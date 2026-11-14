@@ -1,40 +1,42 @@
 using System;
 using System.Collections.Generic;
 
-/// <summary>Chat-only attention from real fills. Fixed 120-second rings and a shared two-second cache.</summary>
+/// <summary>Attention relative to each stock's own volume history. Bounded minute rings and one shared cache.</summary>
 public sealed class MarketConversationFocus
 {
-    private const int Window = 60, Capacity = 120;
     private struct Bucket
     {
-        public int Second;
+        public int Minute;
         public decimal Volume, Turnover, First, Last;
     }
     public struct Snapshot
     {
         public decimal Volume, PreviousVolume, Turnover, ReturnPercent;
-        public double Probability;
+        public double Probability, HeatScore, DwellMultiplier;
     }
     private sealed class Entry
     {
         public Stock Stock;
-        public readonly Bucket[] Buckets = new Bucket[Capacity];
+        public Bucket[] Buckets;
         public Snapshot Snapshot;
-        public double Raw;
+        public double Raw, Started, HotSince = double.NaN, ReentryUntil;
+        public bool InHotList;
     }
     private readonly Dictionary<Stock,Entry> lookup = new();
     private readonly List<Entry> entries = new();
+    private readonly List<Entry> ranking = new();
     private float nextRefresh = float.MinValue;
     private bool active;
     public float RefreshSeconds { get; set; } = 2f;
     public float ExplorationShare { get; set; } = .18f;
+    public Func<double> GameMinutes { get; set; }
     public int RefreshCount { get; private set; }
     public int Count => entries.Count;
     public void Register(Stock stock)
     {
         if (stock == null || lookup.ContainsKey(stock))
         { return; }
-        var entry = new Entry { Stock = stock }; lookup.Add(stock,entry); entries.Add(entry); nextRefresh = float.MinValue;
+        var entry = new Entry { Stock = stock, Started = double.NaN }; lookup.Add(stock,entry); entries.Add(entry); nextRefresh = float.MinValue;
     }
     public void Remove(Stock stock)
     {
@@ -46,9 +48,15 @@ public sealed class MarketConversationFocus
         if (stock == null || quantity <= 0m || price <= 0m)
         { return; }
         Register(stock);
-        int second = (int)Math.Floor(now), index = ((second % Capacity) + Capacity) % Capacity;
-        var entry = lookup[stock]; ref Bucket bucket = ref entry.Buckets[index];
-        if (bucket.Second != second || bucket.Volume == 0m) { bucket = new Bucket { Second = second, First = price }; }
+        double gameMinute = GameMinutes?.Invoke() ?? now;
+        int minute = (int)Math.Floor(gameMinute);
+        int capacity = Math.Max(2, ChatSocialConfig.Current.Int("hotBaselineMinutes") + 2);
+        var entry = lookup[stock];
+        if (entry.Buckets == null || entry.Buckets.Length != capacity)
+        { entry.Buckets = new Bucket[capacity]; entry.Started = gameMinute; entry.HotSince = double.NaN; entry.InHotList = false; }
+        int index = ((minute % capacity) + capacity) % capacity;
+        ref Bucket bucket = ref entry.Buckets[index];
+        if (bucket.Minute != minute || bucket.Volume == 0m) { bucket = new Bucket { Minute = minute, First = price }; }
         bucket.Last = price; bucket.Volume += quantity; bucket.Turnover += price * quantity;
     }
     private void Refresh(float now)
@@ -56,40 +64,60 @@ public sealed class MarketConversationFocus
         if (now < nextRefresh)
         { return; }
         nextRefresh = now + Math.Max(.25f,RefreshSeconds); RefreshCount++;
-        int second = (int)Math.Floor(now), count = 0;
-        decimal volume = 0m, turnover = 0m;
+        var config = ChatSocialConfig.Current;
+        double gameMinute = GameMinutes?.Invoke() ?? now;
+        int minute = (int)Math.Floor(gameMinute), count = 0;
+        int window = config.Int("hotWindowMinutes"), history = config.Int("hotBaselineMinutes");
+        decimal volume = 0m;
+        ranking.Clear();
         foreach (var entry in entries)
         {
             entry.Snapshot = default; entry.Raw = 0d;
             if (!entry.Stock.IsListed || entry.Stock.IsDelisted)
             { continue; }
-            count++; int first = int.MaxValue, last = int.MinValue; decimal open = 0m, close = 0m;
+            count++; int first = int.MaxValue, last = int.MinValue, prior = int.MinValue;
+            decimal open = 0m, close = 0m, priorPrice = 0m, historyVolume = 0m;
+            if (entry.Buckets == null) { continue; }
             foreach (var bucket in entry.Buckets)
             {
-                int age = second-bucket.Second;
-                if (bucket.Volume <= 0m || age < 0 || age >= Capacity)
+                int age = minute - bucket.Minute;
+                if (bucket.Volume <= 0m || age < 0 || age >= history)
                 { continue; }
-                if (age >= Window) { entry.Snapshot.PreviousVolume += bucket.Volume; continue; }
+                historyVolume += bucket.Volume;
+                if (age >= window)
+                {
+                    if (age < window * 2) { entry.Snapshot.PreviousVolume += bucket.Volume; }
+                    if (bucket.Minute > prior) { prior = bucket.Minute; priorPrice = bucket.Last; }
+                    continue;
+                }
                 entry.Snapshot.Volume += bucket.Volume; entry.Snapshot.Turnover += bucket.Turnover;
-                if (bucket.Second < first) { first = bucket.Second; open = bucket.First; }
-                if (bucket.Second > last) { last = bucket.Second; close = bucket.Last; }
+                if (bucket.Minute < first) { first = bucket.Minute; open = bucket.First; }
+                if (bucket.Minute > last) { last = bucket.Minute; close = bucket.Last; }
             }
-            if (open > 0m) { entry.Snapshot.ReturnPercent = (close/open-1m)*100m; }
-            volume += entry.Snapshot.Volume; turnover += entry.Snapshot.Turnover;
+            if (priorPrice > 0m) { open = priorPrice; }
+            if (open > 0m && close > 0m) { entry.Snapshot.ReturnPercent = (close / open - 1m) * 100m; }
+            volume += entry.Snapshot.Volume;
+            if (entry.Snapshot.Volume <= 0m || historyVolume <= 0m) { continue; }
+            double observedMinutes = Math.Clamp(gameMinute - entry.Started + 1, window, history);
+            double baseline = (double)historyVolume * window / observedMinutes;
+            double dwell = entry.InHotList ? Math.Max(config.Get("hotDwellFloor"),
+                1 - Math.Max(0, gameMinute - entry.HotSince - config.Get("hotDwellStartMinutes")) * config.Get("hotDwellPenaltyPerMinute")) : 1;
+            double reentry = gameMinute < entry.ReentryUntil ? config.Get("hotReentryScale") : 1;
+            entry.Raw = (double)entry.Snapshot.Volume / baseline *
+                (1 + Math.Abs((double)entry.Snapshot.ReturnPercent) / config.Get("hotReturnDivisor")) * dwell * reentry;
+            entry.Snapshot.HeatScore = entry.Raw; entry.Snapshot.DwellMultiplier = dwell;
+            ranking.Add(entry);
         }
         active = volume > 0m;
-        double total = 0d;
+        ranking.Sort((a, b) => { int order = b.Raw.CompareTo(a.Raw); return order != 0 ? order : string.CompareOrdinal(a.Stock.symbol, b.Stock.symbol); });
+        double total = 0; foreach (var entry in ranking) { total += entry.Raw; }
+        int hotCount = Math.Min(config.Int("hotListCount"), ranking.Count);
         foreach (var entry in entries)
         {
-            var data = entry.Snapshot;
-            if (data.Volume <= 0m)
-            { continue; }
-            double relativeVolume = (double)(data.Volume/volume);
-            double relativeValue = turnover > 0m ? (double)(data.Turnover/turnover) : relativeVolume;
-            double surge = data.PreviousVolume > 0m ? (double)(data.Volume/data.PreviousVolume) : 2d;
-            double acceleration = 1d + .25d*Math.Clamp(surge-1d,0d,3d);
-            double movement = 1d + Math.Min(20d,Math.Abs((double)data.ReturnPercent))*.05d;
-            entry.Raw = (.45d*relativeVolume + .55d*relativeValue)*acceleration*movement; total += entry.Raw;
+            int rank = ranking.IndexOf(entry); bool hot = rank >= 0 && rank < hotCount;
+            if (hot && !entry.InHotList) { entry.HotSince = gameMinute; }
+            if (!hot && entry.InHotList) { entry.ReentryUntil = gameMinute + config.Get("hotReentryMinutes"); entry.HotSince = double.NaN; }
+            entry.InHotList = hot;
         }
         double explore = Math.Clamp(ExplorationShare,0f,1f);
         foreach (var entry in entries)

@@ -24,11 +24,13 @@ public static partial class ChatSocialTests
             if(args.Length>2 && args[2]=="rates") { SocialReplays(stage); return failed==0?0:1; }
             if(args.Length>2 && args[2]=="tune") { SearchTuning(stage); return failed==0?0:1; }
             if(args.Length>2 && args[2]=="decisions") { DecisionScenarios(stage); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="focus") { FocusScenarios(); return failed==0?0:1; }
             ModelTests(); LegacyReplay();
             if(stage>=2) { SocialReplays(stage); }
             if(stage>=4) { IgnoredFightScenario(stage); }
             if(stage>=5) { ModerationScenarios(stage); }
             if(stage>=6) { DecisionScenarios(stage); }
+            if(stage>=7) { FocusScenarios(); }
         }
         catch(Exception ex) { Console.WriteLine(ex); failed++; }
         Console.WriteLine($"Stage {stage}: passed={passed}, failed={failed}"); return failed==0?0:1;

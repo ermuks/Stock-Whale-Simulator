@@ -135,6 +135,7 @@ public sealed class MarketDayController : MonoBehaviour
         Instance = this;
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;
+        ConversationFocus.GameMinutes = () => (Day - 1) * 1440d + GameMinute;
         UnityEngine.Random.InitState(seed);
         messages = new BotChatMessage[Mathf.Clamp(messageLimit, 16, 1024)];
         RemainingSeconds = preOpenSeconds;

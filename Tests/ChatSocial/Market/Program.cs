@@ -18,6 +18,7 @@ public static class MarketTests
             bot.cash=1000000;foreach(var stock in StockManager.Instance.stocks) { bot.GrantShares(stock,100,stock.currentPrice); }
         }
         var day=MarketDayController.Instance;var society=new InvestorSociety {day=day};InvestorSociety.Instance=society;society.BindSocialBots(day.Bots);
+        day.ConversationFocus.GameMinutes=()=>ChatSocialAudit.GameMinute;
         foreach(var bot in day.Bots) { bot.Social.Psychology.Room=1;society.GetRoom(1).Members.Add(bot.Social.Id); }
         society.ChooseSocialTopic=bot=>day.ConversationFocus.Choose(bot.Social.Psychology.SocialRng.Next(),Time.time);
         society.SocialRecentReturn=stock=>(double)day.ConversationFocus.Read(stock,Time.time).ReturnPercent;
