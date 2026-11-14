@@ -1,0 +1,2423 @@
+{
+  "schemaVersion": 1,
+  "language": "ko-KR",
+  "profitRateUnit": "Ratio",
+  "stressRange": {
+    "min": 0,
+    "max": 100
+  },
+  "templates": [
+    {
+      "id": "PriceRise_0_001",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오늘 움직임 괜찮네. 조금 더 지켜봄."
+    },
+    {
+      "id": "PriceRise_0_002",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 올라오니까 마음이 좀 편하다."
+    },
+    {
+      "id": "PriceRise_0_003",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 아직 들고 있어. 지금 흐름은 마음에 듦."
+    },
+    {
+      "id": "PriceRise_0_004",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오르는 건 좋은데 바로 더 사지는 않을 거야."
+    },
+    {
+      "id": "PriceRise_0_005",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오늘은 차트 볼 맛이 있네."
+    },
+    {
+      "id": "PriceRise_0_006",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 일단 보유 유지. 급하게 결정할 필요는 없지."
+    },
+    {
+      "id": "PriceRise_40_001",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 올라오긴 하는데 아직 안심은 못 하겠다."
+    },
+    {
+      "id": "PriceRise_40_002",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 제발 이번에는 다시 내려가지 마라…"
+    },
+    {
+      "id": "PriceRise_40_003",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 반등하니까 숨 좀 쉬겠네."
+    },
+    {
+      "id": "PriceRise_40_004",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오늘은 좀 버텨줘. 계속 보고 있다."
+    },
+    {
+      "id": "PriceRise_40_005",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오르는데도 긴장이 안 풀리네."
+    },
+    {
+      "id": "PriceRise_40_006",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 또 내려갈까 봐 자꾸 확인하게 된다."
+    },
+    {
+      "id": "PriceFall_0_001",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 내려오네. 아직은 지켜볼 생각."
+    },
+    {
+      "id": "PriceFall_0_002",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 흔들린다고 바로 던지진 않을게."
+    },
+    {
+      "id": "PriceFall_0_003",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오늘 움직임은 좀 약하네."
+    },
+    {
+      "id": "PriceFall_0_004",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 추가 매수는 일단 보류."
+    },
+    {
+      "id": "PriceFall_0_005",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 조정인지 더 빠질 건지 확인해 봐야지."
+    },
+    {
+      "id": "PriceFall_0_006",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 39,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 지금은 급하게 손대지 않는 쪽으로."
+    },
+    {
+      "id": "PriceFall_40_001",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 또 내려가네… 잠깐 화면 끌까."
+    },
+    {
+      "id": "PriceFall_40_002",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 이거 보고 있으니까 진짜 피곤하다."
+    },
+    {
+      "id": "PriceFall_40_003",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 그만 좀 빠져라."
+    },
+    {
+      "id": "PriceFall_40_004",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오늘은 계좌 보기 싫다."
+    },
+    {
+      "id": "PriceFall_40_005",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 내려가는 거 보니까 판단이 안 서네."
+    },
+    {
+      "id": "PriceFall_40_006",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 40,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 괜히 계속 새로고침하게 된다."
+    },
+    {
+      "id": "HoldingProfit_0_001",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitPositive"
+      ],
+      "weight": 1,
+      "text": "{stockName} 평가손익은 플러스. 일단 지켜보는 중."
+    },
+    {
+      "id": "HoldingProfit_0_002",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitPositive"
+      ],
+      "weight": 1,
+      "text": "{stockName} 수익 중이라 마음은 좀 편하네."
+    },
+    {
+      "id": "HoldingProfit_0_003",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitPositive"
+      ],
+      "weight": 1,
+      "text": "{stockName} 계좌에 빨간 숫자 보이니까 기분 좋다."
+    },
+    {
+      "id": "HoldingProfit_0_004",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitPositive"
+      ],
+      "weight": 1,
+      "text": "{stockName} 아직 팔진 않았지만 수익은 나고 있음."
+    },
+    {
+      "id": "HoldingProfit_0_005",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitPositive"
+      ],
+      "weight": 1,
+      "text": "{stockName} 지금 가격이면 내 평단보다 위야."
+    },
+    {
+      "id": "HoldingProfit_0_006",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitPositive"
+      ],
+      "weight": 1,
+      "text": "{stockName} 이대로면 좋겠는데 끝까지 봐야지."
+    },
+    {
+      "id": "HoldingLoss_0_001",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 아직 내 평단 아래야."
+    },
+    {
+      "id": "HoldingLoss_0_002",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 남들은 좋아하는데 나는 아직 마이너스…"
+    },
+    {
+      "id": "HoldingLoss_0_003",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 평가손실 보고 있으니 마음이 무겁네."
+    },
+    {
+      "id": "HoldingLoss_0_004",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 내 계좌는 아직 회복 중이다."
+    },
+    {
+      "id": "HoldingLoss_0_005",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 본전까지는 좀 더 올라야 해."
+    },
+    {
+      "id": "HoldingLoss_0_006",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "UnrealizedProfitNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 손실 중이라 추가 매수는 고민되네."
+    },
+    {
+      "id": "BreakEvenRecovered_0_001",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "CrossedUnrealizedLossToNonNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 드디어 본전권 돌아왔다."
+    },
+    {
+      "id": "BreakEvenRecovered_0_002",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "CrossedUnrealizedLossToNonNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 마이너스 벗어나니까 살 것 같네."
+    },
+    {
+      "id": "BreakEvenRecovered_0_003",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "CrossedUnrealizedLossToNonNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 와 버틴 보람은 있네. 이제 다시 생각해 봄."
+    },
+    {
+      "id": "BreakEvenRecovered_0_004",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "CrossedUnrealizedLossToNonNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 평단까지 왔다. 한숨 돌린다."
+    },
+    {
+      "id": "BreakEvenRecovered_0_005",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "CrossedUnrealizedLossToNonNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 계좌 회복됐다… 오늘은 좀 편하겠다."
+    },
+    {
+      "id": "BreakEvenRecovered_0_006",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "CrossedUnrealizedLossToNonNegative"
+      ],
+      "weight": 1,
+      "text": "{stockName} 이제 손실 구간은 벗어났어."
+    },
+    {
+      "id": "ProfitRealized_0_001",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentProfitableSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 일부 팔아서 수익 확정했어."
+    },
+    {
+      "id": "ProfitRealized_0_002",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentProfitableSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 이번 매도는 이익으로 끝났다."
+    },
+    {
+      "id": "ProfitRealized_0_003",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentProfitableSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 익절했다. 일단 마음은 편함."
+    },
+    {
+      "id": "ProfitRealized_0_004",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentProfitableSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 실현 수익 찍히니까 좋네."
+    },
+    {
+      "id": "ProfitRealized_0_005",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentProfitableSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 이번 거래는 벌고 나왔어."
+    },
+    {
+      "id": "ProfitRealized_0_006",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentProfitableSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 수익 챙겼다. 다음 건 천천히 볼게."
+    },
+    {
+      "id": "LossRealized_0_001",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentLosingSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 손실 보고 정리했어."
+    },
+    {
+      "id": "LossRealized_0_002",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentLosingSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 이번 매도는 손해다. 좀 쉬어야겠다."
+    },
+    {
+      "id": "LossRealized_0_003",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentLosingSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 손절하니까 허탈하네."
+    },
+    {
+      "id": "LossRealized_0_004",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentLosingSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 손실 확정했다. 다음 판단은 신중하게."
+    },
+    {
+      "id": "LossRealized_0_005",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentLosingSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 이번 거래는 졌다…"
+    },
+    {
+      "id": "LossRealized_0_006",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentLosingSell"
+      ],
+      "weight": 1,
+      "text": "{stockName} 마이너스로 팔았어. 지금은 생각 정리 중."
+    },
+    {
+      "id": "PriceRiseAfterSell_0_001",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentSellThenPriceRise"
+      ],
+      "weight": 1,
+      "text": "{stockName} 내가 파니까 올라가네."
+    },
+    {
+      "id": "PriceRiseAfterSell_0_002",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentSellThenPriceRise"
+      ],
+      "weight": 1,
+      "text": "{stockName} 방금 팔았는데 이 타이밍 뭐냐 ㅋㅋ"
+    },
+    {
+      "id": "PriceRiseAfterSell_0_003",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentSellThenPriceRise"
+      ],
+      "weight": 1,
+      "text": "{stockName} 매도하고 나니까 차트가 더 좋아 보인다."
+    },
+    {
+      "id": "PriceRiseAfterSell_0_004",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentSellThenPriceRise"
+      ],
+      "weight": 1,
+      "text": "{stockName} 조금만 더 기다릴 걸 그랬나."
+    },
+    {
+      "id": "PriceRiseAfterSell_0_005",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentSellThenPriceRise"
+      ],
+      "weight": 1,
+      "text": "{stockName} 팔고 오른 거 보니 괜히 아쉽네."
+    },
+    {
+      "id": "PriceRiseAfterSell_0_006",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentSellThenPriceRise"
+      ],
+      "weight": 1,
+      "text": "{stockName} 내 매도 뒤에 올라가는 건 좀 얄밉다."
+    },
+    {
+      "id": "BuyConsideration_0_001",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "NotHolding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 지금 들어가면 늦은 거 아님?"
+    },
+    {
+      "id": "BuyConsideration_0_002",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "NotHolding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 아직 안 샀어. 계속 보는 중."
+    },
+    {
+      "id": "BuyConsideration_0_003",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "NotHolding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 진입할지 고민되네."
+    },
+    {
+      "id": "BuyConsideration_0_004",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "NotHolding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 나는 물량 없어. 관망 중."
+    },
+    {
+      "id": "BuyConsideration_0_005",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "NotHolding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 사기 전에 흐름 좀 더 확인할게."
+    },
+    {
+      "id": "BuyConsideration_0_006",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "NotHolding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 관심은 있는데 아직 결정 못 했다."
+    },
+    {
+      "id": "MarketOpen_0_001",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "장 열렸네. 오늘도 천천히 보자."
+    },
+    {
+      "id": "MarketOpen_0_002",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "시작이다. 다들 무리하지 말자."
+    },
+    {
+      "id": "MarketOpen_0_003",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘은 어떤 종목이 움직이려나."
+    },
+    {
+      "id": "MarketOpen_0_004",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "개장했네. 일단 호가부터 볼게."
+    },
+    {
+      "id": "MarketOpen_0_005",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "채팅보다 주문부터 확인하고 온다."
+    },
+    {
+      "id": "MarketOpen_0_006",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘도 시장 켜놨다."
+    },
+    {
+      "id": "MarketClose_0_001",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 장 끝났네. 다들 고생했다."
+    },
+    {
+      "id": "MarketClose_0_002",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "마감이다. 내일 다시 보자."
+    },
+    {
+      "id": "MarketClose_0_003",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "이제 계좌 정리하고 쉬어야지."
+    },
+    {
+      "id": "MarketClose_0_004",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 주문은 끝. 잠깐 쉬고 온다."
+    },
+    {
+      "id": "MarketClose_0_005",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "장이 닫히니까 좀 조용해졌네."
+    },
+    {
+      "id": "MarketClose_0_006",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 판단들 한번 돌아봐야겠다."
+    },
+    {
+      "id": "DailyProfit_0_001",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnPositive"
+      ],
+      "weight": 1,
+      "text": "오늘 계좌는 플러스로 마감."
+    },
+    {
+      "id": "DailyProfit_0_002",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnPositive"
+      ],
+      "weight": 1,
+      "text": "오늘은 자산이 늘었다. 이 정도면 만족."
+    },
+    {
+      "id": "DailyProfit_0_003",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnPositive"
+      ],
+      "weight": 1,
+      "text": "일일 성적은 수익이다. 내일도 차분하게."
+    },
+    {
+      "id": "DailyProfit_0_004",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnPositive"
+      ],
+      "weight": 1,
+      "text": "오늘 결과 괜찮네. 무리하진 말아야지."
+    },
+    {
+      "id": "DailyProfit_0_005",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnPositive"
+      ],
+      "weight": 1,
+      "text": "오늘은 벌었다. 일단 쉬자."
+    },
+    {
+      "id": "DailyProfit_0_006",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnPositive"
+      ],
+      "weight": 1,
+      "text": "마감 결산 플러스 확인했다."
+    },
+    {
+      "id": "DailyLoss_0_001",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnNegative"
+      ],
+      "weight": 1,
+      "text": "오늘 결산은 마이너스네."
+    },
+    {
+      "id": "DailyLoss_0_002",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnNegative"
+      ],
+      "weight": 1,
+      "text": "오늘은 자산이 줄었다. 내일 다시 생각해 봄."
+    },
+    {
+      "id": "DailyLoss_0_003",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnNegative"
+      ],
+      "weight": 1,
+      "text": "일일 성적 손실. 지금은 좀 쉬어야겠다."
+    },
+    {
+      "id": "DailyLoss_0_004",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnNegative"
+      ],
+      "weight": 1,
+      "text": "오늘 결과는 아쉽다."
+    },
+    {
+      "id": "DailyLoss_0_005",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnNegative"
+      ],
+      "weight": 1,
+      "text": "오늘은 졌다. 판단 기록이나 봐야지."
+    },
+    {
+      "id": "DailyLoss_0_006",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "DailyReturnNegative"
+      ],
+      "weight": 1,
+      "text": "마감 숫자 보니까 마음이 무겁네."
+    },
+    {
+      "id": "StressRelief_0_001",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentStressDrop"
+      ],
+      "weight": 1,
+      "text": "{stockName} 아까보다 마음이 훨씬 편해졌다."
+    },
+    {
+      "id": "StressRelief_0_002",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentStressDrop"
+      ],
+      "weight": 1,
+      "text": "{stockName} 와 살았다 ㅋㅋㅋㅋ"
+    },
+    {
+      "id": "StressRelief_0_003",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentStressDrop"
+      ],
+      "weight": 1,
+      "text": "{stockName} 이제 좀 숨 돌리겠네."
+    },
+    {
+      "id": "StressRelief_0_004",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentStressDrop"
+      ],
+      "weight": 1,
+      "text": "{stockName} 아까는 예민했는데 지금은 괜찮아."
+    },
+    {
+      "id": "StressRelief_0_005",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentStressDrop"
+      ],
+      "weight": 1,
+      "text": "{stockName} 회복하니까 기분이 확 달라지네."
+    },
+    {
+      "id": "StressRelief_0_006",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Holding",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [
+        "RecentStressDrop"
+      ],
+      "weight": 1,
+      "text": "{stockName} 오늘 다시 웃는다 ㅋㅋ"
+    },
+    {
+      "id": "PriceRise_extra_20261012_001",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 올라오는 속도가 좀 빠르네."
+    },
+    {
+      "id": "PriceRise_extra_20261012_002",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 이럴 때 욕심내면 꼭 늦더라."
+    },
+    {
+      "id": "PriceRise_extra_20261012_003",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 더 갈지는 모르겠는데 눈은 못 떼겠음."
+    },
+    {
+      "id": "PriceRise_extra_20261012_004",
+      "event": "PriceRise",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 호가부터 보고 판단해야겠다."
+    },
+    {
+      "id": "PriceFall_extra_20261012_001",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 내려오는 동안엔 손이 잘 안 나가네."
+    },
+    {
+      "id": "PriceFall_extra_20261012_002",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 떨어졌다고 바로 싸다고 하긴 어렵지."
+    },
+    {
+      "id": "PriceFall_extra_20261012_003",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 호가 간격부터 확인하는 중."
+    },
+    {
+      "id": "PriceFall_extra_20261012_004",
+      "event": "PriceFall",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 오늘은 천천히 봐야겠는데."
+    },
+    {
+      "id": "HoldingProfit_extra_20261012_001",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 이럴 때 미리 기준을 정해둬야 하는데."
+    },
+    {
+      "id": "HoldingProfit_extra_20261012_002",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 기분은 좋은데 판단은 따로 해야지."
+    },
+    {
+      "id": "HoldingProfit_extra_20261012_003",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 숫자 계속 보니까 욕심이 붙네."
+    },
+    {
+      "id": "HoldingProfit_extra_20261012_004",
+      "event": "HoldingProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 어디까지 기다릴지가 더 어렵다."
+    },
+    {
+      "id": "HoldingLoss_extra_20261012_001",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 손실 볼 때 시간이 더 느리게 가는 듯."
+    },
+    {
+      "id": "HoldingLoss_extra_20261012_002",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 잠깐 화면에서 눈 좀 떼야겠다."
+    },
+    {
+      "id": "HoldingLoss_extra_20261012_003",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 이유 없이 버티는 건 아닌지 다시 보는 중."
+    },
+    {
+      "id": "HoldingLoss_extra_20261012_004",
+      "event": "HoldingLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 본전 생각만 하면 판단이 꼬이더라."
+    },
+    {
+      "id": "BreakEvenRecovered_extra_20261012_001",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 다시 선택할 기회라고 생각해 봐야지."
+    },
+    {
+      "id": "BreakEvenRecovered_extra_20261012_002",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 이제 처음 샀을 때 기준을 다시 읽어봄."
+    },
+    {
+      "id": "BreakEvenRecovered_extra_20261012_003",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 마음이 풀려도 주문은 천천히."
+    },
+    {
+      "id": "BreakEvenRecovered_extra_20261012_004",
+      "event": "BreakEvenRecovered",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 아까 긴장했던 건 좀 가라앉았네."
+    },
+    {
+      "id": "ProfitRealized_extra_20261012_001",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 정리하고 나니 화면 보는 느낌이 다르네."
+    },
+    {
+      "id": "ProfitRealized_extra_20261012_002",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 결과보다 이번 판단을 기록해둬야겠다."
+    },
+    {
+      "id": "ProfitRealized_extra_20261012_003",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 더 갈까 싶어도 일단 한숨 돌림."
+    },
+    {
+      "id": "ProfitRealized_extra_20261012_004",
+      "event": "ProfitRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 이번 매매는 여기서 마무리."
+    },
+    {
+      "id": "LossRealized_extra_20261012_001",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 다음 주문까지는 잠깐 쉬려고."
+    },
+    {
+      "id": "LossRealized_extra_20261012_002",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 아쉬운데 같은 실수는 줄여야지."
+    },
+    {
+      "id": "LossRealized_extra_20261012_003",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 복구하겠다고 급하게 들어가진 말자."
+    },
+    {
+      "id": "LossRealized_extra_20261012_004",
+      "event": "LossRealized",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 왜 들어갔는지부터 적어보는 중."
+    },
+    {
+      "id": "PriceRiseAfterSell_extra_20261012_001",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 팔고 나서도 계속 보게 되네."
+    },
+    {
+      "id": "PriceRiseAfterSell_extra_20261012_002",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 다시 탈지는 별개로 생각해야지."
+    },
+    {
+      "id": "PriceRiseAfterSell_extra_20261012_003",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 지나간 주문인데 자꾸 생각남."
+    },
+    {
+      "id": "PriceRiseAfterSell_extra_20261012_004",
+      "event": "PriceRiseAfterSell",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 다음 기회도 있겠지."
+    },
+    {
+      "id": "BuyConsideration_extra_20261012_001",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 호가가 비면 체결 가격도 달라질 수 있지."
+    },
+    {
+      "id": "BuyConsideration_extra_20261012_002",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 매수 누르기 전에 수량부터 줄여보는 중."
+    },
+    {
+      "id": "BuyConsideration_extra_20261012_003",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 지금 들어갈 이유가 충분한가 생각 중."
+    },
+    {
+      "id": "BuyConsideration_extra_20261012_004",
+      "event": "BuyConsideration",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "{stockName} 차트보다 주문창을 먼저 봐야겠다."
+    },
+    {
+      "id": "MarketOpen_extra_20261012_001",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘은 주문 전에 한 번 더 생각하기."
+    },
+    {
+      "id": "MarketOpen_extra_20261012_002",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "다들 화면 켰나? 나는 일단 구경부터."
+    },
+    {
+      "id": "MarketOpen_extra_20261012_003",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "첫 움직임 보고 너무 급해지진 말자."
+    },
+    {
+      "id": "MarketOpen_extra_20261012_004",
+      "event": "MarketOpen",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "호가 간격부터 체크해 봐야겠네."
+    },
+    {
+      "id": "MarketClose_extra_20261012_001",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 판단 중에 뭐가 아쉬웠는지 적는 중."
+    },
+    {
+      "id": "MarketClose_extra_20261012_002",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "다들 고생했어. 이제 눈 좀 쉬자."
+    },
+    {
+      "id": "MarketClose_extra_20261012_003",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "장 끝나고 보니까 또 다른 생각이 드네."
+    },
+    {
+      "id": "MarketClose_extra_20261012_004",
+      "event": "MarketClose",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "내일 계획은 오늘 기분 가라앉고 세워야지."
+    },
+    {
+      "id": "DailyProfit_extra_20261012_001",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 잘된 건 운도 있었겠지."
+    },
+    {
+      "id": "DailyProfit_extra_20261012_002",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "결과 좋다고 내일 수량부터 늘리진 말자."
+    },
+    {
+      "id": "DailyProfit_extra_20261012_003",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 주문 기록 다시 보는 중."
+    },
+    {
+      "id": "DailyProfit_extra_20261012_004",
+      "event": "DailyProfit",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "기분 좋을 때 쉬는 것도 연습해야겠다."
+    },
+    {
+      "id": "DailyLoss_extra_20261012_001",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘은 머리 좀 식혀야겠네."
+    },
+    {
+      "id": "DailyLoss_extra_20261012_002",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "급한 주문이 있었는지 다시 살펴보려고."
+    },
+    {
+      "id": "DailyLoss_extra_20261012_003",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "내일 바로 만회하겠다는 생각부터 내려놓자."
+    },
+    {
+      "id": "DailyLoss_extra_20261012_004",
+      "event": "DailyLoss",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "결과랑 판단을 나눠서 적어봐야겠다."
+    },
+    {
+      "id": "StressRelief_extra_20261012_001",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "화면 잠깐 안 보니까 생각이 정리되네."
+    },
+    {
+      "id": "StressRelief_extra_20261012_002",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "어깨에 힘 들어갔던 것도 이제 알았음."
+    },
+    {
+      "id": "StressRelief_extra_20261012_003",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "물 좀 마시고 와야겠다."
+    },
+    {
+      "id": "StressRelief_extra_20261012_004",
+      "event": "StressRelief",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "주문 없이 구경만 하는 시간도 필요하네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_001",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "커피 식은 줄도 모르고 보고 있었네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_002",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "다들 점심 뭐 먹었어? 메뉴 정하는 게 더 어렵다."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_003",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "마우스 잡은 손에 힘 너무 들어갔다."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_004",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "잠깐 창문 열고 바람 좀 쐬고 옴."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_005",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "물 한 잔 마시고 다시 보는 중."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_006",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘은 알림 소리만 나도 돌아보게 되네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_007",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "배고프니까 판단이 더 급해지는 것 같아."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_008",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "의자에 너무 오래 앉아 있었네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_009",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "모니터 밝기 좀 낮췄더니 눈이 편하다."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_010",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "숫자만 보다가 시계 보면 놀람."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_011",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "잠깐 스트레칭 하고 와야겠다."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_012",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘은 배달 말고 직접 밥 해 먹을까."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_013",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "장 보면서 과자 먹으니까 끝도 없네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_014",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "키보드 청소할 때가 됐는데 미루는 중."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_015",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "밖에 날씨는 좋은데 나는 화면만 보고 있네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_016",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "다들 음악 틀어놓고 보나? 난 조용한 게 낫더라."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_017",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 주문 메모 쓰다가 글씨가 점점 작아짐."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_018",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "쉬는 것도 타이밍 잡기가 어렵네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_019",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "요즘 잠부터 제대로 자려고 노력 중."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_020",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "커피 더 마실까 하다가 물로 바꿨다."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_021",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "잠깐 화면 덮고 생각 정리하는 중."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_022",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "인터넷 멀쩡한데 괜히 연결 확인해 봄."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_023",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "눈 깜빡이는 것도 잊고 있었네."
+    },
+    {
+      "id": "SmallTalk_extra_20261012_024",
+      "event": "SmallTalk",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "오늘 저녁엔 산책 좀 해야겠다."
+    },
+    {
+      "id": "Agreement_extra_20261012_001",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "그 말 들으니 한 번 더 생각하게 되네."
+    },
+    {
+      "id": "Agreement_extra_20261012_002",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "그 관점도 참고해볼게."
+    },
+    {
+      "id": "Agreement_extra_20261012_003",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "나도 급하게 결론 내리진 않으려고."
+    },
+    {
+      "id": "Agreement_extra_20261012_004",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "그렇게 볼 수도 있겠다."
+    },
+    {
+      "id": "Agreement_extra_20261012_005",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "얘기해줘서 고마워. 조금 더 지켜볼게."
+    },
+    {
+      "id": "Agreement_extra_20261012_006",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "듣고 보니 확인해볼 부분이 있네."
+    },
+    {
+      "id": "Agreement_extra_20261012_007",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "내 생각이랑 비교해 보는 중."
+    },
+    {
+      "id": "Agreement_extra_20261012_008",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "일단 내 기준도 다시 살펴봐야겠네."
+    },
+    {
+      "id": "Agreement_extra_20261012_009",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "말 나온 김에 잠깐 생각을 정리해봄."
+    },
+    {
+      "id": "Agreement_extra_20261012_010",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "확신보다는 천천히 확인하는 쪽이 좋겠네."
+    },
+    {
+      "id": "Agreement_extra_20261012_011",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "그 얘기는 기억해둘게."
+    },
+    {
+      "id": "Agreement_extra_20261012_012",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "판단하기 전에 한 번 더 봐야겠다."
+    },
+    {
+      "id": "Agreement_extra_20261012_013",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "비슷한 고민을 해 본 적은 있어."
+    },
+    {
+      "id": "Agreement_extra_20261012_014",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "설명 들으니까 생각할 거리가 생기네."
+    },
+    {
+      "id": "Agreement_extra_20261012_015",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "지금은 서두르지 않고 보는 중."
+    },
+    {
+      "id": "Agreement_extra_20261012_016",
+      "event": "Agreement",
+      "personality": "Any",
+      "tone": "Casual",
+      "holdingCondition": "Any",
+      "minStress": 0,
+      "maxStress": 100,
+      "requirements": [],
+      "weight": 1,
+      "text": "각자 기준이 다를 수 있으니 참고만 해볼게."
+    }
+  ]
+}

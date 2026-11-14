@@ -1,0 +1,449 @@
+using System;
+using System.Globalization;
+using System.Text;
+using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
+
+/// <summary>기존 두 World Space Canvas의 새 기본 화면. 기존 탭과 이벤트는 그대로 유지한다.</summary>
+[DefaultExecutionOrder(150)]
+public sealed class DeviceTerminalUI : MonoBehaviour
+{
+    public bool journal;
+    public TabletAccountUI navigation;
+    public DeskOperationUI legacy;
+    public DeviceOrderSession session;
+    public DeviceMarketJournal records;
+    public DeviceTerminalUI orderScreen;
+    public TabletViewController orderTablet, thisTablet;
+    public TabletViewController pairedTablet;
+    public GameObject panel, draftPanel, reviewPanel, splitPanel;
+    public Button mainTab, buy, sell, split, review, submit, back, cancel, prepare, budget, eventOrder;
+    public TMP_InputField price, quantity, parts, interval;
+    public TextMeshProUGUI stockName, ticker, currentPrice, change, graphRange, status, feedback;
+    public TextMeshProUGUI position, cash, plan, forecast, validation, confirmation, splitLabel, amount;
+    public TextMeshProUGUI eventDetail, fills, company, eventCount;
+    public Button[] eventButtons;
+    public TextMeshProUGUI[] eventTitles, eventTags;
+    public RectTransform eventContent;
+    public DevicePriceGraph graph;
+    public Image progress;
+    public GameObject growthPanel;
+    public Button growth, closeGrowth, openRooms;
+    public TextMeshProUGUI growthText;
+    public CompactGrowthUI visualGrowth;
+    private Stock selected, reviewedStock;
+    private bool buying = true, splitting, confirming, receipt;
+    private decimal reviewedPrice, reviewedQuantity;
+    private int reviewedParts;
+    private float reviewedInterval, next;
+    private int seenVersion = -1;
+    private DeviceMarketJournal.Entry selectedEvent;
+    private System.Collections.IEnumerator focusing;
+    private string draftSource = "";
+    private GameObject quickQuantityPanel;
+    private TextMeshProUGUI reviewLabel;
+    private Button[] quickButtons;
+    private LeadingRoomUI leadingRooms;
+    private readonly StringBuilder text = new(1024);
+    private static readonly Color Ink = new Color32(230, 235, 239, 255), Muted = new Color32(166, 177, 186, 255), Up = new Color32(239, 89, 100, 255), Down = new Color32(76, 150, 232, 255), Active = new Color32(23, 55, 62, 255), Neutral = new Color32(23, 33, 38, 255);
+    public static void Set(TextMeshProUGUI target, string value)
+    {
+        if (target != null && target.text != value)
+        { target.text = value; }
+    }
+    public static string Money(decimal value) => PriceTickPolicy.FormatMoney(value) + "원";
+    void Start()
+    {
+        mainTab.onClick.AddListener(Show);
+        legacy.deskTab.onClick.AddListener(Hide);
+        legacy.legacyTab.onClick.AddListener(Hide);
+        if (journal)
+        {
+            visualGrowth?.Configure(openRooms,closeGrowth);
+            for (int i = 0; i < eventButtons.Length; i++)
+            {
+                int row = i;
+                eventButtons[i].onClick.AddListener(() => SelectEvent(row));
+            }
+            eventOrder.onClick.AddListener(OpenOrder);
+            growth.onClick.AddListener(ShowGrowth); closeGrowth.onClick.AddListener(HideGrowth); openRooms.onClick.AddListener(OpenRooms);
+        }
+        else
+        {
+            ConfigureQuickOrder();
+            buy.onClick.AddListener(Buy); sell.onClick.AddListener(Sell);
+            split.onClick.AddListener(Split); review.onClick.AddListener(Review);
+            submit.onClick.AddListener(Submit); back.onClick.AddListener(Back);
+            cancel.onClick.AddListener(Cancel); prepare.onClick.AddListener(Prepare);
+            price.onValueChanged.AddListener(Edited); quantity.onValueChanged.AddListener(Edited);
+            parts.onValueChanged.AddListener(Edited); interval.onValueChanged.AddListener(Edited);
+        }
+        if (navigation == null) { Show(); }
+    }
+    public void Show()
+    {
+        if (navigation != null) { navigation.OpenExisting(this); }
+        else { ShowLocal(); }
+    }
+    public void ShowLocal()
+    {
+        legacy.deskPanel.SetActive(false); legacy.legacyPanel.SetActive(false);
+        panel.SetActive(true); next = 0f;
+        mainTab.image.color = Active;
+    }
+    public void FocusScreen()
+    {
+        Show();
+        if (focusing == null && !PhoneCallController.IsRaised)
+        { focusing = FocusExistingTablet(); StartCoroutine(focusing); }
+    }
+    private System.Collections.IEnumerator FocusExistingTablet()
+    {
+        if (pairedTablet != null)
+        {
+            pairedTablet.ReturnTablet();
+            while (pairedTablet.IsReturning)
+            { yield return null; }
+        }
+        thisTablet.FocusTablet(); focusing = null;
+    }
+    public bool LoadSignalDraft(Stock stock, bool buyOrder, decimal limit, string source)
+    {
+        if (journal || stock == null || !stock.AcceptsOrders || session.Active || !PriceTickPolicy.IsValidPrice(limit))
+        { return false; }
+        int index = StockManager.Instance.stocks.IndexOf(stock);
+        if (index < 0 || !session.Prepare(stock))
+        { return false; }
+        StockManager.Instance.SelectStock(index); selected = stock;
+        buying = buyOrder; splitting = confirming = receipt = false;
+        draftSource = source;
+        price.SetTextWithoutNotify(limit.ToString("0",CultureInfo.InvariantCulture)); quantity.SetTextWithoutNotify("1");
+        FocusScreen(); next = 0f; return true;
+    }
+    public void FocusGrowth()
+    { FocusScreen(); ShowGrowth(); }
+    private void Hide()
+    { panel.SetActive(false); mainTab.image.color = Neutral; }
+    private void ShowGrowth()
+    {
+        visualGrowth?.Configure(openRooms,closeGrowth);
+        growthPanel.transform.SetAsLastSibling(); growthPanel.SetActive(true);
+        if (PlayerProgression.Instance != null) { visualGrowth?.Refresh(PlayerProgression.Instance); }
+        next = 0f;
+    }
+    private void HideGrowth() { growthPanel.SetActive(false); }
+    private void OpenRooms()
+    {
+        var career = PlayerProgression.Instance;
+        if (career == null)
+        { visualGrowth?.ShowFeedback("성장 기록을 불러오는 중입니다."); return; }
+        if (!career.CanOperateRooms && !career.Eligible)
+        {
+            if (orderScreen == null)
+            { visualGrowth?.ShowFeedback("주문 화면 연결을 확인해 주세요."); return; }
+            HideGrowth(); orderScreen.FocusScreen(); return;
+        }
+        if (!career.CanOperateRooms)
+        {
+            if (career.OpenLeadingRooms()) { visualGrowth?.Refresh(career); }
+            else { visualGrowth?.ShowFeedback("개설 조건이 바뀌었습니다. 현재 성과를 확인하세요."); }
+            next = 0f; return;
+        }
+        if (leadingRooms == null) { leadingRooms = FindAnyObjectByType<LeadingRoomUI>(); }
+        if (leadingRooms == null || leadingRooms.chat == null)
+        { visualGrowth?.ShowFeedback("라운지를 준비하는 중입니다. 잠시 후 다시 눌러 주세요."); return; }
+        leadingRooms.chat.SelectRoom(1); HideGrowth(); thisTablet.ReturnTablet();
+        MarketEventFeed.Instance?.Notify("내 리딩방 1을 열었습니다. 오른쪽 모니터에서 참가자와 대화를 확인하세요.");
+    }
+    private void Buy() { buying = true; Edited(""); }
+    private void Sell() { buying = false; Edited(""); }
+    private void Split() { splitting = !splitting; Edited(""); }
+    private void Edited(string unused) { next = 0f; }
+    private void Prepare()
+    {
+        if (session.Prepare(selected))
+        {
+            receipt = confirming = false; draftSource = "";
+            CurrentPrice(); quantity.SetTextWithoutNotify("1");
+        }
+        next = 0f;
+    }
+    private void ConfigureQuickOrder()
+    {
+        reviewLabel = review.GetComponentInChildren<TextMeshProUGUI>();
+        budget.gameObject.SetActive(false); progress.transform.parent.gameObject.SetActive(false);
+        Set(prepare.GetComponentInChildren<TextMeshProUGUI>(),"입력 초기화");
+        Layout((RectTransform)prepare.transform,.025f,.865f,.20f,.065f);
+        Layout((RectTransform)cancel.transform,.25f,.865f,.205f,.065f);
+        quickQuantityPanel = new GameObject("Area :: Quick Order Amounts",typeof(RectTransform));
+        quickQuantityPanel.transform.SetParent(draftPanel.transform,false);
+        quickQuantityPanel.layer = draftPanel.layer;
+        Layout((RectTransform)quickQuantityPanel.transform,0,.45f,1,.09f);
+        quickButtons = new[] {
+            QuickButton("Current Price","현재가",0,.49f), QuickButton("Quarter","25%",.51f,.15f),
+            QuickButton("Half","50%",.68f,.15f), QuickButton("Maximum","최대",.85f,.15f)
+        };
+        quickButtons[0].onClick.AddListener(CurrentPrice);
+        quickButtons[1].onClick.AddListener(() => SetQuantity(.25m));
+        quickButtons[2].onClick.AddListener(() => SetQuantity(.5m));
+        quickButtons[3].onClick.AddListener(() => SetQuantity(1m));
+    }
+    private Button QuickButton(string name,string caption,float x,float width)
+    {
+        var rect = new GameObject("Button :: Order " + name,typeof(RectTransform)).GetComponent<RectTransform>();
+        rect.SetParent(quickQuantityPanel.transform,false); Layout(rect,x,0,width,1);
+        rect.gameObject.layer = quickQuantityPanel.layer;
+        var image = rect.gameObject.AddComponent<Image>(); image.color = Neutral; image.raycastTarget = true;
+        var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
+        var label = Instantiate(reviewLabel,rect); label.name = "Text :: Order " + name;
+        Layout(label.rectTransform,0,0,1,1); label.text = caption; label.fontSize = 29;
+        label.fontStyle = FontStyles.Normal; label.enableAutoSizing = false; label.alignment = TextAlignmentOptions.Center;
+        label.raycastTarget = false; label.color = Ink;
+        return button;
+    }
+    private static void Layout(RectTransform rect,float x,float y,float width,float height)
+    {
+        rect.anchorMin = new Vector2(x,1-y-height); rect.anchorMax = new Vector2(x+width,1-y);
+        rect.offsetMin = rect.offsetMax = Vector2.zero; rect.localScale = Vector3.one;
+    }
+    private void CurrentPrice()
+    {
+        if (selected == null || session.Active)
+        { return; }
+        price.SetTextWithoutNotify(PriceTickPolicy.RoundToTick(selected.currentPrice).ToString("0",CultureInfo.InvariantCulture));
+        next = 0f;
+    }
+    private void SetQuantity(decimal fraction)
+    {
+        if (selected == null || session.Active)
+        { return; }
+        decimal limit = Number(price);
+        decimal maximum = buying ? limit >= 1m ? decimal.Floor(session.AvailableCash / limit) : 0m : session.account.GetHolding(selected);
+        decimal value = Math.Min(1000000m,decimal.Floor(Math.Max(0m,maximum) * fraction));
+        if (maximum >= 1m) { value = Math.Max(1m,value); }
+        quantity.SetTextWithoutNotify(value.ToString("0",CultureInfo.InvariantCulture)); next = 0f;
+    }
+    private static decimal Number(TMP_InputField field)
+    {
+        return decimal.TryParse(field.text, NumberStyles.None, CultureInfo.InvariantCulture, out decimal value) ? value : 0m;
+    }
+    private string Check(out decimal p, out decimal q, out int n, out float seconds)
+    {
+        p = Number(price); q = Number(quantity);
+        decimal rawParts = Number(parts), rawInterval = Number(interval);
+        n = splitting && rawParts <= 10m ? (int)rawParts : splitting ? 0 : 1;
+        seconds = splitting && rawInterval <= 60m ? (float)rawInterval : splitting ? 0f : 3f;
+        return session.Validate(selected, buying, p, q, n, seconds);
+    }
+    private void Review()
+    {
+        string error = Check(out decimal p, out decimal q, out int n, out float seconds);
+        if (!string.IsNullOrEmpty(error))
+        { Set(validation, error); return; }
+        if (!splitting)
+        {
+            session.Submit(selected,buying,p,q,1,1f);
+            confirming = receipt = false; draftSource = ""; next = 0f;
+            Order(); return;
+        }
+        reviewedStock = selected; reviewedPrice = p; reviewedQuantity = q; reviewedParts = n; reviewedInterval = seconds;
+        confirming = true; receipt = false;
+        Set(confirmation, selected.stockName + "\n\n" + (buying ? "매수" : "매도") + " · 지정가 " + Money(p) + "\n총 " + q.ToString("N0") + "주 · " + Money(p * q) + "\n" + (n > 1 ? n + "회 분할 · " + seconds + "초 간격" : "한 번에 제출") + "\n\n지정가 조건과 실제 호가에 따라 체결됩니다.");
+        next = 0f;
+    }
+    private void Submit()
+    {
+        if (!confirming || reviewedStock != selected)
+        { return; }
+        if (session.Submit(reviewedStock, buying, reviewedPrice, reviewedQuantity, reviewedParts, reviewedInterval))
+        { confirming = false; receipt = true; draftSource = ""; }
+        else
+        { Set(confirmation, session.Feedback + "\n\n입력값을 다시 확인하세요."); }
+        next = 0f;
+    }
+    private void Back() { confirming = receipt = false; next = 0f; }
+    private void Cancel() { session.Cancel(); next = 0f; }
+    void Update()
+    {
+        if (!panel.activeInHierarchy || Time.unscaledTime < next || StockManager.Instance == null || session.account == null)
+        { return; }
+        next = Time.unscaledTime + .3f;
+        Stock stock = StockManager.Instance.CurrentStock;
+        if (selected != stock)
+        {
+            selected = stock;
+            if (!journal)
+            {
+                confirming = false;
+                if (!session.Active && selected != null)
+                {
+                    session.Prepare(selected); receipt = false; draftSource = "";
+                    price.SetTextWithoutNotify(PriceTickPolicy.RoundToTick(selected.currentPrice).ToString(CultureInfo.InvariantCulture));
+                    quantity.SetTextWithoutNotify("1");
+                }
+            }
+        }
+        if (selected == null)
+        { return; }
+        if (!journal && !session.Active && selected != session.Target) { Prepare(); }
+        Header();
+        if (journal)
+        { Journal(); }
+        else
+        { Order(); }
+    }
+    private void Header()
+    {
+        Set(stockName, selected.stockName); Set(ticker, selected.symbol + " · 현재 선택 종목");
+        Set(currentPrice, Money(selected.currentPrice));
+        decimal reference = StockStatistics.Instance == null ? selected.currentPrice : StockStatistics.Instance.GetStats(selected).prevDayClose;
+        decimal delta = selected.currentPrice - reference;
+        Set(change, (delta >= 0m ? "+" : "") + Money(delta) + "  (" + (reference > 0m ? (delta / reference * 100m).ToString("+0.0;-0.0;0.0") : "0.0") + "%)");
+        change.color = delta >= 0m ? Up : Down;
+        graph.color = change.color; graph.SetStock(selected);
+        Set(graphRange, "최근 40개 캔들 · 전일 " + Money(reference));
+    }
+    private void Order()
+    {
+        var account = session.account;
+        decimal owned = account.GetOwnedVolume(selected), average = account.GetOwnedAverage(selected), pnl = (selected.currentPrice - average) * owned;
+        Set(position, "<size=29><color=#A6B1BA>평균 매수가</color></size>\n<size=40>" + Money(average) + "</size>\n<size=29><color=#A6B1BA>보유 수량</color></size>\n<size=40>" + owned.ToString("N0") + "주</size>\n<size=29><color=#A6B1BA>평가손익</color></size>\n<size=36><color=" + (pnl >= 0m ? "#EF5964" : "#4C96E8") + ">" + pnl.ToString("+#,##0;-#,##0;0") + "원</color></size>");
+        Set(cash, "주문 가능 현금  " + Money(session.AvailableCash) + "\n미체결 예약금  " + Money(account.ReservedCash));
+        Set(plan, "매도 가능  " + account.GetHolding(selected).ToString("N0") + "주" + (session.Number > 0 ? "\n최근 주문  " + session.Filled.ToString("N0") + "/" + session.Quantity.ToString("N0") + "주 체결" : "\n예약금을 제외한 잔고 전액 사용 가능"));
+        Set(status, session.Status);
+        Set(feedback, !session.Active && !receipt && !string.IsNullOrEmpty(draftSource) ? draftSource + " · 가격과 수량 확인 후 직접 제출하세요." : (session.Active && session.Target != null ? session.Target.stockName + " · " : "") + session.Feedback);
+        cancel.interactable = session.Active;
+        prepare.interactable = !session.Active;
+        draftPanel.SetActive(!confirming && !receipt);
+        reviewPanel.SetActive(confirming || receipt);
+        if (receipt)
+        {
+            Set(confirmation, session.Status + "\n" + session.Target.stockName + " · #" + session.Number.ToString("D4") + "\n\n" + (session.Buy ? "매수 " : "매도 ") + session.Filled.ToString("N0") + " / " + session.Quantity.ToString("N0") + "주 체결\n호가 대기 " + session.PendingVolume.ToString("N0") + "주\n분할 제출 대기 " + session.Unsubmitted.ToString("N0") + "주\n\n" + session.Feedback);
+        }
+        submit.gameObject.SetActive(confirming); back.interactable = !session.Active;
+        if (confirming || receipt)
+        { return; }
+        splitPanel.SetActive(splitting);
+        quickQuantityPanel.SetActive(!splitting);
+        foreach (var button in quickButtons) { button.interactable = !session.Active; }
+        Set(splitLabel, splitting ? "분할 주문  ON" : "분할 주문  OFF");
+        buy.image.color = buying ? Active : Neutral; sell.image.color = buying ? Neutral : Active;
+        string error = Check(out decimal p, out decimal q, out int n, out float seconds);
+        Set(validation, error); review.interactable = string.IsNullOrEmpty(error);
+        decimal cost = p > 0m && q > 0m && p <= decimal.MaxValue / q ? p * q : 0m;
+        Set(amount, cost > 0m ? Money(cost) : "—");
+        Set(reviewLabel, session.Active ? "체결 대기 중" : splitting ? "분할 주문 확인" : (buying ? "매수 " : "매도 ") + (string.IsNullOrEmpty(error) ? q.ToString("N0") + "주 · " + Money(cost) : "주문"));
+        review.image.color = buying ? new Color32(127,52,62,255) : new Color32(43,85,133,255);
+        if (session.Active)
+        {
+            Set(forecast,"실제 체결 " + session.Filled.ToString("N0") + "주 · 대기 " + (session.PendingVolume + session.Unsubmitted).ToString("N0") + "주\n미체결 취소 후 새 주문을 낼 수 있습니다."); return;
+        }
+        if (!string.IsNullOrEmpty(error))
+        { Set(forecast, "전량 체결 시 예상\n입력값을 확인하세요."); return; }
+        decimal afterCash = account.cash - account.ReservedCash + (buying ? -1m : 1m) * p * q;
+        Set(forecast, "전량 체결 후  " + (owned + (buying ? q : -q)).ToString("N0") + "주\n주문 가능 현금  " + Money(afterCash));
+    }
+    private void SelectEvent(int index)
+    {
+        if (index >= records.Events.Count)
+        { return; }
+        selectedEvent = records.Events[index]; seenVersion = -1; next = 0f;
+    }
+    private void Journal()
+    {
+        if (growthPanel.activeSelf && PlayerProgression.Instance != null)
+        {
+            var career = PlayerProgression.Instance;
+            if (visualGrowth != null) { visualGrowth.Refresh(career); }
+            else { Set(growthText,"거래대금 " + Money(career.Turnover) + " / " + Money(career.rules.leadingTurnover) + "\n실현손익 " + Money(career.RealizedProfit) + " / " + Money(career.rules.leadingRealizedProfit)); }
+            openRooms.interactable = true;
+        }
+        if (selectedEvent == null && records.Events.Count > 0)
+        { selectedEvent = records.Events[0]; }
+        if (seenVersion != records.Version)
+        {
+            seenVersion = records.Version;
+            Set(eventCount, "최근 사건 " + records.Events.Count);
+            eventContent.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, records.Events.Count * 150f);
+            for (int i = 0; i < eventButtons.Length; i++)
+            {
+                bool present = i < records.Events.Count; eventButtons[i].gameObject.SetActive(present);
+                if (!present)
+                { continue; }
+                var entry = records.Events[i];
+                Set(eventTitles[i], entry.Time + "  " + entry.Title);
+                string tag = entry.Urgent ? "시장 급변" : entry.Stock != null && session.account.GetOwnedVolume(entry.Stock) > 0m ? "내 포지션 관련" : entry.Source;
+                Set(eventTags[i], tag); eventTags[i].color = entry.Urgent ? new Color32(230, 185, 99, 255) : Muted;
+                eventButtons[i].image.color = entry == selectedEvent ? Active : Color.clear;
+            }
+            text.Clear();
+            int count = Math.Min(records.Fills.Count, 4);
+            for (int i = 0; i < count; i++)
+            {
+                var fill = records.Fills[i];
+                text.Append(fill.Time).Append("  ").Append(fill.Stock.symbol).Append("  ").Append(fill.Buy ? "매수 " : "매도 ").Append(fill.Quantity.ToString("N0")).Append("주  ").Append(Money(fill.Price)).AppendLine();
+            }
+            Set(fills, count > 0 ? text.ToString() : "실제 체결이 발생하면 시간·종목·수량·가격을 기록합니다.");
+        }
+        Detail();
+        decimal shares = PlayerAccounts.Instance != null ? PlayerAccounts.Instance.Owned(selected) : session.account.GetOwnedVolume(selected);
+        decimal goal = shares < 100m ? 100m : shares < 1000m ? 1000m : shares < 10000m ? 10000m : selected.issuedShares / 2m + 1m;
+        Set(company, "보유 " + shares.ToString("N0") + "주 / 다음 목표 " + goal.ToString("N0") + "주\n실제 지분 " + (selected.issuedShares > 0m ? shares / selected.issuedShares * 100m : 0m).ToString("0.####") + "% · 경영권은 50% 초과");
+        Set(feedback, WorldDramaDirector.Instance == null ? "사건과 체결을 비교하며 관찰하세요." : WorldDramaDirector.Instance.BoardResult);
+    }
+    private void Detail()
+    {
+        var entry = selectedEvent;
+        eventOrder.interactable = entry != null && entry.Stock != null && entry.Stock.AcceptsOrders;
+        if (entry == null)
+        { Set(eventDetail, "시장을 관찰하는 중입니다.\n뉴스와 체결 변화가 발생하면 이곳에 기록됩니다."); return; }
+        text.Clear(); text.Append("<b>").Append(entry.Title.Replace("<", "‹")).Append("</b>\n").Append(entry.Source).Append(" · ").Append(entry.Time).Append("\n").Append(entry.Certainty).Append("\n\n");
+        if (entry.Stock != null)
+        {
+            text.Append("발생 직전 60초 · ").Append(entry.Volume.ToString("N0")).Append("주\n매수 주도 비중 ").Append(entry.Volume > 0m ? (entry.BuyVolume / entry.Volume * 100m).ToString("0.0") + "%" : "집계 없음");
+            text.Append("\n<color=#A6B1BA>매도 호가를 소진한 체결량 / 전체 체결량\n상승 확률을 뜻하지 않습니다.</color>\n\n");
+        }
+        text.Append("연결된 라운지 발언\n");
+        int found = 0;
+        var day = MarketDayController.Instance;
+        if (day != null && entry.Id > 0)
+        {
+            for (int i = day.MessageCount - 1; i >= Math.Max(0, day.MessageCount - 64) && found < 3; i--)
+            {
+                var message = day.GetMessage(i);
+                if (message.Context.EventId != entry.Id)
+                { continue; }
+                text.Append(message.Nickname.Replace("<", "‹")).Append(": ").Append(message.Text.Replace("<", "‹")).AppendLine(); found++;
+            }
+        }
+        if (found == 0)
+        { text.Append("이 사건에 연결된 발언이 아직 없습니다."); }
+        Set(eventDetail, text.ToString());
+    }
+    private void OpenOrder()
+    {
+        if (selectedEvent == null || selectedEvent.Stock == null)
+        { return; }
+        int index = StockManager.Instance.stocks.IndexOf(selectedEvent.Stock);
+        if (index < 0)
+        { return; }
+        StockManager.Instance.SelectStock(index); orderScreen.Show();
+        if (navigation != null)
+        { return; }
+        // 기존 들기/내려놓기 경로를 그대로 사용해 원래 책상 위치로 복귀한다.
+        StartCoroutine(SwitchTablet());
+    }
+    private System.Collections.IEnumerator SwitchTablet()
+    {
+        thisTablet.ReturnTablet();
+        while (thisTablet.IsReturning)
+        { yield return null; }
+        orderTablet.FocusTablet();
+    }
+    void OnDestroy()
+    {
+        if (mainTab != null) { mainTab.onClick.RemoveListener(Show); }
+        if (legacy != null) { legacy.deskTab.onClick.RemoveListener(Hide); legacy.legacyTab.onClick.RemoveListener(Hide); }
+    }
+}

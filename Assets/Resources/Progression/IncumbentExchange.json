@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "observationSeconds": 5.0,
+  "responseCooldown": 8.0,
+  "quoteLifetime": 6.0,
+  "depthFraction": 0.15,
+  "maximumShares": 50
+}

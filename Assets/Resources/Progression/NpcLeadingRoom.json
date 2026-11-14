@@ -1,0 +1,7 @@
+{
+  "schemaVersion": 1,
+  "title": "새벽 관찰실",
+  "observationSeconds": 5.0,
+  "signalLifetime": 60.0,
+  "messageInterval": 15.0
+}
