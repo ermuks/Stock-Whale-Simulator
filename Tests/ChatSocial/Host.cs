@@ -58,6 +58,7 @@ public class Trader { }
 public sealed class TradeBot : Trader
 {
     public bool isActiveAndEnabled = true;
+    public bool IsExchangeParticipant;
     public BotSocialState Social;
     public int DailySettledDay;
     public decimal DailyReturn;
@@ -75,6 +76,10 @@ public sealed partial class InvestorSociety
 {
     public const int MaximumRoomId = 4;
     public static InvestorSociety Instance;
+    public sealed class Room { public readonly SocialRoomState Social = new(); public readonly HashSet<int> Members = new(); }
+    public readonly Room[] Rooms = { new(),new(),new(),new() };
+    public Room GetRoom(int id) => id>0 && id<=4 ? Rooms[id-1] : null;
+    public void OfferExistingSpeech(TradeBot bot,int room,InvestorMessageContext context,ChatEvent kind) { Offer(bot,room,SocialMotive.WITNESSED_EVENT); }
     public void ReadBeforeSpeech(TradeBot bot) { }
 }
 public sealed class LeadingRoomOrders

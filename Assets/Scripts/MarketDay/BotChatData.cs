@@ -227,7 +227,9 @@ public readonly struct BotChatMessage
     public readonly SocialMessage Social;
     public BotChatMessage(long sequence, TradeBot bot, int day, int minute, string text, string templateId, ChatEvent kind, InvestorMessageContext context = default, SocialMessage social = null)
     {
-        Social = social;
+        Social = social ?? new SocialMessage { id = ChatSocialIds.Next(), senderId = bot == null ? 0 : bot.Social.Id, roomId = context.Room,
+            at = (day - 1) * 1440d + minute, act = SocialAct.REACT, templateKey = templateId, text = text, facts = new SocialFacts(),
+            debug = new SocialMessageDebug { trigger = bot == null ? "SYSTEM" : "LEGACY", weights = Array.Empty<SocialWeight>(), slots = new SocialFacts() } };
         Context = context.EventId > 0 ? context : new InvestorMessageContext(0, 0, 0f, bot == null ? 1f : bot.Social.Confidence, bot == null ? 0f : bot.Social.Psychology.Trust, false, target: 0);
         Sequence = sequence;
         BotId = bot == null ? 0 : bot.Social.Id;

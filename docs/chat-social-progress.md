@@ -23,3 +23,17 @@
 - 명세 차이: D01 상한 예외 유지. 금융 원장은 삭제하지 않았고 사회 기억을 별도로 추가했다. 기존 저장이 없는 봇에 대한 새 스냅샷 어댑터를 제공하며 월드 저장 메뉴를 임의로 만들지 않았다.
 - 설정: `chat_social_config.values`에 성격 분포·친구·기억·쿨다운·스레드·감정·제재·4분면·FOMO·관심 분배·T/R 범위 출발값을 추가. `chat_act_weights`에 동기/응답/효과 표를 추가했다. 기존 런타임 기본값을 튜닝하지 않았다. R 목표는 원문 그대로다.
 - 신규 C# 전문은 해당 파일이 원문이다. 주요 함수 전후: `InvestorPsychology` 생성자는 기존 초기값 생성 후 별도 `InitializeSocial`만 호출한다. `Record/ObserveForecast/Decay/RecallBetrayal/Witness/ObserveRisk/ObserveMissedGain`은 기존 계산 후 `AuditEmotion`을 호출한다. `InvestorSociety.Update`는 기존 시계로 로그 시각만 설정한다. 메시지 생성자는 기존 필드를 유지하며 nullable Social 인자만 추가한다.
+
+## 2단계 — 동기→화행→실제 사실→말투 (완료)
+
+- `ChatSocialPipeline.cs`: 기존 InvestorSociety의 partial 확장이다. 별도 MonoBehaviour/병렬 사회 엔진을 만들지 않았다. 동기 큐·만료·우선순위·6초/응답 반값 쿨다운·방 10초 5개 제한, 화행 가중치, 실제 포지션/최근 체결 슬롯, 말투 분류, 최근 봇 10/방 30 키 중복 차단, 후보 고갈 시 다음 화행을 구현했다. 실행 시 확인할 수 있는 후보 가중치·슬롯·템플릿·동기를 메시지에 저장한다.
+- `ChatSocialUnity.cs`: 기존 공용방/방 저장소로 새 메시지를 전달하고, 실제 체결 훅으로 최근 매수·매도 사실을 기록한다. 감정/사건 JSONL은 정식 빌드에서도 기록하며 주기적으로 flush한다. `NpcLeadingRoom`의 실제 대기 주문/최근 체결 신호는 전용 사실 슬롯과 템플릿으로 유지한다.
+- `MarketDayController`: `ProcessChat`의 기존 이벤트 큐를 새 파이프라인으로 전달한다. 가격 급등락 사건의 현재 유효성 검사는 유지한다. `PublishParticipant`도 동일 경로를 사용하고, 최종 발행은 `PublishSocialParticipant`로 기존 풀링/스크롤 저장소에 넣는다. `ObserveConversationTrade`에 사실 원장 수집만 추가했다.
+- `InvestorSociety`: Update의 기존 예산 내에서 사회 tick 호출. TickBot은 주문/멤버십을 유지하고 예전 독립 발화 부분을 우회한다. Speak/RecordOutcome은 직접 문장 발행 대신 의도를 넣는다. 기존 Canvas·위치·UI 이벤트는 변경하지 않았다.
+- `BotChatData/ChatSocialData`: 메시지 ID를 방 간 공통으로 발급한다. 시스템 안내도 act/templateKey/debug를 갖는다. 실제 스트레스 스냅샷은 유지한다.
+- 템플릿: 기존 192개는 사건/보유/수익 조건을 보존해 이관. 기존 장 시작 문구가 임의 시각에 선택되는 문제를 검사에서 찾아 `event:` 조건을 추가했다. 새 문구 972개와 NPC 신호 3개를 JSON에 추가했다. 일부 새 문구는 접두어 변형이며 8단계 문구 품질 검토에서 개선해야 한다.
+- 검증: 39개 통과, 실패 0. 5개 시드 T1/T7/T8 통과. 발행 수 1466/1455/1486/1417/1392. 숫자 슬롯을 발행 시 실제 포지션 fixture와 비교하고 메타데이터 누락·미치환 슬롯도 검사했다. 전체 Runtime/Editor 컴파일 오류 0. 이 단계의 시장 입력은 명시적 fixture이며 실제 시장 3일 검사는 7단계다.
+- **R8 설정 전후:** plain 후보를 화행×격식×강도별 2→6개로 확장. 시드 순서 73129~73133의 차단율이 40.190/44.472/51.747/59.428/65.390% → 모두 0.000% (0/1466, 0/1455, 0/1486, 0/1417, 0/1392). 목표 5%는 그대로. 첫 실패 결과도 `stage-2/before-template-expansion.txt`에 보존했다.
+- 설정 추가: tradeFactCapacity=64, logFlushSeconds=5, legacyTradeSeconds=180, legacyAfterSellRatio=.03, legacyEventSeconds=45, legacyStressDrop=5. 기존 사실 유효기간을 데이터로 옮겼다. R 범위 변경 없음.
+- 13.4: `stage-2`의 시드 3개 2시간 로그를 읽었다. 종목/가격/포지션 내용이 주가 되었다. 아직 응답 단계 전이므로 질문 다음에 다른 종목 발언이 이어지는 곳이 많고 퇴장은 없다. 반말·존댓말은 봇별로 일정하다. 접두어와 핵심 표현 반복은 남아 있으며 8단계 개선 대상으로 기록한다.
+- 명세 차이: D01 예외 외 없음. 신호 UI/실제 주문 기능은 유지하며 문장 표시 경로만 바꿨다. 신규 C# 전문과 함수별 전후는 소스 및 이 단계 커밋 diff에서 확인할 수 있다.

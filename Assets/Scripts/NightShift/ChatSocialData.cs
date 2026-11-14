@@ -8,6 +8,12 @@ public enum SocialThreadKind { CHAT, QUESTION, ARGUMENT }
 public enum SocialEnd { NONE, MAX_TURNS, NO_REPLY, RESOLVED, EXIT, PLAYER_ACTION, INTERRUPTED }
 public enum SocialMemoryKind { LOSS_BY_LEAD, GAIN_BY_LEAD, KICKED, FOUGHT, SAW_KICK, SAW_BRAG_THEN_CRASH, BIG_SELF_LOSS, BIG_SELF_GAIN }
 public enum InvestorQuadrant { Indifferent, Loyal, Ambivalent, Hostile }
+public static class ChatSocialIds
+{
+    private static long last;
+    public static long Next() => ++last;
+    internal static void Reset() { last = 0; }
+}
 
 /// <summary>Separate stream: adding social choices must never consume the trading RNG.</summary>
 public sealed class SocialRandom
@@ -56,9 +62,12 @@ public sealed class SocialTraits
 }
 [Serializable] public sealed class SocialFacts
 {
-    public string symbol, stockName, amount, pct, avgPrice, price, quantity, memSymbol, memPct, memWhen;
+    public string symbol, stockName, amount, pct, avgPrice, price, quantity, profitKind, memSymbol, memPct, memWhen;
     public long eventId;
     public bool bought, sold, held, profitable, losing, directLead;
+    public bool dailyProfit, dailyLoss, recovered, recentSellProfit, recentSellLoss, sellThenRise, stressRelief, signal;
+    public string bidStatus, askStatus, signalResult;
+    public string sourceEvent;
     public double at;
 }
 [Serializable] public sealed class SocialWeight { public string key; public double value; }

@@ -13,7 +13,7 @@ if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 $taskResponse = @('-nologo','-target:exe','-parallel-',('-out:"' + $taskOut + '/ChatSocial.dll"'))
 Get-ChildItem -LiteralPath 'C:/Program Files/Unity/6000.5.5f1/Editor/Data/DotNetSdk/packs/Microsoft.NETCore.App.Ref/8.0.21/ref/net8.0' -Filter '*.dll' | ForEach-Object { $taskResponse += '-r:"' + $_.FullName + '"' }
 $taskSources = @('Tests/ChatSocial/Host.cs','Tests/ChatSocial/Tests.cs','Validation/ChatSocial/LegacyChatProduction.cs','Assets/Scripts/MarketDay/BotChatData.cs','Assets/Scripts/MarketDay/MarketConversationFocus.cs','Assets/Scripts/NightShift/InvestorPsychology.cs','Assets/Scripts/NightShift/BotMind.cs','Assets/Scripts/NightShift/InvestorConversation.cs')
-$taskSources += Get-ChildItem -LiteralPath (Join-Path $taskRoot 'Assets/Scripts/NightShift') -Filter 'ChatSocial*.cs' | ForEach-Object { $_.FullName }
+$taskSources += Get-ChildItem -LiteralPath (Join-Path $taskRoot 'Assets/Scripts/NightShift') -Filter 'ChatSocial*.cs' | Where-Object { $_.Name -notlike '*Unity.cs' } | ForEach-Object { $_.FullName }
 $taskSources += 'Validation/ChatSocial/ProgressionProduction.cs'
 foreach ($taskSource in $taskSources) {
     $taskPath = if ([IO.Path]::IsPathRooted($taskSource)) { $taskSource } else { Join-Path $taskRoot $taskSource }

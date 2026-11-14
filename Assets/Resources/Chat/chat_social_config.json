@@ -900,6 +900,30 @@
     {
       "key": "stockBreadthMin",
       "value": 0.5
+    },
+    {
+      "key": "tradeFactCapacity",
+      "value": 64
+    },
+    {
+      "key": "logFlushSeconds",
+      "value": 5
+    },
+    {
+      "key": "legacyTradeSeconds",
+      "value": 180
+    },
+    {
+      "key": "legacyAfterSellRatio",
+      "value": 0.03
+    },
+    {
+      "key": "legacyEventSeconds",
+      "value": 45
+    },
+    {
+      "key": "legacyStressDrop",
+      "value": 5
     }
   ]
 }

@@ -21,6 +21,7 @@ public static class ChatSocialTests
         try
         {
             ModelTests(); LegacyReplay();
+            if(stage>=2) { SocialReplays(stage); }
         }
         catch(Exception ex) { Console.WriteLine(ex); failed++; }
         Console.WriteLine($"Stage {stage}: passed={passed}, failed={failed}"); return failed==0?0:1;
@@ -71,6 +72,70 @@ public static class ChatSocialTests
             Check(first.Count>0 && first.SequenceEqual(second),$"T1 legacy production chat seed={seed}, messages={first.Count}");
             if(index++<3) { File.WriteAllLines(Path.Combine(folder,$"seed-{seed}-2h.txt"),first.Where(x=>int.Parse(x.Split(':')[0])==1 && int.Parse(x.Split(':')[1].Split('|')[0])<660),new UTF8Encoding(false)); }
             File.WriteAllText(Path.Combine(folder,$"seed-{seed}.sha256"),Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(string.Join("\n",first)))));
+        }
+    }
+    private sealed class ReplayResult
+    {
+        public InvestorSociety Society;
+        public List<SocialMessage> Messages=new();
+        public int FactErrors;
+        public string Serialized => string.Join("\n",Messages.Select(JsonUtility.ToJson));
+    }
+    private static ReplayResult SocialReplay(int seed,int stage)
+    {
+        ChatSocialIds.Reset();
+        ChatSocialAudit.Begin(new SocialJournal(100000));
+        StockManager.Instance=new StockManager();
+        for(int i=0;i<4;i++) { StockManager.Instance.stocks.Add(new Stock {symbol="S"+i,stockName=new[]{"노보손해보험","두덕리식품","미래바이오","국민금융"}[i],currentPrice=1000+i*500}); }
+        var bots=new List<TradeBot>();
+        for(int id=1;id<=20;id++)
+        {
+            var bot=new TradeBot {Social=new BotSocialState(id,seed,"RandomBot")};
+            var stock=StockManager.Instance.stocks[id%4];
+            bot.Positions[stock]=(100m,stock.currentPrice*(id%2==0?.9m:1.1m));
+            bot.Social.Positions[stock]=new BotSocialState.PositionMemory();
+            bot.Social.Psychology.Room=1;bots.Add(bot);
+        }
+        var society=new InvestorSociety();society.BindSocialBots(bots);
+        var result=new ReplayResult {Society=society};
+        society.SocialMessagePublished+=message=>
+        {
+            result.Messages.Add(message);
+            var bot=society.SocialBots[message.senderId];
+            var stock=StockManager.Instance.stocks.FirstOrDefault(s=>s.symbol==message.facts.symbol);
+            if(stock!=null)
+            {
+                var current=society.CaptureFacts(bot,stock);
+                if(current.price!=message.facts.price || current.quantity!=message.facts.quantity || current.amount!=message.facts.amount || current.pct!=message.facts.pct || current.held!=message.facts.held || current.bought!=message.facts.bought || current.sold!=message.facts.sold) { result.FactErrors++; }
+            }
+            if(message.text.Contains('{') || message.text.Contains('}') || message.debug==null || message.debug.weights==null || string.IsNullOrWhiteSpace(message.templateKey)) { result.FactErrors++; }
+        };
+        // The production scheduler receives fixed game/real timestamps. Portfolio inputs are deterministic fixtures,
+        // not a substitute for the real-market, three-day test required in stage 7.
+        for(int step=0;step<3324;step++)
+        {
+            double minute=540+step*390d/900d;UnityEngine.Time.time=step;
+            society.SocialAdvance((int)(minute/1440)+1,minute%1440,step,20);
+        }
+        return result;
+    }
+    private static void SocialReplays(int stage)
+    {
+        string directory=Path.Combine(root,"docs/chat-social-results/stage-"+stage);Directory.CreateDirectory(directory);
+        int index=0;
+        foreach(int seed in new[]{73129,73130,73131,73132,73133})
+        {
+            var replay=SocialReplay(seed,stage);var duplicate=SocialReplay(seed,stage);
+            Check(replay.Messages.Count>0 && replay.Serialized==duplicate.Serialized,$"T1 social production seed={seed}, messages={replay.Messages.Count}");
+            bool unique=true;var recent=new Queue<string>();
+            foreach(var message in replay.Messages)
+            { if(recent.Contains(message.templateKey)) { unique=false; } recent.Enqueue(message.templateKey);if(recent.Count>=30) { recent.Dequeue(); } }
+            Check(unique,$"T7 rolling 30 template keys seed={seed}");
+            Check(replay.FactErrors==0,$"T8 live portfolio facts + complete metadata seed={seed}");
+            double blocked=replay.Society.SocialAttempts==0?0:(double)replay.Society.TemplateBlocked/replay.Society.SocialAttempts;
+            Check(blocked<=ChatSocialConfig.Current.Get("R8Max"),$"R8 seed={seed} blocked={replay.Society.TemplateBlocked}/{replay.Society.SocialAttempts} ({blocked:P3})");
+            if(index++<3) { File.WriteAllLines(Path.Combine(directory,$"seed-{seed}-2h.txt"),replay.Messages.Where(m=>m.at<660).Select(m=>$"{m.at:F1}|#{m.senderId}|{m.act}|{m.text}"),new UTF8Encoding(false)); }
+            File.WriteAllText(Path.Combine(directory,$"seed-{seed}.sha256"),Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(replay.Serialized))));
         }
     }
 }

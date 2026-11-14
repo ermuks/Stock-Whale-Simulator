@@ -717,6 +717,7 @@ public sealed class MarketDayController : MonoBehaviour
     private void ObserveConversationTrade(Stock stock,decimal price,decimal volume,IOrderOwner buyer,IOrderOwner seller,Order resting)
     {
         if (!ReferenceEquals(buyer,seller)) { ConversationFocus.Record(stock,price,volume,Time.time); }
+        InvestorSociety.Instance?.ObserveSocialFill(stock, price, volume, buyer, seller, resting);
     }
     private int PickConversationEvent(float now)
     {
@@ -798,6 +799,22 @@ public sealed class MarketDayController : MonoBehaviour
 
     private void ProcessChat()
     {
+        if (InvestorSociety.Instance != null && InvestorSociety.Instance.SocialReady)
+        {
+            int budget = Math.Min(candidatesPerFrame, events.Count);
+            for (int i = 0; i < budget; i++)
+            {
+                int index = PickConversationEvent(Time.time); var pending = events[index];
+                bool current = Time.time - pending.Time <= eventLifetime;
+                current &= pending.Kind != ChatEvent.MarketOpen || Phase == MarketPhase.Trading;
+                current &= pending.Kind != ChatEvent.MarketClose || Phase == MarketPhase.PostClose;
+                current &= pending.Kind != ChatEvent.PriceRise || pending.Stock != null && pending.ReferencePrice > 0m && pending.Stock.currentPrice >= pending.ReferencePrice * (1m + (decimal)surgeRatio);
+                current &= pending.Kind != ChatEvent.PriceFall || pending.Stock != null && pending.ReferencePrice > 0m && pending.Stock.currentPrice <= pending.ReferencePrice * (1m - (decimal)surgeRatio);
+                if (current) { InvestorSociety.Instance.OfferMarketEvent(pending.Kind, pending.Stock, pending.Bot); }
+                RemoveEvent(index);
+            }
+            return;
+        }
         float now = Time.time;
         while (sentenceExpiry.Count > 0 && now - sentenceExpiry.Peek().time > sentenceCooldown)
         {
@@ -953,8 +970,14 @@ public sealed class MarketDayController : MonoBehaviour
     {
         if (bot == null || bot.Social == null || string.IsNullOrWhiteSpace(text))
         { return; }
+        if (InvestorSociety.Instance != null && InvestorSociety.Instance.SocialReady)
+        { InvestorSociety.Instance.OfferExistingSpeech(bot, 0, context, ChatEvent.Agreement); return; }
         AddMessage(new BotChatMessage(++sequence, bot, Day, GameMinute, text, "contact", ChatEvent.Agreement, context));
         bot.Social.LastSpeech = Time.time;
+    }
+    public void PublishSocialParticipant(TradeBot bot, SocialMessage message, InvestorMessageContext context)
+    {
+        AddMessage(new BotChatMessage(++sequence, bot, Day, GameMinute, message.text, message.templateKey, ChatEvent.Agreement, context, message));
     }
     public void PublishBulletin(string text)
     {

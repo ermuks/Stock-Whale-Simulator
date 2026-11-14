@@ -179,7 +179,8 @@ public sealed class NpcLeadingRoom : MonoBehaviour
         message += ask > 0m ? " 매도 " + ask.ToString("N0") + "원에도 실제 주문이 있습니다." : " 매도 주문은 아직 없습니다.";
         message += " 부임 후 실현손익 " + RealizedProfit.ToString("+#,##0;-#,##0;0") + "원.";
         var context = new InvestorMessageContext(InvestorSociety.Instance.NextEventId(),RoomId,Math.Sign(RealizedProfit),.8f,0f,true,target:Leader.Social.Id);
-        InvestorSociety.Instance.Speak(Leader,RoomId,message,context,ChatEvent.BuyConsideration);
+        if (InvestorSociety.Instance.SocialReady) { InvestorSociety.Instance.OfferNpcObservation(Leader); }
+        else { InvestorSociety.Instance.Speak(Leader,RoomId,message,context,ChatEvent.BuyConsideration); }
     }
     public void RequestJoin()
     { JoinRequested = true; }

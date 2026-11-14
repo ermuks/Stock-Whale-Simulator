@@ -60,7 +60,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
     private MarketDayController day;
     private readonly Dictionary<int, int> suggestions = new();
     private static readonly ProfilerMarker TickMarker = new("DonDon.InvestorSociety");
-    void Awake() { Instance = this; random = new System.Random(settings.seed); }
+    void Awake() { Instance = this; random = new System.Random(settings.seed); ChatSocialIds.Reset(); }
     void Update()
     {
         if (Time.timeScale > 0f) { Orders?.FlushObservedResults(settings.botsPerTick); }
@@ -71,6 +71,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
         if (day == null || !day.Ready || StockManager.Instance == null)
         { return; }
         if (Orders == null) { Orders = new LeadingRoomOrders(this); }
+        PrepareSocialRuntime();
         nextTick = Time.time + Mathf.Max(.05f, settings.updateInterval);
         using (TickMarker.Auto())
         {
@@ -84,6 +85,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
                 { continue; }
                 TickBot(bot, Time.time);
             }
+            SocialAdvance(day.Day, day.GameMinute, Time.time, settings.botsPerTick);
         }
     }
     public long NextEventId() => ++nextEvent;
@@ -126,8 +128,11 @@ public sealed partial class InvestorSociety : MonoBehaviour
         Orders?.Tick(bot, now, random.NextDouble());
         if (!mind.ActiveAt(now))
         { return; }
-        ReadRecent(bot, 0, now);
-        if (mind.Room > 0) { ReadRecent(bot, mind.Room, now); }
+        if (!SocialReady)
+        {
+            ReadRecent(bot, 0, now);
+            if (mind.Room > 0) { ReadRecent(bot, mind.Room, now); }
+        }
         if (now >= mind.NextMembership)
         {
             mind.NextMembership = now + 20f + (float)random.NextDouble() * 45f;
@@ -150,6 +155,8 @@ public sealed partial class InvestorSociety : MonoBehaviour
         }
         if (mind.Room > 0)
         { Orders?.Consider(bot, GetRoom(mind.Room).Command, random.NextDouble(), now); }
+        if (SocialReady)
+        { return; }
         if (now < mind.NextSpeech || now - bot.Social.LastSpeech < settings.speechCooldown)
         { return; }
         if (mind.Latest.HasValue && mind.LastSharedExperience != mind.Latest.Value.EventId && random.NextDouble() < .25f + mind.Activity * .35f)
@@ -238,6 +245,8 @@ public sealed partial class InvestorSociety : MonoBehaviour
     }
     public void Speak(TradeBot bot, int room, string text, InvestorMessageContext context, ChatEvent kind = ChatEvent.Agreement)
     {
+        if (bot != null && SocialReady)
+        { OfferExistingSpeech(bot, room, context, kind); return; }
         day ??= MarketDayController.Instance;
         if (day == null)
         { return; }
@@ -260,6 +269,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
         if (!bot.Social.Psychology.Record(experience, settings))
         { return; }
         Outcomes++; Trace(bot, bot.Social.Psychology.LastCause);
+        if (SocialReady) { OfferExistingSpeech(bot, bot.Social.Psychology.Room, Context(bot, experience, bot.Social.Psychology.Room), ChatEvent.Agreement); }
     }
     public bool Join(TradeBot bot, int roomId)
     {
@@ -340,6 +350,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
     }
     void OnDestroy()
     {
+        DisposeSocialRuntime();
         Orders?.Dispose();
         if (Instance == this) { Instance = null; }
     }
