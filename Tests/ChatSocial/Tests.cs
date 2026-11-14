@@ -7,7 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
 
-public static class ChatSocialTests
+public static partial class ChatSocialTests
 {
     private static int failed, passed;
     private static string root;
@@ -23,6 +23,7 @@ public static class ChatSocialTests
             ModelTests(); LegacyReplay();
             if(stage>=2) { SocialReplays(stage); }
             if(stage>=4) { IgnoredFightScenario(stage); }
+            if(stage>=5) { ModerationScenarios(stage); }
         }
         catch(Exception ex) { Console.WriteLine(ex); failed++; }
         Console.WriteLine($"Stage {stage}: passed={passed}, failed={failed}"); return failed==0?0:1;
@@ -84,7 +85,7 @@ public static class ChatSocialTests
         public SocialJournal Journal;
         public string Serialized => string.Join("\n",Messages.Select(JsonUtility.ToJson));
     }
-    private static ReplayResult SocialReplay(int seed,int stage,bool priorGain=false)
+    private static ReplayResult SocialReplay(int seed,int stage,bool priorGain=false,int steps=3324,Action<ReplayResult,int> afterStep=null)
     {
         ChatSocialIds.Reset();
         var journal=new SocialJournal(100000);ChatSocialAudit.Begin(journal);
@@ -119,10 +120,11 @@ public static class ChatSocialTests
         };
         // The production scheduler receives fixed game/real timestamps. Portfolio inputs are deterministic fixtures,
         // not a substitute for the real-market, three-day test required in stage 7.
-        for(int step=0;step<3324;step++)
+        for(int step=0;step<steps;step++)
         {
             double minute=540+step*390d/900d;UnityEngine.Time.time=step;
             society.SocialAdvance((int)(minute/1440)+1,minute%1440,step,20);
+            afterStep?.Invoke(result,step);
         }
         return result;
     }

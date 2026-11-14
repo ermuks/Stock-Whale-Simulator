@@ -1,0 +1,20 @@
+seed=73129 actor=2 opponent=12 at=563.40 next3h_stage4: control=True, warning=True
+seed=73130 actor=1 opponent=20 at=670.87 next3h_stage4: control=False, warning=False
+seed=73131 actor=15 opponent=6 at=794.80 next3h_stage4: control=True, warning=False
+seed=73132 actor=20 opponent=4 at=1212.97 next3h_stage4: control=True, warning=True
+seed=73133 actor=7 opponent=19 at=1736.00 next3h_stage4: control=True, warning=False
+seed=73134: no stage2 trigger in either identical no-action arm; control=False, warning=False
+seed=73135 actor=15 opponent=10 at=1010.60 next3h_stage4: control=True, warning=False
+seed=73136: no stage2 trigger in either identical no-action arm; control=False, warning=False
+seed=73137 actor=3 opponent=1 at=565.13 next3h_stage4: control=True, warning=False
+seed=73138 actor=10 opponent=7 at=648.33 next3h_stage4: control=True, warning=True
+seed=73139 actor=7 opponent=6 at=874.53 next3h_stage4: control=True, warning=False
+seed=73140 actor=14 opponent=6 at=1125.00 next3h_stage4: control=True, warning=True
+seed=73141 actor=12 opponent=10 at=767.07 next3h_stage4: control=True, warning=True
+seed=73142 actor=5 opponent=17 at=1765.90 next3h_stage4: control=True, warning=False
+seed=73143 actor=12 opponent=2 at=753.20 next3h_stage4: control=True, warning=False
+seed=73144 actor=14 opponent=11 at=1183.07 next3h_stage4: control=True, warning=True
+seed=73145 actor=20 opponent=6 at=1139.73 next3h_stage4: control=True, warning=False
+seed=73146 actor=1 opponent=7 at=1235.50 next3h_stage4: control=True, warning=True
+seed=73147 actor=6 opponent=7 at=1354.67 next3h_stage4: control=True, warning=True
+seed=73148 actor=5 opponent=1 at=767.93 next3h_stage4: control=True, warning=False

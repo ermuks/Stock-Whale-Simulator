@@ -44,6 +44,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
 
     private readonly List<Row> rows = new();
     private float nextAngerRefresh;
+    private ChatSocialMenuUnity moderationMenu;
     private MarketDayController day;
     private long version = -1, readSequence, oldestSequence;
     private int selectedBot, lastSecond = -1, firstVisible = -1, lastMinute = -1, lastDay = -1, lastHudMinute = -1, lastHudDay = -1;
@@ -62,6 +63,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
     private BotChatMessage Message(int index) => SelectedRoom == 0 ? day.GetMessage(index) : Room.Get(index);
     public void SelectRoom(int room)
     {
+        moderationMenu?.Close();
         SelectedRoom = Mathf.Clamp(room, 0, InvestorSociety.MaximumRoomId);
         selectedBot = 0;
         if (profile != null)
@@ -88,6 +90,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         informationScroll = informationPanel == null ? null : informationPanel.GetComponentInChildren<ScrollRect>(true);
         messageMeasure = rowTemplate.Find("Text :: Message").GetComponent<TextMeshProUGUI>();
         nicknameMeasure = rowTemplate.Find("Text :: Nickname").GetComponent<TextMeshProUGUI>();
+        moderationMenu = gameObject.AddComponent<ChatSocialMenuUnity>(); moderationMenu.Initialize(this, nicknameMeasure.font);
         int visible = Mathf.Clamp(Mathf.CeilToInt(scroll.viewport.rect.height / rowHeight) + 2, 1, rowPoolLimit);
         for (int i = 0; i < visible; i++)
         {
@@ -106,6 +109,10 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 StressRing = rect.Find("Image :: Stress").GetComponentInChildren<TerminalGlyph>(true)
             };
             rect.GetComponent<Button>().onClick.AddListener(() => SelectProfile(row.BotId));
+            row.Nickname.raycastTarget = true;
+            var nicknameButton = row.Nickname.gameObject.GetComponent<Button>() ?? row.Nickname.gameObject.AddComponent<Button>();
+            nicknameButton.targetGraphic = row.Nickname;
+            nicknameButton.onClick.AddListener(() => { SelectProfile(row.BotId); moderationMenu.Open(row.BotId, row.Nickname.rectTransform); });
             row.AngerDot = Instantiate(row.Nickname, rect);
             row.AngerDot.name = "Text :: Anger Indicator"; row.AngerDot.text = "●";
             row.AngerDot.raycastTarget = false; row.AngerDot.enableAutoSizing = false;

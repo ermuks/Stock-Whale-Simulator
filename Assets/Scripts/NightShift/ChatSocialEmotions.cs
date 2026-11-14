@@ -283,7 +283,7 @@ public sealed partial class InvestorSociety
     {
         foreach (var thread in socialThreads.Values)
         {
-            if (thread.firstStage3At < 0 || thread.endReason == SocialEnd.PLAYER_ACTION || thread.endReason == SocialEnd.RESOLVED || SocialTime.Seconds - thread.firstStage3At < Config.Get("callPlayerDelaySec"))
+            if (thread.firstStage3At < 0 || thread.moderated || thread.endReason == SocialEnd.PLAYER_ACTION || thread.endReason == SocialEnd.RESOLVED || SocialTime.Seconds - thread.firstStage3At < Config.Get("callPlayerDelaySec"))
             { continue; }
             if (!fightWitnesses.TryGetValue(thread.id, out var seen))
             { continue; }

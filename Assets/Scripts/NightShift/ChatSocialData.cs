@@ -107,7 +107,7 @@ public sealed class SocialIntent
     public SocialEnd endReason;
     public List<int> participants = new();
     public double lastAt, firstStage3At = -1;
-    public bool calledPlayer;
+    public bool calledPlayer, moderated;
     public string symbol;
     public decimal initialPrice;
     public bool Active => endReason == SocialEnd.NONE;

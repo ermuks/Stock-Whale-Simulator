@@ -103,6 +103,7 @@ public sealed class LeadingRoomUI : MonoBehaviour
             NpcDetails(); invite.interactable = false; return;
         }
         string title = room == null ? "공용 라운지 · 메시지를 눌러 참여자 선택" : $"리딩방 {room.Id} · 참여 {room.Members.Count}명";
+        if (room != null && room.PlayerOwned) { title += $" · 경각심 {room.Social.discipline:0} · 위축 {room.Social.chill:0}"; }
         int waiting = 0, holding = 0, deferred = 0, rejected = 0, completed = 0, canceled = 0;
         if (InvestorSociety.Instance.Orders != null && room != null)
         {

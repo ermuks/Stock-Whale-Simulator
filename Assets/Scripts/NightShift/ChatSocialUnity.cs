@@ -17,6 +17,8 @@ public sealed partial class InvestorSociety
             WitnessChance = bot => Config.Get("witnessProbability") * (Config.Get("witnessActivityBase") + bot.Social.Psychology.Activity * Config.Get("witnessActivityScale"));
             SocialMessagePublished += DeliverSocialMessage;
             SocialDeparted += OnSocialDeparture;
+            CanModerateRoom = room => IsRoomOpen(room);
+            SocialSystemNotice += DeliverSocialSystemNotice;
             try
             {
                 string directory = Path.Combine(Application.persistentDataPath, "SocialLogs"); Directory.CreateDirectory(directory);
@@ -37,6 +39,15 @@ public sealed partial class InvestorSociety
         ChatSocialAudit.Journal.Changed -= WriteSocialChange; ChatSocialAudit.Journal.Happened -= WriteSocialEvent;
         SocialMessagePublished -= DeliverSocialMessage; socialLog?.Dispose(); socialLog = null;
         SocialDeparted -= OnSocialDeparture;
+        SocialSystemNotice -= DeliverSocialSystemNotice;
+    }
+    private void DeliverSocialSystemNotice(int roomId, string text, long id)
+    {
+        var room = GetRoom(roomId);
+        if (room == null || day == null) { return; }
+        room.Add(new BotChatMessage(room.Version + 1, null, day.Day, day.GameMinute, text, "SYSTEM.MODERATION", ChatEvent.Agreement,
+            new InvestorMessageContext(id, roomId, 0, 1, 0, false)));
+        LastAction = text;
     }
     private void OnSocialDeparture(TradeBot bot, int room, string reason) { Leave(bot, reason); }
     private void DeliverSocialMessage(SocialMessage message)

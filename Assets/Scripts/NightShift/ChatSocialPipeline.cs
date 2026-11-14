@@ -63,7 +63,7 @@ public sealed partial class InvestorSociety
             if (socialCursor >= socialBots.Count) { socialCursor = 0; }
             var bot = socialBots[socialCursor++]; var mind = bot.Social.Psychology;
             BeforeSocialBot(bot);
-            if (!Present(bot, mind.Room))
+            if (!bot.isActiveAndEnabled)
             { continue; }
             double now = SocialTime.Seconds;
             for (int j = mind.Intentions.Count - 1; j >= 0; j--)
@@ -76,7 +76,7 @@ public sealed partial class InvestorSociety
                 nextIdle[mind.SocialId] = now + Config.Get("idleInterval");
                 double chill = SocialRoom(mind.Room).chill;
                 double probability = Config.Get("idleChance") * mind.Traits.Sociability / 50d * Math.Max(Config.Get("chillSpeechFloor"), 1 - chill / Config.Get("chillSpeechDivisor"));
-                if (mind.Intentions.Count == 0 && mind.ActiveAt((float)now) && mind.SocialRng.Next() < probability)
+                if (Present(bot, mind.Room) && mind.Intentions.Count == 0 && mind.ActiveAt((float)now) && mind.SocialRng.Next() < probability)
                 { Offer(bot, mind.Room, SocialMotive.IDLE); }
             }
             int selected = -1;
@@ -258,6 +258,7 @@ public sealed partial class InvestorSociety
             if (act == SocialAct.BRAG || act == SocialAct.MOCK) { weight *= .5 + mind.Traits.Bravado / 100d; }
             if (act == SocialAct.MEDIATE) { weight *= mind.Traits.Sociability / 100d * (1.5 - mind.Traits.Temper / 100d); }
             if (act == SocialAct.LAMENT) { weight *= .5 + mind.Fear / 100d; }
+            if (act == SocialAct.PRAISE_PLAYER) { weight *= Math.Max(Config.Get("chillSpeechFloor"), 1 - SocialRoom(intent.roomId).chill / Config.Get("chillSpeechDivisor")); }
             if (act == SocialAct.MOCK || act == SocialAct.INSULT || act == SocialAct.REBUT) { weight *= 1 - SocialRoom(intent.roomId).discipline / Config.Get("attackDisciplineDivisor"); }
             if (lastAct.TryGetValue(mind.SocialId, out var previous) && previous == act && consecutiveAct[mind.SocialId] >= Config.Int("maxConsecutiveAct") && !(intent.threadId > 0 && (act == SocialAct.MOCK || act == SocialAct.REBUT)))
             { weight = 0; }
