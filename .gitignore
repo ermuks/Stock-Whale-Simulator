@@ -1,0 +1,25 @@
+# Unity-generated caches and local editor state
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Bb]uild/
+/[Bb]uilds/
+/[Mm]emoryCaptures/
+/.vs/
+/.idea/
+*.csproj
+*.sln
+*.slnx
+*.pidb
+*.user
+*.suo
+*.opendb
+*.VC.db
+
+# Prior local validation workspaces contain copied Unity libraries/builds.
+# New chat-social test sources must live outside this generated output directory.
+/Validation/
+**/__pycache__/
+*.pyc
