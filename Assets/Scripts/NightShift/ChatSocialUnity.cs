@@ -14,6 +14,7 @@ public sealed partial class InvestorSociety
         {
             ChooseSocialTopic = bot => day.ConversationFocus.Choose(bot.Social.Psychology.SocialRng.Next(), Time.time);
             RefreshOfferedFacts = RefreshNpcFacts;
+            WitnessChance = bot => settings.witnessProbability * (Config.Get("witnessActivityBase") + bot.Social.Psychology.Activity * Config.Get("witnessActivityScale"));
             SocialMessagePublished += DeliverSocialMessage;
             try
             {

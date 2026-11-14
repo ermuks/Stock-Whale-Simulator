@@ -179,7 +179,7 @@
     },
     {
       "key": "chatTurnsMin",
-      "value": 2
+      "value": 3.0
     },
     {
       "key": "chatTurnsMax",
@@ -187,11 +187,11 @@
     },
     {
       "key": "questionTurnsMin",
-      "value": 2
+      "value": 3.0
     },
     {
       "key": "questionTurnsMax",
-      "value": 3
+      "value": 4.0
     },
     {
       "key": "argumentTurnsMin",
@@ -924,6 +924,102 @@
     {
       "key": "legacyStressDrop",
       "value": 5
+    },
+    {
+      "key": "initiateTargetChance",
+      "value": 0.4
+    },
+    {
+      "key": "relationWeightFloor",
+      "value": 0.2
+    },
+    {
+      "key": "argumentAttackCount",
+      "value": 2
+    },
+    {
+      "key": "witnessProbability",
+      "value": 0.35
+    },
+    {
+      "key": "witnessActivityBase",
+      "value": 0.35
+    },
+    {
+      "key": "witnessActivityScale",
+      "value": 0.65
+    },
+    {
+      "key": "replyBase.INSULT",
+      "value": 0.9
+    },
+    {
+      "key": "replyBase.REBUT",
+      "value": 0.9
+    },
+    {
+      "key": "replyBase.MOCK",
+      "value": 0.9
+    },
+    {
+      "key": "replyBase.ASK",
+      "value": 0.98
+    },
+    {
+      "key": "replyBase.DOUBT",
+      "value": 0.98
+    },
+    {
+      "key": "replyBase.APOLOGIZE",
+      "value": 0.65
+    },
+    {
+      "key": "replyBase.COMFORT",
+      "value": 0.5
+    },
+    {
+      "key": "replyBase.AGREE",
+      "value": 0.65
+    },
+    {
+      "key": "replyBase.BRAG",
+      "value": 0.9
+    },
+    {
+      "key": "replyBase.ANSWER",
+      "value": 0.9
+    },
+    {
+      "key": "replyBase.MEDIATE",
+      "value": 0.4
+    },
+    {
+      "key": "replyBase.SMALLTALK",
+      "value": 0.8
+    },
+    {
+      "key": "replyBase.LAMENT",
+      "value": 0.5
+    },
+    {
+      "key": "replyBase.PRAISE_PLAYER",
+      "value": 0.5
+    },
+    {
+      "key": "replyBase.WARN_PLAYER",
+      "value": 0.5
+    },
+    {
+      "key": "replyBase.CALL_PLAYER",
+      "value": 0
+    },
+    {
+      "key": "replyBase.REACT",
+      "value": 0.4
+    },
+    {
+      "key": "replyBase.FAREWELL",
+      "value": 0.35
     }
   ]
 }

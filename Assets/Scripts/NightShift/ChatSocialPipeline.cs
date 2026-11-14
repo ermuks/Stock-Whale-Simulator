@@ -208,6 +208,8 @@ public sealed partial class InvestorSociety
             var selection = candidates[chosen]; candidates.RemoveAt(chosen);
             if (!Enum.TryParse<SocialAct>(selection.key, out var act))
             { return; }
+            if (act == SocialAct.PRAISE_PLAYER || act == SocialAct.WARN_PLAYER || act == SocialAct.CALL_PLAYER) { intent.targetId = -1; }
+            else if (intent.threadId == 0 && intent.replyToId == 0 && (act == SocialAct.LAMENT || act == SocialAct.REACT)) { intent.targetId = 0; }
             var templates = EligibleTemplates(bot, intent, facts, act);
             if (templates.Count == 0)
             { continue; }
@@ -242,10 +244,11 @@ public sealed partial class InvestorSociety
         SelectSocialReplyTable(intent, ref table);
         if (table == null)
         { return result; }
-        foreach (var entry in table.weights)
+        var entries = intent.forcedAct.HasValue ? new[] { new SocialWeight { key = intent.forcedAct.Value.ToString(), value = 1 } } : table.weights;
+        foreach (var entry in entries)
         {
             if (!Enum.TryParse<SocialAct>(entry.key, out var act)) { result.Add(new SocialWeight { key = entry.key, value = entry.value }); continue; }
-            double weight = intent.forcedAct.HasValue ? act == intent.forcedAct ? 1 : 0 : entry.value;
+            double weight = entry.value;
             if (act == SocialAct.BRAG && !facts.profitable || act == SocialAct.LAMENT && !facts.losing ||
                 (act == SocialAct.PRAISE_PLAYER || act == SocialAct.WARN_PLAYER) && !facts.directLead ||
                 (act == SocialAct.ANSWER || act == SocialAct.AGREE || act == SocialAct.REBUT || act == SocialAct.MOCK || act == SocialAct.INSULT || act == SocialAct.COMFORT || act == SocialAct.APOLOGIZE || act == SocialAct.MEDIATE) && intent.targetId == 0)
@@ -259,8 +262,6 @@ public sealed partial class InvestorSociety
             AdjustSocialWeight(bot, intent, act, ref weight);
             if (weight > 0) { result.Add(new SocialWeight { key = entry.key, value = weight }); }
         }
-        if (intent.forcedAct.HasValue && !result.Exists(w => w.key == intent.forcedAct.Value.ToString()))
-        { result.Add(new SocialWeight { key = intent.forcedAct.Value.ToString(), value = 1 }); }
         return result;
     }
     private List<SocialTemplate> EligibleTemplates(TradeBot bot, SocialIntent intent, SocialFacts facts, SocialAct act)

@@ -79,6 +79,7 @@ public static class ChatSocialTests
         public InvestorSociety Society;
         public List<SocialMessage> Messages=new();
         public int FactErrors;
+        public int AvailabilityErrors, ConcurrencyErrors;
         public string Serialized => string.Join("\n",Messages.Select(JsonUtility.ToJson));
     }
     private static ReplayResult SocialReplay(int seed,int stage)
@@ -102,6 +103,9 @@ public static class ChatSocialTests
         {
             result.Messages.Add(message);
             var bot=society.SocialBots[message.senderId];
+            if(!society.Present(bot,message.roomId) || message.targetId>0 && !society.Present(society.SocialBots[message.targetId],message.roomId)) { result.AvailabilityErrors++; }
+            var active=society.SocialRoom(message.roomId).threads.Where(t=>t.Active).ToArray();
+            if(active.Length>2 || active.Count(t=>t.kind==SocialThreadKind.ARGUMENT)>1 || active.SelectMany(t=>t.participants).GroupBy(id=>id).Any(g=>g.Count()>1)) { result.ConcurrencyErrors++; }
             var stock=StockManager.Instance.stocks.FirstOrDefault(s=>s.symbol==message.facts.symbol);
             if(stock!=null)
             {
@@ -134,6 +138,20 @@ public static class ChatSocialTests
             Check(replay.FactErrors==0,$"T8 live portfolio facts + complete metadata seed={seed}");
             double blocked=replay.Society.SocialAttempts==0?0:(double)replay.Society.TemplateBlocked/replay.Society.SocialAttempts;
             Check(blocked<=ChatSocialConfig.Current.Get("R8Max"),$"R8 seed={seed} blocked={replay.Society.TemplateBlocked}/{replay.Society.SocialAttempts} ({blocked:P3})");
+            if(stage>=3)
+            {
+                var s=replay.Society;
+                Check(replay.Messages.All(m=>m.targetId==0 || m.text.StartsWith("@"+(m.targetId==-1?"방장":s.SocialBots[m.targetId].Social.Nickname)+" ")),$"T2 target prefix seed={seed}");
+                Check(replay.AvailabilityErrors==0,$"T10 room availability at publication seed={seed}");
+                Check(replay.ConcurrencyErrors==0 && s.ClosedThreads.All(t=>t.turnCount<=t.maxTurns && t.participants.Count<=4),$"T11 thread turns + participants + concurrency seed={seed}");
+                double r1=s.DirectedMessages==0?0:(double)s.AnsweredCalls/s.DirectedMessages;
+                double r2=s.ClosedThreads.Count==0?0:s.ClosedThreads.Average(t=>t.turnCount);
+                double r3=(double)replay.Messages.Count(m=>m.targetId!=0)/replay.Messages.Count;
+                Check(r1>=ChatSocialConfig.Current.Get("R1Min") && r1<=ChatSocialConfig.Current.Get("R1Max"),$"R1 seed={seed} {s.AnsweredCalls}/{s.DirectedMessages} = {r1:P3}");
+                Check(r2>=ChatSocialConfig.Current.Get("R2Min") && r2<=ChatSocialConfig.Current.Get("R2Max"),$"R2 seed={seed} mean={r2:F4}, threads={s.ClosedThreads.Count}");
+                Check(r3>=ChatSocialConfig.Current.Get("R3Min") && r3<=ChatSocialConfig.Current.Get("R3Max"),$"R3 seed={seed} targeted={r3:P3}");
+                Check(s.ClosedThreads.Any(t=>t.turnCount>=3),$"scene A spontaneous multi-turn conversation seed={seed}");
+            }
             if(index++<3) { File.WriteAllLines(Path.Combine(directory,$"seed-{seed}-2h.txt"),replay.Messages.Where(m=>m.at<660).Select(m=>$"{m.at:F1}|#{m.senderId}|{m.act}|{m.text}"),new UTF8Encoding(false)); }
             File.WriteAllText(Path.Combine(directory,$"seed-{seed}.sha256"),Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(replay.Serialized))));
         }
