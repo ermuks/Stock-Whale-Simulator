@@ -1,12 +1,13 @@
-param([string]$Case='baseline',[int]$Seed=73129)
+param([string]$Case='baseline',[int]$Seed=73129,[ValidateSet(7,8)][int]$Stage=7)
 $ErrorActionPreference='Stop'
 if (Get-Process Unity -ErrorAction SilentlyContinue) { throw 'Another Unity instance is already running.' }
 $taskRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-$taskOutput=Join-Path $taskRoot ('docs/chat-social-results/stage-7/'+$Case+'-'+$Seed)
+$taskOutput=Join-Path $taskRoot ('docs/chat-social-results/stage-'+$Stage+'/'+$Case+'-'+$Seed)
 New-Item -ItemType Directory -Force -Path $taskOutput | Out-Null
 $taskHash=(Get-FileHash -LiteralPath (Join-Path $taskRoot 'Assets/Scenes 1/TradeScene.unity')).Hash
 $taskSelf=[Diagnostics.Process]::GetCurrentProcess();$taskSelf.ProcessorAffinity=[IntPtr]1;$taskSelf.PriorityClass='BelowNormal'
 $env:DONDON_CHAT_MARKET_CASE=$Case;$env:DONDON_CHAT_MARKET_SEED="$Seed"
+$env:DONDON_CHAT_MARKET_STAGE="$Stage"
 $taskUnity=Start-Process -FilePath 'C:/Program Files/Unity/6000.5.5f1/Editor/Unity.exe' -ArgumentList @('-batchmode','-nographics','-job-worker-count','1','-assetImportWorkerCount','1','-projectPath',('"'+$taskRoot+'"'),'-executeMethod','ChatSocialMarketValidation.Run','-logFile',('"'+$taskOutput+'/unity.log"')) -WindowStyle Hidden -PassThru
 $taskUnity.ProcessorAffinity=[IntPtr]1;$taskUnity.PriorityClass='BelowNormal'
 $taskStart=Get-Date;$taskPeak=0L

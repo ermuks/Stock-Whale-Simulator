@@ -84,7 +84,7 @@ public class StockNewsAttentionManager:UnityEngine.MonoBehaviour
 { public static StockNewsAttentionManager Instance; public void RegisterStock(Stock stock) { } public float GetAttention(Stock stock)=>1; }
 public sealed class WorldDramaDirector { public static WorldDramaDirector Instance; public bool CanFundBuy(TradeBot bot)=>true;public bool TryFundDecision(TradeBot bot,Stock stock)=>false; }
 public sealed class MarketRhythmDirector
-{ public static MarketRhythmDirector Instance;public void BoundOrder(TradeBot bot,Stock stock,bool buy,ref decimal price,ref decimal quantity) { }public bool TryAct(TradeBot bot,Stock stock)=>false; }
+{ public static MarketRhythmDirector Instance;public void BoundOrder(TradeBot bot,Stock stock,bool buy,ref decimal price,ref decimal quantity) { }public bool TryAct(TradeBot bot,Stock stock,bool promised=false)=>false; }
 public static class PsychologicalLevelManager
 { public static event Action<Stock,decimal> OnWallForming,OnBreakthroughImminent; }
 public static class CandleHistoryManager

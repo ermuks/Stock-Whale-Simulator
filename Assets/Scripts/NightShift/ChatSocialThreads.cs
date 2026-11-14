@@ -243,6 +243,7 @@ public sealed partial class InvestorSociety
             }
         }
         TickSocialEmotions();
+        TrimSocialCaches();
     }
     private void ReadSocialRecent(TradeBot observer)
     {

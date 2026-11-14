@@ -1,0 +1,2 @@
+PASS 1 chat surface(s): runtime bootstrap, existing pooled message Button event selects bound SocialMessage, nickname Button event selects bound investor, inspector closes. Existing profile/moderation listeners remain connected.
+Event invocation in actual Play Mode; not rendered mouse/camera QA.

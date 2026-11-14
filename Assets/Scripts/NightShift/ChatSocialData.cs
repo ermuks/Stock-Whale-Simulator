@@ -68,6 +68,7 @@ public sealed class SocialTraits
     public string symbol, stockName, amount, pct, avgPrice, price, quantity, profitKind, memSymbol, memPct, memWhen;
     public long eventId;
     public bool bought, sold, held, profitable, losing, directLead;
+    public bool canPromise;
     public bool dailyProfit, dailyLoss, recovered, recentSellProfit, recentSellLoss, sellThenRise, stressRelief, signal;
     public string bidStatus, askStatus, signalResult;
     public string sourceEvent;
@@ -80,6 +81,7 @@ public sealed class SocialTraits
 [Serializable] public sealed class SocialMessageDebug
 {
     public string trigger;
+    public string contextKey;
     public long causeId;
     public SocialWeight[] weights;
     public SocialFacts slots;
@@ -93,6 +95,7 @@ public sealed class SocialTraits
     public SocialFacts facts;
     public string topicEvent, templateKey, text;
     public bool isLie, memory;
+    public SocialPromisedAction promisedAction;
     public SocialMessageDebug debug;
 }
 public sealed class SocialIntent
@@ -247,6 +250,9 @@ public sealed partial class InvestorPsychology
         public FomoLotSnapshot[] fomoLots;
         public RoomCooldownSnapshot[] rejoin, mutes;
         public double lastQuadrantReview = -1, lastFomoObservation = -1, lastRelationshipSpeech = -1;
+        public SocialPromisedAction promisedAction;
+        public string promisedSymbol;
+        public long promiseMessage;
     }
     [Serializable] public sealed class FomoLotSnapshot { public string symbol, quantity, cost, realized; }
     [Serializable] public sealed class RoomCooldownSnapshot { public int room; public double until; }
@@ -272,6 +278,7 @@ public sealed partial class InvestorPsychology
         return new SocialSnapshot { id = SocialId, room = Room, greed = Greed, fear = Fear, trust = Trust, betrayal = Betrayal,
             fomo = 0, fomoSymbol = FomoSymbol, fomoUntil = FomoUntil, fomoCooldownUntil = FomoCooldownUntil, quadrant = Quadrant, randomState = SocialRng.State,
             traits = Traits, relations = relations.ToArray(), memories = memories.ToArray(), fomoLots = lots.ToArray(), rejoin = SaveCooldowns(RejoinAt), mutes = SaveCooldowns(MutedUntil),
+            promisedAction = PromisedAction, promisedSymbol = PromisedSymbol, promiseMessage = PromiseMessage,
             lastQuadrantReview = LastQuadrantReview, lastFomoObservation = LastFomoObservation, lastRelationshipSpeech = LastRelationshipSpeech };
     }
     public bool RestoreSocial(SocialSnapshot saved)
@@ -295,7 +302,9 @@ public sealed partial class InvestorPsychology
         if (saved.relations != null) { foreach (var row in saved.relations) { if (row != null && (!Finite(row.anger) || !Finite(row.affinity) || !Finite(row.lastInteractionAt) || !Finite(row.lastWarningAt))) { return false; } } }
         if (saved.memories != null) { foreach (var row in saved.memories) { if (row != null && (!Finite(row.at) || row.usedCount < 0)) { return false; } } }
         foreach (var group in new[] { saved.rejoin, saved.mutes }) { if (group != null) { foreach (var row in group) { if (row == null || row.room < 1 || row.room > InvestorSociety.MaximumRoomId || !Finite(row.until)) { return false; } } } }
+        if (!Enum.IsDefined(typeof(SocialPromisedAction), saved.promisedAction) || saved.promisedAction != SocialPromisedAction.None && string.IsNullOrEmpty(saved.promisedSymbol)) { return false; }
         Greed = saved.greed; Fear = saved.fear; Trust = saved.trust; Betrayal = saved.betrayal;
+        PromisedAction = saved.promisedAction; PromisedSymbol = saved.promisedSymbol; PromiseMessage = saved.promiseMessage;
         Quadrant = saved.quadrant; FomoSymbol = saved.version >= 2 ? saved.fomoSymbol : null;
         Room = Math.Max(0, Math.Min(InvestorSociety.MaximumRoomId, saved.room));
         FomoUntil = saved.version >= 2 ? Math.Max(0, saved.fomoUntil) : 0;

@@ -5,7 +5,7 @@ using UnityEngine;
 public sealed partial class InvestorSociety
 {
     private bool socialWired;
-    private StreamWriter socialLog;
+    private SocialLogSink socialLog;
     private float nextSocialLogFlush;
     private void PrepareSocialRuntime()
     {
@@ -23,24 +23,27 @@ public sealed partial class InvestorSociety
             try
             {
                 string directory = Path.Combine(Application.persistentDataPath, "SocialLogs"); Directory.CreateDirectory(directory);
-                socialLog = new StreamWriter(Path.Combine(directory, "session-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff") + ".jsonl"));
+                socialLog = new SocialLogSink(new StreamWriter(Path.Combine(directory, "session-" + DateTime.UtcNow.ToString("yyyyMMdd-HHmmss-fff") + ".jsonl")),
+                    message => Debug.LogWarning("Social log disabled; in-memory audit continues: " + message));
                 ChatSocialAudit.Journal.Changed += WriteSocialChange; ChatSocialAudit.Journal.Happened += WriteSocialEvent;
             }
             catch (IOException ex) { Debug.LogWarning("Social log file unavailable: " + ex.Message); }
+            catch (UnauthorizedAccessException ex) { Debug.LogWarning("Social log file unavailable: " + ex.Message); }
             socialWired = true;
         }
         SocialTime.Set(day.Day, day.GameMinute, Time.time);
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
     }
-    private void WriteSocialChange(SocialChange change) { socialLog?.WriteLine(JsonUtility.ToJson(change)); }
-    private void WriteSocialEvent(SocialEvent record) { socialLog?.WriteLine(JsonUtility.ToJson(record)); }
+    private void WriteSocialChange(SocialChange change) { socialLog?.Write(JsonUtility.ToJson(change)); }
+    private void WriteSocialEvent(SocialEvent record) { socialLog?.Write(JsonUtility.ToJson(record)); }
     private void DisposeSocialRuntime()
     {
         ChatSocialAudit.Journal.Changed -= WriteSocialChange; ChatSocialAudit.Journal.Happened -= WriteSocialEvent;
         SocialMessagePublished -= DeliverSocialMessage; socialLog?.Dispose(); socialLog = null;
         SocialDeparted -= OnSocialDeparture;
         SocialSystemNotice -= DeliverSocialSystemNotice;
+        socialWired = false;
     }
     private void DeliverSocialSystemNotice(int roomId, string text, long id)
     {

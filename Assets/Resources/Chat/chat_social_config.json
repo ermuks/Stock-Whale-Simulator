@@ -1072,6 +1072,26 @@
     {
       "key": "hotListCount",
       "value": 3
+    },
+    {
+      "key": "suffixChance",
+      "value": 0.25
+    },
+    {
+      "key": "suffixEmotionMin",
+      "value": 60
+    },
+    {
+      "key": "cacheTrimSeconds",
+      "value": 60
+    },
+    {
+      "key": "cacheGraceSeconds",
+      "value": 180
+    },
+    {
+      "key": "closedThreadCache",
+      "value": 512
     }
   ]
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "key": "cacheGraceSeconds",
+    "before": null,
+    "after": 180
+  },
+  {
+    "key": "cacheTrimSeconds",
+    "before": null,
+    "after": 60
+  },
+  {
+    "key": "closedThreadCache",
+    "before": null,
+    "after": 512
+  },
+  {
+    "key": "suffixChance",
+    "before": null,
+    "after": 0.25
+  },
+  {
+    "key": "suffixEmotionMin",
+    "before": null,
+    "after": 60
+  }
+]

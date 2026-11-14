@@ -1,0 +1,27 @@
+Prepared config, migrated template data, and verbatim legacy chat methods.
+Tests\ChatSocial\Host.cs(50,39): warning SYSLIB0050: 'FormatterServices'은(는) 사용되지 않습니다. 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050)
+Tests\ChatSocial\Host.cs(107,39): warning CS0067: 'StockManager.OnStockListed' 이벤트가 사용되지 않았습니다.
+Validation\ChatSocial\LegacyChatProduction.cs(84,59): warning CS0169: 'MarketDayController.nextId' 필드가 사용되지 않았습니다.
+Tests\ChatSocial\Host.cs(107,53): warning CS0067: 'StockManager.OnStockDelisted' 이벤트가 사용되지 않았습니다.
+Validation\ChatSocial\LegacyChatProduction.cs(84,45): warning CS0169: 'MarketDayController.stressCursor' 필드가 사용되지 않았습니다.
+Validation\ChatSocial\LegacyChatProduction.cs(89,23): warning CS0169: 'MarketDayController.phaseWork' 필드가 사용되지 않았습니다.
+PASS 4.4 all 162 act/register/intensity groups have >=6 distinct plain texts
+PASS 4.4 all 36 targeted attack/doubt groups have >=4 memory texts
+PASS Template index preserves original eligibility scan order in every bucket
+PASS Invalid window reload preserves running configuration and generation
+PASS Invalid template reload preserves catalog/index atomically
+FAIL Suffixes deterministic, 1000-message coverage=0, social RNG untouched
+PASS Neutral small talk never receives unrelated fear/anger suffix
+PASS Disk I/O failure disables only disk logging and warns once
+PASS Healthy audit sink writes and disposes normally
+PASS Other stock does not consume a trade promise
+PASS Buy promise doubles the next matching decision once
+PASS Sell promise doubles sell probability, not order size or money
+PASS Optional v2 promise survives social snapshot restore
+PASS Promise probability remains bounded at one
+PASS Typed future-action template registers an actual pending decision before publication
+PASS Developer click trace includes trigger, weights, facts, traits, top relations and memories
+PASS 1100 closed-thread soak bounded to 512 while active thread survives
+PASS Pending departure and visible message protect their old thread
+PASS Expired exposure is reclaimed; visible-message dedup cap survives
+PASS Room thread cache is pruned consistently with global index

@@ -34,6 +34,15 @@ public sealed class ChatSocialConfig
             { throw new ArgumentException("Invalid/duplicate social config key"); }
             index.Add(value.key, value.value);
         }
+        foreach (string key in new[] { "hotWindowMinutes", "hotBaselineMinutes", "hotReturnDivisor", "replyExpiry", "cacheTrimSeconds", "cacheGraceSeconds", "logFlushSeconds" })
+        { if (Get(key) <= 0) { throw new ArgumentException("Expected positive social setting: " + key); } }
+        foreach (string key in new[] { "suffixChance", "witnessProbability", "hotDwellFloor", "hotReentryScale" })
+        { if (Get(key) < 0 || Get(key) > 1) { throw new ArgumentException("Expected probability: " + key); } }
+        foreach (string key in new[] { "closedThreadCache", "logCapacity", "memoryCapacity", "roomRecentTemplates", "hotListCount" })
+        { if (Get(key) < 1 || Get(key) != Math.Floor(Get(key))) { throw new ArgumentException("Expected positive count: " + key); } }
+        if (Get("hotBaselineMinutes") < Get("hotWindowMinutes") || Get("replyDelayMin") > Get("replyDelayMax") ||
+            Get("angerStage1") >= Get("angerStage2") || Get("angerStage2") >= Get("angerStage3") || Get("angerStage3") >= Get("angerStage4") || Get("angerStage4") > 100)
+        { throw new ArgumentException("Invalid social window/threshold ordering"); }
     }
     public double Get(string key)
     {
@@ -58,10 +67,17 @@ public sealed class ChatSocialConfig
     public string key, act, style, variant, text;
     public int intensity;
     public string[] requires;
+    public SocialPromisedAction promisedAction;
 }
 [Serializable] public sealed class SocialTemplateDocument
 {
     public int schemaVersion = 1;
     public SocialTemplate[] templates;
     public SocialActTable[] suffixes;
+    public SocialContextPhrases[] contexts;
+}
+[Serializable] public sealed class SocialContextPhrases
+{
+    public string key, style;
+    public string[] texts;
 }

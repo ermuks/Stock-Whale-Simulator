@@ -308,6 +308,19 @@ public abstract partial class TradeBot : Trader
     /// <summary>ThinkLoop 대기 구간(초). 모니터봇처럼 수가 많으면 오버라이드해 더 길게 두면 부하 감소.</summary>
     protected virtual float GetThinkDelayMin() => 2f;
     protected virtual float GetThinkDelayMax() => 10f;
+    public bool CanMakeSocialPromise => !IsCompanyOwner && !IsExchangeParticipant && !(this is WhaleFollowerBot) && MarketRhythmDirector.Instance != null;
+    private Stock PendingSocialStock()
+    {
+        if (Social == null || Social.Psychology.PromisedAction == SocialPromisedAction.None || StockManager.Instance == null)
+        { return null; }
+        foreach (var stock in StockManager.Instance.stocks)
+        {
+            if (stock.symbol != Social.Psychology.PromisedSymbol || !stock.AcceptsOrders) { continue; }
+            if (CanBuyStock(stock) || CanSellStock(stock)) { return stock; }
+            Social.Psychology.ClearPromise("insufficient-resources"); return null;
+        }
+        Social.Psychology.ClearPromise("stock-unavailable"); return null;
+    }
     IEnumerator ThinkLoop()
     {
         while (true)
@@ -325,7 +338,8 @@ public abstract partial class TradeBot : Trader
                 }
             }
 
-            Stock pick = PickStock();
+            Stock promised = PendingSocialStock();
+            Stock pick = promised ?? PickStock();
             if (pick != null && pick.AcceptsOrders && (CanBuyStock(pick) || CanSellStock(pick)) && StockManager.Instance != null && StockManager.Instance.stocks.Contains(pick))
             {
                 RefreshLiquidityOrders(pick);
@@ -333,6 +347,8 @@ public abstract partial class TradeBot : Trader
                 { continue; }
 
                 MarketDayController.Instance?.Consider(this, pick);
+                if (promised != null && MarketRhythmDirector.Instance != null && MarketRhythmDirector.Instance.TryAct(this, pick, true))
+                { continue; }
                 if ((WorldDramaDirector.Instance == null || !WorldDramaDirector.Instance.TryFundDecision(this, pick)) && !TryThinBookSellOffer(pick) && (MarketRhythmDirector.Instance == null || !MarketRhythmDirector.Instance.TryAct(this, pick)))
                 {
                     ThinkForStock(pick);

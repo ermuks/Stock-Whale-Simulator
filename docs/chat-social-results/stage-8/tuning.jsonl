@@ -1,0 +1,1 @@
+[{"key": "suffixChance", "before": null, "after": 0.25}, {"key": "suffixEmotionMin", "before": null, "after": 60}, {"key": "cacheTrimSeconds", "before": null, "after": 60}, {"key": "cacheGraceSeconds", "before": null, "after": 180}, {"key": "closedThreadCache", "before": null, "after": 512}]

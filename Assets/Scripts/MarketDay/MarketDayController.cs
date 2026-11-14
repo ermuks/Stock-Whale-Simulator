@@ -133,6 +133,7 @@ public sealed class MarketDayController : MonoBehaviour
         }
 
         Instance = this;
+        ChatSocialDebugUnity.ApplySeed(this);
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;
         ConversationFocus.GameMinutes = () => (Day - 1) * 1440d + GameMinute;

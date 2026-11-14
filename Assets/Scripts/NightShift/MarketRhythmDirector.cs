@@ -99,9 +99,9 @@ public sealed class MarketRhythmDirector : MonoBehaviour
         string flow = tape.Flow > 7f ? "매수 체결 우세" : tape.Flow < -7f ? "매도 체결 우세" : "매수·매도 힘겨루기";
         return flow + (tape.Activity > 35f ? " · 거래 활발" : tape.Activity > 8f ? " · 거래 지속" : " · 거래 한산");
     }
-    public bool TryAct(TradeBot bot, Stock stock)
+    public bool TryAct(TradeBot bot, Stock stock, bool promised = false)
     {
-        if (bot == null || stock == null || stock.currentPrice <= 0m || !MarketDayController.CanTrade || !stock.AcceptsOrders || bot.IsCompanyOwner || bot.IsExchangeParticipant || bot is WhaleFollowerBot || !tapes.TryGetValue(stock, out var tape) || random.NextDouble() >= participation)
+        if (bot == null || stock == null || stock.currentPrice <= 0m || !MarketDayController.CanTrade || !stock.AcceptsOrders || bot.IsCompanyOwner || bot.IsExchangeParticipant || bot is WhaleFollowerBot || !tapes.TryGetValue(stock, out var tape) || !promised && random.NextDouble() >= participation)
         { return false; }
         if (InvestorSociety.Instance?.Orders != null && !InvestorSociety.Instance.Orders.AllowsRegular(bot, stock))
         { return true; }
@@ -121,7 +121,9 @@ public sealed class MarketRhythmDirector : MonoBehaviour
         decimal basis = bot.GetOwnedAverage(stock);
         if (basis > 0m && bot.GetHolding(stock) > 0m)
         { bias -= Mathf.Clamp((float)(stock.currentPrice / basis - 1m) * .6f, -.12f, .3f); }
-        bool buy = random.NextDouble() < Mathf.Clamp(.5f + bias, .2f, .8f);
+        double buyProbability = Mathf.Clamp(.5f + bias, .2f, .8f);
+        buyProbability = bot.Social.Psychology.ConsumePromisedBuyProbability(stock.symbol, buyProbability);
+        bool buy = random.NextDouble() < buyProbability;
         bool active = tape.Rhythm == Rhythm.Expansion || tape.Rhythm == Rhythm.ProfitTaking;
         bool cross = random.NextDouble() < (active ? .68 : .3);
         if (buy == cross)

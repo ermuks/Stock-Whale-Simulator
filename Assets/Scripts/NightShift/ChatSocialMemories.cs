@@ -43,7 +43,7 @@ public sealed partial class InvestorSociety
             double age = SocialTime.GameMinute - memory.at;
             facts.memWhen = age < 1440 ? "아까" : age < 2880 ? "어제" : age < 43200 ? "저번에" : "지난달에";
             var candidates = new List<SocialTemplate>();
-            foreach (var template in ChatSocialAssets.Templates.templates)
+            foreach (var template in ChatSocialAssets.Candidates(act, style, intensity, "memory"))
             {
                 if (template.act != act.ToString() || template.style != style || template.intensity != intensity || template.variant != "memory" ||
                     mind.RecentTemplateKeys.Contains(template.key) || !TemplateFactsMatch(template, facts)) { continue; }

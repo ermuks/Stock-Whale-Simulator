@@ -1,0 +1,6 @@
+PASS actual TradeScene, no player trades/actions
+daysCompleted=3; bots=1191; fills=468384; listed=8
+volumeShare=0.202959; leaderIntervalGameMinutes=3.070866; leaderTimeShare=0.149573; lastTradedBreadth=1.000000
+tradingMinuteSamples=1170; wallSeconds=151.7
+Editor-only fixed 0.1s simulation steps; timeScale=1; normal 900s trading/180s post-close settings; rendering disabled; full production scene participants.
+failure=

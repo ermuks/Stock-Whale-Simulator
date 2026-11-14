@@ -100,3 +100,32 @@
 - 첫 A 실행은 시장 검사는 끝났으나 종료 계측 중 PowerShell Int32 메모리 기록이 2GB에서 넘쳤다. 64비트로 수정 후 동일 조건으로 재실행했다. 두 A 실행의 분별 원자료가 일치하며, 검증기 오류를 게임 실패/성공에 섞지 않았다. 정상 재실행의 프로세스 결과와 자원 계측은 `A-relative-verified-73129`에 있다.
 - 네 목표가 A만으로 충족되어 11.6에 따라 **B·C·D를 추가하지 않았다.** 필요 없는 신규 매매 억제·피로·과열 제동으로 시장을 변경하지 않는다. FOMO의 과열 제동 우회는 D를 도입할 때 필요하며 현재 없는 제동을 적용했다고 주장하지 않는다.
 - `TestsFocus.cs`: 절대 거래량100배 차이에 대한 상대 점수 동등성, 체류0.3 하한, 실제5분 수익률/평소대비 급증, 정지 시계, 이력 만료, 상장폐지 검사. 전체 자동 검증 **155건 통과/0실패**, 이전 T/R/S 수치는 6단계와 동일. 실제 Unity 씬 로드/컴파일/3일 실행에서 오류0. `results.txt`에 전체 결과를 기록했다.
+
+## 8단계 — 문구 확충·정독·개발 도구·최종 검증 (완료)
+
+- `chat_templates.json`: 기본 문구 972개를 접두어만 다른 문장에서 서로 다른 의미의 문장으로 교체했다. 화행/격식/강도 162조합 모두 plain 6개 이상, 공격·의심 36조합 모두 memory 4개 이상이다. 전체 plain 1,653개, memory 432개, 추가 문맥 답변 126개. 기존 키·순서·후보 수·사실 조건을 유지했다. [조합별 분량](chat-social-results/stage-8/template-counts.csv)에 전체 수량이 있다.
+- 신규 `ChatSocialLanguage.cs`: 별도 결정적 난수로 탐욕·공포·분노 말끝을 제한적으로 적용한다. `ContextualSocialText`는 실제 응답 부모의 화행을 보고 잡담/수익/손실/질문을 구별하고, 대상 없는 의심은 종목을 밝힌다. `TemplateMissesByAct`와 사건 로그에 후보 부족을 기록한다. 일반 예고/기억/조치 문구를 임의로 문맥 문장으로 덮어쓰지 않는다.
+- `ChatSocialAssets.EnsureLoaded/Reload/Install/Candidates`: 불변 카탈로그 세대와 화행·말투·강도·변형별 인덱스를 추가해 발화 때 2,085개 전체를 훑지 않는다. 후보 순서는 같고 잘못된 재로드는 현재 설정/인덱스를 보존한다. `ChatSocialConfig.Validate`는 창 길이·확률·정수 개수·분노 임계 순서·중복/유한값을 검사한다. `ChatSocialPipeline.CaptureFacts/GenerateSocialMessage/EligibleTemplates`, `ChatSocialMemories.PrepareMemoryTemplates`를 연결했다.
+- 신규 `ChatSocialMaintenance.TrimSocialCaches`: 60초마다 만료 호출 쿨다운·노출·경고·동조 예약 자료와 오래된 종료 스레드를 정리한다. 최근 메시지·대기 의도·퇴장 예약·진행 중 스레드는 보호한다. 1,100개 종료 스레드 부하 검사에서 종료 캐시512+진행1로 정리되며 기억/원본 사건 로그는 유지했다. `ChatSocialThreads.BeforeSocialTick`에서 주기적으로 호출한다.
+- 신규 `ChatSocialLog.SocialLogSink`와 `ChatSocialUnity.PrepareSocialRuntime/WriteSocialChange/WriteSocialEvent/DisposeSocialRuntime`: 디스크 쓰기·flush·dispose의 I/O/권한 실패가 시장을 종료시키지 않게 했다. 경고는 한 번, 메모리 감사 로그는 계속 유지한다. 정상 구독 해제와 재초기화도 정리했다.
+- 신규 `ChatSocialDiagnostics`, `ChatSocialDebugUnity`: 개발 빌드/에디터에서 F9를 켜고 기존 메시지 또는 닉네임을 누르면 동기·가중치·템플릿·문맥 키·당시 사실, 성격6종·감정·4분면·관계 상위5·기억을 확인한다. 양방향 분노 지정, 실제 파이프라인을 통하는 화행 예약, 고정 시드 재시작을 제공한다. `TabletGroupChatUI`의 기존 풀 행/닉네임 버튼에 연결했고 `MarketDayController.Awake`에서 재시작 시드만 반영한다. 출시 빌드에 검사 패널/입력 폴링을 추가하지 않는다.
+- 신규 `ChatSocialPromises`: 예고 메타데이터를 발화→다음 실제 매매 판단의 일회 확률×2에 연결한다. `TradeBot.PendingSocialStock/ThinkLoop`와 `MarketRhythmDirector.TryAct`의 기존 주문/유한 자금 경로를 재사용한다. `ChatSocialData.CaptureSocial/RestoreSocial`에 선택적 예고 상태를 보존한다. 현재 기본 문구에는 미래 확정 매매 예고를 추가하지 않았으며 테스트 카탈로그를 주입해 동작을 확인했다(D17). 관찰 문장을 매매 의사로 추측하지 않는다.
+- 테스트/작성 도구: `TestsPolish.cs`, `Stage8Templates.py`, `Stage8Contexts.py`, `Stage8Setup.py`, `Stage8Report.py`; 기존 `Tests.cs`, `Host.cs`, `RunSceneMarket.ps1`, `Market/Host.cs`, `Market/Run.ps1` 갱신. `ChatSocialMarketValidation`에 단계별 출력 경로와 실제 Play Mode의 채팅 버튼 이벤트 연결 검사를 추가했다. 독립 시장 코어 실행기도 컴파일 호환 확인했다.
+
+### 검증 결과
+
+- **자동 검증 180건 통과/0실패. T1~T11, R1~R8, S1~S6 모두 통과.** 20봇·1개 리딩방·24게임시간·고정5시드·플레이어 조치 없는 기준과 비교 시나리오는 그대로다. 전체 Runtime/Editor 및 별도 시장 코어 실행기 컴파일 오류0. 기존 API 경고는 남아 있다. 자세한 출력은 [results.txt](chat-social-results/stage-8/results.txt), [compile.txt](chat-social-results/stage-8/compile.txt).
+- 시드73129~73133의 **R1** 56.054/55.769/56.000/56.897/59.218%; **R2** 2.9531/3.0351/2.9796/3.3810/3.0784턴; **R3** 49.032/48.624/42.227/46.982/44.743%; **R4** 6/7/9/6/5; **R5** 3/3/4/4/3; **R6** 합산12/17=0.7059; **R7** 5.806/5.734/5.336/11.024/7.090%; **R8** 0.850/0.353/0.782/1.082/0.598%. 7단계와 동일하며 합격 범위 변경 없음.
+- S1: 다음3시간 언쟁1→0 및 제재 반응. S2: 호출18/분노퇴장6/방치 목격 신뢰 하락190. S3: 위축60, 메시지62→34. S4: 20시드 단계4 상승14→12. S5: 높은 배신 봇 추방 위축0. S6: 애증/무관심 및 충성/애증의 수락·금액·조기 매도·손절·실제 콜백 결과 차이. 신뢰180/배신130 실제값/공식 상한100/과열 예외 회귀 검사 유지.
+- **실제 TradeScene 3일 재검증**: 1,191봇/8종목/468,384체결, 30분 거래량 점유율20.2959%, 급관심1위 교체3.0709게임분, 최장 누적1위비율14.9573%, 최종 거래 종목 분산100%. 모두 11.1 목표 이내. 1,170개 분별 표본은 7단계 A 결과와 byte 단위 동일하다. `final-context-73129`의 result/minutes/resources 및 `market-repeat-check.json` 참조.
+- 실제 Play Mode에서 기존 풀 메시지/닉네임 Button 이벤트를 호출해 각각 바인딩된 메시지와 투자자가 개발 검사기에 선택되는 것을 확인했다(`ui-bindings.txt`). 렌더링을 끈 검증이므로 실제 마우스 클릭 좌표/게임 카메라 가독성 확인으로 표현하지 않는다. 마지막 방어 검사(잘못된 사용자 템플릿 인덱스/예고 취소)는 이후 전체 자동 검증·컴파일로 추가 확인했다.
+- 모든 실행은 한 코어·BelowNormal·순차 진행. 실제 씬 재실행은 최대 메모리2,075MB, 총176.7초, 종료코드0. 4GB/960초 제한, 씬 SHA256 불변. 게임 배속 기능은 추가하지 않았다.
+- 추가 설정: `suffixChance=.25`, `suffixEmotionMin=60`, `cacheTrimSeconds=60`, `cacheGraceSeconds=180`, `closedThreadCache=512`. 기존 판단 가중치 및 R/시장 목표 범위는 그대로다. 전체 전후 값은 [settings-diff.json](chat-social-results/stage-8/settings-diff.json). 첫 말끝 분포 검사에서 연속 ID의 해시 상관 문제(0/1000)를 발견해 난수 입력 혼합을 고쳤고, 236/1000으로 통과했다. 합격 범위를 바꾸지 않았고 최초 실패 로그도 보존했다.
+
+### 정독·차이·제한
+
+- [13.4 정독 평가](chat-social-results/stage-8/reading-review.md)에 세 로그 및 네 질문의 답을 제공했다. 각 첫2시간은40/44/36메시지, 퇴장0. 퇴장은 S2의 이후 구간을 별도로 읽어 원인을 확인했다. 인접 메시지 주제 전환22/39·18/43·19/35쌍을 표시했으며 이를 숨기지 않았다. 기억형의 비슷한 문장, `replyToId` 없는 첫 발언의 일반적 동의 표현은 후속 문안 개선 대상으로 남는다.
+- D01 및 기존 결정 유지, 8단계 적용 판단은 D16~D19에 기록했다. B/C/D 시장 제동은 필요 없어 추가하지 않았으므로 FOMO가 존재하지 않는 D를 우회한다고 주장하지 않는다. 기존 전체 월드 저장 기능은 없으며 검증한 저장 범위는 PlayerProgression v1과 사회 상태 어댑터다.
+- 새 C# 전문은 해당 소스 파일에 있고, 여러 곳을 바꾼 기존 파일은 [함수별 원본/수정본](chat-social-results/stage-8/function-comparisons.md)에 전체 함수 문맥으로 비교했다. 씬·프리팹·3D 위치·거래 체결 엔진은 이번 단계에서 변경하지 않았다.
+
+9개 단계(0~8)의 완료 조건을 확인했다. 0~7의 개별 커밋 이후 이 기록과 최종 코드/검증 자료를 8단계의 별도 로컬 커밋으로 남긴다.

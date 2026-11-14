@@ -27,7 +27,8 @@ public static class ChatSocialMarketValidation
     {
         string label = Environment.GetEnvironmentVariable("DONDON_CHAT_MARKET_CASE") ?? "baseline";
         int seed = int.TryParse(Environment.GetEnvironmentVariable("DONDON_CHAT_MARKET_SEED"), out int parsed) ? parsed : 73129;
-        folder = "docs/chat-social-results/stage-7/" + label + "-" + seed;
+        int stage = Environment.GetEnvironmentVariable("DONDON_CHAT_MARKET_STAGE") == "8" ? 8 : 7;
+        folder = "docs/chat-social-results/stage-" + stage + "/" + label + "-" + seed;
         Directory.CreateDirectory(folder);
         samples = new StreamWriter(folder + "/minutes.csv") { AutoFlush = true };
         samples.WriteLine("day,minute,leader,top30minVolumeShare,lastTradedBreadth,filledTrades,bots");
@@ -124,6 +125,11 @@ public static class ChatSocialMarketValidation
         double interval = (double)tradingSamples / Math.Max(1, leaderChanges);
         double duration = leaderMinutes.Count == 0 ? 1 : (double)leaderMinutes.Values.Max() / Math.Max(1, tradingSamples);
         double breadth = (double)lastTrade.Values.Distinct().Count(s => s.IsListed && !s.IsDelisted) / Math.Max(1, listed);
+        if (failure == null && folder.Contains("stage-8"))
+        {
+            try { ValidateDebugClicks(); }
+            catch (Exception error) { failure = "Developer UI binding: " + error; }
+        }
         bool pass = failure == null && fills > 0 && errors.Count == 0 && share <= config.Get("volumeShareMax") &&
             interval <= config.Get("hotLeaderIntervalMax") && duration <= config.Get("leaderTimeShareMax") && breadth >= config.Get("stockBreadthMin");
         string result = $"{(pass ? "PASS" : "FAIL")} actual TradeScene, no player trades/actions\n" +
@@ -137,6 +143,36 @@ public static class ChatSocialMarketValidation
         EditorSettings.enterPlayModeOptionsEnabled = oldOptions; EditorSettings.enterPlayModeOptions = oldFlags;
         EditorApplication.update -= Monitor; Application.logMessageReceived -= Log;
         EditorApplication.Exit(pass ? 0 : 1);
+    }
+    // Invoked after the three-day observation, so it cannot influence market metrics.
+    private static void ValidateDebugClicks()
+    {
+        const System.Reflection.BindingFlags flags = System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic;
+        var inspector = UnityEngine.Object.FindAnyObjectByType<ChatSocialDebugUnity>();
+        if (inspector == null) { throw new Exception("Development inspector was not bootstrapped."); }
+        var type = inspector.GetType(); type.GetField("visible", flags).SetValue(inspector, true);
+        int checkedRows = 0;
+        foreach (var ui in UnityEngine.Object.FindObjectsByType<TabletGroupChatUI>(FindObjectsInactive.Include))
+        {
+            var rows = (System.Collections.IEnumerable)typeof(TabletGroupChatUI).GetField("rows", flags).GetValue(ui);
+            foreach (var row in rows)
+            {
+                var rowType = row.GetType(); var message = (SocialMessage)rowType.GetField("SocialMessage").GetValue(row);
+                if (message == null || message.senderId <= 0) { continue; }
+                var rect = (RectTransform)rowType.GetField("Rect").GetValue(row);
+                rect.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+                if (!ReferenceEquals(type.GetField("selectedMessage", flags).GetValue(inspector), message))
+                { throw new Exception("Pooled message button did not select its bound social message."); }
+                var nickname = (TMPro.TextMeshProUGUI)rowType.GetField("Nickname").GetValue(row);
+                nickname.GetComponent<UnityEngine.UI.Button>().onClick.Invoke();
+                if (!(bool)type.GetField("inspectBot", flags).GetValue(inspector) || (string)type.GetField("botId", flags).GetValue(inspector) != message.senderId.ToString())
+                { throw new Exception("Nickname click did not inspect its bound investor."); }
+                checkedRows++; break;
+            }
+        }
+        type.GetField("visible", flags).SetValue(inspector, false);
+        if (checkedRows == 0) { throw new Exception("No populated pooled message rows to validate."); }
+        File.WriteAllText(folder + "/ui-bindings.txt", $"PASS {checkedRows} chat surface(s): runtime bootstrap, existing pooled message Button event selects bound SocialMessage, nickname Button event selects bound investor, inspector closes. Existing profile/moderation listeners remain connected.\nEvent invocation in actual Play Mode; not rendered mouse/camera QA.\n");
     }
 }
 

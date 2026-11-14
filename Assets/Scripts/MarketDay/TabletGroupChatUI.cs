@@ -39,6 +39,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         public TextMeshProUGUI Nickname, Time, AngerDot;
         public RectTransform Bubble;
         public int BotId;
+        public SocialMessage SocialMessage;
         public long Sequence = -1;
     }
 
@@ -108,11 +109,11 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 Gauge = rect.Find("Image :: Stress").GetComponent<Image>(),
                 StressRing = rect.Find("Image :: Stress").GetComponentInChildren<TerminalGlyph>(true)
             };
-            rect.GetComponent<Button>().onClick.AddListener(() => SelectProfile(row.BotId));
+            rect.GetComponent<Button>().onClick.AddListener(() => { SelectProfile(row.BotId); ChatSocialDebugUnity.ShowMessage(row.SocialMessage); });
             row.Nickname.raycastTarget = true;
             var nicknameButton = row.Nickname.gameObject.GetComponent<Button>() ?? row.Nickname.gameObject.AddComponent<Button>();
             nicknameButton.targetGraphic = row.Nickname;
-            nicknameButton.onClick.AddListener(() => { SelectProfile(row.BotId); moderationMenu.Open(row.BotId, row.Nickname.rectTransform); });
+            nicknameButton.onClick.AddListener(() => { SelectProfile(row.BotId); moderationMenu.Open(row.BotId, row.Nickname.rectTransform); ChatSocialDebugUnity.ShowBot(row.BotId); });
             row.AngerDot = Instantiate(row.Nickname, rect);
             row.AngerDot.name = "Text :: Anger Indicator"; row.AngerDot.text = "●";
             row.AngerDot.raycastTarget = false; row.AngerDot.enableAutoSizing = false;
@@ -301,6 +302,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                     {
                         row.Sequence = message.Sequence;
                         row.BotId = message.BotId;
+                        row.SocialMessage = message.Social;
                         row.Nickname.text = message.Nickname;
                         row.Time.text = $"{message.Day}일 {message.Minute / 60:D2}:{message.Minute % 60:D2}";
                         row.Text.text = message.Text;

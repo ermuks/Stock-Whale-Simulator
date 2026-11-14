@@ -57,7 +57,8 @@ namespace UnityEngine
             return new JsonSerializerOptions { IncludeFields=true, IgnoreReadOnlyProperties=true,TypeInfoResolver=resolver };
         }
         public static T FromJson<T>(string json) => JsonSerializer.Deserialize<T>(json,Options);
-        public static string ToJson(object item) => JsonSerializer.Serialize(item,item.GetType(),Options);
+        public static string ToJson(object item) => item == null ? "null" : JsonSerializer.Serialize(item,item.GetType(),Options);
+        public static string ToJson(object item, bool prettyPrint) => ToJson(item);
     }
 }
 namespace Unity.Profiling { public struct ProfilerMarker { public ProfilerMarker(string key) { } } }
@@ -86,6 +87,7 @@ public class Trader : IOrderOwner { }
 public static class PriceTickPolicy { public static decimal RoundToTick(decimal price)=>decimal.Round(price,0); }
 public sealed class TradeBot : Trader
 {
+    public bool CanMakeSocialPromise => true;
     public bool isActiveAndEnabled = true;
     public bool IsExchangeParticipant;
     public BotSocialState Social;

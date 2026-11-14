@@ -160,6 +160,7 @@ public sealed partial class InvestorSociety
         if (stock == null)
         { return facts; }
         facts.symbol = stock.symbol; facts.stockName = stock.stockName; facts.price = Money(stock.currentPrice);
+        facts.canPromise = bot.CanMakeSocialPromise && mind.PromisedAction == SocialPromisedAction.None;
         decimal qty = bot.GetOwnedVolume(stock), basis = bot.GetOwnedAverage(stock);
         facts.quantity = Money(qty); facts.held = qty > 0;
         if (qty > 0 && basis > 0)
@@ -230,16 +231,21 @@ public sealed partial class InvestorSociety
             else if (intent.targetId == -1 && mind.Quadrant == InvestorQuadrant.Indifferent && intent.replyToId == 0) { intent.targetId = 0; }
             var templates = EligibleTemplates(bot, intent, facts, act);
             if (templates.Count == 0)
-            { continue; }
+            { RecordTemplateMiss(act); continue; }
             var template = templates[mind.SocialRng.Range(0, templates.Count)];
             var message = new SocialMessage { id = ChatSocialIds.Next(), roomId = intent.roomId, senderId = mind.SocialId, targetId = intent.targetId,
                 at = SocialTime.GameMinute, realAt = SocialTime.Seconds, act = act, replyToId = intent.replyToId, threadId = intent.threadId,
                 facts = facts, topicEvent = intent.motive.ToString(), templateKey = template.key, isLie = false, memory = template.variant == "memory",
+                promisedAction = template.promisedAction,
                 debug = new SocialMessageDebug { trigger = intent.motive.ToString(), causeId = intent.causeId, weights = debugWeights, slots = facts } };
             string target = message.targetId == -1 ? "방장" : SocialBots.TryGetValue(message.targetId, out var other) ? other.Social.Nickname : "";
-            message.text = SlotPattern.Replace(template.text, match => Slot(facts, match.Groups[1].Value, target));
+            socialMessageIndex.TryGetValue(message.replyToId, out var parentMessage);
+            string phrase = ContextualSocialText(template, message, parentMessage);
+            message.text = SlotPattern.Replace(phrase, match => Slot(facts, match.Groups[1].Value, target));
+            message.text = DecorateSocialText(mind, message, message.text);
             if (message.targetId != 0) { message.text = "@" + target + " " + message.text; }
             BeforeSocialPublish(bot, intent, message);
+            if (message.promisedAction != SocialPromisedAction.None) { mind.PromiseTrade(message.promisedAction, facts.symbol, message.id); }
             mind.SocialLastSpeech = SocialTime.Seconds; bot.Social.LastSpeech = (float)SocialTime.Seconds;
             mind.RecentTemplateKeys.Enqueue(template.key);
             while (mind.RecentTemplateKeys.Count > Config.Int("botRecentTemplates")) { mind.RecentTemplateKeys.Dequeue(); }
@@ -290,11 +296,13 @@ public sealed partial class InvestorSociety
         double emotion = act == SocialAct.BRAG ? mind.Greed : act == SocialAct.LAMENT ? mind.Fear : 0;
         PrepareSocialStyle(bot, intent, act, ref style, ref emotion);
         int intensity = emotion >= Config.Get("intensityThree") ? 3 : emotion >= Config.Get("intensityTwo") ? 2 : 1;
-        foreach (var template in ChatSocialAssets.Templates.templates)
+        foreach (var template in ChatSocialAssets.Candidates(act, style, intensity, "plain"))
         {
             if (template.act != act.ToString() || template.style != style || template.intensity != intensity || template.variant != "plain" || facts.signal != (template.requires != null && Array.IndexOf(template.requires, "signal") >= 0))
             { continue; }
             if (mind.RecentTemplateKeys.Contains(template.key))
+            { continue; }
+            if (template.promisedAction != SocialPromisedAction.None && (!facts.canPromise || template.promisedAction == SocialPromisedAction.Sell && !facts.held))
             { continue; }
             if (facts.notice != null && (template.requires == null || Array.IndexOf(template.requires, "notice:" + facts.notice) < 0))
             { continue; }

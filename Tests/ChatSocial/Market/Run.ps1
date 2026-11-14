@@ -1,4 +1,4 @@
-param([int]$Seed=73129,[int]$Days=1)
+param([int]$Seed=73129,[int]$Days=1,[switch]$CompileOnly)
 $ErrorActionPreference='Stop'
 $taskRoot=[IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../../..'))
 $taskOut=Join-Path $taskRoot 'Validation/ChatSocial/Market'
@@ -19,5 +19,6 @@ $taskRsp=Join-Path $taskOut 'Market.rsp';Set-Content $taskRsp $taskResponse -Enc
 & $taskRuntime $taskCompiler ('@'+$taskRsp)
 if($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Set-Content (Join-Path $taskOut 'Market.runtimeconfig.json') '{"runtimeOptions":{"tfm":"net8.0","framework":{"name":"Microsoft.NETCore.App","version":"8.0.21"}}}' -Encoding utf8
+if($CompileOnly) { exit 0 }
 & $taskRuntime (Join-Path $taskOut 'Market.dll') $taskRoot $Seed $Days
 exit $LASTEXITCODE
