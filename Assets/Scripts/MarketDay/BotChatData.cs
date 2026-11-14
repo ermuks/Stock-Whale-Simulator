@@ -224,8 +224,10 @@ public readonly struct BotChatMessage
     public readonly float Stress;
     public readonly ChatEvent Event;
     public readonly InvestorMessageContext Context;
-    public BotChatMessage(long sequence, TradeBot bot, int day, int minute, string text, string templateId, ChatEvent kind, InvestorMessageContext context = default)
+    public readonly SocialMessage Social;
+    public BotChatMessage(long sequence, TradeBot bot, int day, int minute, string text, string templateId, ChatEvent kind, InvestorMessageContext context = default, SocialMessage social = null)
     {
+        Social = social;
         Context = context.EventId > 0 ? context : new InvestorMessageContext(0, 0, 0f, bot == null ? 1f : bot.Social.Confidence, bot == null ? 0f : bot.Social.Psychology.Trust, false, target: 0);
         Sequence = sequence;
         BotId = bot == null ? 0 : bot.Social.Id;

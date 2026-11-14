@@ -1,0 +1,495 @@
+{
+  "schemaVersion": 1,
+  "motives": [
+    {
+      "key": "IDLE",
+      "weights": [
+        {
+          "key": "SMALLTALK",
+          "value": 8
+        },
+        {
+          "key": "ASK",
+          "value": 15
+        },
+        {
+          "key": "REACT",
+          "value": 20
+        },
+        {
+          "key": "BRAG",
+          "value": 10
+        },
+        {
+          "key": "LAMENT",
+          "value": 10
+        },
+        {
+          "key": "DOUBT",
+          "value": 8
+        },
+        {
+          "key": "AGREE",
+          "value": 8
+        },
+        {
+          "key": "MOCK",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "SELF_EVENT",
+      "weights": [
+        {
+          "key": "BRAG",
+          "value": 35
+        },
+        {
+          "key": "LAMENT",
+          "value": 35
+        },
+        {
+          "key": "PRAISE_PLAYER",
+          "value": 15
+        },
+        {
+          "key": "WARN_PLAYER",
+          "value": 15
+        },
+        {
+          "key": "REACT",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "key": "WITNESSED_EVENT",
+      "weights": [
+        {
+          "key": "ASK",
+          "value": 25
+        },
+        {
+          "key": "DOUBT",
+          "value": 15
+        },
+        {
+          "key": "AGREE",
+          "value": 20
+        },
+        {
+          "key": "REBUT",
+          "value": 15
+        },
+        {
+          "key": "COMFORT",
+          "value": 10
+        },
+        {
+          "key": "MOCK",
+          "value": 8
+        },
+        {
+          "key": "REACT",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "key": "EMOTION_THRESHOLD",
+      "weights": [
+        {
+          "key": "MOCK",
+          "value": 25
+        },
+        {
+          "key": "REBUT",
+          "value": 25
+        },
+        {
+          "key": "DOUBT",
+          "value": 15
+        },
+        {
+          "key": "INSULT",
+          "value": 20
+        },
+        {
+          "key": "LAMENT",
+          "value": 10
+        },
+        {
+          "key": "CALL_PLAYER",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "key": "REPLY_OBLIGATION",
+      "weights": [
+        {
+          "key": "ANSWER",
+          "value": 50
+        },
+        {
+          "key": "AGREE",
+          "value": 30
+        },
+        {
+          "key": "REBUT",
+          "value": 20
+        }
+      ]
+    }
+  ],
+  "replies": [
+    {
+      "key": "MOCK",
+      "weights": [
+        {
+          "key": "MOCK",
+          "value": 35
+        },
+        {
+          "key": "REBUT",
+          "value": 30
+        },
+        {
+          "key": "DOUBT",
+          "value": 10
+        },
+        {
+          "key": "SMALLTALK",
+          "value": 15
+        },
+        {
+          "key": "LAMENT",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "key": "INSULT",
+      "weights": [
+        {
+          "key": "INSULT",
+          "value": 40
+        },
+        {
+          "key": "MOCK",
+          "value": 30
+        },
+        {
+          "key": "REBUT",
+          "value": 20
+        },
+        {
+          "key": "CALL_PLAYER",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "key": "REBUT",
+      "weights": [
+        {
+          "key": "REBUT",
+          "value": 45
+        },
+        {
+          "key": "MOCK",
+          "value": 20
+        },
+        {
+          "key": "AGREE",
+          "value": 15
+        },
+        {
+          "key": "ASK",
+          "value": 10
+        },
+        {
+          "key": "APOLOGIZE",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "key": "DOUBT",
+      "weights": [
+        {
+          "key": "ANSWER",
+          "value": 45
+        },
+        {
+          "key": "REBUT",
+          "value": 30
+        },
+        {
+          "key": "MOCK",
+          "value": 15
+        },
+        {
+          "key": "BRAG",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "key": "ASK",
+      "weights": [
+        {
+          "key": "ANSWER",
+          "value": 80
+        },
+        {
+          "key": "ASK",
+          "value": 10
+        },
+        {
+          "key": "SMALLTALK",
+          "value": 10
+        }
+      ]
+    },
+    {
+      "key": "BRAG",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 35
+        },
+        {
+          "key": "DOUBT",
+          "value": 25
+        },
+        {
+          "key": "MOCK",
+          "value": 15
+        },
+        {
+          "key": "ASK",
+          "value": 25
+        }
+      ]
+    },
+    {
+      "key": "LAMENT",
+      "weights": [
+        {
+          "key": "COMFORT",
+          "value": 50
+        },
+        {
+          "key": "MOCK",
+          "value": 20
+        },
+        {
+          "key": "AGREE",
+          "value": 30
+        }
+      ]
+    },
+    {
+      "key": "COMFORT",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 60
+        },
+        {
+          "key": "SMALLTALK",
+          "value": 40
+        }
+      ]
+    },
+    {
+      "key": "AGREE",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 60
+        },
+        {
+          "key": "SMALLTALK",
+          "value": 40
+        }
+      ]
+    },
+    {
+      "key": "APOLOGIZE",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 60
+        },
+        {
+          "key": "MOCK",
+          "value": 25
+        },
+        {
+          "key": "APOLOGIZE",
+          "value": 15
+        }
+      ]
+    },
+    {
+      "key": "MEDIATE",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 50
+        },
+        {
+          "key": "REBUT",
+          "value": 30
+        },
+        {
+          "key": "SILENCE",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "key": "ANSWER",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 60
+        },
+        {
+          "key": "ASK",
+          "value": 20
+        },
+        {
+          "key": "SMALLTALK",
+          "value": 20
+        }
+      ]
+    },
+    {
+      "key": "SMALLTALK",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 60
+        },
+        {
+          "key": "SMALLTALK",
+          "value": 40
+        }
+      ]
+    }
+  ],
+  "effects": [
+    {
+      "key": "DOUBT",
+      "weights": [
+        {
+          "key": "anger",
+          "value": 4
+        },
+        {
+          "key": "affinity",
+          "value": -2
+        }
+      ]
+    },
+    {
+      "key": "REBUT",
+      "weights": [
+        {
+          "key": "anger",
+          "value": 6
+        },
+        {
+          "key": "affinity",
+          "value": -3
+        }
+      ]
+    },
+    {
+      "key": "MOCK",
+      "weights": [
+        {
+          "key": "anger",
+          "value": 12
+        },
+        {
+          "key": "affinity",
+          "value": -8
+        },
+        {
+          "key": "fear",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "key": "INSULT",
+      "weights": [
+        {
+          "key": "anger",
+          "value": 25
+        },
+        {
+          "key": "affinity",
+          "value": -20
+        }
+      ]
+    },
+    {
+      "key": "AGREE",
+      "weights": [
+        {
+          "key": "anger",
+          "value": -3
+        },
+        {
+          "key": "affinity",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "key": "COMFORT",
+      "weights": [
+        {
+          "key": "anger",
+          "value": -5
+        },
+        {
+          "key": "affinity",
+          "value": 8
+        },
+        {
+          "key": "fear",
+          "value": -4
+        }
+      ]
+    },
+    {
+      "key": "APOLOGIZE",
+      "weights": [
+        {
+          "key": "anger",
+          "value": -20
+        },
+        {
+          "key": "affinity",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "key": "ANSWER",
+      "weights": [
+        {
+          "key": "affinity",
+          "value": 2
+        }
+      ]
+    }
+  ]
+}

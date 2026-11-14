@@ -1,0 +1,905 @@
+{
+  "schemaVersion": 1,
+  "values": [
+    {
+      "key": "temperMean",
+      "value": 50
+    },
+    {
+      "key": "temperSd",
+      "value": 20
+    },
+    {
+      "key": "grudgeMean",
+      "value": 45
+    },
+    {
+      "key": "grudgeSd",
+      "value": 25
+    },
+    {
+      "key": "suggestibilityMean",
+      "value": 50
+    },
+    {
+      "key": "suggestibilitySd",
+      "value": 20
+    },
+    {
+      "key": "sociabilityMean",
+      "value": 50
+    },
+    {
+      "key": "sociabilitySd",
+      "value": 25
+    },
+    {
+      "key": "bravadoMean",
+      "value": 40
+    },
+    {
+      "key": "bravadoSd",
+      "value": 25
+    },
+    {
+      "key": "politenessMean",
+      "value": 60
+    },
+    {
+      "key": "politenessSd",
+      "value": 25
+    },
+    {
+      "key": "friendsMin",
+      "value": 2
+    },
+    {
+      "key": "friendsMax",
+      "value": 4
+    },
+    {
+      "key": "friendAffinityMin",
+      "value": 30
+    },
+    {
+      "key": "friendAffinityMax",
+      "value": 70
+    },
+    {
+      "key": "memoryCapacity",
+      "value": 8
+    },
+    {
+      "key": "logCapacity",
+      "value": 12000
+    },
+    {
+      "key": "speakCooldownSec",
+      "value": 6
+    },
+    {
+      "key": "replyCooldownScale",
+      "value": 0.5
+    },
+    {
+      "key": "roomWindowSec",
+      "value": 10
+    },
+    {
+      "key": "roomMaxMsgPer10Sec",
+      "value": 5
+    },
+    {
+      "key": "replyExpiry",
+      "value": 20
+    },
+    {
+      "key": "emotionExpiry",
+      "value": 30
+    },
+    {
+      "key": "selfExpiry",
+      "value": 60
+    },
+    {
+      "key": "witnessExpiry",
+      "value": 45
+    },
+    {
+      "key": "idleChance",
+      "value": 0.12
+    },
+    {
+      "key": "idleInterval",
+      "value": 2
+    },
+    {
+      "key": "botRecentTemplates",
+      "value": 10
+    },
+    {
+      "key": "roomRecentTemplates",
+      "value": 30
+    },
+    {
+      "key": "maxConsecutiveAct",
+      "value": 2
+    },
+    {
+      "key": "memoryChance",
+      "value": 0.4
+    },
+    {
+      "key": "memoryMaxUses",
+      "value": 2
+    },
+    {
+      "key": "styleFormalMin",
+      "value": 67
+    },
+    {
+      "key": "styleCasualMin",
+      "value": 34
+    },
+    {
+      "key": "intensityTwo",
+      "value": 40
+    },
+    {
+      "key": "intensityThree",
+      "value": 70
+    },
+    {
+      "key": "replyMin",
+      "value": 0.05
+    },
+    {
+      "key": "replyMax",
+      "value": 0.98
+    },
+    {
+      "key": "replySociability",
+      "value": 0.004
+    },
+    {
+      "key": "replyAnger",
+      "value": 0.003
+    },
+    {
+      "key": "replyChill",
+      "value": 0.003
+    },
+    {
+      "key": "replyDelayMin",
+      "value": 2
+    },
+    {
+      "key": "replyDelayMax",
+      "value": 7
+    },
+    {
+      "key": "chatTurnsMin",
+      "value": 2
+    },
+    {
+      "key": "chatTurnsMax",
+      "value": 4
+    },
+    {
+      "key": "questionTurnsMin",
+      "value": 2
+    },
+    {
+      "key": "questionTurnsMax",
+      "value": 3
+    },
+    {
+      "key": "argumentTurnsMin",
+      "value": 4
+    },
+    {
+      "key": "argumentTurnsMax",
+      "value": 8
+    },
+    {
+      "key": "maxThreads",
+      "value": 2
+    },
+    {
+      "key": "maxArguments",
+      "value": 1
+    },
+    {
+      "key": "maxParticipants",
+      "value": 4
+    },
+    {
+      "key": "thirdPartyChance",
+      "value": 0.15
+    },
+    {
+      "key": "friendThreshold",
+      "value": 40
+    },
+    {
+      "key": "mediatorSociability",
+      "value": 60
+    },
+    {
+      "key": "mediatorTemper",
+      "value": 50
+    },
+    {
+      "key": "spectatorBravado",
+      "value": 60
+    },
+    {
+      "key": "spectatorAffinity",
+      "value": 20
+    },
+    {
+      "key": "pairCooldownSec",
+      "value": 60
+    },
+    {
+      "key": "interruptMovePct",
+      "value": 5
+    },
+    {
+      "key": "angerStage1",
+      "value": 30
+    },
+    {
+      "key": "angerStage2",
+      "value": 55
+    },
+    {
+      "key": "angerStage3",
+      "value": 75
+    },
+    {
+      "key": "angerStage4",
+      "value": 90
+    },
+    {
+      "key": "angerMaximumPerMessage",
+      "value": 25
+    },
+    {
+      "key": "angerDecayPerHour",
+      "value": 6
+    },
+    {
+      "key": "angerHalfTemper",
+      "value": 0.5
+    },
+    {
+      "key": "angerDisciplineDivisor",
+      "value": 200
+    },
+    {
+      "key": "attackDisciplineDivisor",
+      "value": 150
+    },
+    {
+      "key": "witnessHalfSuggestibility",
+      "value": 0.5
+    },
+    {
+      "key": "witnessThreadCap",
+      "value": 10
+    },
+    {
+      "key": "rumorDailyTrustCap",
+      "value": 15
+    },
+    {
+      "key": "ignoredAnger",
+      "value": 3
+    },
+    {
+      "key": "ignoredAffinity",
+      "value": -2
+    },
+    {
+      "key": "mediationBase",
+      "value": 0.3
+    },
+    {
+      "key": "mediationAffinityDivisor",
+      "value": 200
+    },
+    {
+      "key": "mediationStage3Scale",
+      "value": 0.5
+    },
+    {
+      "key": "mediationSuccessAnger",
+      "value": -12
+    },
+    {
+      "key": "mediationSuccessAffinity",
+      "value": 3
+    },
+    {
+      "key": "mediationFailAnger",
+      "value": 5
+    },
+    {
+      "key": "mediationFailAffinity",
+      "value": -3
+    },
+    {
+      "key": "friendMockAnger",
+      "value": 4
+    },
+    {
+      "key": "friendInsultAnger",
+      "value": 8
+    },
+    {
+      "key": "insultWitnessAffinity",
+      "value": -4
+    },
+    {
+      "key": "bragGreed",
+      "value": 4
+    },
+    {
+      "key": "losingBragAffinity",
+      "value": -3
+    },
+    {
+      "key": "lamentHeldFear",
+      "value": 6
+    },
+    {
+      "key": "lamentOtherFear",
+      "value": 2
+    },
+    {
+      "key": "praiseTrust",
+      "value": 3
+    },
+    {
+      "key": "warnTrust",
+      "value": -4
+    },
+    {
+      "key": "stage1AttackWeight",
+      "value": 2
+    },
+    {
+      "key": "stage2AttackWeight",
+      "value": 3
+    },
+    {
+      "key": "stage3PeaceWeight",
+      "value": 0.3
+    },
+    {
+      "key": "callPlayerDelaySec",
+      "value": 8
+    },
+    {
+      "key": "exitGraceSec",
+      "value": 15
+    },
+    {
+      "key": "exitAngerMin",
+      "value": 85
+    },
+    {
+      "key": "exitOtherAngerDrop",
+      "value": 30
+    },
+    {
+      "key": "exitTrust",
+      "value": -10
+    },
+    {
+      "key": "exitGrudgeWarnChance",
+      "value": 0.6
+    },
+    {
+      "key": "exitRejoinMinutes",
+      "value": 1440
+    },
+    {
+      "key": "abandonedFightTrust",
+      "value": -2
+    },
+    {
+      "key": "sympathyAffinity",
+      "value": 60
+    },
+    {
+      "key": "sympathyTrustDivisor",
+      "value": 150
+    },
+    {
+      "key": "sympathyDisciplineDivisor",
+      "value": 200
+    },
+    {
+      "key": "sympathyDelayMin",
+      "value": 5
+    },
+    {
+      "key": "sympathyDelayMax",
+      "value": 25
+    },
+    {
+      "key": "sympathyCapFraction",
+      "value": 0.25
+    },
+    {
+      "key": "sympathyTrust",
+      "value": -5
+    },
+    {
+      "key": "sympathyRejoinMinutes",
+      "value": 720
+    },
+    {
+      "key": "warningAnger",
+      "value": -15
+    },
+    {
+      "key": "warningTemperMin",
+      "value": 70
+    },
+    {
+      "key": "warningTrust",
+      "value": -3
+    },
+    {
+      "key": "warningDiscipline",
+      "value": 5
+    },
+    {
+      "key": "warningResolveChance",
+      "value": 0.6
+    },
+    {
+      "key": "warningRepeatMinutes",
+      "value": 10
+    },
+    {
+      "key": "warningRepeatScale",
+      "value": 0.5
+    },
+    {
+      "key": "oneSidedTrust",
+      "value": -3
+    },
+    {
+      "key": "muteMinutes",
+      "value": 30
+    },
+    {
+      "key": "muteTrust",
+      "value": -5
+    },
+    {
+      "key": "muteDiscipline",
+      "value": 8
+    },
+    {
+      "key": "unmuteGrudge",
+      "value": 70
+    },
+    {
+      "key": "kickFighterDiscipline",
+      "value": 20
+    },
+    {
+      "key": "kickFighterTrust",
+      "value": 2
+    },
+    {
+      "key": "kickBetrayalMin",
+      "value": 60
+    },
+    {
+      "key": "kickBetrayalDiscipline",
+      "value": 5
+    },
+    {
+      "key": "kickBetrayalTrust",
+      "value": 1
+    },
+    {
+      "key": "kickArbitraryDiscipline",
+      "value": 5
+    },
+    {
+      "key": "kickArbitraryChill",
+      "value": 8
+    },
+    {
+      "key": "kickFriendTrust",
+      "value": -5
+    },
+    {
+      "key": "kickOneSidedFriendTrust",
+      "value": -8
+    },
+    {
+      "key": "kickBothWindowSec",
+      "value": 20
+    },
+    {
+      "key": "kickBothDiscipline",
+      "value": 10
+    },
+    {
+      "key": "kickRateWindowMinutes",
+      "value": 60
+    },
+    {
+      "key": "kickRateLimit",
+      "value": 3
+    },
+    {
+      "key": "kickRateChill",
+      "value": 10
+    },
+    {
+      "key": "kickSelfTrust",
+      "value": -30
+    },
+    {
+      "key": "kickSelfBetrayal",
+      "value": 15
+    },
+    {
+      "key": "kickWarnBase",
+      "value": 0.3
+    },
+    {
+      "key": "kickWarnGrudgeDivisor",
+      "value": 200
+    },
+    {
+      "key": "disciplineDecayPerHour",
+      "value": 3
+    },
+    {
+      "key": "chillDecayPerHour",
+      "value": 4
+    },
+    {
+      "key": "disciplineReactThreshold",
+      "value": 20
+    },
+    {
+      "key": "chillReactThreshold",
+      "value": 30
+    },
+    {
+      "key": "chillSpeechFloor",
+      "value": 0.2
+    },
+    {
+      "key": "chillSpeechDivisor",
+      "value": 125
+    },
+    {
+      "key": "quadrantThreshold",
+      "value": 50
+    },
+    {
+      "key": "quadrantHysteresis",
+      "value": 5
+    },
+    {
+      "key": "loyalAcceptanceBase",
+      "value": 0.5
+    },
+    {
+      "key": "loyalAcceptanceDivisor",
+      "value": 200
+    },
+    {
+      "key": "loyalAmountBase",
+      "value": 0.6
+    },
+    {
+      "key": "loyalAmountDivisor",
+      "value": 250
+    },
+    {
+      "key": "ambivalentAcceptanceBase",
+      "value": 0.35
+    },
+    {
+      "key": "ambivalentAcceptanceDivisor",
+      "value": 300
+    },
+    {
+      "key": "ambivalentAmount",
+      "value": 0.5
+    },
+    {
+      "key": "ambivalentTargetMin",
+      "value": 0.6
+    },
+    {
+      "key": "ambivalentTargetMax",
+      "value": 0.8
+    },
+    {
+      "key": "ambivalentStopScale",
+      "value": 0.5
+    },
+    {
+      "key": "ambivalentGainTrustScale",
+      "value": 0.5
+    },
+    {
+      "key": "ambivalentProfitBetrayalRelief",
+      "value": 1
+    },
+    {
+      "key": "ambivalentLossScale",
+      "value": 1.5
+    },
+    {
+      "key": "hostileLeaveDivisor",
+      "value": 200
+    },
+    {
+      "key": "indifferentAcceptanceDivisor",
+      "value": 200
+    },
+    {
+      "key": "indifferentAmount",
+      "value": 0.4
+    },
+    {
+      "key": "indifferentDailyLeave",
+      "value": 0.1
+    },
+    {
+      "key": "fomoRisePct",
+      "value": 8
+    },
+    {
+      "key": "fomoDurationMinutes",
+      "value": 20
+    },
+    {
+      "key": "fomoCooldownMinutes",
+      "value": 60
+    },
+    {
+      "key": "fomoFearDivisor",
+      "value": 150
+    },
+    {
+      "key": "fomoAmountScale",
+      "value": 1.5
+    },
+    {
+      "key": "fomoLossFear",
+      "value": 15
+    },
+    {
+      "key": "fomoGainGreed",
+      "value": 10
+    },
+    {
+      "key": "memoryLeadAssetPct",
+      "value": 10
+    },
+    {
+      "key": "memorySelfAssetPct",
+      "value": 15
+    },
+    {
+      "key": "memoryAngerScale",
+      "value": 1.3
+    },
+    {
+      "key": "memoryLossSalience",
+      "value": 90
+    },
+    {
+      "key": "memoryGainSalience",
+      "value": 70
+    },
+    {
+      "key": "memoryKickedSalience",
+      "value": 85
+    },
+    {
+      "key": "memoryFoughtSalience",
+      "value": 60
+    },
+    {
+      "key": "memorySawKickSalience",
+      "value": 45
+    },
+    {
+      "key": "memoryBragCrashSalience",
+      "value": 40
+    },
+    {
+      "key": "memorySelfSalience",
+      "value": 50
+    },
+    {
+      "key": "tradeFactMinutes",
+      "value": 30
+    },
+    {
+      "key": "promiseWeight",
+      "value": 2
+    },
+    {
+      "key": "hotWindowMinutes",
+      "value": 5
+    },
+    {
+      "key": "hotBaselineMinutes",
+      "value": 180
+    },
+    {
+      "key": "hotReturnDivisor",
+      "value": 5
+    },
+    {
+      "key": "hotDwellStartMinutes",
+      "value": 10
+    },
+    {
+      "key": "hotDwellPenaltyPerMinute",
+      "value": 0.05
+    },
+    {
+      "key": "hotDwellFloor",
+      "value": 0.3
+    },
+    {
+      "key": "hotReentryMinutes",
+      "value": 15
+    },
+    {
+      "key": "hotReentryScale",
+      "value": 0.5
+    },
+    {
+      "key": "fatigueGain",
+      "value": 8
+    },
+    {
+      "key": "fatigueDecayPerHour",
+      "value": 15
+    },
+    {
+      "key": "fatigueDivisor",
+      "value": 125
+    },
+    {
+      "key": "rotationMinutes",
+      "value": 60
+    },
+    {
+      "key": "rotationStrength",
+      "value": 1
+    },
+    {
+      "key": "rotationLookbackMinutes",
+      "value": 120
+    },
+    {
+      "key": "rotationReturnDivisor",
+      "value": 10
+    },
+    {
+      "key": "rotationMin",
+      "value": 0.3
+    },
+    {
+      "key": "rotationMax",
+      "value": 2.5
+    },
+    {
+      "key": "overheatFloor",
+      "value": 0.2
+    },
+    {
+      "key": "overheatStartPct",
+      "value": 15
+    },
+    {
+      "key": "overheatDivisor",
+      "value": 30
+    },
+    {
+      "key": "overheatFear",
+      "value": 2
+    },
+    {
+      "key": "overheatFearMinutes",
+      "value": 10
+    },
+    {
+      "key": "R1Min",
+      "value": 0.55
+    },
+    {
+      "key": "R1Max",
+      "value": 0.8
+    },
+    {
+      "key": "R2Min",
+      "value": 2.5
+    },
+    {
+      "key": "R2Max",
+      "value": 4.5
+    },
+    {
+      "key": "R3Min",
+      "value": 0.3
+    },
+    {
+      "key": "R3Max",
+      "value": 0.5
+    },
+    {
+      "key": "R4Min",
+      "value": 4
+    },
+    {
+      "key": "R4Max",
+      "value": 15
+    },
+    {
+      "key": "R5Min",
+      "value": 1
+    },
+    {
+      "key": "R5Max",
+      "value": 4
+    },
+    {
+      "key": "R6Min",
+      "value": 0.3
+    },
+    {
+      "key": "R6Max",
+      "value": 1.5
+    },
+    {
+      "key": "R7Min",
+      "value": 0.05
+    },
+    {
+      "key": "R7Max",
+      "value": 0.15
+    },
+    {
+      "key": "R8Max",
+      "value": 0.05
+    },
+    {
+      "key": "volumeShareMax",
+      "value": 0.45
+    },
+    {
+      "key": "hotLeaderIntervalMax",
+      "value": 60
+    },
+    {
+      "key": "leaderTimeShareMax",
+      "value": 0.25
+    },
+    {
+      "key": "stockBreadthMin",
+      "value": 0.5
+    }
+  ]
+}

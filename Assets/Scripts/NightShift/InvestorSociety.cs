@@ -4,7 +4,7 @@ using UnityEngine;
 using Unity.Profiling;
 
 /// <summary>주기적 예산 안에서 각 투자자의 관찰·감정·가입·대화를 처리한다. 전역 감정 방송은 없다.</summary>
-public sealed class InvestorSociety : MonoBehaviour
+public sealed partial class InvestorSociety : MonoBehaviour
 {
     public const int PlayerRoomCount = 3, MaximumRoomId = 4;
     public sealed class Room
@@ -21,6 +21,7 @@ public sealed class InvestorSociety : MonoBehaviour
         public long Version { get; private set; }
         public LeadingRoomOrders.Command Command;
         public float NextConversation;
+        public readonly SocialRoomState Social = new();
         private readonly Dictionary<string, float> recentText = new();
         private readonly Queue<(string text, float time)> recentTextOrder = new();
         public bool RegisterText(string text, float now)
@@ -66,6 +67,7 @@ public sealed class InvestorSociety : MonoBehaviour
         if (!MarketDayController.CanTrade || Time.time < nextTick)
         { return; }
         day = MarketDayController.Instance;
+        if (day != null) { ChatSocialAudit.GameMinute = (day.Day - 1) * 1440d + day.GameMinute; }
         if (day == null || !day.Ready || StockManager.Instance == null)
         { return; }
         if (Orders == null) { Orders = new LeadingRoomOrders(this); }

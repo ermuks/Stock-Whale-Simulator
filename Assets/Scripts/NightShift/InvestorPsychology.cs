@@ -73,7 +73,7 @@ public sealed class InvestorEventMemory
 }
 
 /// <summary>개인의 감정과 장기 경험. 시세/계좌/UI에 의존하지 않아 재현 가능한 검증이 가능하다.</summary>
-public sealed class InvestorPsychology
+public sealed partial class InvestorPsychology
 {
     public float Greed { get; private set; }
     public float Fear { get; private set; }
@@ -107,6 +107,7 @@ public sealed class InvestorPsychology
         Credulity = .15f + (float)random.NextDouble() * .7f;
         Activity = .15f + (float)random.NextDouble() * .8f;
         ActivityOffset = (float)random.NextDouble() * 180f;
+        InitializeSocial(id, seed);
     }
     public bool ActiveAt(float time) => (time + ActivityOffset) % 180f < 45f + Activity * 120f;
     public bool Record(InvestorExperience experience, InvestorSocietySettings settings)
@@ -130,7 +131,7 @@ public sealed class InvestorPsychology
         if (Experiences.Count == 64) { Experiences.RemoveAt(0); }
         Experiences.Add(experience);
         LastCause = $"직접 {experience.Reason} #{experience.EventId}: {experience.Symbol} {experience.ReturnPercent:+0.00;-0.00;0}%";
-        Clamp(); return true;
+        Clamp(); AuditEmotion("direct-experience", experience.EventId); return true;
     }
     public bool ObserveForecast(InvestorForecastObservation observation, InvestorSocietySettings settings)
     {
@@ -142,7 +143,7 @@ public sealed class InvestorPsychology
         if (Observations.Count == 32) { Observations.RemoveAt(0); }
         Observations.Add(observation);
         LastCause = $"거부한 지시 #{observation.CommandId} 목표 도달 목격: {observation.Symbol}, 신뢰 +{gain:0.00} (미체결)";
-        Clamp(); return true;
+        Clamp(); AuditEmotion("forecast-observation", observation.EventId); return true;
     }
     public void Decay(float seconds, InvestorSocietySettings settings)
     {
@@ -151,13 +152,14 @@ public sealed class InvestorPsychology
         Betrayal = Mathf.Max(0f, Betrayal - amount * .7f);
         Fear = Mathf.Max(0f, Fear - amount * 1.4f); Fomo = Mathf.Max(0f, Fomo - amount * 1.7f);
         Greed = Mathf.MoveTowards(Greed, BaselineGreed, amount * .2f);
+        AuditEmotion("decay");
     }
     public void RecallBetrayal()
     {
         if (BetrayalMemory <= 0f)
         { return; }
         Betrayal += Mathf.Min(28f, 4f + BetrayalMemory * .35f);
-        LastCause = "재회유: 이전 손실 기억 활성화"; Clamp();
+        LastCause = "재회유: 이전 손실 기억 활성화"; Clamp(); AuditEmotion("betrayal-recall");
     }
     public bool Witness(long eventId, float sentiment, float credibility, int hops, InvestorSocietySettings settings)
     {
@@ -168,7 +170,7 @@ public sealed class InvestorPsychology
         if (sentiment > 0f) { Trust += impact; Fomo += impact * 1.5f; }
         else { Betrayal += impact; Fear += impact * .8f; }
         LastCause = $"목격 #{eventId}: {(sentiment > 0f ? "긍정" : "부정")} 소문 {impact:0.00}";
-        Clamp(); return true;
+        Clamp(); AuditEmotion("legacy-witness", eventId); return true;
     }
     public float Acceptance => Mathf.Clamp01(.08f + Greed * .003f + Trust * .005f + Fomo * .002f - Betrayal * .006f - Fear * .003f);
     public float JoinChance => Mathf.Clamp01(.05f + Greed * .0015f + Trust * .005f + Fomo * .002f - Betrayal * .005f);
@@ -176,9 +178,10 @@ public sealed class InvestorPsychology
     public void ObserveRisk(float returnPercent)
     {
         if (returnPercent < -2f) { Fear = Mathf.Max(Fear, Mathf.Min(85f, -returnPercent * (1.2f + Credulity))); }
+        AuditEmotion("position-risk");
     }
     public void ObserveMissedGain(float returnPercent)
-    { if (returnPercent > 2f) { Fomo = Mathf.Max(Fomo, Mathf.Min(75f, returnPercent * (Greed / 100f + .4f))); } }
+    { if (returnPercent > 2f) { Fomo = Mathf.Max(Fomo, Mathf.Min(75f, returnPercent * (Greed / 100f + .4f))); } AuditEmotion("missed-gain"); }
     public void RememberSpeaker(int author, long id, float sentiment, float credibility)
     {
         if (Perceptions.Count == 32) { Perceptions.RemoveAt(0); }
