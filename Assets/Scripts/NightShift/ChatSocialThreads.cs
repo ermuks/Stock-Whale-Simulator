@@ -64,8 +64,9 @@ public sealed partial class InvestorSociety
     partial void PrepareSocialFacts(TradeBot bot, SocialIntent intent, ref SocialFacts facts)
     {
         var mind = bot.Social.Psychology;
+        if (facts.directLead && intent.replyToId == 0) { intent.targetId = -1; }
         if (intent.targetId == 0 && intent.threadId == 0 && mind.ActiveThread == 0 && !pendingReplies.ContainsKey(mind.SocialId) && !pendingOrigins.ContainsKey(mind.SocialId) &&
-            ActiveThreads(intent.roomId) < Config.Int("maxThreads") && intent.motive != SocialMotive.SELF_EVENT &&
+            ActiveThreads(intent.roomId) < Config.Int("maxThreads") &&
             mind.SocialRng.Next() < Config.Get("initiateTargetChance"))
         { intent.targetId = ChooseTarget(bot, intent.roomId, facts); }
         PrepareMemoryFacts(bot, intent, facts);
@@ -94,6 +95,7 @@ public sealed partial class InvestorSociety
             if (secondAttack) { weight = 0; }
         }
         AdjustAngerWeight(bot, intent, act, ref weight);
+        AdjustQuadrantWeight(bot, intent, act, ref weight);
         if (act == SocialAct.MEDIATE && (intent.threadId == 0 || FindSocialThread(intent.threadId)?.kind != SocialThreadKind.ARGUMENT)) { weight = 0; }
     }
     partial void CheckSocialThread(TradeBot bot, SocialIntent intent, ref bool valid)
@@ -288,6 +290,8 @@ public sealed partial class InvestorSociety
             {
                 if (bot.Social.Psychology.ActiveThread == thread.id) { bot.Social.Psychology.ActiveThread = 0; }
                 bot.Social.Psychology.Intentions.RemoveAll(i => i.threadId == thread.id);
+                if (reason == SocialEnd.PLAYER_ACTION)
+                { bot.Social.Psychology.Intentions.RemoveAll(i => i.threadId == 0 && i.motive == SocialMotive.EMOTION_THRESHOLD && thread.participants.Contains(i.targetId)); }
             }
             foreach (int other in thread.participants)
             { if (id != other) { pairCooldown[Pair(id, other)] = SocialTime.Seconds + Config.Get("pairCooldownSec"); } }

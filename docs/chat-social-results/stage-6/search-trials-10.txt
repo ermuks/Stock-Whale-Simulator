@@ -1,0 +1,2640 @@
+trial=0 temperMean 50 -> 60
+trial=0 angerDecayPerHour 8 -> 5
+trial=0 idleChance 0.12 -> 0.035
+trial=0 initiateTargetChance 0.6 -> 0.4
+trial=0 memoryMaxUses 6 -> 6
+trial=0 argumentTurnsMin 8 -> 8
+trial=0 argumentTurnsMax 12 -> 14
+trial=0 memoryChance 1 -> 1
+trial=0 exitGraceSec 15 -> 30
+trial=0 angerStage2 55 -> 50
+trial=0 replyBase.SMALLTALK 0.8 -> 0.8
+trial=0 chatTurnsMax 4 -> 4
+trial=0 effects.DOUBT.anger 6 -> 15
+trial=0 effects.REBUT.anger 10 -> 15
+trial=0 motives.IDLE.DOUBT 3 -> 13
+trial=0 motives.IDLE.MOCK 0.5 -> 3
+trial=0 seed=73129 messages=497 R1=0.647577 R2=3.370968 R3=0.462777 R4=7.000000 R5=4.000000 R7=0.060362 R8=0.005634
+trial=0 seed=73130 messages=492 R1=0.620370 R2=3.233333 R3=0.445122 R4=11.000000 R5=3.000000 R7=0.046748 R8=0.003012
+trial=0 seed=73131 messages=512 R1=0.612150 R2=3.166667 R3=0.423828 R4=4.000000 R5=1.000000 R7=0.015625 R8=0.005464
+trial=0 seed=73132 messages=374 R1=0.571429 R2=3.000000 R3=0.419786 R4=6.000000 R5=5.000000 R7=0.045455 R8=0.005682
+trial=0 seed=73133 messages=506 R1=0.604348 R2=3.266667 R3=0.458498 R4=7.000000 R5=3.000000 R7=0.039526 R8=0.007776
+trial=0 R6=0.562500 error=0.859801
+trial=1 temperMean 60 -> 60
+trial=1 angerDecayPerHour 5 -> 7
+trial=1 idleChance 0.035 -> 0.03
+trial=1 initiateTargetChance 0.4 -> 0.4
+trial=1 memoryMaxUses 6 -> 4
+trial=1 argumentTurnsMin 8 -> 8
+trial=1 argumentTurnsMax 14 -> 14
+trial=1 memoryChance 1 -> 1
+trial=1 exitGraceSec 30 -> 30
+trial=1 angerStage2 50 -> 45
+trial=1 replyBase.SMALLTALK 0.8 -> 0.8
+trial=1 chatTurnsMax 4 -> 4
+trial=1 effects.DOUBT.anger 15 -> 15
+trial=1 effects.REBUT.anger 15 -> 15
+trial=1 motives.IDLE.DOUBT 13 -> 20
+trial=1 motives.IDLE.MOCK 3 -> 3
+trial=1 seed=73129 messages=484 R1=0.604082 R2=3.466667 R3=0.522727 R4=11.000000 R5=6.000000 R7=0.092975 R8=0.020492
+trial=1 seed=73130 messages=455 R1=0.630435 R2=3.230769 R3=0.410989 R4=5.000000 R5=2.000000 R7=0.032967 R8=0.003333
+trial=1 seed=73131 messages=442 R1=0.639423 R2=3.770833 R3=0.484163 R4=7.000000 R5=5.000000 R7=0.085973 R8=0.003979
+trial=1 seed=73132 messages=444 R1=0.611111 R2=3.244898 R3=0.412162 R4=5.000000 R5=3.000000 R7=0.060811 R8=0.021429
+trial=1 seed=73133 messages=369 R1=0.617801 R2=3.809524 R3=0.539295 R4=13.000000 R5=7.000000 R7=0.102981 R8=0.004172
+trial=1 R6=0.608696 error=2.480443
+trial=2 temperMean 60 -> 60
+trial=2 angerDecayPerHour 7 -> 8
+trial=2 idleChance 0.03 -> 0.035
+trial=2 initiateTargetChance 0.4 -> 0.4
+trial=2 memoryMaxUses 4 -> 6
+trial=2 argumentTurnsMin 8 -> 8
+trial=2 argumentTurnsMax 14 -> 12
+trial=2 memoryChance 1 -> 1
+trial=2 exitGraceSec 30 -> 45
+trial=2 angerStage2 45 -> 50
+trial=2 replyBase.SMALLTALK 0.8 -> 0.8
+trial=2 chatTurnsMax 4 -> 4
+trial=2 effects.DOUBT.anger 15 -> 15
+trial=2 effects.REBUT.anger 15 -> 15
+trial=2 motives.IDLE.DOUBT 20 -> 20
+trial=2 motives.IDLE.MOCK 3 -> 2
+trial=2 seed=73129 messages=464 R1=0.654618 R2=3.762712 R3=0.551724 R4=12.000000 R5=5.000000 R7=0.096983 R8=0.003788
+trial=2 seed=73130 messages=498 R1=0.606481 R2=3.220339 R3=0.443775 R4=10.000000 R5=4.000000 R7=0.048193 R8=0.004847
+trial=2 seed=73131 messages=440 R1=0.621005 R2=4.090909 R3=0.515909 R4=12.000000 R5=7.000000 R7=0.122727 R8=0.010944
+trial=2 seed=73132 messages=467 R1=0.589474 R2=3.220000 R3=0.413276 R4=5.000000 R5=2.000000 R7=0.049251 R8=0.011315
+trial=2 seed=73133 messages=457 R1=0.622727 R2=3.403509 R3=0.487965 R4=8.000000 R5=3.000000 R7=0.059081 R8=0.004458
+trial=2 R6=0.666667 error=1.697066
+trial=3 temperMean 60 -> 65
+trial=3 angerDecayPerHour 8 -> 6
+trial=3 idleChance 0.035 -> 0.02
+trial=3 initiateTargetChance 0.4 -> 0.42
+trial=3 memoryMaxUses 6 -> 6
+trial=3 argumentTurnsMin 8 -> 8
+trial=3 argumentTurnsMax 12 -> 12
+trial=3 memoryChance 1 -> 1
+trial=3 exitGraceSec 45 -> 45
+trial=3 angerStage2 50 -> 40
+trial=3 replyBase.SMALLTALK 0.8 -> 0.8
+trial=3 chatTurnsMax 4 -> 4
+trial=3 effects.DOUBT.anger 15 -> 15
+trial=3 effects.REBUT.anger 15 -> 15
+trial=3 motives.IDLE.DOUBT 20 -> 20
+trial=3 motives.IDLE.MOCK 2 -> 2
+trial=3 seed=73129 messages=417 R1=0.652174 R2=3.777778 R3=0.563549 R4=11.000000 R5=5.000000 R7=0.103118 R8=0.009416
+trial=3 seed=73130 messages=414 R1=0.660287 R2=3.705882 R3=0.514493 R4=8.000000 R5=2.000000 R7=0.055556 R8=0.006438
+trial=3 seed=73131 messages=336 R1=0.652941 R2=4.171429 R3=0.526786 R4=8.000000 R5=4.000000 R7=0.110119 R8=0.011527
+trial=3 seed=73132 messages=398 R1=0.655000 R2=3.620000 R3=0.510050 R4=6.000000 R5=3.000000 R7=0.080402 R8=0.012072
+trial=3 seed=73133 messages=370 R1=0.606218 R2=3.659091 R3=0.529730 R4=8.000000 R5=4.000000 R7=0.091892 R8=0.000000
+trial=3 R6=0.611111 error=1.056371
+trial=4 temperMean 65 -> 60
+trial=4 angerDecayPerHour 6 -> 6
+trial=4 idleChance 0.02 -> 0.02
+trial=4 initiateTargetChance 0.42 -> 0.4
+trial=4 memoryMaxUses 6 -> 6
+trial=4 argumentTurnsMin 8 -> 8
+trial=4 argumentTurnsMax 12 -> 14
+trial=4 memoryChance 1 -> 1
+trial=4 exitGraceSec 45 -> 45
+trial=4 angerStage2 40 -> 50
+trial=4 replyBase.SMALLTALK 0.8 -> 0.8
+trial=4 chatTurnsMax 4 -> 4
+trial=4 effects.DOUBT.anger 15 -> 15
+trial=4 effects.REBUT.anger 15 -> 15
+trial=4 motives.IDLE.DOUBT 20 -> 16
+trial=4 motives.IDLE.MOCK 2 -> 2
+trial=4 seed=73129 messages=405 R1=0.634831 R2=3.354167 R3=0.449383 R4=5.000000 R5=3.000000 R7=0.064198 R8=0.027311
+trial=4 seed=73130 messages=396 R1=0.637931 R2=3.176471 R3=0.444444 R4=6.000000 R5=2.000000 R7=0.047980 R8=0.011521
+trial=4 seed=73131 messages=377 R1=0.626667 R2=3.238095 R3=0.400531 R4=3.000000 R5=2.000000 R7=0.055703 R8=0.012545
+trial=4 seed=73132 messages=366 R1=0.632653 R2=3.093023 R3=0.404372 R4=3.000000 R5=1.000000 R7=0.024590 R8=0.011990
+trial=4 seed=73133 messages=386 R1=0.626437 R2=3.037736 R3=0.458549 R4=4.000000 R5=2.000000 R7=0.041451 R8=0.011682
+trial=4 R6=0.700000 error=0.541611
+trial=5 temperMean 60 -> 65
+trial=5 angerDecayPerHour 6 -> 6
+trial=5 idleChance 0.02 -> 0.025
+trial=5 initiateTargetChance 0.4 -> 0.42
+trial=5 memoryMaxUses 6 -> 4
+trial=5 argumentTurnsMin 8 -> 8
+trial=5 argumentTurnsMax 14 -> 12
+trial=5 memoryChance 1 -> 1
+trial=5 exitGraceSec 45 -> 30
+trial=5 angerStage2 50 -> 50
+trial=5 replyBase.SMALLTALK 0.8 -> 0.8
+trial=5 chatTurnsMax 4 -> 4
+trial=5 effects.DOUBT.anger 15 -> 15
+trial=5 effects.REBUT.anger 15 -> 15
+trial=5 motives.IDLE.DOUBT 16 -> 16
+trial=5 motives.IDLE.MOCK 2 -> 2
+trial=5 seed=73129 messages=417 R1=0.651163 R2=3.500000 R3=0.529976 R4=8.000000 R5=4.000000 R7=0.064748 R8=0.010769
+trial=5 seed=73130 messages=465 R1=0.604839 R2=3.328125 R3=0.544086 R4=10.000000 R5=5.000000 R7=0.062366 R8=0.012403
+trial=5 seed=73131 messages=454 R1=0.613065 R2=3.067797 R3=0.442731 R4=5.000000 R5=1.000000 R7=0.017621 R8=0.010823
+trial=5 seed=73132 messages=433 R1=0.625641 R2=3.178571 R3=0.457275 R4=6.000000 R5=2.000000 R7=0.036952 R8=0.004184
+trial=5 seed=73133 messages=412 R1=0.621053 R2=3.565217 R3=0.468447 R4=8.000000 R5=4.000000 R7=0.072816 R8=0.008432
+trial=5 R6=0.625000 error=1.157917
+trial=6 temperMean 65 -> 65
+trial=6 angerDecayPerHour 6 -> 6
+trial=6 idleChance 0.025 -> 0.035
+trial=6 initiateTargetChance 0.42 -> 0.42
+trial=6 memoryMaxUses 4 -> 6
+trial=6 argumentTurnsMin 8 -> 8
+trial=6 argumentTurnsMax 12 -> 14
+trial=6 memoryChance 1 -> 1
+trial=6 exitGraceSec 30 -> 30
+trial=6 angerStage2 50 -> 50
+trial=6 replyBase.SMALLTALK 0.8 -> 0.8
+trial=6 chatTurnsMax 4 -> 4
+trial=6 effects.DOUBT.anger 15 -> 15
+trial=6 effects.REBUT.anger 15 -> 15
+trial=6 motives.IDLE.DOUBT 16 -> 16
+trial=6 motives.IDLE.MOCK 2 -> 2
+trial=6 seed=73129 messages=520 R1=0.659389 R2=3.276923 R3=0.446154 R4=6.000000 R5=2.000000 R7=0.021154 R8=0.018333
+trial=6 seed=73130 messages=498 R1=0.613953 R2=3.200000 R3=0.435743 R4=6.000000 R5=3.000000 R7=0.024096 R8=0.008253
+trial=6 seed=73131 messages=500 R1=0.579186 R2=3.250000 R3=0.446000 R4=6.000000 R5=3.000000 R7=0.048000 R8=0.011869
+trial=6 seed=73132 messages=479 R1=0.620536 R2=3.278689 R3=0.469729 R4=5.000000 R5=4.000000 R7=0.048017 R8=0.008955
+trial=6 seed=73133 messages=421 R1=0.630769 R2=3.510204 R3=0.472684 R4=4.000000 R5=3.000000 R7=0.061758 R8=0.007853
+trial=6 R6=0.666667 error=0.587331
+trial=7 temperMean 65 -> 60
+trial=7 angerDecayPerHour 6 -> 5
+trial=7 idleChance 0.035 -> 0.03
+trial=7 initiateTargetChance 0.42 -> 0.4
+trial=7 memoryMaxUses 6 -> 6
+trial=7 argumentTurnsMin 8 -> 8
+trial=7 argumentTurnsMax 14 -> 14
+trial=7 memoryChance 1 -> 1
+trial=7 exitGraceSec 30 -> 45
+trial=7 angerStage2 50 -> 50
+trial=7 replyBase.SMALLTALK 0.8 -> 0.8
+trial=7 chatTurnsMax 4 -> 4
+trial=7 effects.DOUBT.anger 15 -> 15
+trial=7 effects.REBUT.anger 15 -> 15
+trial=7 motives.IDLE.DOUBT 16 -> 16
+trial=7 motives.IDLE.MOCK 2 -> 3
+trial=7 seed=73129 messages=508 R1=0.671937 R2=3.786885 R3=0.509843 R4=11.000000 R5=5.000000 R7=0.074803 R8=0.010204
+trial=7 seed=73130 messages=484 R1=0.612360 R2=3.056604 R3=0.369835 R4=4.000000 R5=1.000000 R7=0.018595 R8=0.016260
+trial=7 seed=73131 messages=433 R1=0.609137 R2=3.420000 R3=0.461894 R4=5.000000 R5=3.000000 R7=0.039261 R8=0.003165
+trial=7 seed=73132 messages=477 R1=0.654206 R2=3.527273 R3=0.457023 R4=6.000000 R5=3.000000 R7=0.056604 R8=0.009756
+trial=7 seed=73133 messages=381 R1=0.617647 R2=3.560976 R3=0.454068 R4=6.000000 R5=4.000000 R7=0.091864 R8=0.007052
+trial=7 R6=0.687500 error=0.803986
+trial=8 temperMean 60 -> 65
+trial=8 angerDecayPerHour 5 -> 8
+trial=8 idleChance 0.03 -> 0.02
+trial=8 initiateTargetChance 0.4 -> 0.42
+trial=8 memoryMaxUses 6 -> 4
+trial=8 argumentTurnsMin 8 -> 8
+trial=8 argumentTurnsMax 14 -> 12
+trial=8 memoryChance 1 -> 1
+trial=8 exitGraceSec 45 -> 45
+trial=8 angerStage2 50 -> 45
+trial=8 replyBase.SMALLTALK 0.8 -> 0.8
+trial=8 chatTurnsMax 4 -> 4
+trial=8 effects.DOUBT.anger 15 -> 15
+trial=8 effects.REBUT.anger 15 -> 15
+trial=8 motives.IDLE.DOUBT 16 -> 16
+trial=8 motives.IDLE.MOCK 3 -> 3
+trial=8 seed=73129 messages=383 R1=0.628866 R2=3.711111 R3=0.522193 R4=9.000000 R5=5.000000 R7=0.096606 R8=0.005208
+trial=8 seed=73130 messages=397 R1=0.620879 R2=3.456522 R3=0.468514 R4=6.000000 R5=3.000000 R7=0.052897 R8=0.012739
+trial=8 seed=73131 messages=361 R1=0.595000 R2=3.531915 R3=0.576177 R4=10.000000 R5=5.000000 R7=0.119114 R8=0.006359
+trial=8 seed=73132 messages=357 R1=0.613095 R2=3.340909 R3=0.481793 R4=5.000000 R5=2.000000 R7=0.039216 R8=0.010060
+trial=8 seed=73133 messages=378 R1=0.649123 R2=3.361702 R3=0.462963 R4=4.000000 R5=3.000000 R7=0.044974 R8=0.005964
+trial=8 R6=0.611111 error=1.316627
+trial=9 temperMean 65 -> 60
+trial=9 angerDecayPerHour 8 -> 8
+trial=9 idleChance 0.02 -> 0.03
+trial=9 initiateTargetChance 0.42 -> 0.42
+trial=9 memoryMaxUses 4 -> 6
+trial=9 argumentTurnsMin 8 -> 8
+trial=9 argumentTurnsMax 12 -> 14
+trial=9 memoryChance 1 -> 1
+trial=9 exitGraceSec 45 -> 30
+trial=9 angerStage2 45 -> 40
+trial=9 replyBase.SMALLTALK 0.8 -> 0.8
+trial=9 chatTurnsMax 4 -> 4
+trial=9 effects.DOUBT.anger 15 -> 15
+trial=9 effects.REBUT.anger 15 -> 15
+trial=9 motives.IDLE.DOUBT 16 -> 13
+trial=9 motives.IDLE.MOCK 3 -> 3
+trial=9 seed=73129 messages=425 R1=0.659459 R2=3.904762 R3=0.444706 R4=6.000000 R5=4.000000 R7=0.089412 R8=0.008186
+trial=9 seed=73130 messages=449 R1=0.604762 R2=3.228070 R3=0.474388 R4=5.000000 R5=3.000000 R7=0.055679 R8=0.007800
+trial=9 seed=73131 messages=416 R1=0.608696 R2=3.153846 R3=0.451923 R4=5.000000 R5=3.000000 R7=0.045673 R8=0.010667
+trial=9 seed=73132 messages=436 R1=0.590643 R2=2.803571 R3=0.392202 R4=2.000000 R5=1.000000 R7=0.016055 R8=0.004082
+trial=9 seed=73133 messages=454 R1=0.629808 R2=3.220339 R3=0.464758 R4=8.000000 R5=3.000000 R7=0.046256 R8=0.006957
+trial=9 R6=0.928571 error=0.601982
+trial=10 temperMean 60 -> 60
+trial=10 angerDecayPerHour 8 -> 5
+trial=10 idleChance 0.03 -> 0.03
+trial=10 initiateTargetChance 0.42 -> 0.4
+trial=10 memoryMaxUses 6 -> 6
+trial=10 argumentTurnsMin 8 -> 8
+trial=10 argumentTurnsMax 14 -> 14
+trial=10 memoryChance 1 -> 1
+trial=10 exitGraceSec 30 -> 45
+trial=10 angerStage2 40 -> 40
+trial=10 replyBase.SMALLTALK 0.8 -> 0.8
+trial=10 chatTurnsMax 4 -> 4
+trial=10 effects.DOUBT.anger 15 -> 15
+trial=10 effects.REBUT.anger 15 -> 15
+trial=10 motives.IDLE.DOUBT 13 -> 13
+trial=10 motives.IDLE.MOCK 3 -> 3
+trial=10 seed=73129 messages=445 R1=0.608911 R2=3.296296 R3=0.458427 R4=5.000000 R5=4.000000 R7=0.053933 R8=0.012312
+trial=10 seed=73130 messages=504 R1=0.613636 R2=3.045455 R3=0.440476 R4=4.000000 R5=2.000000 R7=0.041667 R8=0.012567
+trial=10 seed=73131 messages=459 R1=0.599034 R2=3.066667 R3=0.457516 R4=5.000000 R5=2.000000 R7=0.039216 R8=0.001597
+trial=10 seed=73132 messages=453 R1=0.627551 R2=3.196429 R3=0.437086 R4=4.000000 R5=2.000000 R7=0.033113 R8=0.004878
+trial=10 seed=73133 messages=452 R1=0.618090 R2=3.120690 R3=0.444690 R4=5.000000 R5=2.000000 R7=0.046460 R8=0.003571
+trial=10 R6=0.500000 error=0.395449
+trial=11 temperMean 60 -> 60
+trial=11 angerDecayPerHour 5 -> 6
+trial=11 idleChance 0.03 -> 0.025
+trial=11 initiateTargetChance 0.4 -> 0.42
+trial=11 memoryMaxUses 6 -> 6
+trial=11 argumentTurnsMin 8 -> 8
+trial=11 argumentTurnsMax 14 -> 14
+trial=11 memoryChance 1 -> 1
+trial=11 exitGraceSec 45 -> 30
+trial=11 angerStage2 40 -> 40
+trial=11 replyBase.SMALLTALK 0.8 -> 0.8
+trial=11 chatTurnsMax 4 -> 4
+trial=11 effects.DOUBT.anger 15 -> 15
+trial=11 effects.REBUT.anger 15 -> 15
+trial=11 motives.IDLE.DOUBT 13 -> 16
+trial=11 motives.IDLE.MOCK 3 -> 2
+trial=11 seed=73129 messages=441 R1=0.619718 R2=3.490566 R3=0.496599 R4=7.000000 R5=4.000000 R7=0.081633 R8=0.002954
+trial=11 seed=73130 messages=447 R1=0.619469 R2=3.500000 R3=0.514541 R4=10.000000 R5=5.000000 R7=0.071588 R8=0.006061
+trial=11 seed=73131 messages=444 R1=0.610256 R2=3.203704 R3=0.445946 R4=6.000000 R5=2.000000 R7=0.031532 R8=0.003914
+trial=11 seed=73132 messages=417 R1=0.623529 R2=3.120000 R3=0.410072 R4=3.000000 R5=1.000000 R7=0.023981 R8=0.011792
+trial=11 seed=73133 messages=382 R1=0.575419 R2=3.239130 R3=0.476440 R4=6.000000 R5=5.000000 R7=0.065445 R8=0.013913
+trial=11 R6=0.764706 error=1.275159
+trial=12 temperMean 60 -> 65
+trial=12 angerDecayPerHour 6 -> 5
+trial=12 idleChance 0.025 -> 0.025
+trial=12 initiateTargetChance 0.42 -> 0.42
+trial=12 memoryMaxUses 6 -> 4
+trial=12 argumentTurnsMin 8 -> 8
+trial=12 argumentTurnsMax 14 -> 12
+trial=12 memoryChance 1 -> 1
+trial=12 exitGraceSec 30 -> 30
+trial=12 angerStage2 40 -> 50
+trial=12 replyBase.SMALLTALK 0.8 -> 0.8
+trial=12 chatTurnsMax 4 -> 4
+trial=12 effects.DOUBT.anger 15 -> 15
+trial=12 effects.REBUT.anger 15 -> 15
+trial=12 motives.IDLE.DOUBT 16 -> 20
+trial=12 motives.IDLE.MOCK 2 -> 3
+trial=12 seed=73129 messages=426 R1=0.621212 R2=3.320755 R3=0.478873 R4=8.000000 R5=4.000000 R7=0.065728 R8=0.007937
+trial=12 seed=73130 messages=448 R1=0.622807 R2=3.366667 R3=0.517857 R4=10.000000 R5=4.000000 R7=0.037946 R8=0.003431
+trial=12 seed=73131 messages=408 R1=0.623188 R2=3.529412 R3=0.519608 R4=9.000000 R5=5.000000 R7=0.090686 R8=0.005034
+trial=12 seed=73132 messages=416 R1=0.670391 R2=3.352941 R3=0.430288 R4=4.000000 R5=2.000000 R7=0.045673 R8=0.009381
+trial=12 seed=73133 messages=442 R1=0.626728 R2=3.344828 R3=0.500000 R4=6.000000 R5=3.000000 R7=0.042986 R8=0.006122
+trial=12 R6=0.444444 error=0.754599
+trial=13 temperMean 65 -> 60
+trial=13 angerDecayPerHour 5 -> 6
+trial=13 idleChance 0.025 -> 0.03
+trial=13 initiateTargetChance 0.42 -> 0.42
+trial=13 memoryMaxUses 4 -> 4
+trial=13 argumentTurnsMin 8 -> 8
+trial=13 argumentTurnsMax 12 -> 12
+trial=13 memoryChance 1 -> 1
+trial=13 exitGraceSec 30 -> 30
+trial=13 angerStage2 50 -> 50
+trial=13 replyBase.SMALLTALK 0.8 -> 0.8
+trial=13 chatTurnsMax 4 -> 4
+trial=13 effects.DOUBT.anger 15 -> 15
+trial=13 effects.REBUT.anger 15 -> 15
+trial=13 motives.IDLE.DOUBT 20 -> 20
+trial=13 motives.IDLE.MOCK 3 -> 3
+trial=13 seed=73129 messages=468 R1=0.654762 R2=3.538462 R3=0.549145 R4=10.000000 R5=5.000000 R7=0.083333 R8=0.014825
+trial=13 seed=73130 messages=461 R1=0.616162 R2=3.163636 R3=0.433839 R4=6.000000 R5=1.000000 R7=0.023861 R8=0.006656
+trial=13 seed=73131 messages=454 R1=0.608040 R2=3.283019 R3=0.449339 R4=9.000000 R5=4.000000 R7=0.070485 R8=0.011577
+trial=13 seed=73132 messages=379 R1=0.582353 R2=3.062500 R3=0.451187 R4=6.000000 R5=3.000000 R7=0.055409 R8=0.006935
+trial=13 seed=73133 messages=455 R1=0.593137 R2=3.050847 R3=0.457143 R4=6.000000 R5=3.000000 R7=0.043956 R8=0.015773
+trial=13 R6=0.500000 error=0.900888
+trial=14 temperMean 60 -> 65
+trial=14 angerDecayPerHour 6 -> 8
+trial=14 idleChance 0.03 -> 0.02
+trial=14 initiateTargetChance 0.42 -> 0.42
+trial=14 memoryMaxUses 4 -> 4
+trial=14 argumentTurnsMin 8 -> 8
+trial=14 argumentTurnsMax 12 -> 14
+trial=14 memoryChance 1 -> 1
+trial=14 exitGraceSec 30 -> 30
+trial=14 angerStage2 50 -> 40
+trial=14 replyBase.SMALLTALK 0.8 -> 0.8
+trial=14 chatTurnsMax 4 -> 4
+trial=14 effects.DOUBT.anger 15 -> 15
+trial=14 effects.REBUT.anger 15 -> 15
+trial=14 motives.IDLE.DOUBT 20 -> 13
+trial=14 motives.IDLE.MOCK 3 -> 3
+trial=14 seed=73129 messages=385 R1=0.635220 R2=3.000000 R3=0.412987 R4=0.000000 R5=0.000000 R7=0.000000 R8=0.020356
+trial=14 seed=73130 messages=367 R1=0.618750 R2=3.302326 R3=0.444142 R4=5.000000 R5=2.000000 R7=0.043597 R8=0.012474
+trial=14 seed=73131 messages=329 R1=0.609023 R2=3.531250 R3=0.416413 R4=5.000000 R5=3.000000 R7=0.069909 R8=0.001572
+trial=14 seed=73132 messages=381 R1=0.629630 R2=3.173913 R3=0.430446 R4=5.000000 R5=2.000000 R7=0.049869 R8=0.017544
+trial=14 seed=73133 messages=340 R1=0.554913 R2=3.285714 R3=0.529412 R4=8.000000 R5=4.000000 R7=0.091176 R8=0.004357
+trial=14 R6=0.818182 error=1.409374
+trial=15 temperMean 65 -> 65
+trial=15 angerDecayPerHour 8 -> 5
+trial=15 idleChance 0.02 -> 0.035
+trial=15 initiateTargetChance 0.42 -> 0.42
+trial=15 memoryMaxUses 4 -> 6
+trial=15 argumentTurnsMin 8 -> 8
+trial=15 argumentTurnsMax 14 -> 12
+trial=15 memoryChance 1 -> 1
+trial=15 exitGraceSec 30 -> 45
+trial=15 angerStage2 40 -> 50
+trial=15 replyBase.SMALLTALK 0.8 -> 0.8
+trial=15 chatTurnsMax 4 -> 4
+trial=15 effects.DOUBT.anger 15 -> 15
+trial=15 effects.REBUT.anger 15 -> 15
+trial=15 motives.IDLE.DOUBT 13 -> 16
+trial=15 motives.IDLE.MOCK 3 -> 3
+trial=15 seed=73129 messages=505 R1=0.611872 R2=3.076923 R3=0.437624 R4=6.000000 R5=4.000000 R7=0.025743 R8=0.016200
+trial=15 seed=73130 messages=477 R1=0.626050 R2=3.483333 R3=0.509434 R4=11.000000 R5=4.000000 R7=0.060797 R8=0.009223
+trial=15 seed=73131 messages=519 R1=0.612903 R2=3.216667 R3=0.421965 R4=5.000000 R5=2.000000 R7=0.025048 R8=0.021070
+trial=15 seed=73132 messages=496 R1=0.613636 R2=3.213115 R3=0.451613 R4=6.000000 R5=2.000000 R7=0.036290 R8=0.004823
+trial=15 seed=73133 messages=442 R1=0.645320 R2=3.471698 R3=0.468326 R4=7.000000 R5=3.000000 R7=0.067873 R8=0.007143
+trial=15 R6=0.400000 error=0.676359
+trial=16 temperMean 65 -> 65
+trial=16 angerDecayPerHour 5 -> 8
+trial=16 idleChance 0.035 -> 0.02
+trial=16 initiateTargetChance 0.42 -> 0.42
+trial=16 memoryMaxUses 6 -> 6
+trial=16 argumentTurnsMin 8 -> 8
+trial=16 argumentTurnsMax 12 -> 12
+trial=16 memoryChance 1 -> 1
+trial=16 exitGraceSec 45 -> 45
+trial=16 angerStage2 50 -> 50
+trial=16 replyBase.SMALLTALK 0.8 -> 0.8
+trial=16 chatTurnsMax 4 -> 4
+trial=16 effects.DOUBT.anger 15 -> 15
+trial=16 effects.REBUT.anger 15 -> 15
+trial=16 motives.IDLE.DOUBT 16 -> 13
+trial=16 motives.IDLE.MOCK 3 -> 2
+trial=16 seed=73129 messages=385 R1=0.635220 R2=3.000000 R3=0.412987 R4=0.000000 R5=0.000000 R7=0.000000 R8=0.020356
+trial=16 seed=73130 messages=408 R1=0.609195 R2=3.255319 R3=0.433824 R4=6.000000 R5=3.000000 R7=0.044118 R8=0.009579
+trial=16 seed=73131 messages=358 R1=0.557047 R2=2.976190 R3=0.427374 R4=4.000000 R5=2.000000 R7=0.053073 R8=0.018265
+trial=16 seed=73132 messages=399 R1=0.630769 R2=3.277778 R3=0.493734 R4=5.000000 R5=3.000000 R7=0.040100 R8=0.006757
+trial=16 seed=73133 messages=367 R1=0.595628 R2=3.265306 R3=0.504087 R4=6.000000 R5=3.000000 R7=0.054496 R8=0.012000
+trial=16 R6=0.545455 error=1.375227
+trial=17 temperMean 65 -> 65
+trial=17 angerDecayPerHour 8 -> 6
+trial=17 idleChance 0.02 -> 0.025
+trial=17 initiateTargetChance 0.42 -> 0.42
+trial=17 memoryMaxUses 6 -> 6
+trial=17 argumentTurnsMin 8 -> 8
+trial=17 argumentTurnsMax 12 -> 12
+trial=17 memoryChance 1 -> 1
+trial=17 exitGraceSec 45 -> 45
+trial=17 angerStage2 50 -> 50
+trial=17 replyBase.SMALLTALK 0.8 -> 0.8
+trial=17 chatTurnsMax 4 -> 4
+trial=17 effects.DOUBT.anger 15 -> 15
+trial=17 effects.REBUT.anger 15 -> 15
+trial=17 motives.IDLE.DOUBT 13 -> 16
+trial=17 motives.IDLE.MOCK 2 -> 2
+trial=17 seed=73129 messages=402 R1=0.635294 R2=3.347826 R3=0.425373 R4=3.000000 R5=2.000000 R7=0.042289 R8=0.021002
+trial=17 seed=73130 messages=433 R1=0.662222 R2=3.545455 R3=0.526559 R4=6.000000 R5=3.000000 R7=0.060046 R8=0.007168
+trial=17 seed=73131 messages=430 R1=0.590674 R2=3.192308 R3=0.455814 R4=8.000000 R5=2.000000 R7=0.027907 R8=0.009363
+trial=17 seed=73132 messages=424 R1=0.615789 R2=3.127273 R3=0.452830 R4=5.000000 R5=2.000000 R7=0.040094 R8=0.004484
+trial=17 seed=73133 messages=366 R1=0.629371 R2=3.307692 R3=0.393443 R4=3.000000 R5=2.000000 R7=0.043716 R8=0.009653
+trial=17 R6=1.000000 error=0.774555
+trial=18 temperMean 65 -> 65
+trial=18 angerDecayPerHour 6 -> 6
+trial=18 idleChance 0.025 -> 0.035
+trial=18 initiateTargetChance 0.42 -> 0.4
+trial=18 memoryMaxUses 6 -> 6
+trial=18 argumentTurnsMin 8 -> 8
+trial=18 argumentTurnsMax 12 -> 14
+trial=18 memoryChance 1 -> 1
+trial=18 exitGraceSec 45 -> 45
+trial=18 angerStage2 50 -> 45
+trial=18 replyBase.SMALLTALK 0.8 -> 0.8
+trial=18 chatTurnsMax 4 -> 4
+trial=18 effects.DOUBT.anger 15 -> 15
+trial=18 effects.REBUT.anger 15 -> 15
+trial=18 motives.IDLE.DOUBT 16 -> 20
+trial=18 motives.IDLE.MOCK 2 -> 2
+trial=18 seed=73129 messages=470 R1=0.614679 R2=3.392857 R3=0.472340 R4=10.000000 R5=4.000000 R7=0.080851 R8=0.008850
+trial=18 seed=73130 messages=466 R1=0.604762 R2=3.267857 R3=0.461373 R4=7.000000 R5=3.000000 R7=0.042918 R8=0.009563
+trial=18 seed=73131 messages=469 R1=0.660870 R2=3.941176 R3=0.498934 R4=10.000000 R5=5.000000 R7=0.098081 R8=0.002506
+trial=18 seed=73132 messages=483 R1=0.636792 R2=3.872340 R3=0.449275 R4=11.000000 R5=5.000000 R7=0.093168 R8=0.011594
+trial=18 seed=73133 messages=428 R1=0.613527 R2=3.309091 R3=0.495327 R4=13.000000 R5=6.000000 R7=0.095794 R8=0.006570
+trial=18 R6=0.565217 error=1.404149
+trial=19 temperMean 65 -> 65
+trial=19 angerDecayPerHour 6 -> 6
+trial=19 idleChance 0.035 -> 0.025
+trial=19 initiateTargetChance 0.4 -> 0.4
+trial=19 memoryMaxUses 6 -> 6
+trial=19 argumentTurnsMin 8 -> 8
+trial=19 argumentTurnsMax 14 -> 14
+trial=19 memoryChance 1 -> 1
+trial=19 exitGraceSec 45 -> 45
+trial=19 angerStage2 45 -> 45
+trial=19 replyBase.SMALLTALK 0.8 -> 0.8
+trial=19 chatTurnsMax 4 -> 4
+trial=19 effects.DOUBT.anger 15 -> 15
+trial=19 effects.REBUT.anger 15 -> 15
+trial=19 motives.IDLE.DOUBT 20 -> 20
+trial=19 motives.IDLE.MOCK 2 -> 2
+trial=19 seed=73129 messages=468 R1=0.643519 R2=3.527273 R3=0.467949 R4=8.000000 R5=3.000000 R7=0.066239 R8=0.028169
+trial=19 seed=73130 messages=394 R1=0.631111 R2=3.629630 R3=0.586294 R4=9.000000 R5=6.000000 R7=0.071066 R8=0.001445
+trial=19 seed=73131 messages=427 R1=0.618785 R2=3.196078 R3=0.430913 R4=3.000000 R5=2.000000 R7=0.037471 R8=0.014159
+trial=19 seed=73132 messages=411 R1=0.648148 R2=3.711538 R3=0.540146 R4=13.000000 R5=6.000000 R7=0.097324 R8=0.007949
+trial=19 seed=73133 messages=431 R1=0.615385 R2=3.000000 R3=0.424594 R4=4.000000 R5=1.000000 R7=0.013921 R8=0.002075
+trial=19 R6=0.555556 error=2.542526
+trial=20 temperMean 65 -> 65
+trial=20 angerDecayPerHour 6 -> 7
+trial=20 idleChance 0.025 -> 0.035
+trial=20 initiateTargetChance 0.4 -> 0.42
+trial=20 memoryMaxUses 6 -> 6
+trial=20 argumentTurnsMin 8 -> 8
+trial=20 argumentTurnsMax 14 -> 12
+trial=20 memoryChance 1 -> 1
+trial=20 exitGraceSec 45 -> 45
+trial=20 angerStage2 45 -> 50
+trial=20 replyBase.SMALLTALK 0.8 -> 0.8
+trial=20 chatTurnsMax 4 -> 4
+trial=20 effects.DOUBT.anger 15 -> 15
+trial=20 effects.REBUT.anger 15 -> 15
+trial=20 motives.IDLE.DOUBT 20 -> 13
+trial=20 motives.IDLE.MOCK 2 -> 3
+trial=20 seed=73129 messages=480 R1=0.662698 R2=3.609375 R3=0.539583 R4=8.000000 R5=5.000000 R7=0.081250 R8=0.005517
+trial=20 seed=73130 messages=494 R1=0.638767 R2=3.071429 R3=0.459514 R4=4.000000 R5=2.000000 R7=0.028340 R8=0.003190
+trial=20 seed=73131 messages=487 R1=0.643192 R2=3.362069 R3=0.445585 R4=7.000000 R5=4.000000 R7=0.055441 R8=0.005706
+trial=20 seed=73132 messages=433 R1=0.621891 R2=3.314815 R3=0.475751 R4=6.000000 R5=3.000000 R7=0.057737 R8=0.009709
+trial=20 seed=73133 messages=488 R1=0.625000 R2=2.982143 R3=0.360656 R4=3.000000 R5=0.000000 R7=0.000000 R8=0.018109
+trial=20 R6=0.857143 error=1.672092
+trial=21 temperMean 65 -> 60
+trial=21 angerDecayPerHour 7 -> 7
+trial=21 idleChance 0.035 -> 0.025
+trial=21 initiateTargetChance 0.42 -> 0.4
+trial=21 memoryMaxUses 6 -> 6
+trial=21 argumentTurnsMin 8 -> 8
+trial=21 argumentTurnsMax 12 -> 12
+trial=21 memoryChance 1 -> 1
+trial=21 exitGraceSec 45 -> 45
+trial=21 angerStage2 50 -> 40
+trial=21 replyBase.SMALLTALK 0.8 -> 0.8
+trial=21 chatTurnsMax 4 -> 4
+trial=21 effects.DOUBT.anger 15 -> 15
+trial=21 effects.REBUT.anger 15 -> 15
+trial=21 motives.IDLE.DOUBT 13 -> 20
+trial=21 motives.IDLE.MOCK 3 -> 3
+trial=21 seed=73129 messages=435 R1=0.633028 R2=3.603774 R3=0.510345 R4=10.000000 R5=5.000000 R7=0.066667 R8=0.006885
+trial=21 seed=73130 messages=433 R1=0.626263 R2=3.431373 R3=0.464203 R4=8.000000 R5=3.000000 R7=0.062356 R8=0.009141
+trial=21 seed=73131 messages=438 R1=0.616580 R2=3.428571 R3=0.447489 R4=9.000000 R5=3.000000 R7=0.057078 R8=0.006033
+trial=21 seed=73132 messages=412 R1=0.641414 R2=3.702128 R3=0.497573 R4=13.000000 R5=7.000000 R7=0.097087 R8=0.009983
+trial=21 seed=73133 messages=312 R1=0.614035 R2=4.281250 R3=0.570513 R4=11.000000 R5=7.000000 R7=0.147436 R8=0.003155
+trial=21 R6=0.640000 error=2.737622
+trial=22 temperMean 60 -> 60
+trial=22 angerDecayPerHour 7 -> 5
+trial=22 idleChance 0.025 -> 0.02
+trial=22 initiateTargetChance 0.4 -> 0.4
+trial=22 memoryMaxUses 6 -> 4
+trial=22 argumentTurnsMin 8 -> 8
+trial=22 argumentTurnsMax 12 -> 12
+trial=22 memoryChance 1 -> 1
+trial=22 exitGraceSec 45 -> 30
+trial=22 angerStage2 40 -> 40
+trial=22 replyBase.SMALLTALK 0.8 -> 0.8
+trial=22 chatTurnsMax 4 -> 4
+trial=22 effects.DOUBT.anger 15 -> 15
+trial=22 effects.REBUT.anger 15 -> 15
+trial=22 motives.IDLE.DOUBT 20 -> 20
+trial=22 motives.IDLE.MOCK 3 -> 3
+trial=22 seed=73129 messages=427 R1=0.633929 R2=3.679245 R3=0.536300 R4=8.000000 R5=5.000000 R7=0.093677 R8=0.009346
+trial=22 seed=73130 messages=403 R1=0.569892 R2=3.304348 R3=0.481390 R4=10.000000 R5=5.000000 R7=0.064516 R8=0.008681
+trial=22 seed=73131 messages=390 R1=0.635838 R2=3.476190 R3=0.451282 R4=9.000000 R5=4.000000 R7=0.082051 R8=0.009728
+trial=22 seed=73132 messages=410 R1=0.623711 R2=3.469388 R3=0.482927 R4=8.000000 R5=3.000000 R7=0.080488 R8=0.006073
+trial=22 seed=73133 messages=362 R1=0.617021 R2=3.047619 R3=0.389503 R4=1.000000 R5=0.000000 R7=0.000000 R8=0.005495
+trial=22 R6=0.470588 error=1.954226
+trial=23 temperMean 60 -> 60
+trial=23 angerDecayPerHour 5 -> 6
+trial=23 idleChance 0.02 -> 0.035
+trial=23 initiateTargetChance 0.4 -> 0.4
+trial=23 memoryMaxUses 4 -> 6
+trial=23 argumentTurnsMin 8 -> 8
+trial=23 argumentTurnsMax 12 -> 12
+trial=23 memoryChance 1 -> 1
+trial=23 exitGraceSec 30 -> 30
+trial=23 angerStage2 40 -> 40
+trial=23 replyBase.SMALLTALK 0.8 -> 0.8
+trial=23 chatTurnsMax 4 -> 4
+trial=23 effects.DOUBT.anger 15 -> 15
+trial=23 effects.REBUT.anger 15 -> 15
+trial=23 motives.IDLE.DOUBT 20 -> 13
+trial=23 motives.IDLE.MOCK 3 -> 3
+trial=23 seed=73129 messages=509 R1=0.635193 R2=3.276923 R3=0.465619 R4=8.000000 R5=3.000000 R7=0.047151 R8=0.006803
+trial=23 seed=73130 messages=484 R1=0.626794 R2=3.183333 R3=0.438017 R4=10.000000 R5=3.000000 R7=0.047521 R8=0.004732
+trial=23 seed=73131 messages=501 R1=0.632353 R2=3.047619 R3=0.409182 R4=2.000000 R5=1.000000 R7=0.003992 R8=0.005597
+trial=23 seed=73132 messages=484 R1=0.655367 R2=3.395833 R3=0.378099 R4=6.000000 R5=3.000000 R7=0.049587 R8=0.010545
+trial=23 seed=73133 messages=477 R1=0.615741 R2=3.078125 R3=0.457023 R4=6.000000 R5=2.000000 R7=0.025157 R8=0.003101
+trial=23 R6=0.333333 error=0.947739
+trial=24 temperMean 60 -> 60
+trial=24 angerDecayPerHour 6 -> 7
+trial=24 idleChance 0.035 -> 0.025
+trial=24 initiateTargetChance 0.4 -> 0.4
+trial=24 memoryMaxUses 6 -> 6
+trial=24 argumentTurnsMin 8 -> 8
+trial=24 argumentTurnsMax 12 -> 12
+trial=24 memoryChance 1 -> 1
+trial=24 exitGraceSec 30 -> 30
+trial=24 angerStage2 40 -> 40
+trial=24 replyBase.SMALLTALK 0.8 -> 0.8
+trial=24 chatTurnsMax 4 -> 4
+trial=24 effects.DOUBT.anger 15 -> 15
+trial=24 effects.REBUT.anger 15 -> 15
+trial=24 motives.IDLE.DOUBT 13 -> 16
+trial=24 motives.IDLE.MOCK 3 -> 3
+trial=24 seed=73129 messages=462 R1=0.628019 R2=3.166667 R3=0.452381 R4=3.000000 R5=2.000000 R7=0.038961 R8=0.017682
+trial=24 seed=73130 messages=450 R1=0.565401 R2=3.436364 R3=0.535556 R4=13.000000 R5=7.000000 R7=0.108889 R8=0.014184
+trial=24 seed=73131 messages=444 R1=0.621005 R2=3.305085 R3=0.495495 R4=8.000000 R5=3.000000 R7=0.045045 R8=0.001873
+trial=24 seed=73132 messages=401 R1=0.609756 R2=3.439024 R3=0.416459 R4=6.000000 R5=3.000000 R7=0.057357 R8=0.015748
+trial=24 seed=73133 messages=338 R1=0.575000 R2=3.139535 R3=0.491124 R4=4.000000 R5=4.000000 R7=0.062130 R8=0.001567
+trial=24 R6=0.578947 error=1.428626
+trial=25 temperMean 60 -> 65
+trial=25 angerDecayPerHour 7 -> 7
+trial=25 idleChance 0.025 -> 0.03
+trial=25 initiateTargetChance 0.4 -> 0.4
+trial=25 memoryMaxUses 6 -> 6
+trial=25 argumentTurnsMin 8 -> 8
+trial=25 argumentTurnsMax 12 -> 14
+trial=25 memoryChance 1 -> 1
+trial=25 exitGraceSec 30 -> 45
+trial=25 angerStage2 40 -> 50
+trial=25 replyBase.SMALLTALK 0.8 -> 0.8
+trial=25 chatTurnsMax 4 -> 4
+trial=25 effects.DOUBT.anger 15 -> 15
+trial=25 effects.REBUT.anger 15 -> 15
+trial=25 motives.IDLE.DOUBT 16 -> 16
+trial=25 motives.IDLE.MOCK 3 -> 3
+trial=25 seed=73129 messages=478 R1=0.692308 R2=3.571429 R3=0.443515 R4=6.000000 R5=3.000000 R7=0.060669 R8=0.004464
+trial=25 seed=73130 messages=489 R1=0.609756 R2=3.403846 R3=0.427403 R4=9.000000 R5=5.000000 R7=0.069530 R8=0.017241
+trial=25 seed=73131 messages=464 R1=0.643192 R2=3.403509 R3=0.465517 R4=4.000000 R5=3.000000 R7=0.064655 R8=0.011713
+trial=25 seed=73132 messages=469 R1=0.636792 R2=3.547170 R3=0.464819 R4=7.000000 R5=4.000000 R7=0.074627 R8=0.008734
+trial=25 seed=73133 messages=411 R1=0.606936 R2=3.409091 R3=0.428224 R4=7.000000 R5=3.000000 R7=0.055961 R8=0.007899
+trial=25 R6=0.333333 error=0.333333
+trial=26 temperMean 65 -> 60
+trial=26 angerDecayPerHour 7 -> 8
+trial=26 idleChance 0.03 -> 0.035
+trial=26 initiateTargetChance 0.4 -> 0.4
+trial=26 memoryMaxUses 6 -> 4
+trial=26 argumentTurnsMin 8 -> 8
+trial=26 argumentTurnsMax 14 -> 14
+trial=26 memoryChance 1 -> 1
+trial=26 exitGraceSec 45 -> 45
+trial=26 angerStage2 50 -> 50
+trial=26 replyBase.SMALLTALK 0.8 -> 0.8
+trial=26 chatTurnsMax 4 -> 4
+trial=26 effects.DOUBT.anger 15 -> 15
+trial=26 effects.REBUT.anger 15 -> 15
+trial=26 motives.IDLE.DOUBT 16 -> 16
+trial=26 motives.IDLE.MOCK 3 -> 3
+trial=26 seed=73129 messages=482 R1=0.636364 R2=3.348485 R3=0.510373 R4=8.000000 R5=4.000000 R7=0.072614 R8=0.011436
+trial=26 seed=73130 messages=471 R1=0.613636 R2=3.250000 R3=0.473461 R4=8.000000 R5=2.000000 R7=0.042463 R8=0.004545
+trial=26 seed=73131 messages=537 R1=0.617424 R2=3.587302 R3=0.502793 R4=9.000000 R5=3.000000 R7=0.070764 R8=0.016345
+trial=26 seed=73132 messages=484 R1=0.620408 R2=3.684211 R3=0.518595 R4=10.000000 R5=6.000000 R7=0.072314 R8=0.010495
+trial=26 seed=73133 messages=450 R1=0.599034 R2=3.384615 R3=0.475556 R4=10.000000 R5=5.000000 R7=0.064444 R8=0.008368
+trial=26 R6=0.500000 error=1.234180
+trial=27 temperMean 60 -> 65
+trial=27 angerDecayPerHour 8 -> 8
+trial=27 idleChance 0.035 -> 0.035
+trial=27 initiateTargetChance 0.4 -> 0.4
+trial=27 memoryMaxUses 4 -> 6
+trial=27 argumentTurnsMin 8 -> 8
+trial=27 argumentTurnsMax 14 -> 14
+trial=27 memoryChance 1 -> 1
+trial=27 exitGraceSec 45 -> 45
+trial=27 angerStage2 50 -> 50
+trial=27 replyBase.SMALLTALK 0.8 -> 0.8
+trial=27 chatTurnsMax 4 -> 4
+trial=27 effects.DOUBT.anger 15 -> 15
+trial=27 effects.REBUT.anger 15 -> 15
+trial=27 motives.IDLE.DOUBT 16 -> 13
+trial=27 motives.IDLE.MOCK 3 -> 2
+trial=27 seed=73129 messages=466 R1=0.646388 R2=3.982456 R3=0.581545 R4=13.000000 R5=8.000000 R7=0.103004 R8=0.008631
+trial=27 seed=73130 messages=510 R1=0.590698 R2=2.895522 R3=0.427451 R4=3.000000 R5=2.000000 R7=0.015686 R8=0.006734
+trial=27 seed=73131 messages=511 R1=0.614679 R2=3.237288 R3=0.434442 R4=8.000000 R5=2.000000 R7=0.027397 R8=0.013223
+trial=27 seed=73132 messages=468 R1=0.586735 R2=2.949153 R3=0.423077 R4=2.000000 R5=3.000000 R7=0.019231 R8=0.005338
+trial=27 seed=73133 messages=500 R1=0.629442 R2=3.214286 R3=0.402000 R4=6.000000 R5=3.000000 R7=0.040000 R8=0.014851
+trial=27 R6=0.277778 error=3.012865
+trial=28 temperMean 65 -> 60
+trial=28 angerDecayPerHour 8 -> 8
+trial=28 idleChance 0.035 -> 0.025
+trial=28 initiateTargetChance 0.4 -> 0.4
+trial=28 memoryMaxUses 6 -> 6
+trial=28 argumentTurnsMin 8 -> 8
+trial=28 argumentTurnsMax 14 -> 14
+trial=28 memoryChance 1 -> 1
+trial=28 exitGraceSec 45 -> 45
+trial=28 angerStage2 50 -> 45
+trial=28 replyBase.SMALLTALK 0.8 -> 0.8
+trial=28 chatTurnsMax 4 -> 4
+trial=28 effects.DOUBT.anger 15 -> 15
+trial=28 effects.REBUT.anger 15 -> 15
+trial=28 motives.IDLE.DOUBT 13 -> 16
+trial=28 motives.IDLE.MOCK 2 -> 3
+trial=28 seed=73129 messages=472 R1=0.652778 R2=3.500000 R3=0.461864 R4=6.000000 R5=2.000000 R7=0.063559 R8=0.009381
+trial=28 seed=73130 messages=427 R1=0.584906 R2=3.214286 R3=0.503513 R4=10.000000 R5=3.000000 R7=0.067916 R8=0.008547
+trial=28 seed=73131 messages=440 R1=0.623529 R2=3.465116 R3=0.397727 R4=9.000000 R5=3.000000 R7=0.059091 R8=0.013093
+trial=28 seed=73132 messages=421 R1=0.585635 R2=3.163265 R3=0.432304 R4=4.000000 R5=2.000000 R7=0.023753 R8=0.009597
+trial=28 seed=73133 messages=407 R1=0.593361 R2=3.648148 R3=0.604423 R4=11.000000 R5=8.000000 R7=0.122850 R8=0.001618
+trial=28 R6=0.777778 error=2.135481
+trial=29 temperMean 60 -> 65
+trial=29 angerDecayPerHour 8 -> 7
+trial=29 idleChance 0.025 -> 0.03
+trial=29 initiateTargetChance 0.4 -> 0.42
+trial=29 memoryMaxUses 6 -> 4
+trial=29 argumentTurnsMin 8 -> 8
+trial=29 argumentTurnsMax 14 -> 12
+trial=29 memoryChance 1 -> 1
+trial=29 exitGraceSec 45 -> 45
+trial=29 angerStage2 45 -> 40
+trial=29 replyBase.SMALLTALK 0.8 -> 0.8
+trial=29 chatTurnsMax 4 -> 4
+trial=29 effects.DOUBT.anger 15 -> 15
+trial=29 effects.REBUT.anger 15 -> 15
+trial=29 motives.IDLE.DOUBT 16 -> 20
+trial=29 motives.IDLE.MOCK 3 -> 3
+trial=29 seed=73129 messages=495 R1=0.643443 R2=3.453125 R3=0.501010 R4=8.000000 R5=4.000000 R7=0.060606 R8=0.011905
+trial=29 seed=73130 messages=482 R1=0.622642 R2=3.444444 R3=0.448133 R4=9.000000 R5=4.000000 R7=0.072614 R8=0.007564
+trial=29 seed=73131 messages=461 R1=0.630542 R2=3.169492 R3=0.444685 R4=5.000000 R5=2.000000 R7=0.041215 R8=0.012839
+trial=29 seed=73132 messages=416 R1=0.600000 R2=3.425532 R3=0.468750 R4=9.000000 R5=4.000000 R7=0.086538 R8=0.001435
+trial=29 seed=73133 messages=426 R1=0.574661 R2=3.702128 R3=0.530516 R4=14.000000 R5=6.000000 R7=0.115023 R8=0.010189
+trial=29 R6=0.850000 error=0.912152
+trial=30 temperMean 65 -> 60
+trial=30 angerDecayPerHour 7 -> 6
+trial=30 idleChance 0.03 -> 0.035
+trial=30 initiateTargetChance 0.42 -> 0.4
+trial=30 memoryMaxUses 4 -> 6
+trial=30 argumentTurnsMin 8 -> 8
+trial=30 argumentTurnsMax 12 -> 12
+trial=30 memoryChance 1 -> 1
+trial=30 exitGraceSec 45 -> 45
+trial=30 angerStage2 40 -> 45
+trial=30 replyBase.SMALLTALK 0.8 -> 0.8
+trial=30 chatTurnsMax 4 -> 4
+trial=30 effects.DOUBT.anger 15 -> 15
+trial=30 effects.REBUT.anger 15 -> 15
+trial=30 motives.IDLE.DOUBT 20 -> 20
+trial=30 motives.IDLE.MOCK 3 -> 2
+trial=30 seed=73129 messages=468 R1=0.668122 R2=4.000000 R3=0.497863 R4=14.000000 R5=6.000000 R7=0.117521 R8=0.007026
+trial=30 seed=73130 messages=484 R1=0.615385 R2=3.322581 R3=0.493802 R4=12.000000 R5=4.000000 R7=0.080579 R8=0.005806
+trial=30 seed=73131 messages=510 R1=0.616601 R2=3.516129 R3=0.505882 R4=9.000000 R5=5.000000 R7=0.080392 R8=0.005457
+trial=30 seed=73132 messages=470 R1=0.616162 R2=3.301887 R3=0.429787 R4=6.000000 R5=4.000000 R7=0.076596 R8=0.004274
+trial=30 seed=73133 messages=465 R1=0.635246 R2=3.767857 R3=0.535484 R4=15.000000 R5=5.000000 R7=0.107527 R8=0.006849
+trial=30 R6=0.416667 error=1.540164
+trial=31 temperMean 60 -> 65
+trial=31 angerDecayPerHour 6 -> 7
+trial=31 idleChance 0.035 -> 0.025
+trial=31 initiateTargetChance 0.4 -> 0.4
+trial=31 memoryMaxUses 6 -> 4
+trial=31 argumentTurnsMin 8 -> 8
+trial=31 argumentTurnsMax 12 -> 12
+trial=31 memoryChance 1 -> 1
+trial=31 exitGraceSec 45 -> 30
+trial=31 angerStage2 45 -> 45
+trial=31 replyBase.SMALLTALK 0.8 -> 0.8
+trial=31 chatTurnsMax 4 -> 4
+trial=31 effects.DOUBT.anger 15 -> 15
+trial=31 effects.REBUT.anger 15 -> 15
+trial=31 motives.IDLE.DOUBT 20 -> 16
+trial=31 motives.IDLE.MOCK 2 -> 2
+trial=31 seed=73129 messages=421 R1=0.612565 R2=3.207547 R3=0.463183 R4=6.000000 R5=4.000000 R7=0.061758 R8=0.018405
+trial=31 seed=73130 messages=432 R1=0.610465 R2=3.100000 R3=0.402778 R4=5.000000 R5=2.000000 R7=0.039352 R8=0.016293
+trial=31 seed=73131 messages=419 R1=0.637681 R2=3.400000 R3=0.503580 R4=6.000000 R5=4.000000 R7=0.078759 R8=0.014540
+trial=31 seed=73132 messages=357 R1=0.628378 R2=3.447368 R3=0.422969 R4=5.000000 R5=2.000000 R7=0.039216 R8=0.009174
+trial=31 seed=73133 messages=336 R1=0.560694 R2=3.063830 R3=0.529762 R4=8.000000 R5=5.000000 R7=0.068452 R8=0.003413
+trial=31 R6=1.176471 error=0.714367
+trial=32 temperMean 65 -> 60
+trial=32 angerDecayPerHour 7 -> 5
+trial=32 idleChance 0.025 -> 0.02
+trial=32 initiateTargetChance 0.4 -> 0.4
+trial=32 memoryMaxUses 4 -> 6
+trial=32 argumentTurnsMin 8 -> 8
+trial=32 argumentTurnsMax 12 -> 12
+trial=32 memoryChance 1 -> 1
+trial=32 exitGraceSec 30 -> 30
+trial=32 angerStage2 45 -> 40
+trial=32 replyBase.SMALLTALK 0.8 -> 0.8
+trial=32 chatTurnsMax 4 -> 4
+trial=32 effects.DOUBT.anger 15 -> 15
+trial=32 effects.REBUT.anger 15 -> 15
+trial=32 motives.IDLE.DOUBT 16 -> 20
+trial=32 motives.IDLE.MOCK 2 -> 2
+trial=32 seed=73129 messages=415 R1=0.616740 R2=3.545455 R3=0.561446 R4=12.000000 R5=5.000000 R7=0.089157 R8=0.005736
+trial=32 seed=73130 messages=410 R1=0.613065 R2=3.595745 R3=0.504878 R4=13.000000 R5=5.000000 R7=0.068293 R8=0.005025
+trial=32 seed=73131 messages=387 R1=0.652632 R2=3.818182 R3=0.503876 R4=9.000000 R5=4.000000 R7=0.098191 R8=0.004587
+trial=32 seed=73132 messages=410 R1=0.623711 R2=3.469388 R3=0.482927 R4=8.000000 R5=3.000000 R7=0.080488 R8=0.006073
+trial=32 seed=73133 messages=357 R1=0.588608 R2=3.162791 R3=0.450980 R4=6.000000 R5=3.000000 R7=0.058824 R8=0.002451
+trial=32 R6=0.700000 error=1.017666
+trial=33 temperMean 60 -> 65
+trial=33 angerDecayPerHour 5 -> 7
+trial=33 idleChance 0.02 -> 0.02
+trial=33 initiateTargetChance 0.4 -> 0.4
+trial=33 memoryMaxUses 6 -> 4
+trial=33 argumentTurnsMin 8 -> 8
+trial=33 argumentTurnsMax 12 -> 14
+trial=33 memoryChance 1 -> 1
+trial=33 exitGraceSec 30 -> 45
+trial=33 angerStage2 40 -> 45
+trial=33 replyBase.SMALLTALK 0.8 -> 0.8
+trial=33 chatTurnsMax 4 -> 4
+trial=33 effects.DOUBT.anger 15 -> 15
+trial=33 effects.REBUT.anger 15 -> 15
+trial=33 motives.IDLE.DOUBT 20 -> 16
+trial=33 motives.IDLE.MOCK 2 -> 3
+trial=33 seed=73129 messages=413 R1=0.556213 R2=2.958333 R3=0.414044 R4=3.000000 R5=3.000000 R7=0.038741 R8=0.017241
+trial=33 seed=73130 messages=424 R1=0.655172 R2=3.557692 R3=0.497642 R4=8.000000 R5=4.000000 R7=0.075472 R8=0.013462
+trial=33 seed=73131 messages=368 R1=0.619048 R2=3.468085 R3=0.524457 R4=5.000000 R5=4.000000 R7=0.062500 R8=0.003155
+trial=33 seed=73132 messages=387 R1=0.635802 R2=3.288889 R3=0.428941 R4=6.000000 R5=1.000000 R7=0.023256 R8=0.008621
+trial=33 seed=73133 messages=362 R1=0.632653 R2=3.530612 R3=0.560773 R4=8.000000 R5=6.000000 R7=0.085635 R8=0.011976
+trial=33 R6=0.500000 error=1.563758
+trial=34 temperMean 65 -> 60
+trial=34 angerDecayPerHour 7 -> 6
+trial=34 idleChance 0.02 -> 0.035
+trial=34 initiateTargetChance 0.4 -> 0.42
+trial=34 memoryMaxUses 4 -> 4
+trial=34 argumentTurnsMin 8 -> 8
+trial=34 argumentTurnsMax 14 -> 14
+trial=34 memoryChance 1 -> 1
+trial=34 exitGraceSec 45 -> 30
+trial=34 angerStage2 45 -> 45
+trial=34 replyBase.SMALLTALK 0.8 -> 0.8
+trial=34 chatTurnsMax 4 -> 4
+trial=34 effects.DOUBT.anger 15 -> 15
+trial=34 effects.REBUT.anger 15 -> 15
+trial=34 motives.IDLE.DOUBT 16 -> 13
+trial=34 motives.IDLE.MOCK 3 -> 2
+trial=34 seed=73129 messages=509 R1=0.594595 R2=3.152778 R3=0.516699 R4=9.000000 R5=4.000000 R7=0.041257 R8=0.001550
+trial=34 seed=73130 messages=490 R1=0.654709 R2=3.354839 R3=0.459184 R4=6.000000 R5=2.000000 R7=0.030612 R8=0.008621
+trial=34 seed=73131 messages=508 R1=0.636735 R2=3.328358 R3=0.498031 R4=7.000000 R5=4.000000 R7=0.049213 R8=0.000000
+trial=34 seed=73132 messages=480 R1=0.565854 R2=3.211538 R3=0.435417 R4=8.000000 R5=4.000000 R7=0.062500 R8=0.006410
+trial=34 seed=73133 messages=482 R1=0.637555 R2=3.474576 R3=0.487552 R4=9.000000 R5=4.000000 R7=0.066390 R8=0.010324
+trial=34 R6=0.444444 error=0.372675
+trial=35 temperMean 60 -> 65
+trial=35 angerDecayPerHour 6 -> 5
+trial=35 idleChance 0.035 -> 0.03
+trial=35 initiateTargetChance 0.42 -> 0.42
+trial=35 memoryMaxUses 4 -> 6
+trial=35 argumentTurnsMin 8 -> 8
+trial=35 argumentTurnsMax 14 -> 12
+trial=35 memoryChance 1 -> 1
+trial=35 exitGraceSec 30 -> 30
+trial=35 angerStage2 45 -> 45
+trial=35 replyBase.SMALLTALK 0.8 -> 0.8
+trial=35 chatTurnsMax 4 -> 4
+trial=35 effects.DOUBT.anger 15 -> 15
+trial=35 effects.REBUT.anger 15 -> 15
+trial=35 motives.IDLE.DOUBT 13 -> 13
+trial=35 motives.IDLE.MOCK 2 -> 2
+trial=35 seed=73129 messages=448 R1=0.622807 R2=3.327869 R3=0.520089 R4=9.000000 R5=4.000000 R7=0.044643 R8=0.018349
+trial=35 seed=73130 messages=483 R1=0.615385 R2=2.802817 R3=0.430642 R4=1.000000 R5=0.000000 R7=0.000000 R8=0.022267
+trial=35 seed=73131 messages=442 R1=0.592965 R2=3.052632 R3=0.457014 R4=5.000000 R5=2.000000 R7=0.031674 R8=0.002990
+trial=35 seed=73132 messages=462 R1=0.604278 R2=3.132075 R3=0.411255 R4=5.000000 R5=2.000000 R7=0.032468 R8=0.007968
+trial=35 seed=73133 messages=406 R1=0.636872 R2=3.375000 R3=0.448276 R4=8.000000 R5=4.000000 R7=0.059113 R8=0.011382
+trial=35 R6=0.916667 error=1.618661
+trial=36 temperMean 65 -> 60
+trial=36 angerDecayPerHour 5 -> 7
+trial=36 idleChance 0.03 -> 0.03
+trial=36 initiateTargetChance 0.42 -> 0.42
+trial=36 memoryMaxUses 6 -> 4
+trial=36 argumentTurnsMin 8 -> 8
+trial=36 argumentTurnsMax 12 -> 12
+trial=36 memoryChance 1 -> 1
+trial=36 exitGraceSec 30 -> 45
+trial=36 angerStage2 45 -> 50
+trial=36 replyBase.SMALLTALK 0.8 -> 0.8
+trial=36 chatTurnsMax 4 -> 4
+trial=36 effects.DOUBT.anger 15 -> 15
+trial=36 effects.REBUT.anger 15 -> 15
+trial=36 motives.IDLE.DOUBT 13 -> 13
+trial=36 motives.IDLE.MOCK 2 -> 3
+trial=36 seed=73129 messages=469 R1=0.628319 R2=3.119403 R3=0.486141 R4=6.000000 R5=2.000000 R7=0.038380 R8=0.012844
+trial=36 seed=73130 messages=486 R1=0.599206 R2=3.261538 R3=0.530864 R4=12.000000 R5=4.000000 R7=0.078189 R8=0.005093
+trial=36 seed=73131 messages=466 R1=0.626866 R2=3.000000 R3=0.437768 R4=5.000000 R5=1.000000 R7=0.012876 R8=0.014006
+trial=36 seed=73132 messages=441 R1=0.624309 R2=3.260000 R3=0.417234 R4=8.000000 R5=4.000000 R7=0.052154 R8=0.006061
+trial=36 seed=73133 messages=441 R1=0.643979 R2=3.460000 R3=0.439909 R4=9.000000 R5=3.000000 R7=0.056689 R8=0.023148
+trial=36 R6=0.500000 error=0.641770
+trial=37 temperMean 60 -> 60
+trial=37 angerDecayPerHour 7 -> 8
+trial=37 idleChance 0.03 -> 0.035
+trial=37 initiateTargetChance 0.42 -> 0.42
+trial=37 memoryMaxUses 4 -> 4
+trial=37 argumentTurnsMin 8 -> 8
+trial=37 argumentTurnsMax 12 -> 14
+trial=37 memoryChance 1 -> 1
+trial=37 exitGraceSec 45 -> 30
+trial=37 angerStage2 50 -> 45
+trial=37 replyBase.SMALLTALK 0.8 -> 0.8
+trial=37 chatTurnsMax 4 -> 4
+trial=37 effects.DOUBT.anger 15 -> 15
+trial=37 effects.REBUT.anger 15 -> 15
+trial=37 motives.IDLE.DOUBT 13 -> 13
+trial=37 motives.IDLE.MOCK 3 -> 2
+trial=37 seed=73129 messages=503 R1=0.629482 R2=3.393939 R3=0.508946 R4=9.000000 R5=4.000000 R7=0.067594 R8=0.005780
+trial=37 seed=73130 messages=490 R1=0.654709 R2=3.354839 R3=0.459184 R4=6.000000 R5=2.000000 R7=0.030612 R8=0.008621
+trial=37 seed=73131 messages=533 R1=0.621277 R2=3.056338 R3=0.444653 R4=3.000000 R5=3.000000 R7=0.033771 R8=0.007386
+trial=37 seed=73132 messages=471 R1=0.598039 R2=3.067797 R3=0.439490 R4=6.000000 R5=4.000000 R7=0.040340 R8=0.010920
+trial=37 seed=73133 messages=479 R1=0.639269 R2=3.413793 R3=0.467641 R4=9.000000 R5=6.000000 R7=0.064718 R8=0.010724
+trial=37 R6=0.315789 error=1.255077
+trial=38 temperMean 60 -> 60
+trial=38 angerDecayPerHour 8 -> 6
+trial=38 idleChance 0.035 -> 0.02
+trial=38 initiateTargetChance 0.42 -> 0.42
+trial=38 memoryMaxUses 4 -> 4
+trial=38 argumentTurnsMin 8 -> 8
+trial=38 argumentTurnsMax 14 -> 14
+trial=38 memoryChance 1 -> 1
+trial=38 exitGraceSec 30 -> 30
+trial=38 angerStage2 45 -> 45
+trial=38 replyBase.SMALLTALK 0.8 -> 0.8
+trial=38 chatTurnsMax 4 -> 4
+trial=38 effects.DOUBT.anger 15 -> 15
+trial=38 effects.REBUT.anger 15 -> 15
+trial=38 motives.IDLE.DOUBT 13 -> 20
+trial=38 motives.IDLE.MOCK 2 -> 3
+trial=38 seed=73129 messages=412 R1=0.613861 R2=3.339623 R3=0.500000 R4=6.000000 R5=3.000000 R7=0.046117 R8=0.007590
+trial=38 seed=73130 messages=405 R1=0.635870 R2=3.437500 R3=0.461728 R4=9.000000 R5=4.000000 R7=0.069136 R8=0.009524
+trial=38 seed=73131 messages=395 R1=0.622222 R2=3.434783 R3=0.463291 R4=6.000000 R5=2.000000 R7=0.050633 R8=0.012072
+trial=38 seed=73132 messages=402 R1=0.642157 R2=3.381818 R3=0.517413 R4=7.000000 R5=3.000000 R7=0.064677 R8=0.004415
+trial=38 seed=73133 messages=357 R1=0.614815 R2=2.976190 R3=0.378151 R4=0.000000 R5=0.000000 R7=0.000000 R8=0.011080
+trial=38 R6=0.750000 error=1.322869
+trial=39 temperMean 60 -> 65
+trial=39 angerDecayPerHour 6 -> 7
+trial=39 idleChance 0.02 -> 0.02
+trial=39 initiateTargetChance 0.42 -> 0.4
+trial=39 memoryMaxUses 4 -> 4
+trial=39 argumentTurnsMin 8 -> 8
+trial=39 argumentTurnsMax 14 -> 14
+trial=39 memoryChance 1 -> 1
+trial=39 exitGraceSec 30 -> 45
+trial=39 angerStage2 45 -> 40
+trial=39 replyBase.SMALLTALK 0.8 -> 0.8
+trial=39 chatTurnsMax 4 -> 4
+trial=39 effects.DOUBT.anger 15 -> 15
+trial=39 effects.REBUT.anger 15 -> 15
+trial=39 motives.IDLE.DOUBT 20 -> 16
+trial=39 motives.IDLE.MOCK 3 -> 2
+trial=39 seed=73129 messages=375 R1=0.608696 R2=3.545455 R3=0.501333 R4=9.000000 R5=5.000000 R7=0.104000 R8=0.008130
+trial=39 seed=73130 messages=412 R1=0.645833 R2=3.175439 R3=0.470874 R4=7.000000 R5=2.000000 R7=0.048544 R8=0.008368
+trial=39 seed=73131 messages=340 R1=0.562842 R2=3.452381 R3=0.561765 R4=13.000000 R5=6.000000 R7=0.123529 R8=0.004412
+trial=39 seed=73132 messages=364 R1=0.647059 R2=3.500000 R3=0.475275 R4=4.000000 R5=3.000000 R7=0.057692 R8=0.016949
+trial=39 seed=73133 messages=388 R1=0.627119 R2=3.018182 R3=0.461340 R4=3.000000 R5=2.000000 R7=0.036082 R8=0.007282
+trial=39 R6=0.944444 error=1.560138
+trial=40 temperMean 65 -> 60
+trial=40 angerDecayPerHour 7 -> 5
+trial=40 idleChance 0.02 -> 0.03
+trial=40 initiateTargetChance 0.4 -> 0.4
+trial=40 memoryMaxUses 4 -> 6
+trial=40 argumentTurnsMin 8 -> 8
+trial=40 argumentTurnsMax 14 -> 14
+trial=40 memoryChance 1 -> 1
+trial=40 exitGraceSec 45 -> 30
+trial=40 angerStage2 40 -> 50
+trial=40 replyBase.SMALLTALK 0.8 -> 0.8
+trial=40 chatTurnsMax 4 -> 4
+trial=40 effects.DOUBT.anger 15 -> 15
+trial=40 effects.REBUT.anger 15 -> 15
+trial=40 motives.IDLE.DOUBT 16 -> 16
+trial=40 motives.IDLE.MOCK 2 -> 3
+trial=40 seed=73129 messages=485 R1=0.645418 R2=3.655738 R3=0.527835 R4=9.000000 R5=5.000000 R7=0.078351 R8=0.010738
+trial=40 seed=73130 messages=486 R1=0.616667 R2=3.055556 R3=0.372428 R4=4.000000 R5=2.000000 R7=0.018519 R8=0.016064
+trial=40 seed=73131 messages=451 R1=0.611399 R2=3.306122 R3=0.439024 R4=7.000000 R5=3.000000 R7=0.053215 R8=0.012640
+trial=40 seed=73132 messages=439 R1=0.614583 R2=3.622222 R3=0.444191 R4=4.000000 R5=3.000000 R7=0.066059 R8=0.006270
+trial=40 seed=73133 messages=398 R1=0.626316 R2=3.833333 R3=0.487437 R4=12.000000 R5=6.000000 R7=0.113065 R8=0.010937
+trial=40 R6=0.736842 error=1.453990
+trial=41 temperMean 60 -> 65
+trial=41 angerDecayPerHour 5 -> 6
+trial=41 idleChance 0.03 -> 0.02
+trial=41 initiateTargetChance 0.4 -> 0.4
+trial=41 memoryMaxUses 6 -> 4
+trial=41 argumentTurnsMin 8 -> 8
+trial=41 argumentTurnsMax 14 -> 14
+trial=41 memoryChance 1 -> 1
+trial=41 exitGraceSec 30 -> 45
+trial=41 angerStage2 50 -> 50
+trial=41 replyBase.SMALLTALK 0.8 -> 0.8
+trial=41 chatTurnsMax 4 -> 4
+trial=41 effects.DOUBT.anger 15 -> 15
+trial=41 effects.REBUT.anger 15 -> 15
+trial=41 motives.IDLE.DOUBT 16 -> 13
+trial=41 motives.IDLE.MOCK 3 -> 3
+trial=41 seed=73129 messages=388 R1=0.651429 R2=3.533333 R3=0.453608 R4=4.000000 R5=3.000000 R7=0.033505 R8=0.022472
+trial=41 seed=73130 messages=386 R1=0.631250 R2=3.127660 R3=0.419689 R4=2.000000 R5=1.000000 R7=0.023316 R8=0.007353
+trial=41 seed=73131 messages=343 R1=0.638418 R2=3.756098 R3=0.533528 R4=9.000000 R5=5.000000 R7=0.110787 R8=0.007800
+trial=41 seed=73132 messages=390 R1=0.668317 R2=4.116279 R3=0.535897 R4=8.000000 R5=4.000000 R7=0.087179 R8=0.004264
+trial=41 seed=73133 messages=301 R1=0.575758 R2=2.948718 R3=0.445183 R4=4.000000 R5=2.000000 R7=0.053156 R8=0.003831
+trial=41 R6=1.000000 error=1.294065
+trial=42 temperMean 65 -> 60
+trial=42 angerDecayPerHour 6 -> 5
+trial=42 idleChance 0.02 -> 0.02
+trial=42 initiateTargetChance 0.4 -> 0.4
+trial=42 memoryMaxUses 4 -> 6
+trial=42 argumentTurnsMin 8 -> 8
+trial=42 argumentTurnsMax 14 -> 14
+trial=42 memoryChance 1 -> 1
+trial=42 exitGraceSec 45 -> 45
+trial=42 angerStage2 50 -> 50
+trial=42 replyBase.SMALLTALK 0.8 -> 0.8
+trial=42 chatTurnsMax 4 -> 4
+trial=42 effects.DOUBT.anger 15 -> 15
+trial=42 effects.REBUT.anger 15 -> 15
+trial=42 motives.IDLE.DOUBT 13 -> 16
+trial=42 motives.IDLE.MOCK 3 -> 3
+trial=42 seed=73129 messages=407 R1=0.627660 R2=3.543478 R3=0.479115 R4=5.000000 R5=4.000000 R7=0.061425 R8=0.018595
+trial=42 seed=73130 messages=382 R1=0.616216 R2=3.375000 R3=0.502618 R4=9.000000 R5=3.000000 R7=0.057592 R8=0.001961
+trial=42 seed=73131 messages=397 R1=0.625731 R2=3.488372 R3=0.438287 R4=7.000000 R5=3.000000 R7=0.060453 R8=0.011076
+trial=42 seed=73132 messages=377 R1=0.625000 R2=3.500000 R3=0.437666 R4=6.000000 R5=3.000000 R7=0.066313 R8=0.016071
+trial=42 seed=73133 messages=364 R1=0.637500 R2=3.266667 R3=0.450549 R4=3.000000 R5=3.000000 R7=0.041209 R8=0.010163
+trial=42 R6=0.437500 error=0.191910
+trial=43 temperMean 60 -> 60
+trial=43 angerDecayPerHour 5 -> 5
+trial=43 idleChance 0.02 -> 0.02
+trial=43 initiateTargetChance 0.4 -> 0.4
+trial=43 memoryMaxUses 6 -> 6
+trial=43 argumentTurnsMin 8 -> 8
+trial=43 argumentTurnsMax 14 -> 12
+trial=43 memoryChance 1 -> 1
+trial=43 exitGraceSec 45 -> 45
+trial=43 angerStage2 50 -> 45
+trial=43 replyBase.SMALLTALK 0.8 -> 0.8
+trial=43 chatTurnsMax 4 -> 4
+trial=43 effects.DOUBT.anger 15 -> 15
+trial=43 effects.REBUT.anger 15 -> 15
+trial=43 motives.IDLE.DOUBT 16 -> 13
+trial=43 motives.IDLE.MOCK 3 -> 2
+trial=43 seed=73129 messages=375 R1=0.588889 R2=3.255319 R3=0.488000 R4=7.000000 R5=5.000000 R7=0.072000 R8=0.005217
+trial=43 seed=73130 messages=400 R1=0.646409 R2=3.437500 R3=0.460000 R4=8.000000 R5=3.000000 R7=0.062500 R8=0.010917
+trial=43 seed=73131 messages=343 R1=0.647799 R2=4.029412 R3=0.478134 R4=8.000000 R5=4.000000 R7=0.125364 R8=0.010169
+trial=43 seed=73132 messages=405 R1=0.609626 R2=3.651163 R3=0.479012 R4=9.000000 R5=4.000000 R7=0.064198 R8=0.006198
+trial=43 seed=73133 messages=378 R1=0.578652 R2=3.058824 R3=0.481481 R4=5.000000 R5=3.000000 R7=0.039683 R8=0.000000
+trial=43 R6=0.578947 error=0.436508
+trial=44 temperMean 60 -> 60
+trial=44 angerDecayPerHour 5 -> 6
+trial=44 idleChance 0.02 -> 0.035
+trial=44 initiateTargetChance 0.4 -> 0.42
+trial=44 memoryMaxUses 6 -> 4
+trial=44 argumentTurnsMin 8 -> 8
+trial=44 argumentTurnsMax 12 -> 12
+trial=44 memoryChance 1 -> 1
+trial=44 exitGraceSec 45 -> 30
+trial=44 angerStage2 45 -> 40
+trial=44 replyBase.SMALLTALK 0.8 -> 0.8
+trial=44 chatTurnsMax 4 -> 4
+trial=44 effects.DOUBT.anger 15 -> 15
+trial=44 effects.REBUT.anger 15 -> 15
+trial=44 motives.IDLE.DOUBT 13 -> 13
+trial=44 motives.IDLE.MOCK 2 -> 3
+trial=44 seed=73129 messages=512 R1=0.640351 R2=2.904110 R3=0.449219 R4=3.000000 R5=0.000000 R7=0.011719 R8=0.009671
+trial=44 seed=73130 messages=496 R1=0.662281 R2=3.849057 R3=0.463710 R4=9.000000 R5=5.000000 R7=0.070565 R8=0.004491
+trial=44 seed=73131 messages=523 R1=0.644444 R2=3.196970 R3=0.435946 R4=3.000000 R5=3.000000 R7=0.030593 R8=0.011869
+trial=44 seed=73132 messages=475 R1=0.603604 R2=3.254237 R3=0.475789 R4=8.000000 R5=4.000000 R7=0.061053 R8=0.009160
+trial=44 seed=73133 messages=505 R1=0.619835 R2=3.272727 R3=0.487129 R4=7.000000 R5=3.000000 R7=0.041584 R8=0.006144
+trial=44 R6=0.733333 error=1.509528
+trial=45 temperMean 60 -> 60
+trial=45 angerDecayPerHour 6 -> 5
+trial=45 idleChance 0.035 -> 0.035
+trial=45 initiateTargetChance 0.42 -> 0.42
+trial=45 memoryMaxUses 4 -> 4
+trial=45 argumentTurnsMin 8 -> 8
+trial=45 argumentTurnsMax 12 -> 12
+trial=45 memoryChance 1 -> 1
+trial=45 exitGraceSec 30 -> 45
+trial=45 angerStage2 40 -> 45
+trial=45 replyBase.SMALLTALK 0.8 -> 0.8
+trial=45 chatTurnsMax 4 -> 4
+trial=45 effects.DOUBT.anger 15 -> 15
+trial=45 effects.REBUT.anger 15 -> 15
+trial=45 motives.IDLE.DOUBT 13 -> 16
+trial=45 motives.IDLE.MOCK 3 -> 3
+trial=45 seed=73129 messages=525 R1=0.653696 R2=3.507692 R3=0.497143 R4=12.000000 R5=4.000000 R7=0.070476 R8=0.014124
+trial=45 seed=73130 messages=471 R1=0.632411 R2=3.580645 R3=0.547771 R4=11.000000 R5=5.000000 R7=0.078556 R8=0.005208
+trial=45 seed=73131 messages=508 R1=0.576531 R2=3.132075 R3=0.389764 R4=5.000000 R5=2.000000 R7=0.031496 R8=0.007962
+trial=45 seed=73132 messages=498 R1=0.625000 R2=3.101449 R3=0.469880 R4=5.000000 R5=1.000000 R7=0.028112 R8=0.003854
+trial=45 seed=73133 messages=372 R1=0.663317 R2=3.693878 R3=0.543011 R4=9.000000 R5=4.000000 R7=0.083333 R8=0.009589
+trial=45 R6=0.937500 error=1.191155
+trial=46 temperMean 60 -> 60
+trial=46 angerDecayPerHour 5 -> 6
+trial=46 idleChance 0.035 -> 0.025
+trial=46 initiateTargetChance 0.42 -> 0.42
+trial=46 memoryMaxUses 4 -> 6
+trial=46 argumentTurnsMin 8 -> 8
+trial=46 argumentTurnsMax 12 -> 14
+trial=46 memoryChance 1 -> 1
+trial=46 exitGraceSec 45 -> 30
+trial=46 angerStage2 45 -> 40
+trial=46 replyBase.SMALLTALK 0.8 -> 0.8
+trial=46 chatTurnsMax 4 -> 4
+trial=46 effects.DOUBT.anger 15 -> 15
+trial=46 effects.REBUT.anger 15 -> 15
+trial=46 motives.IDLE.DOUBT 16 -> 13
+trial=46 motives.IDLE.MOCK 3 -> 2
+trial=46 seed=73129 messages=415 R1=0.608040 R2=3.264151 R3=0.484337 R4=7.000000 R5=3.000000 R7=0.055422 R8=0.006202
+trial=46 seed=73130 messages=428 R1=0.618605 R2=3.062500 R3=0.511682 R4=7.000000 R5=2.000000 R7=0.037383 R8=0.003663
+trial=46 seed=73131 messages=398 R1=0.612022 R2=3.666667 R3=0.474874 R4=8.000000 R5=5.000000 R7=0.070352 R8=0.009404
+trial=46 seed=73132 messages=415 R1=0.597938 R2=3.320000 R3=0.479518 R4=8.000000 R5=4.000000 R7=0.067470 R8=0.007463
+trial=46 seed=73133 messages=427 R1=0.587912 R2=2.981481 R3=0.433255 R4=4.000000 R5=2.000000 R7=0.044496 R8=0.002066
+trial=46 R6=0.562500 error=0.572948
+trial=47 temperMean 60 -> 60
+trial=47 angerDecayPerHour 6 -> 8
+trial=47 idleChance 0.025 -> 0.025
+trial=47 initiateTargetChance 0.42 -> 0.42
+trial=47 memoryMaxUses 6 -> 4
+trial=47 argumentTurnsMin 8 -> 8
+trial=47 argumentTurnsMax 14 -> 14
+trial=47 memoryChance 1 -> 1
+trial=47 exitGraceSec 30 -> 30
+trial=47 angerStage2 40 -> 40
+trial=47 replyBase.SMALLTALK 0.8 -> 0.8
+trial=47 chatTurnsMax 4 -> 4
+trial=47 effects.DOUBT.anger 15 -> 15
+trial=47 effects.REBUT.anger 15 -> 15
+trial=47 motives.IDLE.DOUBT 13 -> 13
+trial=47 motives.IDLE.MOCK 2 -> 3
+trial=47 seed=73129 messages=389 R1=0.604278 R2=3.354167 R3=0.491003 R4=8.000000 R5=4.000000 R7=0.069409 R8=0.007911
+trial=47 seed=73130 messages=435 R1=0.579208 R2=3.052632 R3=0.478161 R4=8.000000 R5=4.000000 R7=0.050575 R8=0.003442
+trial=47 seed=73131 messages=453 R1=0.635193 R2=3.534483 R3=0.527594 R4=9.000000 R5=4.000000 R7=0.077263 R8=0.007032
+trial=47 seed=73132 messages=425 R1=0.581522 R2=2.844828 R3=0.437647 R4=5.000000 R5=2.000000 R7=0.028235 R8=0.009960
+trial=47 seed=73133 messages=437 R1=0.587678 R2=3.254545 R3=0.489703 R4=7.000000 R5=4.000000 R7=0.082380 R8=0.007692
+trial=47 R6=0.722222 error=0.355616
+trial=48 temperMean 60 -> 65
+trial=48 angerDecayPerHour 8 -> 7
+trial=48 idleChance 0.025 -> 0.03
+trial=48 initiateTargetChance 0.42 -> 0.42
+trial=48 memoryMaxUses 4 -> 4
+trial=48 argumentTurnsMin 8 -> 8
+trial=48 argumentTurnsMax 14 -> 12
+trial=48 memoryChance 1 -> 1
+trial=48 exitGraceSec 30 -> 30
+trial=48 angerStage2 40 -> 45
+trial=48 replyBase.SMALLTALK 0.8 -> 0.8
+trial=48 chatTurnsMax 4 -> 4
+trial=48 effects.DOUBT.anger 15 -> 15
+trial=48 effects.REBUT.anger 15 -> 15
+trial=48 motives.IDLE.DOUBT 13 -> 20
+trial=48 motives.IDLE.MOCK 3 -> 3
+trial=48 seed=73129 messages=467 R1=0.639216 R2=3.859649 R3=0.563169 R4=14.000000 R5=7.000000 R7=0.107066 R8=0.009079
+trial=48 seed=73130 messages=476 R1=0.632743 R2=3.508772 R3=0.483193 R4=9.000000 R5=4.000000 R7=0.063025 R8=0.007530
+trial=48 seed=73131 messages=400 R1=0.625668 R2=3.720930 R3=0.477500 R4=11.000000 R5=6.000000 R7=0.097500 R8=0.004000
+trial=48 seed=73132 messages=391 R1=0.653846 R2=3.744186 R3=0.473146 R4=10.000000 R5=5.000000 R7=0.089514 R8=0.012623
+trial=48 seed=73133 messages=346 R1=0.541176 R2=3.139535 R3=0.500000 R4=12.000000 R5=5.000000 R7=0.115607 R8=0.005780
+trial=48 R6=0.740741 error=2.684473
+trial=49 temperMean 65 -> 60
+trial=49 angerDecayPerHour 7 -> 6
+trial=49 idleChance 0.03 -> 0.02
+trial=49 initiateTargetChance 0.42 -> 0.42
+trial=49 memoryMaxUses 4 -> 4
+trial=49 argumentTurnsMin 8 -> 8
+trial=49 argumentTurnsMax 12 -> 14
+trial=49 memoryChance 1 -> 1
+trial=49 exitGraceSec 30 -> 45
+trial=49 angerStage2 45 -> 50
+trial=49 replyBase.SMALLTALK 0.8 -> 0.8
+trial=49 chatTurnsMax 4 -> 4
+trial=49 effects.DOUBT.anger 15 -> 15
+trial=49 effects.REBUT.anger 15 -> 15
+trial=49 motives.IDLE.DOUBT 20 -> 13
+trial=49 motives.IDLE.MOCK 3 -> 2
+trial=49 seed=73129 messages=352 R1=0.589041 R2=2.954545 R3=0.417614 R4=2.000000 R5=1.000000 R7=0.025568 R8=0.024074
+trial=49 seed=73130 messages=414 R1=0.608696 R2=3.113208 R3=0.451691 R4=5.000000 R5=2.000000 R7=0.031401 R8=0.013274
+trial=49 seed=73131 messages=388 R1=0.612360 R2=3.224490 R3=0.463918 R4=3.000000 R5=2.000000 R7=0.054124 R8=0.011673
+trial=49 seed=73132 messages=393 R1=0.582353 R2=3.106383 R3=0.440204 R4=6.000000 R5=2.000000 R7=0.027990 R8=0.022124
+trial=49 seed=73133 messages=385 R1=0.585635 R2=3.160000 R3=0.475325 R4=4.000000 R5=2.000000 R7=0.044156 R8=0.006667
+trial=49 R6=0.666667 error=0.981579
+trial=50 temperMean 60 -> 65
+trial=50 angerDecayPerHour 6 -> 5
+trial=50 idleChance 0.02 -> 0.035
+trial=50 initiateTargetChance 0.42 -> 0.4
+trial=50 memoryMaxUses 4 -> 6
+trial=50 argumentTurnsMin 8 -> 8
+trial=50 argumentTurnsMax 14 -> 12
+trial=50 memoryChance 1 -> 1
+trial=50 exitGraceSec 45 -> 45
+trial=50 angerStage2 50 -> 40
+trial=50 replyBase.SMALLTALK 0.8 -> 0.8
+trial=50 chatTurnsMax 4 -> 4
+trial=50 effects.DOUBT.anger 15 -> 15
+trial=50 effects.REBUT.anger 15 -> 15
+trial=50 motives.IDLE.DOUBT 13 -> 20
+trial=50 motives.IDLE.MOCK 2 -> 2
+trial=50 seed=73129 messages=479 R1=0.606481 R2=3.339286 R3=0.459290 R4=10.000000 R5=5.000000 R7=0.085595 R8=0.004884
+trial=50 seed=73130 messages=474 R1=0.622222 R2=3.456140 R3=0.487342 R4=10.000000 R5=4.000000 R7=0.061181 R8=0.005427
+trial=50 seed=73131 messages=484 R1=0.596330 R2=3.203390 R3=0.458678 R4=6.000000 R5=3.000000 R7=0.045455 R8=0.009957
+trial=50 seed=73132 messages=489 R1=0.613636 R2=3.288136 R3=0.458078 R4=9.000000 R5=4.000000 R7=0.075665 R8=0.005961
+trial=50 seed=73133 messages=416 R1=0.572193 R2=3.058824 R3=0.456731 R4=8.000000 R5=5.000000 R7=0.064904 R8=0.009272
+trial=50 R6=0.571429 error=0.712121
+trial=51 temperMean 65 -> 65
+trial=51 angerDecayPerHour 5 -> 7
+trial=51 idleChance 0.035 -> 0.025
+trial=51 initiateTargetChance 0.4 -> 0.42
+trial=51 memoryMaxUses 6 -> 4
+trial=51 argumentTurnsMin 8 -> 8
+trial=51 argumentTurnsMax 12 -> 14
+trial=51 memoryChance 1 -> 1
+trial=51 exitGraceSec 45 -> 45
+trial=51 angerStage2 40 -> 45
+trial=51 replyBase.SMALLTALK 0.8 -> 0.8
+trial=51 chatTurnsMax 4 -> 4
+trial=51 effects.DOUBT.anger 15 -> 15
+trial=51 effects.REBUT.anger 15 -> 15
+trial=51 motives.IDLE.DOUBT 20 -> 16
+trial=51 motives.IDLE.MOCK 2 -> 3
+trial=51 seed=73129 messages=431 R1=0.645161 R2=4.043478 R3=0.517401 R4=14.000000 R5=6.000000 R7=0.109049 R8=0.020498
+trial=51 seed=73130 messages=433 R1=0.621277 R2=3.654545 R3=0.556582 R4=13.000000 R5=5.000000 R7=0.087760 R8=0.000000
+trial=51 seed=73131 messages=454 R1=0.641509 R2=3.385965 R3=0.480176 R4=7.000000 R5=3.000000 R7=0.052863 R8=0.001927
+trial=51 seed=73132 messages=340 R1=0.593103 R2=3.388889 R3=0.438235 R4=7.000000 R5=5.000000 R7=0.058824 R8=0.010363
+trial=51 seed=73133 messages=359 R1=0.600000 R2=3.815789 R3=0.518106 R4=12.000000 R5=4.000000 R7=0.075209 R8=0.003295
+trial=51 R6=0.608696 error=1.793779
+trial=52 temperMean 65 -> 65
+trial=52 angerDecayPerHour 7 -> 8
+trial=52 idleChance 0.025 -> 0.02
+trial=52 initiateTargetChance 0.42 -> 0.42
+trial=52 memoryMaxUses 4 -> 6
+trial=52 argumentTurnsMin 8 -> 8
+trial=52 argumentTurnsMax 14 -> 14
+trial=52 memoryChance 1 -> 1
+trial=52 exitGraceSec 45 -> 45
+trial=52 angerStage2 45 -> 50
+trial=52 replyBase.SMALLTALK 0.8 -> 0.8
+trial=52 chatTurnsMax 4 -> 4
+trial=52 effects.DOUBT.anger 15 -> 15
+trial=52 effects.REBUT.anger 15 -> 15
+trial=52 motives.IDLE.DOUBT 16 -> 20
+trial=52 motives.IDLE.MOCK 3 -> 2
+trial=52 seed=73129 messages=408 R1=0.643836 R2=3.840000 R3=0.553922 R4=11.000000 R5=6.000000 R7=0.102941 R8=0.007722
+trial=52 seed=73130 messages=432 R1=0.658120 R2=3.655172 R3=0.553241 R4=10.000000 R5=4.000000 R7=0.081019 R8=0.002160
+trial=52 seed=73131 messages=301 R1=0.621951 R2=4.400000 R3=0.568106 R4=11.000000 R5=8.000000 R7=0.156146 R8=0.008319
+trial=52 seed=73132 messages=385 R1=0.621302 R2=3.039216 R3=0.444156 R4=2.000000 R5=1.000000 R7=0.020779 R8=0.011933
+trial=52 seed=73133 messages=377 R1=0.596154 R2=3.021739 R3=0.424403 R4=5.000000 R5=2.000000 R7=0.045093 R8=0.004902
+trial=52 R6=0.523810 error=3.460902
+trial=53 temperMean 65 -> 65
+trial=53 angerDecayPerHour 8 -> 6
+trial=53 idleChance 0.02 -> 0.02
+trial=53 initiateTargetChance 0.42 -> 0.42
+trial=53 memoryMaxUses 6 -> 6
+trial=53 argumentTurnsMin 8 -> 8
+trial=53 argumentTurnsMax 14 -> 14
+trial=53 memoryChance 1 -> 1
+trial=53 exitGraceSec 45 -> 45
+trial=53 angerStage2 50 -> 45
+trial=53 replyBase.SMALLTALK 0.8 -> 0.8
+trial=53 chatTurnsMax 4 -> 4
+trial=53 effects.DOUBT.anger 15 -> 15
+trial=53 effects.REBUT.anger 15 -> 15
+trial=53 motives.IDLE.DOUBT 20 -> 13
+trial=53 motives.IDLE.MOCK 2 -> 2
+trial=53 seed=73129 messages=385 R1=0.635220 R2=3.000000 R3=0.412987 R4=0.000000 R5=0.000000 R7=0.000000 R8=0.020356
+trial=53 seed=73130 messages=409 R1=0.617021 R2=3.416667 R3=0.466993 R4=6.000000 R5=3.000000 R7=0.053790 R8=0.014519
+trial=53 seed=73131 messages=358 R1=0.595506 R2=3.355556 R3=0.522346 R4=9.000000 R5=5.000000 R7=0.089385 R8=0.006107
+trial=53 seed=73132 messages=401 R1=0.598985 R2=3.226415 R3=0.498753 R4=7.000000 R5=4.000000 R7=0.042394 R8=0.004525
+trial=53 seed=73133 messages=370 R1=0.584795 R2=3.040000 R3=0.470270 R4=6.000000 R5=2.000000 R7=0.043243 R8=0.006329
+trial=53 R6=0.714286 error=1.785662
+trial=54 temperMean 65 -> 60
+trial=54 angerDecayPerHour 6 -> 8
+trial=54 idleChance 0.02 -> 0.03
+trial=54 initiateTargetChance 0.42 -> 0.42
+trial=54 memoryMaxUses 6 -> 6
+trial=54 argumentTurnsMin 8 -> 8
+trial=54 argumentTurnsMax 14 -> 14
+trial=54 memoryChance 1 -> 1
+trial=54 exitGraceSec 45 -> 30
+trial=54 angerStage2 45 -> 45
+trial=54 replyBase.SMALLTALK 0.8 -> 0.8
+trial=54 chatTurnsMax 4 -> 4
+trial=54 effects.DOUBT.anger 15 -> 15
+trial=54 effects.REBUT.anger 15 -> 15
+trial=54 motives.IDLE.DOUBT 13 -> 16
+trial=54 motives.IDLE.MOCK 2 -> 3
+trial=54 seed=73129 messages=481 R1=0.597561 R2=3.625000 R3=0.523909 R4=13.000000 R5=8.000000 R7=0.112266 R8=0.017403
+trial=54 seed=73130 messages=483 R1=0.640187 R2=3.362069 R3=0.449275 R4=6.000000 R5=2.000000 R7=0.020704 R8=0.018868
+trial=54 seed=73131 messages=479 R1=0.649402 R2=3.945455 R3=0.546973 R4=16.000000 R5=7.000000 R7=0.123173 R8=0.005326
+trial=54 seed=73132 messages=443 R1=0.584699 R2=3.057692 R3=0.417607 R4=6.000000 R5=3.000000 R7=0.036117 R8=0.007080
+trial=54 seed=73133 messages=424 R1=0.609890 R2=3.642857 R3=0.441038 R4=9.000000 R5=5.000000 R7=0.094340 R8=0.004444
+trial=54 R6=0.440000 error=3.543770
+trial=55 temperMean 60 -> 60
+trial=55 angerDecayPerHour 8 -> 5
+trial=55 idleChance 0.03 -> 0.025
+trial=55 initiateTargetChance 0.42 -> 0.4
+trial=55 memoryMaxUses 6 -> 6
+trial=55 argumentTurnsMin 8 -> 8
+trial=55 argumentTurnsMax 14 -> 12
+trial=55 memoryChance 1 -> 1
+trial=55 exitGraceSec 30 -> 45
+trial=55 angerStage2 45 -> 40
+trial=55 replyBase.SMALLTALK 0.8 -> 0.8
+trial=55 chatTurnsMax 4 -> 4
+trial=55 effects.DOUBT.anger 15 -> 15
+trial=55 effects.REBUT.anger 15 -> 15
+trial=55 motives.IDLE.DOUBT 16 -> 13
+trial=55 motives.IDLE.MOCK 3 -> 3
+trial=55 seed=73129 messages=386 R1=0.616216 R2=3.604651 R3=0.487047 R4=9.000000 R5=4.000000 R7=0.080311 R8=0.005634
+trial=55 seed=73130 messages=459 R1=0.622881 R2=3.370968 R3=0.529412 R4=12.000000 R5=3.000000 R7=0.076253 R8=0.008562
+trial=55 seed=73131 messages=450 R1=0.620112 R2=3.220000 R3=0.408889 R4=5.000000 R5=2.000000 R7=0.024444 R8=0.009823
+trial=55 seed=73132 messages=416 R1=0.616114 R2=3.509804 R3=0.516827 R4=7.000000 R5=4.000000 R7=0.060096 R8=0.001645
+trial=55 seed=73133 messages=404 R1=0.605556 R2=3.096154 R3=0.455446 R4=5.000000 R5=2.000000 R7=0.059406 R8=0.004040
+trial=55 R6=0.733333 error=0.486749
+trial=56 temperMean 60 -> 60
+trial=56 angerDecayPerHour 5 -> 8
+trial=56 idleChance 0.025 -> 0.025
+trial=56 initiateTargetChance 0.4 -> 0.42
+trial=56 memoryMaxUses 6 -> 4
+trial=56 argumentTurnsMin 8 -> 8
+trial=56 argumentTurnsMax 12 -> 14
+trial=56 memoryChance 1 -> 1
+trial=56 exitGraceSec 45 -> 30
+trial=56 angerStage2 40 -> 45
+trial=56 replyBase.SMALLTALK 0.8 -> 0.8
+trial=56 chatTurnsMax 4 -> 4
+trial=56 effects.DOUBT.anger 15 -> 15
+trial=56 effects.REBUT.anger 15 -> 15
+trial=56 motives.IDLE.DOUBT 13 -> 20
+trial=56 motives.IDLE.MOCK 3 -> 3
+trial=56 seed=73129 messages=416 R1=0.592233 R2=3.489796 R3=0.509615 R4=11.000000 R5=6.000000 R7=0.096154 R8=0.004967
+trial=56 seed=73130 messages=459 R1=0.590476 R2=3.101695 R3=0.459695 R4=5.000000 R5=1.000000 R7=0.013072 R8=0.012000
+trial=56 seed=73131 messages=377 R1=0.637615 R2=4.861111 R3=0.599469 R4=16.000000 R5=8.000000 R7=0.180371 R8=0.002793
+trial=56 seed=73132 messages=433 R1=0.653061 R2=3.327273 R3=0.454965 R4=7.000000 R5=2.000000 R7=0.050808 R8=0.007843
+trial=56 seed=73133 messages=434 R1=0.595349 R2=3.206897 R3=0.509217 R4=13.000000 R5=4.000000 R7=0.064516 R8=0.000000
+trial=56 R6=0.571429 error=3.535967
+trial=57 temperMean 60 -> 65
+trial=57 angerDecayPerHour 8 -> 5
+trial=57 idleChance 0.025 -> 0.025
+trial=57 initiateTargetChance 0.42 -> 0.4
+trial=57 memoryMaxUses 4 -> 4
+trial=57 argumentTurnsMin 8 -> 8
+trial=57 argumentTurnsMax 14 -> 14
+trial=57 memoryChance 1 -> 1
+trial=57 exitGraceSec 30 -> 30
+trial=57 angerStage2 45 -> 45
+trial=57 replyBase.SMALLTALK 0.8 -> 0.8
+trial=57 chatTurnsMax 4 -> 4
+trial=57 effects.DOUBT.anger 15 -> 15
+trial=57 effects.REBUT.anger 15 -> 15
+trial=57 motives.IDLE.DOUBT 20 -> 16
+trial=57 motives.IDLE.MOCK 3 -> 2
+trial=57 seed=73129 messages=423 R1=0.641791 R2=3.303571 R3=0.484634 R4=8.000000 R5=2.000000 R7=0.052009 R8=0.021242
+trial=57 seed=73130 messages=431 R1=0.626728 R2=3.528302 R3=0.519722 R4=10.000000 R5=6.000000 R7=0.095128 R8=0.000000
+trial=57 seed=73131 messages=418 R1=0.650485 R2=3.576923 R3=0.500000 R4=10.000000 R5=6.000000 R7=0.093301 R8=0.008117
+trial=57 seed=73132 messages=360 R1=0.638158 R2=3.621622 R3=0.433333 R4=6.000000 R5=3.000000 R7=0.061111 R8=0.005263
+trial=57 seed=73133 messages=345 R1=0.598901 R2=3.270833 R3=0.544928 R4=7.000000 R5=6.000000 R7=0.075362 R8=0.010327
+trial=57 R6=0.739130 error=2.323246
+trial=58 temperMean 65 -> 65
+trial=58 angerDecayPerHour 5 -> 7
+trial=58 idleChance 0.025 -> 0.025
+trial=58 initiateTargetChance 0.4 -> 0.4
+trial=58 memoryMaxUses 4 -> 6
+trial=58 argumentTurnsMin 8 -> 8
+trial=58 argumentTurnsMax 14 -> 14
+trial=58 memoryChance 1 -> 1
+trial=58 exitGraceSec 30 -> 45
+trial=58 angerStage2 45 -> 50
+trial=58 replyBase.SMALLTALK 0.8 -> 0.8
+trial=58 chatTurnsMax 4 -> 4
+trial=58 effects.DOUBT.anger 15 -> 15
+trial=58 effects.REBUT.anger 15 -> 15
+trial=58 motives.IDLE.DOUBT 16 -> 13
+trial=58 motives.IDLE.MOCK 2 -> 3
+trial=58 seed=73129 messages=441 R1=0.634855 R2=3.283582 R3=0.557823 R4=8.000000 R5=4.000000 R7=0.083900 R8=0.003130
+trial=58 seed=73130 messages=448 R1=0.609865 R2=3.472727 R3=0.508929 R4=9.000000 R5=4.000000 R7=0.055804 R8=0.008432
+trial=58 seed=73131 messages=419 R1=0.673797 R2=4.405405 R3=0.467780 R4=10.000000 R5=7.000000 R7=0.116945 R8=0.004552
+trial=58 seed=73132 messages=375 R1=0.609890 R2=3.619048 R3=0.493333 R4=6.000000 R5=4.000000 R7=0.080000 R8=0.004747
+trial=58 seed=73133 messages=424 R1=0.633166 R2=3.339623 R3=0.478774 R4=9.000000 R5=4.000000 R7=0.070755 R8=0.014170
+trial=58 R6=0.608696 error=1.333759
+trial=59 temperMean 65 -> 65
+trial=59 angerDecayPerHour 7 -> 7
+trial=59 idleChance 0.025 -> 0.025
+trial=59 initiateTargetChance 0.4 -> 0.4
+trial=59 memoryMaxUses 6 -> 4
+trial=59 argumentTurnsMin 8 -> 8
+trial=59 argumentTurnsMax 14 -> 12
+trial=59 memoryChance 1 -> 1
+trial=59 exitGraceSec 45 -> 45
+trial=59 angerStage2 50 -> 50
+trial=59 replyBase.SMALLTALK 0.8 -> 0.8
+trial=59 chatTurnsMax 4 -> 4
+trial=59 effects.DOUBT.anger 15 -> 15
+trial=59 effects.REBUT.anger 15 -> 15
+trial=59 motives.IDLE.DOUBT 13 -> 13
+trial=59 motives.IDLE.MOCK 3 -> 2
+trial=59 seed=73129 messages=452 R1=0.644550 R2=3.615385 R3=0.477876 R4=6.000000 R5=4.000000 R7=0.057522 R8=0.014035
+trial=59 seed=73130 messages=467 R1=0.614350 R2=3.140625 R3=0.488223 R4=7.000000 R5=3.000000 R7=0.040685 R8=0.012915
+trial=59 seed=73131 messages=431 R1=0.589474 R2=3.074074 R3=0.443155 R4=4.000000 R5=2.000000 R7=0.030162 R8=0.009597
+trial=59 seed=73132 messages=439 R1=0.612022 R2=3.153846 R3=0.419134 R4=5.000000 R5=1.000000 R7=0.013667 R8=0.002268
+trial=59 seed=73133 messages=362 R1=0.634409 R2=3.622222 R3=0.522099 R4=9.000000 R5=4.000000 R7=0.085635 R8=0.007505
+trial=59 R6=0.642857 error=0.765347
+trial=60 temperMean 65 -> 60
+trial=60 angerDecayPerHour 7 -> 7
+trial=60 idleChance 0.025 -> 0.025
+trial=60 initiateTargetChance 0.4 -> 0.42
+trial=60 memoryMaxUses 4 -> 6
+trial=60 argumentTurnsMin 8 -> 8
+trial=60 argumentTurnsMax 12 -> 14
+trial=60 memoryChance 1 -> 1
+trial=60 exitGraceSec 45 -> 45
+trial=60 angerStage2 50 -> 45
+trial=60 replyBase.SMALLTALK 0.8 -> 0.8
+trial=60 chatTurnsMax 4 -> 4
+trial=60 effects.DOUBT.anger 15 -> 15
+trial=60 effects.REBUT.anger 15 -> 15
+trial=60 motives.IDLE.DOUBT 13 -> 20
+trial=60 motives.IDLE.MOCK 2 -> 2
+trial=60 seed=73129 messages=406 R1=0.612717 R2=3.120000 R3=0.433498 R4=4.000000 R5=2.000000 R7=0.046798 R8=0.004847
+trial=60 seed=73130 messages=409 R1=0.642857 R2=3.680851 R3=0.488998 R4=8.000000 R5=5.000000 R7=0.073350 R8=0.011218
+trial=60 seed=73131 messages=414 R1=0.589286 R2=3.315789 R3=0.553140 R4=11.000000 R5=5.000000 R7=0.082126 R8=0.005172
+trial=60 seed=73132 messages=405 R1=0.619289 R2=3.103448 R3=0.491358 R4=4.000000 R5=2.000000 R7=0.032099 R8=0.001869
+trial=60 seed=73133 messages=428 R1=0.638889 R2=3.705882 R3=0.518692 R4=6.000000 R5=5.000000 R7=0.102804 R8=0.008741
+trial=60 R6=0.894737 error=1.570190
+trial=61 temperMean 60 -> 65
+trial=61 angerDecayPerHour 7 -> 5
+trial=61 idleChance 0.025 -> 0.03
+trial=61 initiateTargetChance 0.42 -> 0.4
+trial=61 memoryMaxUses 6 -> 4
+trial=61 argumentTurnsMin 8 -> 8
+trial=61 argumentTurnsMax 14 -> 14
+trial=61 memoryChance 1 -> 1
+trial=61 exitGraceSec 45 -> 30
+trial=61 angerStage2 45 -> 40
+trial=61 replyBase.SMALLTALK 0.8 -> 0.8
+trial=61 chatTurnsMax 4 -> 4
+trial=61 effects.DOUBT.anger 15 -> 15
+trial=61 effects.REBUT.anger 15 -> 15
+trial=61 motives.IDLE.DOUBT 20 -> 20
+trial=61 motives.IDLE.MOCK 2 -> 3
+trial=61 seed=73129 messages=487 R1=0.638298 R2=3.709091 R3=0.492813 R4=12.000000 R5=5.000000 R7=0.073922 R8=0.008915
+trial=61 seed=73130 messages=481 R1=0.600000 R2=3.596154 R3=0.480249 R4=12.000000 R5=6.000000 R7=0.076923 R8=0.007342
+trial=61 seed=73131 messages=463 R1=0.630000 R2=3.172414 R3=0.438445 R4=5.000000 R5=2.000000 R7=0.041037 R8=0.011272
+trial=61 seed=73132 messages=470 R1=0.635514 R2=3.869565 R3=0.470213 R4=11.000000 R5=6.000000 R7=0.104255 R8=0.013841
+trial=61 seed=73133 messages=350 R1=0.588571 R2=3.191489 R3=0.511429 R4=10.000000 R5=4.000000 R7=0.091429 R8=0.005215
+trial=61 R6=0.478261 error=1.813442
+trial=62 temperMean 65 -> 65
+trial=62 angerDecayPerHour 5 -> 6
+trial=62 idleChance 0.03 -> 0.025
+trial=62 initiateTargetChance 0.4 -> 0.4
+trial=62 memoryMaxUses 4 -> 6
+trial=62 argumentTurnsMin 8 -> 8
+trial=62 argumentTurnsMax 14 -> 12
+trial=62 memoryChance 1 -> 1
+trial=62 exitGraceSec 30 -> 45
+trial=62 angerStage2 40 -> 40
+trial=62 replyBase.SMALLTALK 0.8 -> 0.8
+trial=62 chatTurnsMax 4 -> 4
+trial=62 effects.DOUBT.anger 15 -> 15
+trial=62 effects.REBUT.anger 15 -> 15
+trial=62 motives.IDLE.DOUBT 20 -> 20
+trial=62 motives.IDLE.MOCK 3 -> 2
+trial=62 seed=73129 messages=441 R1=0.642857 R2=3.440678 R3=0.514739 R4=6.000000 R5=3.000000 R7=0.058957 R8=0.017361
+trial=62 seed=73130 messages=478 R1=0.658915 R2=3.786885 R3=0.556485 R4=12.000000 R5=6.000000 R7=0.106695 R8=0.011551
+trial=62 seed=73131 messages=432 R1=0.615385 R2=3.196078 R3=0.428241 R4=3.000000 R5=2.000000 R7=0.037037 R8=0.014060
+trial=62 seed=73132 messages=405 R1=0.641860 R2=3.895833 R3=0.548148 R4=14.000000 R5=7.000000 R7=0.125926 R8=0.009360
+trial=62 seed=73133 messages=369 R1=0.625668 R2=3.387755 R3=0.517615 R4=6.000000 R5=4.000000 R7=0.062331 R8=0.001706
+trial=62 R6=0.500000 error=2.572145
+trial=63 temperMean 65 -> 60
+trial=63 angerDecayPerHour 6 -> 7
+trial=63 idleChance 0.025 -> 0.03
+trial=63 initiateTargetChance 0.4 -> 0.4
+trial=63 memoryMaxUses 6 -> 6
+trial=63 argumentTurnsMin 8 -> 8
+trial=63 argumentTurnsMax 12 -> 12
+trial=63 memoryChance 1 -> 1
+trial=63 exitGraceSec 45 -> 30
+trial=63 angerStage2 40 -> 45
+trial=63 replyBase.SMALLTALK 0.8 -> 0.8
+trial=63 chatTurnsMax 4 -> 4
+trial=63 effects.DOUBT.anger 15 -> 15
+trial=63 effects.REBUT.anger 15 -> 15
+trial=63 motives.IDLE.DOUBT 20 -> 13
+trial=63 motives.IDLE.MOCK 2 -> 3
+trial=63 seed=73129 messages=459 R1=0.644444 R2=3.618182 R3=0.501089 R4=10.000000 R5=4.000000 R7=0.061002 R8=0.014388
+trial=63 seed=73130 messages=488 R1=0.616915 R2=3.254545 R3=0.422131 R4=7.000000 R5=3.000000 R7=0.053279 R8=0.012090
+trial=63 seed=73131 messages=423 R1=0.586022 R2=3.096154 R3=0.453901 R4=7.000000 R5=4.000000 R7=0.054374 R8=0.012262
+trial=63 seed=73132 messages=453 R1=0.648780 R2=3.462963 R3=0.459161 R4=7.000000 R5=3.000000 R7=0.052980 R8=0.006568
+trial=63 seed=73133 messages=481 R1=0.630542 R2=3.245614 R3=0.426195 R4=6.000000 R5=2.000000 R7=0.039501 R8=0.001862
+trial=63 R6=0.625000 error=0.110436
+trial=64 temperMean 60 -> 65
+trial=64 angerDecayPerHour 7 -> 6
+trial=64 idleChance 0.03 -> 0.02
+trial=64 initiateTargetChance 0.4 -> 0.4
+trial=64 memoryMaxUses 6 -> 6
+trial=64 argumentTurnsMin 8 -> 8
+trial=64 argumentTurnsMax 12 -> 12
+trial=64 memoryChance 1 -> 1
+trial=64 exitGraceSec 30 -> 45
+trial=64 angerStage2 45 -> 40
+trial=64 replyBase.SMALLTALK 0.8 -> 0.8
+trial=64 chatTurnsMax 4 -> 4
+trial=64 effects.DOUBT.anger 15 -> 15
+trial=64 effects.REBUT.anger 15 -> 15
+trial=64 motives.IDLE.DOUBT 13 -> 13
+trial=64 motives.IDLE.MOCK 3 -> 3
+trial=64 seed=73129 messages=397 R1=0.602273 R2=3.465116 R3=0.450882 R4=6.000000 R5=3.000000 R7=0.050378 R8=0.018789
+trial=64 seed=73130 messages=406 R1=0.590164 R2=3.431818 R3=0.465517 R4=10.000000 R5=4.000000 R7=0.076355 R8=0.014953
+trial=64 seed=73131 messages=390 R1=0.586735 R2=3.613636 R3=0.520513 R4=10.000000 R5=5.000000 R7=0.112821 R8=0.007634
+trial=64 seed=73132 messages=391 R1=0.624204 R2=3.232558 R3=0.411765 R4=5.000000 R5=2.000000 R7=0.033248 R8=0.002532
+trial=64 seed=73133 messages=310 R1=0.582192 R2=3.236842 R3=0.487097 R4=6.000000 R5=3.000000 R7=0.077419 R8=0.000000
+trial=64 R6=0.882353 error=0.603417
+trial=65 temperMean 65 -> 60
+trial=65 angerDecayPerHour 6 -> 6
+trial=65 idleChance 0.02 -> 0.035
+trial=65 initiateTargetChance 0.4 -> 0.4
+trial=65 memoryMaxUses 6 -> 6
+trial=65 argumentTurnsMin 8 -> 8
+trial=65 argumentTurnsMax 12 -> 14
+trial=65 memoryChance 1 -> 1
+trial=65 exitGraceSec 45 -> 30
+trial=65 angerStage2 40 -> 40
+trial=65 replyBase.SMALLTALK 0.8 -> 0.8
+trial=65 chatTurnsMax 4 -> 4
+trial=65 effects.DOUBT.anger 15 -> 15
+trial=65 effects.REBUT.anger 15 -> 15
+trial=65 motives.IDLE.DOUBT 13 -> 20
+trial=65 motives.IDLE.MOCK 3 -> 3
+trial=65 seed=73129 messages=478 R1=0.637037 R2=3.529412 R3=0.571130 R4=6.000000 R5=4.000000 R7=0.060669 R8=0.006658
+trial=65 seed=73130 messages=492 R1=0.643154 R2=3.627119 R3=0.508130 R4=13.000000 R5=6.000000 R7=0.079268 R8=0.006150
+trial=65 seed=73131 messages=455 R1=0.577670 R2=3.479167 R3=0.461538 R4=7.000000 R5=3.000000 R7=0.068132 R8=0.004255
+trial=65 seed=73132 messages=453 R1=0.627660 R2=3.622222 R3=0.426049 R4=6.000000 R5=6.000000 R7=0.075055 R8=0.006983
+trial=65 seed=73133 messages=443 R1=0.633028 R2=4.000000 R3=0.512415 R4=13.000000 R5=7.000000 R7=0.137698 R8=0.007134
+trial=65 R6=0.461538 error=2.791709
+trial=66 temperMean 60 -> 60
+trial=66 angerDecayPerHour 6 -> 7
+trial=66 idleChance 0.035 -> 0.03
+trial=66 initiateTargetChance 0.4 -> 0.42
+trial=66 memoryMaxUses 6 -> 6
+trial=66 argumentTurnsMin 8 -> 8
+trial=66 argumentTurnsMax 14 -> 12
+trial=66 memoryChance 1 -> 1
+trial=66 exitGraceSec 30 -> 45
+trial=66 angerStage2 40 -> 45
+trial=66 replyBase.SMALLTALK 0.8 -> 0.8
+trial=66 chatTurnsMax 4 -> 4
+trial=66 effects.DOUBT.anger 15 -> 15
+trial=66 effects.REBUT.anger 15 -> 15
+trial=66 motives.IDLE.DOUBT 20 -> 13
+trial=66 motives.IDLE.MOCK 3 -> 2
+trial=66 seed=73129 messages=487 R1=0.678715 R2=3.640625 R3=0.523614 R4=10.000000 R5=5.000000 R7=0.090349 R8=0.012730
+trial=66 seed=73130 messages=481 R1=0.606195 R2=2.957143 R3=0.471933 R4=2.000000 R5=1.000000 R7=0.006237 R8=0.013889
+trial=66 seed=73131 messages=466 R1=0.635514 R2=3.142857 R3=0.465665 R4=4.000000 R5=2.000000 R7=0.038627 R8=0.006359
+trial=66 seed=73132 messages=458 R1=0.592391 R2=3.018519 R3=0.406114 R4=3.000000 R5=1.000000 R7=0.019651 R8=0.008180
+trial=66 seed=73133 messages=455 R1=0.629630 R2=3.385965 R3=0.487912 R4=9.000000 R5=3.000000 R7=0.057143 R8=0.010084
+trial=66 R6=0.333333 error=1.578988
+trial=67 temperMean 60 -> 65
+trial=67 angerDecayPerHour 7 -> 8
+trial=67 idleChance 0.03 -> 0.035
+trial=67 initiateTargetChance 0.42 -> 0.42
+trial=67 memoryMaxUses 6 -> 6
+trial=67 argumentTurnsMin 8 -> 8
+trial=67 argumentTurnsMax 12 -> 12
+trial=67 memoryChance 1 -> 1
+trial=67 exitGraceSec 45 -> 30
+trial=67 angerStage2 45 -> 40
+trial=67 replyBase.SMALLTALK 0.8 -> 0.8
+trial=67 chatTurnsMax 4 -> 4
+trial=67 effects.DOUBT.anger 15 -> 15
+trial=67 effects.REBUT.anger 15 -> 15
+trial=67 motives.IDLE.DOUBT 13 -> 16
+trial=67 motives.IDLE.MOCK 2 -> 2
+trial=67 seed=73129 messages=525 R1=0.648221 R2=3.342857 R3=0.493333 R4=8.000000 R5=4.000000 R7=0.053333 R8=0.015924
+trial=67 seed=73130 messages=497 R1=0.572650 R2=3.180328 R3=0.476861 R4=8.000000 R5=3.000000 R7=0.044266 R8=0.008596
+trial=67 seed=73131 messages=508 R1=0.591837 R2=3.457627 R3=0.494094 R4=12.000000 R5=6.000000 R7=0.064961 R8=0.010667
+trial=67 seed=73132 messages=468 R1=0.639640 R2=3.679245 R3=0.482906 R4=8.000000 R5=4.000000 R7=0.081197 R8=0.005917
+trial=67 seed=73133 messages=400 R1=0.611429 R2=3.229167 R3=0.445000 R4=6.000000 R5=3.000000 R7=0.060000 R8=0.001431
+trial=67 R6=0.500000 error=0.724011
+trial=68 temperMean 65 -> 60
+trial=68 angerDecayPerHour 8 -> 7
+trial=68 idleChance 0.035 -> 0.035
+trial=68 initiateTargetChance 0.42 -> 0.4
+trial=68 memoryMaxUses 6 -> 6
+trial=68 argumentTurnsMin 8 -> 8
+trial=68 argumentTurnsMax 12 -> 14
+trial=68 memoryChance 1 -> 1
+trial=68 exitGraceSec 30 -> 45
+trial=68 angerStage2 40 -> 40
+trial=68 replyBase.SMALLTALK 0.8 -> 0.8
+trial=68 chatTurnsMax 4 -> 4
+trial=68 effects.DOUBT.anger 15 -> 15
+trial=68 effects.REBUT.anger 15 -> 15
+trial=68 motives.IDLE.DOUBT 16 -> 16
+trial=68 motives.IDLE.MOCK 2 -> 2
+trial=68 seed=73129 messages=441 R1=0.601942 R2=3.384615 R3=0.478458 R4=10.000000 R5=5.000000 R7=0.083900 R8=0.011436
+trial=68 seed=73130 messages=484 R1=0.581395 R2=3.155172 R3=0.454545 R4=8.000000 R5=4.000000 R7=0.051653 R8=0.007680
+trial=68 seed=73131 messages=512 R1=0.611570 R2=3.596491 R3=0.484375 R4=8.000000 R5=5.000000 R7=0.074219 R8=0.019374
+trial=68 seed=73132 messages=455 R1=0.633028 R2=4.000000 R3=0.494505 R4=10.000000 R5=6.000000 R7=0.125275 R8=0.015257
+trial=68 seed=73133 messages=430 R1=0.640000 R2=3.571429 R3=0.532558 R4=12.000000 R5=4.000000 R7=0.088372 R8=0.002920
+trial=68 R6=0.458333 error=1.496124
+trial=69 temperMean 60 -> 65
+trial=69 angerDecayPerHour 7 -> 5
+trial=69 idleChance 0.035 -> 0.03
+trial=69 initiateTargetChance 0.4 -> 0.42
+trial=69 memoryMaxUses 6 -> 6
+trial=69 argumentTurnsMin 8 -> 8
+trial=69 argumentTurnsMax 14 -> 12
+trial=69 memoryChance 1 -> 1
+trial=69 exitGraceSec 45 -> 45
+trial=69 angerStage2 40 -> 45
+trial=69 replyBase.SMALLTALK 0.8 -> 0.8
+trial=69 chatTurnsMax 4 -> 4
+trial=69 effects.DOUBT.anger 15 -> 15
+trial=69 effects.REBUT.anger 15 -> 15
+trial=69 motives.IDLE.DOUBT 16 -> 13
+trial=69 motives.IDLE.MOCK 2 -> 3
+trial=69 seed=73129 messages=454 R1=0.646226 R2=3.666667 R3=0.473568 R4=9.000000 R5=4.000000 R7=0.074890 R8=0.008345
+trial=69 seed=73130 messages=487 R1=0.613281 R2=3.754386 R3=0.540041 R4=12.000000 R5=6.000000 R7=0.104723 R8=0.004304
+trial=69 seed=73131 messages=462 R1=0.619289 R2=3.103448 R3=0.430736 R4=4.000000 R5=2.000000 R7=0.036797 R8=0.011345
+trial=69 seed=73132 messages=451 R1=0.625668 R2=3.294118 R3=0.419069 R4=5.000000 R5=3.000000 R7=0.044346 R8=0.007952
+trial=69 seed=73133 messages=418 R1=0.636364 R2=3.210526 R3=0.488038 R4=8.000000 R5=3.000000 R7=0.047847 R8=0.009934
+trial=69 R6=0.388889 error=1.076979
+trial=70 temperMean 65 -> 65
+trial=70 angerDecayPerHour 5 -> 7
+trial=70 idleChance 0.03 -> 0.02
+trial=70 initiateTargetChance 0.42 -> 0.42
+trial=70 memoryMaxUses 6 -> 4
+trial=70 argumentTurnsMin 8 -> 8
+trial=70 argumentTurnsMax 12 -> 12
+trial=70 memoryChance 1 -> 1
+trial=70 exitGraceSec 45 -> 30
+trial=70 angerStage2 45 -> 40
+trial=70 replyBase.SMALLTALK 0.8 -> 0.8
+trial=70 chatTurnsMax 4 -> 4
+trial=70 effects.DOUBT.anger 15 -> 15
+trial=70 effects.REBUT.anger 15 -> 15
+trial=70 motives.IDLE.DOUBT 13 -> 16
+trial=70 motives.IDLE.MOCK 3 -> 2
+trial=70 seed=73129 messages=418 R1=0.617647 R2=3.192982 R3=0.495215 R4=4.000000 R5=3.000000 R7=0.057416 R8=0.010799
+trial=70 seed=73130 messages=399 R1=0.631868 R2=3.169811 R3=0.461153 R4=6.000000 R5=2.000000 R7=0.042607 R8=0.012522
+trial=70 seed=73131 messages=294 R1=0.547059 R2=4.000000 R3=0.612245 R4=15.000000 R5=8.000000 R7=0.183673 R8=0.004471
+trial=70 seed=73132 messages=396 R1=0.617021 R2=3.148148 R3=0.482323 R4=3.000000 R5=2.000000 R7=0.042929 R8=0.008850
+trial=70 seed=73133 messages=369 R1=0.612360 R2=3.018519 R3=0.487805 R4=4.000000 R5=2.000000 R7=0.037940 R8=0.009732
+trial=70 R6=0.823529 error=2.599204
+trial=71 temperMean 65 -> 65
+trial=71 angerDecayPerHour 7 -> 5
+trial=71 idleChance 0.02 -> 0.03
+trial=71 initiateTargetChance 0.42 -> 0.4
+trial=71 memoryMaxUses 4 -> 6
+trial=71 argumentTurnsMin 8 -> 8
+trial=71 argumentTurnsMax 12 -> 14
+trial=71 memoryChance 1 -> 1
+trial=71 exitGraceSec 30 -> 45
+trial=71 angerStage2 40 -> 45
+trial=71 replyBase.SMALLTALK 0.8 -> 0.8
+trial=71 chatTurnsMax 4 -> 4
+trial=71 effects.DOUBT.anger 15 -> 15
+trial=71 effects.REBUT.anger 15 -> 15
+trial=71 motives.IDLE.DOUBT 16 -> 20
+trial=71 motives.IDLE.MOCK 2 -> 2
+trial=71 seed=73129 messages=483 R1=0.652985 R2=3.881356 R3=0.571429 R4=12.000000 R5=6.000000 R7=0.099379 R8=0.008108
+trial=71 seed=73130 messages=479 R1=0.622222 R2=3.106061 R3=0.473904 R4=3.000000 R5=1.000000 R7=0.012526 R8=0.001818
+trial=71 seed=73131 messages=437 R1=0.620513 R2=3.283019 R3=0.457666 R4=8.000000 R5=4.000000 R7=0.050343 R8=0.015965
+trial=71 seed=73132 messages=437 R1=0.669643 R2=3.727273 R3=0.526316 R4=8.000000 R5=5.000000 R7=0.098398 R8=0.005797
+trial=71 seed=73133 messages=418 R1=0.606965 R2=3.489796 R3=0.492823 R4=11.000000 R5=5.000000 R7=0.074163 R8=0.012500
+trial=71 R6=0.523810 error=2.287703
+trial=72 temperMean 65 -> 65
+trial=72 angerDecayPerHour 5 -> 6
+trial=72 idleChance 0.03 -> 0.035
+trial=72 initiateTargetChance 0.4 -> 0.42
+trial=72 memoryMaxUses 6 -> 4
+trial=72 argumentTurnsMin 8 -> 8
+trial=72 argumentTurnsMax 14 -> 12
+trial=72 memoryChance 1 -> 1
+trial=72 exitGraceSec 45 -> 30
+trial=72 angerStage2 45 -> 45
+trial=72 replyBase.SMALLTALK 0.8 -> 0.8
+trial=72 chatTurnsMax 4 -> 4
+trial=72 effects.DOUBT.anger 15 -> 15
+trial=72 effects.REBUT.anger 15 -> 15
+trial=72 motives.IDLE.DOUBT 20 -> 13
+trial=72 motives.IDLE.MOCK 2 -> 3
+trial=72 seed=73129 messages=515 R1=0.638009 R2=3.043478 R3=0.433010 R4=4.000000 R5=1.000000 R7=0.013592 R8=0.009479
+trial=72 seed=73130 messages=495 R1=0.627358 R2=3.418182 R3=0.434343 R4=7.000000 R5=5.000000 R7=0.054545 R8=0.005908
+trial=72 seed=73131 messages=514 R1=0.617284 R2=3.142857 R3=0.478599 R4=7.000000 R5=3.000000 R7=0.036965 R8=0.014778
+trial=72 seed=73132 messages=454 R1=0.611702 R2=3.478261 R3=0.425110 R4=6.000000 R5=4.000000 R7=0.070485 R8=0.008253
+trial=72 seed=73133 messages=488 R1=0.625000 R2=2.982143 R3=0.360656 R4=3.000000 R5=0.000000 R7=0.000000 R8=0.018109
+trial=72 R6=0.692308 error=1.752004
+trial=73 temperMean 65 -> 60
+trial=73 angerDecayPerHour 6 -> 8
+trial=73 idleChance 0.035 -> 0.035
+trial=73 initiateTargetChance 0.42 -> 0.42
+trial=73 memoryMaxUses 4 -> 6
+trial=73 argumentTurnsMin 8 -> 8
+trial=73 argumentTurnsMax 12 -> 14
+trial=73 memoryChance 1 -> 1
+trial=73 exitGraceSec 30 -> 30
+trial=73 angerStage2 45 -> 40
+trial=73 replyBase.SMALLTALK 0.8 -> 0.8
+trial=73 chatTurnsMax 4 -> 4
+trial=73 effects.DOUBT.anger 15 -> 15
+trial=73 effects.REBUT.anger 15 -> 15
+trial=73 motives.IDLE.DOUBT 13 -> 13
+trial=73 motives.IDLE.MOCK 3 -> 3
+trial=73 seed=73129 messages=512 R1=0.640351 R2=2.904110 R3=0.449219 R4=3.000000 R5=0.000000 R7=0.011719 R8=0.009671
+trial=73 seed=73130 messages=500 R1=0.649573 R2=3.157143 R3=0.470000 R4=4.000000 R5=2.000000 R7=0.026000 R8=0.008418
+trial=73 seed=73131 messages=518 R1=0.633205 R2=3.347826 R3=0.507722 R4=9.000000 R5=4.000000 R7=0.067568 R8=0.007585
+trial=73 seed=73132 messages=476 R1=0.620690 R2=3.290909 R3=0.432773 R4=6.000000 R5=4.000000 R7=0.048319 R8=0.011164
+trial=73 seed=73133 messages=503 R1=0.582090 R2=3.071429 R3=0.405567 R4=7.000000 R5=3.000000 R7=0.041750 R8=0.008000
+trial=73 R6=0.230769 error=1.254207
+trial=74 temperMean 60 -> 60
+trial=74 angerDecayPerHour 8 -> 6
+trial=74 idleChance 0.035 -> 0.035
+trial=74 initiateTargetChance 0.42 -> 0.4
+trial=74 memoryMaxUses 6 -> 6
+trial=74 argumentTurnsMin 8 -> 8
+trial=74 argumentTurnsMax 14 -> 12
+trial=74 memoryChance 1 -> 1
+trial=74 exitGraceSec 30 -> 30
+trial=74 angerStage2 40 -> 40
+trial=74 replyBase.SMALLTALK 0.8 -> 0.8
+trial=74 chatTurnsMax 4 -> 4
+trial=74 effects.DOUBT.anger 15 -> 15
+trial=74 effects.REBUT.anger 15 -> 15
+trial=74 motives.IDLE.DOUBT 13 -> 13
+trial=74 motives.IDLE.MOCK 3 -> 2
+trial=74 seed=73129 messages=497 R1=0.643777 R2=3.459016 R3=0.476861 R4=8.000000 R5=4.000000 R7=0.066398 R8=0.008054
+trial=74 seed=73130 messages=514 R1=0.617021 R2=2.959459 R3=0.461089 R4=4.000000 R5=1.000000 R7=0.007782 R8=0.014035
+trial=74 seed=73131 messages=524 R1=0.626168 R2=2.942029 R3=0.410305 R4=2.000000 R5=1.000000 R7=0.003817 R8=0.005102
+trial=74 seed=73132 messages=484 R1=0.655367 R2=3.395833 R3=0.378099 R4=6.000000 R5=3.000000 R7=0.049587 R8=0.010545
+trial=74 seed=73133 messages=478 R1=0.640394 R2=3.321429 R3=0.437238 R4=8.000000 R5=4.000000 R7=0.071130 R8=0.010920
+trial=74 R6=0.461538 error=1.069961
+trial=75 temperMean 60 -> 60
+trial=75 angerDecayPerHour 6 -> 6
+trial=75 idleChance 0.035 -> 0.03
+trial=75 initiateTargetChance 0.4 -> 0.42
+trial=75 memoryMaxUses 6 -> 6
+trial=75 argumentTurnsMin 8 -> 8
+trial=75 argumentTurnsMax 12 -> 12
+trial=75 memoryChance 1 -> 1
+trial=75 exitGraceSec 30 -> 45
+trial=75 angerStage2 40 -> 40
+trial=75 replyBase.SMALLTALK 0.8 -> 0.8
+trial=75 chatTurnsMax 4 -> 4
+trial=75 effects.DOUBT.anger 15 -> 15
+trial=75 effects.REBUT.anger 15 -> 15
+trial=75 motives.IDLE.DOUBT 13 -> 16
+trial=75 motives.IDLE.MOCK 2 -> 3
+trial=75 seed=73129 messages=485 R1=0.656904 R2=3.661017 R3=0.507216 R4=10.000000 R5=6.000000 R7=0.086598 R8=0.013680
+trial=75 seed=73130 messages=482 R1=0.621622 R2=3.421053 R3=0.470954 R4=8.000000 R5=3.000000 R7=0.045643 R8=0.014060
+trial=75 seed=73131 messages=430 R1=0.603687 R2=3.339286 R3=0.523256 R4=11.000000 R5=5.000000 R7=0.076744 R8=0.005148
+trial=75 seed=73132 messages=477 R1=0.617925 R2=2.970149 R3=0.446541 R4=2.000000 R5=1.000000 R7=0.016771 R8=0.008757
+trial=75 seed=73133 messages=449 R1=0.649789 R2=3.684211 R3=0.538976 R4=12.000000 R5=5.000000 R7=0.091314 R8=0.007257
+trial=75 R6=0.700000 error=2.238244
+trial=76 temperMean 60 -> 60
+trial=76 angerDecayPerHour 6 -> 8
+trial=76 idleChance 0.03 -> 0.02
+trial=76 initiateTargetChance 0.42 -> 0.42
+trial=76 memoryMaxUses 6 -> 4
+trial=76 argumentTurnsMin 8 -> 8
+trial=76 argumentTurnsMax 12 -> 14
+trial=76 memoryChance 1 -> 1
+trial=76 exitGraceSec 45 -> 30
+trial=76 angerStage2 40 -> 45
+trial=76 replyBase.SMALLTALK 0.8 -> 0.8
+trial=76 chatTurnsMax 4 -> 4
+trial=76 effects.DOUBT.anger 15 -> 15
+trial=76 effects.REBUT.anger 15 -> 15
+trial=76 motives.IDLE.DOUBT 16 -> 20
+trial=76 motives.IDLE.MOCK 3 -> 2
+trial=76 seed=73129 messages=429 R1=0.623256 R2=3.392857 R3=0.510490 R4=6.000000 R5=3.000000 R7=0.041958 R8=0.004057
+trial=76 seed=73130 messages=419 R1=0.644231 R2=3.350877 R3=0.505967 R4=7.000000 R5=4.000000 R7=0.057279 R8=0.008889
+trial=76 seed=73131 messages=399 R1=0.652406 R2=3.489796 R3=0.478697 R4=8.000000 R5=4.000000 R7=0.075188 R8=0.014827
+trial=76 seed=73132 messages=401 R1=0.599010 R2=3.240741 R3=0.516209 R4=9.000000 R5=3.000000 R7=0.074813 R8=0.004292
+trial=76 seed=73133 messages=378 R1=0.625698 R2=3.434783 R3=0.484127 R4=8.000000 R5=4.000000 R7=0.082011 R8=0.002179
+trial=76 R6=0.444444 error=0.243747
+trial=77 temperMean 60 -> 60
+trial=77 angerDecayPerHour 8 -> 7
+trial=77 idleChance 0.02 -> 0.025
+trial=77 initiateTargetChance 0.42 -> 0.4
+trial=77 memoryMaxUses 4 -> 6
+trial=77 argumentTurnsMin 8 -> 8
+trial=77 argumentTurnsMax 14 -> 12
+trial=77 memoryChance 1 -> 1
+trial=77 exitGraceSec 30 -> 45
+trial=77 angerStage2 45 -> 50
+trial=77 replyBase.SMALLTALK 0.8 -> 0.8
+trial=77 chatTurnsMax 4 -> 4
+trial=77 effects.DOUBT.anger 15 -> 15
+trial=77 effects.REBUT.anger 15 -> 15
+trial=77 motives.IDLE.DOUBT 20 -> 13
+trial=77 motives.IDLE.MOCK 2 -> 3
+trial=77 seed=73129 messages=442 R1=0.628713 R2=3.442308 R3=0.466063 R4=7.000000 R5=4.000000 R7=0.063348 R8=0.017742
+trial=77 seed=73130 messages=444 R1=0.635071 R2=3.161290 R3=0.481982 R4=7.000000 R5=2.000000 R7=0.027027 R8=0.006383
+trial=77 seed=73131 messages=450 R1=0.620112 R2=3.220000 R3=0.408889 R4=5.000000 R5=2.000000 R7=0.024444 R8=0.009823
+trial=77 seed=73132 messages=418 R1=0.593583 R2=3.176471 R3=0.454545 R4=8.000000 R5=3.000000 R7=0.057416 R8=0.005190
+trial=77 seed=73133 messages=426 R1=0.646154 R2=3.250000 R3=0.464789 R4=6.000000 R5=2.000000 R7=0.051643 R8=0.013752
+trial=77 R6=0.384615 error=0.485285
+trial=78 temperMean 60 -> 60
+trial=78 angerDecayPerHour 7 -> 8
+trial=78 idleChance 0.025 -> 0.025
+trial=78 initiateTargetChance 0.4 -> 0.42
+trial=78 memoryMaxUses 6 -> 4
+trial=78 argumentTurnsMin 8 -> 8
+trial=78 argumentTurnsMax 12 -> 12
+trial=78 memoryChance 1 -> 1
+trial=78 exitGraceSec 45 -> 30
+trial=78 angerStage2 50 -> 40
+trial=78 replyBase.SMALLTALK 0.8 -> 0.8
+trial=78 chatTurnsMax 4 -> 4
+trial=78 effects.DOUBT.anger 15 -> 15
+trial=78 effects.REBUT.anger 15 -> 15
+trial=78 motives.IDLE.DOUBT 13 -> 13
+trial=78 motives.IDLE.MOCK 3 -> 2
+trial=78 seed=73129 messages=351 R1=0.585227 R2=3.512195 R3=0.518519 R4=8.000000 R5=7.000000 R7=0.096866 R8=0.014423
+trial=78 seed=73130 messages=476 R1=0.625483 R2=3.454545 R3=0.556723 R4=10.000000 R5=3.000000 R7=0.071429 R8=0.005338
+trial=78 seed=73131 messages=448 R1=0.613333 R2=3.044118 R3=0.506696 R4=5.000000 R5=2.000000 R7=0.022321 R8=0.005376
+trial=78 seed=73132 messages=409 R1=0.641026 R2=3.840909 R3=0.493888 R4=8.000000 R5=5.000000 R7=0.100244 R8=0.001949
+trial=78 seed=73133 messages=402 R1=0.630208 R2=3.630435 R3=0.490050 R4=6.000000 R5=5.000000 R7=0.077114 R8=0.003401
+trial=78 R6=0.636364 error=2.353141
+trial=79 temperMean 60 -> 65
+trial=79 angerDecayPerHour 8 -> 8
+trial=79 idleChance 0.025 -> 0.03
+trial=79 initiateTargetChance 0.42 -> 0.42
+trial=79 memoryMaxUses 4 -> 4
+trial=79 argumentTurnsMin 8 -> 8
+trial=79 argumentTurnsMax 12 -> 12
+trial=79 memoryChance 1 -> 1
+trial=79 exitGraceSec 30 -> 30
+trial=79 angerStage2 40 -> 40
+trial=79 replyBase.SMALLTALK 0.8 -> 0.8
+trial=79 chatTurnsMax 4 -> 4
+trial=79 effects.DOUBT.anger 15 -> 15
+trial=79 effects.REBUT.anger 15 -> 15
+trial=79 motives.IDLE.DOUBT 13 -> 20
+trial=79 motives.IDLE.MOCK 2 -> 2
+trial=79 seed=73129 messages=461 R1=0.647826 R2=3.614035 R3=0.511931 R4=8.000000 R5=4.000000 R7=0.073753 R8=0.011189
+trial=79 seed=73130 messages=478 R1=0.595122 R2=2.949153 R3=0.435146 R4=6.000000 R5=1.000000 R7=0.023013 R8=0.003937
+trial=79 seed=73131 messages=458 R1=0.589354 R2=3.610169 R3=0.596070 R4=18.000000 R5=9.000000 R7=0.135371 R8=0.005051
+trial=79 seed=73132 messages=395 R1=0.574257 R2=3.521739 R3=0.529114 R4=12.000000 R5=9.000000 R7=0.124051 R8=0.005319
+trial=79 seed=73133 messages=406 R1=0.611650 R2=3.800000 R3=0.522167 R4=13.000000 R5=6.000000 R7=0.115764 R8=0.006192
+trial=79 R6=0.551724 error=5.339011
+trial=80 temperMean 65 -> 60
+trial=80 angerDecayPerHour 8 -> 8
+trial=80 idleChance 0.03 -> 0.025
+trial=80 initiateTargetChance 0.42 -> 0.4
+trial=80 memoryMaxUses 4 -> 6
+trial=80 argumentTurnsMin 8 -> 8
+trial=80 argumentTurnsMax 12 -> 14
+trial=80 memoryChance 1 -> 1
+trial=80 exitGraceSec 30 -> 30
+trial=80 angerStage2 40 -> 45
+trial=80 replyBase.SMALLTALK 0.8 -> 0.8
+trial=80 chatTurnsMax 4 -> 4
+trial=80 effects.DOUBT.anger 15 -> 15
+trial=80 effects.REBUT.anger 15 -> 15
+trial=80 motives.IDLE.DOUBT 20 -> 20
+trial=80 motives.IDLE.MOCK 2 -> 2
+trial=80 seed=73129 messages=438 R1=0.623318 R2=3.622642 R3=0.522831 R4=7.000000 R5=5.000000 R7=0.073059 R8=0.001595
+trial=80 seed=73130 messages=390 R1=0.603960 R2=3.346154 R3=0.535897 R4=11.000000 R5=5.000000 R7=0.069231 R8=0.003185
+trial=80 seed=73131 messages=452 R1=0.631068 R2=3.263158 R3=0.460177 R4=4.000000 R5=2.000000 R7=0.035398 R8=0.014344
+trial=80 seed=73132 messages=423 R1=0.649038 R2=3.700000 R3=0.501182 R4=10.000000 R5=4.000000 R7=0.087470 R8=0.004992
+trial=80 seed=73133 messages=409 R1=0.626214 R2=4.307692 R3=0.515892 R4=9.000000 R5=6.000000 R7=0.097800 R8=0.007812
+trial=80 R6=0.590909 error=1.858366
+trial=81 temperMean 60 -> 65
+trial=81 angerDecayPerHour 8 -> 8
+trial=81 idleChance 0.025 -> 0.035
+trial=81 initiateTargetChance 0.4 -> 0.42
+trial=81 memoryMaxUses 6 -> 6
+trial=81 argumentTurnsMin 8 -> 8
+trial=81 argumentTurnsMax 14 -> 12
+trial=81 memoryChance 1 -> 1
+trial=81 exitGraceSec 30 -> 45
+trial=81 angerStage2 45 -> 40
+trial=81 replyBase.SMALLTALK 0.8 -> 0.8
+trial=81 chatTurnsMax 4 -> 4
+trial=81 effects.DOUBT.anger 15 -> 15
+trial=81 effects.REBUT.anger 15 -> 15
+trial=81 motives.IDLE.DOUBT 20 -> 16
+trial=81 motives.IDLE.MOCK 2 -> 3
+trial=81 seed=73129 messages=523 R1=0.643443 R2=3.180556 R3=0.470363 R4=6.000000 R5=3.000000 R7=0.028681 R8=0.018759
+trial=81 seed=73130 messages=462 R1=0.612766 R2=3.322581 R3=0.519481 R4=9.000000 R5=4.000000 R7=0.064935 R8=0.006623
+trial=81 seed=73131 messages=536 R1=0.565574 R2=3.158730 R3=0.460821 R4=10.000000 R5=3.000000 R7=0.041045 R8=0.010294
+trial=81 seed=73132 messages=470 R1=0.608040 R2=3.264151 R3=0.429787 R4=5.000000 R5=3.000000 R7=0.031915 R8=0.021148
+trial=81 seed=73133 messages=435 R1=0.597345 R2=3.410714 R3=0.533333 R4=12.000000 R5=5.000000 R7=0.103448 R8=0.002670
+trial=81 R6=0.722222 error=1.080999
+trial=82 temperMean 65 -> 60
+trial=82 angerDecayPerHour 8 -> 5
+trial=82 idleChance 0.035 -> 0.025
+trial=82 initiateTargetChance 0.42 -> 0.42
+trial=82 memoryMaxUses 6 -> 4
+trial=82 argumentTurnsMin 8 -> 8
+trial=82 argumentTurnsMax 12 -> 12
+trial=82 memoryChance 1 -> 1
+trial=82 exitGraceSec 45 -> 30
+trial=82 angerStage2 40 -> 50
+trial=82 replyBase.SMALLTALK 0.8 -> 0.8
+trial=82 chatTurnsMax 4 -> 4
+trial=82 effects.DOUBT.anger 15 -> 15
+trial=82 effects.REBUT.anger 15 -> 15
+trial=82 motives.IDLE.DOUBT 16 -> 20
+trial=82 motives.IDLE.MOCK 3 -> 2
+trial=82 seed=73129 messages=404 R1=0.623711 R2=3.326923 R3=0.492574 R4=8.000000 R5=4.000000 R7=0.084158 R8=0.015649
+trial=82 seed=73130 messages=415 R1=0.612245 R2=3.142857 R3=0.479518 R4=4.000000 R5=2.000000 R7=0.036145 R8=0.004338
+trial=82 seed=73131 messages=417 R1=0.619718 R2=3.490566 R3=0.525180 R4=13.000000 R5=4.000000 R7=0.071942 R8=0.003165
+trial=82 seed=73132 messages=411 R1=0.597938 R2=3.000000 R3=0.479319 R4=6.000000 R5=3.000000 R7=0.051095 R8=0.000000
+trial=82 seed=73133 messages=409 R1=0.618182 R2=3.288136 R3=0.550122 R4=7.000000 R5=3.000000 R7=0.056235 R8=0.001767
+trial=82 R6=0.875000 error=0.515065
+trial=83 temperMean 60 -> 65
+trial=83 angerDecayPerHour 5 -> 7
+trial=83 idleChance 0.025 -> 0.035
+trial=83 initiateTargetChance 0.42 -> 0.4
+trial=83 memoryMaxUses 4 -> 6
+trial=83 argumentTurnsMin 8 -> 8
+trial=83 argumentTurnsMax 12 -> 12
+trial=83 memoryChance 1 -> 1
+trial=83 exitGraceSec 30 -> 45
+trial=83 angerStage2 50 -> 45
+trial=83 replyBase.SMALLTALK 0.8 -> 0.8
+trial=83 chatTurnsMax 4 -> 4
+trial=83 effects.DOUBT.anger 15 -> 15
+trial=83 effects.REBUT.anger 15 -> 15
+trial=83 motives.IDLE.DOUBT 20 -> 20
+trial=83 motives.IDLE.MOCK 2 -> 2
+trial=83 seed=73129 messages=520 R1=0.613027 R2=3.875000 R3=0.517308 R4=16.000000 R5=7.000000 R7=0.117308 R8=0.006281
+trial=83 seed=73130 messages=477 R1=0.596859 R2=3.072727 R3=0.404612 R4=5.000000 R5=1.000000 R7=0.010482 R8=0.007375
+trial=83 seed=73131 messages=498 R1=0.636364 R2=3.625000 R3=0.473896 R4=7.000000 R5=4.000000 R7=0.060241 R8=0.010870
+trial=83 seed=73132 messages=445 R1=0.609524 R2=3.723404 R3=0.487640 R4=8.000000 R5=7.000000 R7=0.105618 R8=0.006964
+trial=83 seed=73133 messages=453 R1=0.604061 R2=3.288462 R3=0.443709 R4=11.000000 R5=4.000000 R7=0.081678 R8=0.014608
+trial=83 R6=0.782609 error=2.572626
+trial=84 temperMean 65 -> 65
+trial=84 angerDecayPerHour 7 -> 8
+trial=84 idleChance 0.035 -> 0.02
+trial=84 initiateTargetChance 0.4 -> 0.42
+trial=84 memoryMaxUses 6 -> 6
+trial=84 argumentTurnsMin 8 -> 8
+trial=84 argumentTurnsMax 12 -> 14
+trial=84 memoryChance 1 -> 1
+trial=84 exitGraceSec 45 -> 30
+trial=84 angerStage2 45 -> 50
+trial=84 replyBase.SMALLTALK 0.8 -> 0.8
+trial=84 chatTurnsMax 4 -> 4
+trial=84 effects.DOUBT.anger 15 -> 15
+trial=84 effects.REBUT.anger 15 -> 15
+trial=84 motives.IDLE.DOUBT 20 -> 13
+trial=84 motives.IDLE.MOCK 2 -> 2
+trial=84 seed=73129 messages=385 R1=0.635220 R2=3.000000 R3=0.412987 R4=0.000000 R5=0.000000 R7=0.000000 R8=0.020356
+trial=84 seed=73130 messages=393 R1=0.597633 R2=2.941176 R3=0.432570 R4=4.000000 R5=1.000000 R7=0.010178 R8=0.006452
+trial=84 seed=73131 messages=363 R1=0.558659 R2=3.083333 R3=0.504132 R4=7.000000 R5=4.000000 R7=0.082645 R8=0.011290
+trial=84 seed=73132 messages=394 R1=0.609467 R2=2.980769 R3=0.434010 R4=6.000000 R5=3.000000 R7=0.032995 R8=0.006881
+trial=84 seed=73133 messages=354 R1=0.532934 R2=2.978261 R3=0.477401 R4=5.000000 R5=2.000000 R7=0.033898 R8=0.006682
+trial=84 R6=0.900000 error=2.015181
+trial=85 temperMean 65 -> 65
+trial=85 angerDecayPerHour 8 -> 5
+trial=85 idleChance 0.02 -> 0.03
+trial=85 initiateTargetChance 0.42 -> 0.42
+trial=85 memoryMaxUses 6 -> 6
+trial=85 argumentTurnsMin 8 -> 8
+trial=85 argumentTurnsMax 14 -> 12
+trial=85 memoryChance 1 -> 1
+trial=85 exitGraceSec 30 -> 30
+trial=85 angerStage2 50 -> 45
+trial=85 replyBase.SMALLTALK 0.8 -> 0.8
+trial=85 chatTurnsMax 4 -> 4
+trial=85 effects.DOUBT.anger 15 -> 15
+trial=85 effects.REBUT.anger 15 -> 15
+trial=85 motives.IDLE.DOUBT 13 -> 20
+trial=85 motives.IDLE.MOCK 2 -> 3
+trial=85 seed=73129 messages=471 R1=0.646552 R2=3.586207 R3=0.503185 R4=7.000000 R5=4.000000 R7=0.070064 R8=0.011782
+trial=85 seed=73130 messages=474 R1=0.612613 R2=3.428571 R3=0.478903 R4=8.000000 R5=4.000000 R7=0.073840 R8=0.007246
+trial=85 seed=73131 messages=401 R1=0.593750 R2=3.627907 R3=0.491272 R4=11.000000 R5=6.000000 R7=0.127182 R8=0.003871
+trial=85 seed=73132 messages=390 R1=0.583784 R2=3.511628 R3=0.482051 R4=10.000000 R5=5.000000 R7=0.094872 R8=0.008621
+trial=85 seed=73133 messages=382 R1=0.582474 R2=3.627907 R3=0.526178 R4=16.000000 R5=7.000000 R7=0.138743 R8=0.007342
+trial=85 R6=0.769231 error=2.237723
+trial=86 temperMean 65 -> 65
+trial=86 angerDecayPerHour 5 -> 6
+trial=86 idleChance 0.03 -> 0.03
+trial=86 initiateTargetChance 0.42 -> 0.4
+trial=86 memoryMaxUses 6 -> 6
+trial=86 argumentTurnsMin 8 -> 8
+trial=86 argumentTurnsMax 12 -> 12
+trial=86 memoryChance 1 -> 1
+trial=86 exitGraceSec 30 -> 45
+trial=86 angerStage2 45 -> 50
+trial=86 replyBase.SMALLTALK 0.8 -> 0.8
+trial=86 chatTurnsMax 4 -> 4
+trial=86 effects.DOUBT.anger 15 -> 15
+trial=86 effects.REBUT.anger 15 -> 15
+trial=86 motives.IDLE.DOUBT 20 -> 20
+trial=86 motives.IDLE.MOCK 3 -> 2
+trial=86 seed=73129 messages=472 R1=0.663677 R2=3.642857 R3=0.489407 R4=8.000000 R5=4.000000 R7=0.076271 R8=0.005874
+trial=86 seed=73130 messages=490 R1=0.619048 R2=3.321429 R3=0.436735 R4=6.000000 R5=3.000000 R7=0.053061 R8=0.003781
+trial=86 seed=73131 messages=420 R1=0.614583 R2=3.185185 R3=0.466667 R4=7.000000 R5=4.000000 R7=0.069048 R8=0.008671
+trial=86 seed=73132 messages=445 R1=0.617021 R2=3.274510 R3=0.429213 R4=8.000000 R5=3.000000 R7=0.044944 R8=0.003401
+trial=86 seed=73133 messages=378 R1=0.645161 R2=3.790698 R3=0.505291 R4=7.000000 R5=4.000000 R7=0.097884 R8=0.004354
+trial=86 R6=0.500000 error=0.077017
+trial=87 temperMean 65 -> 65
+trial=87 angerDecayPerHour 6 -> 5
+trial=87 idleChance 0.03 -> 0.03
+trial=87 initiateTargetChance 0.4 -> 0.4
+trial=87 memoryMaxUses 6 -> 6
+trial=87 argumentTurnsMin 8 -> 8
+trial=87 argumentTurnsMax 12 -> 12
+trial=87 memoryChance 1 -> 1
+trial=87 exitGraceSec 45 -> 45
+trial=87 angerStage2 50 -> 50
+trial=87 replyBase.SMALLTALK 0.8 -> 0.8
+trial=87 chatTurnsMax 4 -> 4
+trial=87 effects.DOUBT.anger 15 -> 15
+trial=87 effects.REBUT.anger 15 -> 15
+trial=87 motives.IDLE.DOUBT 20 -> 13
+trial=87 motives.IDLE.MOCK 2 -> 2
+trial=87 seed=73129 messages=421 R1=0.640187 R2=3.634615 R3=0.517815 R4=8.000000 R5=5.000000 R7=0.087886 R8=0.012064
+trial=87 seed=73130 messages=483 R1=0.619565 R2=2.965517 R3=0.380952 R4=2.000000 R5=0.000000 R7=0.000000 R8=0.012270
+trial=87 seed=73131 messages=468 R1=0.622549 R2=3.267857 R3=0.438034 R4=4.000000 R5=2.000000 R7=0.032051 R8=0.005639
+trial=87 seed=73132 messages=479 R1=0.613043 R2=3.431034 R3=0.482255 R4=8.000000 R5=3.000000 R7=0.054280 R8=0.020716
+trial=87 seed=73133 messages=461 R1=0.635945 R2=3.138462 R3=0.477223 R4=9.000000 R5=2.000000 R7=0.036876 R8=0.001876
+trial=87 R6=0.916667 error=1.748282
+trial=88 temperMean 65 -> 60
+trial=88 angerDecayPerHour 5 -> 5
+trial=88 idleChance 0.03 -> 0.035
+trial=88 initiateTargetChance 0.4 -> 0.42
+trial=88 memoryMaxUses 6 -> 6
+trial=88 argumentTurnsMin 8 -> 8
+trial=88 argumentTurnsMax 12 -> 14
+trial=88 memoryChance 1 -> 1
+trial=88 exitGraceSec 45 -> 30
+trial=88 angerStage2 50 -> 50
+trial=88 replyBase.SMALLTALK 0.8 -> 0.8
+trial=88 chatTurnsMax 4 -> 4
+trial=88 effects.DOUBT.anger 15 -> 15
+trial=88 effects.REBUT.anger 15 -> 15
+trial=88 motives.IDLE.DOUBT 13 -> 16
+trial=88 motives.IDLE.MOCK 2 -> 3
+trial=88 seed=73129 messages=504 R1=0.645570 R2=3.508197 R3=0.480159 R4=9.000000 R5=6.000000 R7=0.087302 R8=0.009763
+trial=88 seed=73130 messages=500 R1=0.616740 R2=3.153846 R3=0.460000 R4=8.000000 R5=2.000000 R7=0.030000 R8=0.004323
+trial=88 seed=73131 messages=530 R1=0.615063 R2=3.073529 R3=0.454717 R4=5.000000 R5=1.000000 R7=0.016981 R8=0.011725
+trial=88 seed=73132 messages=504 R1=0.609244 R2=3.101449 R3=0.478175 R4=6.000000 R5=2.000000 R7=0.041667 R8=0.003817
+trial=88 seed=73133 messages=422 R1=0.597087 R2=3.617021 R3=0.502370 R4=13.000000 R5=5.000000 R7=0.090047 R8=0.002821
+trial=88 R6=0.562500 error=1.625370
+trial=89 temperMean 60 -> 65
+trial=89 angerDecayPerHour 5 -> 8
+trial=89 idleChance 0.035 -> 0.03
+trial=89 initiateTargetChance 0.42 -> 0.4
+trial=89 memoryMaxUses 6 -> 6
+trial=89 argumentTurnsMin 8 -> 8
+trial=89 argumentTurnsMax 14 -> 14
+trial=89 memoryChance 1 -> 1
+trial=89 exitGraceSec 30 -> 30
+trial=89 angerStage2 50 -> 50
+trial=89 replyBase.SMALLTALK 0.8 -> 0.8
+trial=89 chatTurnsMax 4 -> 4
+trial=89 effects.DOUBT.anger 15 -> 15
+trial=89 effects.REBUT.anger 15 -> 15
+trial=89 motives.IDLE.DOUBT 16 -> 13
+trial=89 motives.IDLE.MOCK 3 -> 2
+trial=89 seed=73129 messages=451 R1=0.613861 R2=3.638298 R3=0.458980 R4=9.000000 R5=5.000000 R7=0.086475 R8=0.023288
+trial=89 seed=73130 messages=483 R1=0.619565 R2=2.965517 R3=0.380952 R4=2.000000 R5=0.000000 R7=0.000000 R8=0.012270
+trial=89 seed=73131 messages=496 R1=0.607306 R2=3.046154 R3=0.445565 R4=4.000000 R5=3.000000 R7=0.026210 R8=0.003876
+trial=89 seed=73132 messages=470 R1=0.633663 R2=3.133333 R3=0.431915 R4=5.000000 R5=1.000000 R7=0.019149 R8=0.013944
+trial=89 seed=73133 messages=453 R1=0.623037 R2=3.033898 R3=0.423841 R4=6.000000 R5=1.000000 R7=0.019868 R8=0.002079
+trial=89 R6=0.100000 error=2.396223
+trial=90 temperMean 65 -> 65
+trial=90 angerDecayPerHour 8 -> 6
+trial=90 idleChance 0.03 -> 0.02
+trial=90 initiateTargetChance 0.4 -> 0.42
+trial=90 memoryMaxUses 6 -> 4
+trial=90 argumentTurnsMin 8 -> 8
+trial=90 argumentTurnsMax 14 -> 14
+trial=90 memoryChance 1 -> 1
+trial=90 exitGraceSec 30 -> 45
+trial=90 angerStage2 50 -> 45
+trial=90 replyBase.SMALLTALK 0.8 -> 0.8
+trial=90 chatTurnsMax 4 -> 4
+trial=90 effects.DOUBT.anger 15 -> 15
+trial=90 effects.REBUT.anger 15 -> 15
+trial=90 motives.IDLE.DOUBT 13 -> 20
+trial=90 motives.IDLE.MOCK 2 -> 2
+trial=90 seed=73129 messages=394 R1=0.640000 R2=3.327273 R3=0.512690 R4=5.000000 R5=2.000000 R7=0.035533 R8=0.006803
+trial=90 seed=73130 messages=409 R1=0.627778 R2=3.196078 R3=0.442543 R4=3.000000 R5=1.000000 R7=0.019560 R8=0.007212
+trial=90 seed=73131 messages=365 R1=0.631285 R2=3.690476 R3=0.506849 R4=10.000000 R5=5.000000 R7=0.098630 R8=0.004878
+trial=90 seed=73132 messages=391 R1=0.613757 R2=3.340426 R3=0.493606 R4=7.000000 R5=3.000000 R7=0.071611 R8=0.008282
+trial=90 seed=73133 messages=362 R1=0.570588 R2=3.108696 R3=0.480663 R4=6.000000 R5=4.000000 R7=0.063536 R8=0.006565
+trial=90 R6=0.600000 error=0.971012
+trial=91 temperMean 65 -> 60
+trial=91 angerDecayPerHour 6 -> 7
+trial=91 idleChance 0.02 -> 0.025
+trial=91 initiateTargetChance 0.42 -> 0.42
+trial=91 memoryMaxUses 4 -> 4
+trial=91 argumentTurnsMin 8 -> 8
+trial=91 argumentTurnsMax 14 -> 12
+trial=91 memoryChance 1 -> 1
+trial=91 exitGraceSec 45 -> 45
+trial=91 angerStage2 45 -> 40
+trial=91 replyBase.SMALLTALK 0.8 -> 0.8
+trial=91 chatTurnsMax 4 -> 4
+trial=91 effects.DOUBT.anger 15 -> 15
+trial=91 effects.REBUT.anger 15 -> 15
+trial=91 motives.IDLE.DOUBT 20 -> 20
+trial=91 motives.IDLE.MOCK 2 -> 3
+trial=91 seed=73129 messages=376 R1=0.650246 R2=4.069767 R3=0.553191 R4=10.000000 R5=6.000000 R7=0.103723 R8=0.004785
+trial=91 seed=73130 messages=459 R1=0.573276 R2=3.126984 R3=0.518519 R4=10.000000 R5=5.000000 R7=0.067538 R8=0.004992
+trial=91 seed=73131 messages=390 R1=0.647668 R2=3.659574 R3=0.515385 R4=9.000000 R5=5.000000 R7=0.084615 R8=0.017910
+trial=91 seed=73132 messages=419 R1=0.619512 R2=3.333333 R3=0.494033 R4=6.000000 R5=3.000000 R7=0.069212 R8=0.001733
+trial=91 seed=73133 messages=423 R1=0.609524 R2=3.509804 R3=0.515366 R4=10.000000 R5=6.000000 R7=0.104019 R8=0.006944
+trial=91 R6=0.760000 error=2.512305
+trial=92 temperMean 60 -> 60
+trial=92 angerDecayPerHour 7 -> 5
+trial=92 idleChance 0.025 -> 0.02
+trial=92 initiateTargetChance 0.42 -> 0.4
+trial=92 memoryMaxUses 4 -> 6
+trial=92 argumentTurnsMin 8 -> 8
+trial=92 argumentTurnsMax 12 -> 14
+trial=92 memoryChance 1 -> 1
+trial=92 exitGraceSec 45 -> 30
+trial=92 angerStage2 40 -> 45
+trial=92 replyBase.SMALLTALK 0.8 -> 0.8
+trial=92 chatTurnsMax 4 -> 4
+trial=92 effects.DOUBT.anger 15 -> 15
+trial=92 effects.REBUT.anger 15 -> 15
+trial=92 motives.IDLE.DOUBT 20 -> 13
+trial=92 motives.IDLE.MOCK 3 -> 2
+trial=92 seed=73129 messages=396 R1=0.622951 R2=3.326531 R3=0.464646 R4=6.000000 R5=3.000000 R7=0.075758 R8=0.016187
+trial=92 seed=73130 messages=415 R1=0.643979 R2=3.411765 R3=0.467470 R4=6.000000 R5=3.000000 R7=0.053012 R8=0.016427
+trial=92 seed=73131 messages=394 R1=0.631902 R2=3.239130 R3=0.418782 R4=3.000000 R5=2.000000 R7=0.040609 R8=0.009690
+trial=92 seed=73132 messages=378 R1=0.602339 R2=3.395349 R3=0.457672 R4=8.000000 R5=3.000000 R7=0.076720 R8=0.013245
+trial=92 seed=73133 messages=401 R1=0.593137 R2=3.411765 R3=0.516209 R4=8.000000 R5=3.000000 R7=0.062344 R8=0.006494
+trial=92 R6=0.428571 error=0.265865
+trial=93 temperMean 60 -> 65
+trial=93 angerDecayPerHour 5 -> 5
+trial=93 idleChance 0.02 -> 0.03
+trial=93 initiateTargetChance 0.4 -> 0.42
+trial=93 memoryMaxUses 6 -> 4
+trial=93 argumentTurnsMin 8 -> 8
+trial=93 argumentTurnsMax 14 -> 14
+trial=93 memoryChance 1 -> 1
+trial=93 exitGraceSec 30 -> 45
+trial=93 angerStage2 45 -> 40
+trial=93 replyBase.SMALLTALK 0.8 -> 0.8
+trial=93 chatTurnsMax 4 -> 4
+trial=93 effects.DOUBT.anger 15 -> 15
+trial=93 effects.REBUT.anger 15 -> 15
+trial=93 motives.IDLE.DOUBT 13 -> 13
+trial=93 motives.IDLE.MOCK 2 -> 3
+trial=93 seed=73129 messages=432 R1=0.666667 R2=4.074074 R3=0.599537 R4=15.000000 R5=8.000000 R7=0.157407 R8=0.010499
+trial=93 seed=73130 messages=475 R1=0.622568 R2=3.388060 R3=0.549474 R4=9.000000 R5=4.000000 R7=0.052632 R8=0.003322
+trial=93 seed=73131 messages=476 R1=0.632653 R2=3.444444 R3=0.529412 R4=7.000000 R5=5.000000 R7=0.079832 R8=0.004208
+trial=93 seed=73132 messages=452 R1=0.603093 R2=3.207547 R3=0.438053 R4=7.000000 R5=4.000000 R7=0.055310 R8=0.003724
+trial=93 seed=73133 messages=378 R1=0.628931 R2=3.631579 R3=0.431217 R4=6.000000 R5=3.000000 R7=0.060847 R8=0.012618
+trial=93 R6=0.625000 error=2.632853
+trial=94 temperMean 65 -> 60
+trial=94 angerDecayPerHour 5 -> 6
+trial=94 idleChance 0.03 -> 0.035
+trial=94 initiateTargetChance 0.42 -> 0.4
+trial=94 memoryMaxUses 4 -> 4
+trial=94 argumentTurnsMin 8 -> 8
+trial=94 argumentTurnsMax 14 -> 12
+trial=94 memoryChance 1 -> 1
+trial=94 exitGraceSec 45 -> 45
+trial=94 angerStage2 40 -> 40
+trial=94 replyBase.SMALLTALK 0.8 -> 0.8
+trial=94 chatTurnsMax 4 -> 4
+trial=94 effects.DOUBT.anger 15 -> 15
+trial=94 effects.REBUT.anger 15 -> 15
+trial=94 motives.IDLE.DOUBT 13 -> 16
+trial=94 motives.IDLE.MOCK 3 -> 2
+trial=94 seed=73129 messages=477 R1=0.660550 R2=3.322581 R3=0.463312 R4=7.000000 R5=3.000000 R7=0.058700 R8=0.009138
+trial=94 seed=73130 messages=501 R1=0.651163 R2=3.545455 R3=0.530938 R4=13.000000 R5=4.000000 R7=0.081836 R8=0.006402
+trial=94 seed=73131 messages=497 R1=0.626126 R2=3.574074 R3=0.452716 R4=5.000000 R5=4.000000 R7=0.074447 R8=0.011713
+trial=94 seed=73132 messages=466 R1=0.629630 R2=3.893617 R3=0.472103 R4=7.000000 R5=4.000000 R7=0.081545 R8=0.004464
+trial=94 seed=73133 messages=429 R1=0.607656 R2=3.591837 R3=0.510490 R4=14.000000 R5=7.000000 R7=0.128205 R8=0.005413
+trial=94 R6=0.681818 error=1.207138
+trial=95 temperMean 60 -> 60
+trial=95 angerDecayPerHour 6 -> 6
+trial=95 idleChance 0.035 -> 0.035
+trial=95 initiateTargetChance 0.4 -> 0.4
+trial=95 memoryMaxUses 4 -> 4
+trial=95 argumentTurnsMin 8 -> 8
+trial=95 argumentTurnsMax 12 -> 14
+trial=95 memoryChance 1 -> 1
+trial=95 exitGraceSec 45 -> 30
+trial=95 angerStage2 40 -> 50
+trial=95 replyBase.SMALLTALK 0.8 -> 0.8
+trial=95 chatTurnsMax 4 -> 4
+trial=95 effects.DOUBT.anger 15 -> 15
+trial=95 effects.REBUT.anger 15 -> 15
+trial=95 motives.IDLE.DOUBT 16 -> 13
+trial=95 motives.IDLE.MOCK 2 -> 3
+trial=95 seed=73129 messages=502 R1=0.636842 R2=3.122807 R3=0.382470 R4=4.000000 R5=2.000000 R7=0.029880 R8=0.010264
+trial=95 seed=73130 messages=489 R1=0.613953 R2=3.129032 R3=0.443763 R4=8.000000 R5=2.000000 R7=0.030675 R8=0.012090
+trial=95 seed=73131 messages=501 R1=0.632353 R2=3.047619 R3=0.409182 R4=2.000000 R5=1.000000 R7=0.003992 R8=0.005597
+trial=95 seed=73132 messages=483 R1=0.614679 R2=3.161290 R3=0.465839 R4=11.000000 R5=5.000000 R7=0.062112 R8=0.003974
+trial=95 seed=73133 messages=503 R1=0.617117 R2=3.140625 R3=0.445328 R4=6.000000 R5=2.000000 R7=0.035785 R8=0.017713
+trial=95 R6=0.416667 error=1.511825
+trial=96 temperMean 60 -> 60
+trial=96 angerDecayPerHour 6 -> 5
+trial=96 idleChance 0.035 -> 0.025
+trial=96 initiateTargetChance 0.4 -> 0.42
+trial=96 memoryMaxUses 4 -> 4
+trial=96 argumentTurnsMin 8 -> 8
+trial=96 argumentTurnsMax 14 -> 12
+trial=96 memoryChance 1 -> 1
+trial=96 exitGraceSec 30 -> 45
+trial=96 angerStage2 50 -> 50
+trial=96 replyBase.SMALLTALK 0.8 -> 0.8
+trial=96 chatTurnsMax 4 -> 4
+trial=96 effects.DOUBT.anger 15 -> 15
+trial=96 effects.REBUT.anger 15 -> 15
+trial=96 motives.IDLE.DOUBT 13 -> 13
+trial=96 motives.IDLE.MOCK 3 -> 2
+trial=96 seed=73129 messages=406 R1=0.621891 R2=3.403846 R3=0.509852 R4=10.000000 R5=4.000000 R7=0.061576 R8=0.023659
+trial=96 seed=73130 messages=458 R1=0.634259 R2=3.446429 R3=0.484716 R4=9.000000 R5=4.000000 R7=0.074236 R8=0.006826
+trial=96 seed=73131 messages=408 R1=0.619048 R2=3.600000 R3=0.475490 R4=9.000000 R5=4.000000 R7=0.063725 R8=0.004673
+trial=96 seed=73132 messages=394 R1=0.596859 R2=3.132075 R3=0.494924 R4=7.000000 R5=3.000000 R7=0.065990 R8=0.011673
+trial=96 seed=73133 messages=424 R1=0.595628 R2=3.018519 R3=0.436321 R4=5.000000 R5=2.000000 R7=0.040094 R8=0.010753
+trial=96 R6=0.588235 error=0.148318
+trial=97 temperMean 60 -> 65
+trial=97 angerDecayPerHour 5 -> 6
+trial=97 idleChance 0.025 -> 0.035
+trial=97 initiateTargetChance 0.42 -> 0.4
+trial=97 memoryMaxUses 4 -> 6
+trial=97 argumentTurnsMin 8 -> 8
+trial=97 argumentTurnsMax 12 -> 14
+trial=97 memoryChance 1 -> 1
+trial=97 exitGraceSec 45 -> 30
+trial=97 angerStage2 50 -> 40
+trial=97 replyBase.SMALLTALK 0.8 -> 0.8
+trial=97 chatTurnsMax 4 -> 4
+trial=97 effects.DOUBT.anger 15 -> 15
+trial=97 effects.REBUT.anger 15 -> 15
+trial=97 motives.IDLE.DOUBT 13 -> 20
+trial=97 motives.IDLE.MOCK 2 -> 2
+trial=97 seed=73129 messages=490 R1=0.643836 R2=3.764706 R3=0.604082 R4=8.000000 R5=5.000000 R7=0.083673 R8=0.007843
+trial=97 seed=73130 messages=465 R1=0.634703 R2=3.574074 R3=0.481720 R4=11.000000 R5=5.000000 R7=0.094624 R8=0.007426
+trial=97 seed=73131 messages=476 R1=0.591837 R2=3.320000 R3=0.422269 R4=6.000000 R5=4.000000 R7=0.058824 R8=0.004093
+trial=97 seed=73132 messages=485 R1=0.623318 R2=3.574074 R3=0.478351 R4=12.000000 R5=5.000000 R7=0.094845 R8=0.007102
+trial=97 seed=73133 messages=409 R1=0.585106 R2=3.291667 R3=0.471883 R4=12.000000 R5=5.000000 R7=0.105134 R8=0.009472
+trial=97 R6=0.541667 error=1.853741
+trial=98 temperMean 65 -> 60
+trial=98 angerDecayPerHour 6 -> 6
+trial=98 idleChance 0.035 -> 0.035
+trial=98 initiateTargetChance 0.4 -> 0.42
+trial=98 memoryMaxUses 6 -> 4
+trial=98 argumentTurnsMin 8 -> 8
+trial=98 argumentTurnsMax 14 -> 14
+trial=98 memoryChance 1 -> 1
+trial=98 exitGraceSec 30 -> 30
+trial=98 angerStage2 40 -> 45
+trial=98 replyBase.SMALLTALK 0.8 -> 0.8
+trial=98 chatTurnsMax 4 -> 4
+trial=98 effects.DOUBT.anger 15 -> 15
+trial=98 effects.REBUT.anger 15 -> 15
+trial=98 motives.IDLE.DOUBT 20 -> 13
+trial=98 motives.IDLE.MOCK 2 -> 2
+trial=98 seed=73129 messages=509 R1=0.594595 R2=3.152778 R3=0.516699 R4=9.000000 R5=4.000000 R7=0.041257 R8=0.001550
+trial=98 seed=73130 messages=490 R1=0.654709 R2=3.354839 R3=0.459184 R4=6.000000 R5=2.000000 R7=0.030612 R8=0.008621
+trial=98 seed=73131 messages=508 R1=0.636735 R2=3.328358 R3=0.498031 R4=7.000000 R5=4.000000 R7=0.049213 R8=0.000000
+trial=98 seed=73132 messages=480 R1=0.565854 R2=3.211538 R3=0.435417 R4=8.000000 R5=4.000000 R7=0.062500 R8=0.006410
+trial=98 seed=73133 messages=482 R1=0.637555 R2=3.474576 R3=0.487552 R4=9.000000 R5=4.000000 R7=0.066390 R8=0.010324
+trial=98 R6=0.444444 error=0.372675
+trial=99 temperMean 60 -> 65
+trial=99 angerDecayPerHour 6 -> 8
+trial=99 idleChance 0.035 -> 0.035
+trial=99 initiateTargetChance 0.42 -> 0.4
+trial=99 memoryMaxUses 4 -> 4
+trial=99 argumentTurnsMin 8 -> 8
+trial=99 argumentTurnsMax 14 -> 14
+trial=99 memoryChance 1 -> 1
+trial=99 exitGraceSec 30 -> 30
+trial=99 angerStage2 45 -> 40
+trial=99 replyBase.SMALLTALK 0.8 -> 0.8
+trial=99 chatTurnsMax 4 -> 4
+trial=99 effects.DOUBT.anger 15 -> 15
+trial=99 effects.REBUT.anger 15 -> 15
+trial=99 motives.IDLE.DOUBT 13 -> 16
+trial=99 motives.IDLE.MOCK 2 -> 2
+trial=99 seed=73129 messages=507 R1=0.611538 R2=3.694915 R3=0.528600 R4=11.000000 R5=7.000000 R7=0.086785 R8=0.006588
+trial=99 seed=73130 messages=498 R1=0.614350 R2=3.322034 R3=0.455823 R4=9.000000 R5=5.000000 R7=0.060241 R8=0.003654
+trial=99 seed=73131 messages=513 R1=0.600000 R2=3.157895 R3=0.405458 R4=5.000000 R5=3.000000 R7=0.027290 R8=0.021207
+trial=99 seed=73132 messages=445 R1=0.608511 R2=3.803922 R3=0.530337 R4=9.000000 R5=6.000000 R7=0.089888 R8=0.011478
+trial=99 seed=73133 messages=391 R1=0.593583 R2=3.312500 R3=0.488491 R4=12.000000 R5=5.000000 R7=0.099744 R8=0.006906
+trial=99 R6=0.692308 error=2.855112
+trial=100 temperMean 65 -> 60
+trial=100 angerDecayPerHour 8 -> 8
+trial=100 idleChance 0.035 -> 0.035
+trial=100 initiateTargetChance 0.4 -> 0.4
+trial=100 memoryMaxUses 4 -> 6
+trial=100 argumentTurnsMin 8 -> 8
+trial=100 argumentTurnsMax 14 -> 14
+trial=100 memoryChance 1 -> 1
+trial=100 exitGraceSec 30 -> 30
+trial=100 angerStage2 40 -> 50
+trial=100 replyBase.SMALLTALK 0.8 -> 0.8
+trial=100 chatTurnsMax 4 -> 4
+trial=100 effects.DOUBT.anger 15 -> 15
+trial=100 effects.REBUT.anger 15 -> 15
+trial=100 motives.IDLE.DOUBT 16 -> 13
+trial=100 motives.IDLE.MOCK 2 -> 3
+trial=100 seed=73129 messages=529 R1=0.635514 R2=3.428571 R3=0.410208 R4=5.000000 R5=3.000000 R7=0.032136 R8=0.012559
+trial=100 seed=73130 messages=499 R1=0.632558 R2=3.092308 R3=0.434870 R4=9.000000 R5=2.000000 R7=0.030060 R8=0.010292
+trial=100 seed=73131 messages=496 R1=0.631841 R2=3.048387 R3=0.407258 R4=2.000000 R5=1.000000 R7=0.004032 R8=0.005484
+trial=100 seed=73132 messages=438 R1=0.611399 R2=3.360000 R3=0.454338 R4=10.000000 R5=4.000000 R7=0.068493 R8=0.002882
+trial=100 seed=73133 messages=499 R1=0.589520 R2=3.142857 R3=0.468938 R4=11.000000 R5=4.000000 R7=0.064128 R8=0.003101
+trial=100 R6=0.642857 error=1.019533
+trial=101 temperMean 60 -> 65
+trial=101 angerDecayPerHour 8 -> 5
+trial=101 idleChance 0.035 -> 0.02
+trial=101 initiateTargetChance 0.4 -> 0.42
+trial=101 memoryMaxUses 6 -> 6
+trial=101 argumentTurnsMin 8 -> 8
+trial=101 argumentTurnsMax 14 -> 14
+trial=101 memoryChance 1 -> 1
+trial=101 exitGraceSec 30 -> 30
+trial=101 angerStage2 50 -> 40
+trial=101 replyBase.SMALLTALK 0.8 -> 0.8
+trial=101 chatTurnsMax 4 -> 4
+trial=101 effects.DOUBT.anger 15 -> 15
+trial=101 effects.REBUT.anger 15 -> 15
+trial=101 motives.IDLE.DOUBT 13 -> 16
+trial=101 motives.IDLE.MOCK 3 -> 3
+trial=101 seed=73129 messages=394 R1=0.605882 R2=3.239130 R3=0.434010 R4=4.000000 R5=2.000000 R7=0.043147 R8=0.020964
+trial=101 seed=73130 messages=335 R1=0.634831 R2=3.511111 R3=0.546269 R4=5.000000 R5=3.000000 R7=0.080597 R8=0.008606
+trial=101 seed=73131 messages=353 R1=0.624242 R2=3.452381 R3=0.481586 R4=7.000000 R5=6.000000 R7=0.079320 R8=0.003049
+trial=101 seed=73132 messages=364 R1=0.602151 R2=3.488889 R3=0.521978 R4=6.000000 R5=5.000000 R7=0.085165 R8=0.003670
+trial=101 seed=73133 messages=339 R1=0.600000 R2=3.282609 R3=0.530973 R4=6.000000 R5=5.000000 R7=0.064897 R8=0.007722
+trial=101 R6=0.714286 error=1.897962
+trial=102 temperMean 65 -> 65
+trial=102 angerDecayPerHour 5 -> 6
+trial=102 idleChance 0.02 -> 0.025
+trial=102 initiateTargetChance 0.42 -> 0.42
+trial=102 memoryMaxUses 6 -> 6
+trial=102 argumentTurnsMin 8 -> 8
+trial=102 argumentTurnsMax 14 -> 14
+trial=102 memoryChance 1 -> 1
+trial=102 exitGraceSec 30 -> 30
+trial=102 angerStage2 40 -> 45
+trial=102 replyBase.SMALLTALK 0.8 -> 0.8
+trial=102 chatTurnsMax 4 -> 4
+trial=102 effects.DOUBT.anger 15 -> 15
+trial=102 effects.REBUT.anger 15 -> 15
+trial=102 motives.IDLE.DOUBT 16 -> 20
+trial=102 motives.IDLE.MOCK 3 -> 2
+trial=102 seed=73129 messages=395 R1=0.597015 R2=3.352941 R3=0.518987 R4=9.000000 R5=5.000000 R7=0.075949 R8=0.001429
+trial=102 seed=73130 messages=422 R1=0.627358 R2=3.254237 R3=0.511848 R4=9.000000 R5=3.000000 R7=0.037915 R8=0.008361
+trial=102 seed=73131 messages=456 R1=0.610256 R2=3.125000 R3=0.432018 R4=3.000000 R5=1.000000 R7=0.015351 R8=0.001916
+trial=102 seed=73132 messages=403 R1=0.634409 R2=3.360000 R3=0.468983 R4=5.000000 R5=3.000000 R7=0.057072 R8=0.003745
+trial=102 seed=73133 messages=439 R1=0.650246 R2=3.237288 R3=0.469248 R4=5.000000 R5=2.000000 R7=0.036446 R8=0.012605
+trial=102 R6=0.928571 error=1.181300
+trial=103 temperMean 65 -> 65
+trial=103 angerDecayPerHour 6 -> 8
+trial=103 idleChance 0.025 -> 0.025
+trial=103 initiateTargetChance 0.42 -> 0.42
+trial=103 memoryMaxUses 6 -> 4
+trial=103 argumentTurnsMin 8 -> 8
+trial=103 argumentTurnsMax 14 -> 12
+trial=103 memoryChance 1 -> 1
+trial=103 exitGraceSec 30 -> 45
+trial=103 angerStage2 45 -> 50
+trial=103 replyBase.SMALLTALK 0.8 -> 0.8
+trial=103 chatTurnsMax 4 -> 4
+trial=103 effects.DOUBT.anger 15 -> 15
+trial=103 effects.REBUT.anger 15 -> 15
+trial=103 motives.IDLE.DOUBT 20 -> 13
+trial=103 motives.IDLE.MOCK 2 -> 3
+trial=103 seed=73129 messages=436 R1=0.649770 R2=3.764706 R3=0.509174 R4=10.000000 R5=4.000000 R7=0.068807 R8=0.031348
+trial=103 seed=73130 messages=451 R1=0.622120 R2=3.596154 R3=0.494457 R4=10.000000 R5=6.000000 R7=0.070953 R8=0.006536
+trial=103 seed=73131 messages=424 R1=0.618605 R2=3.891304 R3=0.521226 R4=9.000000 R5=5.000000 R7=0.084906 R8=0.004959
+trial=103 seed=73132 messages=402 R1=0.598985 R2=3.510638 R3=0.497512 R4=8.000000 R5=4.000000 R7=0.084577 R8=0.003390
+trial=103 seed=73133 messages=410 R1=0.588235 R2=3.307692 R3=0.502439 R4=7.000000 R5=4.000000 R7=0.073171 R8=0.006981
+trial=103 R6=0.478261 error=1.164199
+trial=104 temperMean 65 -> 60
+trial=104 angerDecayPerHour 8 -> 7
+trial=104 idleChance 0.025 -> 0.025
+trial=104 initiateTargetChance 0.42 -> 0.42
+trial=104 memoryMaxUses 4 -> 4
+trial=104 argumentTurnsMin 8 -> 8
+trial=104 argumentTurnsMax 12 -> 14
+trial=104 memoryChance 1 -> 1
+trial=104 exitGraceSec 45 -> 45
+trial=104 angerStage2 50 -> 40
+trial=104 replyBase.SMALLTALK 0.8 -> 0.8
+trial=104 chatTurnsMax 4 -> 4
+trial=104 effects.DOUBT.anger 15 -> 15
+trial=104 effects.REBUT.anger 15 -> 15
+trial=104 motives.IDLE.DOUBT 13 -> 20
+trial=104 motives.IDLE.MOCK 3 -> 2
+trial=104 seed=73129 messages=439 R1=0.592233 R2=3.259259 R3=0.478360 R4=7.000000 R5=4.000000 R7=0.056948 R8=0.013245
+trial=104 seed=73130 messages=399 R1=0.629630 R2=3.795918 R3=0.558897 R4=12.000000 R5=6.000000 R7=0.100251 R8=0.010819
+trial=104 seed=73131 messages=426 R1=0.617117 R2=3.209677 R3=0.532864 R4=7.000000 R5=3.000000 R7=0.068075 R8=0.001764
+trial=104 seed=73132 messages=414 R1=0.638498 R2=3.288136 R3=0.524155 R4=7.000000 R5=3.000000 R7=0.048309 R8=0.001808
+trial=104 seed=73133 messages=428 R1=0.614350 R2=3.566038 R3=0.542056 R4=13.000000 R5=8.000000 R7=0.128505 R8=0.005111
+trial=104 R6=0.541667 error=2.806767
+trial=105 temperMean 60 -> 65
+trial=105 angerDecayPerHour 7 -> 8
+trial=105 idleChance 0.025 -> 0.035
+trial=105 initiateTargetChance 0.42 -> 0.42
+trial=105 memoryMaxUses 4 -> 6
+trial=105 argumentTurnsMin 8 -> 8
+trial=105 argumentTurnsMax 14 -> 14
+trial=105 memoryChance 1 -> 1
+trial=105 exitGraceSec 45 -> 30
+trial=105 angerStage2 40 -> 50
+trial=105 replyBase.SMALLTALK 0.8 -> 0.8
+trial=105 chatTurnsMax 4 -> 4
+trial=105 effects.DOUBT.anger 15 -> 15
+trial=105 effects.REBUT.anger 15 -> 15
+trial=105 motives.IDLE.DOUBT 20 -> 16
+trial=105 motives.IDLE.MOCK 2 -> 2
+trial=105 seed=73129 messages=525 R1=0.656652 R2=3.303030 R3=0.447619 R4=6.000000 R5=2.000000 R7=0.028571 R8=0.016584
+trial=105 seed=73130 messages=488 R1=0.601852 R2=3.241379 R3=0.454918 R4=8.000000 R5=4.000000 R7=0.038934 R8=0.005319
+trial=105 seed=73131 messages=524 R1=0.612903 R2=3.015152 R3=0.416031 R4=4.000000 R5=1.000000 R7=0.015267 R8=0.014658
+trial=105 seed=73132 messages=482 R1=0.625000 R2=3.508197 R3=0.539419 R4=8.000000 R5=6.000000 R7=0.087137 R8=0.005780
+trial=105 seed=73133 messages=426 R1=0.623318 R2=4.475000 R3=0.546948 R4=12.000000 R5=8.000000 R7=0.164319 R8=0.006427
+trial=105 R6=0.523810 error=3.247299
+trial=106 temperMean 65 -> 60
+trial=106 angerDecayPerHour 8 -> 8
+trial=106 idleChance 0.035 -> 0.035
+trial=106 initiateTargetChance 0.42 -> 0.4
+trial=106 memoryMaxUses 6 -> 4
+trial=106 argumentTurnsMin 8 -> 8
+trial=106 argumentTurnsMax 14 -> 14
+trial=106 memoryChance 1 -> 1
+trial=106 exitGraceSec 30 -> 45
+trial=106 angerStage2 50 -> 45
+trial=106 replyBase.SMALLTALK 0.8 -> 0.8
+trial=106 chatTurnsMax 4 -> 4
+trial=106 effects.DOUBT.anger 15 -> 15
+trial=106 effects.REBUT.anger 15 -> 15
+trial=106 motives.IDLE.DOUBT 16 -> 16
+trial=106 motives.IDLE.MOCK 2 -> 2
+trial=106 seed=73129 messages=455 R1=0.700389 R2=4.214286 R3=0.584615 R4=11.000000 R5=7.000000 R7=0.131868 R8=0.001198
+trial=106 seed=73130 messages=508 R1=0.623377 R2=3.322581 R3=0.464567 R4=9.000000 R5=3.000000 R7=0.053150 R8=0.009576
+trial=106 seed=73131 messages=528 R1=0.615063 R2=3.377049 R3=0.462121 R4=6.000000 R5=1.000000 R7=0.043561 R8=0.013468
+trial=106 seed=73132 messages=435 R1=0.626609 R2=3.979592 R3=0.549425 R4=10.000000 R5=5.000000 R7=0.121839 R8=0.006906
+trial=106 seed=73133 messages=426 R1=0.637306 R2=3.617021 R3=0.467136 R4=11.000000 R5=5.000000 R7=0.096244 R8=0.006775
+trial=106 R6=0.571429 error=2.401264
+trial=107 temperMean 60 -> 60
+trial=107 angerDecayPerHour 8 -> 7
+trial=107 idleChance 0.035 -> 0.02
+trial=107 initiateTargetChance 0.4 -> 0.42
+trial=107 memoryMaxUses 4 -> 4
+trial=107 argumentTurnsMin 8 -> 8
+trial=107 argumentTurnsMax 14 -> 12
+trial=107 memoryChance 1 -> 1
+trial=107 exitGraceSec 45 -> 45
+trial=107 angerStage2 45 -> 50
+trial=107 replyBase.SMALLTALK 0.8 -> 0.8
+trial=107 chatTurnsMax 4 -> 4
+trial=107 effects.DOUBT.anger 15 -> 15
+trial=107 effects.REBUT.anger 15 -> 15
+trial=107 motives.IDLE.DOUBT 16 -> 16
+trial=107 motives.IDLE.MOCK 2 -> 2
+trial=107 seed=73129 messages=420 R1=0.650246 R2=3.381818 R3=0.490476 R4=7.000000 R5=3.000000 R7=0.052381 R8=0.017613
+trial=107 seed=73130 messages=406 R1=0.652632 R2=3.431373 R3=0.475369 R4=7.000000 R5=3.000000 R7=0.064039 R8=0.004098
+trial=107 seed=73131 messages=375 R1=0.601227 R2=3.177778 R3=0.440000 R4=4.000000 R5=2.000000 R7=0.056000 R8=0.003711
+trial=107 seed=73132 messages=354 R1=0.611111 R2=3.311111 R3=0.516949 R4=8.000000 R5=4.000000 R7=0.081921 R8=0.010121
+trial=107 seed=73133 messages=369 R1=0.592593 R2=2.846154 R3=0.441734 R4=2.000000 R5=1.000000 R7=0.016260 R8=0.012887
+trial=107 R6=0.615385 error=0.603962
+trial=108 temperMean 60 -> 65
+trial=108 angerDecayPerHour 7 -> 5
+trial=108 idleChance 0.02 -> 0.03
+trial=108 initiateTargetChance 0.42 -> 0.4
+trial=108 memoryMaxUses 4 -> 4
+trial=108 argumentTurnsMin 8 -> 8
+trial=108 argumentTurnsMax 12 -> 14
+trial=108 memoryChance 1 -> 1
+trial=108 exitGraceSec 45 -> 30
+trial=108 angerStage2 50 -> 45
+trial=108 replyBase.SMALLTALK 0.8 -> 0.8
+trial=108 chatTurnsMax 4 -> 4
+trial=108 effects.DOUBT.anger 15 -> 15
+trial=108 effects.REBUT.anger 15 -> 15
+trial=108 motives.IDLE.DOUBT 16 -> 13
+trial=108 motives.IDLE.MOCK 2 -> 2
+trial=108 seed=73129 messages=452 R1=0.650000 R2=3.600000 R3=0.495575 R4=8.000000 R5=4.000000 R7=0.079646 R8=0.006849
+trial=108 seed=73130 messages=483 R1=0.619565 R2=2.965517 R3=0.380952 R4=2.000000 R5=0.000000 R7=0.000000 R8=0.012270
+trial=108 seed=73131 messages=497 R1=0.607306 R2=3.046154 R3=0.444668 R4=4.000000 R5=3.000000 R7=0.026157 R8=0.003883
+trial=108 seed=73132 messages=463 R1=0.629442 R2=3.137931 R3=0.427646 R4=5.000000 R5=1.000000 R7=0.019438 R8=0.014113
+trial=108 seed=73133 messages=473 R1=0.617778 R2=3.295082 R3=0.484144 R4=10.000000 R5=4.000000 R7=0.065539 R8=0.005535
+trial=108 R6=0.416667 error=1.559198
+trial=109 temperMean 65 -> 60
+trial=109 angerDecayPerHour 5 -> 8
+trial=109 idleChance 0.03 -> 0.025
+trial=109 initiateTargetChance 0.4 -> 0.4
+trial=109 memoryMaxUses 4 -> 4
+trial=109 argumentTurnsMin 8 -> 8
+trial=109 argumentTurnsMax 14 -> 14
+trial=109 memoryChance 1 -> 1
+trial=109 exitGraceSec 30 -> 45
+trial=109 angerStage2 45 -> 40
+trial=109 replyBase.SMALLTALK 0.8 -> 0.8
+trial=109 chatTurnsMax 4 -> 4
+trial=109 effects.DOUBT.anger 15 -> 15
+trial=109 effects.REBUT.anger 15 -> 15
+trial=109 motives.IDLE.DOUBT 13 -> 16
+trial=109 motives.IDLE.MOCK 2 -> 3
+trial=109 seed=73129 messages=462 R1=0.615385 R2=3.352941 R3=0.428571 R4=3.000000 R5=3.000000 R7=0.051948 R8=0.010239
+trial=109 seed=73130 messages=431 R1=0.603865 R2=3.358491 R3=0.489559 R4=9.000000 R5=3.000000 R7=0.058005 R8=0.012635
+trial=109 seed=73131 messages=422 R1=0.649746 R2=3.666667 R3=0.476303 R4=8.000000 R5=4.000000 R7=0.068720 R8=0.011706
+trial=109 seed=73132 messages=421 R1=0.585635 R2=3.163265 R3=0.432304 R4=4.000000 R5=2.000000 R7=0.023753 R8=0.009671
+trial=109 seed=73133 messages=392 R1=0.585714 R2=3.460000 R3=0.551020 R4=7.000000 R5=7.000000 R7=0.099490 R8=0.001645
+trial=109 R6=0.684211 error=1.608481
+trial=110 temperMean 60 -> 65
+trial=110 angerDecayPerHour 8 -> 6
+trial=110 idleChance 0.025 -> 0.03
+trial=110 initiateTargetChance 0.4 -> 0.42
+trial=110 memoryMaxUses 4 -> 6
+trial=110 argumentTurnsMin 8 -> 8
+trial=110 argumentTurnsMax 14 -> 14
+trial=110 memoryChance 1 -> 1
+trial=110 exitGraceSec 45 -> 45
+trial=110 angerStage2 40 -> 40
+trial=110 replyBase.SMALLTALK 0.8 -> 0.8
+trial=110 chatTurnsMax 4 -> 4
+trial=110 effects.DOUBT.anger 15 -> 15
+trial=110 effects.REBUT.anger 15 -> 15
+trial=110 motives.IDLE.DOUBT 16 -> 16
+trial=110 motives.IDLE.MOCK 3 -> 2
+trial=110 seed=73129 messages=432 R1=0.642857 R2=3.360656 R3=0.525463 R4=7.000000 R5=3.000000 R7=0.062500 R8=0.004666
+trial=110 seed=73130 messages=455 R1=0.598958 R2=3.017544 R3=0.426374 R4=5.000000 R5=2.000000 R7=0.019780 R8=0.014019
+trial=110 seed=73131 messages=465 R1=0.659836 R2=3.555556 R3=0.539785 R4=11.000000 R5=4.000000 R7=0.086022 R8=0.003096
+trial=110 seed=73132 messages=474 R1=0.628821 R2=3.181818 R3=0.487342 R4=5.000000 R5=1.000000 R7=0.018987 R8=0.005495
+trial=110 seed=73133 messages=420 R1=0.606383 R2=3.478261 R3=0.454762 R4=8.000000 R5=3.000000 R7=0.078571 R8=0.012146
+trial=110 R6=0.692308 error=0.938564
+trial=111 temperMean 65 -> 60
+trial=111 angerDecayPerHour 6 -> 6
+trial=111 idleChance 0.03 -> 0.025
+trial=111 initiateTargetChance 0.42 -> 0.4
+trial=111 memoryMaxUses 6 -> 4
+trial=111 argumentTurnsMin 8 -> 8
+trial=111 argumentTurnsMax 14 -> 14
+trial=111 memoryChance 1 -> 1
+trial=111 exitGraceSec 45 -> 30
+trial=111 angerStage2 40 -> 45
+trial=111 replyBase.SMALLTALK 0.8 -> 0.8
+trial=111 chatTurnsMax 4 -> 4
+trial=111 effects.DOUBT.anger 15 -> 15
+trial=111 effects.REBUT.anger 15 -> 15
+trial=111 motives.IDLE.DOUBT 16 -> 20
+trial=111 motives.IDLE.MOCK 2 -> 3
+trial=111 seed=73129 messages=449 R1=0.647059 R2=3.306452 R3=0.498886 R4=6.000000 R5=3.000000 R7=0.057906 R8=0.003630
+trial=111 seed=73130 messages=438 R1=0.625000 R2=3.456140 R3=0.522831 R4=13.000000 R5=5.000000 R7=0.082192 R8=0.012500
+trial=111 seed=73131 messages=405 R1=0.621145 R2=4.065217 R3=0.572840 R4=12.000000 R5=6.000000 R7=0.130864 R8=0.002688
+trial=111 seed=73132 messages=419 R1=0.603261 R2=3.176471 R3=0.448687 R4=8.000000 R5=3.000000 R7=0.062053 R8=0.007905
+trial=111 seed=73133 messages=370 R1=0.629630 R2=3.644444 R3=0.518919 R4=5.000000 R5=3.000000 R7=0.054054 R8=0.006369
+trial=111 R6=0.750000 error=1.572947
+trial=112 temperMean 60 -> 65
+trial=112 angerDecayPerHour 6 -> 5
+trial=112 idleChance 0.025 -> 0.03
+trial=112 initiateTargetChance 0.4 -> 0.4
+trial=112 memoryMaxUses 4 -> 4
+trial=112 argumentTurnsMin 8 -> 8
+trial=112 argumentTurnsMax 14 -> 14
+trial=112 memoryChance 1 -> 1
+trial=112 exitGraceSec 30 -> 30
+trial=112 angerStage2 45 -> 50
+trial=112 replyBase.SMALLTALK 0.8 -> 0.8
+trial=112 chatTurnsMax 4 -> 4
+trial=112 effects.DOUBT.anger 15 -> 15
+trial=112 effects.REBUT.anger 15 -> 15
+trial=112 motives.IDLE.DOUBT 20 -> 13
+trial=112 motives.IDLE.MOCK 3 -> 3
+trial=112 seed=73129 messages=436 R1=0.601896 R2=3.396226 R3=0.500000 R4=8.000000 R5=6.000000 R7=0.080275 R8=0.008621
+trial=112 seed=73130 messages=496 R1=0.637168 R2=3.571429 R3=0.463710 R4=8.000000 R5=3.000000 R7=0.046371 R8=0.008418
+trial=112 seed=73131 messages=449 R1=0.594595 R2=3.391304 R3=0.423163 R4=7.000000 R5=4.000000 R7=0.064588 R8=0.004552
+trial=112 seed=73132 messages=431 R1=0.619792 R2=3.531915 R3=0.452436 R4=7.000000 R5=5.000000 R7=0.081206 R8=0.009615
+trial=112 seed=73133 messages=447 R1=0.598930 R2=3.036364 R3=0.422819 R4=4.000000 R5=2.000000 R7=0.026846 R8=0.011881
+trial=112 R6=0.400000 error=1.267834
+trial=113 temperMean 65 -> 65
+trial=113 angerDecayPerHour 5 -> 7
+trial=113 idleChance 0.03 -> 0.03
+trial=113 initiateTargetChance 0.4 -> 0.42
+trial=113 memoryMaxUses 4 -> 4
+trial=113 argumentTurnsMin 8 -> 8
+trial=113 argumentTurnsMax 14 -> 12
+trial=113 memoryChance 1 -> 1
+trial=113 exitGraceSec 30 -> 45
+trial=113 angerStage2 50 -> 50
+trial=113 replyBase.SMALLTALK 0.8 -> 0.8
+trial=113 chatTurnsMax 4 -> 4
+trial=113 effects.DOUBT.anger 15 -> 15
+trial=113 effects.REBUT.anger 15 -> 15
+trial=113 motives.IDLE.DOUBT 13 -> 16
+trial=113 motives.IDLE.MOCK 3 -> 3
+trial=113 seed=73129 messages=448 R1=0.647321 R2=4.062500 R3=0.515625 R4=13.000000 R5=5.000000 R7=0.104911 R8=0.002677
+trial=113 seed=73130 messages=478 R1=0.622727 R2=3.283333 R3=0.468619 R4=7.000000 R5=2.000000 R7=0.025105 R8=0.021277
+trial=113 seed=73131 messages=470 R1=0.634703 R2=3.106061 R3=0.468085 R4=3.000000 R5=1.000000 R7=0.021277 R8=0.010676
+trial=113 seed=73132 messages=459 R1=0.614350 R2=3.490909 R3=0.496732 R4=11.000000 R5=5.000000 R7=0.091503 R8=0.005997
+trial=113 seed=73133 messages=434 R1=0.640553 R2=3.574074 R3=0.511521 R4=10.000000 R5=5.000000 R7=0.085253 R8=0.013966
+trial=113 R6=0.722222 error=1.762826
+trial=114 temperMean 65 -> 65
+trial=114 angerDecayPerHour 7 -> 8
+trial=114 idleChance 0.03 -> 0.02
+trial=114 initiateTargetChance 0.42 -> 0.42
+trial=114 memoryMaxUses 4 -> 4
+trial=114 argumentTurnsMin 8 -> 8
+trial=114 argumentTurnsMax 12 -> 14
+trial=114 memoryChance 1 -> 1
+trial=114 exitGraceSec 45 -> 45
+trial=114 angerStage2 50 -> 40
+trial=114 replyBase.SMALLTALK 0.8 -> 0.8
+trial=114 chatTurnsMax 4 -> 4
+trial=114 effects.DOUBT.anger 15 -> 15
+trial=114 effects.REBUT.anger 15 -> 15
+trial=114 motives.IDLE.DOUBT 16 -> 16
+trial=114 motives.IDLE.MOCK 3 -> 3
+trial=114 seed=73129 messages=401 R1=0.635359 R2=3.555556 R3=0.458853 R4=6.000000 R5=4.000000 R7=0.079800 R8=0.005941
+trial=114 seed=73130 messages=413 R1=0.598985 R2=3.145455 R3=0.484262 R4=7.000000 R5=2.000000 R7=0.041162 R8=0.012891
+trial=114 seed=73131 messages=388 R1=0.622449 R2=3.392157 R3=0.520619 R4=7.000000 R5=4.000000 R7=0.082474 R8=0.001565
+trial=114 seed=73132 messages=372 R1=0.638889 R2=3.500000 R3=0.491935 R4=5.000000 R5=3.000000 R7=0.067204 R8=0.009259
+trial=114 seed=73133 messages=379 R1=0.640000 R2=3.666667 R3=0.543536 R4=6.000000 R5=6.000000 R7=0.071240 R8=0.008032
+trial=114 R6=0.736842 error=1.075815
+trial=115 temperMean 65 -> 60
+trial=115 angerDecayPerHour 8 -> 5
+trial=115 idleChance 0.02 -> 0.025
+trial=115 initiateTargetChance 0.42 -> 0.42
+trial=115 memoryMaxUses 4 -> 6
+trial=115 argumentTurnsMin 8 -> 8
+trial=115 argumentTurnsMax 14 -> 14
+trial=115 memoryChance 1 -> 1
+trial=115 exitGraceSec 45 -> 45
+trial=115 angerStage2 40 -> 45
+trial=115 replyBase.SMALLTALK 0.8 -> 0.8
+trial=115 chatTurnsMax 4 -> 4
+trial=115 effects.DOUBT.anger 15 -> 15
+trial=115 effects.REBUT.anger 15 -> 15
+trial=115 motives.IDLE.DOUBT 16 -> 20
+trial=115 motives.IDLE.MOCK 3 -> 2
+trial=115 seed=73129 messages=413 R1=0.628141 R2=3.423077 R3=0.489104 R4=9.000000 R5=5.000000 R7=0.075061 R8=0.009119
+trial=115 seed=73130 messages=414 R1=0.601942 R2=3.254545 R3=0.512077 R4=9.000000 R5=3.000000 R7=0.033816 R8=0.003096
+trial=115 seed=73131 messages=432 R1=0.604520 R2=3.229167 R3=0.418981 R4=5.000000 R5=2.000000 R7=0.032407 R8=0.015209
+trial=115 seed=73132 messages=408 R1=0.620513 R2=3.086207 R3=0.482843 R4=3.000000 R5=2.000000 R7=0.031863 R8=0.003788
+trial=115 seed=73133 messages=433 R1=0.637255 R2=3.500000 R3=0.482679 R4=8.000000 R5=5.000000 R7=0.078522 R8=0.000000
+trial=115 R6=0.647059 error=1.337096
+trial=116 temperMean 60 -> 65
+trial=116 angerDecayPerHour 5 -> 8
+trial=116 idleChance 0.025 -> 0.03
+trial=116 initiateTargetChance 0.42 -> 0.42
+trial=116 memoryMaxUses 6 -> 6
+trial=116 argumentTurnsMin 8 -> 8
+trial=116 argumentTurnsMax 14 -> 12
+trial=116 memoryChance 1 -> 1
+trial=116 exitGraceSec 45 -> 45
+trial=116 angerStage2 45 -> 40
+trial=116 replyBase.SMALLTALK 0.8 -> 0.8
+trial=116 chatTurnsMax 4 -> 4
+trial=116 effects.DOUBT.anger 15 -> 15
+trial=116 effects.REBUT.anger 15 -> 15
+trial=116 motives.IDLE.DOUBT 20 -> 13
+trial=116 motives.IDLE.MOCK 2 -> 2
+trial=116 seed=73129 messages=492 R1=0.674603 R2=3.463768 R3=0.518293 R4=7.000000 R5=3.000000 R7=0.050813 R8=0.009434
+trial=116 seed=73130 messages=483 R1=0.615385 R2=2.802817 R3=0.430642 R4=1.000000 R5=0.000000 R7=0.000000 R8=0.022267
+trial=116 seed=73131 messages=482 R1=0.626168 R2=3.063492 R3=0.448133 R4=5.000000 R5=2.000000 R7=0.029046 R8=0.005025
+trial=116 seed=73132 messages=458 R1=0.592391 R2=3.018519 R3=0.406114 R4=3.000000 R5=1.000000 R7=0.019651 R8=0.008180
+trial=116 seed=73133 messages=417 R1=0.621622 R2=3.211538 R3=0.450839 R4=8.000000 R5=3.000000 R7=0.064748 R8=0.013093
+trial=116 R6=0.555556 error=1.801470
+trial=117 temperMean 65 -> 60
+trial=117 angerDecayPerHour 8 -> 6
+trial=117 idleChance 0.03 -> 0.02
+trial=117 initiateTargetChance 0.42 -> 0.4
+trial=117 memoryMaxUses 6 -> 6
+trial=117 argumentTurnsMin 8 -> 8
+trial=117 argumentTurnsMax 12 -> 14
+trial=117 memoryChance 1 -> 1
+trial=117 exitGraceSec 45 -> 45
+trial=117 angerStage2 40 -> 50
+trial=117 replyBase.SMALLTALK 0.8 -> 0.8
+trial=117 chatTurnsMax 4 -> 4
+trial=117 effects.DOUBT.anger 15 -> 15
+trial=117 effects.REBUT.anger 15 -> 15
+trial=117 motives.IDLE.DOUBT 13 -> 13
+trial=117 motives.IDLE.MOCK 2 -> 2
+trial=117 seed=73129 messages=342 R1=0.639752 R2=3.372093 R3=0.476608 R4=4.000000 R5=2.000000 R7=0.038012 R8=0.015845
+trial=117 seed=73130 messages=391 R1=0.650273 R2=3.333333 R3=0.473146 R4=5.000000 R5=2.000000 R7=0.043478 R8=0.010000
+trial=117 seed=73131 messages=378 R1=0.635762 R2=3.232558 R3=0.407407 R4=3.000000 R5=2.000000 R7=0.044974 R8=0.012658
+trial=117 seed=73132 messages=384 R1=0.625731 R2=3.276596 R3=0.447917 R4=7.000000 R5=1.000000 R7=0.026042 R8=0.010127
+trial=117 seed=73133 messages=368 R1=0.594444 R2=3.160000 R3=0.494565 R4=4.000000 R5=2.000000 R7=0.051630 R8=0.000000
+trial=117 R6=1.111111 error=0.565857
+trial=118 temperMean 60 -> 65
+trial=118 angerDecayPerHour 6 -> 6
+trial=118 idleChance 0.02 -> 0.025
+trial=118 initiateTargetChance 0.4 -> 0.42
+trial=118 memoryMaxUses 6 -> 4
+trial=118 argumentTurnsMin 8 -> 8
+trial=118 argumentTurnsMax 14 -> 12
+trial=118 memoryChance 1 -> 1
+trial=118 exitGraceSec 45 -> 30
+trial=118 angerStage2 50 -> 50
+trial=118 replyBase.SMALLTALK 0.8 -> 0.8
+trial=118 chatTurnsMax 4 -> 4
+trial=118 effects.DOUBT.anger 15 -> 15
+trial=118 effects.REBUT.anger 15 -> 15
+trial=118 motives.IDLE.DOUBT 13 -> 13
+trial=118 motives.IDLE.MOCK 2 -> 2
+trial=118 seed=73129 messages=434 R1=0.666667 R2=3.340426 R3=0.382488 R4=3.000000 R5=2.000000 R7=0.034562 R8=0.025197
+trial=118 seed=73130 messages=438 R1=0.612613 R2=3.288136 R3=0.513699 R4=7.000000 R5=3.000000 R7=0.052511 R8=0.005464
+trial=118 seed=73131 messages=436 R1=0.600000 R2=2.932203 R3=0.435780 R4=1.000000 R5=0.000000 R7=0.000000 R8=0.006834
+trial=118 seed=73132 messages=420 R1=0.586735 R2=3.254902 R3=0.476190 R4=7.000000 R5=4.000000 R7=0.083333 R8=0.007634
+trial=118 seed=73133 messages=345 R1=0.589595 R2=3.372093 R3=0.518841 R4=7.000000 R5=5.000000 R7=0.075362 R8=0.003521
+trial=118 R6=0.857143 error=1.847377
+trial=119 temperMean 65 -> 65
+trial=119 angerDecayPerHour 6 -> 5
+trial=119 idleChance 0.025 -> 0.035
+trial=119 initiateTargetChance 0.42 -> 0.42
+trial=119 memoryMaxUses 4 -> 4
+trial=119 argumentTurnsMin 8 -> 8
+trial=119 argumentTurnsMax 12 -> 12
+trial=119 memoryChance 1 -> 1
+trial=119 exitGraceSec 30 -> 30
+trial=119 angerStage2 50 -> 45
+trial=119 replyBase.SMALLTALK 0.8 -> 0.8
+trial=119 chatTurnsMax 4 -> 4
+trial=119 effects.DOUBT.anger 15 -> 15
+trial=119 effects.REBUT.anger 15 -> 15
+trial=119 motives.IDLE.DOUBT 13 -> 20
+trial=119 motives.IDLE.MOCK 2 -> 3
+trial=119 seed=73129 messages=484 R1=0.650206 R2=3.633333 R3=0.516529 R4=9.000000 R5=4.000000 R7=0.064050 R8=0.003927
+trial=119 seed=73130 messages=469 R1=0.617284 R2=3.112676 R3=0.526652 R4=7.000000 R5=3.000000 R7=0.040512 R8=0.003778
+trial=119 seed=73131 messages=495 R1=0.572727 R2=3.172414 R3=0.454545 R4=6.000000 R5=3.000000 R7=0.044444 R8=0.005698
+trial=119 seed=73132 messages=460 R1=0.575221 R2=3.363636 R3=0.500000 R4=7.000000 R5=5.000000 R7=0.069565 R8=0.003995
+trial=119 seed=73133 messages=382 R1=0.583815 R2=3.148936 R3=0.468586 R4=10.000000 R5=4.000000 R7=0.065445 R8=0.007072
+trial=119 R6=0.842105 error=0.699679

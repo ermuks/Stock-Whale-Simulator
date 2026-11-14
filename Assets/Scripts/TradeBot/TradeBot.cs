@@ -220,6 +220,8 @@ public abstract partial class TradeBot : Trader
 
         if (InvestorSociety.Instance?.Orders != null && !InvestorSociety.Instance.Orders.AllowsRegular(this, ResolveStock(stock)))
         { return; }
+        if (Social != null && Social.Psychology.HasFomoFor(ResolveStock(stock)))
+        { volume = decimal.Floor(System.Math.Min(volume * (decimal)ChatSocialConfig.Current.Get("fomoAmountScale"), System.Math.Max(0m, cash - ReservedCash) / System.Math.Max(1m, price))); }
         MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), true, ref price, ref volume);
         base.BuyLimit(price, volume, subTickSteps, stock);
     }
@@ -487,6 +489,12 @@ public abstract partial class TradeBot : Trader
     {
         if (_isSingleStockTrader)
         { return _specializedStock != null && _specializedStock.AcceptsOrders ? _specializedStock : null; }
+
+        if (Social != null && Social.Psychology.HasFomo && StockManager.Instance != null && Random.value < ChatSocialConfig.Current.Get("fomoPickChance"))
+        {
+            foreach (var candidate in StockManager.Instance.stocks)
+            { if (candidate.AcceptsOrders && Social.Psychology.HasFomoFor(candidate)) { return candidate; } }
+        }
 
         if (Social != null && Social.InfluencedStock != null && Social.InfluencedStock.AcceptsOrders && Time.time < Social.InfluenceUntil && Random.value < .1f + Social.Greed * .25f)
         { return Social.InfluencedStock; }

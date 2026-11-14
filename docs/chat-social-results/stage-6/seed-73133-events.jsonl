@@ -1,0 +1,324 @@
+{"time":553.8666666666667,"kind":"THREAD_START","reason":null,"id":1,"threadId":0,"room":1,"actor":19,"target":7,"value":0}
+{"time":553.8666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":1,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":580.7333333333333,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":1,"target":0,"value":600.7333333333333}
+{"time":580.7333333333333,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":7,"target":0,"value":600.7333333333333}
+{"time":580.7333333333333,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":17,"target":0,"value":600.7333333333333}
+{"time":585.0666666666667,"kind":"THREAD_START","reason":null,"id":2,"threadId":0,"room":1,"actor":6,"target":3,"value":0}
+{"time":592,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":12,"target":0,"value":612}
+{"time":602.4,"kind":"CALL_IGNORED","reason":null,"id":16,"threadId":0,"room":1,"actor":6,"target":3,"value":0}
+{"time":602.4,"kind":"THREAD_END","reason":"NO_REPLY","id":2,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":610.6333333333333,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":15,"target":0,"value":630.6333333333333}
+{"time":614.5333333333333,"kind":"THREAD_START","reason":null,"id":3,"threadId":0,"room":1,"actor":10,"target":9,"value":0}
+{"time":614.5333333333333,"kind":"THREAD_END","reason":"RESOLVED","id":3,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":626.2333333333333,"kind":"THREAD_START","reason":null,"id":4,"threadId":0,"room":1,"actor":16,"target":15,"value":0}
+{"time":629.2666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":4,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":650.0666666666666,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":13,"target":0,"value":670.0666666666666}
+{"time":653.1,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":5,"target":0,"value":673.1}
+{"time":690.8,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":14,"target":0,"value":710.8}
+{"time":690.8,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":17,"target":0,"value":710.8}
+{"time":691.2333333333333,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":7,"target":0,"value":711.2333333333333}
+{"time":695.1333333333333,"kind":"THREAD_START","reason":null,"id":5,"threadId":0,"room":1,"actor":16,"target":20,"value":0}
+{"time":695.1333333333333,"kind":"THREAD_END","reason":"RESOLVED","id":5,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":711.1666666666666,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":6,"target":0,"value":731.1666666666666}
+{"time":721.1333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":48,"threadId":0,"room":1,"actor":16,"target":10,"value":1}
+{"time":725.4666666666667,"kind":"THREAD_START","reason":null,"id":6,"threadId":0,"room":1,"actor":16,"target":10,"value":0}
+{"time":734.1333333333333,"kind":"CALL_IGNORED","reason":null,"id":48,"threadId":0,"room":1,"actor":10,"target":16,"value":0}
+{"time":738.9,"kind":"THREAD_END","reason":"NO_REPLY","id":6,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":742.8,"kind":"THREAD_START","reason":null,"id":7,"threadId":0,"room":1,"actor":9,"target":7,"value":0}
+{"time":745.4,"kind":"THREAD_END","reason":"MAX_TURNS","id":7,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":759.2666666666667,"kind":"THREAD_START","reason":null,"id":8,"threadId":0,"room":1,"actor":5,"target":8,"value":0}
+{"time":761.8666666666667,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":1,"target":0,"value":781.8666666666667}
+{"time":761.8666666666667,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":9,"target":0,"value":781.8666666666667}
+{"time":763.6,"kind":"THREAD_END","reason":"RESOLVED","id":8,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":766.6333333333333,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":15,"target":0,"value":786.6333333333333}
+{"time":767.9333333333334,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":11,"target":0,"value":787.9333333333334}
+{"time":815.6,"kind":"THREAD_START","reason":null,"id":9,"threadId":0,"room":1,"actor":7,"target":17,"value":0}
+{"time":815.6,"kind":"THREAD_END","reason":"RESOLVED","id":9,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":820.3666666666667,"kind":"THREAD_START","reason":null,"id":10,"threadId":0,"room":1,"actor":9,"target":17,"value":0}
+{"time":820.3666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":10,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":829.4666666666667,"kind":"THREAD_START","reason":null,"id":11,"threadId":0,"room":1,"actor":20,"target":17,"value":0}
+{"time":833.8,"kind":"THREAD_END","reason":"MAX_TURNS","id":11,"threadId":0,"room":1,"actor":0,"target":0,"value":4}
+{"time":846.8,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":13,"target":0,"value":866.8}
+{"time":847.2333333333333,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":7,"target":0,"value":867.2333333333333}
+{"time":848.9666666666667,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":3,"target":0,"value":868.9666666666667}
+{"time":858.9333333333334,"kind":"THREAD_START","reason":null,"id":12,"threadId":0,"room":1,"actor":7,"target":13,"value":0}
+{"time":863.2666666666667,"kind":"THREAD_END","reason":"MAX_TURNS","id":12,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":865.8666666666667,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":10,"target":0,"value":885.8666666666667}
+{"time":880.6,"kind":"CALL_IGNORED","reason":null,"id":93,"threadId":0,"room":1,"actor":14,"target":10,"value":0}
+{"time":894.9,"kind":"THREAD_START","reason":null,"id":13,"threadId":0,"room":1,"actor":6,"target":17,"value":0}
+{"time":899.2333333333333,"kind":"THREAD_END","reason":"MAX_TURNS","id":13,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":913.5333333333333,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":5,"target":0,"value":933.5333333333333}
+{"time":921.3333333333333,"kind":"CALL_IGNORED","reason":null,"id":103,"threadId":0,"room":1,"actor":7,"target":10,"value":0}
+{"time":939.5333333333333,"kind":"THREAD_START","reason":null,"id":14,"threadId":0,"room":1,"actor":3,"target":9,"value":0}
+{"time":940.8333333333333,"kind":"THREAD_END","reason":"RESOLVED","id":14,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":946.4666666666667,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":7,"target":0,"value":966.4666666666667}
+{"time":948.2,"kind":"CALL_IGNORED","reason":null,"id":111,"threadId":0,"room":1,"actor":7,"target":8,"value":0}
+{"time":986.3333333333333,"kind":"THREAD_START","reason":null,"id":15,"threadId":0,"room":1,"actor":14,"target":3,"value":0}
+{"time":989.3666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":15,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":999.3333333333333,"kind":"THREAD_START","reason":null,"id":16,"threadId":0,"room":1,"actor":1,"target":6,"value":0}
+{"time":1005.4,"kind":"THREAD_END","reason":"MAX_TURNS","id":16,"threadId":0,"room":1,"actor":0,"target":0,"value":4}
+{"time":1033.5666666666666,"kind":"THREAD_START","reason":null,"id":17,"threadId":0,"room":1,"actor":7,"target":14,"value":0}
+{"time":1033.5666666666666,"kind":"THREAD_END","reason":"RESOLVED","id":17,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1056.1,"kind":"THREAD_START","reason":null,"id":18,"threadId":0,"room":1,"actor":3,"target":14,"value":0}
+{"time":1056.1,"kind":"THREAD_END","reason":"RESOLVED","id":18,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1102.4666666666667,"kind":"THREAD_START","reason":null,"id":19,"threadId":0,"room":1,"actor":15,"target":19,"value":0}
+{"time":1104.2,"kind":"THREAD_END","reason":"RESOLVED","id":19,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1141.4666666666667,"kind":"THREAD_START","reason":null,"id":20,"threadId":0,"room":1,"actor":12,"target":9,"value":0}
+{"time":1141.4666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":20,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1207.3333333333335,"kind":"ANGER_STAGE","reason":"direct-message","id":176,"threadId":0,"room":1,"actor":17,"target":2,"value":1}
+{"time":1211.6666666666665,"kind":"THREAD_START","reason":null,"id":21,"threadId":0,"room":1,"actor":17,"target":2,"value":0}
+{"time":1220.3333333333335,"kind":"CALL_IGNORED","reason":null,"id":176,"threadId":0,"room":1,"actor":2,"target":17,"value":0}
+{"time":1220.3333333333335,"kind":"ANGER_STAGE","reason":"ignored-call","id":176,"threadId":0,"room":1,"actor":2,"target":17,"value":1}
+{"time":1225.1,"kind":"THREAD_END","reason":"NO_REPLY","id":21,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1229,"kind":"THREAD_START","reason":null,"id":22,"threadId":0,"room":1,"actor":10,"target":14,"value":0}
+{"time":1233.7666666666667,"kind":"THREAD_END","reason":"MAX_TURNS","id":22,"threadId":0,"room":1,"actor":0,"target":0,"value":4}
+{"time":1246.3333333333335,"kind":"THREAD_START","reason":null,"id":23,"threadId":0,"room":1,"actor":11,"target":17,"value":0}
+{"time":1246.3333333333335,"kind":"THREAD_END","reason":"RESOLVED","id":23,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1253.2666666666667,"kind":"THREAD_START","reason":null,"id":24,"threadId":0,"room":1,"actor":17,"target":20,"value":0}
+{"time":1253.2666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":24,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1264.5333333333333,"kind":"THREAD_START","reason":null,"id":25,"threadId":0,"room":1,"actor":19,"target":20,"value":0}
+{"time":1264.5333333333333,"kind":"THREAD_END","reason":"RESOLVED","id":25,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1268.8666666666668,"kind":"THREAD_START","reason":null,"id":26,"threadId":0,"room":1,"actor":3,"target":20,"value":0}
+{"time":1273.2,"kind":"THREAD_END","reason":"MAX_TURNS","id":26,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1298.3333333333335,"kind":"THREAD_START","reason":null,"id":27,"threadId":0,"room":1,"actor":7,"target":6,"value":0}
+{"time":1307,"kind":"CALL_IGNORED","reason":null,"id":205,"threadId":0,"room":1,"actor":12,"target":10,"value":0}
+{"time":1314.8,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":5,"target":0,"value":1334.8}
+{"time":1314.8,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":9,"target":0,"value":1334.8}
+{"time":1315.2333333333333,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":7,"target":0,"value":1335.2333333333333}
+{"time":1315.6666666666665,"kind":"CALL_IGNORED","reason":null,"id":209,"threadId":0,"room":1,"actor":7,"target":6,"value":0}
+{"time":1315.6666666666665,"kind":"THREAD_END","reason":"NO_REPLY","id":27,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1327.8,"kind":"THREAD_START","reason":null,"id":28,"threadId":0,"room":1,"actor":16,"target":20,"value":0}
+{"time":1330.8333333333335,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":18,"target":0,"value":1350.8333333333335}
+{"time":1332.1333333333332,"kind":"THREAD_END","reason":"MAX_TURNS","id":28,"threadId":0,"room":1,"actor":0,"target":0,"value":4}
+{"time":1372.8666666666668,"kind":"THREAD_START","reason":null,"id":29,"threadId":0,"room":1,"actor":3,"target":9,"value":0}
+{"time":1385.8666666666668,"kind":"CALL_IGNORED","reason":null,"id":232,"threadId":0,"room":1,"actor":9,"target":3,"value":0}
+{"time":1385.8666666666668,"kind":"THREAD_END","reason":"NO_REPLY","id":29,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1407.5333333333333,"kind":"CALL_IGNORED","reason":null,"id":239,"threadId":0,"room":1,"actor":4,"target":14,"value":0}
+{"time":1426.6,"kind":"THREAD_START","reason":null,"id":30,"threadId":0,"room":1,"actor":19,"target":15,"value":0}
+{"time":1429.2,"kind":"THREAD_END","reason":"RESOLVED","id":30,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1433.5333333333333,"kind":"THREAD_START","reason":null,"id":31,"threadId":0,"room":1,"actor":17,"target":19,"value":0}
+{"time":1433.5333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":247,"threadId":0,"room":1,"actor":17,"target":19,"value":1}
+{"time":1435.2666666666667,"kind":"ANGER_STAGE","reason":"direct-message","id":248,"threadId":0,"room":1,"actor":19,"target":17,"value":1}
+{"time":1437.8666666666668,"kind":"ARGUMENT","reason":null,"id":31,"threadId":0,"room":1,"actor":17,"target":19,"value":0}
+{"time":1437.8666666666668,"kind":"ANGER_STAGE","reason":"direct-message","id":249,"threadId":0,"room":1,"actor":19,"target":17,"value":2}
+{"time":1439.6,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":250,"threadId":0,"room":0,"actor":19,"target":17,"value":1}
+{"time":1442.2,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":251,"threadId":0,"room":0,"actor":19,"target":17,"value":2}
+{"time":1442.2,"kind":"ANGER_STAGE","reason":"direct-message","id":251,"threadId":0,"room":1,"actor":17,"target":19,"value":2}
+{"time":1443.9333333333334,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":252,"threadId":0,"room":0,"actor":17,"target":19,"value":1}
+{"time":1446.5333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":253,"threadId":0,"room":0,"actor":17,"target":19,"value":2}
+{"time":1446.5333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":253,"threadId":0,"room":1,"actor":19,"target":17,"value":3}
+{"time":1450.8666666666668,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":255,"threadId":0,"room":0,"actor":19,"target":17,"value":3}
+{"time":1450.8666666666668,"kind":"ANGER_STAGE","reason":"direct-message","id":255,"threadId":0,"room":1,"actor":17,"target":19,"value":3}
+{"time":1455.2,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":257,"threadId":0,"room":0,"actor":17,"target":19,"value":3}
+{"time":1455.2,"kind":"ANGER_STAGE","reason":"direct-message","id":257,"threadId":0,"room":1,"actor":19,"target":17,"value":4}
+{"time":1455.2,"kind":"EXIT_WARNING","reason":null,"id":257,"threadId":0,"room":1,"actor":19,"target":17,"value":0}
+{"time":1456.9333333333334,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":258,"threadId":0,"room":0,"actor":19,"target":17,"value":4}
+{"time":1456.9333333333334,"kind":"ANGER_STAGE","reason":"direct-message","id":258,"threadId":0,"room":1,"actor":17,"target":19,"value":4}
+{"time":1456.9333333333334,"kind":"EXIT_WARNING","reason":null,"id":258,"threadId":0,"room":1,"actor":17,"target":19,"value":0}
+{"time":1459.5333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":259,"threadId":0,"room":0,"actor":19,"target":17,"value":5}
+{"time":1461.2666666666667,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":260,"threadId":0,"room":0,"actor":17,"target":19,"value":4}
+{"time":1463.8666666666668,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":261,"threadId":0,"room":0,"actor":17,"target":19,"value":5}
+{"time":1465.6,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":262,"threadId":0,"room":0,"actor":19,"target":17,"value":6}
+{"time":1465.6,"kind":"THREAD_END","reason":"MAX_TURNS","id":31,"threadId":0,"room":1,"actor":0,"target":0,"value":10}
+{"time":1469.9333333333334,"kind":"MEMORY_MENTION","reason":"FOUGHT #246","id":264,"threadId":0,"room":0,"actor":17,"target":19,"value":6}
+{"time":1472.5333333333333,"kind":"THREAD_START","reason":null,"id":32,"threadId":0,"room":1,"actor":17,"target":19,"value":0}
+{"time":1474.2666666666667,"kind":"THREAD_END","reason":"EXIT","id":32,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1474.2666666666667,"kind":"VOLUNTARY_EXIT","reason":"anger-grace","id":266,"threadId":31,"room":1,"actor":17,"target":19,"value":100}
+{"time":1474.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":3,"target":17,"value":75}
+{"time":1474.2666666666667,"kind":"SYMPATHY_ROLL","reason":"0.6412","id":266,"threadId":0,"room":1,"actor":3,"target":17,"value":0.75}
+{"time":1474.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":9,"target":17,"value":5}
+{"time":1474.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":13,"target":17,"value":0}
+{"time":1474.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":15,"target":17,"value":83}
+{"time":1474.2666666666667,"kind":"SYMPATHY_ROLL","reason":"0.3573","id":266,"threadId":0,"room":1,"actor":15,"target":17,"value":0.83}
+{"time":1474.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":19,"target":17,"value":-51}
+{"time":1474.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":20,"target":17,"value":5}
+{"time":1474.2666666666667,"kind":"SYMPATHY_SCHEDULED","reason":"depth=1","id":266,"threadId":0,"room":1,"actor":15,"target":17,"value":83}
+{"time":1474.2666666666667,"kind":"SYMPATHY_SCHEDULED","reason":"depth=1","id":266,"threadId":0,"room":1,"actor":3,"target":17,"value":75}
+{"time":1476.8666666666668,"kind":"SYMPATHY_EXIT","reason":"depth=1","id":267,"threadId":0,"room":1,"actor":15,"target":17,"value":83}
+{"time":1478.6,"kind":"SYMPATHY_EXIT","reason":"depth=1","id":268,"threadId":0,"room":1,"actor":3,"target":17,"value":75}
+{"time":1488.5666666666666,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":14,"target":17,"value":83}
+{"time":1488.5666666666666,"kind":"SYMPATHY_ROLL","reason":"0.8132","id":266,"threadId":0,"room":1,"actor":14,"target":17,"value":0.83}
+{"time":1488.5666666666666,"kind":"SYMPATHY_SCHEDULED","reason":"depth=1","id":266,"threadId":0,"room":1,"actor":14,"target":17,"value":83}
+{"time":1489.8666666666668,"kind":"CALL_IGNORED","reason":null,"id":267,"threadId":0,"room":1,"actor":15,"target":19,"value":0}
+{"time":1489.8666666666668,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":10,"target":17,"value":82}
+{"time":1489.8666666666668,"kind":"SYMPATHY_ROLL","reason":"0.8601","id":266,"threadId":0,"room":1,"actor":10,"target":17,"value":0.82}
+{"time":1492.4666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":266,"threadId":0,"room":1,"actor":2,"target":17,"value":-4}
+{"time":1498.5333333333333,"kind":"THREAD_START","reason":null,"id":33,"threadId":0,"room":1,"actor":10,"target":6,"value":0}
+{"time":1499.4,"kind":"SYMPATHY_EXIT","reason":"depth=1","id":275,"threadId":0,"room":1,"actor":14,"target":17,"value":83}
+{"time":1502.8666666666668,"kind":"THREAD_END","reason":"MAX_TURNS","id":33,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1544.9,"kind":"THREAD_START","reason":null,"id":34,"threadId":0,"room":0,"actor":14,"target":3,"value":0}
+{"time":1547.9333333333334,"kind":"THREAD_END","reason":"MAX_TURNS","id":34,"threadId":0,"room":0,"actor":0,"target":0,"value":3}
+{"time":1573.9333333333334,"kind":"THREAD_START","reason":null,"id":35,"threadId":0,"room":1,"actor":11,"target":13,"value":0}
+{"time":1573.9333333333334,"kind":"THREAD_END","reason":"RESOLVED","id":35,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1575.6666666666667,"kind":"THREAD_START","reason":null,"id":36,"threadId":0,"room":1,"actor":20,"target":19,"value":0}
+{"time":1578.2666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":36,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1586.0666666666666,"kind":"ANGER_STAGE","reason":"direct-message","id":302,"threadId":0,"room":0,"actor":15,"target":17,"value":1}
+{"time":1590.4,"kind":"THREAD_START","reason":null,"id":37,"threadId":0,"room":0,"actor":17,"target":15,"value":0}
+{"time":1591.7,"kind":"THREAD_START","reason":null,"id":38,"threadId":0,"room":1,"actor":7,"target":6,"value":0}
+{"time":1593.8666666666666,"kind":"THREAD_END","reason":"RESOLVED","id":38,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1604.7,"kind":"CALL_IGNORED","reason":null,"id":306,"threadId":0,"room":0,"actor":17,"target":15,"value":0}
+{"time":1604.7,"kind":"THREAD_END","reason":"NO_REPLY","id":37,"threadId":0,"room":0,"actor":0,"target":0,"value":3}
+{"time":1605.5666666666666,"kind":"THREAD_START","reason":null,"id":39,"threadId":0,"room":1,"actor":13,"target":7,"value":0}
+{"time":1609.9,"kind":"ARGUMENT","reason":null,"id":39,"threadId":0,"room":1,"actor":13,"target":7,"value":0}
+{"time":1609.9,"kind":"ANGER_STAGE","reason":"direct-message","id":312,"threadId":0,"room":1,"actor":7,"target":13,"value":1}
+{"time":1611.2,"kind":"ANGER_STAGE","reason":"direct-message","id":313,"threadId":0,"room":1,"actor":13,"target":7,"value":1}
+{"time":1614.2333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":314,"threadId":0,"room":1,"actor":13,"target":7,"value":2}
+{"time":1615.5333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":315,"threadId":0,"room":0,"actor":13,"target":7,"value":1}
+{"time":1615.5333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":315,"threadId":0,"room":1,"actor":7,"target":13,"value":2}
+{"time":1618.5666666666666,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":316,"threadId":0,"room":0,"actor":7,"target":13,"value":1}
+{"time":1619.8666666666666,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":317,"threadId":0,"room":0,"actor":13,"target":7,"value":2}
+{"time":1619.8666666666666,"kind":"ANGER_STAGE","reason":"direct-message","id":317,"threadId":0,"room":1,"actor":7,"target":13,"value":3}
+{"time":1622.9,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":319,"threadId":0,"room":0,"actor":13,"target":7,"value":3}
+{"time":1622.9,"kind":"ANGER_STAGE","reason":"direct-message","id":319,"threadId":0,"room":1,"actor":7,"target":13,"value":4}
+{"time":1622.9,"kind":"EXIT_WARNING","reason":null,"id":319,"threadId":0,"room":1,"actor":7,"target":13,"value":0}
+{"time":1627.2333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":321,"threadId":0,"room":0,"actor":7,"target":13,"value":2}
+{"time":1627.2333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":321,"threadId":0,"room":1,"actor":13,"target":7,"value":3}
+{"time":1628.5333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":322,"threadId":0,"room":0,"actor":13,"target":7,"value":4}
+{"time":1628.5333333333333,"kind":"THREAD_END","reason":"MAX_TURNS","id":39,"threadId":0,"room":1,"actor":0,"target":0,"value":9}
+{"time":1632.8666666666666,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":324,"threadId":0,"room":0,"actor":7,"target":13,"value":3}
+{"time":1632.8666666666666,"kind":"ANGER_STAGE","reason":"direct-message","id":324,"threadId":0,"room":1,"actor":13,"target":7,"value":4}
+{"time":1632.8666666666666,"kind":"EXIT_WARNING","reason":null,"id":324,"threadId":0,"room":1,"actor":13,"target":7,"value":0}
+{"time":1635.9,"kind":"THREAD_START","reason":null,"id":40,"threadId":0,"room":1,"actor":7,"target":13,"value":0}
+{"time":1635.9,"kind":"ARGUMENT","reason":null,"id":40,"threadId":0,"room":1,"actor":13,"target":7,"value":0}
+{"time":1635.9,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":325,"threadId":0,"room":0,"actor":13,"target":7,"value":5}
+{"time":1637.2,"kind":"THREAD_END","reason":"EXIT","id":40,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1637.2,"kind":"VOLUNTARY_EXIT","reason":"anger-grace","id":326,"threadId":39,"room":1,"actor":7,"target":13,"value":100}
+{"time":1637.2,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":326,"threadId":0,"room":1,"actor":20,"target":7,"value":0}
+{"time":1645.8666666666666,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":326,"threadId":0,"room":1,"actor":10,"target":7,"value":5}
+{"time":1647.1666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":326,"threadId":0,"room":1,"actor":6,"target":7,"value":10}
+{"time":1654.9666666666667,"kind":"THREAD_START","reason":null,"id":41,"threadId":0,"room":1,"actor":19,"target":13,"value":0}
+{"time":1659.3,"kind":"THREAD_END","reason":"MAX_TURNS","id":41,"threadId":0,"room":1,"actor":0,"target":0,"value":4}
+{"time":1665.8,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":326,"threadId":0,"room":1,"actor":9,"target":7,"value":0}
+{"time":1670.1333333333334,"kind":"THREAD_START","reason":null,"id":42,"threadId":0,"room":1,"actor":5,"target":2,"value":0}
+{"time":1673.1666666666667,"kind":"THREAD_START","reason":null,"id":43,"threadId":0,"room":0,"actor":17,"target":3,"value":0}
+{"time":1673.1666666666667,"kind":"THREAD_END","reason":"MAX_TURNS","id":42,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1676.2,"kind":"THREAD_END","reason":"RESOLVED","id":43,"threadId":0,"room":0,"actor":0,"target":0,"value":3}
+{"time":1684,"kind":"THREAD_START","reason":null,"id":44,"threadId":0,"room":1,"actor":10,"target":5,"value":0}
+{"time":1686.1666666666667,"kind":"THREAD_END","reason":"MAX_TURNS","id":44,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1690.5,"kind":"THREAD_START","reason":null,"id":45,"threadId":0,"room":1,"actor":6,"target":10,"value":0}
+{"time":1705.6666666666667,"kind":"CALL_IGNORED","reason":null,"id":349,"threadId":0,"room":1,"actor":6,"target":10,"value":0}
+{"time":1705.6666666666667,"kind":"THREAD_END","reason":"NO_REPLY","id":45,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1705.6666666666667,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":13,"target":0,"value":1725.6666666666667}
+{"time":1713.0333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #309","id":357,"threadId":0,"room":0,"actor":13,"target":7,"value":6}
+{"time":1716.9333333333334,"kind":"THREAD_START","reason":null,"id":46,"threadId":0,"room":0,"actor":13,"target":7,"value":0}
+{"time":1721.2666666666667,"kind":"THREAD_END","reason":"MAX_TURNS","id":46,"threadId":0,"room":0,"actor":0,"target":0,"value":4}
+{"time":1723.8666666666666,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":10,"target":0,"value":1743.8666666666666}
+{"time":1725.1666666666667,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":6,"target":0,"value":1745.1666666666667}
+{"time":1736,"kind":"THREAD_START","reason":null,"id":47,"threadId":0,"room":1,"actor":19,"target":6,"value":0}
+{"time":1739.0333333333333,"kind":"THREAD_END","reason":"MAX_TURNS","id":47,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1766.3333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":374,"threadId":0,"room":1,"actor":2,"target":5,"value":1}
+{"time":1768.0666666666666,"kind":"THREAD_START","reason":null,"id":48,"threadId":0,"room":1,"actor":5,"target":2,"value":0}
+{"time":1772.4,"kind":"THREAD_END","reason":"RESOLVED","id":48,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1776.7333333333333,"kind":"THREAD_START","reason":null,"id":49,"threadId":0,"room":1,"actor":5,"target":1,"value":0}
+{"time":1781.9333333333334,"kind":"THREAD_END","reason":"MAX_TURNS","id":49,"threadId":0,"room":1,"actor":0,"target":0,"value":4}
+{"time":1789.7333333333333,"kind":"THREAD_START","reason":null,"id":50,"threadId":0,"room":0,"actor":7,"target":17,"value":0}
+{"time":1792.3333333333333,"kind":"ARGUMENT","reason":null,"id":50,"threadId":0,"room":0,"actor":7,"target":17,"value":0}
+{"time":1792.3333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":387,"threadId":0,"room":0,"actor":17,"target":7,"value":1}
+{"time":1794.0666666666666,"kind":"ANGER_STAGE","reason":"direct-message","id":388,"threadId":0,"room":0,"actor":7,"target":17,"value":1}
+{"time":1796.6666666666667,"kind":"ANGER_STAGE","reason":"direct-message","id":389,"threadId":0,"room":0,"actor":7,"target":17,"value":2}
+{"time":1798.4,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":390,"threadId":0,"room":0,"actor":7,"target":17,"value":1}
+{"time":1798.4,"kind":"ANGER_STAGE","reason":"direct-message","id":390,"threadId":0,"room":0,"actor":17,"target":7,"value":2}
+{"time":1798.4,"kind":"ANGER_STAGE","reason":"direct-message","id":392,"threadId":0,"room":1,"actor":11,"target":19,"value":1}
+{"time":1801,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":393,"threadId":0,"room":0,"actor":17,"target":7,"value":1}
+{"time":1801,"kind":"ANGER_STAGE","reason":"direct-message","id":393,"threadId":0,"room":0,"actor":7,"target":17,"value":3}
+{"time":1802.7333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":394,"threadId":0,"room":0,"actor":7,"target":17,"value":2}
+{"time":1802.7333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":394,"threadId":0,"room":0,"actor":17,"target":7,"value":3}
+{"time":1802.7333333333333,"kind":"THREAD_START","reason":null,"id":51,"threadId":0,"room":1,"actor":19,"target":11,"value":0}
+{"time":1802.7333333333333,"kind":"ARGUMENT","reason":null,"id":51,"threadId":0,"room":1,"actor":11,"target":19,"value":0}
+{"time":1805.3333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":397,"threadId":0,"room":0,"actor":17,"target":7,"value":2}
+{"time":1805.3333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":397,"threadId":0,"room":0,"actor":7,"target":17,"value":4}
+{"time":1807.9333333333334,"kind":"ANGER_STAGE","reason":"direct-message","id":400,"threadId":0,"room":1,"actor":19,"target":11,"value":1}
+{"time":1809.6666666666667,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":401,"threadId":0,"room":0,"actor":7,"target":17,"value":3}
+{"time":1809.6666666666667,"kind":"ANGER_STAGE","reason":"direct-message","id":401,"threadId":0,"room":0,"actor":17,"target":7,"value":4}
+{"time":1811.4,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":402,"threadId":0,"room":0,"actor":17,"target":7,"value":3}
+{"time":1811.4,"kind":"ANGER_STAGE","reason":"direct-message","id":403,"threadId":0,"room":1,"actor":19,"target":11,"value":2}
+{"time":1812.2666666666667,"kind":"MEMORY_MENTION","reason":"FOUGHT #392","id":404,"threadId":0,"room":0,"actor":19,"target":11,"value":1}
+{"time":1812.2666666666667,"kind":"ANGER_STAGE","reason":"direct-message","id":404,"threadId":0,"room":1,"actor":11,"target":19,"value":2}
+{"time":1815.7333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":406,"threadId":0,"room":0,"actor":19,"target":11,"value":1}
+{"time":1815.7333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":406,"threadId":0,"room":1,"actor":11,"target":19,"value":3}
+{"time":1815.7333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":407,"threadId":0,"room":0,"actor":17,"target":7,"value":4}
+{"time":1816.6,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":408,"threadId":0,"room":0,"actor":11,"target":19,"value":1}
+{"time":1818.3333333333333,"kind":"THREAD_END","reason":"MAX_TURNS","id":50,"threadId":0,"room":0,"actor":0,"target":0,"value":12}
+{"time":1820.0666666666666,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":410,"threadId":0,"room":0,"actor":11,"target":19,"value":2}
+{"time":1820.0666666666666,"kind":"ANGER_STAGE","reason":"direct-message","id":410,"threadId":0,"room":1,"actor":19,"target":11,"value":3}
+{"time":1820.9333333333334,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":411,"threadId":0,"room":0,"actor":17,"target":7,"value":5}
+{"time":1822.6666666666667,"kind":"THREAD_START","reason":null,"id":52,"threadId":0,"room":0,"actor":17,"target":7,"value":0}
+{"time":1822.6666666666667,"kind":"ARGUMENT","reason":null,"id":52,"threadId":0,"room":0,"actor":7,"target":17,"value":0}
+{"time":1822.6666666666667,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":413,"threadId":0,"room":0,"actor":7,"target":17,"value":4}
+{"time":1824.4,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":414,"threadId":0,"room":0,"actor":19,"target":11,"value":2}
+{"time":1824.4,"kind":"ANGER_STAGE","reason":"direct-message","id":414,"threadId":0,"room":1,"actor":11,"target":19,"value":4}
+{"time":1824.4,"kind":"EXIT_WARNING","reason":null,"id":414,"threadId":0,"room":1,"actor":11,"target":19,"value":0}
+{"time":1825.7,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":416,"threadId":0,"room":0,"actor":17,"target":7,"value":6}
+{"time":1827,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":417,"threadId":0,"room":0,"actor":7,"target":17,"value":5}
+{"time":1828.7333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":418,"threadId":0,"room":0,"actor":11,"target":19,"value":3}
+{"time":1828.7333333333333,"kind":"ANGER_STAGE","reason":"direct-message","id":418,"threadId":0,"room":1,"actor":19,"target":11,"value":4}
+{"time":1828.7333333333333,"kind":"EXIT_WARNING","reason":null,"id":418,"threadId":0,"room":1,"actor":19,"target":11,"value":0}
+{"time":1831.3333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #385","id":421,"threadId":0,"room":0,"actor":7,"target":17,"value":6}
+{"time":1833.0666666666666,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":422,"threadId":0,"room":0,"actor":19,"target":11,"value":3}
+{"time":1833.0666666666666,"kind":"THREAD_END","reason":"MAX_TURNS","id":51,"threadId":0,"room":1,"actor":0,"target":0,"value":9}
+{"time":1833.9333333333334,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":423,"threadId":0,"room":0,"actor":11,"target":19,"value":4}
+{"time":1837.4,"kind":"THREAD_START","reason":null,"id":53,"threadId":0,"room":1,"actor":11,"target":19,"value":0}
+{"time":1837.4,"kind":"ARGUMENT","reason":null,"id":53,"threadId":0,"room":1,"actor":19,"target":11,"value":0}
+{"time":1837.4,"kind":"MEMORY_MENTION","reason":"FOUGHT #404","id":426,"threadId":0,"room":0,"actor":19,"target":11,"value":4}
+{"time":1838.2666666666667,"kind":"THREAD_END","reason":"EXIT","id":53,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1838.2666666666667,"kind":"VOLUNTARY_EXIT","reason":"anger-grace","id":427,"threadId":51,"room":1,"actor":11,"target":19,"value":100}
+{"time":1838.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":427,"threadId":0,"room":1,"actor":1,"target":11,"value":0}
+{"time":1838.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":427,"threadId":0,"room":1,"actor":6,"target":11,"value":0}
+{"time":1838.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":427,"threadId":0,"room":1,"actor":9,"target":11,"value":0}
+{"time":1838.2666666666667,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":427,"threadId":0,"room":1,"actor":10,"target":11,"value":0}
+{"time":1838.7,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":427,"threadId":0,"room":1,"actor":16,"target":11,"value":0}
+{"time":1839.1333333333334,"kind":"THREAD_END","reason":"MAX_TURNS","id":52,"threadId":0,"room":0,"actor":0,"target":0,"value":9}
+{"time":1843.0333333333333,"kind":"THREAD_START","reason":null,"id":54,"threadId":0,"room":1,"actor":20,"target":19,"value":0}
+{"time":1843.0333333333333,"kind":"THREAD_END","reason":"RESOLVED","id":54,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1853.8666666666666,"kind":"THREAD_START","reason":null,"id":55,"threadId":0,"room":1,"actor":13,"target":19,"value":0}
+{"time":1856.9,"kind":"SYMPATHY_WITNESS","reason":"observed-farewell","id":427,"threadId":0,"room":1,"actor":19,"target":11,"value":-31}
+{"time":1864.2666666666667,"kind":"CALL_IGNORED","reason":null,"id":435,"threadId":0,"room":1,"actor":6,"target":20,"value":0}
+{"time":1866.8666666666666,"kind":"CALL_IGNORED","reason":null,"id":436,"threadId":0,"room":1,"actor":19,"target":13,"value":0}
+{"time":1866.8666666666666,"kind":"THREAD_END","reason":"NO_REPLY","id":55,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1868.1666666666667,"kind":"THREAD_START","reason":null,"id":56,"threadId":0,"room":0,"actor":7,"target":14,"value":0}
+{"time":1870.3333333333333,"kind":"THREAD_END","reason":"RESOLVED","id":56,"threadId":0,"room":0,"actor":0,"target":0,"value":3}
+{"time":1890.2666666666667,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":19,"target":0,"value":1910.2666666666667}
+{"time":1892.8666666666666,"kind":"THREAD_START","reason":null,"id":57,"threadId":0,"room":0,"actor":3,"target":7,"value":0}
+{"time":1892.8666666666666,"kind":"ANGER_STAGE","reason":"direct-message","id":448,"threadId":0,"room":0,"actor":3,"target":7,"value":1}
+{"time":1893.3,"kind":"ANGER_STAGE","reason":"direct-message","id":449,"threadId":0,"room":0,"actor":7,"target":3,"value":1}
+{"time":1896.3333333333333,"kind":"CALL_IGNORED","reason":null,"id":442,"threadId":0,"room":1,"actor":10,"target":12,"value":0}
+{"time":1897.2,"kind":"ARGUMENT","reason":null,"id":57,"threadId":0,"room":0,"actor":3,"target":7,"value":0}
+{"time":1897.2,"kind":"ANGER_STAGE","reason":"direct-message","id":450,"threadId":0,"room":0,"actor":7,"target":3,"value":2}
+{"time":1897.6333333333334,"kind":"MEMORY_MENTION","reason":"FOUGHT #444","id":451,"threadId":0,"room":0,"actor":7,"target":3,"value":1}
+{"time":1897.6333333333334,"kind":"ANGER_STAGE","reason":"direct-message","id":451,"threadId":0,"room":0,"actor":3,"target":7,"value":2}
+{"time":1901.5333333333333,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":452,"threadId":0,"room":0,"actor":7,"target":3,"value":1}
+{"time":1901.9666666666667,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":454,"threadId":0,"room":0,"actor":3,"target":7,"value":1}
+{"time":1901.9666666666667,"kind":"ANGER_STAGE","reason":"direct-message","id":454,"threadId":0,"room":0,"actor":7,"target":3,"value":3}
+{"time":1906.3,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":456,"threadId":0,"room":0,"actor":7,"target":3,"value":2}
+{"time":1906.3,"kind":"ANGER_STAGE","reason":"direct-message","id":456,"threadId":0,"room":0,"actor":3,"target":7,"value":3}
+{"time":1916.2666666666667,"kind":"THREAD_END","reason":"RESOLVED","id":57,"threadId":0,"room":0,"actor":0,"target":0,"value":8}
+{"time":1918,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":5,"target":0,"value":1938}
+{"time":1918,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":6,"target":0,"value":1938}
+{"time":1918,"kind":"FOMO_START","reason":"S0","id":0,"threadId":0,"room":0,"actor":10,"target":0,"value":1938}
+{"time":1918.8666666666666,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":464,"threadId":0,"room":0,"actor":3,"target":7,"value":2}
+{"time":1918.8666666666666,"kind":"ANGER_STAGE","reason":"direct-message","id":464,"threadId":0,"room":0,"actor":7,"target":3,"value":3}
+{"time":1919.7333333333333,"kind":"FOMO_START","reason":"S2","id":0,"threadId":0,"room":0,"actor":8,"target":0,"value":1939.7333333333333}
+{"time":1920.6,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":465,"threadId":0,"room":0,"actor":7,"target":3,"value":3}
+{"time":1920.6,"kind":"ANGER_STAGE","reason":"direct-message","id":465,"threadId":0,"room":0,"actor":3,"target":7,"value":4}
+{"time":1923.2,"kind":"THREAD_START","reason":null,"id":58,"threadId":0,"room":0,"actor":7,"target":3,"value":0}
+{"time":1923.2,"kind":"ARGUMENT","reason":null,"id":58,"threadId":0,"room":0,"actor":3,"target":7,"value":0}
+{"time":1923.2,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":468,"threadId":0,"room":0,"actor":3,"target":7,"value":3}
+{"time":1923.2,"kind":"ANGER_STAGE","reason":"direct-message","id":468,"threadId":0,"room":0,"actor":7,"target":3,"value":4}
+{"time":1925.3666666666666,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":469,"threadId":0,"room":0,"actor":7,"target":3,"value":4}
+{"time":1931.8666666666666,"kind":"CALL_IGNORED","reason":null,"id":464,"threadId":0,"room":0,"actor":3,"target":7,"value":0}
+{"time":1934.4666666666667,"kind":"THREAD_START","reason":null,"id":59,"threadId":0,"room":1,"actor":8,"target":6,"value":0}
+{"time":1936.2,"kind":"THREAD_END","reason":"MAX_TURNS","id":59,"threadId":0,"room":1,"actor":0,"target":0,"value":3}
+{"time":1936.6333333333334,"kind":"THREAD_END","reason":"NO_REPLY","id":58,"threadId":0,"room":0,"actor":0,"target":0,"value":2}
+{"time":1942.2666666666667,"kind":"THREAD_START","reason":null,"id":60,"threadId":0,"room":0,"actor":17,"target":2,"value":0}
+{"time":1945.3,"kind":"THREAD_END","reason":"MAX_TURNS","id":60,"threadId":0,"room":0,"actor":0,"target":0,"value":3}
+{"time":1950.9333333333334,"kind":"THREAD_START","reason":null,"id":61,"threadId":0,"room":1,"actor":16,"target":13,"value":0}
+{"time":1957,"kind":"ANGER_STAGE","reason":"direct-message","id":487,"threadId":0,"room":0,"actor":15,"target":7,"value":1}
+{"time":1961.3333333333333,"kind":"THREAD_START","reason":null,"id":62,"threadId":0,"room":0,"actor":15,"target":7,"value":0}
+{"time":1962.2,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":491,"threadId":0,"room":0,"actor":3,"target":7,"value":4}
+{"time":1963.9333333333334,"kind":"CALL_IGNORED","reason":null,"id":486,"threadId":0,"room":1,"actor":13,"target":16,"value":0}
+{"time":1963.9333333333334,"kind":"THREAD_END","reason":"NO_REPLY","id":61,"threadId":0,"room":1,"actor":0,"target":0,"value":2}
+{"time":1965.6666666666667,"kind":"ARGUMENT","reason":null,"id":62,"threadId":0,"room":0,"actor":7,"target":3,"value":0}
+{"time":1965.6666666666667,"kind":"MEMORY_MENTION","reason":"FOUGHT #451","id":493,"threadId":0,"room":0,"actor":7,"target":3,"value":5}
+{"time":1970,"kind":"CALL_IGNORED","reason":null,"id":487,"threadId":0,"room":0,"actor":7,"target":15,"value":0}
+{"time":1978.6666666666667,"kind":"CALL_IGNORED","reason":null,"id":493,"threadId":0,"room":0,"actor":7,"target":3,"value":0}
+{"time":1978.6666666666667,"kind":"THREAD_END","reason":"NO_REPLY","id":62,"threadId":0,"room":0,"actor":0,"target":0,"value":4}

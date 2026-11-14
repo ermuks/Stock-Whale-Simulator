@@ -16185,6 +16185,5352 @@
       "requires": [
         "notice:UNMUTED"
       ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.0",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저와 언쟁하셨던 이야기는 기억하십니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.1",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저와도 같은 식으로 다투셨습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.2",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "저와 {memWhen} 언쟁하신 뒤로 달라진 게 있습니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.3",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 언쟁의 상대가 저였다는 건 기억하시지요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.4",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이번 말씀을 들으니 {memWhen} 저와 언쟁하신 일이 생각납니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.5",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 다퉜던 기억 때문에 말씀을 그대로 받아들이기 어렵습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.6",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 이미 한 번 부딪혔습니다. 이번에도 의견이 다르군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.1.7",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저와 싸웠던 일부터 떠오르는군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.0",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저와 언쟁하셨던 이야기는 기억하십니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.1",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저와도 같은 식으로 다투셨습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.2",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "저와 {memWhen} 언쟁하신 뒤로 달라진 게 있습니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.3",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 언쟁의 상대가 저였다는 건 기억하시지요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.4",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이번 말씀을 들으니 {memWhen} 저와 언쟁하신 일이 생각납니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.5",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 다퉜던 기억 때문에 말씀을 그대로 받아들이기 어렵습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.6",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 이미 한 번 부딪혔습니다. 이번에도 의견이 다르군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.2.7",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저와 싸웠던 일부터 떠오르는군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.0",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저와 언쟁하셨던 이야기는 기억하십니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.1",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저와도 같은 식으로 다투셨습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.2",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "저와 {memWhen} 언쟁하신 뒤로 달라진 게 있습니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.3",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 언쟁의 상대가 저였다는 건 기억하시지요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.4",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이번 말씀을 들으니 {memWhen} 저와 언쟁하신 일이 생각납니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.5",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 다퉜던 기억 때문에 말씀을 그대로 받아들이기 어렵습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.6",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 이미 한 번 부딪혔습니다. 이번에도 의견이 다르군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.formal.3.7",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저와 싸웠던 일부터 떠오르는군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.0",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 언쟁한 건 기억하세요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.1",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저한테도 그러셨잖아요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.2",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 다투고 뭐가 달라졌나요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.3",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸웠던 상대가 저예요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.4",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이번 말 들으니 {memWhen} 저랑 언쟁했던 일이 생각나요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.5",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 다툰 게 기억나서 그 말을 쉽게 받아들이긴 어렵네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.6",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 의견이 다르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.1.7",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 싸웠던 일부터 떠오르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.0",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 언쟁한 건 기억하세요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.1",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저한테도 그러셨잖아요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.2",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 다투고 뭐가 달라졌나요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.3",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸웠던 상대가 저예요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.4",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이번 말 들으니 {memWhen} 저랑 언쟁했던 일이 생각나요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.5",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 다툰 게 기억나서 그 말을 쉽게 받아들이긴 어렵네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.6",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 의견이 다르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.2.7",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 싸웠던 일부터 떠오르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.0",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 언쟁한 건 기억하세요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.1",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저한테도 그러셨잖아요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.2",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 다투고 뭐가 달라졌나요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.3",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸웠던 상대가 저예요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.4",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이번 말 들으니 {memWhen} 저랑 언쟁했던 일이 생각나요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.5",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 다툰 게 기억나서 그 말을 쉽게 받아들이긴 어렵네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.6",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 의견이 다르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.casual.3.7",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 싸웠던 일부터 떠오르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.0",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸운 건 기억함?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.1",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 나한테도 그랬잖아.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.2",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 뒤로 뭐가 달라졌는데?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.3",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 상대가 나야.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.4",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이 말 들으니 {memWhen} 나랑 싸운 거 생각난다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.5",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 거 기억나는데 그 말을 쉽게 믿겠냐.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.6",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 생각 다르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.1.7",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸웠던 거부터 떠오르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.0",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸운 건 기억함?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.1",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 나한테도 그랬잖아.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.2",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 뒤로 뭐가 달라졌는데?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.3",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 상대가 나야.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.4",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이 말 들으니 {memWhen} 나랑 싸운 거 생각난다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.5",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 거 기억나는데 그 말을 쉽게 믿겠냐.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.6",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 생각 다르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.2.7",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸웠던 거부터 떠오르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.0",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸운 건 기억함?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.1",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 나한테도 그랬잖아.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.2",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 뒤로 뭐가 달라졌는데?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.3",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 상대가 나야.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.4",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이 말 들으니 {memWhen} 나랑 싸운 거 생각난다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.5",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 거 기억나는데 그 말을 쉽게 믿겠냐.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.6",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 생각 다르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.MOCK.rough.3.7",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸웠던 거부터 떠오르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.0",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저와 언쟁하셨던 이야기는 기억하십니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.1",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저와도 같은 식으로 다투셨습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.2",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "저와 {memWhen} 언쟁하신 뒤로 달라진 게 있습니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.3",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 언쟁의 상대가 저였다는 건 기억하시지요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.4",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이번 말씀을 들으니 {memWhen} 저와 언쟁하신 일이 생각납니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.5",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 다퉜던 기억 때문에 말씀을 그대로 받아들이기 어렵습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.6",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 이미 한 번 부딪혔습니다. 이번에도 의견이 다르군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.1.7",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저와 싸웠던 일부터 떠오르는군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.0",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저와 언쟁하셨던 이야기는 기억하십니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.1",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저와도 같은 식으로 다투셨습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.2",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "저와 {memWhen} 언쟁하신 뒤로 달라진 게 있습니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.3",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 언쟁의 상대가 저였다는 건 기억하시지요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.4",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이번 말씀을 들으니 {memWhen} 저와 언쟁하신 일이 생각납니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.5",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 다퉜던 기억 때문에 말씀을 그대로 받아들이기 어렵습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.6",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 이미 한 번 부딪혔습니다. 이번에도 의견이 다르군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.2.7",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저와 싸웠던 일부터 떠오르는군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.0",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저와 언쟁하셨던 이야기는 기억하십니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.1",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저와도 같은 식으로 다투셨습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.2",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "저와 {memWhen} 언쟁하신 뒤로 달라진 게 있습니까?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.3",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 언쟁의 상대가 저였다는 건 기억하시지요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.4",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이번 말씀을 들으니 {memWhen} 저와 언쟁하신 일이 생각납니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.5",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 다퉜던 기억 때문에 말씀을 그대로 받아들이기 어렵습니다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.6",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 이미 한 번 부딪혔습니다. 이번에도 의견이 다르군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.formal.3.7",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저와 싸웠던 일부터 떠오르는군요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.0",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 언쟁한 건 기억하세요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.1",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저한테도 그러셨잖아요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.2",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 다투고 뭐가 달라졌나요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.3",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸웠던 상대가 저예요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.4",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이번 말 들으니 {memWhen} 저랑 언쟁했던 일이 생각나요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.5",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 다툰 게 기억나서 그 말을 쉽게 받아들이긴 어렵네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.6",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 의견이 다르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.1.7",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 싸웠던 일부터 떠오르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.0",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 언쟁한 건 기억하세요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.1",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저한테도 그러셨잖아요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.2",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 다투고 뭐가 달라졌나요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.3",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸웠던 상대가 저예요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.4",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이번 말 들으니 {memWhen} 저랑 언쟁했던 일이 생각나요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.5",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 다툰 게 기억나서 그 말을 쉽게 받아들이긴 어렵네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.6",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 의견이 다르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.2.7",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 싸웠던 일부터 떠오르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.0",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 언쟁한 건 기억하세요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.1",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저한테도 그러셨잖아요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.2",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 다투고 뭐가 달라졌나요?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.3",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸웠던 상대가 저예요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.4",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이번 말 들으니 {memWhen} 저랑 언쟁했던 일이 생각나요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.5",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 다툰 게 기억나서 그 말을 쉽게 받아들이긴 어렵네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.6",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 의견이 다르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.casual.3.7",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 저랑 싸웠던 일부터 떠오르네요.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.0",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸운 건 기억함?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.1",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 나한테도 그랬잖아.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.2",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 뒤로 뭐가 달라졌는데?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.3",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 상대가 나야.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.4",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이 말 들으니 {memWhen} 나랑 싸운 거 생각난다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.5",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 거 기억나는데 그 말을 쉽게 믿겠냐.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.6",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 생각 다르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.1.7",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸웠던 거부터 떠오르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.0",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸운 건 기억함?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.1",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 나한테도 그랬잖아.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.2",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 뒤로 뭐가 달라졌는데?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.3",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 상대가 나야.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.4",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이 말 들으니 {memWhen} 나랑 싸운 거 생각난다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.5",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 거 기억나는데 그 말을 쉽게 믿겠냐.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.6",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 생각 다르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.2.7",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸웠던 거부터 떠오르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.0",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸운 건 기억함?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.1",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 나한테도 그랬잖아.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.2",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 뒤로 뭐가 달라졌는데?",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.3",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 상대가 나야.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.4",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이 말 들으니 {memWhen} 나랑 싸운 거 생각난다.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.5",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 싸운 거 기억나는데 그 말을 쉽게 믿겠냐.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.6",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 한 번 부딪혔는데 이번에도 생각 다르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.FOUGHT.REBUT.rough.3.7",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 나랑 싸웠던 거부터 떠오르네.",
+      "requires": [
+        "memory:FOUGHT"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.1.0",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑 뒤 {memPct}% 손실이라 하신 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.1.1",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑하시다가 {memPct}%라고 하셨지요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.1.2",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 하신 {memSymbol} 손실 이야기와는 다르군요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.1.3",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 손익 말씀하신 분 아닌가요?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.2.0",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑 뒤 {memPct}% 손실이라 하신 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.2.1",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑하시다가 {memPct}%라고 하셨지요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.2.2",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 하신 {memSymbol} 손실 이야기와는 다르군요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.2.3",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 손익 말씀하신 분 아닌가요?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.3.0",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑 뒤 {memPct}% 손실이라 하신 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.3.1",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑하시다가 {memPct}%라고 하셨지요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.3.2",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 하신 {memSymbol} 손실 이야기와는 다르군요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.formal.3.3",
+      "act": "MOCK",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 손익 말씀하신 분 아닌가요?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.1.0",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}% 됐다고 하셨죠.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.1.1",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤어요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.1.2",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실 얘기하셨잖아요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.1.3",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 하신 분 맞죠?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.2.0",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}% 됐다고 하셨죠.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.2.1",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤어요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.2.2",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실 얘기하셨잖아요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.2.3",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 하신 분 맞죠?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.3.0",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}% 됐다고 하셨죠.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.3.1",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤어요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.3.2",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실 얘기하셨잖아요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.casual.3.3",
+      "act": "MOCK",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 하신 분 맞죠?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.1.0",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}%라며.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.1.1",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.1.2",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실이라 했잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.1.3",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 한 사람이 너잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.2.0",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}%라며.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.2.1",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.2.2",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실이라 했잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.2.3",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 한 사람이 너잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.3.0",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}%라며.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.3.1",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.3.2",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실이라 했잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.MOCK.rough.3.3",
+      "act": "MOCK",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 한 사람이 너잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.1.0",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑 뒤 {memPct}% 손실이라 하신 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.1.1",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑하시다가 {memPct}%라고 하셨지요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.1.2",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 하신 {memSymbol} 손실 이야기와는 다르군요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.1.3",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 손익 말씀하신 분 아닌가요?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.2.0",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑 뒤 {memPct}% 손실이라 하신 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.2.1",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑하시다가 {memPct}%라고 하셨지요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.2.2",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 하신 {memSymbol} 손실 이야기와는 다르군요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.2.3",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 손익 말씀하신 분 아닌가요?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.3.0",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑 뒤 {memPct}% 손실이라 하신 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.3.1",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑하시다가 {memPct}%라고 하셨지요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.3.2",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 하신 {memSymbol} 손실 이야기와는 다르군요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.formal.3.3",
+      "act": "REBUT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 손익 말씀하신 분 아닌가요?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.1.0",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}% 됐다고 하셨죠.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.1.1",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤어요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.1.2",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실 얘기하셨잖아요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.1.3",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 하신 분 맞죠?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.2.0",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}% 됐다고 하셨죠.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.2.1",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤어요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.2.2",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실 얘기하셨잖아요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.2.3",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 하신 분 맞죠?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.3.0",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}% 됐다고 하셨죠.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.3.1",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤어요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.3.2",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실 얘기하셨잖아요.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.casual.3.3",
+      "act": "REBUT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 하신 분 맞죠?",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.1.0",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}%라며.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.1.1",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.1.2",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실이라 했잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.1.3",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 한 사람이 너잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.2.0",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}%라며.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.2.1",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.2.2",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실이라 했잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.2.3",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 한 사람이 너잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.3.0",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 자랑하다 {memPct}%라며.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.3.1",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 자랑 뒤 손실 얘기도 봤다.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.3.2",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 손실이라 했잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_BRAG_THEN_CRASH.REBUT.rough.3.3",
+      "act": "REBUT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}%라고 한 사람이 너잖아.",
+      "requires": [
+        "memory:SAW_BRAG_THEN_CRASH"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.1.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.1.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였습니다. 다음엔 근거를 더 보겠습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.1.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 리딩을 따랐던 {memSymbol} 손실이 기억납니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.1.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 지시에서 손해를 봤던 경험이 있어 조심스럽습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.2.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.2.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였습니다. 다음엔 근거를 더 보겠습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.2.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 리딩을 따랐던 {memSymbol} 손실이 기억납니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.2.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 지시에서 손해를 봤던 경험이 있어 조심스럽습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.3.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.3.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였습니다. 다음엔 근거를 더 보겠습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.3.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 리딩을 따랐던 {memSymbol} 손실이 기억납니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.formal.3.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 지시에서 손해를 봤던 경험이 있어 조심스럽습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.1.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.1.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였어요. 근거 좀 더 볼게요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.1.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 본 손실이 기억나요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.1.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 따라갔다 손해 봐서 조심스러워요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.2.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.2.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였어요. 근거 좀 더 볼게요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.2.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 본 손실이 기억나요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.2.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 따라갔다 손해 봐서 조심스러워요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.3.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.3.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였어요. 근거 좀 더 볼게요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.3.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 본 손실이 기억나요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.casual.3.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 따라갔다 손해 봐서 조심스러워요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.1.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.1.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 결과 {memPct}%. 근거 좀 보자.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.1.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 손실 본 거 기억함.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.1.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 따라가다 손해 봐서 조심하는 거야.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.2.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.2.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 결과 {memPct}%. 근거 좀 보자.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.2.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 손실 본 거 기억함.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.2.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 따라가다 손해 봐서 조심하는 거야.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.3.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.3.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 결과 {memPct}%. 근거 좀 보자.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.3.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 손실 본 거 기억함.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.WARN_PLAYER.rough.3.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 따라가다 손해 봐서 조심하는 거야.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.1.0",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.1.1",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였습니다. 다음엔 근거를 더 보겠습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.1.2",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 리딩을 따랐던 {memSymbol} 손실이 기억납니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.1.3",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 지시에서 손해를 봤던 경험이 있어 조심스럽습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.2.0",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.2.1",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였습니다. 다음엔 근거를 더 보겠습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.2.2",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 리딩을 따랐던 {memSymbol} 손실이 기억납니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.2.3",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 지시에서 손해를 봤던 경험이 있어 조심스럽습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.3.0",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.3.1",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였습니다. 다음엔 근거를 더 보겠습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.3.2",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 리딩을 따랐던 {memSymbol} 손실이 기억납니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.formal.3.3",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 지시에서 손해를 봤던 경험이 있어 조심스럽습니다.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.1.0",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.1.1",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였어요. 근거 좀 더 볼게요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.1.2",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 본 손실이 기억나요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.1.3",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 따라갔다 손해 봐서 조심스러워요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.2.0",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.2.1",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였어요. 근거 좀 더 볼게요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.2.2",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 본 손실이 기억나요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.2.3",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 따라갔다 손해 봐서 조심스러워요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.3.0",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.3.1",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 결과는 {memPct}%였어요. 근거 좀 더 볼게요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.3.2",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 본 손실이 기억나요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.casual.3.3",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 따라갔다 손해 봐서 조심스러워요.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.1.0",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.1.1",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 결과 {memPct}%. 근거 좀 보자.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.1.2",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 손실 본 거 기억함.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.1.3",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} 따라가다 손해 봐서 조심하는 거야.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.2.0",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.2.1",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 결과 {memPct}%. 근거 좀 보자.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.2.2",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 손실 본 거 기억함.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.2.3",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} 따라가다 손해 봐서 조심하는 거야.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.3.0",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.3.1",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 결과 {memPct}%. 근거 좀 보자.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.3.2",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시에서 손실 본 거 기억함.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.LOSS_BY_LEAD.DOUBT.rough.3.3",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} 따라가다 손해 봐서 조심하는 거야.",
+      "requires": [
+        "memory:LOSS_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.1.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 추방당한 적이 있습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.1.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "저는 이미 한 번 추방을 경험했습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.1.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.1.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "추방당한 경험이 있어 믿음이 쉽게 생기지 않습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.2.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 추방당한 적이 있습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.2.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "저는 이미 한 번 추방을 경험했습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.2.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.2.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "추방당한 경험이 있어 믿음이 쉽게 생기지 않습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.3.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 추방당한 적이 있습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.3.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "저는 이미 한 번 추방을 경험했습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.3.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.formal.3.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "추방당한 경험이 있어 믿음이 쉽게 생기지 않습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.1.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.1.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "전 이미 한 번 추방당했어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.1.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 거 기억나요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.1.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "쫓겨난 적 있어서 쉽게 믿기는 어렵네요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.2.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.2.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "전 이미 한 번 추방당했어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.2.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 거 기억나요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.2.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "쫓겨난 적 있어서 쉽게 믿기는 어렵네요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.3.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.3.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "전 이미 한 번 추방당했어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.3.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 거 기억나요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.casual.3.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "쫓겨난 적 있어서 쉽게 믿기는 어렵네요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.1.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났음.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.1.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "난 이미 한 번 추방당했다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.1.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 내보낸 거 기억함.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.1.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "쫓겨난 적 있는데 쉽게 믿겠냐.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.2.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났음.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.2.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "난 이미 한 번 추방당했다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.2.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 내보낸 거 기억함.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.2.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "쫓겨난 적 있는데 쉽게 믿겠냐.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.3.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났음.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.3.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "난 이미 한 번 추방당했다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.3.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 내보낸 거 기억함.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.WARN_PLAYER.rough.3.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "쫓겨난 적 있는데 쉽게 믿겠냐.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.1.0",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 추방당한 적이 있습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.1.1",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "저는 이미 한 번 추방을 경험했습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.1.2",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.1.3",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "추방당한 경험이 있어 믿음이 쉽게 생기지 않습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.2.0",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 추방당한 적이 있습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.2.1",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "저는 이미 한 번 추방을 경험했습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.2.2",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.2.3",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "추방당한 경험이 있어 믿음이 쉽게 생기지 않습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.3.0",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 추방당한 적이 있습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.3.1",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "저는 이미 한 번 추방을 경험했습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.3.2",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.formal.3.3",
+      "act": "DOUBT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "추방당한 경험이 있어 믿음이 쉽게 생기지 않습니다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.1.0",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.1.1",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "전 이미 한 번 추방당했어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.1.2",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 거 기억나요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.1.3",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "쫓겨난 적 있어서 쉽게 믿기는 어렵네요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.2.0",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.2.1",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "전 이미 한 번 추방당했어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.2.2",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 거 기억나요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.2.3",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "쫓겨난 적 있어서 쉽게 믿기는 어렵네요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.3.0",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.3.1",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "전 이미 한 번 추방당했어요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.3.2",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 내보내신 거 기억나요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.casual.3.3",
+      "act": "DOUBT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "쫓겨난 적 있어서 쉽게 믿기는 어렵네요.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.1.0",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났음.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.1.1",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "난 이미 한 번 추방당했다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.1.2",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 내보낸 거 기억함.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.1.3",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "쫓겨난 적 있는데 쉽게 믿겠냐.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.2.0",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났음.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.2.1",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "난 이미 한 번 추방당했다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.2.2",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 내보낸 거 기억함.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.2.3",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "쫓겨난 적 있는데 쉽게 믿겠냐.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.3.0",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 그 방에서 쫓겨났음.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.3.1",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "난 이미 한 번 추방당했다.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.3.2",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 내보낸 거 기억함.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.KICKED.DOUBT.rough.3.3",
+      "act": "DOUBT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "쫓겨난 적 있는데 쉽게 믿겠냐.",
+      "requires": [
+        "memory:KICKED"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.1.0",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시로 {memPct}% 수익을 얻었습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.1.1",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.1.2",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시가 제게 도움이 됐습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.1.3",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol}에서 {memPct}% 얻었던 경험은 인정합니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.2.0",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시로 {memPct}% 수익을 얻었습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.2.1",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.2.2",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시가 제게 도움이 됐습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.2.3",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol}에서 {memPct}% 얻었던 경험은 인정합니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.3.0",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시로 {memPct}% 수익을 얻었습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.3.1",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.3.2",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시가 제게 도움이 됐습니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.formal.3.3",
+      "act": "PRAISE_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol}에서 {memPct}% 얻었던 경험은 인정합니다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.1.0",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라가서 {memPct}% 벌었어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.1.1",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.1.2",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시가 도움 됐어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.1.3",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol}에서 {memPct}% 얻은 건 인정해요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.2.0",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라가서 {memPct}% 벌었어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.2.1",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.2.2",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시가 도움 됐어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.2.3",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol}에서 {memPct}% 얻은 건 인정해요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.3.0",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라가서 {memPct}% 벌었어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.3.1",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.3.2",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시가 도움 됐어요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.casual.3.3",
+      "act": "PRAISE_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol}에서 {memPct}% 얻은 건 인정해요.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.1.0",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라가서 {memPct}% 벌었다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.1.1",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 손익 {memAmount}원이었음.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.1.2",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시는 도움 됐지.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.1.3",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 얻은 건 인정함.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.2.0",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라가서 {memPct}% 벌었다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.2.1",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 손익 {memAmount}원이었음.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.2.2",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시는 도움 됐지.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.2.3",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 얻은 건 인정함.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.3.0",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 따라가서 {memPct}% 벌었다.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.3.1",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "내 {memSymbol} 리딩 손익 {memAmount}원이었음.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.3.2",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} {memSymbol} 지시는 도움 됐지.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.GAIN_BY_LEAD.PRAISE_PLAYER.rough.3.3",
+      "act": "PRAISE_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memSymbol} {memPct}% 얻은 건 인정함.",
+      "requires": [
+        "memory:GAIN_BY_LEAD"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.1.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 다른 분이 추방되는 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.1.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "전에도 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.1.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면이 떠오릅니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.1.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이전에도 누군가 추방되는 걸 봤지요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.2.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 다른 분이 추방되는 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.2.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "전에도 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.2.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면이 떠오릅니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.2.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이전에도 누군가 추방되는 걸 봤지요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.3.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 다른 분이 추방되는 것도 봤습니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.3.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "전에도 내보내신 일이 기억납니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.3.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면이 떠오릅니다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.formal.3.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이전에도 누군가 추방되는 걸 봤지요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.1.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 다른 분 나가는 것도 봤어요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.1.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "전에도 내보내신 거 기억나요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.1.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면이 떠오르네요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.1.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "이전에도 누가 쫓겨나는 걸 봤어요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.2.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 다른 분 나가는 것도 봤어요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.2.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "전에도 내보내신 거 기억나요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.2.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면이 떠오르네요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.2.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "이전에도 누가 쫓겨나는 걸 봤어요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.3.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 다른 분 나가는 것도 봤어요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.3.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "전에도 내보내신 거 기억나요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.3.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면이 떠오르네요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.casual.3.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "이전에도 누가 쫓겨나는 걸 봤어요.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.1.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 다른 사람 추방도 봤음.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.1.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "전에도 내보낸 거 기억난다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.1.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면 생각나네.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.1.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "memory",
+      "text": "전에 누가 쫓겨나는 것도 봤다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.2.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 다른 사람 추방도 봤음.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.2.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "전에도 내보낸 거 기억난다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.2.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면 생각나네.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.2.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "memory",
+      "text": "전에 누가 쫓겨나는 것도 봤다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.3.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 다른 사람 추방도 봤음.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.3.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "전에도 내보낸 거 기억난다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.3.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "{memWhen} 추방 장면 생각나네.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "MEMORY.SAW_KICK.REACT.rough.3.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "memory",
+      "text": "전에 누가 쫓겨나는 것도 봤다.",
+      "requires": [
+        "memory:SAW_KICK"
+      ]
+    },
+    {
+      "key": "FOMO.formal.1.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 기회를 놓칠까 조급해집니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.1.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 {symbol}을 따라가야 할지 고민됩니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.1.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 생각하기 어렵습니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.1.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol}을 보고 있자니 마음이 급합니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.1.4",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 수익 이야기를 보니 흔들립니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.1.5",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 진입 여부를 다시 생각하고 있습니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.2.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 기회를 놓칠까 조급해집니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.2.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 {symbol}을 따라가야 할지 고민됩니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.2.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 생각하기 어렵습니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.2.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol}을 보고 있자니 마음이 급합니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.2.4",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 수익 이야기를 보니 흔들립니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.2.5",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 진입 여부를 다시 생각하고 있습니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.3.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 기회를 놓칠까 조급해집니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.3.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 {symbol}을 따라가야 할지 고민됩니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.3.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 생각하기 어렵습니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.3.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol}을 보고 있자니 마음이 급합니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.3.4",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 수익 이야기를 보니 흔들립니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.formal.3.5",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 진입 여부를 다시 생각하고 있습니다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.1.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 놓칠까 조급하네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.1.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 {symbol} 따라가야 하나 고민돼요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.1.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 생각하긴 어렵네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.1.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 보니까 마음이 급해요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.1.4",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 수익 얘기 들으니 흔들리네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.1.5",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 진입할지 다시 생각 중이에요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.2.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 놓칠까 조급하네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.2.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 {symbol} 따라가야 하나 고민돼요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.2.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 생각하긴 어렵네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.2.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 보니까 마음이 급해요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.2.4",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 수익 얘기 들으니 흔들리네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.2.5",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 진입할지 다시 생각 중이에요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.3.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 놓칠까 조급하네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.3.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 {symbol} 따라가야 하나 고민돼요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.3.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 생각하긴 어렵네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.3.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 보니까 마음이 급해요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.3.4",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 수익 얘기 들으니 흔들리네요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.casual.3.5",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 진입할지 다시 생각 중이에요.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.1.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 놓칠까 조급하다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.1.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 {symbol} 따라가야 하나.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.1.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 보긴 어렵네.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.1.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 보니까 마음 급해진다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.1.4",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 수익 얘기에 흔들리네.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.1.5",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{symbol} 진입할지 다시 생각 중.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.2.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 놓칠까 조급하다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.2.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 {symbol} 따라가야 하나.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.2.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 보긴 어렵네.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.2.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 보니까 마음 급해진다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.2.4",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 수익 얘기에 흔들리네.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.2.5",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{symbol} 진입할지 다시 생각 중.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.3.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 놓칠까 조급하다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.3.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 {symbol} 따라가야 하나.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.3.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol}, 늦었다고만 보긴 어렵네.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.3.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 보니까 마음 급해진다.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.3.4",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 수익 얘기에 흔들리네.",
+      "requires": [
+        "notice:FOMO"
+      ]
+    },
+    {
+      "key": "FOMO.rough.3.5",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{symbol} 진입할지 다시 생각 중.",
+      "requires": [
+        "notice:FOMO"
+      ]
     }
   ],
   "suffixes": []

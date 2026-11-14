@@ -1,0 +1,151 @@
+{
+  "chat_social_config.json": [
+    {
+      "key": "temperMean",
+      "before": 50,
+      "after": 55.0
+    },
+    {
+      "key": "roomMaxMsgPer10Sec",
+      "before": 5,
+      "after": 2.0
+    },
+    {
+      "key": "replyExpiry",
+      "before": 20,
+      "after": 30.0
+    },
+    {
+      "key": "idleChance",
+      "before": 0.12,
+      "after": 0.025
+    },
+    {
+      "key": "memoryChance",
+      "before": 0.4,
+      "after": 1.0
+    },
+    {
+      "key": "memoryMaxUses",
+      "before": 2,
+      "after": 6.0
+    },
+    {
+      "key": "argumentTurnsMax",
+      "before": 12.0,
+      "after": 14.0
+    },
+    {
+      "key": "maxThreads",
+      "before": 2,
+      "after": 1.0
+    },
+    {
+      "key": "angerStage1",
+      "before": 30,
+      "after": 20.0
+    },
+    {
+      "key": "angerStage2",
+      "before": 55,
+      "after": 45.0
+    },
+    {
+      "key": "angerDecayPerHour",
+      "before": 5.0,
+      "after": 4.0
+    },
+    {
+      "key": "attackDisciplineDivisor",
+      "before": 150,
+      "after": 100.0
+    },
+    {
+      "key": "exitGraceSec",
+      "before": 15,
+      "after": 30.0
+    },
+    {
+      "key": "initiateTargetChance",
+      "before": 0.4,
+      "after": 0.375
+    },
+    {
+      "key": "fomoObservationMinutes",
+      "before": null,
+      "after": 5
+    },
+    {
+      "key": "fomoBuyBias",
+      "before": null,
+      "after": 0.12
+    },
+    {
+      "key": "fomoPickChance",
+      "before": null,
+      "after": 0.35
+    },
+    {
+      "key": "leadingStopBasePct",
+      "before": null,
+      "after": 4
+    },
+    {
+      "key": "leadingStopRiskPct",
+      "before": null,
+      "after": 8
+    },
+    {
+      "key": "rememberedBrags",
+      "before": null,
+      "after": 16
+    },
+    {
+      "key": "relationshipSpeechMinutes",
+      "before": null,
+      "after": 60
+    },
+    {
+      "key": "relationshipPublicChance",
+      "before": null,
+      "after": 0.5
+    },
+    {
+      "key": "ambivalentPlayerDoubtScale",
+      "before": null,
+      "after": 3
+    }
+  ],
+  "chat_act_weights.json": [
+    {
+      "key": "motives.IDLE.DOUBT",
+      "before": 3.0,
+      "after": 13.0
+    },
+    {
+      "key": "motives.IDLE.MOCK",
+      "before": 0.5,
+      "after": 2.0
+    },
+    {
+      "key": "motives.SELF_EVENT.DOUBT",
+      "before": null,
+      "after": 5
+    },
+    {
+      "key": "motives.SELF_EVENT.MOCK",
+      "before": null,
+      "after": 3
+    },
+    {
+      "key": "effects.DOUBT.anger",
+      "before": 6.0,
+      "after": 15.0
+    },
+    {
+      "key": "effects.REBUT.anger",
+      "before": 10.0,
+      "after": 15.0
+    }
+  ]
+}

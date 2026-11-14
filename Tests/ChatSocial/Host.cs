@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
+using System.Linq;
+using System.Reflection;
+using System.Text.Json.Serialization.Metadata;
 
 // Only Unity lifetime/time/serialization and external account inputs are adapted here.
 // Legacy chat methods are extracted verbatim at build time; all social methods are production sources.
@@ -36,7 +39,23 @@ namespace UnityEngine
     }
     public static class JsonUtility
     {
-        public static readonly JsonSerializerOptions Options = new() { IncludeFields = true, IgnoreReadOnlyProperties = true, WriteIndented = false };
+        public static readonly JsonSerializerOptions Options = MakeOptions();
+        private static JsonSerializerOptions MakeOptions()
+        {
+            var resolver=new DefaultJsonTypeInfoResolver();
+            resolver.Modifiers.Add(info=>
+            {
+                var fields=info.Type.GetFields(BindingFlags.Instance|BindingFlags.NonPublic).Where(f=>f.GetCustomAttribute<SerializeField>()!=null).ToArray();
+                if(fields.Length==0) { return; }
+                info.CreateObject=()=>System.Runtime.Serialization.FormatterServices.GetUninitializedObject(info.Type);
+                foreach(var field in fields)
+                {
+                    var property=info.CreateJsonPropertyInfo(field.FieldType,field.Name);
+                    property.Get=field.GetValue;property.Set=field.SetValue;info.Properties.Add(property);
+                }
+            });
+            return new JsonSerializerOptions { IncludeFields=true, IgnoreReadOnlyProperties=true,TypeInfoResolver=resolver };
+        }
         public static T FromJson<T>(string json) => JsonSerializer.Deserialize<T>(json,Options);
         public static string ToJson(object item) => JsonSerializer.Serialize(item,item.GetType(),Options);
     }
@@ -47,14 +66,24 @@ public sealed class Stock
     public string stockName = "노보손해보험", symbol = "NM";
     public decimal currentPrice = 1000m;
     public bool IsListed = true, IsDelisted, IsTradingHalted;
+    public bool AcceptsOrders => !IsDelisted && !IsTradingHalted;
+    public event Action<Stock,decimal,decimal,IOrderOwner,IOrderOwner,Order> OnMatchedTrade;
+    public void Matched(decimal price,decimal quantity,IOrderOwner buyer,IOrderOwner seller,Order resting) { OnMatchedTrade?.Invoke(this,price,quantity,buyer,seller,resting); }
     public readonly TestBook orderBook = new();
 }
 public sealed class TestBook
 {
+    public readonly List<Order> Orders=new();
+    public void CopyOwnerOrders(Trader owner,List<Order> target) { target.Clear();target.AddRange(Orders.Where(o=>o.owner==owner)); }
+    public void CancelOrder(Order order,Stock stock) { Orders.Remove(order); }
+    public bool IsActive(Order order)=>Orders.Contains(order);
     public void GetTopBids(List<(decimal price,decimal volume)> target,int n) { target.Clear(); target.Add((999m,100m)); }
     public void GetTopAsks(List<(decimal price,decimal volume)> target,int n) { target.Clear(); target.Add((1001m,100m)); }
 }
-public class Trader { }
+public interface IOrderOwner { }
+public sealed class Order { public Trader owner;public float createdAt;public decimal price,volume,costBasis;public bool buy; }
+public class Trader : IOrderOwner { }
+public static class PriceTickPolicy { public static decimal RoundToTick(decimal price)=>decimal.Round(price,0); }
 public sealed class TradeBot : Trader
 {
     public bool isActiveAndEnabled = true;
@@ -63,11 +92,17 @@ public sealed class TradeBot : Trader
     public int DailySettledDay;
     public decimal DailyReturn;
     public readonly Dictionary<Stock,(decimal quantity,decimal basis)> Positions = new();
+    public decimal cash=100000m,ReservedCash;
+    public decimal Equity()=>cash+Positions.Sum(p=>p.Value.quantity*p.Key.currentPrice);
+    public decimal GetHolding(Stock stock)=>GetOwnedVolume(stock);
+    public void BuyLimit(decimal price,decimal volume,int subTickSteps,Stock stock) { stock.orderBook.Orders.Add(new Order {owner=this,price=price,volume=volume,buy=true,createdAt=UnityEngine.Time.time}); }
+    public void SellLimit(decimal price,decimal volume,int subTickSteps,Stock stock) { stock.orderBook.Orders.Add(new Order {owner=this,price=price,volume=volume,buy=false,createdAt=UnityEngine.Time.time}); }
     public decimal GetOwnedVolume(Stock stock) => Positions.TryGetValue(stock,out var item)?item.quantity:0m;
     public decimal GetOwnedAverage(Stock stock) => Positions.TryGetValue(stock,out var item)?item.basis:0m;
 }
 public sealed class StockManager
 {
+    public static event Action<Stock> OnStockListed,OnStockDelisted;
     public static StockManager Instance;
     public bool SetupConfirmed = true;
     public readonly List<Stock> stocks = new();
@@ -77,17 +112,15 @@ public sealed partial class InvestorSociety
     public const int MaximumRoomId = 4;
     public const int PlayerRoomCount = 3;
     public static InvestorSociety Instance;
-    public sealed class Room { public readonly SocialRoomState Social = new(); public readonly HashSet<int> Members = new(); }
+    public sealed class Room { public readonly SocialRoomState Social = new(); public readonly HashSet<int> Members = new(); public bool PlayerOwned=true; public LeadingRoomOrders.Command Command; }
     public readonly Room[] Rooms = { new(),new(),new(),new() };
     public Room GetRoom(int id) => id>0 && id<=4 ? Rooms[id-1] : null;
     public void OfferExistingSpeech(TradeBot bot,int room,InvestorMessageContext context,ChatEvent kind) { Offer(bot,room,SocialMotive.WITNESSED_EVENT); }
     public void ReadBeforeSpeech(TradeBot bot) { }
-}
-public sealed class LeadingRoomOrders
-{
-    public enum Stage { Canceled,Completed,Rejected,Deferred,AwaitBuy }
-    public sealed class Command { public Stock Stock; public decimal Buy,Sell; }
-    public sealed class Plan { public Stage State; public Command Command; public decimal Remaining; }
+    public InvestorSocietySettings settings=new();
+    public long NextEventId()=>ChatSocialIds.Next();
+    public void Trace(TradeBot bot,string text) { }
+    public void RecordOutcome(TradeBot bot,InvestorExperience experience) { bot.Social.Psychology.Record(experience,settings); }
 }
 public sealed partial class MarketDayController
 {

@@ -3,7 +3,7 @@
   "values": [
     {
       "key": "temperMean",
-      "value": 50
+      "value": 55.0
     },
     {
       "key": "temperSd",
@@ -87,11 +87,11 @@
     },
     {
       "key": "roomMaxMsgPer10Sec",
-      "value": 5
+      "value": 2.0
     },
     {
       "key": "replyExpiry",
-      "value": 20
+      "value": 30.0
     },
     {
       "key": "emotionExpiry",
@@ -107,7 +107,7 @@
     },
     {
       "key": "idleChance",
-      "value": 0.12
+      "value": 0.025
     },
     {
       "key": "idleInterval",
@@ -127,11 +127,11 @@
     },
     {
       "key": "memoryChance",
-      "value": 0.4
+      "value": 1.0
     },
     {
       "key": "memoryMaxUses",
-      "value": 2
+      "value": 6.0
     },
     {
       "key": "styleFormalMin",
@@ -183,7 +183,7 @@
     },
     {
       "key": "chatTurnsMax",
-      "value": 4
+      "value": 4.0
     },
     {
       "key": "questionTurnsMin",
@@ -199,11 +199,11 @@
     },
     {
       "key": "argumentTurnsMax",
-      "value": 12.0
+      "value": 14.0
     },
     {
       "key": "maxThreads",
-      "value": 2
+      "value": 1.0
     },
     {
       "key": "maxArguments",
@@ -247,11 +247,11 @@
     },
     {
       "key": "angerStage1",
-      "value": 30
+      "value": 20.0
     },
     {
       "key": "angerStage2",
-      "value": 55
+      "value": 45.0
     },
     {
       "key": "angerStage3",
@@ -267,7 +267,7 @@
     },
     {
       "key": "angerDecayPerHour",
-      "value": 5.0
+      "value": 4.0
     },
     {
       "key": "angerHalfTemper",
@@ -279,7 +279,7 @@
     },
     {
       "key": "attackDisciplineDivisor",
-      "value": 150
+      "value": 100.0
     },
     {
       "key": "witnessHalfSuggestibility",
@@ -383,7 +383,7 @@
     },
     {
       "key": "exitGraceSec",
-      "value": 15
+      "value": 30.0
     },
     {
       "key": "exitAngerMin",
@@ -927,7 +927,7 @@
     },
     {
       "key": "initiateTargetChance",
-      "value": 0.4
+      "value": 0.375
     },
     {
       "key": "relationWeightFloor",
@@ -1032,6 +1032,42 @@
     {
       "key": "emotionHighThreshold",
       "value": 80
+    },
+    {
+      "key": "fomoObservationMinutes",
+      "value": 5
+    },
+    {
+      "key": "fomoBuyBias",
+      "value": 0.12
+    },
+    {
+      "key": "fomoPickChance",
+      "value": 0.35
+    },
+    {
+      "key": "leadingStopBasePct",
+      "value": 4
+    },
+    {
+      "key": "leadingStopRiskPct",
+      "value": 8
+    },
+    {
+      "key": "rememberedBrags",
+      "value": 16
+    },
+    {
+      "key": "relationshipSpeechMinutes",
+      "value": 60
+    },
+    {
+      "key": "relationshipPublicChance",
+      "value": 0.5
+    },
+    {
+      "key": "ambivalentPlayerDoubtScale",
+      "value": 3
     }
   ]
 }

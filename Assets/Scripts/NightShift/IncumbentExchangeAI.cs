@@ -132,8 +132,9 @@ public sealed class IncumbentExchangeAI : MonoBehaviour
                 { continue; }
                 var mind = bot.Social.Psychology;
                 Snapshot.Relationships.Add((bot.Social.Id,mind.Room,mind.Trust,mind.Betrayal));
-                if (mind.Trust >= 45f && mind.Trust > mind.Betrayal) { Snapshot.Supporters++; }
-                if (mind.Betrayal >= 45f && mind.Betrayal > mind.Trust) { Snapshot.Opponents++; }
+                mind.RefreshQuadrant();
+                if (mind.Quadrant == InvestorQuadrant.Loyal) { Snapshot.Supporters++; }
+                if (mind.Quadrant == InvestorQuadrant.Hostile) { Snapshot.Opponents++; }
             }
         }
         int positionCount = manager.stocks.Count + manager.UnlistedStocks.Count;

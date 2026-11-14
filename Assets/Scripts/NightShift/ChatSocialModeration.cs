@@ -39,8 +39,26 @@ public sealed partial class InvestorSociety
         var mind = bot.Social.Psychology; var room = SocialRoom(roomId);
         double anger = mind.MaximumAnger(out int opponent);
         var thread = FindSocialThread(mind.ActiveThread);
+        if (thread == null)
+        {
+            for (int i = room.threads.Count - 1; i >= 0; i--)
+            {
+                var recent = room.threads[i];
+                if (SocialTime.Seconds - recent.lastAt > Config.Get("replyExpiry")) { continue; }
+                if (recent.kind == SocialThreadKind.ARGUMENT && recent.participants.Contains(botId) && recent.endReason != SocialEnd.RESOLVED && recent.endReason != SocialEnd.PLAYER_ACTION)
+                { thread = recent; break; }
+            }
+        }
         var previous = sanctions.FindLast(s => s.room == roomId && s.actor == opponent && s.opponent == botId && !s.paired && SocialTime.Seconds - s.at <= Config.Get("kickBothWindowSec"));
-        bool fighting = InvestorPsychology.Stage(anger) >= 2 && (thread != null && thread.Active || mind.ExitAt >= 0 || previous != null);
+        bool recentAttack = false;
+        foreach (var message in room.recent)
+        {
+            if (SocialTime.Seconds - message.realAt > Config.Get("replyExpiry") || !Attack(message.act)) { continue; }
+            if (message.senderId == botId && message.targetId == opponent || message.senderId == opponent && message.targetId == botId)
+            { recentAttack = true; break; }
+        }
+        bool fighting = InvestorPsychology.Stage(anger) >= 2 && (thread != null || mind.ExitAt >= 0 || previous != null || recentAttack);
+        ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, room = roomId, actor = botId, target = opponent, kind = "MODERATION_CONTEXT", value = anger, reason = "fighting=" + fighting + ", thread=" + thread?.id + ", active=" + mind.ActiveThread });
         long id = ChatSocialIds.Next();
         var actionRecord = new Sanction { room = roomId, actor = botId, opponent = fighting ? opponent : 0, id = id, at = SocialTime.Seconds, thread = thread?.id ?? previous?.thread ?? 0, action = action };
         var witnesses = ModerationWitnesses(bot, roomId);
@@ -155,6 +173,7 @@ public sealed partial class InvestorSociety
             foreach (int id in reaction.witnesses)
             {
                 if (!SocialBots.TryGetValue(id, out var witness) || !Present(witness, pair.Key.Item1)) { continue; }
+                if (lastAct.TryGetValue(id, out var last) && last == SocialAct.REACT && consecutiveAct.TryGetValue(id, out int count) && count >= Config.Int("maxConsecutiveAct")) { continue; }
                 Offer(witness, pair.Key.Item1, SocialMotive.EMOTION_THRESHOLD, new SocialFacts { notice = pair.Key.Item2 == "discipline" ? "DISCIPLINE" : "CHILL", eventId = reaction.id }, SocialAct.REACT, cause: reaction.id);
                 break;
             }

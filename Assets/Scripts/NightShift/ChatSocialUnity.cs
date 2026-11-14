@@ -14,6 +14,7 @@ public sealed partial class InvestorSociety
         {
             ChooseSocialTopic = bot => day.ConversationFocus.Choose(bot.Social.Psychology.SocialRng.Next(), Time.time);
             RefreshOfferedFacts = RefreshNpcFacts;
+            SocialRecentReturn = stock => (double)day.ConversationFocus.Read(stock, Time.time).ReturnPercent;
             WitnessChance = bot => Config.Get("witnessProbability") * (Config.Get("witnessActivityBase") + bot.Social.Psychology.Activity * Config.Get("witnessActivityScale"));
             SocialMessagePublished += DeliverSocialMessage;
             SocialDeparted += OnSocialDeparture;
@@ -79,6 +80,13 @@ public sealed partial class InvestorSociety
         {
             decimal basis = ReferenceEquals(resting.owner, seller) ? resting.costBasis : selling.SubmittedSellCost;
             selling.Social.Psychology.RecordSocialFill(new SocialTradeFact { symbol = stock.symbol, bought = false, price = price, quantity = volume, cost = basis, at = at });
+            bool leading = Orders?.Get(selling) is LeadingRoomOrders.Plan plan && plan.Command.Stock == stock && !plan.Reported && plan.Remaining > 0;
+            if (!leading && basis > 0)
+            {
+                decimal profit = (price - basis) * volume;
+                selling.Social.Psychology.RememberInvestment(new InvestorExperience(NextEventId(), 0, 0, stock.symbol, basis * volume, price * volume, Time.time,
+                    assetBefore: Math.Max(0, selling.Equity() - profit)), false);
+            }
             Offer(selling, selling.Social.Psychology.Room, SocialMotive.SELF_EVENT, CaptureFacts(selling, stock));
         }
     }

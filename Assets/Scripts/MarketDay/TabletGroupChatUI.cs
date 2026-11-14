@@ -343,6 +343,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 {
                     if (!row.Rect.gameObject.activeSelf) { continue; }
                     var mind = day.FindBot(row.BotId)?.Social.Psychology;
+                    var name = day.FindBot(row.BotId)?.Social.Nickname;
+                    if (name != null) { DeviceTerminalUI.Set(row.Nickname, name + (mind.HasFomo ? " <size=70%><color=#E6944E>FOMO</color></size>" : "")); }
                     int angerStage = mind == null ? 0 : InvestorPsychology.Stage(mind.MaximumAnger(out _));
                     row.AngerDot.gameObject.SetActive(angerStage >= 2);
                     if (angerStage < 2) { continue; }
@@ -365,7 +367,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 {
                     var state = bot.Social;
                     var mind = state.Psychology;
-                    profile.text = $"{state.Nickname} · {state.Profile}\n탐욕 {mind.Greed:0}  공포 {mind.Fear:0}  FOMO {mind.Fomo:0}\n신뢰 {mind.Trust:0}  배신감 {mind.Betrayal:0} · 직접 경험 {mind.Wins}승 / {mind.Losses}패\n스트레스 {state.Stress:0} · 위험 {state.Risk:F1} · 기간 {state.Horizon:F1} · 추격 {state.Chase:F1}\n민감 {state.Sensitivity:F1} · 회복 {state.Recovery:F1} · {state.Tone}";
+                    profile.text = $"{state.Nickname} · {state.Profile} · {mind.QuadrantLabel}" + (mind.HasFomo ? " · FOMO" : "") + $"\n탐욕 {mind.Greed:0}  공포 {mind.Fear:0}\n신뢰 {mind.Trust:0}  배신감 {mind.Betrayal:0} · 직접 경험 {mind.Wins}승 / {mind.Losses}패\n스트레스 {state.Stress:0} · 위험 {state.Risk:F1} · 기간 {state.Horizon:F1} · 추격 {state.Chase:F1}\n민감 {state.Sensitivity:F1} · 회복 {state.Recovery:F1} · {state.Tone}";
                 }
             }
         }

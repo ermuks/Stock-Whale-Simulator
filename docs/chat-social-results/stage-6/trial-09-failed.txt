@@ -1,0 +1,113 @@
+Prepared config, migrated template data, and verbatim legacy chat methods.
+Tests\ChatSocial\Host.cs(50,39): warning SYSLIB0050: 'FormatterServices'은(는) 사용되지 않습니다. 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050)
+Validation\ChatSocial\LegacyChatProduction.cs(84,45): warning CS0169: 'MarketDayController.stressCursor' 필드가 사용되지 않았습니다.
+Validation\ChatSocial\LegacyChatProduction.cs(89,23): warning CS0169: 'MarketDayController.phaseWork' 필드가 사용되지 않았습니다.
+Tests\ChatSocial\Host.cs(105,39): warning CS0067: 'StockManager.OnStockListed' 이벤트가 사용되지 않았습니다.
+Tests\ChatSocial\Host.cs(105,53): warning CS0067: 'StockManager.OnStockDelisted' 이벤트가 사용되지 않았습니다.
+Validation\ChatSocial\LegacyChatProduction.cs(84,59): warning CS0169: 'MarketDayController.nextId' 필드가 사용되지 않았습니다.
+PASS T1 social production seed=73129, messages=655
+PASS T7 rolling 30 template keys seed=73129
+PASS T8 live portfolio facts + complete metadata seed=73129
+PASS R8 seed=73129 blocked=20/675 (2.963 %)
+PASS T2 target prefix seed=73129
+PASS T10 room availability at publication seed=73129
+PASS T11 thread turns + participants + concurrency seed=73129
+PASS R1 room=1 seed=73129 106/191 = 55.497 %
+PASS R2 room=1 seed=73129 mean=3.4884, threads=43
+PASS R3 seed=73129 targeted=49.000 %
+PASS scene A spontaneous multi-turn conversation seed=73129
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73129
+PASS T4 anger rises <=one stage per message seed=73129
+PASS T5 sympathy affinity seed=73129
+PASS T6 sympathy depth=1 seed=73129
+PASS T9 no rumor betrayal seed=73129
+Public-room arguments (outside the specified private-room R4): 8
+PASS R4 seed=73129 arguments=8
+FAIL R5 seed=73129 voluntary=6
+R6 sample seed=73129 sympathy=4, voluntary=6, ratio=0.667
+PASS R7 room=1 seed=73129 memory=51/400 = 12.750 %
+PASS T1 social production seed=73130, messages=483
+PASS T7 rolling 30 template keys seed=73130
+PASS T8 live portfolio facts + complete metadata seed=73130
+PASS R8 seed=73130 blocked=2/485 (0.412 %)
+PASS T2 target prefix seed=73130
+PASS T10 room availability at publication seed=73130
+PASS T11 thread turns + participants + concurrency seed=73130
+PASS R1 room=1 seed=73130 109/189 = 57.672 %
+PASS R2 room=1 seed=73130 mean=3.0962, threads=52
+PASS R3 seed=73130 targeted=40.000 %
+PASS scene A spontaneous multi-turn conversation seed=73130
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73130
+PASS T4 anger rises <=one stage per message seed=73130
+PASS T5 sympathy affinity seed=73130
+PASS T6 sympathy depth=1 seed=73130
+PASS T9 no rumor betrayal seed=73130
+Public-room arguments (outside the specified private-room R4): 0
+PASS R4 seed=73130 arguments=4
+PASS R5 seed=73130 voluntary=3
+R6 sample seed=73130 sympathy=1, voluntary=3, ratio=0.333
+PASS R7 room=1 seed=73130 memory=29/480 = 6.042 %
+PASS T1 social production seed=73131, messages=603
+PASS T7 rolling 30 template keys seed=73131
+PASS T8 live portfolio facts + complete metadata seed=73131
+PASS R8 seed=73131 blocked=7/610 (1.148 %)
+PASS T2 target prefix seed=73131
+PASS T10 room availability at publication seed=73131
+PASS T11 thread turns + participants + concurrency seed=73131
+FAIL R1 room=1 seed=73131 110/207 = 53.140 %
+PASS R2 room=1 seed=73131 mean=3.5909, threads=44
+PASS R3 seed=73131 targeted=46.104 %
+PASS scene A spontaneous multi-turn conversation seed=73131
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73131
+PASS T4 anger rises <=one stage per message seed=73131
+PASS T5 sympathy affinity seed=73131
+PASS T6 sympathy depth=1 seed=73131
+PASS T9 no rumor betrayal seed=73131
+Public-room arguments (outside the specified private-room R4): 3
+PASS R4 seed=73131 arguments=8
+FAIL R5 seed=73131 voluntary=6
+R6 sample seed=73131 sympathy=3, voluntary=6, ratio=0.500
+PASS R7 room=1 seed=73131 memory=50/462 = 10.823 %
+PASS T1 social production seed=73132, messages=498
+PASS T7 rolling 30 template keys seed=73132
+PASS T8 live portfolio facts + complete metadata seed=73132
+PASS R8 seed=73132 blocked=8/506 (1.581 %)
+PASS T2 target prefix seed=73132
+PASS T10 room availability at publication seed=73132
+PASS T11 thread turns + participants + concurrency seed=73132
+PASS R1 room=1 seed=73132 100/175 = 57.143 %
+PASS R2 room=1 seed=73132 mean=3.4878, threads=41
+PASS R3 seed=73132 targeted=40.455 %
+PASS scene A spontaneous multi-turn conversation seed=73132
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73132
+PASS T4 anger rises <=one stage per message seed=73132
+PASS T5 sympathy affinity seed=73132
+PASS T6 sympathy depth=1 seed=73132
+PASS T9 no rumor betrayal seed=73132
+Public-room arguments (outside the specified private-room R4): 3
+PASS R4 seed=73132 arguments=6
+PASS R5 seed=73132 voluntary=3
+R6 sample seed=73132 sympathy=1, voluntary=3, ratio=0.333
+PASS R7 room=1 seed=73132 memory=26/440 = 5.909 %
+PASS T1 social production seed=73133, messages=416
+PASS T7 rolling 30 template keys seed=73133
+PASS T8 live portfolio facts + complete metadata seed=73133
+PASS R8 seed=73133 blocked=5/421 (1.188 %)
+PASS T2 target prefix seed=73133
+PASS T10 room availability at publication seed=73133
+PASS T11 thread turns + participants + concurrency seed=73133
+PASS R1 room=1 seed=73133 82/144 = 56.944 %
+PASS R2 room=1 seed=73133 mean=3.0750, threads=40
+PASS R3 seed=73133 targeted=37.150 %
+PASS scene A spontaneous multi-turn conversation seed=73133
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73133
+PASS T4 anger rises <=one stage per message seed=73133
+PASS T5 sympathy affinity seed=73133
+PASS T6 sympathy depth=1 seed=73133
+PASS T9 no rumor betrayal seed=73133
+Public-room arguments (outside the specified private-room R4): 0
+PASS R4 seed=73133 arguments=4
+PASS R5 seed=73133 voluntary=2
+R6 sample seed=73133 sympathy=1, voluntary=2, ratio=0.500
+FAIL R7 room=1 seed=73133 memory=11/393 = 2.799 %
+PASS R6 per voluntary-exit mean over all 5 seeds: 10/20 = 0.5000

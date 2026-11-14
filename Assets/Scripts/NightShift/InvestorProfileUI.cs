@@ -4,7 +4,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>Six live psychological gauges; exact values and the full original profile are opt-in.</summary>
+/// <summary>Five live gauges with quadrant/FOMO tags; exact values and the full profile are opt-in.</summary>
 public sealed class InvestorProfileUI : MonoBehaviour
 {
     public TextMeshProUGUI heading, summary, detailText;
@@ -19,12 +19,15 @@ public sealed class InvestorProfileUI : MonoBehaviour
     private UnityAction[] clicks;
     private EventTrigger[] triggers;
     private EventTrigger.Entry[] enter, leave;
-    private static readonly string[] Labels = {"신뢰","배신감","탐욕","공포","FOMO","스트레스"};
+    private static readonly string[] Labels = {"신뢰","배신감","탐욕","공포","","스트레스"};
     void Start()
     {
         clicks = new UnityAction[6]; triggers = new EventTrigger[6]; enter = new EventTrigger.Entry[6]; leave = new EventTrigger.Entry[6];
         for (int i = 0; i < 6; i++)
         {
+            if (i == 4) { metricButtons[i].gameObject.SetActive(false); continue; }
+            var meterRect = (RectTransform)metricButtons[i].transform; int position = i < 4 ? i : 4;
+            meterRect.anchorMin = new Vector2(position / 5f, 0); meterRect.anchorMax = new Vector2(position / 5f + .18f, 1); meterRect.offsetMin = meterRect.offsetMax = Vector2.zero;
             int index = i; clicks[i] = () => Pin(index); metricButtons[i].onClick.AddListener(clicks[i]);
             triggers[i] = metricButtons[i].GetComponent<EventTrigger>() ?? metricButtons[i].gameObject.AddComponent<EventTrigger>();
             enter[i] = new EventTrigger.Entry { eventID = EventTriggerType.PointerEnter };
@@ -48,15 +51,16 @@ public sealed class InvestorProfileUI : MonoBehaviour
         if (state == null || state.Id != value.Id)
         { SelectedMetric = hovered = -1; detailPanel.SetActive(false); }
         state = value; meters.SetActive(true); details.interactable = true;
-        DeviceTerminalUI.Set(heading,state.Nickname + " · " + state.Role);
-        for (int i = 0; i < gauges.Length; i++) { gauges[i].SetValue(Amount(i)); }
+        state.Psychology.RefreshQuadrant();
+        DeviceTerminalUI.Set(heading,state.Nickname + " · " + state.Psychology.QuadrantLabel + (state.Psychology.HasFomo ? " · FOMO" : ""));
+        for (int i = 0; i < gauges.Length; i++) { if (i != 4) { gauges[i].SetValue(Amount(i)); } }
         RefreshSummary();
         if (detailPanel.activeSelf) { RefreshDetails(); }
     }
     private float Amount(int index)
     {
         var mind = state.Psychology;
-        return index switch { 0 => mind.Trust, 1 => mind.Betrayal, 2 => mind.Greed, 3 => mind.Fear, 4 => mind.Fomo, _ => state.Stress };
+        return index switch { 0 => mind.Trust, 1 => mind.Betrayal, 2 => mind.Greed, 3 => mind.Fear, _ => state.Stress };
     }
     private void Hover(int index) { hovered = index; RefreshSummary(); }
     private void Pin(int index) { SelectedMetric = SelectedMetric == index ? -1 : index; RefreshSummary(); }
@@ -81,7 +85,7 @@ public sealed class InvestorProfileUI : MonoBehaviour
         double anger = mind.MaximumAnger(out int target);
         string opponent = MarketDayController.Instance?.FindBot(target)?.Social.Nickname ?? "없음";
         DeviceTerminalUI.Set(detailText,state.Nickname + " · " + state.Profile + "\n\n" +
-            $"신뢰 {mind.Trust:0.#}%  ·  배신감 {mind.Betrayal:0.#}%\n탐욕 {mind.Greed:0.#}  ·  공포 {mind.Fear:0.#}  ·  FOMO {mind.Fomo:0.#}\n최대 분노 {anger:0} · 대상 {opponent}\n스트레스 {state.Stress:0.#}/100\n직접 경험 {mind.Wins}승 / {mind.Losses}패\n\n위험 {state.Risk:F1}  ·  기간 {state.Horizon:F1}  ·  추격 {state.Chase:F1}\n민감 {state.Sensitivity:F1}  ·  회복 {state.Recovery:F1}  ·  {state.Tone}\n\n최근 변화 · {mind.LastCause}");
+            $"신뢰 {mind.Trust:0.#}%  ·  배신감 {mind.Betrayal:0.#}% · {mind.QuadrantLabel}\n탐욕 {mind.Greed:0}  ·  공포 {mind.Fear:0}" + (mind.HasFomo ? " · FOMO" : "") + $"\n최대 분노 {anger:0} · 대상 {opponent}\n스트레스 {state.Stress:0.#}/100\n직접 경험 {mind.Wins}승 / {mind.Losses}패\n\n위험 {state.Risk:F1}  ·  기간 {state.Horizon:F1}  ·  추격 {state.Chase:F1}\n민감 {state.Sensitivity:F1}  ·  회복 {state.Recovery:F1}  ·  {state.Tone}\n\n최근 변화 · {mind.LastCause}");
     }
     void OnDestroy()
     {
@@ -89,6 +93,7 @@ public sealed class InvestorProfileUI : MonoBehaviour
         {
             for (int i = 0; i < clicks.Length; i++)
             {
+                if (i == 4) { continue; }
                 if (metricButtons[i] != null) { metricButtons[i].onClick.RemoveListener(clicks[i]); }
                 if (triggers[i] != null) { triggers[i].triggers.Remove(enter[i]); triggers[i].triggers.Remove(leave[i]); }
             }

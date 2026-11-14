@@ -1,4 +1,4 @@
-param([int]$Stage = 1)
+param([int]$Stage = 1, [string]$Scenario = "all")
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $taskOut = Join-Path $taskRoot 'Validation/ChatSocial'
@@ -16,6 +16,7 @@ $taskSources = @('Tests/ChatSocial/Host.cs','Validation/ChatSocial/LegacyChatPro
 $taskSources += Get-ChildItem -LiteralPath (Join-Path $taskRoot 'Tests/ChatSocial') -Filter 'Tests*.cs' | ForEach-Object { $_.FullName }
 $taskSources += Get-ChildItem -LiteralPath (Join-Path $taskRoot 'Assets/Scripts/NightShift') -Filter 'ChatSocial*.cs' | Where-Object { $_.Name -notlike '*Unity.cs' } | ForEach-Object { $_.FullName }
 $taskSources += 'Validation/ChatSocial/ProgressionProduction.cs'
+$taskSources += 'Assets/Scripts/NightShift/LeadingRoomOrders.cs'
 foreach ($taskSource in $taskSources) {
     $taskPath = if ([IO.Path]::IsPathRooted($taskSource)) { $taskSource } else { Join-Path $taskRoot $taskSource }
     $taskResponse += '"' + $taskPath + '"'
@@ -25,5 +26,5 @@ Set-Content -LiteralPath $taskResponsePath -Value $taskResponse -Encoding utf8
 & $taskRuntime $taskCompiler ('@' + $taskResponsePath)
 if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 Set-Content -LiteralPath (Join-Path $taskOut 'ChatSocial.runtimeconfig.json') -Value '{"runtimeOptions":{"tfm":"net8.0","framework":{"name":"Microsoft.NETCore.App","version":"8.0.21"}}}' -Encoding utf8
-& $taskRuntime (Join-Path $taskOut 'ChatSocial.dll') $taskRoot $Stage | Tee-Object -FilePath (Join-Path $taskOut ('stage-' + $Stage + '.txt'))
+& $taskRuntime (Join-Path $taskOut 'ChatSocial.dll') $taskRoot $Stage $Scenario | Tee-Object -FilePath (Join-Path $taskOut ('stage-' + $Stage + '.txt'))
 exit $LASTEXITCODE

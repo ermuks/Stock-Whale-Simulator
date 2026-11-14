@@ -21,7 +21,7 @@ public sealed partial class InvestorPsychology
             case "trust": Trust = (float)Math.Max(0, Trust + delta); break;
             case "betrayal": Betrayal = (float)Math.Max(0, Betrayal + delta); break;
         }
-        LastCause = cause + " #" + eventId; AuditEmotion(cause, eventId);
+        RefreshQuadrant(); LastCause = cause + " #" + eventId; AuditEmotion(cause, eventId);
     }
     public int AngerStage(int target) => Relations.TryGetValue(target, out var row) ? Stage(row.anger) : 0;
     public static int Stage(double value)
@@ -87,7 +87,7 @@ public sealed partial class InvestorSociety
             relation.highestStage = Math.Max(stage, relation.highestStage);
             ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = "ANGER_STAGE", id = causeId, actor = mind.SocialId, target = other, room = roomId, value = stage, reason = cause });
             Offer(receiver, roomId, SocialMotive.EMOTION_THRESHOLD, target: other, cause: causeId);
-            if (stage >= 2)
+            if (stage == 2)
             {
                 RememberFight(receiver, other, causeId);
                 if (SocialBots.TryGetValue(other, out var aggressor)) { RememberFight(aggressor, mind.SocialId, causeId); }
@@ -104,7 +104,9 @@ public sealed partial class InvestorSociety
     }
     private void RememberFight(TradeBot bot, int target, long id)
     {
-        bot.Social.Psychology.Remember(new SocialMemory { eventId = id, type = SocialMemoryKind.FOUGHT, actorId = bot.Social.Id, targetId = target,
+        socialMessageIndex.TryGetValue(id, out var source);
+        long incident = source != null && FindSocialThread(source.threadId) is SocialThread thread ? thread.parentMessage : id;
+        bot.Social.Psychology.Remember(new SocialMemory { eventId = incident, type = SocialMemoryKind.FOUGHT, actorId = bot.Social.Id, targetId = target, symbol = source?.facts.symbol,
             at = SocialTime.GameMinute, salience = Config.Int("memoryFoughtSalience") });
     }
     partial void AdjustAngerWeight(TradeBot bot, SocialIntent intent, SocialAct act, ref double weight)
@@ -158,6 +160,7 @@ public sealed partial class InvestorSociety
             if (witness.Social.Id == message.targetId)
             { continue; }
             var mind = witness.Social.Psychology;
+            RememberWitnessedResult(witness, message);
             if (mind.AngerStage(message.senderId) >= 2 && mind.ActiveThread == 0 && !pendingReplies.ContainsKey(mind.SocialId) && !pendingOrigins.ContainsKey(mind.SocialId))
             {
                 if (thread != null && thread.Active && thread.participants.Count < Config.Int("maxParticipants") && !thread.participants.Contains(mind.SocialId))
@@ -278,6 +281,7 @@ public sealed partial class InvestorSociety
             { Offer(bot, mind.Room, SocialMotive.EMOTION_THRESHOLD, new SocialFacts { notice = mind.ExitIsSympathy ? "SYMPATHY_EXIT" : "VOLUNTARY_EXIT", departedName = SocialBots.TryGetValue(mind.ExitOrigin, out var origin) ? origin.Social.Nickname : null }, SocialAct.FAREWELL); }
         }
         ObserveEmotionalThresholds(bot);
+        TickSocialAutonomy(bot);
     }
     partial void TickSocialEmotions()
     {

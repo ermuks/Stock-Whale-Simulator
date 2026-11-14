@@ -1,0 +1,14 @@
+Validation\ChatSocial\Market\HostCommon.cs(50,39): warning SYSLIB0050: 'FormatterServices'은(는) 사용되지 않습니다. 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050)
+Tests\ChatSocial\Market\Host.cs(53,76): warning CS0067: 'StockManager.OnStockListed' 이벤트가 사용되지 않았습니다.
+Tests\ChatSocial\Market\Host.cs(89,45): warning CS0067: 'PsychologicalLevelManager.OnWallForming' 이벤트가 사용되지 않았습니다.
+Tests\ChatSocial\Market\Host.cs(53,90): warning CS0067: 'StockManager.OnStockDelisted' 이벤트가 사용되지 않았습니다.
+Tests\ChatSocial\Market\Host.cs(89,59): warning CS0067: 'PsychologicalLevelManager.OnBreakthroughImminent' 이벤트가 사용되지 않았습니다.
+R1=0.602007
+R2=3.307692
+R3=0.453453
+R4=17.000000
+R5=5.000000
+R6=0.200000
+R7=0.046547
+R8=0.007005
+seed=73129 fills=5483 messages=666 memory=31 ratio=4.655% conserved=True

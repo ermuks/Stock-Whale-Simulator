@@ -43,9 +43,9 @@ public static class ChatSocialAudit
 
 public sealed partial class InvestorPsychology
 {
-    private float auditedGreed, auditedFear, auditedTrust, auditedBetrayal, auditedFomo;
+    private float auditedGreed, auditedFear, auditedTrust, auditedBetrayal;
     private void InitializeAudit()
-    { auditedGreed = Greed; auditedFear = Fear; auditedTrust = Trust; auditedBetrayal = Betrayal; auditedFomo = Fomo; }
+    { auditedGreed = Greed; auditedFear = Fear; auditedTrust = Trust; auditedBetrayal = Betrayal; }
     private void AuditEmotion(string cause, long id = 0)
     {
         var log = ChatSocialAudit.Journal; double at = ChatSocialAudit.GameMinute;
@@ -53,7 +53,6 @@ public sealed partial class InvestorPsychology
         log.Change(at, SocialId, "fear", auditedFear, Fear, cause, id);
         log.Change(at, SocialId, "trust", auditedTrust, Trust, cause, id);
         log.Change(at, SocialId, "betrayal", auditedBetrayal, Betrayal, cause, id);
-        log.Change(at, SocialId, "legacyFomo", auditedFomo, Fomo, cause, id);
         InitializeAudit();
     }
 }

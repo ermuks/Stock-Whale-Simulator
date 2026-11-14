@@ -1,0 +1,13 @@
+PASS S1 first fighter kick accepted
+PASS S1 second fighter kick accepted
+FAIL S1 next 3h arguments control=1, both kicked=1, discipline reaction=True
+PASS moderation T10/T11 remain valid
+PASS S3 chill=60, next 3h messages control=62, five arbitrary kicks=34, reaction=True
+PASS S5 betrayal >=60 kick adds no chill
+PASS kick bans only this room, keeps public market presence
+PASS kick is direct betrayal +15 and durable memory
+PASS moderation rejected in public/NPC rooms
+PASS mute only prevents this room's speech; no artificial anger decay
+PASS mute expires on game minutes
+PASS repeated warning within 10 game minutes halves anger relief
+PASS S4 20 fixed seeds (20 stage2 triggers): next3h stage4 control=14/20, warned=12/20

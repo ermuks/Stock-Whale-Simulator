@@ -35,7 +35,8 @@ public sealed class LeadingRoomOrders : IDisposable
         public TradeBot Bot;
         public Command Command;
         public Stage State;
-        public decimal Goal, Bought, Remaining, Basis, RealizedCost, Proceeds;
+        public decimal Goal, Bought, Remaining, Basis, RealizedCost, Proceeds, ExitTarget, StopPrice, AssetBefore;
+        public InvestorQuadrant AcceptedQuadrant;
         public float NextAttempt, DecisionAt;
         public bool Reported;
         public readonly List<Order> Pending = new(2);
@@ -87,7 +88,7 @@ public sealed class LeadingRoomOrders : IDisposable
     {
         var mind = plan.Bot.Social.Psychology;
         decimal cash = Math.Max(0m, plan.Bot.cash - plan.Bot.ReservedCash);
-        if (cash < plan.Command.Buy || roll > mind.Acceptance + .35f)
+        if (cash < plan.Command.Buy || mind.Acceptance <= 0 || roll > mind.Acceptance + .35f)
         {
             plan.State = Stage.Rejected;
             if (!plan.Command.TargetReached && !plan.Command.Observers.Contains(plan)) { plan.Command.Observers.Add(plan); }
@@ -96,7 +97,13 @@ public sealed class LeadingRoomOrders : IDisposable
         }
         if (roll >= mind.Acceptance)
         { plan.State = Stage.Deferred; society.Trace(plan.Bot, "명령 보류 #" + plan.Command.Id); return; }
-        plan.Goal = Math.Max(1m, decimal.Floor(Math.Min(society.settings.maxOrderShares, cash * (decimal)society.settings.commandCashFraction / plan.Command.Buy)));
+        plan.Goal = Math.Max(1m, decimal.Floor(Math.Min(society.settings.maxOrderShares, cash * (decimal)(society.settings.commandCashFraction * mind.LeadingAmountScale) / plan.Command.Buy)));
+        plan.AcceptedQuadrant = mind.Quadrant;
+        plan.ExitTarget = PriceTickPolicy.RoundToTick(mind.LeadingTarget(plan.Command.Buy, plan.Command.Sell, mind.SocialRng.Next()));
+        var config = ChatSocialConfig.Current;
+        double stop = (config.Get("leadingStopBasePct") + plan.Bot.Social.Risk * config.Get("leadingStopRiskPct")) * mind.LeadingStopScale;
+        plan.StopPrice = PriceTickPolicy.RoundToTick(plan.Command.Buy * (1m - (decimal)stop / 100m));
+        plan.AssetBefore = plan.Bot.Equity();
         // Remove this bot's old orders on the same instrument before assigning a separate follow ledger.
         plan.Command.Stock.orderBook.CopyOwnerOrders(plan.Bot, snapshot);
         foreach (var order in snapshot) { plan.Command.Stock.orderBook.CancelOrder(order, plan.Command.Stock); }
@@ -123,7 +130,7 @@ public sealed class LeadingRoomOrders : IDisposable
         Prune(plan);
         if (plan.Remaining > 0m)
         { bot.Social.Psychology.ObserveRisk((float)((command.Stock.currentPrice / Math.Max(1m, plan.Basis / plan.Remaining) - 1m) * 100m)); }
-        bool cutLoss = plan.Remaining > 0m && bot.Social.Psychology.Fear > 70f && roll < bot.Social.Psychology.Fear / 100f;
+        bool cutLoss = plan.Remaining > 0m && command.Stock.currentPrice <= plan.StopPrice;
         if (now - command.IssuedAt > society.settings.commandWait && plan.Remaining <= 0m)
         { Cancel(plan); return; }
         if (plan.Pending.Count > 0)
@@ -132,9 +139,9 @@ public sealed class LeadingRoomOrders : IDisposable
             { return; }
             CancelPending(plan);
         }
-        if (plan.Remaining > 0m && (command.Stock.currentPrice >= command.Sell || cutLoss))
+        if (plan.Remaining > 0m && (command.Stock.currentPrice >= plan.ExitTarget || cutLoss))
         {
-            decimal price = command.Sell;
+            decimal price = plan.ExitTarget;
             if (cutLoss)
             {
                 command.Stock.orderBook.GetTopBids(bids, 1);
@@ -235,7 +242,7 @@ public sealed class LeadingRoomOrders : IDisposable
             if (plan.Remaining <= 0m)
             {
                 plan.Reported = true; plan.State = Stage.Completed;
-                society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, Time.time));
+                society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, Time.time, assetBefore: plan.AssetBefore));
             }
         }
     }
@@ -256,7 +263,7 @@ public sealed class LeadingRoomOrders : IDisposable
             { plan.State = Stage.Canceled; continue; }
             plan.RealizedCost += plan.Basis; plan.Basis = plan.Remaining = 0m;
             plan.State = Stage.Completed; plan.Reported = true;
-            society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, Time.time, "상장폐지 손실"));
+            society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, Time.time, "상장폐지 손실", plan.AssetBefore));
         }
         stock.OnMatchedTrade -= Fill; subscribed.Remove(stock);
     }

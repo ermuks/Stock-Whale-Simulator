@@ -47,14 +47,15 @@ public static class VisualHierarchyValidation
     {
         var settings = new InvestorSocietySettings(); fixture = new BotSocialState(900001,73129,"Patient"); var mind = fixture.Psychology;
         for (int i = 1; i <= 4; i++) { mind.Record(new InvestorExperience(i,i,1,"TEST",100m,200m,i),settings); }
-        Check(mind.Trust == 140f,"actual psychology accumulation permits trust above 100");
+        Check(mind.Trust == 800f,"four realized +100% leading results preserve the existing double-ROI trust reward");
         for (int i = 5; i <= 8; i++) { mind.Record(new InvestorExperience(i,i,1,"TEST",100m,50m,i),settings); }
-        Check(mind.Trust == 140f && mind.Betrayal == 180f,"trust and betrayal independently exceed 100 at the same time");
-        Check(!mind.Record(new InvestorExperience(8,8,1,"TEST",100m,50m,9),settings) && mind.Betrayal == 180f,"repeated direct event cannot accumulate extra heat");
+        Check(mind.Trust == 800f && mind.Betrayal == 225f,"trust and betrayal independently exceed 100 with ambivalent loss multiplier");
+        Check(!mind.Record(new InvestorExperience(8,8,1,"TEST",100m,50m,9),settings) && mind.Betrayal == 225f,"repeated direct event cannot accumulate extra heat");
         float memory = mind.BetrayalMemory; mind.Decay(400f,settings);
-        Check(mind.Trust > 100f && mind.Trust < 140f && mind.Betrayal > 100f && mind.Betrayal < 180f && mind.BetrayalMemory == memory,"overheated relationships cool while memory persists");
+        Check(mind.Trust > 100f && mind.Trust < 800f && mind.Betrayal > 100f && mind.Betrayal < 225f && mind.BetrayalMemory == memory,"overheated relationships cool while memory persists");
         float betrayal = mind.Betrayal; mind.RecallBetrayal(); Check(mind.Betrayal > betrayal,"recalling betrayal also preserves overflow");
-        Check(mind.Greed <= 100f && mind.Fear <= 100f && mind.Fomo <= 100f,"other psychological indices retain 0..100 limits");
+        Check(mind.Greed >= 0f && mind.Greed <= 100f && mind.Fear >= 0f && mind.Fear <= 100f,"greed and fear retain 0..100 limits");
+        Check(!mind.HasFomo,"FOMO is a timed tag and is not accumulated by leading rewards");
         Check(mind.Acceptance >= 0f && mind.Acceptance <= 1f && mind.JoinChance >= 0f && mind.JoinChance <= 1f && mind.LeaveChance >= 0f && mind.LeaveChance <= 1f,"decisions remain valid probabilities with overheated inputs");
         Check(Mathf.Clamp01(1f-Mathf.Clamp01(mind.Trust/100f)) >= 0f,"high trust cannot produce negative boredom");
         Check(TerminalGlyph.BandColor(0) == TerminalGlyph.BandColor(24) && TerminalGlyph.BandColor(24) != TerminalGlyph.BandColor(25),"white to yellow boundary at 25");

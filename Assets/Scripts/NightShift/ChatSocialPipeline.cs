@@ -16,6 +16,7 @@ public sealed partial class InvestorSociety
     private readonly Dictionary<int, int> consecutiveAct = new();
     private readonly Dictionary<long, SocialMessage> socialMessageIndex = new();
     private readonly Queue<long> socialMessageOrder = new();
+    private readonly List<(TradeBot bot, SocialIntent intent)> readySocialIntents = new();
     private int socialCursor, knownBotCount = -1;
     public long SocialAttempts { get; private set; }
     public long TemplateBlocked { get; private set; }
@@ -57,6 +58,7 @@ public sealed partial class InvestorSociety
         if (!SocialReady)
         { return; }
         BeforeSocialTick();
+        readySocialIntents.Clear();
         int count = Math.Min(Math.Max(1, budget), socialBots.Count);
         for (int i = 0; i < count; i++)
         {
@@ -92,6 +94,19 @@ public sealed partial class InvestorSociety
             if (selected < 0)
             { continue; }
             var chosen = mind.Intentions[selected]; mind.Intentions.RemoveAt(selected);
+            readySocialIntents.Add((bot, chosen));
+        }
+        // A busy early bot must not consume the room quota before another bot's due reply.
+        readySocialIntents.Sort((a, b) =>
+        {
+            int order = a.intent.motive.CompareTo(b.intent.motive);
+            if (order == 0) { order = a.intent.due.CompareTo(b.intent.due); }
+            if (order == 0) { order = a.bot.Social.Psychology.SocialLastSpeech.CompareTo(b.bot.Social.Psychology.SocialLastSpeech); }
+            return order != 0 ? order : a.bot.Social.Id.CompareTo(b.bot.Social.Id);
+        });
+        foreach (var ready in readySocialIntents)
+        {
+            var bot = ready.bot; var mind = bot.Social.Psychology; var chosen = ready.intent; double now = SocialTime.Seconds;
             var room = SocialRoom(chosen.roomId);
             while (room.sent.Count > 0 && now - room.sent.Peek() >= Config.Get("roomWindowSec")) { room.sent.Dequeue(); }
             if (room.sent.Count >= Config.Int("roomMaxMsgPer10Sec"))
@@ -212,6 +227,7 @@ public sealed partial class InvestorSociety
             { return; }
             if (act == SocialAct.PRAISE_PLAYER || act == SocialAct.WARN_PLAYER || act == SocialAct.CALL_PLAYER) { intent.targetId = -1; }
             else if (intent.threadId == 0 && intent.replyToId == 0 && (act == SocialAct.LAMENT || act == SocialAct.REACT)) { intent.targetId = 0; }
+            else if (intent.targetId == -1 && mind.Quadrant == InvestorQuadrant.Indifferent && intent.replyToId == 0) { intent.targetId = 0; }
             var templates = EligibleTemplates(bot, intent, facts, act);
             if (templates.Count == 0)
             { continue; }
@@ -303,6 +319,8 @@ public sealed partial class InvestorSociety
             { if (facts.notice != requirement.Substring(7)) { return false; } continue; }
             if (requirement.StartsWith("event:", StringComparison.Ordinal))
             { if (facts.sourceEvent != requirement.Substring(6)) { return false; } continue; }
+            if (requirement.StartsWith("memory:", StringComparison.Ordinal))
+            { if (facts.memoryKind != requirement.Substring(7)) { return false; } continue; }
             bool valid = requirement switch
             {
                 "held" or "UnrealizedProfitPositive" => facts.held && (requirement == "held" || facts.profitable),
@@ -323,7 +341,7 @@ public sealed partial class InvestorSociety
     {
         "symbol" or "stockName" => f.stockName ?? f.symbol, "target" => target, "pct" => f.pct, "amount" => f.amount,
         "avgPrice" => f.avgPrice, "price" => f.price, "quantity" => f.quantity, "profitKind" => f.profitKind, "memSymbol" => f.memSymbol, "memPct" => f.memPct, "memWhen" => f.memWhen,
-        "bidStatus" => f.bidStatus, "askStatus" => f.askStatus, "signalResult" => f.signalResult, "departedName" => f.departedName, _ => null
+        "bidStatus" => f.bidStatus, "askStatus" => f.askStatus, "signalResult" => f.signalResult, "departedName" => f.departedName, "memAmount" => f.memAmount, _ => null
     };
     private Stock FindSocialStock(string symbol)
     {
@@ -363,6 +381,7 @@ public sealed partial class InvestorPsychology
     public readonly Queue<SocialTradeFact> SocialFills = new();
     public void RecordSocialFill(SocialTradeFact fact)
     {
+        ObserveFomoFill(fact);
         SocialFills.Enqueue(fact);
         while (SocialFills.Count > ChatSocialConfig.Current.Int("tradeFactCapacity") || SocialFills.Count > 0 && fact.at - SocialFills.Peek().at > ChatSocialConfig.Current.Get("tradeFactMinutes"))
         { SocialFills.Dequeue(); }

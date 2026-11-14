@@ -88,7 +88,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
             SocialAdvance(day.Day, day.GameMinute, Time.time, settings.botsPerTick);
         }
     }
-    public long NextEventId() => ++nextEvent;
+    public long NextEventId() => ChatSocialIds.Next();
     public Room GetRoom(int id) => id >= 1 && id <= Rooms.Length ? Rooms[id - 1] : null;
     public bool IsRoomOpen(int id)
     {

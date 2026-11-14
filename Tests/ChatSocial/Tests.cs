@@ -20,10 +20,15 @@ public static partial class ChatSocialTests
         int stage=int.Parse(args[1]);
         try
         {
+            if(args.Length>2 && args[2]=="moderation") { ModerationScenarios(stage); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="rates") { SocialReplays(stage); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="tune") { SearchTuning(stage); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="decisions") { DecisionScenarios(stage); return failed==0?0:1; }
             ModelTests(); LegacyReplay();
             if(stage>=2) { SocialReplays(stage); }
             if(stage>=4) { IgnoredFightScenario(stage); }
             if(stage>=5) { ModerationScenarios(stage); }
+            if(stage>=6) { DecisionScenarios(stage); }
         }
         catch(Exception ex) { Console.WriteLine(ex); failed++; }
         Console.WriteLine($"Stage {stage}: passed={passed}, failed={failed}"); return failed==0?0:1;
@@ -41,7 +46,7 @@ public static partial class ChatSocialTests
         for(int i=0;i<10;i++) { a.Remember(new SocialMemory { eventId=i+1,at=i,salience=i,type=SocialMemoryKind.FOUGHT }); }
         Check(a.Memories.Count==8 && a.Memories.Min(m=>m.salience)==2,"memory eviction lowest salience then oldest");
         var old=JsonUtility.FromJson<InvestorPsychology.SocialSnapshot>("{\"version\":1,\"id\":1,\"room\":1,\"greed\":70,\"fear\":40,\"trust\":180,\"betrayal\":130,\"fomo\":80}");
-        Check(a.RestoreSocial(old) && a.Trust==180 && a.Betrayal==130 && a.Fomo==0 && a.FomoUntil==0,"v1 migration keeps overheat values and discards numeric FOMO");
+        Check(a.RestoreSocial(old) && a.Trust==180 && a.Betrayal==130 && !a.HasFomo && a.FomoUntil==0,"v1 migration keeps overheat values and discards numeric FOMO");
         Check(a.FormulaTrust==100 && a.FormulaBetrayal==100,"D01 probability inputs cap independently of real values");
         var snapshot=a.CaptureSocial();
         Check(b.RestoreSocial(snapshot) && b.Trust==180 && b.Betrayal==130 && b.SocialRng.State==a.SocialRng.State,"v2 restore preserves state and RNG");
@@ -150,7 +155,7 @@ public static partial class ChatSocialTests
             Check(replay.Messages.Count>0 && replay.Serialized==duplicate.Serialized,$"T1 social production seed={seed}, messages={replay.Messages.Count}");
             bool unique=true;var rooms=new Dictionary<int,Queue<string>>();
             foreach(var message in replay.Messages)
-            { if(!rooms.TryGetValue(message.roomId,out var recent)) { recent=new Queue<string>();rooms[message.roomId]=recent; } if(recent.Contains(message.templateKey)) { unique=false; } recent.Enqueue(message.templateKey);if(recent.Count>=30) { recent.Dequeue(); } }
+            { if(!rooms.TryGetValue(message.roomId,out var recent)) { recent=new Queue<string>();rooms[message.roomId]=recent; } if(recent.Contains(message.templateKey)) { unique=false; } recent.Enqueue(message.templateKey);if(recent.Count>30) { recent.Dequeue(); } }
             Check(unique,$"T7 rolling 30 template keys seed={seed}");
             Check(replay.FactErrors==0,$"T8 live portfolio facts + complete metadata seed={seed}");
             double blocked=replay.Society.SocialAttempts==0?0:(double)replay.Society.TemplateBlocked/replay.Society.SocialAttempts;
@@ -195,6 +200,13 @@ public static partial class ChatSocialTests
                 Check(r5>=ChatSocialConfig.Current.Get("R5Min") && r5<=ChatSocialConfig.Current.Get("R5Max"),$"R5 seed={seed} voluntary={r5}");
                 totalVoluntary+=replay.Society.VoluntaryExits;totalSympathy+=replay.Society.SympathyExits;
                 Console.WriteLine($"R6 sample seed={seed} sympathy={replay.Society.SympathyExits}, voluntary={r5}, ratio={r6:F3}");
+            }
+            if(stage>=6)
+            {
+                var roomMessages=replay.Messages.Where(m=>m.roomId==1).ToArray();
+                double memoryRatio=(double)roomMessages.Count(m=>m.memory)/roomMessages.Length;
+                Console.WriteLine($"Memory template candidates={replay.Society.MemoryEligibleAttempts}, blocked={replay.Society.MemoryTemplateBlocked}");
+                Check(memoryRatio>=ChatSocialConfig.Current.Get("R7Min") && memoryRatio<=ChatSocialConfig.Current.Get("R7Max"),$"R7 room=1 seed={seed} memory={roomMessages.Count(m=>m.memory)}/{roomMessages.Length} = {memoryRatio:P3}");
             }
             if(index++<3) { File.WriteAllLines(Path.Combine(directory,$"seed-{seed}-2h.txt"),replay.Messages.Where(m=>m.at<660).Select(m=>$"{m.at:F1}|room={m.roomId}|#{m.senderId}|{m.act}|{m.text}"),new UTF8Encoding(false)); }
             File.WriteAllText(Path.Combine(directory,$"seed-{seed}.sha256"),Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(replay.Serialized))));

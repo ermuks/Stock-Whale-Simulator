@@ -22,12 +22,12 @@ public readonly struct InvestorExperience
     public readonly long EventId, CommandId;
     public readonly int Room;
     public readonly string Symbol, Reason;
-    public readonly decimal Cost, Proceeds, ReturnPercent;
+    public readonly decimal Cost, Proceeds, ReturnPercent, AssetBefore;
     public readonly float Time;
-    public InvestorExperience(long id, long command, int room, string symbol, decimal cost, decimal proceeds, float time, string reason = "체결")
+    public InvestorExperience(long id, long command, int room, string symbol, decimal cost, decimal proceeds, float time, string reason = "체결", decimal assetBefore = 0m)
     {
         EventId = id; CommandId = command; Room = room; Symbol = symbol; Reason = reason;
-        Cost = cost; Proceeds = proceeds; ReturnPercent = cost > 0m ? (proceeds / cost - 1m) * 100m : 0m; Time = time;
+        Cost = cost; Proceeds = proceeds; ReturnPercent = cost > 0m ? (proceeds / cost - 1m) * 100m : 0m; Time = time; AssetBefore = assetBefore;
     }
 }
 
@@ -75,11 +75,11 @@ public sealed class InvestorEventMemory
 /// <summary>개인의 감정과 장기 경험. 시세/계좌/UI에 의존하지 않아 재현 가능한 검증이 가능하다.</summary>
 public sealed partial class InvestorPsychology
 {
-    public float Greed { get; private set; }
-    public float Fear { get; private set; }
+    private float rawGreed, rawFear;
+    public float Greed { get => (float)Math.Round(rawGreed); private set => rawGreed = Mathf.Clamp(value, 0f, 100f); }
+    public float Fear { get => (float)Math.Round(rawFear); private set => rawFear = Mathf.Clamp(value, 0f, 100f); }
     public float Trust { get; private set; }
     public float Betrayal { get; private set; }
-    public float Fomo { get; private set; }
     public readonly float BaselineGreed, Credulity, Activity, ActivityOffset;
     public int Wins { get; private set; }
     public int Losses { get; private set; }
@@ -115,6 +115,8 @@ public sealed partial class InvestorPsychology
         if (experience.Cost <= 0m || !directEvents.Add(experience.EventId))
         { return false; }
         witnessed.Add(experience.EventId);
+        RefreshQuadrant(); bool ambivalent = Quadrant == InvestorQuadrant.Ambivalent;
+        float previousTrust = Trust, previousBetrayal = Betrayal;
         float roi = (float)Math.Max(-100m, Math.Min(200m, experience.ReturnPercent));
         if (roi > 0f)
         {
@@ -123,11 +125,22 @@ public sealed partial class InvestorPsychology
         }
         else if (roi < 0f)
         {
-            float impact = Mathf.Min(45f, -roi * settings.directLoss * (1f + Mathf.Min(5, Losses) * .15f + Trust / 200f));
+            float impact = Mathf.Min(45f, -roi * settings.directLoss * (1f + Mathf.Min(5, Losses) * .15f + FormulaTrust / 200f));
             Betrayal += impact; Fear += Mathf.Min(35f, -roi * 1.3f);
             BetrayalMemory = Mathf.Clamp(BetrayalMemory + impact * .55f, 0f, 100f); Losses++;
         }
         // Trust and betrayal are independent: a bad experience never erases past trust.
+        if (ambivalent && experience.CommandId > 0)
+        {
+            var c = ChatSocialConfig.Current;
+            if (roi > 0)
+            {
+                Trust = previousTrust + (Trust - previousTrust) * (float)c.Get("ambivalentGainTrustScale");
+                Betrayal = Mathf.Max(0, Betrayal - roi * (float)c.Get("ambivalentProfitBetrayalRelief"));
+            }
+            else if (roi < 0) { Betrayal = previousBetrayal + (Betrayal - previousBetrayal) * (float)c.Get("ambivalentLossScale"); }
+        }
+        RememberInvestment(experience, experience.CommandId > 0);
         if (Experiences.Count == 64) { Experiences.RemoveAt(0); }
         Experiences.Add(experience);
         LastCause = $"직접 {experience.Reason} #{experience.EventId}: {experience.Symbol} {experience.ReturnPercent:+0.00;-0.00;0}%";
@@ -150,8 +163,8 @@ public sealed partial class InvestorPsychology
         float amount = Mathf.Max(0f, seconds) * Mathf.Max(0f, settings.emotionDecay);
         Trust = Mathf.Max(0f, Trust - amount * .35f);
         Betrayal = Mathf.Max(0f, Betrayal - amount * .7f * (1.5f - Traits.Grudge / 100f));
-        Fear = Mathf.Max(0f, Fear - amount * 1.4f); Fomo = Mathf.Max(0f, Fomo - amount * 1.7f);
-        Greed = Mathf.MoveTowards(Greed, BaselineGreed, amount * .2f);
+        rawFear = Mathf.Max(0f, rawFear - amount * 1.4f);
+        rawGreed = Mathf.MoveTowards(rawGreed, BaselineGreed, amount * .2f);
         AuditEmotion("decay");
     }
     public void RecallBetrayal()
@@ -167,21 +180,20 @@ public sealed partial class InvestorPsychology
         { return false; }
         float ownOpposition = sentiment > 0f ? BetrayalMemory / 100f : Mathf.Min(1f, Wins * .15f);
         float impact = settings.rumorImpact * Mathf.Clamp01(credibility) * Credulity * Mathf.Pow(settings.rumorAttenuation, hops) * (1f - ownOpposition * .8f);
-        if (sentiment > 0f) { Trust += impact; Fomo += impact * 1.5f; }
+        if (sentiment > 0f) { Trust += impact; }
         else { Trust -= impact; Fear += impact * .8f; }
         LastCause = $"목격 #{eventId}: {(sentiment > 0f ? "긍정" : "부정")} 소문 {impact:0.00}";
         Clamp(); AuditEmotion("legacy-witness", eventId); return true;
     }
-    public float Acceptance => Mathf.Clamp01(.08f + Greed * .003f + Trust * .005f + Fomo * .002f - Betrayal * .006f - Fear * .003f);
-    public float JoinChance => Mathf.Clamp01(.05f + Greed * .0015f + Trust * .005f + Fomo * .002f - Betrayal * .005f);
-    public float LeaveChance => Mathf.Clamp01(.01f + Betrayal * .006f + Fear * .002f - Trust * .003f);
+    public float JoinChance => Mathf.Clamp01(.05f + Greed * .0015f + FormulaTrust * .005f + (HasFomo ? .1f : 0) - FormulaBetrayal * .005f);
+    public float LeaveChance => Quadrant == InvestorQuadrant.Hostile ? FormulaBetrayal / (float)ChatSocialConfig.Current.Get("hostileLeaveDivisor") : 0;
     public void ObserveRisk(float returnPercent)
     {
         if (returnPercent < -2f) { Fear = Mathf.Max(Fear, Mathf.Min(85f, -returnPercent * (1.2f + Credulity))); }
         AuditEmotion("position-risk");
     }
     public void ObserveMissedGain(float returnPercent)
-    { if (returnPercent > 2f) { Fomo = Mathf.Max(Fomo, Mathf.Min(75f, returnPercent * (Greed / 100f + .4f))); } AuditEmotion("missed-gain"); }
+    { /* FOMO requires a witnessed symbol and is evaluated by the society, never a numeric accumulator. */ }
     public void RememberSpeaker(int author, long id, float sentiment, float credibility)
     {
         if (Perceptions.Count == 32) { Perceptions.RemoveAt(0); }
@@ -191,7 +203,7 @@ public sealed partial class InvestorPsychology
     {
         Greed = Mathf.Clamp(Greed, 0f, 100f); Fear = Mathf.Clamp(Fear, 0f, 100f);
         // Relationship intensity can exceed 100. Decision probabilities remain independently bounded to 0..1.
-        Trust = Mathf.Max(0f, Trust); Betrayal = Mathf.Max(0f, Betrayal); Fomo = Mathf.Clamp(Fomo, 0f, 100f);
+        Trust = Mathf.Max(0f, Trust); Betrayal = Mathf.Max(0f, Betrayal); RefreshQuadrant();
     }
 }
 

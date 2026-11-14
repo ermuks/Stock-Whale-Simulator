@@ -1,0 +1,159 @@
+Prepared config, migrated template data, and verbatim legacy chat methods.
+Tests\ChatSocial\Host.cs(50,39): warning SYSLIB0050: 'FormatterServices'은(는) 사용되지 않습니다. 'Formatter-based serialization is obsolete and should not be used.' (https://aka.ms/dotnet-warnings/SYSLIB0050)
+Validation\ChatSocial\LegacyChatProduction.cs(84,59): warning CS0169: 'MarketDayController.nextId' 필드가 사용되지 않았습니다.
+Validation\ChatSocial\LegacyChatProduction.cs(89,23): warning CS0169: 'MarketDayController.phaseWork' 필드가 사용되지 않았습니다.
+Tests\ChatSocial\Host.cs(105,39): warning CS0067: 'StockManager.OnStockListed' 이벤트가 사용되지 않았습니다.
+Tests\ChatSocial\Host.cs(105,53): warning CS0067: 'StockManager.OnStockDelisted' 이벤트가 사용되지 않았습니다.
+Validation\ChatSocial\LegacyChatProduction.cs(84,45): warning CS0169: 'MarketDayController.stressCursor' 필드가 사용되지 않았습니다.
+PASS configuration loaded from production JSON
+PASS seeded traits and directional friends repeat exactly
+PASS friend seed configured bounds and absolute -100..100 range
+PASS friend seed configured bounds and absolute -100..100 range
+PASS friend seed configured bounds and absolute -100..100 range
+PASS memory eviction lowest salience then oldest
+PASS v1 migration keeps overheat values and discards numeric FOMO
+PASS D01 probability inputs cap independently of real values
+PASS v2 restore preserves state and RNG
+PASS future snapshot rejected without mutation
+PASS clock preserves paused sample and day transition
+PASS change audit omits unchanged values and retains cause
+PASS existing PlayerProgression v1 fixture loads via unchanged Restore
+PASS existing world mismatch rejection preserved
+PASS T1 legacy production chat seed=73129, messages=357
+PASS T1 legacy production chat seed=73130, messages=364
+PASS T1 legacy production chat seed=73131, messages=371
+PASS T1 legacy production chat seed=73132, messages=363
+PASS T1 legacy production chat seed=73133, messages=363
+PASS T1 social production seed=73129, messages=2045
+PASS T7 rolling 30 template keys seed=73129
+PASS T8 live portfolio facts + complete metadata seed=73129
+PASS R8 seed=73129 blocked=16/2061 (0.776 %)
+PASS T2 target prefix seed=73129
+PASS T10 room availability at publication seed=73129
+PASS T11 thread turns + participants + concurrency seed=73129
+PASS R1 room=1 seed=73129 349/594 = 58.754 %
+PASS R2 room=1 seed=73129 mean=2.9503, threads=181
+PASS R3 seed=73129 targeted=40.080 %
+PASS scene A spontaneous multi-turn conversation seed=73129
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73129
+PASS T4 anger rises <=one stage per message seed=73129
+PASS T5 sympathy affinity seed=73129
+PASS T6 sympathy depth=1 seed=73129
+PASS T9 no rumor betrayal seed=73129
+Public-room arguments (outside the specified private-room R4): 22
+PASS R4 seed=73129 arguments=9
+PASS R5 seed=73129 voluntary=3
+R6 sample seed=73129 sympathy=1, voluntary=3, ratio=0.333
+FAIL R7 room=1 seed=73129 memory=18/1492 = 1.206 %
+PASS T1 social production seed=73130, messages=1605
+PASS T7 rolling 30 template keys seed=73130
+PASS T8 live portfolio facts + complete metadata seed=73130
+PASS R8 seed=73130 blocked=15/1620 (0.926 %)
+PASS T2 target prefix seed=73130
+PASS T10 room availability at publication seed=73130
+PASS T11 thread turns + participants + concurrency seed=73130
+PASS R1 room=1 seed=73130 318/540 = 58.889 %
+PASS R2 room=1 seed=73130 mean=2.9217, threads=166
+PASS R3 seed=73130 targeted=34.994 %
+PASS scene A spontaneous multi-turn conversation seed=73130
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73130
+PASS T4 anger rises <=one stage per message seed=73130
+PASS T5 sympathy affinity seed=73130
+PASS T6 sympathy depth=1 seed=73130
+PASS T9 no rumor betrayal seed=73130
+Public-room arguments (outside the specified private-room R4): 2
+PASS R4 seed=73130 arguments=8
+PASS R5 seed=73130 voluntary=1
+R6 sample seed=73130 sympathy=1, voluntary=1, ratio=1.000
+FAIL R7 room=1 seed=73130 memory=9/1546 = 0.582 %
+PASS T1 social production seed=73131, messages=2227
+PASS T7 rolling 30 template keys seed=73131
+PASS T8 live portfolio facts + complete metadata seed=73131
+PASS R8 seed=73131 blocked=12/2239 (0.536 %)
+PASS T2 target prefix seed=73131
+PASS T10 room availability at publication seed=73131
+PASS T11 thread turns + participants + concurrency seed=73131
+PASS R1 room=1 seed=73131 338/568 = 59.507 %
+PASS R2 room=1 seed=73131 mean=2.9209, threads=177
+PASS R3 seed=73131 targeted=39.232 %
+PASS scene A spontaneous multi-turn conversation seed=73131
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73131
+PASS T4 anger rises <=one stage per message seed=73131
+PASS T5 sympathy affinity seed=73131
+PASS T6 sympathy depth=1 seed=73131
+PASS T9 no rumor betrayal seed=73131
+Public-room arguments (outside the specified private-room R4): 21
+FAIL R4 seed=73131 arguments=16
+PASS R5 seed=73131 voluntary=4
+R6 sample seed=73131 sympathy=3, voluntary=4, ratio=0.750
+FAIL R7 room=1 seed=73131 memory=19/1458 = 1.303 %
+PASS T1 social production seed=73132, messages=1818
+PASS T7 rolling 30 template keys seed=73132
+PASS T8 live portfolio facts + complete metadata seed=73132
+PASS R8 seed=73132 blocked=10/1829 (0.547 %)
+PASS T2 target prefix seed=73132
+PASS T10 room availability at publication seed=73132
+PASS T11 thread turns + participants + concurrency seed=73132
+PASS R1 room=1 seed=73132 333/565 = 58.938 %
+PASS R2 room=1 seed=73132 mean=2.8864, threads=176
+PASS R3 seed=73132 targeted=37.984 %
+PASS scene A spontaneous multi-turn conversation seed=73132
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73132
+PASS T4 anger rises <=one stage per message seed=73132
+PASS T5 sympathy affinity seed=73132
+PASS T6 sympathy depth=1 seed=73132
+PASS T9 no rumor betrayal seed=73132
+Public-room arguments (outside the specified private-room R4): 7
+PASS R4 seed=73132 arguments=9
+PASS R5 seed=73132 voluntary=3
+R6 sample seed=73132 sympathy=1, voluntary=3, ratio=0.333
+FAIL R7 room=1 seed=73132 memory=23/1498 = 1.535 %
+PASS T1 social production seed=73133, messages=1894
+PASS T7 rolling 30 template keys seed=73133
+PASS T8 live portfolio facts + complete metadata seed=73133
+PASS R8 seed=73133 blocked=12/1906 (0.630 %)
+PASS T2 target prefix seed=73133
+PASS T10 room availability at publication seed=73133
+PASS T11 thread turns + participants + concurrency seed=73133
+PASS R1 room=1 seed=73133 339/567 = 59.788 %
+PASS R2 room=1 seed=73133 mean=2.8626, threads=182
+PASS R3 seed=73133 targeted=38.885 %
+PASS scene A spontaneous multi-turn conversation seed=73133
+PASS T3 every voluntary departure has 1-2-3-4 cause chain seed=73133
+PASS T4 anger rises <=one stage per message seed=73133
+PASS T5 sympathy affinity seed=73133
+PASS T6 sympathy depth=1 seed=73133
+PASS T9 no rumor betrayal seed=73133
+Public-room arguments (outside the specified private-room R4): 13
+PASS R4 seed=73133 arguments=10
+FAIL R5 seed=73133 voluntary=5
+R6 sample seed=73133 sympathy=2, voluntary=5, ratio=0.400
+FAIL R7 room=1 seed=73133 memory=23/1471 = 1.564 %
+PASS R6 per voluntary-exit mean over all 5 seeds: 8/16 = 0.5000
+PASS S2 prior profitable fills + no player actions: calls=12, exits=3, witnessed trust losses=149
+PASS S1 first fighter kick accepted
+PASS S1 second fighter kick accepted
+FAIL S1 next 3h arguments control=2, both kicked=0, discipline reaction=False
+PASS moderation T10/T11 remain valid
+PASS S3 chill=60, next 3h messages control=194, five arbitrary kicks=117, reaction=True
+PASS S5 betrayal >=60 kick adds no chill
+PASS kick bans only this room, keeps public market presence
+PASS kick is direct betrayal +15 and durable memory
+PASS moderation rejected in public/NPC rooms
+PASS mute only prevents this room's speech; no artificial anger decay
+PASS mute expires on game minutes
+PASS repeated warning within 10 game minutes halves anger relief
+PASS S4 20 fixed seeds (17 stage2 triggers): next3h stage4 control=15/20, warned=9/20
+PASS S6 equal net trust has different quadrant acceptance and amount
+PASS actual overheat quadrant with capped formula inputs
+PASS quadrant hysteresis keeps high at 50
+PASS quadrant hysteresis switches low at 45
+PASS ambivalent realized gain halves trust, relieves betrayal, records significant investment
+PASS ambivalent direct loss betrayal multiplier 1.5
+PASS S6 actual leading plans differ in target, quantity and stop width
+PASS S6 ambivalent submits earlier actual sell order while loyal still waits
+PASS only matching callback settles leading result
+PASS FOMO tag starts once with 20 minute expiry
+PASS FOMO actual loss after expiry raises fear; 60 minute cooldown retained
+PASS serialized snapshot roundtrip preserves private traits, memories and overheat
+Stage 6: passed=133, failed=8

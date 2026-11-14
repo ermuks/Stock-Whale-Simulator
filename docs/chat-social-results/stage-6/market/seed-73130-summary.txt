@@ -1,0 +1,1 @@
+seed=73130 fills=5339 messages=666 memory=28 ratio=4.204% conserved=True

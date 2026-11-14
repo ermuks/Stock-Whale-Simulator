@@ -1,0 +1,17 @@
+PASS S6 equal net trust has different quadrant acceptance and amount
+PASS actual overheat quadrant with capped formula inputs
+PASS quadrant hysteresis keeps high at 50
+PASS quadrant hysteresis switches low at 45
+PASS ambivalent realized gain halves trust, relieves betrayal, records significant investment
+PASS ambivalent direct loss betrayal multiplier 1.5
+PASS D01 direct loss formula caps trust without erasing overheat
+PASS S6 equal net trust produces different actual speech distributions
+PASS S6 actual leading plans differ in target, quantity and stop width
+PASS S6 ambivalent submits earlier actual sell order while loyal still waits
+PASS only matching callback settles leading result
+PASS FOMO tag starts once with 20 minute expiry
+PASS FOMO actual loss after expiry raises fear; 60 minute cooldown retained
+PASS serialized snapshot roundtrip preserves private traits, memories and overheat
+PASS snapshot relationship rows do not alias live state
+PASS non-finite snapshot rejected atomically
+PASS decimal FOMO lots and room cooldowns survive JSON roundtrip

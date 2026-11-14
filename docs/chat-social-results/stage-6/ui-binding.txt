@@ -1,0 +1,2 @@
+PASS 1 serialized profile(s): five gauges, FOMO gauge hidden, timed tag appears/expires, actual-value quadrant, independent 180/130 overheat preserved.
+Edit-mode binding test only; no game-camera render or market execution. Scene was not saved.
