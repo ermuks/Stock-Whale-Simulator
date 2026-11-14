@@ -149,7 +149,7 @@ public sealed partial class InvestorPsychology
     {
         float amount = Mathf.Max(0f, seconds) * Mathf.Max(0f, settings.emotionDecay);
         Trust = Mathf.Max(0f, Trust - amount * .35f);
-        Betrayal = Mathf.Max(0f, Betrayal - amount * .7f);
+        Betrayal = Mathf.Max(0f, Betrayal - amount * .7f * (1.5f - Traits.Grudge / 100f));
         Fear = Mathf.Max(0f, Fear - amount * 1.4f); Fomo = Mathf.Max(0f, Fomo - amount * 1.7f);
         Greed = Mathf.MoveTowards(Greed, BaselineGreed, amount * .2f);
         AuditEmotion("decay");
@@ -168,7 +168,7 @@ public sealed partial class InvestorPsychology
         float ownOpposition = sentiment > 0f ? BetrayalMemory / 100f : Mathf.Min(1f, Wins * .15f);
         float impact = settings.rumorImpact * Mathf.Clamp01(credibility) * Credulity * Mathf.Pow(settings.rumorAttenuation, hops) * (1f - ownOpposition * .8f);
         if (sentiment > 0f) { Trust += impact; Fomo += impact * 1.5f; }
-        else { Betrayal += impact; Fear += impact * .8f; }
+        else { Trust -= impact; Fear += impact * .8f; }
         LastCause = $"목격 #{eventId}: {(sentiment > 0f ? "긍정" : "부정")} 소문 {impact:0.00}";
         Clamp(); AuditEmotion("legacy-witness", eventId); return true;
     }

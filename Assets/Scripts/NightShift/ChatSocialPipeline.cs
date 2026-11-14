@@ -191,6 +191,8 @@ public sealed partial class InvestorSociety
         Stock topic = FindSocialStock(intent.facts?.symbol);
         var facts = CaptureFacts(bot, topic);
         facts.sourceEvent = intent.facts?.sourceEvent;
+        facts.notice = intent.facts?.notice; facts.departedName = intent.facts?.departedName;
+        if (facts.notice != null) { facts.eventId = intent.facts.eventId; }
         if (intent.facts != null && intent.facts.directLead) { facts = intent.facts; }
         if (intent.facts != null && intent.facts.signal && RefreshOfferedFacts != null)
         { facts = RefreshOfferedFacts(bot, intent.facts) ?? facts; }
@@ -217,7 +219,7 @@ public sealed partial class InvestorSociety
             var message = new SocialMessage { id = ChatSocialIds.Next(), roomId = intent.roomId, senderId = mind.SocialId, targetId = intent.targetId,
                 at = SocialTime.GameMinute, realAt = SocialTime.Seconds, act = act, replyToId = intent.replyToId, threadId = intent.threadId,
                 facts = facts, topicEvent = intent.motive.ToString(), templateKey = template.key, isLie = false, memory = template.variant == "memory",
-                debug = new SocialMessageDebug { trigger = intent.motive.ToString(), weights = debugWeights, slots = facts } };
+                debug = new SocialMessageDebug { trigger = intent.motive.ToString(), causeId = intent.causeId, weights = debugWeights, slots = facts } };
             string target = message.targetId == -1 ? "방장" : SocialBots.TryGetValue(message.targetId, out var other) ? other.Social.Nickname : "";
             message.text = SlotPattern.Replace(template.text, match => Slot(facts, match.Groups[1].Value, target));
             if (message.targetId != 0) { message.text = "@" + target + " " + message.text; }
@@ -250,7 +252,7 @@ public sealed partial class InvestorSociety
             if (!Enum.TryParse<SocialAct>(entry.key, out var act)) { result.Add(new SocialWeight { key = entry.key, value = entry.value }); continue; }
             double weight = entry.value;
             if (act == SocialAct.BRAG && !facts.profitable || act == SocialAct.LAMENT && !facts.losing ||
-                (act == SocialAct.PRAISE_PLAYER || act == SocialAct.WARN_PLAYER) && !facts.directLead ||
+                (act == SocialAct.PRAISE_PLAYER || act == SocialAct.WARN_PLAYER) && !facts.directLead && facts.notice != "KICK_WARNING" && facts.notice != "LEFT_WARNING" ||
                 (act == SocialAct.ANSWER || act == SocialAct.AGREE || act == SocialAct.REBUT || act == SocialAct.MOCK || act == SocialAct.INSULT || act == SocialAct.COMFORT || act == SocialAct.APOLOGIZE || act == SocialAct.MEDIATE) && intent.targetId == 0)
             { weight = 0; }
             if (act == SocialAct.BRAG || act == SocialAct.MOCK) { weight *= .5 + mind.Traits.Bravado / 100d; }
@@ -277,6 +279,8 @@ public sealed partial class InvestorSociety
             { continue; }
             if (mind.RecentTemplateKeys.Contains(template.key))
             { continue; }
+            if (facts.notice != null && (template.requires == null || Array.IndexOf(template.requires, "notice:" + facts.notice) < 0))
+            { continue; }
             bool repeat = false; foreach (var recent in SocialRoom(intent.roomId).recent) { if (recent.templateKey == template.key) { repeat = true; break; } }
             if (repeat || !TemplateFactsMatch(template, facts))
             { continue; }
@@ -294,6 +298,8 @@ public sealed partial class InvestorSociety
         { return true; }
         foreach (string requirement in template.requires)
         {
+            if (requirement.StartsWith("notice:", StringComparison.Ordinal))
+            { if (facts.notice != requirement.Substring(7)) { return false; } continue; }
             if (requirement.StartsWith("event:", StringComparison.Ordinal))
             { if (facts.sourceEvent != requirement.Substring(6)) { return false; } continue; }
             bool valid = requirement switch
@@ -316,7 +322,7 @@ public sealed partial class InvestorSociety
     {
         "symbol" or "stockName" => f.stockName ?? f.symbol, "target" => target, "pct" => f.pct, "amount" => f.amount,
         "avgPrice" => f.avgPrice, "price" => f.price, "quantity" => f.quantity, "profitKind" => f.profitKind, "memSymbol" => f.memSymbol, "memPct" => f.memPct, "memWhen" => f.memWhen,
-        "bidStatus" => f.bidStatus, "askStatus" => f.askStatus, "signalResult" => f.signalResult, _ => null
+        "bidStatus" => f.bidStatus, "askStatus" => f.askStatus, "signalResult" => f.signalResult, "departedName" => f.departedName, _ => null
     };
     private Stock FindSocialStock(string symbol)
     {

@@ -36,13 +36,14 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         public TextMeshProUGUI Text;
         public Image Gauge, Avatar;
         public TerminalGlyph StressRing;
-        public TextMeshProUGUI Nickname, Time;
+        public TextMeshProUGUI Nickname, Time, AngerDot;
         public RectTransform Bubble;
         public int BotId;
         public long Sequence = -1;
     }
 
     private readonly List<Row> rows = new();
+    private float nextAngerRefresh;
     private MarketDayController day;
     private long version = -1, readSequence, oldestSequence;
     private int selectedBot, lastSecond = -1, firstVisible = -1, lastMinute = -1, lastDay = -1, lastHudMinute = -1, lastHudDay = -1;
@@ -105,6 +106,16 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 StressRing = rect.Find("Image :: Stress").GetComponentInChildren<TerminalGlyph>(true)
             };
             rect.GetComponent<Button>().onClick.AddListener(() => SelectProfile(row.BotId));
+            row.AngerDot = Instantiate(row.Nickname, rect);
+            row.AngerDot.name = "Text :: Anger Indicator"; row.AngerDot.text = "●";
+            row.AngerDot.raycastTarget = false; row.AngerDot.enableAutoSizing = false;
+            row.AngerDot.fontSize = 18f * layoutScale; row.AngerDot.alignment = TextAlignmentOptions.Center;
+            var dot = row.AngerDot.rectTransform;
+            dot.anchorMin = dot.anchorMax = row.Nickname.rectTransform.anchorMin;
+            dot.pivot = row.Nickname.rectTransform.pivot;
+            dot.anchoredPosition = row.Nickname.rectTransform.anchoredPosition + new Vector2(-24f * layoutScale, 0);
+            dot.sizeDelta = new Vector2(20f, 30f) * layoutScale;
+            row.AngerDot.gameObject.SetActive(false);
             rows.Add(row);
         }
 
@@ -318,6 +329,21 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             }
 
             UpdateUnread();
+            if (Time.time >= nextAngerRefresh)
+            {
+                nextAngerRefresh = Time.time + .25f;
+                foreach (var row in rows)
+                {
+                    if (!row.Rect.gameObject.activeSelf) { continue; }
+                    var mind = day.FindBot(row.BotId)?.Social.Psychology;
+                    int angerStage = mind == null ? 0 : InvestorPsychology.Stage(mind.MaximumAnger(out _));
+                    row.AngerDot.gameObject.SetActive(angerStage >= 2);
+                    if (angerStage < 2) { continue; }
+                    var color = angerStage == 2 ? new Color(1f, .58f, .22f) : new Color(.94f, .35f, .39f);
+                    color.a = angerStage == 4 ? .4f + .6f * (Mathf.Sin(Time.time * 5f) * .5f + .5f) : 1f;
+                    row.AngerDot.color = color;
+                }
+            }
             if (selectedBot > 0 && second != lastProfileSecond)
             {
                 lastProfileSecond = second;

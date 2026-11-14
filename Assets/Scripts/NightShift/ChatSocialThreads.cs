@@ -156,6 +156,7 @@ public sealed partial class InvestorSociety
             if (observer == bot || !Present(observer, message.roomId) || !observer.Social.Psychology.ActiveAt((float)SocialTime.Seconds))
             { continue; }
             var mind = observer.Social.Psychology;
+            mind.SocialLastRead[message.roomId] = message.id;
             double chance = WitnessChance?.Invoke(observer) ?? Config.Get("witnessProbability") * (Config.Get("witnessActivityBase") + mind.Activity * Config.Get("witnessActivityScale"));
             if (observer.Social.Id != message.targetId && mind.SocialRng.Next() >= chance)
             { continue; }
@@ -241,6 +242,29 @@ public sealed partial class InvestorSociety
         }
         TickSocialEmotions();
     }
+    private void ReadSocialRecent(TradeBot observer)
+    {
+        var mind = observer.Social.Psychology;
+        if (!mind.ActiveAt((float)SocialTime.Seconds))
+        { return; }
+        ReadRoom(0);
+        if (mind.Room > 0) { ReadRoom(mind.Room); }
+        void ReadRoom(int roomId)
+        {
+            if (!Present(observer, roomId)) { return; }
+            var messages = SocialRoom(roomId).recent.ToArray();
+            mind.SocialLastRead.TryGetValue(roomId, out long last);
+            for (int i = Math.Max(0, messages.Length - Config.Int("recentReadCount")); i < messages.Length; i++)
+            {
+                var message = messages[i];
+                if (message.id <= last) { continue; }
+                mind.SocialLastRead[roomId] = message.id;
+                if (message.senderId == mind.SocialId || message.targetId == mind.SocialId || !SocialBots.TryGetValue(message.senderId, out var author)) { continue; }
+                double chance = WitnessChance?.Invoke(observer) ?? Config.Get("witnessProbability") * (Config.Get("witnessActivityBase") + mind.Activity * Config.Get("witnessActivityScale"));
+                if (mind.SocialRng.Next() < chance) { ApplyLateSocialWitness(author, message, observer); }
+            }
+        }
+    }
     private void IgnoreCall(SocialMessage message)
     {
         ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = "CALL_IGNORED", id = message.id, room = message.roomId, actor = message.senderId, target = message.targetId });
@@ -278,4 +302,5 @@ public sealed partial class InvestorSociety
     partial void ApplyIgnoredCall(SocialMessage message);
     partial void TickSocialEmotions();
     partial void OnSocialThreadClosed(SocialThread thread);
+    partial void ApplyLateSocialWitness(TradeBot author, SocialMessage message, TradeBot observer);
 }

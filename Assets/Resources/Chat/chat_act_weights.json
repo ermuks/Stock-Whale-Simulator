@@ -26,7 +26,7 @@
         },
         {
           "key": "DOUBT",
-          "value": 8
+          "value": 3.0
         },
         {
           "key": "AGREE",
@@ -34,7 +34,7 @@
         },
         {
           "key": "MOCK",
-          "value": 2
+          "value": 0.5
         }
       ]
     },
@@ -220,11 +220,11 @@
       "weights": [
         {
           "key": "ANSWER",
-          "value": 45
+          "value": 60.0
         },
         {
           "key": "REBUT",
-          "value": 30
+          "value": 12.0
         },
         {
           "key": "MOCK",
@@ -388,7 +388,7 @@
       "weights": [
         {
           "key": "anger",
-          "value": 4
+          "value": 6.0
         },
         {
           "key": "affinity",
@@ -401,7 +401,7 @@
       "weights": [
         {
           "key": "anger",
-          "value": 6
+          "value": 10.0
         },
         {
           "key": "affinity",
@@ -414,7 +414,7 @@
       "weights": [
         {
           "key": "anger",
-          "value": 12
+          "value": 20.0
         },
         {
           "key": "affinity",

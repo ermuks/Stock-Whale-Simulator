@@ -68,12 +68,14 @@ public sealed class SocialTraits
     public bool dailyProfit, dailyLoss, recovered, recentSellProfit, recentSellLoss, sellThenRise, stressRelief, signal;
     public string bidStatus, askStatus, signalResult;
     public string sourceEvent;
+    public string notice, departedName;
     public double at;
 }
 [Serializable] public sealed class SocialWeight { public string key; public double value; }
 [Serializable] public sealed class SocialMessageDebug
 {
     public string trigger;
+    public long causeId;
     public SocialWeight[] weights;
     public SocialFacts slots;
 }
@@ -130,7 +132,7 @@ public sealed class SocialIntent
 {
     public double time;
     public string kind, reason;
-    public long id;
+    public long id, threadId;
     public int room, actor, target;
     public double value;
 }
@@ -178,6 +180,7 @@ public sealed partial class InvestorPsychology
     public readonly Dictionary<int, double> RejoinAt = new(), MutedUntil = new();
     public double FomoUntil, FomoCooldownUntil, SocialLastSpeech = double.NegativeInfinity;
     public long ActiveThread;
+    public readonly Dictionary<int, long> SocialLastRead = new();
     public SocialRandom SocialRng { get; private set; }
     public InvestorQuadrant Quadrant { get; private set; }
     public float FormulaTrust => Mathf.Min(Trust, 100f);

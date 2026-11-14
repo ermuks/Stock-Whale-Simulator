@@ -78,8 +78,10 @@ public sealed class InvestorProfileUI : MonoBehaviour
     private void RefreshDetails()
     {
         var mind = state.Psychology;
+        double anger = mind.MaximumAnger(out int target);
+        string opponent = MarketDayController.Instance?.FindBot(target)?.Social.Nickname ?? "없음";
         DeviceTerminalUI.Set(detailText,state.Nickname + " · " + state.Profile + "\n\n" +
-            $"신뢰 {mind.Trust:0.#}%  ·  배신감 {mind.Betrayal:0.#}%\n탐욕 {mind.Greed:0.#}  ·  공포 {mind.Fear:0.#}  ·  FOMO {mind.Fomo:0.#}\n스트레스 {state.Stress:0.#}/100\n직접 경험 {mind.Wins}승 / {mind.Losses}패\n\n위험 {state.Risk:F1}  ·  기간 {state.Horizon:F1}  ·  추격 {state.Chase:F1}\n민감 {state.Sensitivity:F1}  ·  회복 {state.Recovery:F1}  ·  {state.Tone}\n\n최근 변화 · {mind.LastCause}");
+            $"신뢰 {mind.Trust:0.#}%  ·  배신감 {mind.Betrayal:0.#}%\n탐욕 {mind.Greed:0.#}  ·  공포 {mind.Fear:0.#}  ·  FOMO {mind.Fomo:0.#}\n최대 분노 {anger:0} · 대상 {opponent}\n스트레스 {state.Stress:0.#}/100\n직접 경험 {mind.Wins}승 / {mind.Losses}패\n\n위험 {state.Risk:F1}  ·  기간 {state.Horizon:F1}  ·  추격 {state.Chase:F1}\n민감 {state.Sensitivity:F1}  ·  회복 {state.Recovery:F1}  ·  {state.Tone}\n\n최근 변화 · {mind.LastCause}");
     }
     void OnDestroy()
     {

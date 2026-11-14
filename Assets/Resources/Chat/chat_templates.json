@@ -11433,6 +11433,2976 @@
       "requires": [
         "signal"
       ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.1.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.1.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.1.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장입니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.1.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.1.4",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.1.5",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.2.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.2.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.2.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장입니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.2.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.2.4",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.2.5",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.3.0",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.3.1",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.3.2",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장입니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.3.3",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.3.4",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.formal.3.5",
+      "act": "REACT",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 이대로라면 방을 나가겠습니다. 더는 참기 어렵습니다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.1.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.1.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이자면요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.1.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.1.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.1.4",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남겨요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.1.5",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.2.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.2.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이자면요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.2.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.2.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.2.4",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남겨요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.2.5",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.3.0",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.3.1",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이자면요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.3.2",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.3.3",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.3.4",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남겨요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.casual.3.5",
+      "act": "REACT",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 이대로면 나갈게요. 더는 참기 힘드네요.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.1.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.1.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이면. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.1.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.1.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말은 해야겠다. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.1.4",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남김. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.1.5",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.2.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.2.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이면. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.2.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.2.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말은 해야겠다. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.2.4",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남김. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.2.5",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.3.0",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.3.1",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이면. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.3.2",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.3.3",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말은 해야겠다. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.3.4",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남김. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.EXIT_WARNING.rough.3.5",
+      "act": "REACT",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 이대로면 나감. 더는 못 참겠다.",
+      "requires": [
+        "notice:EXIT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.1.0",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.1.1",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.1.2",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장입니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.1.3",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.1.4",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남깁니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.1.5",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.2.0",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.2.1",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.2.2",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장입니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.2.3",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.2.4",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남깁니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.2.5",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.3.0",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.3.1",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.3.2",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장입니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.3.3",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.3.4",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남깁니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.formal.3.5",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. {departedName}님이 나가셨군요. 저도 함께 나가겠습니다.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.1.0",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.1.1",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이자면요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.1.2",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장은 그래요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.1.3",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.1.4",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남겨요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.1.5",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.2.0",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.2.1",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이자면요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.2.2",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장은 그래요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.2.3",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.2.4",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남겨요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.2.5",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.3.0",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.3.1",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이자면요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.3.2",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장은 그래요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.3.3",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.3.4",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남겨요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.casual.3.5",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. {departedName}님 나가셨네요. 저도 따라 나갈게요.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.1.0",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "{departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.1.1",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이면. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.1.2",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "내 입장은 그럼. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.1.3",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말은 해야겠다. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.1.4",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남김. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.1.5",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.2.0",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "{departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.2.1",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이면. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.2.2",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "내 입장은 그럼. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.2.3",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말은 해야겠다. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.2.4",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남김. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.2.5",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.3.0",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "{departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.3.1",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이면. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.3.2",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "내 입장은 그럼. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.3.3",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말은 해야겠다. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.3.4",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남김. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.SYMPATHY_EXIT.rough.3.5",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. {departedName} 나갔네. 나도 따라 나감.",
+      "requires": [
+        "notice:SYMPATHY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.1.0",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.1.1",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.1.2",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장입니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.1.3",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.1.4",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.1.5",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.2.0",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.2.1",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.2.2",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장입니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.2.3",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.2.4",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.2.5",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.3.0",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.3.1",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.3.2",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장입니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.3.3",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.3.4",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.formal.3.5",
+      "act": "FAREWELL",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.1.0",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.1.1",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이자면요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.1.2",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.1.3",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.1.4",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남겨요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.1.5",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.2.0",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.2.1",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이자면요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.2.2",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.2.3",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.2.4",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남겨요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.2.5",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.3.0",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.3.1",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이자면요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.3.2",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.3.3",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.3.4",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남겨요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.casual.3.5",
+      "act": "FAREWELL",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.1.0",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.1.1",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이면. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.1.2",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.1.3",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말은 해야겠다. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.1.4",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남김. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.1.5",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.2.0",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.2.1",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이면. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.2.2",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.2.3",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말은 해야겠다. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.2.4",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남김. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.2.5",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.3.0",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.3.1",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이면. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.3.2",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.3.3",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말은 해야겠다. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.3.4",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남김. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.VOLUNTARY_EXIT.rough.3.5",
+      "act": "FAREWELL",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 아무도 안 말리네. 더는 싸우기 싫다. 나감.",
+      "requires": [
+        "notice:VOLUNTARY_EXIT"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.1.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.1.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.1.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장입니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.1.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.1.4",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.1.5",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.2.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.2.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.2.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장입니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.2.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.2.4",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.2.5",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.3.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.3.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.3.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장입니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.3.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.3.4",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.formal.3.5",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 그 방에서 추방당했습니다. 제 경험은 좋지 않았습니다.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.1.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.1.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이자면요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.1.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.1.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.1.4",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남겨요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.1.5",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.2.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.2.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이자면요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.2.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.2.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.2.4",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남겨요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.2.5",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.3.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.3.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이자면요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.3.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.3.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.3.4",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남겨요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.casual.3.5",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 그 방에서 쫓겨났어요. 제 경험은 별로였네요.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.1.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.1.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이면. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.1.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.1.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말은 해야겠다. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.1.4",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남김. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.1.5",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.2.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.2.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이면. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.2.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.2.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말은 해야겠다. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.2.4",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남김. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.2.5",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.3.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.3.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이면. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.3.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.3.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말은 해야겠다. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.3.4",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남김. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.KICK_WARNING.rough.3.5",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 그 방에서 쫓겨남. 내 경험은 별로임.",
+      "requires": [
+        "notice:KICK_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.1.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.1.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.1.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장입니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.1.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.1.4",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.1.5",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.2.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.2.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.2.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장입니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.2.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.2.4",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.2.5",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.3.0",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.3.1",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이겠습니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.3.2",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장입니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.3.3",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말씀드려야겠습니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.3.4",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남깁니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.formal.3.5",
+      "act": "WARN_PLAYER",
+      "style": "formal",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로입니다. 싸움을 말리지 않아 그 방에서 나왔습니다.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.1.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.1.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이자면요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.1.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.1.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.1.4",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남겨요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.1.5",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.2.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.2.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이자면요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.2.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.2.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.2.4",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남겨요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.2.5",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.3.0",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.3.1",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이자면요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.3.2",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "제 입장은 그래요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.3.3",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "얘기는 해야겠네요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.3.4",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남겨요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.casual.3.5",
+      "act": "WARN_PLAYER",
+      "style": "casual",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로예요. 싸워도 아무도 안 말려서 그 방 나왔어요.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.1.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.1.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "덧붙이면. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.1.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.1.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "말은 해야겠다. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.1.4",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "참고로 남김. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.1.5",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 1,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.2.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.2.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "덧붙이면. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.2.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.2.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "말은 해야겠다. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.2.4",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "참고로 남김. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.2.5",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 2,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.3.0",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.3.1",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "덧붙이면. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.3.2",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "내 입장은 그럼. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.3.3",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "말은 해야겠다. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.3.4",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "참고로 남김. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
+    },
+    {
+      "key": "NOTICE.LEFT_WARNING.rough.3.5",
+      "act": "WARN_PLAYER",
+      "style": "rough",
+      "intensity": 3,
+      "variant": "plain",
+      "text": "지금 느낀 그대로임. 싸워도 안 말리길래 그 방 나옴.",
+      "requires": [
+        "notice:LEFT_WARNING"
+      ]
     }
   ],
   "suffixes": []

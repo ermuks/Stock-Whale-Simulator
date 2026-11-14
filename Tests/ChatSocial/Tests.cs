@@ -22,6 +22,7 @@ public static class ChatSocialTests
         {
             ModelTests(); LegacyReplay();
             if(stage>=2) { SocialReplays(stage); }
+            if(stage>=4) { IgnoredFightScenario(stage); }
         }
         catch(Exception ex) { Console.WriteLine(ex); failed++; }
         Console.WriteLine($"Stage {stage}: passed={passed}, failed={failed}"); return failed==0?0:1;
@@ -35,7 +36,7 @@ public static class ChatSocialTests
         a.SeedFriends(ids); b.SeedFriends(ids);
         Check(a.Relations.Count>=2 && a.Relations.Count<=4 && JsonUtility.ToJson(a.CaptureSocial())==JsonUtility.ToJson(b.CaptureSocial()),"seeded traits and directional friends repeat exactly");
         foreach(var relation in a.Relations.Values)
-        { Check(relation.to!=1 && relation.affinity>=30 && relation.affinity<=70 && relation.anger==0,"friend seed bounds"); }
+        { Check(relation.to!=1 && relation.affinity>=config.Get("friendAffinityMin") && relation.affinity<=config.Get("friendAffinityMax") && relation.affinity>=-100 && relation.affinity<=100 && relation.anger==0,"friend seed configured bounds and absolute -100..100 range"); }
         for(int i=0;i<10;i++) { a.Remember(new SocialMemory { eventId=i+1,at=i,salience=i,type=SocialMemoryKind.FOUGHT }); }
         Check(a.Memories.Count==8 && a.Memories.Min(m=>m.salience)==2,"memory eviction lowest salience then oldest");
         var old=JsonUtility.FromJson<InvestorPsychology.SocialSnapshot>("{\"version\":1,\"id\":1,\"room\":1,\"greed\":70,\"fear\":40,\"trust\":180,\"betrayal\":130,\"fomo\":80}");
@@ -80,12 +81,13 @@ public static class ChatSocialTests
         public List<SocialMessage> Messages=new();
         public int FactErrors;
         public int AvailabilityErrors, ConcurrencyErrors;
+        public SocialJournal Journal;
         public string Serialized => string.Join("\n",Messages.Select(JsonUtility.ToJson));
     }
-    private static ReplayResult SocialReplay(int seed,int stage)
+    private static ReplayResult SocialReplay(int seed,int stage,bool priorGain=false)
     {
         ChatSocialIds.Reset();
-        ChatSocialAudit.Begin(new SocialJournal(100000));
+        var journal=new SocialJournal(100000);ChatSocialAudit.Begin(journal);
         StockManager.Instance=new StockManager();
         for(int i=0;i<4;i++) { StockManager.Instance.stocks.Add(new Stock {symbol="S"+i,stockName=new[]{"노보손해보험","두덕리식품","미래바이오","국민금융"}[i],currentPrice=1000+i*500}); }
         var bots=new List<TradeBot>();
@@ -96,9 +98,10 @@ public static class ChatSocialTests
             bot.Positions[stock]=(100m,stock.currentPrice*(id%2==0?.9m:1.1m));
             bot.Social.Positions[stock]=new BotSocialState.PositionMemory();
             bot.Social.Psychology.Room=1;bots.Add(bot);
+            if(priorGain) { bot.Social.Psychology.Record(new InvestorExperience(10000+id,10000+id,1,stock.symbol,100000m,120000m,0,"prior filled command fixture"),new InvestorSocietySettings()); }
         }
         var society=new InvestorSociety();society.BindSocialBots(bots);
-        var result=new ReplayResult {Society=society};
+        var result=new ReplayResult {Society=society,Journal=journal};
         society.SocialMessagePublished+=message=>
         {
             result.Messages.Add(message);
@@ -123,17 +126,29 @@ public static class ChatSocialTests
         }
         return result;
     }
+    private static void IgnoredFightScenario(int stage)
+    {
+        var replay=SocialReplay(73129,stage,true);
+        var calls=replay.Messages.Where(m=>m.act==SocialAct.CALL_PLAYER).ToArray();
+        var exits=replay.Journal.Events.Where(e=>e.kind=="VOLUNTARY_EXIT").ToArray();
+        var changes=replay.Journal.Changes.Where(c=>c.causeType=="unmoderated-fight" && c.field=="trust" && c.after<c.before).ToArray();
+        Check(exits.Any(e=>calls.Any(c=>c.roomId==e.room && c.at<e.time && c.debug.causeId==e.threadId) && changes.Any(c=>c.causeId==e.threadId)),
+            $"S2 prior profitable fills + no player actions: calls={calls.Length}, exits={exits.Length}, witnessed trust losses={changes.Length}");
+        string folder=Path.Combine(root,"docs/chat-social-results/stage-"+stage);
+        File.WriteAllLines(Path.Combine(folder,"S2-ignored-fight.jsonl"),replay.Messages.Select(JsonUtility.ToJson).Concat(replay.Journal.Events.Select(JsonUtility.ToJson)).Concat(changes.Select(JsonUtility.ToJson)));
+    }
     private static void SocialReplays(int stage)
     {
         string directory=Path.Combine(root,"docs/chat-social-results/stage-"+stage);Directory.CreateDirectory(directory);
         int index=0;
+        int totalVoluntary=0,totalSympathy=0;
         foreach(int seed in new[]{73129,73130,73131,73132,73133})
         {
             var replay=SocialReplay(seed,stage);var duplicate=SocialReplay(seed,stage);
             Check(replay.Messages.Count>0 && replay.Serialized==duplicate.Serialized,$"T1 social production seed={seed}, messages={replay.Messages.Count}");
-            bool unique=true;var recent=new Queue<string>();
+            bool unique=true;var rooms=new Dictionary<int,Queue<string>>();
             foreach(var message in replay.Messages)
-            { if(recent.Contains(message.templateKey)) { unique=false; } recent.Enqueue(message.templateKey);if(recent.Count>=30) { recent.Dequeue(); } }
+            { if(!rooms.TryGetValue(message.roomId,out var recent)) { recent=new Queue<string>();rooms[message.roomId]=recent; } if(recent.Contains(message.templateKey)) { unique=false; } recent.Enqueue(message.templateKey);if(recent.Count>=30) { recent.Dequeue(); } }
             Check(unique,$"T7 rolling 30 template keys seed={seed}");
             Check(replay.FactErrors==0,$"T8 live portfolio facts + complete metadata seed={seed}");
             double blocked=replay.Society.SocialAttempts==0?0:(double)replay.Society.TemplateBlocked/replay.Society.SocialAttempts;
@@ -144,16 +159,48 @@ public static class ChatSocialTests
                 Check(replay.Messages.All(m=>m.targetId==0 || m.text.StartsWith("@"+(m.targetId==-1?"방장":s.SocialBots[m.targetId].Social.Nickname)+" ")),$"T2 target prefix seed={seed}");
                 Check(replay.AvailabilityErrors==0,$"T10 room availability at publication seed={seed}");
                 Check(replay.ConcurrencyErrors==0 && s.ClosedThreads.All(t=>t.turnCount<=t.maxTurns && t.participants.Count<=4),$"T11 thread turns + participants + concurrency seed={seed}");
-                double r1=s.DirectedMessages==0?0:(double)s.AnsweredCalls/s.DirectedMessages;
-                double r2=s.ClosedThreads.Count==0?0:s.ClosedThreads.Average(t=>t.turnCount);
-                double r3=(double)replay.Messages.Count(m=>m.targetId!=0)/replay.Messages.Count;
-                Check(r1>=ChatSocialConfig.Current.Get("R1Min") && r1<=ChatSocialConfig.Current.Get("R1Max"),$"R1 seed={seed} {s.AnsweredCalls}/{s.DirectedMessages} = {r1:P3}");
-                Check(r2>=ChatSocialConfig.Current.Get("R2Min") && r2<=ChatSocialConfig.Current.Get("R2Max"),$"R2 seed={seed} mean={r2:F4}, threads={s.ClosedThreads.Count}");
+                var roomMessages=replay.Messages.Where(m=>m.roomId==1).ToArray();
+                var directed=roomMessages.Where(m=>m.targetId>0).ToArray();
+                int answered=directed.Count(m=>roomMessages.Any(reply=>reply.replyToId==m.id && reply.senderId==m.targetId));
+                var closed=s.ClosedThreads.Where(t=>t.roomId==1).ToArray();
+                double r1=directed.Length==0?0:(double)answered/directed.Length;
+                double r2=closed.Length==0?0:closed.Average(t=>t.turnCount);
+                double r3=(double)roomMessages.Count(m=>m.targetId!=0)/roomMessages.Length;
+                Check(r1>=ChatSocialConfig.Current.Get("R1Min") && r1<=ChatSocialConfig.Current.Get("R1Max"),$"R1 room=1 seed={seed} {answered}/{directed.Length} = {r1:P3}");
+                Check(r2>=ChatSocialConfig.Current.Get("R2Min") && r2<=ChatSocialConfig.Current.Get("R2Max"),$"R2 room=1 seed={seed} mean={r2:F4}, threads={closed.Length}");
                 Check(r3>=ChatSocialConfig.Current.Get("R3Min") && r3<=ChatSocialConfig.Current.Get("R3Max"),$"R3 seed={seed} targeted={r3:P3}");
                 Check(s.ClosedThreads.Any(t=>t.turnCount>=3),$"scene A spontaneous multi-turn conversation seed={seed}");
             }
-            if(index++<3) { File.WriteAllLines(Path.Combine(directory,$"seed-{seed}-2h.txt"),replay.Messages.Where(m=>m.at<660).Select(m=>$"{m.at:F1}|#{m.senderId}|{m.act}|{m.text}"),new UTF8Encoding(false)); }
+            if(stage>=4)
+            {
+                var changes=replay.Journal.Changes.ToArray();var events=replay.Journal.Events.ToArray();
+                File.WriteAllLines(Path.Combine(directory,$"seed-{seed}-events.jsonl"),events.Select(JsonUtility.ToJson));
+                bool stages=true;
+                foreach(var departure in events.Where(e=>e.kind=="VOLUNTARY_EXIT"))
+                {
+                    var history=events.TakeWhile(e=>!ReferenceEquals(e,departure)).Where(e=>e.kind=="ANGER_STAGE" && e.actor==departure.actor && e.target==departure.target).Select(e=>(int)e.value).ToArray();
+                    int expected=1;foreach(int value in history) { if(value==expected) { expected++; } }
+                    stages &= expected==5;
+                }
+                Check(stages,$"T3 every voluntary departure has 1-2-3-4 cause chain seed={seed}");
+                Check(changes.Where(c=>c.field=="anger" && c.causeType=="direct-message").All(c=>InvestorPsychology.Stage(c.after)-InvestorPsychology.Stage(c.before)<=1),$"T4 anger rises <=one stage per message seed={seed}");
+                Check(events.Where(e=>e.kind=="SYMPATHY_EXIT" || e.kind=="SYMPATHY_SCHEDULED").All(e=>e.value>=60),$"T5 sympathy affinity seed={seed}");
+                Check(events.Where(e=>e.kind=="SYMPATHY_EXIT").All(e=>events.Any(origin=>origin.kind=="VOLUNTARY_EXIT" && origin.actor==e.target && origin.time<=e.time)),$"T6 sympathy depth=1 seed={seed}");
+                Check(changes.Where(c=>c.causeType=="witness-message" || c.causeType=="legacy-witness").All(c=>c.field!="betrayal" || c.after<=c.before),$"T9 no rumor betrayal seed={seed}");
+                double r4=events.Count(e=>e.kind=="ARGUMENT" && e.room==1),r5=replay.Society.VoluntaryExits,r6=r5>0?replay.Society.SympathyExits/r5:0;
+                Console.WriteLine($"Public-room arguments (outside the specified private-room R4): {events.Count(e=>e.kind=="ARGUMENT" && e.room==0)}");
+                Check(r4>=ChatSocialConfig.Current.Get("R4Min") && r4<=ChatSocialConfig.Current.Get("R4Max"),$"R4 seed={seed} arguments={r4}");
+                Check(r5>=ChatSocialConfig.Current.Get("R5Min") && r5<=ChatSocialConfig.Current.Get("R5Max"),$"R5 seed={seed} voluntary={r5}");
+                totalVoluntary+=replay.Society.VoluntaryExits;totalSympathy+=replay.Society.SympathyExits;
+                Console.WriteLine($"R6 sample seed={seed} sympathy={replay.Society.SympathyExits}, voluntary={r5}, ratio={r6:F3}");
+            }
+            if(index++<3) { File.WriteAllLines(Path.Combine(directory,$"seed-{seed}-2h.txt"),replay.Messages.Where(m=>m.at<660).Select(m=>$"{m.at:F1}|room={m.roomId}|#{m.senderId}|{m.act}|{m.text}"),new UTF8Encoding(false)); }
             File.WriteAllText(Path.Combine(directory,$"seed-{seed}.sha256"),Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(replay.Serialized))));
+        }
+        if(stage>=4)
+        {
+            double average=totalVoluntary>0?(double)totalSympathy/totalVoluntary:0;
+            Check(average>=ChatSocialConfig.Current.Get("R6Min") && average<=ChatSocialConfig.Current.Get("R6Max"),$"R6 per voluntary-exit mean over all 5 seeds: {totalSympathy}/{totalVoluntary} = {average:F4}");
         }
     }
 }

@@ -75,6 +75,7 @@ public sealed class StockManager
 public sealed partial class InvestorSociety
 {
     public const int MaximumRoomId = 4;
+    public const int PlayerRoomCount = 3;
     public static InvestorSociety Instance;
     public sealed class Room { public readonly SocialRoomState Social = new(); public readonly HashSet<int> Members = new(); }
     public readonly Room[] Rooms = { new(),new(),new(),new() };

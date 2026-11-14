@@ -143,7 +143,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
                 if (target > 0 && random.NextDouble() < settings.joinProbability * interest)
                 { Join(bot,target); }
             }
-            else if (mind.Room > 0)
+            else if (mind.Room > 0 && !SocialReady)
             {
                 var currentRoom = GetRoom(mind.Room);
                 var command = currentRoom.Command;
@@ -274,6 +274,8 @@ public sealed partial class InvestorSociety : MonoBehaviour
     public bool Join(TradeBot bot, int roomId)
     {
         var room = GetRoom(roomId); var mind = bot.Social.Psychology;
+        if (room != null && (room.Social.banned.Contains(bot.Social.Id) || mind.RejoinAt.TryGetValue(roomId, out double allowedAt) && SocialTime.GameMinute < allowedAt))
+        { return false; }
         if (room == null || !IsRoomOpen(roomId) || mind.Room != 0 || room.Members.Count >= settings.roomCapacity || !bot.isActiveAndEnabled || bot.IsExchangeParticipant)
         { return false; }
         mind.Room = roomId; mind.JoinedRoomAt = Time.time; room.Members.Add(bot.Social.Id); Joins++;

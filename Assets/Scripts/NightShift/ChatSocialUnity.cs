@@ -14,8 +14,9 @@ public sealed partial class InvestorSociety
         {
             ChooseSocialTopic = bot => day.ConversationFocus.Choose(bot.Social.Psychology.SocialRng.Next(), Time.time);
             RefreshOfferedFacts = RefreshNpcFacts;
-            WitnessChance = bot => settings.witnessProbability * (Config.Get("witnessActivityBase") + bot.Social.Psychology.Activity * Config.Get("witnessActivityScale"));
+            WitnessChance = bot => Config.Get("witnessProbability") * (Config.Get("witnessActivityBase") + bot.Social.Psychology.Activity * Config.Get("witnessActivityScale"));
             SocialMessagePublished += DeliverSocialMessage;
+            SocialDeparted += OnSocialDeparture;
             try
             {
                 string directory = Path.Combine(Application.persistentDataPath, "SocialLogs"); Directory.CreateDirectory(directory);
@@ -35,7 +36,9 @@ public sealed partial class InvestorSociety
     {
         ChatSocialAudit.Journal.Changed -= WriteSocialChange; ChatSocialAudit.Journal.Happened -= WriteSocialEvent;
         SocialMessagePublished -= DeliverSocialMessage; socialLog?.Dispose(); socialLog = null;
+        SocialDeparted -= OnSocialDeparture;
     }
+    private void OnSocialDeparture(TradeBot bot, int room, string reason) { Leave(bot, reason); }
     private void DeliverSocialMessage(SocialMessage message)
     {
         if (!SocialBots.TryGetValue(message.senderId, out var bot))
