@@ -32,6 +32,7 @@ public sealed partial class InvestorSociety
             socialWired = true;
         }
         SocialTime.Set(day.Day, day.GameMinute, Time.time);
+        TickHype();
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
     }
@@ -58,6 +59,7 @@ public sealed partial class InvestorSociety
     {
         if (!SocialBots.TryGetValue(message.senderId, out var bot))
         { return; }
+        if (SplitSocialDelivery(bot, message)) { return; }
         var context = new InvestorMessageContext(message.facts?.eventId ?? 0, message.roomId,
             message.act == SocialAct.PRAISE_PLAYER ? 1 : message.act == SocialAct.WARN_PLAYER ? -1 : 0,
             bot.Social.Confidence, bot.Social.Psychology.Trust, message.facts != null && message.facts.directLead,
@@ -73,6 +75,7 @@ public sealed partial class InvestorSociety
     {
         if (ReferenceEquals(buyer, seller) || volume <= 0 || resting == null)
         { return; }
+        ObserveHypeFill(stock, price, volume, buyer, seller);
         double at = day == null ? 0 : (day.Day - 1) * 1440d + day.GameMinute;
         if (buyer is TradeBot buying && buying.Social != null)
         {

@@ -33,6 +33,8 @@ public sealed class LeadingRoomUI : MonoBehaviour
             npcRoom.onClick.AddListener(ShowNpc); npcMembership.onClick.AddListener(Membership);
             npcBuy.onClick.AddListener(NpcBuy); npcSell.onClick.AddListener(NpcSell);
         }
+        // 하단을 참여자 카드와 방 카드로 정리한다(씬은 그대로, 시작할 때 배치).
+        gameObject.AddComponent<ChatFooterCards>().Bind(this);
     }
     private void Public() { chat.SelectRoom(0); }
     private void One() { chat.SelectRoom(1); }
