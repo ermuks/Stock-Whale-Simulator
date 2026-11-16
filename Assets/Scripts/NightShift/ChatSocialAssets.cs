@@ -9,6 +9,18 @@ public static class ChatSocialAssets
     public static SocialTemplateDocument Templates { get; private set; }
     public static int Generation { get; private set; }
     private static Dictionary<(string act, string style, int intensity, string variant), List<SocialTemplate>> templateIndex;
+    private static Dictionary<(string act, string context), SocialCommunityPhrases> communityIndex;
+    private static Dictionary<(string act, string context, string voice, string style), SocialVoicePhrases> voiceIndex;
+    public static SocialVoicePhrases Voice(SocialAct act, string context, string voice, string style)
+    {
+        EnsureLoaded();
+        return voiceIndex.TryGetValue((act.ToString(), context, voice, style), out var group) ? group : null;
+    }
+    public static SocialCommunityPhrases Community(SocialAct act, string context)
+    {
+        EnsureLoaded();
+        return communityIndex.TryGetValue((act.ToString(), context), out var group) ? group : null;
+    }
     public static IReadOnlyList<SocialTemplate> Candidates(SocialAct act, string style, int intensity, string variant)
     {
         EnsureLoaded();
@@ -52,7 +64,38 @@ public static class ChatSocialAssets
                 foreach (string text in context.texts) { if (string.IsNullOrWhiteSpace(text)) { throw new ArgumentException("Empty social context phrase"); } }
             }
         }
-        ChatSocialConfig.Install(config); Acts = acts; Templates = templates; templateIndex = nextIndex; Generation++;
+        var nextCommunity = new Dictionary<(string, string), SocialCommunityPhrases>();
+        if (templates.community != null)
+        {
+            var communityKeys = new HashSet<string>();
+            foreach (var group in templates.community)
+            {
+                if (group == null || string.IsNullOrEmpty(group.key) || !communityKeys.Add(group.key) || !Enum.TryParse<SocialAct>(group.act, out _) ||
+                    string.IsNullOrEmpty(group.context) || group.texts == null || group.texts.Length < 6 || nextCommunity.ContainsKey((group.act, group.context)))
+                { throw new ArgumentException("Invalid community phrase group"); }
+                var unique = new HashSet<string>();
+                foreach (string text in group.texts)
+                { if (string.IsNullOrWhiteSpace(text) || !unique.Add(text)) { throw new ArgumentException("Empty/duplicate community phrase"); } }
+                nextCommunity.Add((group.act, group.context), group);
+            }
+        }
+        var nextVoices = new Dictionary<(string, string, string, string), SocialVoicePhrases>();
+        if (templates.voices != null)
+        {
+            var voiceKeys = new HashSet<string>();
+            foreach (var group in templates.voices)
+            {
+                if (group == null || string.IsNullOrWhiteSpace(group.key) || !voiceKeys.Add(group.key) || !Enum.TryParse<SocialAct>(group.act, out _) ||
+                    string.IsNullOrWhiteSpace(group.context) || !InvestorSociety.IsVoiceKey(group.voice) || group.style != "formal" && group.style != "casual" ||
+                    group.texts == null || group.texts.Length < 4 || nextVoices.ContainsKey((group.act, group.context, group.voice, group.style)))
+                { throw new ArgumentException("Invalid voice phrase group"); }
+                var unique = new HashSet<string>();
+                foreach (string text in group.texts)
+                { if (string.IsNullOrWhiteSpace(text) || !unique.Add(text)) { throw new ArgumentException("Empty/duplicate voice phrase"); } }
+                nextVoices.Add((group.act, group.context, group.voice, group.style), group);
+            }
+        }
+        ChatSocialConfig.Install(config); Acts = acts; Templates = templates; templateIndex = nextIndex; communityIndex = nextCommunity; voiceIndex = nextVoices; Generation++;
     }
     private static void ValidateWeights(SocialActTable[] tables, bool signed)
     {

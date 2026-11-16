@@ -96,6 +96,7 @@ public class TabletViewController : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.BlocksInput) { return; }
         if (tabletObject == null || viewCamera == null)
         { return; }
         if (StockManager.Instance != null && !StockManager.Instance.SetupConfirmed)

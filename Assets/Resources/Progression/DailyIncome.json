@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "companyIncome": 250000,
+  "cashFraction": 0.02,
+  "equityFraction": 0.0015,
+  "recentProfitFraction": 0.25,
+  "betrayalPenalty": 0.85,
+  "fearPenalty": 0.5,
+  "curiosityValue": 1000,
+  "idleFeeImpact": 4,
+  "idleFeeMaximum": 4
+}

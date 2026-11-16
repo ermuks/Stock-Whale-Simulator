@@ -62,7 +62,8 @@ public class SmartBot : TradeBot
     {
         decimal refPrice = GetReferencePrice(stock);
         decimal current = stock.currentPrice;
-        if (refPrice <= 0m || current <= 0m)
+        // 호가 단위 내림으로 목표가가 0이 되는 초저가에서는 판단하지 않는다.
+        if (refPrice < 10m || current < 10m)
         { return; }
 
         if (!holdings.ContainsKey(stock) || GetHolding(stock) <= 0m)
@@ -139,7 +140,9 @@ public class SmartBot : TradeBot
         }
 
         decimal sellDiff = System.Math.Abs(current - targetSell) / targetSell;
-        if (sellDiff >= (decimal)targetPriceCancelThreshold)
+        // 목표가를 이미 넘어선 경우에는 목표를 다시 뽑지 않고 수익을 실현한다.
+        bool passedTarget = current >= targetSell;
+        if (!passedTarget && sellDiff >= (decimal)targetPriceCancelThreshold)
         {
             float profit = Random.Range(sellTargetMinProfit, sellTargetMaxProfit);
             targetSell = PriceTickPolicy.CeilToTick(avg * (1m + (decimal)profit));
@@ -147,12 +150,12 @@ public class SmartBot : TradeBot
             return;
         }
 
-        if (sellDiff <= (decimal)targetPriceThreshold)
+        if (passedTarget || sellDiff <= (decimal)targetPriceThreshold)
         {
             decimal vol = ClampMinVolume(GetSellVolume(sellHoldingRatio, stock));
             if (vol > 0m)
             {
-                DelayedSellLimit(GetEffectiveSellPrice(stock, targetSell), vol, 0, stock);
+                DelayedSellLimit(GetEffectiveSellPrice(stock, passedTarget ? current : targetSell), vol, 0, stock);
                 _targetSellPrice[stock] = 0m;
             }
         }

@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "chart.crowdValue",
+      "title": "시장이 믿는 가격",
+      "description": "개인 투자자들이 지금 이 종목을 얼마짜리로 믿고 있는지 차트에 표시합니다. 소문과 뉴스, 세력의 작업으로 부풀거나 꺼지는 값입니다.",
+      "requires": "",
+      "cost": 5000000,
+      "minutes": 120
+    },
+    {
+      "id": "chart.realValue",
+      "title": "기업 실제 가치",
+      "description": "실적과 사업 전망으로 계산한 주당 실제 가치를 차트에 표시합니다. 시장이 믿는 가격과의 차이가 곧 거품의 크기입니다.",
+      "requires": "chart.crowdValue",
+      "cost": 30000000,
+      "minutes": 480
+    }
+  ]
+}

@@ -116,7 +116,7 @@ public sealed class ChartGuideOverlay : MonoBehaviour
             { ticks[i].gameObject.SetActive(active); }
             if (!active)
             { continue; }
-            ticks[i].text = scale.Tick(i).ToString("N0", Numbers);
+            GameLocalizedText.Set(ticks[i],scale.Tick(i).ToString("N0", Numbers));
             float y = plotHeight * i / scale.Intervals;
             Place(ticks[i].rectTransform, plotWidth + 8f, Mathf.Clamp(y - LabelHeight * .5f, 0f, plotHeight - LabelHeight), axisWidth - 14f, LabelHeight);
         }
@@ -124,8 +124,11 @@ public sealed class ChartGuideOverlay : MonoBehaviour
         RefreshTrades(stock, true);
     }
 
+    private int marketColorVersion=-1;
     private void RefreshTrades(Stock stock, bool geometryChanged)
     {
+        geometryChanged |= marketColorVersion!=MarketColors.Version;
+        marketColorVersion=MarketColors.Version;
         bool stockChanged = stock != tradeStock;
         if (!stockChanged && !geometryChanged && Time.unscaledTime < nextTradeRead)
         { return; }
@@ -219,7 +222,7 @@ public sealed class ChartGuideOverlay : MonoBehaviour
     private static bool SameLevel(ChartTradeLevels.Level a, ChartTradeLevels.Level b)
     { return a.Account == b.Account && a.Type == b.Type && a.Price == b.Price && a.Quantity == b.Quantity; }
     private static Color TradeColor(ChartTradeLevels.Kind kind)
-    { return kind == ChartTradeLevels.Kind.Average ? new Color32(73, 195, 201, 255) : kind == ChartTradeLevels.Kind.Buy ? new Color32(239, 89, 100, 255) : new Color32(76, 150, 232, 255); }
+    { return kind == ChartTradeLevels.Kind.Average ? new Color32(73, 195, 201, 255) : kind == ChartTradeLevels.Kind.Buy ? MarketColors.Up : MarketColors.Down; }
     private void EnsureTradeLabels(int count)
     {
         while (tradeBadges.Count < count)
@@ -272,8 +275,8 @@ public sealed class ChartGuideOverlay : MonoBehaviour
 
     private static void SetText(TMP_Text target, string value)
     {
-        if (target.text != value)
-        { target.text = value; }
+        if (!GameLocalizedText.Matches(target,value))
+        { GameLocalizedText.Set(target,value); }
     }
     private static void Place(RectTransform rect, float x, float y, float width, float height)
     {
@@ -306,7 +309,7 @@ public sealed class ChartGuideOverlay : MonoBehaviour
         var label = Rect(name, parent).gameObject.AddComponent<TextMeshProUGUI>();
         label.font = source.font; label.fontSharedMaterial = source.fontSharedMaterial;
         label.fontSize = FontSize; label.enableAutoSizing = false; label.color = color;
-        label.text = "";
+        GameLocalizedText.Set(label,"");
         label.textWrappingMode = TextWrappingModes.NoWrap; label.overflowMode = TextOverflowModes.Truncate;
         label.alignment = TextAlignmentOptions.MidlineRight; label.raycastTarget = false;
         return label;

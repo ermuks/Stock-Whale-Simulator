@@ -100,23 +100,11 @@ public partial class StockManager : MonoBehaviour
     void Update()
     {
         HandleStockNavigation();
-        if (!SetupConfirmed || stocks == null || fakeValueReversionPerSecond <= 0f)
+        if (!SetupConfirmed || stocks == null)
         { return; }
 
-        float dt = Time.deltaTime;
-        decimal factor = (decimal)(fakeValueReversionPerSecond * dt);
-        foreach (var stock in stocks)
-        {
-            if (stock == null)
-            { continue; }
-
-            decimal gap = stock.realValue - stock.fakeValue;
-            if (gap == 0m)
-            { continue; }
-
-            decimal newFake = stock.fakeValue + gap * factor;
-            stock.SetFakeValue(newFake);
-        }
+        // fakeValue는 더 이상 realValue로 수렴하지 않는다. 개미들이 각자 믿는 가격의 집계값이다.
+        UpdateCrowdValues();
     }
 
     /// <summary>진행 중 신규 상장. 가상 과거를 만들지 않으며 자산·차트·거래소에 같은 종목 등록.</summary>
@@ -157,6 +145,7 @@ public partial class StockManager : MonoBehaviour
 
     private void HandleStockNavigation()
     {
+        if (PauseMenuController.BlocksInput) { return; }
         if (!SetupConfirmed || stocks == null || stocks.Count == 0)
         { return; }
         int direction = Input.GetKeyDown(KeyCode.W) ? -1 : Input.GetKeyDown(KeyCode.S) ? 1 : 0;

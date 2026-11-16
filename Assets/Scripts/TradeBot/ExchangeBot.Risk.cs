@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using Unity.Profiling;
 
@@ -17,7 +17,7 @@ public partial class ExchangeBot
 
     private void InitializeGrade(StockState state)
     {
-        state.NextGradeEvaluation = Time.time + Mathf.Max(1f, Settings.gradeInterval) + (states.Count - 1) * 0.1f;
+        state.NextGradeEvaluation = SessionClock.Time + Mathf.Max(1f, Settings.gradeInterval) + (states.Count - 1) * 0.1f;
         if (CandleHistoryManager.Instance == null || CandleHistoryManager.Instance.Completed(state.Stock).Count < 20)
         {
             state.Stock.RiskPending = true;
@@ -25,7 +25,7 @@ public partial class ExchangeBot
         }
 
         state.Stock.RiskPending = false;
-        ApplyGrade(state, GradeFor(state.Risk), Time.time);
+        ApplyGrade(state, GradeFor(state.Risk), SessionClock.Time);
     }
 
     public StockRiskGrade GradeFor(decimal indicator)
@@ -148,17 +148,17 @@ public partial class ExchangeBot
                 if (stock.IsTradingHalted)
                 {
                     stock.orderBook.CancelAllBudgeted(stock, Math.Max(1, Settings.cancelOrdersPerFrame));
-                    if (Time.time >= stock.HaltUntil && !stock.orderBook.HasOrders)
+                    if (SessionClock.Time >= stock.HaltUntil && !stock.orderBook.HasOrders)
                     {
-                        ApplyGrade(state, StockRiskGrade.HighRisk, Time.time);
+                        ApplyGrade(state, StockRiskGrade.HighRisk, SessionClock.Time);
                         state.GraceCandles = Math.Max(1, Settings.haltGraceCandles);
-                        state.NextGradeEvaluation = Time.time + Mathf.Max(1f, Settings.gradeInterval);
+                        state.NextGradeEvaluation = SessionClock.Time + Mathf.Max(1f, Settings.gradeInterval);
                         state.NeedsOpening = state.NewListing && state.CompletedCount < 60;
                     }
                 }
                 else
                 {
-                    EvaluateGrade(stock, Time.time);
+                    EvaluateGrade(stock, SessionClock.Time);
                 }
             }
         }

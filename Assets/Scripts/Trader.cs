@@ -68,6 +68,24 @@ public class Trader : MonoBehaviour, IOrderOwner
         _cash += amount;
     }
 
+    public bool ContributePrivateCapital(Stock stock, decimal amount)
+    {
+        if (stock == null || stock.IsListed || GetHolding(stock) != stock.issuedShares || amount <= 0 || amount != decimal.Floor(amount) || PlayerAccounts.Available(this) < amount)
+        { return false; }
+        avgPrice[stock] += amount / stock.issuedShares;
+        ApplyTradeCash(-amount);
+        return true;
+    }
+
+    public bool SubscribeShares(Stock stock, decimal shares, decimal price)
+    {
+        if (stock == null || shares < 1 || shares != decimal.Floor(shares) || price < 1 || cash - ReservedCash < shares * price)
+        { return false; }
+        ApplyTradeCash(-shares * price);
+        AddHolding(stock, shares, price);
+        return true;
+    }
+
     public void ExternalFlow(decimal amount)
     {
         if (baselineReady)

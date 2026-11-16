@@ -1,0 +1,17 @@
+{
+  "titles": ["리딩방 가입", "매매 성과", "내 리딩방"],
+  "observing": "운영자 관찰",
+  "waiting": "가입 대기",
+  "firstSignal": "첫 신호 기다리기",
+  "turnover": "거래",
+  "profit": "손익",
+  "preparing": "개설 준비",
+  "eligible": "개설 가능",
+  "operate": "직접 운영하기",
+  "complete": "완료",
+  "current": "지금",
+  "tenThousand": "만",
+  "hundredMillion": "억",
+  "trillion": "조",
+  "won": "원"
+}

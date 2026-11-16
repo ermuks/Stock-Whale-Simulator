@@ -21,11 +21,18 @@ public static partial class ChatSocialTests
         try
         {
             if(args.Length>2 && args[2]=="moderation") { ModerationScenarios(stage); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="news") { NewsSocietyScenarios(); Console.WriteLine($"News: passed={passed}, failed={failed}"); return failed==0?0:1; }
             if(args.Length>2 && args[2]=="rates") { SocialReplays(stage); return failed==0?0:1; }
             if(args.Length>2 && args[2]=="tune") { SearchTuning(stage); return failed==0?0:1; }
             if(args.Length>2 && args[2]=="decisions") { DecisionScenarios(stage); return failed==0?0:1; }
             if(args.Length>2 && args[2]=="focus") { FocusScenarios(); return failed==0?0:1; }
             if(args.Length>2 && args[2]=="polish") { PolishScenarios(); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="watch") { WatchScenarios(); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="voice") { SpeechScenarios(); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="variety") { VoiceVarietyScenarios(); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="flow") { ConversationFlowScenarios(); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="risk-recruitment") { MarketRiskRecruitmentScenarios(); return failed==0?0:1; }
+            if(args.Length>2 && args[2]=="mediation") { MediationScenarios(); return failed==0?0:1; }
             ModelTests(); LegacyReplay();
             if(stage>=2) { SocialReplays(stage); }
             if(stage>=4) { IgnoredFightScenario(stage); }
@@ -33,6 +40,12 @@ public static partial class ChatSocialTests
             if(stage>=6) { DecisionScenarios(stage); }
             if(stage>=7) { FocusScenarios(); }
             if(stage>=8) { PolishScenarios(); }
+            if(stage>=8) { WatchScenarios(); }
+            if(stage>=8) { SpeechScenarios(); }
+            if(stage>=8) { MediationScenarios(); }
+            if(stage>=8) { VoiceVarietyScenarios(); ConversationFlowScenarios(); }
+            if(stage>=8) { MarketRiskRecruitmentScenarios(); }
+            if(stage>=8) { NewsSocietyScenarios(); }
         }
         catch(Exception ex) { Console.WriteLine(ex); failed++; }
         Console.WriteLine($"Stage {stage}: passed={passed}, failed={failed}"); return failed==0?0:1;

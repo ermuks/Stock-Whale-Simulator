@@ -1,0 +1,17 @@
+{
+  "titles": ["Join a room", "Trade results", "My own room"],
+  "observing": "Watch the leader",
+  "waiting": "Waiting to join",
+  "firstSignal": "Wait for a signal",
+  "turnover": "Traded",
+  "profit": "Profit",
+  "preparing": "Getting ready",
+  "eligible": "Ready to open",
+  "operate": "Lead my own room",
+  "complete": "Done",
+  "current": "Now",
+  "tenThousand": "10K",
+  "hundredMillion": "100M",
+  "trillion": "T",
+  "won": "KRW"
+}

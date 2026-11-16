@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
 /// 종목 리스트 한 행. 보조 정보는 전달된 최근 캔들(현재 최대 18개) 합계 기준.
-/// 가격=현재가, 등락률=전일 종가 대비. 거래량/거래대금과 미니 캔들은 전달된 최근 봉 기준.
+/// 가격=현재가, 등락률=전일 종가 대비. 미니 캔들은 당일 시가/고가/저가/현재가 기준.
 /// </summary>
 public class StockListItem : MonoBehaviour
 {
@@ -37,8 +37,8 @@ public class StockListItem : MonoBehaviour
     public Image riskBadgeBackground;
     private bool selected, selectionInitialized;
     private string iconSymbol;
-    private static readonly Color Up = new Color32(239, 89, 100, 255);
-    private static readonly Color Down = new Color32(76, 150, 232, 255);
+    private static Color Up => MarketColors.Up;
+    private static Color Down => MarketColors.Down;
     const string IconPath = "Stock/";
     /// <summary>이 행이 표시하는 종목. Set() 시 저장, 버튼 클릭 시 이 종목으로 오더북·차트 전환.</summary>
     private Stock _stock;
@@ -95,9 +95,9 @@ public class StockListItem : MonoBehaviour
         if (textName != null)
         {
             string name = textRisk != null ? stock.stockName : stock.stockName + " · " + stock.RiskDisplay;
-            if (textName.text != name)
+            if (!GameLocalizedText.Matches(textName,name))
             {
-                textName.text = name;
+                GameLocalizedText.Set(textName,name);
                 badgeLayoutDirty = true;
             }
         }
@@ -125,15 +125,19 @@ public class StockListItem : MonoBehaviour
         }
 
         // 거래량/거래대금: 최근 18캔들 전체 합
-        // 미니 캔들만 최근 6개 묶음. 등락률/등락률 정렬은 고정된 전일 종가 기준.
+        // 미니 캔들은 당일 OHLC. 등락률/등락률 정렬은 고정된 전일 종가 기준.
         float volumeSum = 0f;
         float turnoverSum = 0f;
         decimal dailyChange = 0m;
-        bool hasDailyChange = StockStatistics.Instance != null && StockStatistics.Instance.TryGetDailyChange(stock, out dailyChange);
+        var statistics = StockStatistics.Instance;
+        bool hasDailyChange = statistics != null && statistics.TryGetDailyChange(stock, out dailyChange);
         float changePct = (float)dailyChange;
         CandleData? summary = null;
+        if (statistics != null && statistics.TryGetDailyCandle(stock, out var dailyCandle))
+        {
+            summary = dailyCandle;
+        }
         int nAll = last10 != null ? last10.Count : 0;
-        const int groupSize = 6;
         if (nAll > 0)
         {
             for (int i = 0; i < nAll; i++)
@@ -141,13 +145,6 @@ public class StockListItem : MonoBehaviour
                 volumeSum += last10[i].volume;
                 turnoverSum += last10[i].close * last10[i].volume;
             }
-
-            // 현재 구간: 마지막 캔들 인덱스가 속한 6개 묶음 (0~5 → 0, 6~11 → 1, 12~17 → 2)
-            int lastIndex = nAll - 1;
-            int groupIndex = lastIndex / groupSize;
-            int from = groupIndex * groupSize;
-            int to = Mathf.Min(from + groupSize, nAll);
-            summary = AggregateCandleRange(last10, from, to);
         }
 
         if (textVolume10 != null)
@@ -166,7 +163,9 @@ public class StockListItem : MonoBehaviour
             textChangePct10.color = changePct > 0 ? Up : changePct < 0 ? Down : new Color32(138,150,163,255);
         }
         VolumeSortValue = volumeSum; ChangeSortValue = changePct;
-        ApplyCandleAnchors(summary);
+        // 0% 기준은 등락률과 같은 전일 종가. 전일 종가가 없으면 당일 시가를 쓴다.
+        float reference = hasDailyChange && changePct > -99f && summary.HasValue ? summary.Value.close / (1f + changePct / 100f) : summary.HasValue ? summary.Value.open : 0f;
+        ApplyCandleAnchors(summary, reference);
     }
 
     private void LayoutBadge()
@@ -185,48 +184,6 @@ public class StockListItem : MonoBehaviour
         riskBadgeBackground.rectTransform.anchoredPosition = position; textRisk.rectTransform.anchoredPosition = position;
         riskBadgeBackground.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,badgeWidth);
         textRisk.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,badgeWidth);
-    }
-
-    /// <summary>구간 캔들을 하나의 캔들로 합침. open=첫 시가, close=마지막 종가, high/low=구간 최고/최저.</summary>
-    static CandleData AggregateCandleRange(IReadOnlyList<CandleData> candles, int fromInclusive, int toExclusive)
-    {
-        if (candles == null)
-        { return default; }
-
-        int n = candles.Count;
-        int from = Mathf.Clamp(fromInclusive, 0, n);
-        int to = Mathf.Clamp(toExclusive, 0, n);
-        if (to <= from)
-        { return default; }
-
-        float open = candles[from].open;
-        float close = candles[to - 1].close;
-        float high = candles[from].high;
-        float low = candles[from].low;
-        float vol = 0f;
-        for (int i = from; i < to; i++)
-        {
-            if (candles[i].high > high)
-            {
-                high = candles[i].high;
-            }
-
-            if (candles[i].low < low)
-            {
-                low = candles[i].low;
-            }
-
-            vol += candles[i].volume;
-        }
-
-        return new CandleData
-        {
-            open = open,
-            close = close,
-            high = high,
-            low = low,
-            volume = vol
-        };
     }
 
     /// <summary>거래량 표기: 0~9,999 → #,##0 / 10,000~999,999 → k / 1,000,000~ → M</summary>
@@ -271,11 +228,11 @@ public class StockListItem : MonoBehaviour
             string label = stock.RiskLabel;
             if (stock.IsTradingHalted)
             {
-                label += " " + Mathf.CeilToInt(Mathf.Max(0f, stock.HaltUntil - Time.time)) + "초";
+                label += " " + Mathf.CeilToInt(Mathf.Max(0f, stock.HaltUntil - SessionClock.Time)) + "초";
             }
-            if (textRisk.text != label)
+            if (!GameLocalizedText.Matches(textRisk,label))
             {
-                textRisk.text = label;
+                GameLocalizedText.Set(textRisk,label);
                 badgeLayoutDirty = true;
             }
             if (textRisk.color != color)
@@ -293,7 +250,9 @@ public class StockListItem : MonoBehaviour
         }
     }
 
-    void ApplyCandleAnchors(CandleData? summary)
+    // 미니 캔들 세로 눈금은 고정이다. 가운데가 0%, 맨 아래가 -50%, 맨 위가 +50%.
+    private const float CandleScalePercent = 50f;
+    void ApplyCandleAnchors(CandleData? summary, float reference)
     {
         if (imgLine != null)
         {
@@ -306,13 +265,9 @@ public class StockListItem : MonoBehaviour
         if (!summary.HasValue)
         { return; }
         CandleData candle = summary.Value;
-        float low = Mathf.Min(candle.low, candle.open, candle.close);
-        float high = Mathf.Max(candle.high, candle.open, candle.close);
-        float range = Mathf.Max(high - low, 1f);
-        float middle = (low + high) * .5f;
-        low = middle - range * .5f - range * .12f;
-        high = middle + range * .5f + range * .12f;
-        float Map(float price) => Mathf.Clamp01((price - low) / (high - low));
+        if (reference <= 0f)
+        { reference = candle.open; }
+        float Map(float price) => Mathf.Clamp01(.5f + (price / reference - 1f) * 100f / (CandleScalePercent * 2f));
         Color color = candle.close >= candle.open ? Up : Down;
         if (imgLine != null)
         {

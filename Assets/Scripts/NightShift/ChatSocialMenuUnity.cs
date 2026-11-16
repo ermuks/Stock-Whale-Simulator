@@ -38,7 +38,7 @@ public sealed class ChatSocialMenuUnity : MonoBehaviour
         rect.anchorMin = new Vector2(0, 1); rect.anchorMax = Vector2.one; rect.pivot = new Vector2(.5f, 1);
         rect.offsetMin = new Vector2(14 * chat.layoutScale, -(y + height) * chat.layoutScale);
         rect.offsetMax = new Vector2(-14 * chat.layoutScale, -y * chat.layoutScale);
-        var label = go.GetComponent<TextMeshProUGUI>(); label.font = font; label.text = text;
+        var label = go.GetComponent<TextMeshProUGUI>(); label.font = font; GameLocalizedText.Set(label,text);
         label.fontSize = 25 * chat.layoutScale; label.enableAutoSizing = false; label.alignment = TextAlignmentOptions.MidlineLeft;
         label.color = new Color(.90f, .92f, .94f); label.raycastTarget = false;
         return label;
@@ -54,7 +54,7 @@ public sealed class ChatSocialMenuUnity : MonoBehaviour
         Vector3 local = parent.InverseTransformPoint(nickname.position);
         panel.anchoredPosition = new Vector2(Mathf.Clamp(local.x, parent.rect.xMin, parent.rect.xMax - panel.rect.width),
             Mathf.Clamp(local.y, parent.rect.yMin + panel.rect.height, parent.rect.yMax));
-        title.text = bot.Social.Nickname;
+        GameLocalizedText.Set(title,bot.Social.Nickname,true);
         panel.SetAsLastSibling(); panel.gameObject.SetActive(true);
     }
     private void Execute(SocialModeration action)

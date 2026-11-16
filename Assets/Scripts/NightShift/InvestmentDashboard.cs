@@ -26,7 +26,7 @@ public sealed class InvestmentDashboard : MonoBehaviour
     public static readonly Color Ink = new Color32(230,235,239,255);
     public static string Signed(decimal value) => value.ToString("+#,##0;-#,##0;0");
     public static string Rate(decimal pnl, decimal basis) => basis > 0m ? (pnl / basis * 100m).ToString("+0.00;-0.00;0.00") + "%" : "—";
-    public static Color ProfitColor(decimal pnl) => pnl > 0m ? new Color32(239,89,100,255) : pnl < 0m ? new Color32(76,150,232,255) : Ink;
+    public static Color ProfitColor(decimal pnl) => pnl > 0m ? MarketColors.Up : pnl < 0m ? MarketColors.Down : Ink;
     void Start()
     { sort.onClick.AddListener(CycleSort); detail.onClick.AddListener(() => navigation.ShowPage(TabletAccountUI.Page.Detail)); }
     void OnEnable()
@@ -91,7 +91,7 @@ public sealed class InvestmentDashboard : MonoBehaviour
         DeviceTerminalUI.Set(valuation, priced ? DeviceTerminalUI.Money(stockValue) : "—");
         DeviceTerminalUI.Set(profit, priced ? Signed(pnl) + "원  (" + Rate(pnl,basisTotal) + ")" : "평가가격 확인 중"); profit.color = priced ? ProfitColor(pnl) : Ink;
         DeviceTerminalUI.Set(available, DeviceTerminalUI.Money(PlayerAccounts.Available(account)));
-        DeviceTerminalUI.Set(total, priced ? DeviceTerminalUI.Money(account.cash + stockValue) : "—");
+        DeviceTerminalUI.Set(total, priced ? DeviceTerminalUI.Money(account.cash + stockValue - PlayerAccounts.TaxDebt(account)) : "—");
         DeviceTerminalUI.Set(count,"보유 종목  " + owned.Count);
         DeviceTerminalUI.Set(cost,"총 매수원금  " + DeviceTerminalUI.Money(basisTotal));
         DeviceTerminalUI.Set(sortLabel,SortMode == 0 ? "평가금 높은 순" : SortMode == 1 ? "수익률 높은 순" : "종목명 순");

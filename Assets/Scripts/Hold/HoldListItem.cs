@@ -16,7 +16,16 @@ public class HoldListItem : MonoBehaviour
     public TextMeshProUGUI textQuantity;
     public TextMeshProUGUI textCurrentPrice, textCurrentValue, textAvailability, textEmpty;
     public bool currencySuffix;
-    private static readonly Color Up = new Color32(239,89,100,255), Down = new Color32(76,150,232,255), Neutral = new Color32(166,177,186,255);
+    private static readonly Color Neutral = new Color32(166,177,186,255);
+    private decimal shownProfit;
+    void OnEnable() { MarketColors.Changed += RefreshColors; RefreshColors(); }
+    void OnDisable() { MarketColors.Changed -= RefreshColors; }
+    private void RefreshColors()
+    {
+        Color color=MarketColors.ForChange(shownProfit,Neutral);
+        if (textProfitPct!=null) { textProfitPct.color=color; }
+        if (textEvaluationProfit!=null) { textEvaluationProfit.color=color; }
+    }
 
     static readonly NumberFormatInfo _nfi;
 
@@ -31,13 +40,14 @@ public class HoldListItem : MonoBehaviour
     /// <summary>수익률(%): (현재가-평단)/평단*100. 평가손익: (현재가-평단)*수량. 평균매가는 원 단위로 표시. 보유수량 정수.</summary>
     public void Set(string symbol, string name, decimal profitPct, decimal evaluationProfitLoss, decimal avgPrice, decimal quantity)
     {
+        shownProfit=evaluationProfitLoss;
         DeviceTerminalUI.Set(textSymbol,symbol ?? ""); DeviceTerminalUI.Set(textName,name ?? "");
         DeviceTerminalUI.Set(textProfitPct,profitPct.ToString("+#,##0.0;-#,##0.0;0.0",_nfi) + "%");
         string unit = currencySuffix ? "원" : "";
         DeviceTerminalUI.Set(textEvaluationProfit,(evaluationProfitLoss > 0m ? "+" : "") + PriceTickPolicy.FormatMoney(evaluationProfitLoss) + unit);
         DeviceTerminalUI.Set(textAvgPrice,FormatAvgPrice(avgPrice) + unit);
         DeviceTerminalUI.Set(textQuantity,decimal.Truncate(quantity).ToString("N0",_nfi) + (currencySuffix ? "주" : ""));
-        Color color = evaluationProfitLoss > 0m ? Up : evaluationProfitLoss < 0m ? Down : Neutral;
+        Color color = MarketColors.ForChange(evaluationProfitLoss,Neutral);
         if (textProfitPct != null && textProfitPct.color != color) { textProfitPct.color = color; }
         if (textEvaluationProfit != null && textEvaluationProfit.color != color) { textEvaluationProfit.color = color; }
     }

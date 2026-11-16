@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Localization-Assets-Shared
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Localization-Assets-Shared
+  m_GUID: 3f86d2f4a69bb844a9d53244fb05e29b
+  m_SerializeEntries:
+  - m_GUID: 8a98882c92a5f754081de85eca998533
+    m_Address: Assets/Localization/Tables/DonDon Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 1
+  m_Settings: {fileID: 11400000, guid: 87f258be32a80954fb3fcad1b99fe8f0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 508790c3284a52a418ab45967fefe683, type: 2}
+    - {fileID: 11400000, guid: 469839d7f4ced0544a78fb49f07c66bb, type: 2}
+    - {fileID: 11400000, guid: c557b106443f0ac4fa1caca18b8abd4a, type: 2}

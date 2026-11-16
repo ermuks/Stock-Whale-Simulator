@@ -1,111 +1,108 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 가짜 뉴스 발행 관리. FakeValueAndNews.md 설계에 따름.
-/// - 세력이 fake value를 조작한 뒤 N초가 지나야 가짜 뉴스 발행 가능.
-/// - itCompany 노드 description을 뉴스 헤드라인으로 사용.
-/// </summary>
+/// <summary>Fictional in-game rumors use the same news/order market. Player publication requires tablet 2.</summary>
 public class FakeNewsManager : MonoBehaviour
 {
     public static FakeNewsManager Instance { get; private set; }
-
-    [Header("타이밍")]
-    [Tooltip("조작 후 이 시간(초)이 지나야 가짜 뉴스 발행 가능")]
     public float minSecondsAfterManipulation = 30f;
-
-    [Header("정책")]
-    [Tooltip("같은 조작에 대해 뉴스 1회만 발행 여부")]
     public bool oneNewsPerManipulation = true;
-
-    /// <summary>종목별: (조작 시각, 이미 뉴스 발행했는지)</summary>
-    private Dictionary<Stock, (float time, bool published)> _manipulations = new Dictionary<Stock, (float, bool)>();
-
+    [Range(0, 1)] public float followupChance = .65f;
+    [Min(30)] public float followupDelaySeconds = 120f;
+    private readonly Dictionary<Stock, (float time, bool published)> manipulations = new();
+    private readonly List<(Stock stock, NewsArticle article, float due)> followups = new();
+    private readonly NewsPublicationClock playerClock = new();
+    private float nextCheck;
+    public double PlayerCooldown => playerClock.Remaining(Time.realtimeSinceStartupAsDouble);
+    public bool PlayerUnlocked => PlayerAccounts.Instance != null && PlayerAccounts.Instance.AutomatedUnlocked &&
+        PlayerAccounts.Instance.CanUse(PlayerAccounts.Instance.automated);
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-            return;
-        }
+        if (Instance != null && Instance != this) { Destroy(this); return; }
         Instance = this;
     }
-
-    void OnEnable()
-    {
-        StockManager.OnStockDelisted += OnStockDelisted;
-    }
-
-    void OnDisable()
-    {
-        StockManager.OnStockDelisted -= OnStockDelisted;
-    }
-
+    void OnEnable() { StockManager.OnStockDelisted += OnStockDelisted; }
+    void OnDisable() { StockManager.OnStockDelisted -= OnStockDelisted; }
+    void OnDestroy() { if (Instance == this) { Instance = null; } }
     void OnStockDelisted(Stock stock)
     {
-        if (stock != null)
-            _manipulations.Remove(stock);
+        if (stock == null) { return; }
+        manipulations.Remove(stock); followups.RemoveAll(item => item.stock == stock);
     }
-
-    void OnDestroy()
-    {
-        if (Instance == this)
-            Instance = null;
-    }
-
-    /// <summary>
-    /// 세력이 fake value를 조작했을 때 호출. 타임스탬프 기록.
-    /// WhaleBot 등에서 SetFakeValue 직후 호출.
-    /// </summary>
     public void RecordManipulation(Stock stock)
     {
-        if (stock == null) return;
-        float now = Time.time;
-        _manipulations[stock] = (now, false);
+        if (stock == null) { return; }
+        manipulations[stock] = (SessionClock.Time, false);
     }
-
-    /// <summary>
-    /// 가짜 뉴스 발행 시도. 현재 시각 - 조작 시각 >= N초 이고 아직 미발행이면 발행.
-    /// </summary>
-    /// <param name="stock">종목</param>
-    /// <param name="isPump">펌프(상승) 뉴스면 true, 덤프(하락)면 false. criticalValue 선택에 사용</param>
-    /// <returns>발행 성공 여부</returns>
+    public bool CanPublish(Stock stock) => stock != null && manipulations.TryGetValue(stock, out var record) &&
+        (!oneNewsPerManipulation || !record.published) && SessionClock.Time - record.time >= minSecondsAfterManipulation;
     public bool TryPublishFakeNews(Stock stock, bool isPump)
     {
-        if (stock == null) return false;
-        if (NewsManager.Instance == null) return false;
-        if (!_manipulations.TryGetValue(stock, out var rec)) return false;
-
-        float elapsed = Time.time - rec.time;
-        if (elapsed < minSecondsAfterManipulation) return false;
-        if (oneNewsPerManipulation && rec.published) return false;
-
-        string title = GetFakeNewsTitle(stock, isPump);
-        if (string.IsNullOrEmpty(title)) return false;
-
-        float criticalValue = isPump ? 1.08f : 0.92f; // 호재/악재 색상용
-        NewsManager.Instance.AddNews(stock, criticalValue, title);
-
-        _manipulations[stock] = (rec.time, true);
-        Debug.Log($"[세력] 가짜 뉴스 발행 — {stock.stockName}({stock.symbol}) {(isPump ? "호재" : "악재")} | {title}");
+        if (!CanPublish(stock) || NewsManager.Instance == null || !stock.AcceptsOrders) { return false; }
+        var article = PublishRumor(stock, "contracts", isPump, Mathf.FloorToInt(SessionClock.Time));
+        if (article == null) { return false; }
+        manipulations[stock] = (manipulations[stock].time, true); return true;
+    }
+    public NewsArticle PreviewPlayer(Stock stock, string category, bool positive, int variant)
+    {
+        var manager = NewsManager.Instance;
+        if (stock == null || manager == null) { return null; }
+        string title = NewsWriting.RumorTitle(manager.Writing, stock.symbol, stock.stockName, category, positive, variant);
+        return NewsWriting.Compose(manager.Writing, 0, stock.symbol, stock.stockName, title, positive ? .64 : -.64,
+            DeviceMarketJournal.FullStamp(), SessionClock.Time, true, category, variant);
+    }
+    public bool TryPublishPlayer(Stock stock, string category, bool positive, int variant, out NewsArticle article, out string reason)
+    {
+        article = null;
+        if (!PlayerUnlocked) { reason = "2번 계좌 해금 후 사용할 수 있습니다."; return false; }
+        if (stock == null || !stock.IsListed || !stock.AcceptsOrders || !MarketDayController.CanTrade)
+        { reason = "거래 중인 종목을 선택하세요."; return false; }
+        if (PlayerCooldown > 0) { reason = "다음 발행까지 " + FormatCooldown(PlayerCooldown); return false; }
+        if (NewsManager.Instance == null) { reason = "뉴스 연결을 준비하고 있습니다."; return false; }
+        article = PublishRumor(stock, category, positive, variant);
+        if (article == null) { reason = "기사 발행에 실패했습니다. 다시 확인하세요."; return false; }
+        playerClock.TryConsume(Time.realtimeSinceStartupAsDouble);
+        reason = "발행 완료 · 재사용 대기 " + FormatCooldown(PlayerCooldown);
+        ChatSocialAudit.Journal.Event(new SocialEvent { id = article.id, time = ChatSocialAudit.GameMinute, actor = -1,
+            kind = "PLAYER_NEWS_PUBLISHED", reason = stock.symbol + " " + category, value = article.sentiment });
         return true;
     }
-
-    /// <summary>해당 종목이 N초 경과 후 뉴스 발행 가능한지</summary>
-    public bool CanPublish(Stock stock)
+    private NewsArticle PublishRumor(Stock stock, string category, bool positive, int variant)
     {
-        if (stock == null || !_manipulations.TryGetValue(stock, out var rec))
-            return false;
-        if (oneNewsPerManipulation && rec.published)
-            return false;
-        return (Time.time - rec.time) >= minSecondsAfterManipulation;
+        var manager = NewsManager.Instance;
+        string title = NewsWriting.RumorTitle(manager.Writing, stock.symbol, stock.stockName, category, positive, variant);
+        var article = manager.Publish(stock, positive ? 1.08f : .92f, title, fabricated: true, category: category, variant: variant);
+        if (article != null && NewsWriting.Hash(article.id + ":followup:" + stock.symbol) % 10000 < followupChance * 10000)
+        {
+            if (followups.Count >= 16) { followups.RemoveAt(0); }
+            followups.Add((stock, article, SessionClock.Time + followupDelaySeconds + NewsWriting.Hash(article.id.ToString()) % 45));
+        }
+        return article;
     }
-
-    string GetFakeNewsTitle(Stock stock, bool isPump)
+    void Update()
     {
-        if (ItCompanyManager.Instance == null || !ItCompanyManager.Instance.IsLoaded)
-            return null;
-
-        return ItCompanyManager.Instance.GetRandomNodeDescriptionForFakeNews(isPump);
+        if (SessionClock.Time < nextCheck || !MarketDayController.CanTrade || NewsManager.Instance == null) { return; }
+        nextCheck = SessionClock.Time + 1;
+        for (int i = followups.Count - 1; i >= 0; i--)
+        {
+            var item = followups[i];
+            if (SessionClock.Time < item.due) { continue; }
+            followups.RemoveAt(i);
+            if (item.stock == null || item.stock.IsDelisted) { continue; }
+            NewsManager.Instance.Publish(item.stock, item.article.sentiment > 0 ? .94f : 1.06f,
+                item.stock.stockName + " 관련 " + item.article.categoryLabel + " 주장, 확인 자료 없는 것으로 드러나",
+                category: item.article.category, storyId: item.article.storyId, correction: true);
+        }
+    }
+    public bool RestorePlayerCooldown(double remaining, long savedUtcTicks)
+    {
+        if (savedUtcTicks < 0 || savedUtcTicks > DateTime.MaxValue.Ticks) { return false; }
+        double offline = savedUtcTicks == 0 ? 0 : Math.Max(0, (DateTime.UtcNow.Ticks - savedUtcTicks) / (double)TimeSpan.TicksPerSecond);
+        return playerClock.Restore(remaining, offline, Time.realtimeSinceStartupAsDouble);
+    }
+    public static string FormatCooldown(double value)
+    {
+        return DeviceMarketJournal.Duration(Math.Max(0,value)*DeviceMarketJournal.GameSecondsPerRealSecond/60d);
     }
 }

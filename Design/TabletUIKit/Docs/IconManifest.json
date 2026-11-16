@@ -1,0 +1,573 @@
+{
+  "name": "DonDon Solid Icons",
+  "version": "1.0",
+  "columns": 8,
+  "rows": 6,
+  "spriteMode": "Multiple",
+  "backgroundAlpha": 0,
+  "iconFill": "#FFFFFF",
+  "spacingPx": 0,
+  "paddingPx": 0,
+  "pivot": [
+    0.5,
+    0.5
+  ],
+  "recommendedUnityImport": {
+    "textureType": "Sprite (2D and UI)",
+    "spriteMode": "Multiple",
+    "meshType": "Full Rect",
+    "filterMode": "Bilinear",
+    "compression": "None or High Quality",
+    "mipMaps": false
+  },
+  "atlases": [
+    {
+      "filename": "DonDon_Solid_Icons_64.png",
+      "width": 512,
+      "height": 384,
+      "cellSize": 64
+    },
+    {
+      "filename": "DonDon_Solid_Icons_128.png",
+      "width": 1024,
+      "height": 768,
+      "cellSize": 128
+    },
+    {
+      "filename": "DonDon_Solid_Icons_256.png",
+      "width": 2048,
+      "height": 1536,
+      "cellSize": 256
+    }
+  ],
+  "sprites": [
+    {
+      "index": 0,
+      "name": "home",
+      "ko": "홈",
+      "x": 0,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 0,
+      "row": 0
+    },
+    {
+      "index": 1,
+      "name": "assets",
+      "ko": "총자산",
+      "x": 256,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 1,
+      "row": 0
+    },
+    {
+      "index": 2,
+      "name": "wallet",
+      "ko": "계좌 현금",
+      "x": 512,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 2,
+      "row": 0
+    },
+    {
+      "index": 3,
+      "name": "holdings",
+      "ko": "보유 종목",
+      "x": 768,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 3,
+      "row": 0
+    },
+    {
+      "index": 4,
+      "name": "market",
+      "ko": "시장",
+      "x": 1024,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 4,
+      "row": 0
+    },
+    {
+      "index": 5,
+      "name": "buy",
+      "ko": "매수",
+      "x": 1280,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 5,
+      "row": 0
+    },
+    {
+      "index": 6,
+      "name": "sell",
+      "ko": "매도",
+      "x": 1536,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 6,
+      "row": 0
+    },
+    {
+      "index": 7,
+      "name": "pending_order",
+      "ko": "미체결 주문",
+      "x": 1792,
+      "yFromTop": 0,
+      "width": 256,
+      "height": 256,
+      "col": 7,
+      "row": 0
+    },
+    {
+      "index": 8,
+      "name": "company",
+      "ko": "내 기업",
+      "x": 0,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 0,
+      "row": 1
+    },
+    {
+      "index": 9,
+      "name": "factory",
+      "ko": "설비 확장",
+      "x": 256,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 1,
+      "row": 1
+    },
+    {
+      "index": 10,
+      "name": "sales",
+      "ko": "영업 확대",
+      "x": 512,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 2,
+      "row": 1
+    },
+    {
+      "index": 11,
+      "name": "research",
+      "ko": "기술 연구",
+      "x": 768,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 3,
+      "row": 1
+    },
+    {
+      "index": 12,
+      "name": "auto_trade",
+      "ko": "자동 매매",
+      "x": 1024,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 4,
+      "row": 1
+    },
+    {
+      "index": 13,
+      "name": "robot",
+      "ko": "자동화",
+      "x": 1280,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 5,
+      "row": 1
+    },
+    {
+      "index": 14,
+      "name": "news",
+      "ko": "뉴스",
+      "x": 1536,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 6,
+      "row": 1
+    },
+    {
+      "index": 15,
+      "name": "history",
+      "ko": "기록",
+      "x": 1792,
+      "yFromTop": 256,
+      "width": 256,
+      "height": 256,
+      "col": 7,
+      "row": 1
+    },
+    {
+      "index": 16,
+      "name": "cash",
+      "ko": "현금",
+      "x": 0,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 0,
+      "row": 2
+    },
+    {
+      "index": 17,
+      "name": "coin_stack",
+      "ko": "자금",
+      "x": 256,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 1,
+      "row": 2
+    },
+    {
+      "index": 18,
+      "name": "growth",
+      "ko": "수익 증가",
+      "x": 512,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 2,
+      "row": 2
+    },
+    {
+      "index": 19,
+      "name": "loss",
+      "ko": "손실",
+      "x": 768,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 3,
+      "row": 2
+    },
+    {
+      "index": 20,
+      "name": "check",
+      "ko": "조건 충족",
+      "x": 1024,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 4,
+      "row": 2
+    },
+    {
+      "index": 21,
+      "name": "close",
+      "ko": "취소",
+      "x": 1280,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 5,
+      "row": 2
+    },
+    {
+      "index": 22,
+      "name": "lock",
+      "ko": "잠금",
+      "x": 1536,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 6,
+      "row": 2
+    },
+    {
+      "index": 23,
+      "name": "unlock",
+      "ko": "해금",
+      "x": 1792,
+      "yFromTop": 512,
+      "width": 256,
+      "height": 256,
+      "col": 7,
+      "row": 2
+    },
+    {
+      "index": 24,
+      "name": "timer",
+      "ko": "남은 시간",
+      "x": 0,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 0,
+      "row": 3
+    },
+    {
+      "index": 25,
+      "name": "calendar",
+      "ko": "날짜",
+      "x": 256,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 1,
+      "row": 3
+    },
+    {
+      "index": 26,
+      "name": "refresh",
+      "ko": "갱신",
+      "x": 512,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 2,
+      "row": 3
+    },
+    {
+      "index": 27,
+      "name": "settings",
+      "ko": "설정",
+      "x": 768,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 3,
+      "row": 3
+    },
+    {
+      "index": 28,
+      "name": "alert",
+      "ko": "주의",
+      "x": 1024,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 4,
+      "row": 3
+    },
+    {
+      "index": 29,
+      "name": "info",
+      "ko": "정보",
+      "x": 1280,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 5,
+      "row": 3
+    },
+    {
+      "index": 30,
+      "name": "chevron_right",
+      "ko": "자세히",
+      "x": 1536,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 6,
+      "row": 3
+    },
+    {
+      "index": 31,
+      "name": "chevron_down",
+      "ko": "펼치기",
+      "x": 1792,
+      "yFromTop": 768,
+      "width": 256,
+      "height": 256,
+      "col": 7,
+      "row": 3
+    },
+    {
+      "index": 32,
+      "name": "plus",
+      "ko": "증가",
+      "x": 0,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 0,
+      "row": 4
+    },
+    {
+      "index": 33,
+      "name": "minus",
+      "ko": "감소",
+      "x": 256,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 1,
+      "row": 4
+    },
+    {
+      "index": 34,
+      "name": "search",
+      "ko": "검색",
+      "x": 512,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 2,
+      "row": 4
+    },
+    {
+      "index": 35,
+      "name": "price_tag",
+      "ko": "가격",
+      "x": 768,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 3,
+      "row": 4
+    },
+    {
+      "index": 36,
+      "name": "listing",
+      "ko": "상장",
+      "x": 1024,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 4,
+      "row": 4
+    },
+    {
+      "index": 37,
+      "name": "dividend",
+      "ko": "배당",
+      "x": 1280,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 5,
+      "row": 4
+    },
+    {
+      "index": 38,
+      "name": "reinvest",
+      "ko": "재투자",
+      "x": 1536,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 6,
+      "row": 4
+    },
+    {
+      "index": 39,
+      "name": "reserve",
+      "ko": "비축",
+      "x": 1792,
+      "yFromTop": 1024,
+      "width": 256,
+      "height": 256,
+      "col": 7,
+      "row": 4
+    },
+    {
+      "index": 40,
+      "name": "play",
+      "ko": "시작",
+      "x": 0,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 0,
+      "row": 5
+    },
+    {
+      "index": 41,
+      "name": "stop",
+      "ko": "중단",
+      "x": 256,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 1,
+      "row": 5
+    },
+    {
+      "index": 42,
+      "name": "pause",
+      "ko": "일시정지",
+      "x": 512,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 2,
+      "row": 5
+    },
+    {
+      "index": 43,
+      "name": "progress",
+      "ko": "진행 중",
+      "x": 768,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 3,
+      "row": 5
+    },
+    {
+      "index": 44,
+      "name": "complete",
+      "ko": "완료",
+      "x": 1024,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 4,
+      "row": 5
+    },
+    {
+      "index": 45,
+      "name": "failed",
+      "ko": "실패",
+      "x": 1280,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 5,
+      "row": 5
+    },
+    {
+      "index": 46,
+      "name": "bell",
+      "ko": "알림",
+      "x": 1536,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 6,
+      "row": 5
+    },
+    {
+      "index": 47,
+      "name": "filter",
+      "ko": "필터",
+      "x": 1792,
+      "yFromTop": 1280,
+      "width": 256,
+      "height": 256,
+      "col": 7,
+      "row": 5
+    }
+  ]
+}

@@ -46,9 +46,9 @@ public class TradeBotManager : MonoBehaviour
     public int spreadFillerBotCount = 30;
     [Header("=== 전략적 매매 ===")]
     [Tooltip("Smart: 평단 기반. 60명 × 16M = 0.96B")]
-    public int smartBotCount = 60;
+    public int smartBotCount = 120;
     [Tooltip("Panic: 패닉셀. 40명 × 16M = 0.64B")]
-    public int panicBotCount = 40;
+    public int panicBotCount = 60;
     [Tooltip("Monitor: 급등락 대응. 20명 × 20M = 0.40B")]
     public int monitorBotCount = 20;
     [Header("=== 세력 ===")]
@@ -91,7 +91,7 @@ public class TradeBotManager : MonoBehaviour
     [Range(0f, 0.3f)]
     public float returnChance = 0.15f;
     [Tooltip("목표 봇 수 (이 수치 근처로 수렴)")]
-    public int targetActiveBots = 910;
+    public int targetActiveBots = 990;
     [Tooltip("최소 봇 수 (이 이하로 줄지 않음)")]
     public int minActiveBots = 600;
     [Tooltip("최대 봇 수 (이 이상 늘지 않음)")]
@@ -200,7 +200,7 @@ public class TradeBotManager : MonoBehaviour
         WhaleBot.OnWhalePumpStarted += OnWhalePumpStarted;
         WhaleBot.OnWhaleOperationEnded += OnWhaleOperationEnded;
         WhaleFollowerBot.OnReturnedToPool += OnFollowerReturnedToPool;
-        _lastPopulationCheck = Time.time;
+        _lastPopulationCheck = SessionClock.Time;
         StartCoroutine(PopulationFlowLoop());
         StartCoroutine(OrderCleanupLoop());
     }

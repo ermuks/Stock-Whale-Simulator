@@ -15,6 +15,11 @@ public class CandleHistoryManager : MonoBehaviour
     private float timer;
     private bool wasTrading;
     private readonly Dictionary<Stock, List<CandleData>> candles = new();
+    private readonly Dictionary<Stock, List<CandleData>> chartHistory = new();
+    private readonly Dictionary<Stock, List<CandleData>> minuteHistory = new();
+    public const int ChartHistoryCapacity = 8192;
+    public IReadOnlyList<CandleData> ChartHistory(Stock stock) => chartHistory.TryGetValue(stock, out var archive) ? archive : Completed(stock);
+    public IReadOnlyList<CandleData> MinuteHistory(Stock stock) => minuteHistory.TryGetValue(stock, out var minutes) ? minutes : Empty;
     private readonly Dictionary<Stock, Forming> forming = new();
     private readonly Dictionary<Stock, int> actualCompleted = new();
     private static readonly CandleData[] Empty = Array.Empty<CandleData>();
@@ -66,20 +71,23 @@ public class CandleHistoryManager : MonoBehaviour
         stock.OnMatchedTrade -= OnMatched;
         stock.OnRiskChanged -= OnRiskChanged;
         candles.Remove(stock);
+        chartHistory.Remove(stock);
+        minuteHistory.Remove(stock);
         forming.Remove(stock);
         actualCompleted.Remove(stock);
     }
 
     public void RegisterStock(Stock stock)
     {
-        if (stock == null || candles.ContainsKey(stock))
+        if (stock==null) { return; }
+        stock.OnMatchedTrade -= OnMatched; stock.OnMatchedTrade += OnMatched;
+        stock.OnRiskChanged -= OnRiskChanged; stock.OnRiskChanged += OnRiskChanged;
+        if (candles.ContainsKey(stock))
         { return; }
 
         candles[stock] = new List<CandleData>(101);
         actualCompleted[stock] = 0;
         ResetForming(stock);
-        stock.OnMatchedTrade += OnMatched;
-        stock.OnRiskChanged += OnRiskChanged;
     }
 
     private void OnRiskChanged(Stock stock, StockRiskGrade before, StockRiskGrade after)
@@ -153,6 +161,14 @@ public class CandleHistoryManager : MonoBehaviour
 
     void OnMatched(Stock stock, decimal price, decimal volume, IOrderOwner buyer, IOrderOwner seller, Order resting)
     {
+        var clock = MarketDayController.Instance;
+        if (clock != null && MarketDayController.CanTrade)
+        {
+            if (!minuteHistory.TryGetValue(stock, out var minutes))
+            { minutes = new List<CandleData>(); minuteHistory.Add(stock, minutes); }
+            ChartHistorySeries.RecordTrade(minutes, clock.Day, clock.GameMinute, price, volume,
+                !(buyer is ExchangeBot) && !(seller is ExchangeBot), ChartHistoryCapacity);
+        }
         if (!forming.TryGetValue(stock, out var f))
         { return; }
 
@@ -215,6 +231,11 @@ public class CandleHistoryManager : MonoBehaviour
         candle.historical = false;
         candle.marketDay = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.Day;
         candle.marketMinute = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.GameMinute;
+        if (!chartHistory.TryGetValue(stock, out var archive))
+        { archive = new List<CandleData>(list); chartHistory.Add(stock, archive); }
+        archive.Add(candle);
+        if (archive.Count > ChartHistoryCapacity)
+        { archive.RemoveAt(0); }
         list.Add(candle);
         if (list.Count > 100)
         {

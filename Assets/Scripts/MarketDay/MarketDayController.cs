@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +64,8 @@ public sealed class MarketDayController : MonoBehaviour
     public bool Ready { get; private set; }
     public bool IntegrityFailed { get; private set; }
     public bool InitialDistributionComplete { get; private set; }
+    public bool ReportPending { get; private set; }
+    public bool CheckpointReady => Ready && Phase == MarketPhase.PostClose && ReportPending && elapsed == 0f && phaseWork == null;
 
     public readonly Dictionary<Stock, decimal> ClosingPrices = new();
     public readonly List<TradeBot> Bots = new(2000);
@@ -107,22 +109,40 @@ public sealed class MarketDayController : MonoBehaviour
     public long MessageVersion => sequence;
     public int PendingEvents => events.Count;
 
-    public int GameMinute
+    // Overnight minutes deliberately extend past 1440, keeping social/event time monotonic.
+    public int GameMinute => (int)ExactGameMinute;
+    public int ClockMinute => GameMinute % 1440;
+    public int CalendarDay => Day + GameMinute / 1440;
+    public double AbsoluteGameMinute => (Day - 1) * 1440d + ExactGameMinute;
+    public double ExactGameMinute
     {
         get
         {
             float progress = Mathf.Clamp01(elapsed / Mathf.Max(0.1f, Duration));
             if (Phase == MarketPhase.PreOpen)
-            { return 8 * 60 + (int)(60f * progress); }
+            { return 8 * 60 + 60d * progress; }
 
             if (Phase == MarketPhase.Trading)
-            { return 9 * 60 + (int)(390f * progress); }
+            { return 9 * 60 + 480d * progress; }
 
-            return 15 * 60 + 30 + (int)(150f * progress);
+            return Phase == MarketPhase.Closing ? 1020d : 1020d + 900d * progress;
         }
     }
 
-    private float Duration => Phase == MarketPhase.PreOpen ? preOpenSeconds : Phase == MarketPhase.Trading ? tradingSeconds : postCloseSeconds;
+    private float Duration => Phase == MarketPhase.PreOpen ? (Day == 1 ? preOpenSeconds : tradingSeconds / 8f) :
+        Phase == MarketPhase.Trading ? tradingSeconds : tradingSeconds * 15f / 8f;
+
+    public void AcknowledgeReport() { ReportPending = false; }
+    public void PrepareSessionRestore()
+    {
+        if (phaseWork!=null) { StopCoroutine(phaseWork); phaseWork=null; }
+        foreach (var bot in Bots) { if (bot!=null) { bot.SuspendSession(); } }
+    }
+    public void StartMorningAfterSleep()
+    {
+        if (Phase != MarketPhase.PostClose || phaseWork != null) { return; }
+        ReportPending = false; Day++; Phase = MarketPhase.PreOpen; elapsed = 0f; RemainingSeconds = Duration;
+    }
 
     void Awake()
     {
@@ -133,6 +153,7 @@ public sealed class MarketDayController : MonoBehaviour
         }
 
         Instance = this;
+        if (GetComponent<PlayerRestController>() == null) { gameObject.AddComponent<PlayerRestController>(); }
         ChatSocialDebugUnity.ApplySeed(this);
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;
@@ -204,8 +225,9 @@ public sealed class MarketDayController : MonoBehaviour
             }
         }
 
+        CorporateEconomy.Instance?.InitializeCompanyWorld();
         Ready = true;
-        nextPublish = Time.time + publishMin;
+        nextPublish = SessionClock.Time + publishMin;
     }
 
     public bool Register(TradeBot bot)
@@ -352,7 +374,7 @@ public sealed class MarketDayController : MonoBehaviour
         if (memory == null)
         { return; }
 
-        if (Time.time - memory.SellTime > recentTradeLifetime)
+        if (SessionClock.Time - memory.SellTime > recentTradeLifetime)
         {
             memory.SellVolume = 0m;
             memory.SellProfit = 0m;
@@ -361,10 +383,12 @@ public sealed class MarketDayController : MonoBehaviour
         decimal total = memory.SellVolume + volume;
         memory.SellPrice = (memory.SellPrice * memory.SellVolume + price * volume) / total;
         memory.SellVolume = total;
-        memory.SellTime = Time.time;
+        memory.SellTime = SessionClock.Time;
         decimal profit = (price - basis) * volume;
+        bot.Social.Psychology.Companies.Realized(stock.symbol, (double)profit, (double)(basis * volume), SessionClock.Time);
         memory.SellProfit += profit;
         memory.PendingProfit += profit;
+        bot.Social.Psychology.LearnFromTrade((double)((price / basis - 1m) * 100m));
         memory.PendingBasis += basis * volume;
         if (!recentSellers.TryGetValue(stock, out var list))
         {
@@ -395,14 +419,13 @@ public sealed class MarketDayController : MonoBehaviour
 
     void Update()
     {
-        if (!Ready || IntegrityFailed || Time.timeScale <= 0f)
+        if (!Ready || IntegrityFailed || ReportPending || Time.timeScale <= 0f)
         { return; }
 
         float dt = Time.deltaTime;
         if (Phase == MarketPhase.Closing)
         {
-            elapsed += dt;
-            RemainingSeconds = Mathf.Max(0f, postCloseSeconds - elapsed);
+            RemainingSeconds = 0f;
         }
         else
         {
@@ -410,7 +433,7 @@ public sealed class MarketDayController : MonoBehaviour
             elapsed += step;
             if (Phase == MarketPhase.Trading)
             {
-                TradingElapsed += step * (23400.0 / Math.Max(0.1, tradingSeconds));
+                TradingElapsed += step * (28800.0 / Math.Max(0.1, tradingSeconds));
             }
 
             RemainingSeconds = Mathf.Max(0f, Duration - elapsed);
@@ -444,6 +467,13 @@ public sealed class MarketDayController : MonoBehaviour
     {
         if (Phase == MarketPhase.PreOpen)
         {
+            if (CorporateEconomy.Instance!=null) { yield return CorporateEconomy.Instance.ProcessListings(Day); }
+            DailyIncomeController.Instance?.BeginDay(Day);
+            for (int i = 0; i < Bots.Count; i++)
+            {
+                DailyIncomeController.Instance?.Renew(Bots[i]);
+                if (i % Mathf.Max(1,botsPerFrame) == 0) { yield return null; }
+            }
             if (StockStatistics.Instance != null) { StockStatistics.Instance.BeginTradingDay(ClosingPrices); }
             Phase = MarketPhase.Trading;
             SessionId++;
@@ -479,6 +509,7 @@ public sealed class MarketDayController : MonoBehaviour
             closingTraders.AddRange(Trader.Registry);
             closingStocks.Clear();
             closingStocks.AddRange(StockManager.Instance.stocks);
+            closingStocks.AddRange(StockManager.Instance.UnlistedStocks);
             for (int i = 0; i < closingTraders.Count; i++)
             {
                 using (CloseMarker.Auto())
@@ -510,9 +541,10 @@ public sealed class MarketDayController : MonoBehaviour
             }
 
             ClosingPrices.Clear();
+            float ledgerFrameStart=Time.realtimeSinceStartup;
             foreach (var stock in closingStocks)
             {
-                if (!StockManager.Instance.stocks.Contains(stock))
+                if (!StockManager.Instance.stocks.Contains(stock) && !StockManager.Instance.UnlistedStocks.Contains(stock))
                 { continue; }
 
                 decimal total = ExchangeWarehouse.Instance.GetHolding(stock);
@@ -526,9 +558,10 @@ public sealed class MarketDayController : MonoBehaviour
                         }
                     }
 
-                    if (i % Mathf.Max(1, botsPerFrame) == 0)
+                    if (i % Mathf.Max(1, botsPerFrame) == 0 && Time.realtimeSinceStartup-ledgerFrameStart>=.002f)
                     {
                         yield return null;
+                        ledgerFrameStart=Time.realtimeSinceStartup;
                     }
                 }
 
@@ -540,8 +573,17 @@ public sealed class MarketDayController : MonoBehaviour
                     yield break;
                 }
 
-                ClosingPrices[stock] = stock.currentPrice;
+                if (stock.IsListed) { ClosingPrices[stock] = stock.currentPrice; }
             }
+
+            foreach (var trader in closingTraders)
+            {
+                if (trader != null && (trader.ReservedCash != 0m || trader.EscrowVolume != 0m))
+                {
+                    IntegrityFailed = true; Debug.LogError("마감 예약 자산 잔존: " + trader.name); phaseWork = null; yield break;
+                }
+            }
+            if (CorporateEconomy.Instance != null) { yield return CorporateEconomy.Instance.Settle(Day); }
 
             for (int i = 0; i < closingTraders.Count; i++)
             {
@@ -574,11 +616,14 @@ public sealed class MarketDayController : MonoBehaviour
             }
 
             closingTraders.Clear();
+            if (DailyIncomeController.Instance != null) { yield return DailyIncomeController.Instance.Settle(Day); }
             Phase = MarketPhase.PostClose;
+            elapsed = 0f; ReportPending = true;
             Enqueue(ChatEvent.MarketClose, null, null);
         }
         else
         {
+            PlayerRestController.Instance?.NightPassedAwake();
             Day++;
             Phase = MarketPhase.PreOpen;
             elapsed = 0f;
@@ -588,6 +633,11 @@ public sealed class MarketDayController : MonoBehaviour
         // StartCoroutine can complete synchronously; always yield before clearing its handle.
         yield return null;
         phaseWork = null;
+        if (ReportPending)
+        {
+            PlayerRestController.Instance?.ObserveClock();
+            PauseMenuController.Instance?.ReceiveClosingReport();
+        }
     }
 
     public void UpdateStress(TradeBot bot, bool force = false)
@@ -597,10 +647,10 @@ public sealed class MarketDayController : MonoBehaviour
 
         var state = bot.Social;
         double seconds = TradingElapsed - state.LastTradingSeconds;
-        if (!force && Time.time - state.LastSampleTime < stressSampleSeconds)
+        if (!force && SessionClock.Time - state.LastSampleTime < stressSampleSeconds)
         { return; }
 
-        state.LastSampleTime = Time.time;
+        state.LastSampleTime = SessionClock.Time;
         state.LastTradingSeconds = TradingElapsed;
         float before = state.Stress;
         Stock reliefStock = null;
@@ -637,7 +687,7 @@ public sealed class MarketDayController : MonoBehaviour
                     if (memory.WasLoss && rate >= 0m)
                     {
                         state.Stress -= breakEvenDrop * state.Recovery;
-                        memory.CrossTime = Time.time;
+                        memory.CrossTime = SessionClock.Time;
                         Enqueue(ChatEvent.BreakEvenRecovered, stock, bot);
                     }
 
@@ -668,13 +718,13 @@ public sealed class MarketDayController : MonoBehaviour
                 memory.LossSeconds = 0;
             }
 
-            if (memory.PendingBasis > 0m && Time.time - memory.LastRealizedResponse >= realizedAggregationSeconds)
+            if (memory.PendingBasis > 0m && SessionClock.Time - memory.LastRealizedResponse >= realizedAggregationSeconds)
             {
                 float reaction = Mathf.Clamp((float)(memory.PendingProfit / memory.PendingBasis) * realizedScale, -10f, 10f);
                 state.Stress -= reaction * (reaction > 0f ? state.Recovery : state.Sensitivity);
                 memory.PendingProfit = 0m;
                 memory.PendingBasis = 0m;
-                memory.LastRealizedResponse = Time.time;
+                memory.LastRealizedResponse = SessionClock.Time;
             }
 
             if (state.Stress < positionStressBefore)
@@ -686,7 +736,7 @@ public sealed class MarketDayController : MonoBehaviour
         state.Stress = Mathf.Clamp(state.Stress, 0f, 100f);
         if (before - state.Stress >= stressDropThreshold)
         {
-            state.LastDropTime = Time.time;
+            state.LastDropTime = SessionClock.Time;
             state.LastDropAmount = before - state.Stress;
             state.LastDropStock = reliefStock;
             Enqueue(ChatEvent.StressRelief, reliefStock, bot);
@@ -698,6 +748,7 @@ public sealed class MarketDayController : MonoBehaviour
         if (stock != null && Ready)
         {
             AddMessage(new BotChatMessage(++sequence, null, Day, GameMinute, stock.stockName + ": " + stock.RiskLabel, "risk_status", ChatEvent.RiskChanged));
+            InvestorSociety.Instance?.NotifyMarketRisk(stock);
         }
     }
 
@@ -718,7 +769,7 @@ public sealed class MarketDayController : MonoBehaviour
 
     private void ObserveConversationTrade(Stock stock,decimal price,decimal volume,IOrderOwner buyer,IOrderOwner seller,Order resting)
     {
-        if (!ReferenceEquals(buyer,seller)) { ConversationFocus.Record(stock,price,volume,Time.time); }
+        if (!ReferenceEquals(buyer,seller)) { ConversationFocus.Record(stock,price,volume,SessionClock.Time); }
         InvestorSociety.Instance?.ObserveSocialFill(stock, price, volume, buyer, seller, resting);
     }
     private int PickConversationEvent(float now)
@@ -783,7 +834,7 @@ public sealed class MarketDayController : MonoBehaviour
         long ticket = ++eventTicket;
         eventIndices.Add(key, events.Count);
         eventOrder.Enqueue((kind, stock, bot, ticket));
-        events.Add(new MarketEvent { Kind = kind, Stock = stock, Bot = bot, Time = Time.time, ReferencePrice = referencePrice, Ticket = ticket });
+        events.Add(new MarketEvent { Kind = kind, Stock = stock, Bot = bot, Time = SessionClock.Time, ReferencePrice = referencePrice, Ticket = ticket });
     }
 
     private void RemoveOldestEvent()
@@ -806,8 +857,8 @@ public sealed class MarketDayController : MonoBehaviour
             int budget = Math.Min(candidatesPerFrame, events.Count);
             for (int i = 0; i < budget; i++)
             {
-                int index = PickConversationEvent(Time.time); var pending = events[index];
-                bool current = Time.time - pending.Time <= eventLifetime;
+                int index = PickConversationEvent(SessionClock.Time); var pending = events[index];
+                bool current = SessionClock.Time - pending.Time <= eventLifetime;
                 current &= pending.Kind != ChatEvent.MarketOpen || Phase == MarketPhase.Trading;
                 current &= pending.Kind != ChatEvent.MarketClose || Phase == MarketPhase.PostClose;
                 current &= pending.Kind != ChatEvent.PriceRise || pending.Stock != null && pending.ReferencePrice > 0m && pending.Stock.currentPrice >= pending.ReferencePrice * (1m + (decimal)surgeRatio);
@@ -817,7 +868,7 @@ public sealed class MarketDayController : MonoBehaviour
             }
             return;
         }
-        float now = Time.time;
+        float now = SessionClock.Time;
         while (sentenceExpiry.Count > 0 && now - sentenceExpiry.Peek().time > sentenceCooldown)
         {
             var expired = sentenceExpiry.Dequeue();
@@ -975,7 +1026,7 @@ public sealed class MarketDayController : MonoBehaviour
         if (InvestorSociety.Instance != null && InvestorSociety.Instance.SocialReady)
         { InvestorSociety.Instance.OfferExistingSpeech(bot, 0, context, ChatEvent.Agreement); return; }
         AddMessage(new BotChatMessage(++sequence, bot, Day, GameMinute, text, "contact", ChatEvent.Agreement, context));
-        bot.Social.LastSpeech = Time.time;
+        bot.Social.LastSpeech = SessionClock.Time;
     }
     public void PublishSocialParticipant(TradeBot bot, SocialMessage message, InvestorMessageContext context)
     {
@@ -987,6 +1038,13 @@ public sealed class MarketDayController : MonoBehaviour
         { return; }
         AddMessage(new BotChatMessage(++sequence, null, Day, GameMinute, text, "bulletin", ChatEvent.RiskChanged));
     }
+    public void PublishRoomNotice(string text, ChatRoomNotice notice, long eventId)
+    {
+        if (string.IsNullOrWhiteSpace(text) || notice == ChatRoomNotice.None)
+        { return; }
+        AddMessage(new BotChatMessage(++sequence, null, Day, GameMinute, text, "SYSTEM.ROOM", ChatEvent.Agreement,
+            new InvestorMessageContext(eventId, 0, 0, 1, 0, false), notice: notice));
+    }
     public bool Eligible(TradeBot bot, Stock stock, BotChatTemplateCatalog.Entry entry)
     {
         var state = bot.Social;
@@ -997,7 +1055,7 @@ public sealed class MarketDayController : MonoBehaviour
         if ((entry.holdingKind == HoldingCondition.Holding && !held) || (entry.holdingKind == HoldingCondition.NotHolding && held) || (entry.text.Contains("{stockName}") && stock == null))
         { return false; }
 
-        float now = Time.time;
+        float now = SessionClock.Time;
         foreach (var speech in state.RecentSpeech)
         {
             if (speech.id == entry.id && now - speech.time < sentenceCooldown)
@@ -1039,7 +1097,7 @@ public sealed class MarketDayController : MonoBehaviour
     {
         if (message.BotId > 0)
         {
-            lastBotMessageTime = Time.time;
+            lastBotMessageTime = SessionClock.Time;
         }
         if (messageCount == messages.Length)
         {
@@ -1055,10 +1113,12 @@ public sealed class MarketDayController : MonoBehaviour
 
     void OnListed(Stock stock)
     {
+        stock.OnTradeExecutedWithStock -= OnMarketTrade;
         stock.OnTradeExecutedWithStock += OnMarketTrade;
+        stock.OnMatchedTrade -= ObserveConversationTrade;
         stock.OnMatchedTrade += ObserveConversationTrade; ConversationFocus.Register(stock);
-        subscribed.Add(stock);
-        eventPrices[stock] = stock.currentPrice;
+        if (!subscribed.Contains(stock)) { subscribed.Add(stock); }
+        if (!eventPrices.ContainsKey(stock)) { eventPrices[stock] = stock.currentPrice; }
         if (!holders.ContainsKey(stock))
         {
             holders[stock] = new List<TradeBot>();

@@ -13,6 +13,7 @@ public sealed class DeviceMarketJournal : MonoBehaviour
         public string Title, Source, Time, Certainty;
         public bool Urgent;
         public decimal Volume, BuyVolume;
+        public NewsArticle Article;
     }
     public sealed class Fill
     {
@@ -32,10 +33,25 @@ public sealed class DeviceMarketJournal : MonoBehaviour
     private readonly Dictionary<Stock, Tape> tapes = new();
     private string lastFeed;
     private float next;
+    public static double GameNow => MarketDayController.Instance?.AbsoluteGameMinute ?? 0;
+    public static double GameSecondsPerRealSecond => 28800d / Math.Max(.1d,MarketDayController.Instance?.tradingSeconds ?? 900d);
+    public static string FullStamp() => MarketDayController.Instance==null ? "DAY — —:—" : "DAY "+MarketDayController.Instance.CalendarDay+" "+Stamp();
+    public static string Duration(double gameMinutes)
+    {
+        long minutes=(long)Math.Ceiling(Math.Max(0,gameMinutes));
+        return (minutes/60).ToString("00")+":"+(minutes%60).ToString("00");
+    }
+    public void ReconnectSession()
+    {
+        foreach (var stock in StockManager.Instance.stocks) { stock.OnMatchedTrade-=Observe; stock.OnMatchedTrade+=Observe; if (!tapes.ContainsKey(stock)) { tapes.Add(stock,new Tape()); } }
+    }
+    public void ClearHistory() { Fills.Clear(); Events.Clear(); Version++; }
     public static string Stamp()
     {
         var day = MarketDayController.Instance;
-        int minute = day == null ? 540 : day.GameMinute;
+        if (day==null)
+        { return "—:—"; }
+        int minute = day.ClockMinute;
         return (minute / 60).ToString("D2") + ":" + (minute % 60).ToString("D2");
     }
     void OnEnable()
@@ -55,9 +71,10 @@ public sealed class DeviceMarketJournal : MonoBehaviour
     }
     private void Register(Stock stock)
     {
-        if (stock == null || tapes.ContainsKey(stock))
+        if (stock == null)
         { return; }
-        tapes.Add(stock, new Tape());
+        if (!tapes.ContainsKey(stock)) { tapes.Add(stock,new Tape()); }
+        stock.OnMatchedTrade -= Observe;
         stock.OnMatchedTrade += Observe;
     }
     private void Remove(Stock stock)
@@ -69,7 +86,7 @@ public sealed class DeviceMarketJournal : MonoBehaviour
     {
         if (resting == null || quantity <= 0m || !tapes.TryGetValue(stock, out var tape))
         { return; }
-        int second = Mathf.FloorToInt(Time.time), slot = second % 60;
+        int second = Mathf.FloorToInt(SessionClock.Time), slot = second % 60;
         if (tape.Seconds[slot] != second)
         { tape.Seconds[slot] = second; tape.Buy[slot] = tape.Sell[slot] = 0m; }
         if (resting.isBuy)
@@ -81,7 +98,7 @@ public sealed class DeviceMarketJournal : MonoBehaviour
         { return; }
         bool isBuy = ReferenceEquals(buyer, player);
         decimal basis = ReferenceEquals(resting.owner, player) ? resting.costBasis : player.SubmittedSellCost;
-        Fills.Insert(0, new Fill { Stock = stock, Time = Stamp(), Buy = isBuy, Price = price, Quantity = quantity, Realized = isBuy ? 0m : (price - basis) * quantity });
+        Fills.Insert(0, new Fill { Stock = stock, Time = FullStamp(), Buy = isBuy, Price = price, Quantity = quantity, Realized = isBuy ? 0m : (price - basis) * quantity });
         if (Fills.Count > 64)
         { Fills.RemoveAt(64); }
         Version++;
@@ -91,7 +108,7 @@ public sealed class DeviceMarketJournal : MonoBehaviour
         volume = buy = 0m;
         if (stock == null || !tapes.TryGetValue(stock, out var tape))
         { return; }
-        int now = Mathf.FloorToInt(Time.time);
+        int now = Mathf.FloorToInt(SessionClock.Time);
         for (int i = 0; i < 60; i++)
         {
             if (now - tape.Seconds[i] >= 60)
@@ -106,7 +123,8 @@ public sealed class DeviceMarketJournal : MonoBehaviour
     private void Add(Stock stock, long id, string title, string source, string certainty, bool urgent)
     {
         Flow(stock, out decimal volume, out decimal buy);
-        Events.Insert(0, new Entry { Stock = stock, Id = id, Title = title, Source = source, Certainty = certainty, Urgent = urgent, Time = Stamp(), Volume = volume, BuyVolume = buy });
+        Events.Insert(0, new Entry { Stock = stock, Id = id, Title = title, Source = source, Certainty = certainty, Urgent = urgent, Time = FullStamp(), Volume = volume, BuyVolume = buy,
+            Article = id > 0 ? NewsManager.Instance?.FindArticle(id) : null });
         if (Events.Count > 40)
         { Events.RemoveAt(40); }
         Version++;

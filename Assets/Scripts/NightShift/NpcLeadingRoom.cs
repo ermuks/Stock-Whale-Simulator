@@ -40,7 +40,7 @@ public sealed class NpcLeadingRoom : MonoBehaviour
     public string LeaderName => Leader == null || Leader.Social == null ? "운영자 대기" : Leader.Social.Nickname;
     public bool Available => Leader != null && Leader.isActiveAndEnabled && Leader.Social != null && Leader.Social.Psychology.Room == RoomId;
     public float NextObservationAt => nextObservation;
-    public bool HasSignal => Available && Current != null && Current.LeaderId == Leader.Social.Id && Time.time < Current.ExpiresAt && Current.Stock.AcceptsOrders;
+    public bool HasSignal => Available && Current != null && Current.LeaderId == Leader.Social.Id && SessionClock.Time < Current.ExpiresAt && Current.Stock.AcceptsOrders;
     private readonly HashSet<Stock> watched = new();
     private readonly List<Order> orders = new(32);
     private float nextObservation, nextMessage, lastBuyTime;
@@ -65,9 +65,9 @@ public sealed class NpcLeadingRoom : MonoBehaviour
     }
     void Update()
     {
-        if (!MarketDayController.CanTrade || MarketDayController.Instance == null || !MarketDayController.Instance.Ready || Time.time < nextObservation)
+        if (!MarketDayController.CanTrade || MarketDayController.Instance == null || !MarketDayController.Instance.Ready || SessionClock.Time < nextObservation)
         { return; }
-        Observe(Time.time);
+        Observe(SessionClock.Time);
     }
     public void Observe(float now)
     {
@@ -116,8 +116,8 @@ public sealed class NpcLeadingRoom : MonoBehaviour
     }
     private void Watch(Stock stock)
     {
-        if (stock != null && watched.Add(stock))
-        { stock.OnMatchedTrade += Trade; }
+        if (stock==null) { return; }
+        watched.Add(stock); stock.OnMatchedTrade -= Trade; stock.OnMatchedTrade += Trade;
     }
     private void Forget(Stock stock)
     {
@@ -137,7 +137,7 @@ public sealed class NpcLeadingRoom : MonoBehaviour
             RealizedProfit += (price - basis) * quantity;
         }
         else
-        { lastBought = stock; lastBuyPrice = price; lastBuyTime = Time.time; }
+        { lastBought = stock; lastBuyPrice = price; lastBuyTime = SessionClock.Time; }
     }
     private void PublishObservation(float now)
     {
@@ -188,12 +188,15 @@ public sealed class NpcLeadingRoom : MonoBehaviour
     {
         if (!Available || !StockManager.Instance.SetupConfirmed)
         { Status = "운영자가 준비되면 참여할 수 있습니다."; return false; }
+        bool wasJoined = PlayerJoined;
         JoinRequested = true; PlayerJoined = true;
+        if (!wasJoined) { InvestorSociety.Instance?.PostRoomNotice(RoomId, ChatRoomNotice.Join, "플레이어 님이 입장했습니다."); }
         chat?.SelectRoom(RoomId);
         return true;
     }
     public void LeavePlayer()
     {
+        if (PlayerJoined) { InvestorSociety.Instance?.PostRoomNotice(RoomId, ChatRoomNotice.Leave, "플레이어 님이 퇴장했습니다."); }
         PlayerJoined = JoinRequested = false;
         if (chat != null && chat.SelectedRoom == RoomId)
         { chat.SelectRoom(0); }

@@ -1,0 +1,35 @@
+{
+  "status": "PASS",
+  "checks": [
+    "prototype-order-1024: host frame contains the entire interface",
+    "native focus preserves confirmation navigation",
+    "selected event uses its own buy aggressor ratio",
+    "ratio definition contains no stale event-specific percentage",
+    "new event controls use the host cursor preference",
+    "prototype-order-375: host frame contains the entire interface",
+    "narrow split order retains the confirmation action",
+    "no browser runtime errors after final presentation changes"
+  ],
+  "measurements": [
+    {
+      "name": "prototype-order-1024",
+      "rootHeight": 1043.53125,
+      "rootBottom": 1043.53125,
+      "innerHeight": 1044,
+      "scrollHeight": 1044,
+      "shellHeight": 951.53125,
+      "iframeHeight": 1044
+    },
+    {
+      "name": "prototype-order-375",
+      "rootHeight": 2120.046875,
+      "rootBottom": 2120.046875,
+      "innerHeight": 2121,
+      "scrollHeight": 2121,
+      "shellHeight": 1996.046875,
+      "iframeHeight": 2121
+    }
+  ],
+  "pageErrors": [],
+  "finished": "2026-11-14T07:07:44.307Z"
+}

@@ -27,7 +27,7 @@ public sealed class PlayerAccounts : MonoBehaviour
     }
     public void EvaluateUnlock()
     {
-        if (!Ready || AutomatedUnlocked || primary == null || primary.Equity() <= unlockAssets)
+        if (!Ready || AutomatedUnlocked || primary == null || primary.Equity() - TaxDebt(primary) <= unlockAssets)
         { return; }
         AutomatedUnlocked = true;
         Unlocked?.Invoke();
@@ -41,7 +41,22 @@ public sealed class PlayerAccounts : MonoBehaviour
         return Instance != null ? ReferenceEquals(owner, Instance.primary) || ReferenceEquals(owner, Instance.automated) : StockManager.Instance != null && ReferenceEquals(owner, StockManager.Instance.playerAccount);
     }
     public decimal Owned(Stock stock) => primary.GetOwnedVolume(stock) + automated.GetOwnedVolume(stock);
-    public static decimal Available(Trader account) => account == null ? 0m : Math.Max(0m, account.cash - account.ReservedCash);
+    public static decimal TaxDebt(Trader account)
+    {
+        bool primaryAccount = account != null && (Instance != null ? account == Instance.primary : StockManager.Instance != null && account == StockManager.Instance.playerAccount);
+        return primaryAccount ? DailyIncomeController.Instance?.Ledger.UnpaidTax ?? 0m : 0m;
+    }
+    public static decimal Available(Trader account)
+    {
+        if (account==null)
+        { return 0m; }
+        return Math.Max(0m,account.cash-account.ReservedCash-TaxDebt(account)-ScheduledCash(account));
+    }
+    public static decimal ScheduledCash(Trader account)
+    {
+        var session=Instance==null ? null : account==Instance.primary ? Instance.primaryOrders : account==Instance.automated ? Instance.automatedOrders : null;
+        return session?.ScheduledBuyCost ?? 0m;
+    }
     public bool Transfer(Trader from, decimal amount, out string reason)
     {
         if (!AutomatedUnlocked || !CanUse(from))

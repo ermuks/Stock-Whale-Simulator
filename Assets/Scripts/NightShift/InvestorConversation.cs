@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>검증된 개인 원장과 방금 읽은 발언으로 문장을 구성한다. 감정 수치만으로 수익 경험을 지어내지 않는다.</summary>
 public static class InvestorConversation
@@ -58,7 +58,7 @@ public static class InvestorConversation
         { return "아직 결정 못 했어요. 자금이랑 호가부터 좀 볼게요."; }
         if (active && plan.State == LeadingRoomOrders.Stage.AwaitBuy)
         { return plan.Command.Stock.stockName + " " + plan.Command.Buy.ToString("N0") + "원 매수 조건까지 기다릴게요."; }
-        bool busy = MarketDayController.Instance != null && MarketDayController.Instance.ConversationFocus.HasActivity(Time.time);
+        bool busy = MarketDayController.Instance != null && MarketDayController.Instance.ConversationFocus.HasActivity(SessionClock.Time);
         if (variant % (busy ? 10 : 4) != 0 && StockManager.Instance != null && StockManager.Instance.stocks.Count > 0)
         { return MarketRemark(bot, variant); }
         return BotMind.Compose(bot, ChatEvent.SmallTalk, null, "잠깐 쉬었다 볼까요.");
@@ -67,7 +67,7 @@ public static class InvestorConversation
     {
         var stocks = StockManager.Instance.stocks;
         var focus = MarketDayController.Instance?.ConversationFocus;
-        var stock = focus?.Choose((variant & int.MaxValue)/(double)(int.MaxValue+1L),Time.time) ?? stocks[variant % stocks.Count];
+        var stock = focus?.Choose((variant & int.MaxValue)/(double)(int.MaxValue+1L),SessionClock.Time) ?? stocks[variant % stocks.Count];
         return MarketRemark(bot,stock,variant);
     }
     public static string MarketRemark(TradeBot bot,Stock stock,int variant)
@@ -80,10 +80,10 @@ public static class InvestorConversation
             return variant % 2 == 0 ? name + " 제 평단은 " + basis.ToString("N0") + "원. 평가손익 " + rate.ToString("+0.0;-0.0;0") + "%네요."
                 : name + " " + shares.ToString("N0") + "주 들고 있어요. " + (rate < 0m ? "손실 중이라 더 신중하게 보려고요." : "평가이익이 있어도 아직 판 건 아니에요.");
         }
-        if (variant % 5 == 1 && bot.Social.Positions.TryGetValue(stock, out var memory) && memory.SellVolume > 0m && Time.time - memory.SellTime < 180f)
+        if (variant % 5 == 1 && bot.Social.Positions.TryGetValue(stock, out var memory) && memory.SellVolume > 0m && SessionClock.Time - memory.SellTime < 180f)
         { return name + " 최근 매도 결과는 " + memory.SellProfit.ToString("+0;-0;0") + "원. " + (memory.SellProfit < 0m ? "좀 쉬면서 생각해 볼게요." : "이번 결과를 다음에도 기대하진 않으려고요."); }
         var focus = MarketDayController.Instance?.ConversationFocus;
-        var tape = focus == null ? default : focus.Read(stock,Time.time);
+        var tape = focus == null ? default : focus.Read(stock,SessionClock.Time);
         if (tape.Volume > 0m)
         {
             string volume = tape.Volume.ToString("N0"), rate = tape.ReturnPercent.ToString("+0.0;-0.0;0.0");

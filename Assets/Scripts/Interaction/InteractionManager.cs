@@ -45,6 +45,7 @@ public class InteractionManager : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.BlocksInput) { HideHint(); return; }
         if (_cam == null)
         {
             _cam = Camera.main;
@@ -87,10 +88,10 @@ public class InteractionManager : MonoBehaviour
             hintRoot.SetActive(true);
 
         if (keyText != null)
-            keyText.text = $"[{GameKeyBindings.Interact}]";
+            GameLocalizedText.Set(keyText,$"[{GameKeyBindings.Interact}]");
 
         if (interactionText != null)
-            interactionText.text = interactable != null ? interactable.interactionText : "";
+            GameLocalizedText.Set(interactionText,interactable != null ? interactable.interactionText : "");
     }
 
     void HideHint()
@@ -99,9 +100,9 @@ public class InteractionManager : MonoBehaviour
             hintRoot.SetActive(false);
 
         if (keyText != null)
-            keyText.text = "";
+            GameLocalizedText.Set(keyText,"");
 
         if (interactionText != null)
-            interactionText.text = "";
+            GameLocalizedText.Set(interactionText,"");
     }
 }

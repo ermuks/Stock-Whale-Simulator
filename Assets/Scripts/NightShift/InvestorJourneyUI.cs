@@ -11,12 +11,15 @@ public sealed class InvestorJourneyUI : MonoBehaviour
     public LeadingRoomUI rooms;
     public DeviceTerminalUI orders, journal;
     public TerminalGlyph[] stages;
+    public InvestorJourneyNotes paperNotes;
     public int Step { get; private set; }
     private bool hidden;
     private float next;
     void Start()
     {
-        action.onClick.AddListener(Act); dismiss.onClick.AddListener(Hide); reopen.onClick.AddListener(Show);
+        if (action != null) { action.onClick.AddListener(Act); }
+        if (dismiss != null) { dismiss.onClick.AddListener(Hide); }
+        if (reopen != null) { reopen.onClick.AddListener(Show); }
     }
     private void Hide() { hidden = true; next = 0f; }
     private void Show() { hidden = false; next = 0f; }
@@ -25,6 +28,22 @@ public sealed class InvestorJourneyUI : MonoBehaviour
         if (Time.unscaledTime < next)
         { return; }
         next = Time.unscaledTime + .5f;
+        if (paperNotes != null)
+        {
+            if (card != null && card.activeSelf) { card.SetActive(false); }
+            if (reopen != null && reopen.gameObject.activeSelf) { reopen.gameObject.SetActive(false); }
+            bool ready = StockManager.Instance != null && StockManager.Instance.SetupConfirmed;
+            if (paperNotes.gameObject.activeSelf != ready) { paperNotes.gameObject.SetActive(ready); }
+            var sourceRoom = NpcLeadingRoom.Instance; var progress = PlayerProgression.Instance;
+            if (ready && sourceRoom != null && progress != null)
+            {
+                paperNotes.InitializeMilestones(progress.JourneyMilestones);
+                progress.RememberJourneyMilestones(sourceRoom.PlayerJoined);
+                Step = ResolveStep(sourceRoom, progress);
+                paperNotes.Refresh(sourceRoom, progress, Step);
+            }
+            return;
+        }
         bool visible = StockManager.Instance != null && StockManager.Instance.SetupConfirmed && !DeskViewController.OwnsView && !TabletViewController.IsTabletHeld && !PhoneCallController.IsRaised;
         card.SetActive(visible && !hidden); reopen.gameObject.SetActive(visible && hidden);
         if (!visible)
@@ -32,7 +51,7 @@ public sealed class InvestorJourneyUI : MonoBehaviour
         var npc = NpcLeadingRoom.Instance; var career = PlayerProgression.Instance;
         if (npc == null || career == null)
         { return; }
-        Step = career.CanOperateRooms ? 4 : career.Eligible ? 3 : career.Turnover > 0m ? 2 : npc.PlayerJoined ? 1 : 0;
+        Step = ResolveStep(npc, career);
         string title, body, button;
         if (Step == 0)
         {
@@ -71,6 +90,8 @@ public sealed class InvestorJourneyUI : MonoBehaviour
         else
         { rooms.chat.SelectRoom(1); }
     }
+    private static int ResolveStep(NpcLeadingRoom npc, PlayerProgression career)
+    { return career.CanOperateRooms ? 4 : career.Eligible ? 3 : career.Turnover > 0m ? 2 : npc.PlayerJoined ? 1 : 0; }
     void OnDestroy()
     {
         if (action != null) { action.onClick.RemoveListener(Act); }

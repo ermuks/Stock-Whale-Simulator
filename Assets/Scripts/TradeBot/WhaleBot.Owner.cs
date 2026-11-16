@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Profiling;
@@ -78,7 +78,7 @@ public partial class WhaleBot
             }
         }
 
-        nextDisposal = Time.time + InitialAccountId % 10 * 0.1f;
+        nextDisposal = SessionClock.Time + InitialAccountId % 10 * 0.1f;
     }
 
     private decimal OwnSellOutstanding()
@@ -122,10 +122,10 @@ public partial class WhaleBot
     {
         disposalRemainingSeconds = Math.Max(0, DisposalNewsAt - (ExchangeBot.Instance == null ? 0 : ExchangeBot.Instance.NewsClock));
         disposalSoldShares = (double)DisposalSold;
-        if (OwnedCompany == null || OwnedCompany.IsDelisting || OwnedCompany.IsDelisted || !MarketDayController.CanTrade || !OwnedCompany.AcceptsOrders || Time.time < nextDisposal)
+        if (OwnedCompany == null || OwnedCompany.IsDelisting || OwnedCompany.IsDelisted || !MarketDayController.CanTrade || !OwnedCompany.AcceptsOrders || SessionClock.Time < nextDisposal)
         { return; }
 
-        nextDisposal = Time.time + Mathf.Max(0.1f, OwnerSettings.disposalInterval);
+        nextDisposal = SessionClock.Time + Mathf.Max(0.1f, OwnerSettings.disposalInterval);
         using (DisposalMarker.Auto())
         {
             decimal outstanding = OwnSellOutstanding();
@@ -136,7 +136,7 @@ public partial class WhaleBot
             for (int i = 0; i < ownOrders.Count; i++)
             {
                 var order = ownOrders[i];
-                if (order.isBuy || Time.time - order.createdAt < OwnerSettings.staleSellSeconds)
+                if (order.isBuy || SessionClock.Time - order.createdAt < OwnerSettings.staleSellSeconds)
                 { continue; }
 
                 decimal remaining = order.volume;

@@ -59,8 +59,8 @@ public class LiquidityBotManager : MonoBehaviour
             { yield break; }
         }
 
-        float t0 = Time.time;
-        while (ExchangeWarehouse.Instance == null && Time.time - t0 < 3f)
+        float t0 = SessionClock.Time;
+        while (ExchangeWarehouse.Instance == null && SessionClock.Time - t0 < 3f)
         {
             yield return null;
         }

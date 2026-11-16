@@ -11,8 +11,13 @@ public sealed class DeskViewController : MonoBehaviour
     [Tooltip("왼쪽 종목, 중앙 차트, 오른쪽 채팅 순서")]
     public RectTransform[] monitorScreens = new RectTransform[3];
     public TabletViewController[] tablets = new TabletViewController[2];
+    public InvestorJourneyNotes journeyNotes;
     [Range(.7f, .96f)] public float monitorFill = .92f;
     [Range(30f, 45f)] public float focusFieldOfView = 45f;
+    [Tooltip("종목 목록을 볼 때의 카메라 월드 Y 회전. 중앙 모니터도 함께 보이게 한다.")]
+    public float stocksViewYaw = -20f;
+    [Tooltip("채팅을 볼 때의 카메라 월드 Y 회전.")]
+    public float chatViewYaw = 5.7f;
     [Range(.1f, .5f)] public float transitionSeconds = .24f;
     [Range(0f, .5f)] public float tabletSwayDegrees = .22f;
     public DeskViewTarget Target { get; private set; } = DeskViewTarget.None;
@@ -75,6 +80,7 @@ public sealed class DeskViewController : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.BlocksInput) { Hovered = DeskViewTarget.None; return; }
         if (!Ready)
         { Hovered = DeskViewTarget.None; return; }
         if (MouseCameraController.TextEntryActive)
@@ -150,10 +156,35 @@ public sealed class DeskViewController : MonoBehaviour
             tablets[(int)next - 3].HoldForDeskView();
             moving = true; transitionTime = 0f;
         }
-        else if (DeskViewFraming.TryPose(ScreenFor(next), viewCamera, monitorFill, corners, out Pose pose, focusFieldOfView))
+        else if (TryMonitorPose(next, out Pose pose))
         { BeginTransition(pose, focusFieldOfView); }
         else
         { ExitView(true); }
+    }
+
+    private bool TryMonitorPose(DeskViewTarget target, out Pose pose)
+    {
+        if (!DeskViewFraming.TryPose(ScreenFor(target), viewCamera, monitorFill, corners, out pose, focusFieldOfView))
+        { return false; }
+        if (target == DeskViewTarget.Stocks || target == DeskViewTarget.Chat)
+        {
+            Vector3 angles = pose.rotation.eulerAngles;
+            angles.y = target == DeskViewTarget.Stocks ? stocksViewYaw : chatViewYaw;
+            pose.rotation = Quaternion.Euler(angles);
+        }
+        else if (target == DeskViewTarget.Chart && journeyNotes != null && journeyNotes.framingBottom != null)
+        {
+            // Fit the hanging notes as well as the screen; the actual monitor transform stays untouched.
+            Vector3 up = (corners[1] - corners[0]).normalized;
+            Vector3 forward = pose.rotation * Vector3.forward;
+            float extra = Mathf.Max(0f, Vector3.Dot(corners[0] - journeyNotes.framingBottom.position, up));
+            float height = Vector3.Distance(corners[0], corners[1]) + extra;
+            float width = Vector3.Distance(corners[0], corners[3]);
+            float distance = DeskViewFraming.Distance(width, height, focusFieldOfView, viewCamera.aspect, monitorFill);
+            Vector3 center = (corners[0] + corners[2]) * .5f - up * (extra * .5f);
+            pose.position = center - forward * Mathf.Max(viewCamera.nearClipPlane + .1f, distance);
+        }
+        return true;
     }
 
     public void ExitView(bool immediate = false)
@@ -186,6 +217,7 @@ public sealed class DeskViewController : MonoBehaviour
 
     void LateUpdate()
     {
+        if (PauseMenuController.BlocksInput) { return; }
         if (Target >= DeskViewTarget.TabletOne)
         {
             var tablet = tablets[(int)Target - 3];
@@ -204,7 +236,7 @@ public sealed class DeskViewController : MonoBehaviour
         if (IsFocused && !Mathf.Approximately(lastAspect, viewCamera.aspect))
         {
             lastAspect = viewCamera.aspect;
-            if (DeskViewFraming.TryPose(ScreenFor(Target), viewCamera, monitorFill, corners, out Pose pose, focusFieldOfView))
+            if (TryMonitorPose(Target, out Pose pose))
             { SetPointerTarget(DeskViewTarget.None); BeginTransition(pose, focusFieldOfView); }
         }
         if (!moving)

@@ -39,6 +39,7 @@ public class StockListUIManager : MonoBehaviour
 
     void OnEnable()
     {
+        MarketColors.Changed += RefreshAll;
         VisibleList = this;
         StockManager.OnStockDelisted += OnStockDelisted;
         StockManager.OnStockListed += OnStockListed;
@@ -46,6 +47,7 @@ public class StockListUIManager : MonoBehaviour
 
     void OnDisable()
     {
+        MarketColors.Changed -= RefreshAll;
         if (VisibleList == this) { VisibleList = null; }
         StockManager.OnStockDelisted -= OnStockDelisted;
         StockManager.OnStockListed -= OnStockListed;
@@ -75,6 +77,8 @@ public class StockListUIManager : MonoBehaviour
     {
         BuildList();
     }
+
+    public void ReconnectSession() { BuildList(); }
 
     void BuildList()
     {
@@ -202,7 +206,7 @@ public class StockListUIManager : MonoBehaviour
         var button = rect.gameObject.AddComponent<Button>(); button.targetGraphic = image;
         label = Instantiate(source,rect); label.name = "Text :: Sort " + name; label.gameObject.SetActive(true);
         label.rectTransform.anchorMin = Vector2.zero; label.rectTransform.anchorMax = Vector2.one; label.rectTransform.offsetMin = label.rectTransform.offsetMax = Vector2.zero;
-        label.text = caption; label.fontSize = 44; label.enableAutoSizing = false; label.fontStyle = FontStyles.Normal;
+        GameLocalizedText.Set(label,caption); label.fontSize = 44; label.enableAutoSizing = false; label.fontStyle = FontStyles.Normal;
         label.color = new Color32(230,235,239,255); label.alignment = TextAlignmentOptions.Center; label.raycastTarget = false;
         return button;
     }

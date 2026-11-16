@@ -13,6 +13,9 @@ foreach ($taskAssembly in @('Assembly-CSharp','Assembly-CSharp-Editor')) {
         if ($_ -match '^-out:') { '-out:"' + $taskOut + '/' + $taskAssembly + '.dll"' }
         elseif ($_ -match '^-refout:') { '-refout:"' + $taskOut + '/' + $taskAssembly + '.ref.dll"' }
         elseif ($_ -eq ('-r:"' + $taskBase + 'Assembly-CSharp.ref.dll"')) { '-r:"' + $taskOut + '/Assembly-CSharp.ref.dll"' }
+        elseif ($_ -match '^"(Assets/(?:Scripts|Editor)/.+\.cs)"$' -and !(Test-Path -LiteralPath (Join-Path $taskRoot $Matches[1]))) {
+            Write-Host ('Removed stale Unity source entry: ' + $Matches[1])
+        }
         else { $_ }
     }
     $taskDirectory = if ($taskAssembly -eq 'Assembly-CSharp') { 'Assets/Scripts' } else { 'Assets/Editor' }

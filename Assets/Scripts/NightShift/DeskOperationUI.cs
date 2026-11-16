@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,6 +13,7 @@ public sealed class DeskOperationUI : MonoBehaviour
     public TextMeshProUGUI heading, accountText, stateText, details, feedback, history, budgetText;
     public Image heatFill, progressFill;
     public TextMeshProUGUI monitorStatus;
+    [System.NonSerialized] public SpreadTradingUI spreadView;
     private TradingOperationController operation;
     private float nextRefresh;
     void Start()
@@ -52,12 +53,12 @@ public sealed class DeskOperationUI : MonoBehaviour
     private void Finish() { operation?.Finish(); }
     private static void Text(TextMeshProUGUI target, string value)
     {
-        if (target != null && target.text != value)
-        { target.text = value; }
+        if (target != null && !GameLocalizedText.Matches(target,value))
+        { GameLocalizedText.Set(target,value); }
     }
     void Update()
     {
-        if (operation == null || Time.unscaledTime < nextRefresh)
+        if (spreadView != null || operation == null || Time.unscaledTime < nextRefresh)
         { return; }
         nextRefresh = Time.unscaledTime + .5f;
         var manager = StockManager.Instance;

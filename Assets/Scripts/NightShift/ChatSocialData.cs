@@ -7,7 +7,7 @@ public enum SocialAct { BRAG, LAMENT, ASK, ANSWER, AGREE, REBUT, DOUBT, MOCK, IN
 public enum SocialMotive { REPLY_OBLIGATION, EMOTION_THRESHOLD, SELF_EVENT, WITNESSED_EVENT, IDLE }
 public enum SocialThreadKind { CHAT, QUESTION, ARGUMENT }
 public enum SocialEnd { NONE, MAX_TURNS, NO_REPLY, RESOLVED, EXIT, PLAYER_ACTION, INTERRUPTED }
-public enum SocialMemoryKind { LOSS_BY_LEAD, GAIN_BY_LEAD, KICKED, FOUGHT, SAW_KICK, SAW_BRAG_THEN_CRASH, BIG_SELF_LOSS, BIG_SELF_GAIN }
+public enum SocialMemoryKind { LOSS_BY_LEAD, GAIN_BY_LEAD, KICKED, FOUGHT, SAW_KICK, SAW_BRAG_THEN_CRASH, BIG_SELF_LOSS, BIG_SELF_GAIN, ROOM_FEE }
 public enum InvestorQuadrant { Indifferent, Loyal, Ambivalent, Hostile }
 public static class ChatSocialIds
 {
@@ -33,19 +33,32 @@ public sealed class SocialRandom
 public sealed class SocialTraits
 {
     [SerializeField] private int temper, grudge, suggestibility, sociability, bravado, politeness;
+    [SerializeField] private int speechVersion;
+    [SerializeField] private bool serious;
     public int Temper => temper;
     public int Grudge => grudge;
     public int Suggestibility => suggestibility;
     public int Sociability => sociability;
     public int Bravado => bravado;
     public int Politeness => politeness;
+    public bool Serious => serious;
+    public string SpeechLabel => serious ? "진지함" : "진지하지 않음";
     public bool Valid => temper >= 0 && temper <= 100 && grudge >= 0 && grudge <= 100 && suggestibility >= 0 && suggestibility <= 100 &&
-        sociability >= 0 && sociability <= 100 && bravado >= 0 && bravado <= 100 && politeness >= 0 && politeness <= 100;
+        sociability >= 0 && sociability <= 100 && bravado >= 0 && bravado <= 100 && politeness >= 0 && politeness <= 100 && speechVersion >= 0 && speechVersion <= 1;
     public SocialTraits(SocialRandom random, ChatSocialConfig config)
     {
         temper = Draw("temper"); grudge = Draw("grudge"); suggestibility = Draw("suggestibility");
         sociability = Draw("sociability"); bravado = Draw("bravado"); politeness = Draw("politeness");
+        // A separate stream keeps new voice traits from shifting decisions or seeded friendships.
+        var voiceRandom = new SocialRandom(unchecked((int)random.State ^ 0x5931a7bd));
+        serious = voiceRandom.Next() < config.Get("seriousSpeechChance"); speechVersion = 1;
         int Draw(string name) => Math.Max(0, Math.Min(100, random.Normal(config.Get(name + "Mean"), config.Get(name + "Sd"))));
+    }
+    public void MigrateSpeech(SocialTraits generated)
+    {
+        if (speechVersion != 0)
+        { return; }
+        serious = generated.serious; speechVersion = 1;
     }
 }
 
@@ -70,9 +83,20 @@ public sealed class SocialTraits
     public bool bought, sold, held, profitable, losing, directLead;
     public bool canPromise;
     public bool dailyProfit, dailyLoss, recovered, recentSellProfit, recentSellLoss, sellThenRise, stressRelief, signal;
+    /// <summary>notable: 말할 만한 크기의 평가·실현 손익인가. saleNotable: 방금 한 매도가 말할 만한가. parentNews: 답하는 상대의 말에 소식·기사가 있었는가.</summary>
+    public bool notable, saleNotable, parentNews;
     public string bidStatus, askStatus, signalResult;
     public string sourceEvent;
     public string notice, departedName;
+    public int riskVersion, riskGrade, riskObserver;
+    public long companyNewsId;
+    public string newsHeadline;
+    public int newsObserver;
+    public double companySentiment;
+    public bool newsCorrection;
+    public string observationPrice, observedPrice, observationPercent;
+    public int observationBotId;
+    public double observationAt, observedAt;
     public string memoryKind, memAmount;
     public long memoryEventId;
     public double at;
@@ -82,12 +106,15 @@ public sealed class SocialTraits
 {
     public string trigger;
     public string contextKey;
+    public string speechDisposition, speechKey, numberStyle, speechVoice;
     public long causeId;
     public SocialWeight[] weights;
     public SocialFacts slots;
 }
 [Serializable] public sealed class SocialMessage
 {
+    /// <summary>손익을 말한 메시지에 붙는 인증 카드. 없으면 null.</summary>
+    public ChatProfitCard profitCard;
     public long id, replyToId, threadId;
     public int roomId, senderId, targetId;
     public double at, realAt;
@@ -97,9 +124,17 @@ public sealed class SocialTraits
     public bool isLie, memory;
     public SocialPromisedAction promisedAction;
     public SocialMessageDebug debug;
+    public string localizedPhrase, localizedSuffix, localizedTarget;
+    public SocialSpeechValue[] localizedValues;
+}
+[Serializable] public sealed class SocialSpeechValue
+{
+    public string name, value, raw;
+    public bool approximate;
 }
 public sealed class SocialIntent
 {
+    public bool topicHesitated;
     public SocialMotive motive;
     public SocialAct? forcedAct;
     public int targetId, roomId;
@@ -122,6 +157,7 @@ public sealed class SocialIntent
 }
 [Serializable] public sealed class SocialRoomState
 {
+    public bool firstMemberInvited;
     public double discipline, chill, updatedGameMinute;
     public readonly List<SocialThread> threads = new();
     public readonly Queue<SocialMessage> recent = new();
@@ -185,6 +221,7 @@ public sealed partial class InvestorPsychology
     public readonly List<SocialMemory> Memories = new();
     public readonly List<SocialIntent> Intentions = new();
     public readonly Queue<string> RecentTemplateKeys = new();
+    public readonly Queue<string> RecentSpeechKeys = new();
     public readonly Dictionary<int, double> RejoinAt = new(), MutedUntil = new();
     public double FomoUntil, FomoCooldownUntil, SocialLastSpeech = double.NegativeInfinity;
     public long ActiveThread;
@@ -242,6 +279,10 @@ public sealed partial class InvestorPsychology
         public float greed, fear, trust, betrayal, fomo;
         public double fomoUntil, fomoCooldownUntil;
         public string fomoSymbol;
+        public float chartSkill;
+        public int chartLessons;
+        public string panicSymbol;
+        public double panicUntil, panicCooldownUntil;
         public InvestorQuadrant quadrant;
         public uint randomState;
         public SocialTraits traits;
@@ -249,6 +290,9 @@ public sealed partial class InvestorPsychology
         public SocialMemory[] memories;
         public FomoLotSnapshot[] fomoLots;
         public RoomCooldownSnapshot[] rejoin, mutes;
+        public RoomCooldownSnapshot[] knownPlayerRooms;
+        public int invitedPlayerRooms;
+        public CompanyOpinionBook.Opinion[] companies;
         public double lastQuadrantReview = -1, lastFomoObservation = -1, lastRelationshipSpeech = -1;
         public SocialPromisedAction promisedAction;
         public string promisedSymbol;
@@ -276,8 +320,10 @@ public sealed partial class InvestorPsychology
         foreach (var row in FomoLots.Values) { lots.Add(new FomoLotSnapshot { symbol = row.symbol, quantity = row.quantity.ToString(CultureInfo.InvariantCulture), cost = row.cost.ToString(CultureInfo.InvariantCulture), realized = row.realized.ToString(CultureInfo.InvariantCulture) }); }
         lots.Sort((a, b) => string.CompareOrdinal(a.symbol, b.symbol));
         return new SocialSnapshot { id = SocialId, room = Room, greed = Greed, fear = Fear, trust = Trust, betrayal = Betrayal,
+            chartSkill = ChartSkill, chartLessons = ChartLessons, panicSymbol = PanicSymbol, panicUntil = PanicUntil, panicCooldownUntil = PanicCooldownUntil,
             fomo = 0, fomoSymbol = FomoSymbol, fomoUntil = FomoUntil, fomoCooldownUntil = FomoCooldownUntil, quadrant = Quadrant, randomState = SocialRng.State,
             traits = Traits, relations = relations.ToArray(), memories = memories.ToArray(), fomoLots = lots.ToArray(), rejoin = SaveCooldowns(RejoinAt), mutes = SaveCooldowns(MutedUntil),
+            knownPlayerRooms = SaveCooldowns(KnownPlayerRooms), invitedPlayerRooms = InvitedPlayerRooms, companies = Companies.Capture(),
             promisedAction = PromisedAction, promisedSymbol = PromisedSymbol, promiseMessage = PromiseMessage,
             lastQuadrantReview = LastQuadrantReview, lastFomoObservation = LastFomoObservation, lastRelationshipSpeech = LastRelationshipSpeech };
     }
@@ -302,19 +348,30 @@ public sealed partial class InvestorPsychology
         if (saved.relations != null) { foreach (var row in saved.relations) { if (row != null && (!Finite(row.anger) || !Finite(row.affinity) || !Finite(row.lastInteractionAt) || !Finite(row.lastWarningAt))) { return false; } } }
         if (saved.memories != null) { foreach (var row in saved.memories) { if (row != null && (!Finite(row.at) || row.usedCount < 0)) { return false; } } }
         foreach (var group in new[] { saved.rejoin, saved.mutes }) { if (group != null) { foreach (var row in group) { if (row == null || row.room < 1 || row.room > InvestorSociety.MaximumRoomId || !Finite(row.until)) { return false; } } } }
+        if (saved.invitedPlayerRooms < 0 || saved.invitedPlayerRooms >= 1 << InvestorSociety.PlayerRoomCount) { return false; }
+        if (saved.knownPlayerRooms != null) { foreach (var row in saved.knownPlayerRooms) { if (row == null || row.room < 1 || row.room > InvestorSociety.PlayerRoomCount || !Finite(row.until)) { return false; } } }
+        if (!CompanyOpinionBook.Valid(saved.companies)) { return false; }
         if (!Enum.IsDefined(typeof(SocialPromisedAction), saved.promisedAction) || saved.promisedAction != SocialPromisedAction.None && string.IsNullOrEmpty(saved.promisedSymbol)) { return false; }
         Greed = saved.greed; Fear = saved.fear; Trust = saved.trust; Betrayal = saved.betrayal;
         PromisedAction = saved.promisedAction; PromisedSymbol = saved.promisedSymbol; PromiseMessage = saved.promiseMessage;
         Quadrant = saved.quadrant; FomoSymbol = saved.version >= 2 ? saved.fomoSymbol : null;
+        RestoreChartSkill(saved.chartSkill, saved.chartLessons);
+        PanicSymbol = string.IsNullOrEmpty(saved.panicSymbol) ? null : saved.panicSymbol;
+        PanicUntil = Finite(saved.panicUntil) ? Math.Max(0, saved.panicUntil) : 0;
+        PanicCooldownUntil = Finite(saved.panicCooldownUntil) ? Math.Max(0, saved.panicCooldownUntil) : 0;
         Room = Math.Max(0, Math.Min(InvestorSociety.MaximumRoomId, saved.room));
+        if (Room > InvestorSociety.AvailablePlayerRoomCount && Room <= InvestorSociety.PlayerRoomCount) { Room = 0; }
         FomoUntil = saved.version >= 2 ? Math.Max(0, saved.fomoUntil) : 0;
         FomoCooldownUntil = saved.version >= 2 ? Math.Max(0, saved.fomoCooldownUntil) : 0;
         LastQuadrantReview = saved.lastQuadrantReview; LastFomoObservation = saved.lastFomoObservation; LastRelationshipSpeech = saved.lastRelationshipSpeech;
         FomoLots.Clear(); foreach (var row in lots) { FomoLots[row.Key] = row.Value; }
         RejoinAt.Clear(); MutedUntil.Clear();
+        KnownPlayerRooms.Clear(); InvitedPlayerRooms = saved.invitedPlayerRooms;
+        Companies.Restore(saved.companies);
+        if (saved.knownPlayerRooms != null) { foreach (var row in saved.knownPlayerRooms) { KnownPlayerRooms[row.room] = row.until; } }
         if (saved.rejoin != null) { foreach (var row in saved.rejoin) { RejoinAt[row.room] = row.until; } }
         if (saved.mutes != null) { foreach (var row in saved.mutes) { MutedUntil[row.room] = row.until; } }
-        if (saved.traits != null) { Traits = saved.traits; }
+        if (saved.traits != null) { saved.traits.MigrateSpeech(Traits); Traits = saved.traits; }
         if (saved.randomState != 0) { SocialRng.Restore(saved.randomState); }
         Relations.Clear(); Memories.Clear();
         if (saved.relations != null)

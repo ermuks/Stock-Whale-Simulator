@@ -49,6 +49,8 @@ public sealed partial class InvestorSociety
         if (bot == null || !bot.isActiveAndEnabled || bot.IsExchangeParticipant || room != 0 && bot.Social.Psychology.Room != room)
         { return false; }
         var mind = bot.Social.Psychology;
+        if (room == 0 && mind.PublicReturnAt > SocialTime.GameMinute)
+        { return false; }
         return SocialRoom(room) != null && !SocialRoom(room).banned.Contains(bot.Social.Id) &&
             (!mind.MutedUntil.TryGetValue(room, out double until) || SocialTime.GameMinute >= until);
     }
@@ -58,6 +60,7 @@ public sealed partial class InvestorSociety
         if (!SocialReady)
         { return; }
         BeforeSocialTick();
+        FlushTyping();
         readySocialIntents.Clear();
         int count = Math.Min(Math.Max(1, budget), socialBots.Count);
         for (int i = 0; i < count; i++)
@@ -73,6 +76,7 @@ public sealed partial class InvestorSociety
                 if (mind.Intentions[j].expires < now || !Present(bot, mind.Intentions[j].roomId))
                 { ExpireSocialIntent(bot, mind.Intentions[j]); mind.Intentions.RemoveAt(j); }
             }
+            if (IsTyping(bot)) { continue; }
             if (!nextIdle.TryGetValue(mind.SocialId, out double idleAt) || now >= idleAt)
             {
                 nextIdle[mind.SocialId] = now + Config.Get("idleInterval");
@@ -115,6 +119,7 @@ public sealed partial class InvestorSociety
                 if (chosen.motive < SocialMotive.WITNESSED_EVENT) { chosen.due = room.sent.Peek() + Config.Get("roomWindowSec"); mind.Intentions.Add(chosen); }
                 continue;
             }
+            if (HesitateOnNewTopic(bot, chosen) || BeginTyping(bot, chosen)) { continue; }
             GenerateSocialMessage(bot, chosen);
         }
     }
@@ -143,7 +148,17 @@ public sealed partial class InvestorSociety
         var facts = CaptureFacts(bot, stock);
         facts.sourceEvent = kind.ToString();
         var motive = kind == ChatEvent.ProfitRealized || kind == ChatEvent.LossRealized ? SocialMotive.SELF_EVENT : kind == ChatEvent.SmallTalk ? SocialMotive.IDLE : SocialMotive.WITNESSED_EVENT;
-        Offer(bot, 0, motive, facts);
+        // 말할 만한 매도였다면 그 매도를 화제로 꺼낸다. 익절은 잘 말하고 손절은 가끔만 말한다. 난수열은 쓰지 않는다.
+        SocialAct? forced = null;
+        if (motive == SocialMotive.SELF_EVENT && SaleNotable(bot, stock, facts))
+        {
+            int bravado = bot.Social.Psychology.Traits.Bravado;
+            bool gain = kind == ChatEvent.ProfitRealized;
+            float chance = gain ? 45f + bravado * .4f : 12f + (100 - bravado) * .2f;
+            if (CompanyBusiness.Hash("SALE:" + bot.Social.Id + ":" + stock.symbol + ":" + (long)(SocialTime.Seconds / 30d)) % 100 < chance)
+            { forced = gain ? SocialAct.BRAG : SocialAct.LAMENT; }
+        }
+        Offer(bot, 0, motive, facts, forced);
     }
     public SocialFacts CaptureFacts(TradeBot bot, Stock preferred = null)
     {
@@ -169,6 +184,7 @@ public sealed partial class InvestorSociety
             facts.avgPrice = Money(basis); facts.amount = Money(profit); facts.pct = Percent((stock.currentPrice / basis - 1m) * 100m);
             facts.profitable = profit > 0; facts.losing = profit < 0;
             facts.profitKind = "평가";
+            facts.notable = Notable(bot, profit, (stock.currentPrice / basis - 1m) * 100m, 1m);
         }
         foreach (var fill in mind.SocialFills)
         {
@@ -180,6 +196,7 @@ public sealed partial class InvestorSociety
                 decimal profit = (fill.price - fill.cost) * fill.quantity;
                 facts.amount = Money(profit); facts.pct = Percent((fill.price / fill.cost - 1m) * 100m);
                 facts.profitable = profit > 0; facts.losing = profit < 0; facts.profitKind = "실현";
+                facts.notable = Notable(bot, profit, (fill.price / fill.cost - 1m) * 100m, .5m);
             }
         }
         int today = (int)(SocialTime.GameMinute / 1440d) + 1;
@@ -198,6 +215,29 @@ public sealed partial class InvestorSociety
     }
     public static string Money(decimal value) => value.ToString("#,##0", SocialCulture);
     public static string Percent(decimal value) => value.ToString("+0.0;-0.0;0.0", SocialCulture);
+    /// <summary>
+    /// 말할 만한 손익인가. 자기 자산에 비해 의미 있는 금액이고 수익률도 눈에 띄어야 한다.
+    /// 허세가 큰 봇은 기준이 낮다(자산의 0.3%·수익률 2%부터), 진지한 봇은 높다(자산의 1%·수익률 6%).
+    /// </summary>
+    private static bool Notable(TradeBot bot, decimal profit, decimal percent, decimal scale)
+    {
+        decimal equity = bot.Equity();
+        if (equity <= 0m || profit == 0m)
+        { return false; }
+        int bravado = bot.Social.Psychology.Traits.Bravado;
+        decimal asset = Math.Abs(profit) / equity * 100m;
+        decimal minimumAsset = (.3m + (100 - bravado) * .007m) * scale, minimumReturn = (2m + (100 - bravado) * .04m) * scale;
+        return asset >= minimumAsset && Math.Abs(percent) >= minimumReturn || asset >= minimumAsset * 5m;
+    }
+    /// <summary>방금 한 매도 묶음이 말할 만한가(보유 평가 손익보다 기준을 절반으로 둔다).</summary>
+    private static bool SaleNotable(TradeBot bot, Stock stock, SocialFacts facts)
+    {
+        if (stock == null || !bot.Social.Positions.TryGetValue(stock, out var sale) || sale.SellVolume < 1m || sale.SellPrice <= 0m)
+        { return false; }
+        decimal cost = sale.SellPrice * sale.SellVolume - sale.SellProfit;
+        facts.saleNotable = cost > 0m && Notable(bot, sale.SellProfit, sale.SellProfit / cost * 100m, .5m);
+        return facts.saleNotable;
+    }
     private void GenerateSocialMessage(TradeBot bot, SocialIntent intent)
     {
         var mind = bot.Social.Psychology; var room = SocialRoom(intent.roomId);
@@ -205,14 +245,25 @@ public sealed partial class InvestorSociety
         { return; }
         // Re-read live portfolio facts when an intention is finally processed, not when it was queued.
         Stock topic = FindSocialStock(intent.facts?.symbol);
+        if (topic == null && LiveConversationEnabled)
+        { topic = ChooseRoomTopic(bot, intent.roomId, mind.SocialRng.Next()); }
         var facts = CaptureFacts(bot, topic);
         facts.sourceEvent = intent.facts?.sourceEvent;
-        facts.notice = intent.facts?.notice; facts.departedName = intent.facts?.departedName;
+        bool saleEvent = facts.sourceEvent == "ProfitRealized" || facts.sourceEvent == "LossRealized";
+        if (saleEvent) { SaleNotable(bot, topic, facts); }
+        // 답글은 상대의 알림 종류(FOMO·관찰 등)를 물려받지 않는다. 물려받으면 답글용 문장이 전부 걸러진다.
+        facts.notice = intent.replyToId != 0 ? null : intent.facts?.notice; facts.departedName = intent.facts?.departedName;
+        PreserveWatchObservation(bot, intent, facts);
+        if (!RefreshMarketRiskFacts(bot, intent, facts)) { return; }
+        if (!PreserveCompanyNews(bot, intent, facts)) { return; }
         if (facts.notice != null) { facts.eventId = intent.facts.eventId; }
-        if (intent.facts != null && intent.facts.directLead) { facts = intent.facts; }
+        // 남의 리딩 성과에 답할 때 그 사람의 손익을 내 것처럼 말하지 않는다.
+        if (intent.facts != null && intent.facts.directLead && intent.replyToId == 0) { facts = intent.facts; }
         if (intent.facts != null && intent.facts.signal && RefreshOfferedFacts != null)
         { facts = RefreshOfferedFacts(bot, intent.facts) ?? facts; }
         PrepareSocialFacts(bot, intent, ref facts);
+        if (intent.replyToId != 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var answered) && answered.facts != null)
+        { facts.parentNews = answered.facts.companyNewsId > 0 || !string.IsNullOrEmpty(answered.facts.newsHeadline); }
         var candidates = BuildSocialWeights(bot, intent, facts);
         SocialAttempts++;
         var debugWeights = candidates.ToArray();
@@ -227,9 +278,18 @@ public sealed partial class InvestorSociety
             if (!Enum.TryParse<SocialAct>(selection.key, out var act))
             { return; }
             if (act == SocialAct.PRAISE_PLAYER || act == SocialAct.WARN_PLAYER || act == SocialAct.CALL_PLAYER) { intent.targetId = -1; }
-            else if (intent.threadId == 0 && intent.replyToId == 0 && (act == SocialAct.LAMENT || act == SocialAct.REACT)) { intent.targetId = 0; }
+            // 상대의 말과 이어지지 않는 혼잣말(자랑·한탄·반응·잡담)에는 @상대를 붙이지 않는다.
+            else if (intent.threadId == 0 && intent.replyToId == 0 && (act == SocialAct.LAMENT || act == SocialAct.REACT || act == SocialAct.BRAG || act == SocialAct.SMALLTALK)) { intent.targetId = 0; }
             else if (intent.targetId == -1 && mind.Quadrant == InvestorQuadrant.Indifferent && intent.replyToId == 0) { intent.targetId = 0; }
             var templates = EligibleTemplates(bot, intent, facts, act);
+            if (saleEvent && (act == SocialAct.BRAG || act == SocialAct.LAMENT))
+            {
+                // 매도를 계기로 한 말이면 매도를 말하는 문장을 고른다. 그런 문장이 없고 평가 손익도 말할 만하지 않으면 이 말은 하지 않는다.
+                string wanted = "event:" + facts.sourceEvent;
+                var about = templates.FindAll(t => t.requires != null && Array.IndexOf(t.requires, wanted) >= 0);
+                if (about.Count > 0) { templates = about; }
+                else if (!facts.notable) { templates.Clear(); }
+            }
             if (templates.Count == 0)
             { RecordTemplateMiss(act); continue; }
             var template = templates[mind.SocialRng.Range(0, templates.Count)];
@@ -240,21 +300,23 @@ public sealed partial class InvestorSociety
                 debug = new SocialMessageDebug { trigger = intent.motive.ToString(), causeId = intent.causeId, weights = debugWeights, slots = facts } };
             string target = message.targetId == -1 ? "방장" : SocialBots.TryGetValue(message.targetId, out var other) ? other.Social.Nickname : "";
             socialMessageIndex.TryGetValue(message.replyToId, out var parentMessage);
-            string phrase = ContextualSocialText(template, message, parentMessage);
-            message.text = SlotPattern.Replace(phrase, match => Slot(facts, match.Groups[1].Value, target));
-            message.text = DecorateSocialText(mind, message, message.text);
+            message.text = RenderSocialText(mind, template, message, parentMessage, target, room.recent);
             if (message.targetId != 0) { message.text = "@" + target + " " + message.text; }
+            message.profitCard = CaptureProfitCard(bot, message);
             BeforeSocialPublish(bot, intent, message);
             if (message.promisedAction != SocialPromisedAction.None) { mind.PromiseTrade(message.promisedAction, facts.symbol, message.id); }
             mind.SocialLastSpeech = SocialTime.Seconds; bot.Social.LastSpeech = (float)SocialTime.Seconds;
             mind.RecentTemplateKeys.Enqueue(template.key);
             while (mind.RecentTemplateKeys.Count > Config.Int("botRecentTemplates")) { mind.RecentTemplateKeys.Dequeue(); }
+            mind.RecentSpeechKeys.Enqueue(message.debug.speechKey ?? "");
+            while (mind.RecentSpeechKeys.Count > Config.Int("botRecentTemplates")) { mind.RecentSpeechKeys.Dequeue(); }
             room.recent.Enqueue(message); while (room.recent.Count > Config.Int("roomRecentTemplates")) { room.recent.Dequeue(); }
             room.sent.Enqueue(SocialTime.Seconds);
             consecutiveAct[mind.SocialId] = lastAct.TryGetValue(mind.SocialId, out var previous) && previous == act ? consecutiveAct[mind.SocialId] + 1 : 1;
             lastAct[mind.SocialId] = act;
             socialMessageIndex[message.id] = message; socialMessageOrder.Enqueue(message.id);
             while (socialMessageOrder.Count > Config.Int("logCapacity")) { socialMessageIndex.Remove(socialMessageOrder.Dequeue()); }
+            ObserveConversationTopic(message);
             SocialPublished++; SocialMessagePublished?.Invoke(message); AfterSocialPublish(bot, intent, message);
             return;
         }
@@ -273,7 +335,10 @@ public sealed partial class InvestorSociety
         {
             if (!Enum.TryParse<SocialAct>(entry.key, out var act)) { result.Add(new SocialWeight { key = entry.key, value = entry.value }); continue; }
             double weight = entry.value;
-            if (act == SocialAct.BRAG && !facts.profitable || act == SocialAct.LAMENT && !facts.losing ||
+            // 자랑·한탄은 말할 만한 손익일 때만. 1,800원 벌었다고 자랑하지 않는다.
+            bool worthBrag = facts.profitable && (facts.notable || facts.directLead) || facts.sourceEvent == "ProfitRealized" && facts.recentSellProfit && facts.saleNotable;
+            bool worthLament = facts.losing && (facts.notable || facts.directLead) || facts.sourceEvent == "LossRealized" && facts.recentSellLoss && facts.saleNotable;
+            if (act == SocialAct.BRAG && !worthBrag || act == SocialAct.LAMENT && !worthLament ||
                 (act == SocialAct.PRAISE_PLAYER || act == SocialAct.WARN_PLAYER) && !facts.directLead && facts.notice != "KICK_WARNING" && facts.notice != "LEFT_WARNING" ||
                 (act == SocialAct.ANSWER || act == SocialAct.AGREE || act == SocialAct.REBUT || act == SocialAct.MOCK || act == SocialAct.INSULT || act == SocialAct.COMFORT || act == SocialAct.APOLOGIZE || act == SocialAct.MEDIATE) && intent.targetId == 0)
             { weight = 0; }
@@ -318,10 +383,12 @@ public sealed partial class InvestorSociety
         return result;
     }
     private static bool TemplateFactsMatch(SocialTemplate template, SocialFacts facts)
+        => SpeechRequirementsMatch(template.requires, facts);
+    private static bool SpeechRequirementsMatch(string[] requirements, SocialFacts facts)
     {
-        if (template.requires == null)
+        if (requirements == null)
         { return true; }
-        foreach (string requirement in template.requires)
+        foreach (string requirement in requirements)
         {
             if (requirement.StartsWith("notice:", StringComparison.Ordinal))
             { if (facts.notice != requirement.Substring(7)) { return false; } continue; }
@@ -338,7 +405,7 @@ public sealed partial class InvestorSociety
                 "notHeld" => !facts.held, "RecentProfitableSell" => facts.recentSellProfit, "RecentLosingSell" => facts.recentSellLoss,
                 "RecentSellThenPriceRise" => facts.sellThenRise, "DailyReturnPositive" => facts.dailyProfit,
                 "DailyReturnNegative" => facts.dailyLoss, "CrossedUnrealizedLossToNonNegative" => facts.recovered,
-                "RecentStressDrop" => facts.stressRelief, "signal" => facts.signal,
+                "RecentStressDrop" => facts.stressRelief, "signal" => facts.signal, "parentNews" => facts.parentNews,
                 _ => false
             };
             if (!valid) { return false; }
@@ -349,7 +416,11 @@ public sealed partial class InvestorSociety
     {
         "symbol" or "stockName" => f.stockName ?? f.symbol, "target" => target, "pct" => f.pct, "amount" => f.amount,
         "avgPrice" => f.avgPrice, "price" => f.price, "quantity" => f.quantity, "profitKind" => f.profitKind, "memSymbol" => f.memSymbol, "memPct" => f.memPct, "memWhen" => f.memWhen,
-        "bidStatus" => f.bidStatus, "askStatus" => f.askStatus, "signalResult" => f.signalResult, "departedName" => f.departedName, "memAmount" => f.memAmount, _ => null
+        "bidStatus" => f.bidStatus, "askStatus" => f.askStatus, "signalResult" => f.signalResult, "departedName" => f.departedName, "memAmount" => f.memAmount,
+        "seenPrice" => f.observationPrice, "movePct" => f.observationPercent,
+        "riskLabel" => IsMarketRiskNotice(f.notice) ? MarketRiskLabel(f.riskGrade) : null,
+        "newsHeadline" => f.newsHeadline,
+        "seenMinutes" => f.observationPrice != null ? (f.observedAt - f.observationAt).ToString("0.#", SocialCulture) : null, _ => null
     };
     private Stock FindSocialStock(string symbol)
     {

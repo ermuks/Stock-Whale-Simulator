@@ -12,9 +12,11 @@ public sealed partial class InvestorSociety
         BindSocialBots(day.Bots);
         if (!socialWired)
         {
-            ChooseSocialTopic = bot => day.ConversationFocus.Choose(bot.Social.Psychology.SocialRng.Next(), Time.time);
+            ConfigureLiveConversation(day.ConversationFocus);
+            ChooseSocialTopic = bot => ChooseRoomTopic(bot, bot.Social.Psychology.Room, bot.Social.Psychology.SocialRng.Next());
+            ChooseWatchedStock = ChoosePersonalWatch;
             RefreshOfferedFacts = RefreshNpcFacts;
-            SocialRecentReturn = stock => (double)day.ConversationFocus.Read(stock, Time.time).ReturnPercent;
+            SocialRecentReturn = stock => (double)day.ConversationFocus.Read(stock, SessionClock.Time).ReturnPercent;
             WitnessChance = bot => Config.Get("witnessProbability") * (Config.Get("witnessActivityBase") + bot.Social.Psychology.Activity * Config.Get("witnessActivityScale"));
             SocialMessagePublished += DeliverSocialMessage;
             SocialDeparted += OnSocialDeparture;
@@ -31,12 +33,28 @@ public sealed partial class InvestorSociety
             catch (UnauthorizedAccessException ex) { Debug.LogWarning("Social log file unavailable: " + ex.Message); }
             socialWired = true;
         }
-        SocialTime.Set(day.Day, day.GameMinute, Time.time);
+        SocialTime.Set(day.Day, day.GameMinute, SessionClock.Time);
         TickHype();
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
     }
     private void WriteSocialChange(SocialChange change) { socialLog?.Write(JsonUtility.ToJson(change)); }
+    private Stock ChoosePersonalWatch(TradeBot bot)
+    {
+        if (bot.IsSingleStockTrader) { return bot.SpecializedStock; }
+        var stocks = StockManager.Instance?.stocks;
+        if (stocks == null) { return null; }
+        Stock chosen = null;
+        double total = 0;
+        foreach (var stock in stocks)
+        {
+            if (!stock.AcceptsOrders) { continue; }
+            double weight = 1 + Math.Min(3d, Math.Max(0d, bot.GetPreference(stock))) + (bot.GetOwnedVolume(stock) > 0m ? 3d : 0d);
+            total += weight;
+            if (bot.Social.Psychology.SocialRng.Next() * total < weight) { chosen = stock; }
+        }
+        return chosen;
+    }
     private void WriteSocialEvent(SocialEvent record) { socialLog?.Write(JsonUtility.ToJson(record)); }
     private void DisposeSocialRuntime()
     {
@@ -46,15 +64,17 @@ public sealed partial class InvestorSociety
         SocialSystemNotice -= DeliverSocialSystemNotice;
         socialWired = false;
     }
-    private void DeliverSocialSystemNotice(int roomId, string text, long id)
+    private void DeliverSocialSystemNotice(int roomId, string text, long id, ChatRoomNotice notice)
     {
+        if (day == null) { return; }
+        if (roomId == 0) { day.PublishRoomNotice(text, notice, id); return; }
         var room = GetRoom(roomId);
-        if (room == null || day == null) { return; }
+        if (room == null) { return; }
         room.Add(new BotChatMessage(room.Version + 1, null, day.Day, day.GameMinute, text, "SYSTEM.MODERATION", ChatEvent.Agreement,
-            new InvestorMessageContext(id, roomId, 0, 1, 0, false)));
+            new InvestorMessageContext(id, roomId, 0, 1, 0, false), notice: notice));
         LastAction = text;
     }
-    private void OnSocialDeparture(TradeBot bot, int room, string reason) { Leave(bot, reason); }
+    private void OnSocialDeparture(TradeBot bot, int room, string reason, ChatRoomNotice notice) { Leave(bot, reason, notice); }
     private void DeliverSocialMessage(SocialMessage message)
     {
         if (!SocialBots.TryGetValue(message.senderId, out var bot))
@@ -90,7 +110,7 @@ public sealed partial class InvestorSociety
             if (!leading && basis > 0)
             {
                 decimal profit = (price - basis) * volume;
-                selling.Social.Psychology.RememberInvestment(new InvestorExperience(NextEventId(), 0, 0, stock.symbol, basis * volume, price * volume, Time.time,
+                selling.Social.Psychology.RememberInvestment(new InvestorExperience(NextEventId(), 0, 0, stock.symbol, basis * volume, price * volume, SessionClock.Time,
                     assetBefore: Math.Max(0, selling.Equity() - profit)), false);
             }
             Offer(selling, selling.Social.Psychology.Room, SocialMotive.SELF_EVENT, CaptureFacts(selling, stock));
@@ -119,7 +139,7 @@ public sealed partial class InvestorSociety
     private SocialFacts RefreshNpcFacts(TradeBot leader, SocialFacts previous)
     {
         var npc = NpcLeadingRoom.Instance; var signal = npc?.Current;
-        if (npc == null || npc.Leader != leader || signal == null || signal.ExpiresAt <= Time.time)
+        if (npc == null || npc.Leader != leader || signal == null || signal.ExpiresAt <= SessionClock.Time)
         { return null; }
         return new SocialFacts { signal = true, eventId = signal.Id, symbol = signal.Stock.symbol, stockName = signal.Stock.stockName, at = SocialTime.GameMinute,
             bidStatus = signal.Buy > 0 ? Money(signal.Buy) + (signal.RestingBuy ? "원 매수 주문 대기" : "원 최근 매수 체결") : "매수 주문 없음",

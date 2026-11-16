@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Profiling;
@@ -235,9 +235,9 @@ public partial class ExchangeBot
             }
         }
 
-        if (Time.time >= nextFutureDebug)
+        if (SessionClock.Time >= nextFutureDebug)
         {
-            nextFutureDebug = Time.time + 1f;
+            nextFutureDebug = SessionClock.Time + 1f;
             for (int i = 0; i < scheduleOrder.Count; i++)
             {
                 var schedule = scheduleOrder[i];

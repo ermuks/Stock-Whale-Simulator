@@ -118,7 +118,7 @@ public class MonitorBot : TradeBot
         }
 
         _lastPrice[stock] = stock.currentPrice;
-        _nextCheckTime[stock] = Time.time + Random.Range(checkIntervalMin, checkIntervalMax);
+        _nextCheckTime[stock] = SessionClock.Time + Random.Range(checkIntervalMin, checkIntervalMax);
     }
 
     public void ExitOperation()
@@ -226,7 +226,7 @@ public class MonitorBot : TradeBot
             }
         }
 
-        float now = Time.time;
+        float now = SessionClock.Time;
         if (!_nextCheckTime.TryGetValue(stock, out float next) || now < next)
         {
             if (!_nextCheckTime.ContainsKey(stock))
@@ -321,6 +321,6 @@ public class MonitorBot : TradeBot
 
     void ScheduleNext(Stock stock)
     {
-        _nextCheckTime[stock] = Time.time + Random.Range(checkIntervalMin, checkIntervalMax);
+        _nextCheckTime[stock] = SessionClock.Time + Random.Range(checkIntervalMin, checkIntervalMax);
     }
 }

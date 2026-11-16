@@ -23,7 +23,7 @@ public sealed class CompactGrowthUI : MonoBehaviour
         Layout((RectTransform)transform,.015f,.012f,.97f,.976f);
         Layout(title.rectTransform,.045f,.04f,.74f,.075f); title.fontSize = 52;
         Layout((RectTransform)details.transform,.83f,.045f,.125f,.06f);
-        var detailsLabel = details.GetComponentInChildren<TextMeshProUGUI>(); detailsLabel.text = "조건 보기"; detailsLabel.fontSize = 30;
+        var detailsLabel = details.GetComponentInChildren<TextMeshProUGUI>(); GameLocalizedText.Set(detailsLabel,"조건 보기"); detailsLabel.fontSize = 30;
         nextStep = Caption("Next Step",.045f,.15f,.91f,.085f,49);
         hint = Caption("Action Hint",.045f,.25f,.91f,.055f,31); hint.color = new Color32(166,177,186,255);
         Layout((RectTransform)overview.transform,.045f,.35f,.91f,.36f);
@@ -35,12 +35,12 @@ public sealed class CompactGrowthUI : MonoBehaviour
         Layout(detailText.rectTransform,.045f,.35f,.91f,.38f); detailText.fontSize = 32;
         Layout((RectTransform)action.transform,.045f,.80f,.66f,.115f); actionLabel.fontSize = 43;
         Layout((RectTransform)close.transform,.73f,.82f,.225f,.085f); close.GetComponentInChildren<TextMeshProUGUI>().fontSize = 32;
-        primary.image.color = new Color32(18,124,137,255);
+        TabletControlStyle.Button(primary,true);
         primary.transition = Selectable.Transition.ColorTint;
     }
     private TextMeshProUGUI Caption(string name,float x,float y,float w,float h,float size)
     {
-        var label = Instantiate(title,transform); label.name = "Text :: Growth " + name; label.text = ""; label.fontSize = size;
+        var label = Instantiate(title,transform); label.name = "Text :: Growth " + name; GameLocalizedText.Set(label,""); label.fontSize = size;
         label.raycastTarget = false; label.enableAutoSizing = false; label.textWrappingMode = TextWrappingModes.NoWrap;
         label.overflowMode = TextOverflowModes.Ellipsis; Layout(label.rectTransform,x,y,w,h); return label;
     }

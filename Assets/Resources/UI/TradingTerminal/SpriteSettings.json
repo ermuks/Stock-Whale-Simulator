@@ -1,0 +1,119 @@
+[
+  {
+    "file": "Panel_Background.png",
+    "width": 1024,
+    "height": 1024,
+    "borderLTRB": [
+      24,
+      24,
+      24,
+      24
+    ],
+    "imageType": "Sliced",
+    "transparentOuterMarginPixels": 8
+  },
+  {
+    "file": "Stock_Selected.png",
+    "width": 1024,
+    "height": 256,
+    "borderLTRB": [
+      20,
+      20,
+      20,
+      20
+    ],
+    "imageType": "Sliced",
+    "transparentOuterMarginPixels": 8
+  },
+  {
+    "file": "Chat_Bubble.png",
+    "width": 1024,
+    "height": 384,
+    "borderLTRB": [
+      64,
+      64,
+      64,
+      64
+    ],
+    "imageType": "Sliced",
+    "transparentOuterMarginPixels": 8
+  },
+  {
+    "file": "Chat_Input.png",
+    "width": 1024,
+    "height": 256,
+    "borderLTRB": [
+      40,
+      40,
+      40,
+      40
+    ],
+    "imageType": "Sliced",
+    "transparentOuterMarginPixels": 8
+  },
+  {
+    "file": "Avatar_Orange.png",
+    "width": 512,
+    "height": 512,
+    "borderLTRB": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "imageType": "Simple",
+    "transparentOuterMarginPixels": 4
+  },
+  {
+    "file": "Avatar_Blue.png",
+    "width": 512,
+    "height": 512,
+    "borderLTRB": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "imageType": "Simple",
+    "transparentOuterMarginPixels": 4
+  },
+  {
+    "file": "Avatar_Pink.png",
+    "width": 512,
+    "height": 512,
+    "borderLTRB": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "imageType": "Simple",
+    "transparentOuterMarginPixels": 4
+  },
+  {
+    "file": "Icon_Participants.png",
+    "width": 256,
+    "height": 256,
+    "borderLTRB": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "imageType": "Simple",
+    "transparentOuterMarginPixels": 4
+  },
+  {
+    "file": "Icon_Send.png",
+    "width": 256,
+    "height": 256,
+    "borderLTRB": [
+      0,
+      0,
+      0,
+      0
+    ],
+    "imageType": "Simple",
+    "transparentOuterMarginPixels": 4
+  }
+]

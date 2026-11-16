@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Unity.Profiling;
 
 public enum StockRiskGrade
@@ -38,13 +38,14 @@ public class Stock
 
     public string RiskLabel => RiskPending ? "판정 대기" : RiskGrade == StockRiskGrade.Safe ? "안전" : RiskGrade == StockRiskGrade.Warning ? "경고" : RiskGrade == StockRiskGrade.Danger ? "위험" : RiskGrade == StockRiskGrade.HighRisk ? "고위험" : "거래중지";
     public UnityEngine.Color RiskColor => StockManager.Instance == null ? UnityEngine.Color.gray : RiskGrade == StockRiskGrade.Safe ? StockManager.Instance.economy.safeColor : RiskGrade == StockRiskGrade.Warning ? StockManager.Instance.economy.warningColor : RiskGrade == StockRiskGrade.Danger ? StockManager.Instance.economy.dangerColor : RiskGrade == StockRiskGrade.HighRisk ? StockManager.Instance.economy.highColor : StockManager.Instance.economy.haltedColor;
-    public string RiskDisplay => "<color=#" + UnityEngine.ColorUtility.ToHtmlStringRGB(RiskPending ? UnityEngine.Color.gray : RiskColor) + ">" + RiskLabel + (IsTradingHalted ? " " + UnityEngine.Mathf.CeilToInt(UnityEngine.Mathf.Max(0f, HaltUntil - UnityEngine.Time.time)) + "초" : "") + "</color>";
+    public string RiskDisplay => "<color=#" + UnityEngine.ColorUtility.ToHtmlStringRGB(RiskPending ? UnityEngine.Color.gray : RiskColor) + ">" + RiskLabel + (IsTradingHalted ? " " + UnityEngine.Mathf.CeilToInt(UnityEngine.Mathf.Max(0f, HaltUntil - SessionClock.Time)) + "초" : "") + "</color>";
 
     public string symbol;
     public string stockName;
     public decimal currentPrice;
     /// <summary>발행 주식 수. 거래소 창고가 초기에 전량 보유.</summary>
     public decimal issuedShares;
+    public CompanyBusiness business;
     /// <summary>진짜가치. itCompany/펀더멘털 등에서 갱신. UI는 OnRealOrFakeValueChanged 구독.</summary>
     public decimal realValue;
     /// <summary>가짜가치. 세력 조작·itCompany 등에서 갱신. UI는 OnRealOrFakeValueChanged 구독.</summary>

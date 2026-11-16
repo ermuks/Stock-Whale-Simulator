@@ -1,0 +1,65 @@
+{
+  "name": "DonDon Tablet UI",
+  "design": "Dark Minimal / Solid Icons / Flat UI",
+  "colors": {
+    "background": "#0C141B",
+    "panel": "#121E26",
+    "panelHover": "#1A2A33",
+    "divider": "#2A3B45",
+    "textPrimary": "#F4F7F9",
+    "textSecondary": "#A6B4C0",
+    "textMuted": "#6E818E",
+    "accent": "#2EE8CF",
+    "profitKR": "#F16C73",
+    "lossKR": "#5AAAF5",
+    "warning": "#F2BC64",
+    "disabled": "#53636C",
+    "iconSource": "#FFFFFF",
+    "notes": "Sprite pixels remain white; apply state colors with Unity Image.color"
+  },
+  "layout": {
+    "referenceCanvas": "1280x800 conceptual only; adapt to current World Space Canvas",
+    "outerMargin": 24,
+    "spacingUnit": 8,
+    "panelGap": 16,
+    "sectionGap": 24,
+    "panelRadius": 8,
+    "buttonRadius": 6,
+    "dividerPx": 1
+  },
+  "component": {
+    "primaryButtonMinHeight": 52,
+    "secondaryButtonMinHeight": 44,
+    "inputMinHeight": 48,
+    "tabMinHeight": 48,
+    "listRowMinHeight": 54,
+    "iconToolbarPx": 24,
+    "iconFeaturePx": 32,
+    "minScreenReadableTextPx": 16,
+    "mainValuePx": "28-34 at source scale; verify perceived size on world-space tablet"
+  },
+  "typesetting": {
+    "koreanJapanese": "TMP SDF locale fallback",
+    "latinNumbers": "Tabular Numerals / right aligned",
+    "integerWon": true,
+    "numberWrap": false,
+    "numericLayoutReservedWidth": true,
+    "buttonAutoResizeMax2Lines": false
+  },
+  "states": {
+    "normal": "solid white icon / secondary contrast",
+    "hover": "surface hover",
+    "selected": "teal icon or underline, not a large gradient",
+    "disabled": "muted and noninteractive",
+    "running": "teal status and progress",
+    "completed": "check",
+    "failed": "failed icon + short cause",
+    "locked": "lock icon only for Tablet 2 lock screen"
+  },
+  "screens": [
+    "assets",
+    "order",
+    "company",
+    "auto_trading"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "version": 1, "seed": 38173,
+  "dailyRevenueRate": 0.08, "variableCostRatio": 0.55, "fixedCostRatio": 0.20, "initialCashRatio": 0.08,
+  "dividendPayout": 0.60, "investmentPayout": 0.15, "reservePayout": 0.15,
+  "dividendInvestment": 0.10, "growthInvestment": 0.60, "productivityGain": 0.5, "maximumProductivity": 2,
+  "entryCompany": "NM", "entryIssuedShares": 2000000
+}

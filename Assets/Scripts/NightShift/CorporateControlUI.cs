@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -26,10 +26,10 @@ public sealed class CorporateControlUI : MonoBehaviour
         var current = StockManager.Instance.CurrentStock;
         if (WorldDramaDirector.Instance.Controls(current)) { controlled = current; }
         bool can = WorldDramaDirector.Instance.Controls(controlled);
-        management.interactable = investment.interactable = dividend.interactable = can && MarketDayController.CanTrade;
-        acquisition.interactable = can && current != controlled && MarketDayController.CanTrade;
+        management.interactable = investment.interactable = dividend.interactable = can && MarketDayController.Instance.Phase != MarketPhase.Closing;
+        acquisition.interactable = current != null && MarketDayController.CanTrade;
         string text = can ? controlled.stockName + " 경영권 확보 · 매입 대상 " + current.stockName : "경영권: 실제 지분 50% 초과 필요";
-        if (status.text != text) { status.text = text; }
+        if (!GameLocalizedText.Matches(status,text)) { GameLocalizedText.Set(status,text); }
     }
     void OnDestroy()
     {

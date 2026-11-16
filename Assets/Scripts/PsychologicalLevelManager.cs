@@ -112,7 +112,7 @@ public class PsychologicalLevelManager : MonoBehaviour
             currentResistance = GetNextResistance(stock.currentPrice),
             previousPrice = stock.currentPrice,
             isWallActive = false,
-            lastCheckTime = Time.time
+            lastCheckTime = SessionClock.Time
         };
 
         state.tradeHandler = (price, vol) => CheckPriceMovement(stock, price);
@@ -125,8 +125,8 @@ public class PsychologicalLevelManager : MonoBehaviour
     {
         if (!_states.TryGetValue(stock, out var state)) return;
 
-        if (Time.time - state.lastCheckTime < 0.5f) return;
-        state.lastCheckTime = Time.time;
+        if (SessionClock.Time - state.lastCheckTime < 0.5f) return;
+        state.lastCheckTime = SessionClock.Time;
 
         decimal resistance = state.currentResistance;
         if (resistance <= 0m) return;
@@ -142,7 +142,7 @@ public class PsychologicalLevelManager : MonoBehaviour
                 if (UnityEngine.Random.value < wallFormChance)
                 {
                     state.isWallActive = true;
-                    state.wallFormedTime = Time.time;
+                    state.wallFormedTime = SessionClock.Time;
                     OnWallForming?.Invoke(stock, resistance);
                 }
             }

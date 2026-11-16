@@ -17,11 +17,13 @@ public sealed class DeskControlHints : MonoBehaviour
     public TMP_FontAsset sdfFont;
     public Sprite keycap;
     public Labels labels = new Labels();
+    public bool showShortcutHints;
     private RectTransform hints, markerRect;
     private DeskInteractionMarkers markers;
     private readonly TextMeshProUGUI[] keys = new TextMeshProUGUI[6], captions = new TextMeshProUGUI[6];
     private readonly RectTransform[] cells = new RectTransform[6];
     private MouseCameraController mouseLook;
+    private TabletAccountUI[] tabletNavigation;
     private int state = -1;
     private bool wasVisible;
 
@@ -32,6 +34,7 @@ public sealed class DeskControlHints : MonoBehaviour
         if (views == null)
         { enabled = false; return; }
         mouseLook = views.GetComponent<MouseCameraController>();
+        tabletNavigation = FindObjectsByType<TabletAccountUI>(FindObjectsInactive.Include);
         if (sdfFont == null)
         { sdfFont = Resources.Load<TMP_FontAsset>("Chat/Chat Korean"); }
         if (keycap == null)
@@ -75,13 +78,14 @@ public sealed class DeskControlHints : MonoBehaviour
     {
         if (views == null || hints == null)
         { return; }
-        bool shown = views.Ready && !MouseCameraController.TextEntryActive;
-        if (shown != wasVisible)
-        { hints.gameObject.SetActive(shown); wasVisible = shown; }
+        bool shown = !PauseMenuController.BlocksInput && views.Ready && !MouseCameraController.TextEntryActive && !ViewingOrderForm();
+        bool showLabels = shown && showShortcutHints;
+        if (showLabels != wasVisible)
+        { hints.gameObject.SetActive(showLabels); wasVisible = showLabels; }
         bool phone = PhoneCallController.IsRaised;
         bool paused = mouseLook != null && mouseLook.IsPaused;
         int next = ((int)views.Target + 1) * 4 + (phone ? 2 : 0) + (paused ? 1 : 0);
-        if (shown && next != state)
+        if (showLabels && next != state)
         { state = next; RefreshLabels(phone, paused); }
         bool desk = shown && !views.IsFocused && !views.IsTransitioning && !phone;
         for (int i = 0; i < 5; i++)
@@ -99,6 +103,19 @@ public sealed class DeskControlHints : MonoBehaviour
         }
         RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, MouseCameraController.GetAimScreenPosition(), null, out Vector2 aim);
         markers.SetAim(aim, desk && MouseCameraController.IsCursorLocked && views.Hovered == DeskViewTarget.None);
+    }
+
+    private bool ViewingOrderForm()
+    {
+        if (PhoneCallController.IsRaised || views.Target < DeskViewTarget.TabletOne || tabletNavigation == null)
+        { return false; }
+        bool second = views.Target == DeskViewTarget.TabletTwo;
+        foreach (var tablet in tabletNavigation)
+        {
+            if (tablet != null && tablet.second == second && !tablet.Locked && tablet.CurrentPage == TabletAccountUI.Page.Orders)
+            { return true; }
+        }
+        return false;
     }
 
     private void RefreshLabels(bool phone, bool paused)
@@ -143,10 +160,10 @@ public sealed class DeskControlHints : MonoBehaviour
     private void Hint(int index, string key, string caption)
     {
         cells[index].gameObject.SetActive(true);
-        if (keys[index].text != key)
-        { keys[index].text = key; }
-        if (captions[index].text != caption)
-        { captions[index].text = caption; }
+        if (!GameLocalizedText.Matches(keys[index],key))
+        { GameLocalizedText.Set(keys[index],key); }
+        if (!GameLocalizedText.Matches(captions[index],caption))
+        { GameLocalizedText.Set(captions[index],caption); }
     }
 
     private static RectTransform Rect(string name, Transform parent, Vector2 position, Vector2 size)

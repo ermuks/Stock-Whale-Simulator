@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -87,7 +87,7 @@ public class OrderBookUIManager : MonoBehaviour
     {
         if (toggleButtonText != null)
         {
-            toggleButtonText.text = _displayMode == VolumeDisplayMode.Volume ? "거래량 보기" : "거래대금 보기";
+            GameLocalizedText.Set(toggleButtonText,_displayMode == VolumeDisplayMode.Volume ? "거래량 보기" : "거래대금 보기");
         }
     }
 
@@ -95,12 +95,12 @@ public class OrderBookUIManager : MonoBehaviour
     {
         foreach (Transform child in buyParent)
         {
-            buyRows.Add(child.GetComponent<DrawRawOrder>());
+            var row=child.GetComponent<DrawRawOrder>(); row.SetSide(true); buyRows.Add(row);
         }
 
         foreach (Transform child in sellParent)
         {
-            sellRows.Add(child.GetComponent<DrawRawOrder>());
+            var row=child.GetComponent<DrawRawOrder>(); row.SetSide(false); sellRows.Add(row);
         }
     }
 

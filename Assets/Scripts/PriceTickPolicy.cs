@@ -14,6 +14,18 @@ public static class PriceTickPolicy
         (500000m, 500m)
     };
     private const decimal MinPrice = 1m;
+    /// <summary>Resting retail quotes cluster at round numbers without crossing the original limit.</summary>
+    public static decimal RoundRetailQuote(decimal price, bool buy)
+    {
+        if (price <= 0m)
+        { return price; }
+        decimal step = 1m;
+        while (price / step >= 100m)
+        { step *= 10m; }
+        step = Math.Max(step, GetTickSize(price));
+        decimal rounded = (buy ? decimal.Floor(price / step) : decimal.Ceiling(price / step)) * step;
+        return buy ? Math.Max(1m, FloorToTick(rounded)) : CeilToTick(rounded);
+    }
     public static decimal GetTickSize(decimal price)
     {
         foreach (var (max, tick) in Tiers)

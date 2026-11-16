@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,7 +47,7 @@ public abstract partial class TradeBot
             response.ApplyAt = stock.RiskChangedAt + hash / (float)uint.MaxValue * (StockManager.Instance == null ? 30f : Mathf.Max(0f, StockManager.Instance.economy.reactionDelayMax));
         }
 
-        if (Time.time >= response.ApplyAt)
+        if (SessionClock.Time >= response.ApplyAt)
         {
             response.Applied = stock.RiskGrade;
         }
@@ -74,7 +74,8 @@ public abstract partial class TradeBot
         return float.IsNaN(value) || float.IsInfinity(value) ? 1f : Mathf.Clamp(value, 0f, 10f);
     }
 
-    protected virtual bool CanBuyStock(Stock stock) => stock != null && stock.AcceptsOrders;
+    protected virtual bool CanBuyStock(Stock stock) => stock != null && stock.AcceptsOrders &&
+        (IsExchangeParticipant || Social == null || Social.Psychology.MarketRiskBuyScale(stock.symbol, SessionClock.Time) > 0);
     protected virtual bool CanSellStock(Stock stock) => stock != null && stock.AcceptsOrders;
     private int IntentVersion(Stock stock) => stock == null ? -1 : stock.OrderEpoch + (intentVersions.TryGetValue(stock, out int version) ? version : 0);
     public void InvalidateStockIntents(Stock stock)

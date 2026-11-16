@@ -76,6 +76,7 @@ public sealed class InvestorEventMemory
 public sealed partial class InvestorPsychology
 {
     private float rawGreed, rawFear;
+    public readonly CompanyOpinionBook Companies;
     public float Greed { get => (float)Math.Round(rawGreed); private set => rawGreed = Mathf.Clamp(value, 0f, 100f); }
     public float Fear { get => (float)Math.Round(rawFear); private set => rawFear = Mathf.Clamp(value, 0f, 100f); }
     public float Trust { get; private set; }
@@ -102,6 +103,7 @@ public sealed partial class InvestorPsychology
     public InvestorForecastObservation? LatestObservation => Observations.Count == 0 ? null : Observations[Observations.Count - 1];
     public InvestorPsychology(int id, int seed)
     {
+        Companies = new CompanyOpinionBook(seed, id);
         var random = new System.Random(unchecked(seed + id * 7919));
         Greed = BaselineGreed = 50f + (float)random.NextDouble() * 30f;
         Credulity = .15f + (float)random.NextDouble() * .7f;

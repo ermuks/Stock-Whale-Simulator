@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -194,6 +194,7 @@ public partial class ExchangeBot : TradeBot
 
     private void Register(Stock stock, bool listing)
     {
+        stock.OnMatchedTrade -= OnMatched; stock.OnMatchedTrade += OnMatched;
         if (byStock.ContainsKey(stock))
         { return; }
 
@@ -204,7 +205,7 @@ public partial class ExchangeBot : TradeBot
             InitialInventory = GetOwnedVolume(stock),
             NewListing = listing,
             ListingDay = MarketDayController.Instance == null ? 1 : MarketDayController.Instance.Day,
-            NextReference = Time.time + Mathf.Max(0.1f, referenceInterval),
+            NextReference = SessionClock.Time + Mathf.Max(0.1f, referenceInterval),
             NeedsOpening = true,
             Random = new System.Random(CandleHistoryManager.StableSeed(referenceSeed, stock.symbol))
         };
@@ -218,7 +219,6 @@ public partial class ExchangeBot : TradeBot
         }
 
         debugStocks.Add(new StockDebug { symbol = stock.symbol });
-        stock.OnMatchedTrade += OnMatched;
         if (listing)
         {
             decimal perLevel = decimal.Floor(state.InitialInventory * Ratio(initialListingSupplyRatio) / 50m);
@@ -279,10 +279,10 @@ public partial class ExchangeBot : TradeBot
         { return; }
         TickFutureNews();
         TickRiskGrades();
-        if (AssetsInitialized && Time.time >= nextDebug)
+        if (AssetsInitialized && SessionClock.Time >= nextDebug)
         {
             UpdateDebug();
-            nextDebug = Time.time + 1f;
+            nextDebug = SessionClock.Time + 1f;
         }
 
         if (!AssetsInitialized || !MarketDayController.CanTrade || states.Count == 0)
@@ -305,7 +305,7 @@ public partial class ExchangeBot : TradeBot
                 continue;
             }
 
-            float now = Time.time;
+            float now = SessionClock.Time;
             if (now >= state.NextReference)
             {
                 using (ReferenceMarker.Auto())
@@ -352,7 +352,7 @@ public partial class ExchangeBot : TradeBot
         foreach (var state in states)
         {
             state.NeedsOpening = true;
-            state.NextReference = Time.time + Mathf.Max(0.1f, referenceInterval);
+            state.NextReference = SessionClock.Time + Mathf.Max(0.1f, referenceInterval);
         }
     }
 
@@ -417,7 +417,7 @@ public partial class ExchangeBot : TradeBot
         {
             CancelInitial(state);
             state.NeedsOpening = false;
-            state.NextRegular = Time.time;
+            state.NextRegular = SessionClock.Time;
         }
 
         if (!previouslyRisky && state.Risky)
@@ -478,7 +478,7 @@ public partial class ExchangeBot : TradeBot
 
         bool maker = resting != null && ReferenceEquals(resting.owner, this);
         decimal beforeInventory = GetOwnedVolume(stock) + (maker ? sold ? volume : -volume : 0m);
-        int index = TouchPressure(state, Time.time, beforeInventory);
+        int index = TouchPressure(state, SessionClock.Time, beforeInventory);
         var bucket = state.Pressure[index];
         bucket.NetSold += sold ? volume : -volume;
         bucket.NetSpend += bought ? price * volume : -price * volume;
@@ -718,8 +718,17 @@ public partial class ExchangeBot : TradeBot
         decimal target = Math.Min(volumeTarget, levelLimit * 2m);
         decimal buy = decimal.Floor(Math.Min(Math.Max(0L, buyBudgetAmount) / state.Middle, target));
         decimal sell = decimal.Floor(Math.Min(Math.Max(0L, sellBudgetAmount) / state.Middle, target));
-        BuildLevels(state.Middle, distance + (state.BuyProtected ? Ratio(protectionDistance) : 0m), buy, true, state.BuyPrices, state.BuyVolumes);
-        BuildLevels(state.Middle, distance + (state.SellProtected ? Ratio(protectionDistance) : 0m), sell, false, state.SellPrices, state.SellVolumes);
+        // 거래소는 진짜 가치를 안다. 방어 호가의 중심을 체결가 평균에서 가치 쪽으로 조금만 옮긴다(평균의 ±10% 이내).
+        // 물량 한도는 그대로이므로 벽으로 가격을 누르지 않는다.
+        decimal center = state.Middle;
+        if (stock.realValue > 0m)
+        {
+            decimal shift = (stock.realValue - state.Middle) * 0.25m, limit = state.Middle * 0.1m;
+            center = state.Middle + Math.Max(-limit, Math.Min(limit, shift));
+        }
+
+        BuildLevels(center, distance + (state.BuyProtected ? Ratio(protectionDistance) : 0m), buy, true, state.BuyPrices, state.BuyVolumes);
+        BuildLevels(center, distance + (state.SellProtected ? Ratio(protectionDistance) : 0m), sell, false, state.SellPrices, state.SellVolumes);
         for (int i = 0; i < 3; i++)
         {
             state.BuyVolumes[i] = Math.Min(state.BuyVolumes[i], levelLimit);
@@ -1066,13 +1075,13 @@ public partial class ExchangeBot : TradeBot
             d.risk = (double)s.Risk;
             d.grade = s.Stock.RiskLabel;
             d.gradePending = s.Stock.RiskPending;
-            d.nextGradeEvaluation = Math.Max(0f, s.NextGradeEvaluation - Time.time);
-            d.haltRemaining = s.Stock.IsTradingHalted ? Math.Max(0f, s.Stock.HaltUntil - Time.time) : 0;
+            d.nextGradeEvaluation = Math.Max(0f, s.NextGradeEvaluation - SessionClock.Time);
+            d.haltRemaining = s.Stock.IsTradingHalted ? Math.Max(0f, s.Stock.HaltUntil - SessionClock.Time) : 0;
             int gradeIndex = Math.Min(3, (int)s.Stock.RiskGrade);
             d.cautiousSelection = s.Stock.IsTradingHalted ? 0f : DebugSelectionWeight(Settings.cautiousWeights, gradeIndex);
             d.neutralSelection = s.Stock.IsTradingHalted ? 0f : DebugSelectionWeight(Settings.neutralWeights, gradeIndex);
             d.speculativeSelection = s.Stock.IsTradingHalted ? 0f : DebugSelectionWeight(Settings.speculativeWeights, gradeIndex);
-            d.nextReevaluation = Math.Max(0f, s.NextRegular - Time.time);
+            d.nextReevaluation = Math.Max(0f, s.NextRegular - SessionClock.Time);
             d.targetBuy = (double)s.TargetBuy;
             d.targetSell = (double)s.TargetSell;
             d.reservedBuy = (double)ReservedBuy(s);

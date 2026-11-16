@@ -12,6 +12,8 @@ namespace UnityEngine
 {
     public class MonoBehaviour { }
     public class Coroutine { }
+    public enum RuntimeInitializeLoadType { SubsystemRegistration }
+    public class RuntimeInitializeOnLoadMethodAttribute : Attribute { public RuntimeInitializeOnLoadMethodAttribute(RuntimeInitializeLoadType type) { } }
     public class DefaultExecutionOrder : Attribute { public DefaultExecutionOrder(int n) { } }
     public class HeaderAttribute : Attribute { public HeaderAttribute(string text) { } }
     public class MinAttribute : Attribute { public MinAttribute(float n) { } }
@@ -62,8 +64,12 @@ namespace UnityEngine
     }
 }
 namespace Unity.Profiling { public struct ProfilerMarker { public ProfilerMarker(string key) { } } }
+public enum StockRiskGrade { Safe, Warning, Danger, HighRisk, Halted }
 public sealed class Stock
 {
+    public StockRiskGrade RiskGrade;
+    public int RiskVersion;
+    public bool RiskPending;
     public string stockName = "노보손해보험", symbol = "NM";
     public decimal currentPrice = 1000m;
     public bool IsListed = true, IsDelisted, IsTradingHalted;
@@ -87,6 +93,7 @@ public class Trader : IOrderOwner { }
 public static class PriceTickPolicy { public static decimal RoundToTick(decimal price)=>decimal.Round(price,0); }
 public sealed class TradeBot : Trader
 {
+    public float riskPreference = .5f;
     public bool CanMakeSocialPromise => true;
     public bool isActiveAndEnabled = true;
     public bool IsExchangeParticipant;
@@ -113,9 +120,18 @@ public sealed partial class InvestorSociety
 {
     public const int MaximumRoomId = 4;
     public const int PlayerRoomCount = 3;
+    public const int AvailablePlayerRoomCount = 1;
     public static InvestorSociety Instance;
-    public sealed class Room { public readonly SocialRoomState Social = new(); public readonly HashSet<int> Members = new(); public bool PlayerOwned=true; public LeadingRoomOrders.Command Command; }
-    public readonly Room[] Rooms = { new(),new(),new(),new() };
+    public sealed class Room { public readonly SocialRoomState Social = new(); public readonly HashSet<int> Members = new(); public int Id,OwnerBotId; public bool PlayerOwned=true; public string Title; public string DisplayName => PlayerOwned ? "내 리딩방" : Title; public LeadingRoomOrders.Command Command; public long Version; public float NextConversation; }
+    public readonly Room[] Rooms = { new() {Id=1},new() {Id=2},new() {Id=3},new() {Id=4,PlayerOwned=false} };
+    private MarketDayController day;
+    private readonly Random random = new(73129);
+    private readonly Dictionary<int,int> suggestions = new();
+    private float nextContact;
+    public int Joins;
+    public string LastAction;
+    public void PostRoomNotice(int room,ChatRoomNotice notice,string text) { }
+    public void Speak(TradeBot bot,int room,string text,InvestorMessageContext context,ChatEvent kind=ChatEvent.Agreement) { }
     public Room GetRoom(int id) => id>0 && id<=4 ? Rooms[id-1] : null;
     public void OfferExistingSpeech(TradeBot bot,int room,InvestorMessageContext context,ChatEvent kind) { Offer(bot,room,SocialMotive.WITNESSED_EVENT); }
     public void ReadBeforeSpeech(TradeBot bot) { }
@@ -124,8 +140,15 @@ public sealed partial class InvestorSociety
     public void Trace(TradeBot bot,string text) { }
     public void RecordOutcome(TradeBot bot,InvestorExperience experience) { bot.Social.Psychology.Record(experience,settings); }
 }
+public sealed class FakeNewsManager
+{
+    public static FakeNewsManager Instance;
+    public double PlayerCooldown;
+    public bool RestorePlayerCooldown(double remaining,long savedUtcTicks) { PlayerCooldown=remaining; return true; }
+}
 public sealed partial class MarketDayController
 {
+    public TradeBot FindBot(int id) => Bots.FirstOrDefault(bot=>bot.Social?.Id==id);
     public BotChatTemplateCatalog Catalog { get; private set; }
     public readonly List<BotChatMessage> AllMessages = new();
     public void InitializeReplay(int chosenSeed)
@@ -142,4 +165,20 @@ public sealed partial class MarketDayController
         long before = sequence; ProcessChat();
         if (before != sequence) { AllMessages.Add(GetMessage(MessageCount-1)); }
     }
+}
+
+// Unity account/clock adapter is absent in the conversation-only harness.
+// Paid joins, money movement and UI are exercised by Validation/DailyIncome's actual-scene driver.
+public sealed class DailyIncomeController
+{
+    [Serializable] public sealed class SaveData
+    {
+        public string worldId, company, realizedAtOpen;
+        public DailyIncomeLedger.Snapshot ledger;
+    }
+    public static DailyIncomeController Instance => null;
+    public SaveData Capture() => null;
+    public bool CanRestore(SaveData saved,string worldId) => false;
+    public bool Restore(SaveData saved,string worldId) => false;
+    public bool Enter(TradeBot bot,int room,out string reason) { reason = ""; return true; }
 }

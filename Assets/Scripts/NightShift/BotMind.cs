@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 /// <summary>성격·현재 스트레스·관계가 실제 선택 확률에 들어가는 작은 의사결정 모델.</summary>
 public static class BotMind
@@ -10,7 +10,7 @@ public static class BotMind
         { return 0f; }
         float fear = Mathf.Clamp01(s.Stress / 100f * .35f + s.Psychology.Fear / 100f * .45f + (1f - s.Confidence) * .2f);
         float result = (s.Greed - .5f) * .18f + (s.Impulsiveness - .5f) * .1f - fear * .14f - s.Suspicion * .05f + (s.Psychology.HasFomoFor(stock) ? (float)ChatSocialConfig.Current.Get("fomoBuyBias") : 0);
-        if (s.InfluencedStock == stock && Time.time < s.InfluenceUntil)
+        if (s.InfluencedStock == stock && SessionClock.Time < s.InfluenceUntil)
         { result += .06f + s.Greed * .12f - s.Suspicion * .06f; }
         return Mathf.Clamp(result, -.25f, .25f);
     }

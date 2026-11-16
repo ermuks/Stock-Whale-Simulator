@@ -58,11 +58,11 @@ public class BookBot : TradeBot
         var book = stock.orderBook;
         decimal refPrice = GetReferencePrice(stock);
         decimal current = stock.currentPrice;
-        decimal realValue = stock.realValue;
+        decimal realValue = refPrice; // 개미는 진짜 가치를 모른다. 자기가 믿는 가격을 쓴다.
         if (refPrice <= 0m || current <= 0m) return;
 
-        bool isUndervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsUndervalued(stock);
-        bool isOvervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsOvervalued(stock);
+        bool isUndervalued = FeelsCheap(stock);
+        bool isOvervalued = FeelsExpensive(stock);
 
         float actualBuyChance = marketBuyChance;
         float actualSellChance = marketSellChance;

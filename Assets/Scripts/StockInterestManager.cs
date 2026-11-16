@@ -80,7 +80,7 @@ public class StockInterestManager : MonoBehaviour
             }
         }
 
-        _nextDecayTime = Time.time + decayInterval;
+        _nextDecayTime = SessionClock.Time + decayInterval;
     }
 
     void OnDestroy()
@@ -116,9 +116,9 @@ public class StockInterestManager : MonoBehaviour
 
     void Update()
     {
-        if (Time.time >= _nextDecayTime)
+        if (SessionClock.Time >= _nextDecayTime)
         {
-            _nextDecayTime = Time.time + decayInterval;
+            _nextDecayTime = SessionClock.Time + decayInterval;
             Decay();
         }
     }
@@ -291,12 +291,13 @@ public class StockInterestManager : MonoBehaviour
     /// <summary>새 종목이 리스트에 추가될 때 호출 (StockManager에서)</summary>
     public void RegisterStock(Stock stock)
     {
-        if (stock == null || _interest.ContainsKey(stock))
+        if (stock==null) { return; }
+        stock.OnTradeExecutedWithStock -= OnStockTraded; stock.OnTradeExecutedWithStock += OnStockTraded;
+        if (_interest.ContainsKey(stock))
         { return; }
 
         _interest[stock] = Baseline;
         _lastPrice[stock] = stock.currentPrice;
-        stock.OnTradeExecutedWithStock += OnStockTraded;
         if (StockNewsAttentionManager.Instance != null)
         {
             StockNewsAttentionManager.Instance.RegisterStock(stock);

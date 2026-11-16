@@ -95,6 +95,8 @@ public sealed partial class InvestorSociety
     private void TickSocialAutonomy(TradeBot bot)
     {
         var mind = bot.Social.Psychology; mind.RefreshQuadrant();
+        TickMarketWatch(bot);
+        TickMarketRisk(bot);
         if (mind.LastRelationshipSpeech < 0) { mind.LastRelationshipSpeech = SocialTime.GameMinute; }
         if (SocialTime.GameMinute - mind.LastRelationshipSpeech >= Config.Get("relationshipSpeechMinutes"))
         {
@@ -125,7 +127,7 @@ public sealed partial class InvestorSociety
             mind.Quadrant == InvestorQuadrant.Indifferent ? Config.Get("indifferentDailyLeave") : 0;
         if (mind.SocialRng.Next() >= chance) { return; }
         int room = mind.Room;
-        SocialDeparted?.Invoke(bot, room, mind.QuadrantLabel + " 관계로 관찰방 이동"); GetRoom(room).Members.Remove(mind.SocialId); mind.Room = 0; mind.Intentions.Clear();
+        SocialDeparted?.Invoke(bot, room, mind.QuadrantLabel + " 관계로 관찰방 이동", ChatRoomNotice.Leave); GetRoom(room).Members.Remove(mind.SocialId); mind.Room = 0; mind.Intentions.Clear();
         ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, room = room, actor = mind.SocialId, kind = "RELATIONSHIP_DEPARTURE", reason = mind.Quadrant.ToString() });
     }
     public SocialFacts LeadingExperienceFacts(InvestorExperience experience)

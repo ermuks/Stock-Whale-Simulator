@@ -17,6 +17,9 @@ $taskSources += Get-ChildItem -LiteralPath (Join-Path $taskRoot 'Tests/ChatSocia
 $taskSources += Get-ChildItem -LiteralPath (Join-Path $taskRoot 'Assets/Scripts/NightShift') -Filter 'ChatSocial*.cs' | Where-Object { $_.Name -notlike '*Unity.cs' } | ForEach-Object { $_.FullName }
 $taskSources += 'Validation/ChatSocial/ProgressionProduction.cs'
 $taskSources += 'Assets/Scripts/NightShift/LeadingRoomOrders.cs'
+$taskSources += 'Assets/Scripts/NightShift/DailyIncomeLedger.cs'
+$taskSources += 'Assets/Scripts/Settings/SessionClock.cs'
+$taskSources += 'Assets/Scripts/News/NewsArticle.cs','Assets/Scripts/News/CompanyOpinionBook.cs'
 foreach ($taskSource in $taskSources) {
     $taskPath = if ([IO.Path]::IsPathRooted($taskSource)) { $taskSource } else { Join-Path $taskRoot $taskSource }
     $taskResponse += '"' + $taskPath + '"'

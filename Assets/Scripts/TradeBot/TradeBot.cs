@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -223,6 +223,34 @@ public abstract partial class TradeBot : Trader
         if (Social != null && Social.Psychology.HasFomoFor(ResolveStock(stock)))
         { volume = decimal.Floor(System.Math.Min(volume * (decimal)ChatSocialConfig.Current.Get("fomoAmountScale"), System.Math.Max(0m, cash - ReservedCash) / System.Math.Max(1m, price))); }
         MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), true, ref price, ref volume);
+        if (!IsExchangeParticipant && Social != null)
+        {
+            double riskScale = Social.Psychology.MarketRiskBuyScale(ResolveStock(stock)?.symbol, SessionClock.Time);
+            double newsScale = Social.Psychology.Companies.TradeScale(ResolveStock(stock)?.symbol, true, SessionClock.Time);
+            volume = decimal.Floor(volume * (decimal)(riskScale * newsScale));
+            if (volume < 1m) { return; }
+        }
+        if (!IsExchangeParticipant && price > 0m)
+        {
+            // 가용 현금을 넘는 주문은 전량 거절되므로 살 수 있는 수량으로 줄인다.
+            volume = System.Math.Min(volume, decimal.Floor(System.Math.Max(0m, cash - ReservedCash) / price));
+            if (volume < 1m) { return; }
+            // 목표 비중을 넘는 매수는 하지 않는다. 리딩방 지시 주문은 수락한 약속이므로 제외한다.
+            bool commanded = InvestorSociety.Instance?.Orders != null && InvestorSociety.Instance.Orders.IsSubmitting(this);
+            decimal room = commanded ? decimal.MaxValue : PositionRoom(ResolveStock(stock));
+            if (room != decimal.MaxValue)
+            {
+                volume = System.Math.Min(volume, decimal.Floor(room / price));
+                if (volume < 1m) { return; }
+                // 한 번의 주문으로 목표 비중을 다 채우지 않는다. 충동 상태가 아니면 목표의 30%까지만 산다.
+                bool chasing = Social != null && Social.Psychology.HasFomoFor(ResolveStock(stock));
+                decimal target = TargetPositionValue(ResolveStock(stock));
+                if (!chasing && target != decimal.MaxValue)
+                {
+                    volume = System.Math.Min(volume, System.Math.Max(1m, decimal.Floor(target * 0.3m / price)));
+                }
+            }
+        }
         base.BuyLimit(price, volume, subTickSteps, stock);
     }
 
@@ -237,6 +265,8 @@ public abstract partial class TradeBot : Trader
         if (InvestorSociety.Instance?.Orders != null && !InvestorSociety.Instance.Orders.AllowsRegular(this, ResolveStock(stock)))
         { return; }
         MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), false, ref price, ref volume);
+        if (!IsExchangeParticipant && Social != null)
+        { volume = decimal.Floor(volume * (decimal)Social.Psychology.Companies.TradeScale(ResolveStock(stock)?.symbol, false, SessionClock.Time)); }
         base.SellLimit(price, volume, subTickSteps, stock);
     }
 
@@ -342,6 +372,10 @@ public abstract partial class TradeBot : Trader
             Stock pick = promised ?? PickStock();
             if (pick != null && pick.AcceptsOrders && (CanBuyStock(pick) || CanSellStock(pick)) && StockManager.Instance != null && StockManager.Instance.stocks.Contains(pick))
             {
+                ObserveMarket(pick);
+                if (TryPanicSell(pick))
+                { continue; }
+
                 RefreshLiquidityOrders(pick);
                 if (CancelDistantSellOrdersAndEndTurnIfAny(pick))
                 { continue; }
@@ -373,7 +407,7 @@ public abstract partial class TradeBot : Trader
             {
                 lifetime = 120f;
             }
-            if (Time.time - order.createdAt >= lifetime && stock.orderBook.CancelOrder(order, stock))
+            if (SessionClock.Time - order.createdAt >= lifetime && stock.orderBook.CancelOrder(order, stock))
             {
                 cancelled++;
                 if (cancelled >= 2)
@@ -384,7 +418,7 @@ public abstract partial class TradeBot : Trader
 
     private bool TryThinBookSellOffer(Stock stock)
     {
-        if (IsExchangeParticipant || !CanSellStock(stock) || Time.time < nextThinBookOffer || sellHoldingRatio <= 0m || HasPendingOrderFor(stock, false))
+        if (IsExchangeParticipant || !CanSellStock(stock) || SessionClock.Time < nextThinBookOffer || sellHoldingRatio <= 0m || HasPendingOrderFor(stock, false))
         { return false; }
         decimal holding = GetHolding(stock);
         if (holding < minOrderVolume || stock.currentPrice < 1m)
@@ -417,7 +451,7 @@ public abstract partial class TradeBot : Trader
         decimal volume = ClampMinVolume(holding * ratio);
         if (volume < 1m)
         { return false; }
-        nextThinBookOffer = Time.time + Mathf.Max(0f, orderDelayMax) + Random.Range(15f, 30f);
+        nextThinBookOffer = SessionClock.Time + Mathf.Max(0f, orderDelayMax) + Random.Range(15f, 30f);
         DelayedSellLimit(price, volume, 0, stock);
         return true;
     }
@@ -470,7 +504,7 @@ public abstract partial class TradeBot : Trader
         if (!MarketDayController.CanTrade || !isActiveAndEnabled || stock == null || !stock.AcceptsOrders || targetPrice <= 0m || volume <= 0m)
         { return; }
 
-        _pendingOrders.Add(new PendingOrder { stock = stock, targetPrice = targetPrice, volume = volume, isBuy = true, subTickSteps = subTickSteps, createdTime = Time.time, intentVersion = IntentVersion(stock) });
+        _pendingOrders.Add(new PendingOrder { stock = stock, targetPrice = targetPrice, volume = volume, isBuy = true, subTickSteps = subTickSteps, createdTime = SessionClock.Time, intentVersion = IntentVersion(stock) });
     }
 
     /// <summary>목표가 매도 주문 등록. 현재가가 목표가 근처에 도달하면 실행됨.</summary>
@@ -482,7 +516,7 @@ public abstract partial class TradeBot : Trader
         if (!MarketDayController.CanTrade || !isActiveAndEnabled || stock == null || !stock.AcceptsOrders || targetPrice <= 0m || volume <= 0m)
         { return; }
 
-        _pendingOrders.Add(new PendingOrder { stock = stock, targetPrice = targetPrice, volume = volume, isBuy = false, subTickSteps = subTickSteps, createdTime = Time.time, intentVersion = IntentVersion(stock) });
+        _pendingOrders.Add(new PendingOrder { stock = stock, targetPrice = targetPrice, volume = volume, isBuy = false, subTickSteps = subTickSteps, createdTime = SessionClock.Time, intentVersion = IntentVersion(stock) });
     }
 
     /// <summary>해당 종목의 대기 주문이 있는지 확인</summary>
@@ -506,13 +540,19 @@ public abstract partial class TradeBot : Trader
         if (_isSingleStockTrader)
         { return _specializedStock != null && _specializedStock.AcceptsOrders ? _specializedStock : null; }
 
+        if (Social != null && Social.Psychology.HasPanic && StockManager.Instance != null)
+        {
+            foreach (var candidate in StockManager.Instance.stocks)
+            { if (candidate.AcceptsOrders && Social.Psychology.HasPanicFor(candidate) && GetOwnedVolume(candidate) > 0m) { return candidate; } }
+        }
+
         if (Social != null && Social.Psychology.HasFomo && StockManager.Instance != null && Random.value < ChatSocialConfig.Current.Get("fomoPickChance"))
         {
             foreach (var candidate in StockManager.Instance.stocks)
             { if (candidate.AcceptsOrders && Social.Psychology.HasFomoFor(candidate)) { return candidate; } }
         }
 
-        if (Social != null && Social.InfluencedStock != null && Social.InfluencedStock.AcceptsOrders && Time.time < Social.InfluenceUntil && Random.value < .1f + Social.Greed * .25f)
+        if (Social != null && Social.InfluencedStock != null && Social.InfluencedStock.AcceptsOrders && SessionClock.Time < Social.InfluenceUntil && Random.value < .1f + Social.Greed * .25f)
         { return Social.InfluencedStock; }
 
         if (StockInterestManager.Instance != null)
@@ -565,7 +605,8 @@ public abstract partial class TradeBot : Trader
         if (stock == null)
         { return 0m; }
 
-        return stock.fakeValue;
+        // 개미는 자기가 믿는 가격, 세력·거래소는 진짜 가치를 기준으로 삼는다.
+        return BelievedPrice(stock);
     }
 
     /// <summary>
@@ -574,6 +615,7 @@ public abstract partial class TradeBot : Trader
     /// </summary>
     protected decimal GetEffectiveSellPrice(Stock stock, decimal refBasedSellPrice)
     {
+        refBasedSellPrice = ApplyRoundQuotePreference(stock, refBasedSellPrice, false);
         if (stock == null || refBasedSellPrice <= 0m)
         { return refBasedSellPrice; }
 
@@ -595,6 +637,7 @@ public abstract partial class TradeBot : Trader
     /// </summary>
     protected decimal GetEffectiveBuyPrice(Stock stock, decimal refBasedBuyPrice)
     {
+        refBasedBuyPrice = ApplyRoundQuotePreference(stock, refBasedBuyPrice, true);
         if (stock == null)
         { return refBasedBuyPrice; }
 
@@ -613,11 +656,27 @@ public abstract partial class TradeBot : Trader
         return refBasedBuyPrice < nearCurrent ? refBasedBuyPrice : nearCurrent;
     }
 
+    private decimal ApplyRoundQuotePreference(Stock stock, decimal price, bool buy)
+    {
+        if (stock == null || price <= 0m || IsExchangeParticipant || IsCompanyOwner)
+        { return price; }
+        // Stable investor preference; never move an aggressive exit or a specified leading-room order.
+        if (CompanyBusiness.Hash("ROUND:" + InitialAccountId) % 100 >= 45 || (buy ? price >= stock.currentPrice : price <= stock.currentPrice))
+        { return price; }
+        return PriceTickPolicy.RoundRetailQuote(price, buy);
+    }
+
     /// <summary>현금의 일정 비율로 매수할 수량 (가격 반영). stock 없으면 CurrentStock. referencePrice 넣으면 그 가격 기준(미입력 시 현재가). 항상 정수로 내림.</summary>
     protected decimal GetBuyVolume(decimal cashRatio, Stock stock = null, decimal? referencePrice = null)
     {
         Stock s = ResolveStock(stock);
         decimal price = referencePrice.HasValue && referencePrice.Value > 0m ? referencePrice.Value : s.currentPrice;
+        // 기준가가 현재가보다 낮아도 실제 체결은 현재가 부근이므로, 의도한 현금 비율을 넘는 수량을 만들지 않는다.
+        if (s.currentPrice > price)
+        {
+            price = s.currentPrice;
+        }
+
         if (price <= 0m)
         { return 0m; }
 

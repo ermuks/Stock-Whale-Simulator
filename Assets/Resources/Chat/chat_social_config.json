@@ -383,7 +383,7 @@
     },
     {
       "key": "exitGraceSec",
-      "value": 30.0
+      "value": 30
     },
     {
       "key": "exitAngerMin",
@@ -1092,6 +1092,182 @@
     {
       "key": "closedThreadCache",
       "value": 512
+    },
+    {
+      "key": "watchMovePercent",
+      "value": 30
+    },
+    {
+      "key": "watchObservationMinMinutes",
+      "value": 3
+    },
+    {
+      "key": "watchObservationMaxMinutes",
+      "value": 8
+    },
+    {
+      "key": "watchMaximumGapMinutes",
+      "value": 30
+    },
+    {
+      "key": "watchReactionCooldownMinutes",
+      "value": 12
+    },
+    {
+      "key": "watchRetargetMinutes",
+      "value": 30
+    },
+    {
+      "key": "seriousSpeechChance",
+      "value": 0.45
+    },
+    {
+      "key": "communityPlayfulChance",
+      "value": 0.7
+    },
+    {
+      "key": "communitySeriousChance",
+      "value": 0.02
+    },
+    {
+      "key": "colloquialNumberChance",
+      "value": 0.9
+    },
+    {
+      "key": "seriousColloquialNumberChance",
+      "value": 0.15
+    },
+    {
+      "key": "mediationStressMin",
+      "value": 80
+    },
+    {
+      "key": "mediationExitBaseChance",
+      "value": 0.1
+    },
+    {
+      "key": "mediationExitMaxChance",
+      "value": 0.5
+    },
+    {
+      "key": "mediationExitDelayMinSec",
+      "value": 6
+    },
+    {
+      "key": "mediationExitDelayMaxSec",
+      "value": 10
+    },
+    {
+      "key": "mediationRejoinMinutes",
+      "value": 30
+    },
+    {
+      "key": "mediationTauntBravadoMin",
+      "value": 55
+    },
+    {
+      "key": "mediationTauntAngerMin",
+      "value": 30
+    },
+    {
+      "key": "mediationTauntChance",
+      "value": 0.5
+    },
+    {
+      "key": "departureReactionChance",
+      "value": 0.35
+    },
+    {
+      "key": "voiceStyleChance",
+      "value": 1.0
+    },
+    {
+      "key": "topicPreferredCount",
+      "value": 3
+    },
+    {
+      "key": "topicMemorySeconds",
+      "value": 120
+    },
+    {
+      "key": "topicContinueWeight",
+      "value": 4
+    },
+    {
+      "key": "topicNewWeight",
+      "value": 0.3
+    },
+    {
+      "key": "topicHotMultiplier",
+      "value": 2
+    },
+    {
+      "key": "topicHesitationChance",
+      "value": 0.8
+    },
+    {
+      "key": "topicHesitationMinSec",
+      "value": 2
+    },
+    {
+      "key": "topicHesitationMaxSec",
+      "value": 7
+    },
+    {
+      "key": "typingPerRoom",
+      "value": 4
+    },
+    {
+      "key": "typingMinSec",
+      "value": 0.9
+    },
+    {
+      "key": "typingMaxSec",
+      "value": 2.6
+    },
+    {
+      "key": "riskBulletinSeconds",
+      "value": 60
+    },
+    {
+      "key": "riskWitnessChance",
+      "value": 0.7
+    },
+    {
+      "key": "riskSpeechChance",
+      "value": 0.45
+    },
+    {
+      "key": "riskSpeechGapSeconds",
+      "value": 10
+    },
+    {
+      "key": "riskFearPerGrade",
+      "value": 6
+    },
+    {
+      "key": "riskBuyReduction",
+      "value": 0.9
+    },
+    {
+      "key": "riskPauseSeconds",
+      "value": 20
+    },
+    {
+      "key": "riskPauseConcern",
+      "value": 0.7
+    },
+    {
+      "key": "riskVoicesPerNotice",
+      "value": 2
+    },
+    {
+      "key": "riskAttentionSeconds",
+      "value": 120
+    },
+    {
+      "key": "roomReferralMinutes",
+      "value": 120
     }
   ]
 }

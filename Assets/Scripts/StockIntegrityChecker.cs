@@ -40,9 +40,9 @@ public class StockIntegrityChecker : MonoBehaviour
 
     void Update()
     {
-        if (Time.time - _lastCheckTime >= checkInterval)
+        if (SessionClock.Time - _lastCheckTime >= checkInterval)
         {
-            _lastCheckTime = Time.time;
+            _lastCheckTime = SessionClock.Time;
             CheckAllStocks();
         }
     }

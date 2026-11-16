@@ -35,7 +35,7 @@ public class StockNewsAttentionManager : MonoBehaviour
                 RegisterStock(stock);
             }
         }
-        _nextDecayTime = Time.time + decayInterval;
+        _nextDecayTime = SessionClock.Time + decayInterval;
         StockManager.OnStockDelisted += OnStockDelisted;
     }
 
@@ -54,9 +54,9 @@ public class StockNewsAttentionManager : MonoBehaviour
 
     void Update()
     {
-        if (Time.time >= _nextDecayTime)
+        if (SessionClock.Time >= _nextDecayTime)
         {
-            _nextDecayTime = Time.time + decayInterval;
+            _nextDecayTime = SessionClock.Time + decayInterval;
             Decay();
         }
     }

@@ -23,8 +23,8 @@ public class NewsListItem : MonoBehaviour
     /// <summary>criticalValue: 1 초과면 호재, 1 미만이면 악재. 정도는 |criticalValue - 1| * 100 %. Image는 호재/악재에 따라 색상 적용.</summary>
     public void Set(string symbol, float criticalValue, string title)
     {
-        if (textSymbol != null) textSymbol.text = symbol ?? "";
-        if (textTitle != null) textTitle.text = title ?? "";
+        if (textSymbol != null) GameLocalizedText.Set(textSymbol,symbol ?? "");
+        if (textTitle != null) GameLocalizedText.Set(textTitle,title ?? "");
 
         float pct = (criticalValue - 1f) * 100f;
 

@@ -57,7 +57,7 @@ public static partial class ChatSocialTests
         rejected = false;
         try { ChatSocialAssets.Install(config, acts, badCatalog); } catch (ArgumentException) { rejected = true; }
         Check(rejected && ChatSocialAssets.Generation == generation && ReferenceEquals(catalog, ChatSocialAssets.Templates), "Invalid template reload preserves catalog/index atomically");
-        var mind = Enumerable.Range(1,100).Select(id => new InvestorPsychology(id,73129)).First(m => m.Traits.Politeness < 34);
+        var mind = Enumerable.Range(1,100).Select(id => new InvestorPsychology(id,73129)).First(m => m.Traits.Politeness < 34 && !m.Traits.Serious);
         var save = mind.CaptureSocial(); save.greed = 90; save.fear = 90; mind.RestoreSocial(save);
         uint state = mind.SocialRng.State; int decorated = 0;
         for (int i = 1; i <= 1000; i++)

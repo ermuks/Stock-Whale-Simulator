@@ -76,8 +76,8 @@ public class InstitutionBootstrapper : MonoBehaviour
         { yield break; }
 
         // 창고 준비 대기 (없어도 세팅은 하되, 창고가 있으면 반드시 TransferTo로 이동)
-        float t0 = Time.time;
-        while (ExchangeWarehouse.Instance == null && Time.time - t0 < 3f)
+        float t0 = SessionClock.Time;
+        while (ExchangeWarehouse.Instance == null && SessionClock.Time - t0 < 3f)
         {
             yield return null;
         }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Profiling;
@@ -7,13 +7,15 @@ using Unity.Profiling;
 public sealed partial class InvestorSociety : MonoBehaviour
 {
     public const int PlayerRoomCount = 3, MaximumRoomId = 4;
+    // Keep legacy room IDs for saved references; only one player room is available in gameplay.
+    public const int AvailablePlayerRoomCount = 1;
     public sealed class Room
     {
         public readonly int Id;
         public int OwnerBotId;
         public string Title;
         public bool PlayerOwned => Id <= PlayerRoomCount;
-        public string DisplayName => PlayerOwned ? "내 리딩방 " + Id : Title;
+        public string DisplayName => PlayerOwned ? "내 리딩방" : Title;
         public readonly HashSet<int> Members = new();
         private readonly BotChatMessage[] messages = new BotChatMessage[128];
         private int start;
@@ -64,7 +66,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
     void Update()
     {
         if (Time.timeScale > 0f) { Orders?.FlushObservedResults(settings.botsPerTick); }
-        if (!MarketDayController.CanTrade || Time.time < nextTick)
+        if (!MarketDayController.CanTrade || SessionClock.Time < nextTick)
         { return; }
         day = MarketDayController.Instance;
         if (day != null) { ChatSocialAudit.GameMinute = (day.Day - 1) * 1440d + day.GameMinute; }
@@ -72,7 +74,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
         { return; }
         if (Orders == null) { Orders = new LeadingRoomOrders(this); }
         PrepareSocialRuntime();
-        nextTick = Time.time + Mathf.Max(.05f, settings.updateInterval);
+        nextTick = SessionClock.Time + Mathf.Max(.05f, settings.updateInterval);
         using (TickMarker.Auto())
         {
             int count = Math.Min(Math.Max(1, settings.botsPerTick), day.Bots.Count);
@@ -83,27 +85,35 @@ public sealed partial class InvestorSociety : MonoBehaviour
                 var bot = day.Bots[cursor++];
                 if (bot == null || bot.Social == null || bot.IsExchangeParticipant)
                 { continue; }
-                TickBot(bot, Time.time);
+                TickBot(bot, SessionClock.Time);
             }
-            SocialAdvance(day.Day, day.GameMinute, Time.time, settings.botsPerTick);
+            SocialAdvance(day.Day, day.GameMinute, SessionClock.Time, settings.botsPerTick);
         }
     }
     public long NextEventId() => ChatSocialIds.Next();
+    public LeadingRoomOrders EnsureSessionOrders()
+    { return Orders ??= new LeadingRoomOrders(this); }
+    public void ReconnectSession()
+    {
+        day = MarketDayController.Instance;
+        EnsureSessionOrders().ReconnectSession();
+        PrepareSocialRuntime();
+    }
     public Room GetRoom(int id) => id >= 1 && id <= Rooms.Length ? Rooms[id - 1] : null;
     public bool IsRoomOpen(int id)
     {
         var room = GetRoom(id);
-        return room != null && (room.PlayerOwned ? PlayerProgression.Instance == null || PlayerProgression.Instance.CanOperateRooms : room.OwnerBotId > 0);
+        return room != null && (room.PlayerOwned ? id <= AvailablePlayerRoomCount && (PlayerProgression.Instance == null || PlayerProgression.Instance.CanOperateRooms) : room.OwnerBotId > 0);
     }
     private int ChooseRoom(TradeBot bot)
     {
-        if (suggestions.TryGetValue(bot.Social.Id,out int suggested) && IsRoomOpen(suggested))
+        if (suggestions.TryGetValue(bot.Social.Id,out int suggested) && IsRoomOpen(suggested) && CanDiscoverPlayerRoom(bot, suggested))
         { return suggested; }
         int first = random.Next(Rooms.Length);
         for (int i = 0; i < Rooms.Length; i++)
         {
             int candidate = Rooms[(first + i) % Rooms.Length].Id;
-            if (IsRoomOpen(candidate))
+            if (IsRoomOpen(candidate) && (!Rooms[(first + i) % Rooms.Length].PlayerOwned || CanDiscoverPlayerRoom(bot, candidate)))
             { return candidate; }
         }
         return 0;
@@ -114,6 +124,8 @@ public sealed partial class InvestorSociety : MonoBehaviour
         mind.Decay(Mathf.Max(0f, now - mind.UpdatedAt), settings); mind.UpdatedAt = now;
         if (!bot.isActiveAndEnabled)
         { if (mind.Room > 0) { Leave(bot, "거래 활동 중단"); } return; }
+        if (mind.Room > AvailablePlayerRoomCount && mind.Room <= PlayerRoomCount)
+        { Leave(bot, "비활성화된 이전 리딩방에서 공용 라운지로 이동", ChatRoomNotice.None); }
         foreach (var position in bot.Social.Positions)
         {
             decimal basis = bot.GetOwnedAverage(position.Key);
@@ -210,10 +222,10 @@ public sealed partial class InvestorSociety : MonoBehaviour
     public void ReadBeforeSpeech(TradeBot bot)
     {
         day ??= MarketDayController.Instance;
-        if (day == null || bot.Social == null || !bot.Social.Psychology.ActiveAt(Time.time))
+        if (day == null || bot.Social == null || !bot.Social.Psychology.ActiveAt(SessionClock.Time))
         { return; }
-        ReadRecent(bot, 0, Time.time);
-        if (bot.Social.Psychology.Room > 0) { ReadRecent(bot, bot.Social.Psychology.Room, Time.time); }
+        ReadRecent(bot, 0, SessionClock.Time);
+        if (bot.Social.Psychology.Room > 0) { ReadRecent(bot, bot.Social.Psychology.Room, SessionClock.Time); }
     }
     public bool Observe(TradeBot bot, BotChatMessage message, int roomId, float now, double replyRoll)
     {
@@ -256,43 +268,61 @@ public sealed partial class InvestorSociety : MonoBehaviour
             var channel = GetRoom(room);
             if (channel == null)
             { return; }
-            if (bot != null && !channel.RegisterText(text, Time.time))
-            { bot.Social.Psychology.NextSpeech = Time.time + 8f; return; }
+            if (bot != null && !channel.RegisterText(text, SessionClock.Time))
+            { bot.Social.Psychology.NextSpeech = SessionClock.Time + 8f; return; }
             channel.Add(new BotChatMessage(channel.Version + 1, bot, day.Day, day.GameMinute, text, "society", kind, context));
-            if (bot != null) { channel.NextConversation = Time.time + Mathf.Max(1f, settings.roomMessageInterval); }
+            if (bot != null) { channel.NextConversation = SessionClock.Time + Mathf.Max(1f, settings.roomMessageInterval); }
         }
         if (bot != null)
-        { bot.Social.LastSpeech = Time.time; bot.Social.Psychology.NextSpeech = Time.time + settings.speechCooldown + (float)random.NextDouble() * 30f; }
+        { bot.Social.LastSpeech = SessionClock.Time; bot.Social.Psychology.NextSpeech = SessionClock.Time + settings.speechCooldown + (float)random.NextDouble() * 30f; }
     }
     public void RecordOutcome(TradeBot bot, InvestorExperience experience)
     {
+        if (DailyIncomeController.Instance != null) { experience = DailyIncomeController.Instance.NetExperience(bot,experience); }
         if (!bot.Social.Psychology.Record(experience, settings))
         { return; }
         Outcomes++; Trace(bot, bot.Social.Psychology.LastCause);
         if (SocialReady) { OfferExistingSpeech(bot, bot.Social.Psychology.Room, Context(bot, experience, bot.Social.Psychology.Room), ChatEvent.Agreement); }
     }
-    public bool Join(TradeBot bot, int roomId)
+    public bool Join(TradeBot bot, int roomId, bool playerInvited = false)
     {
+        if (bot?.Social == null) { return false; }
         var room = GetRoom(roomId); var mind = bot.Social.Psychology;
         if (room != null && (room.Social.banned.Contains(bot.Social.Id) || mind.RejoinAt.TryGetValue(roomId, out double allowedAt) && SocialTime.GameMinute < allowedAt))
         { return false; }
         if (room == null || !IsRoomOpen(roomId) || mind.Room != 0 || room.Members.Count >= settings.roomCapacity || !bot.isActiveAndEnabled || bot.IsExchangeParticipant)
         { return false; }
-        mind.Room = roomId; mind.JoinedRoomAt = Time.time; room.Members.Add(bot.Social.Id); Joins++;
+        if (room.PlayerOwned && !playerInvited && !CanDiscoverPlayerRoom(bot, roomId))
+        { return false; }
+        if (room.PlayerOwned && DailyIncomeController.Instance != null && !DailyIncomeController.Instance.Enter(bot,roomId,out string feeReason))
+        { LastAction = bot.Social.Nickname + ": " + feeReason; Trace(bot,"이용료 거절: " + feeReason); return false; }
+        if (room.PlayerOwned && playerInvited)
+        { room.Social.firstMemberInvited = true; mind.InvitedPlayerRooms |= 1 << (roomId - 1); }
+        mind.Room = roomId; mind.JoinedRoomAt = SessionClock.Time; room.Members.Add(bot.Social.Id); Joins++;
         mind.LastWitnessRoom = 0;
         mind.LastRead[roomId] = room.Version; // Pre-join private messages were not witnessed.
-        if (Time.time >= room.NextConversation && random.NextDouble() < settings.roomGreetingProbability)
+        PostRoomNotice(roomId, ChatRoomNotice.Join, bot.Social.Nickname + " 님이 입장했습니다.");
+        if (SessionClock.Time >= room.NextConversation && random.NextDouble() < settings.roomGreetingProbability)
         { Speak(bot, roomId, InvestorConversation.Greeting(bot), default, ChatEvent.SmallTalk); }
         Trace(bot, roomId + "번 방 참여"); return true;
     }
-    public void Leave(TradeBot bot, string reason)
+    public void Leave(TradeBot bot, string reason, ChatRoomNotice notice = ChatRoomNotice.Leave)
     {
         int room = bot.Social.Psychology.Room;
         if (room == 0)
         { return; }
         GetRoom(room).Members.Remove(bot.Social.Id); bot.Social.Psychology.Room = 0;
         Orders?.Cancel(Orders.Get(bot)); Leaves++;
+        bot.Social.Psychology.MediationExitAt = -1;
+        if (notice != ChatRoomNotice.None) { PostRoomNotice(room, notice, bot.Social.Nickname + " 님이 퇴장했습니다."); }
         Trace(bot, room + "번 방 이탈: " + reason);
+    }
+    public void PostRoomNotice(int roomId, ChatRoomNotice notice, string text)
+    {
+        day ??= MarketDayController.Instance;
+        if (day == null || notice == ChatRoomNotice.None)
+        { return; }
+        DeliverSocialSystemNotice(roomId, text, NextEventId(), notice);
     }
     public bool Invite(int botId, int roomId)
     {
@@ -300,19 +330,25 @@ public sealed partial class InvestorSociety : MonoBehaviour
         { LastAction = PlayerProgression.Instance.LockReason; return false; }
         day ??= MarketDayController.Instance;
         var bot = day == null ? null : day.FindBot(botId);
-        if (bot == null || bot.Social == null || !MarketDayController.CanTrade || GetRoom(roomId) == null || !GetRoom(roomId).PlayerOwned)
+        if (bot == null || bot.Social == null || !MarketDayController.CanTrade || GetRoom(roomId) == null || !GetRoom(roomId).PlayerOwned || !IsRoomOpen(roomId))
         { LastAction = "참여자와 리딩방을 선택하세요."; return false; }
         var mind = bot.Social.Psychology;
-        if (Time.time < nextContact || Time.time - mind.LastContact < settings.repeatContactCooldown)
+        bool firstMember = !GetRoom(roomId).Social.firstMemberInvited;
+        if (!firstMember && (SessionClock.Time < nextContact || SessionClock.Time - mind.LastContact < settings.repeatContactCooldown))
         { LastAction = "아직 다시 연락할 수 없습니다."; return false; }
         if (mind.Room != 0)
-        { LastAction = "이미 " + mind.Room + "번 방에 참여 중입니다."; return false; }
+        { LastAction = "이미 " + GetRoom(mind.Room).DisplayName + "에 참여 중입니다."; return false; }
         if (GetRoom(roomId).Members.Count >= settings.roomCapacity)
         { LastAction = "방의 정원이 가득 찼습니다."; return false; }
-        nextContact = Time.time + settings.contactCooldown; mind.LastContact = Time.time;
+        if (!bot.isActiveAndEnabled || bot.IsExchangeParticipant || GetRoom(roomId).Social.banned.Contains(botId) ||
+            mind.RejoinAt.TryGetValue(roomId, out double returnAt) && SocialTime.GameMinute < returnAt)
+        { LastAction = "지금은 이 참여자를 초대할 수 없습니다."; return false; }
+        nextContact = SessionClock.Time + settings.contactCooldown; mind.LastContact = SessionClock.Time;
         mind.RecallBetrayal(); Trace(bot, "회유: " + mind.LastCause);
-        bool accepted = random.NextDouble() < mind.JoinChance && Join(bot, roomId);
-        LastAction = accepted ? bot.Social.Nickname + ": " + roomId + "번 방에 참여했습니다. 명령 수락은 별도 판단합니다." : bot.Social.Nickname + ": 참여 제안을 거절했습니다.";
+        bool willing = firstMember || random.NextDouble() < mind.JoinChance;
+        LastAction = bot.Social.Nickname + ": 참여 제안을 거절했습니다.";
+        bool accepted = willing && Join(bot, roomId, playerInvited: true);
+        if (accepted) { LastAction = bot.Social.Nickname + ": 내 리딩방에 참여했습니다. 명령 수락은 별도 판단합니다."; }
         return accepted;
     }
     public bool Issue(int roomId, Stock stock, decimal buy, decimal sell)
@@ -320,11 +356,11 @@ public sealed partial class InvestorSociety : MonoBehaviour
         if (PlayerProgression.Instance != null && !PlayerProgression.Instance.CanOperateRooms)
         { LastAction = PlayerProgression.Instance.LockReason; return false; }
         var room = GetRoom(roomId);
-        if (room == null || !room.PlayerOwned || !MarketDayController.CanTrade || stock == null || !stock.AcceptsOrders || buy < 1m || sell <= buy || buy != PriceTickPolicy.RoundToTick(buy) || sell != PriceTickPolicy.RoundToTick(sell))
+        if (room == null || !room.PlayerOwned || !IsRoomOpen(roomId) || !MarketDayController.CanTrade || stock == null || !stock.AcceptsOrders || buy < 1m || sell <= buy || buy != PriceTickPolicy.RoundToTick(buy) || sell != PriceTickPolicy.RoundToTick(sell))
         { LastAction = "거래 가능한 종목과 올바른 원화 호가를 입력하세요. 매도가는 매수가보다 커야 합니다."; return false; }
         CancelRoom(roomId);
-        room.Command = new LeadingRoomOrders.Command { Id = ++nextCommand, Room = roomId, Stock = stock, Buy = buy, Sell = sell, IssuedAt = Time.time, IssuedDay = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.Day };
-        LastAction = $"{roomId}번 방: {stock.stockName} 매수 ≤ {buy:N0} / 매도 ≥ {sell:N0}. 참가자가 개별 판단합니다.";
+        room.Command = new LeadingRoomOrders.Command { Id = ++nextCommand, Room = roomId, Stock = stock, Buy = buy, Sell = sell, IssuedAt = SessionClock.Time, IssuedDay = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.Day };
+        LastAction = $"{room.DisplayName}: {stock.stockName} 매수 ≤ {buy:N0} / 매도 ≥ {sell:N0}. 참가자가 개별 판단합니다.";
         Speak(null, roomId, LastAction, default); return true;
     }
     public void CancelRoom(int roomId)
@@ -334,12 +370,12 @@ public sealed partial class InvestorSociety : MonoBehaviour
         { return; }
         if (room.Command != null) { room.Command.Canceled = true; }
         Orders?.CancelRoom(roomId);
-        LastAction = roomId + "번 방 지시 취소. 체결된 주식은 각 참가자에게 남습니다.";
+        LastAction = room.DisplayName + " 지시 취소. 체결된 주식은 각 참가자에게 남습니다.";
     }
     public void Trace(TradeBot bot, string cause)
     {
         if (DebugTrace.Count >= 64) { DebugTrace.Dequeue(); }
-        string entry = $"{Time.time:0.0}s #{bot.Social.Id} {cause}";
+        string entry = $"{SessionClock.Time:0.0}s #{bot.Social.Id} {cause}";
         DebugTrace.Enqueue(entry);
         if (settings.trace) { Debug.Log("[InvestorSociety] " + entry); }
     }

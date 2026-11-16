@@ -91,8 +91,8 @@ public class PanicBot : TradeBot
             peak = current;
         }
 
-        bool isOvervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsOvervalued(stock);
-        bool isUndervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsUndervalued(stock);
+        bool isOvervalued = FeelsExpensive(stock);
+        bool isUndervalued = FeelsCheap(stock);
 
         decimal holding = GetHolding(stock);
         

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
@@ -37,7 +37,7 @@ public static class InvestorSocietyScenePatch
         var monitor = stockScreen.transform.Find("Panel :: Operation Monitor");
         Layout((RectTransform)monitor, .035f, .81f, .93f, .17f);
         monitor.GetComponent<Image>().color = Dark;
-        var label = monitor.GetComponentsInChildren<TextMeshProUGUI>().First(); label.text = "체결 흐름"; label.fontSize = 44f;
+        var label = monitor.GetComponentsInChildren<TextMeshProUGUI>().First(); label.text = "체결 흐름"; label.fontSize = 36f;
         var stockUi = Object.FindObjectsByType<DeskOperationUI>(FindObjectsInactive.Include, FindObjectsSortMode.None).Single(c => !c.journal);
         stockUi.monitorStatus.fontSize = 32f; stockUi.monitorStatus.fontSharedMaterial = secondary;
         var scroll = stockScreen.GetComponentInChildren<ScrollRect>(true);

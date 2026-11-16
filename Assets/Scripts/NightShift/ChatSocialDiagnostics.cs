@@ -14,6 +14,8 @@ public static class ChatSocialDiagnostics
         text.AppendLine(message.text); text.AppendLine($"Act: {message.act} | template: {message.templateKey}");
         text.AppendLine($"Trigger: {message.debug?.trigger} | cause: {message.debug?.causeId}");
         text.AppendLine($"Context phrase: {message.debug?.contextKey ?? "base"}");
+        text.AppendLine($"Speech: {message.debug?.speechDisposition} | phrase: {message.debug?.speechKey ?? "base"} | numbers: {message.debug?.numberStyle}");
+        text.AppendLine($"Voice: {message.debug?.speechVoice}");
         if (message.debug?.weights != null)
         { foreach (var weight in message.debug.weights) { text.AppendLine($"  {weight.key}: {weight.value:F4}"); } }
         text.AppendLine("Facts at publication:"); text.AppendLine(JsonUtility.ToJson(message.debug?.slots ?? message.facts, true));
@@ -26,6 +28,8 @@ public static class ChatSocialDiagnostics
         text.AppendLine($"{bot.Social.Nickname} #{mind.SocialId} | room {mind.Room}");
         text.AppendLine($"Temper {traits.Temper} | Grudge {traits.Grudge} | Suggestibility {traits.Suggestibility}");
         text.AppendLine($"Sociability {traits.Sociability} | Bravado {traits.Bravado} | Politeness {traits.Politeness}");
+        text.AppendLine($"말투 성향: {traits.SpeechLabel}");
+        text.AppendLine($"표현 습관: {InvestorSociety.VoiceLabel(mind)}");
         text.AppendLine($"Greed {mind.Greed:F0} | Fear {mind.Fear:F0} | Trust {mind.Trust:F0} | Betrayal {mind.Betrayal:F0}");
         text.AppendLine($"Quadrant {mind.Quadrant} | FOMO {(mind.HasFomo ? mind.FomoSymbol + " until " + mind.FomoUntil.ToString("F1") : "off")}");
         text.AppendLine($"Formula trust/betrayal: {mind.FormulaTrust:F0}/{mind.FormulaBetrayal:F0}");

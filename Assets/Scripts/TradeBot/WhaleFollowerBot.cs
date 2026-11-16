@@ -150,10 +150,10 @@ public class WhaleFollowerBot : TradeBot
         operationStock = stock;
         _whaleTargetPrice = target > 0m ? target : stock.fakeValue;
         entryAvgPrice = 0m;
-        joinTime = Time.time;
+        joinTime = SessionClock.Time;
         mode = Mode.FomoBuy;
-        _nextActionTime = Time.time + Random.Range(0.1f, 1f);
-        _buyEndTime = Time.time + Random.Range(buyDurationMin, buyDurationMax);
+        _nextActionTime = SessionClock.Time + Random.Range(0.1f, 1f);
+        _buyEndTime = SessionClock.Time + Random.Range(buyDurationMin, buyDurationMax);
         _peakPrice = (float)stock.currentPrice;
     }
 
@@ -217,7 +217,7 @@ public class WhaleFollowerBot : TradeBot
         if (stock == null || operationStock == null || stock != operationStock)
         { return; }
 
-        float now = Time.time;
+        float now = SessionClock.Time;
         if (now < _nextActionTime)
         { return; }
 
@@ -432,11 +432,11 @@ public class WhaleFollowerBot : TradeBot
         if (sellVol >= holding * 0.8m)
         {
             mode = Mode.Done;
-            _nextActionTime = Time.time + 2f;
+            _nextActionTime = SessionClock.Time + 2f;
         }
         else
         {
-            _nextActionTime = Time.time + Random.Range(2f, 5f);
+            _nextActionTime = SessionClock.Time + Random.Range(2f, 5f);
         }
     }
 

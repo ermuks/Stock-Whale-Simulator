@@ -33,18 +33,46 @@ public partial class StockManager
     private static readonly ProfilerMarker InitialMarker = new("DonDon.InitialEconomy");
     public static event Action OnInitialEconomyReady;
     public Stock FindStock(string id) => id != null && stockById.TryGetValue(id, out var stock) ? stock : null;
+    public Stock RegisterPrivateCompany(string id,string name,decimal price,decimal shares)
+    {
+        var existing=FindStock(id); if (existing!=null) { return existing; }
+        if (string.IsNullOrWhiteSpace(id) || stockById.Count>=64 || shares<1 || price<=0) { throw new InvalidOperationException("Invalid private company."); }
+        var stock=new Stock(id,name,price,shares) { IsListed=false };
+        stockById.Add(id,stock); UnlistedStocks.Add(stock); return stock;
+    }
     public Trader FindOwner(string id) => id != null && ownersById.TryGetValue(id, out var owner) ? owner : null;
+    public void ReconnectListedCompanies()
+    {
+        foreach (var stock in stocks)
+        {
+            CandleHistoryManager.Instance?.RegisterStock(stock);
+            StockInterestManager.Instance?.RegisterStock(stock);
+            StockStatistics.Instance?.RegisterStock(stock);
+            OnStockListed?.Invoke(stock);
+        }
+    }
     public void BuildEconomyStocks()
     {
         initialRandom = new System.Random(economy.seed);
+        var businessRules = CorporateEconomy.LoadRules();
+        var growthRules = CorporateEconomy.LoadGrowthRules();
         foreach (var definition in economy.companies)
         {
             if (definition == null || string.IsNullOrWhiteSpace(definition.stockId) || stockById.ContainsKey(definition.stockId))
             { continue; }
 
+            // New-world entry target only. Restored Stock instances retain their saved issued shares.
+            if (definition.stockId == businessRules.entryCompany && businessRules.entryIssuedShares > 0)
+            { definition.issuedShares = businessRules.entryIssuedShares; }
             var stock = new Stock(definition.stockId, definition.name, PriceTickPolicy.RoundToTick(Math.Max(1m, definition.startPrice)), definition.issuedShares);
             stock.OwnerId = definition.ownerId;
             stock.IsListed = definition.initiallyListed;
+            if (definition==economy.companies[0] && economy.retailPlayerStart)
+            {
+                stock.issuedShares=growthRules.founderShares;
+                stock.currentPrice=stock.realValue=stock.fakeValue=growthRules.founderValue/(decimal)growthRules.founderShares;
+                stock.orderBook=new OrderBook(stock.currentPrice); stock.IsListed=false;
+            }
             stockById.Add(stock.symbol, stock);
             if (stock.IsListed)
             {
@@ -135,6 +163,15 @@ public partial class StockManager
             }
         }
 
+        if (economy.retailPlayerStart)
+        {
+            var rules=CorporateEconomy.LoadGrowthRules(); decimal cap=0;
+            foreach (var item in stocks) { cap+=item.currentPrice*item.issuedShares; }
+            preview=new PlayerSetupPreview(name,rules.founderShares,0,rules.founderValue/(decimal)rules.founderShares,0,economy.retailStartingCash,
+                economy.marketCapExchangeCash ? cap*(decimal)economy.exchangeCashRatio : economy.directExchangeCash);
+            return true;
+        }
+
         if (!long.TryParse(sharesInput, System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out long shares) || shares < economy.minimumShares || shares >= economy.maximumSharesExclusive)
         {
             reason = "발행량은 1,000,000 이상 1,000,000,000 미만 정수입니다.";
@@ -177,6 +214,7 @@ public partial class StockManager
 
     public bool ConfirmPlayer(string name, string shares, string percentage, out string reason)
     {
+        if (economy.retailPlayerStart && DailyIncomeController.Instance!=null) { name=DailyIncomeController.Instance.CompanyName; }
         if (!PreviewPlayer(name, shares, percentage, out var preview, out reason))
         { return false; }
 
@@ -208,7 +246,7 @@ public partial class StockManager
             playerStock.issuedShares = preview.Shares;
             playerStock.currentPrice = playerStock.realValue = playerStock.fakeValue = preview.Price;
             playerStock.orderBook = new OrderBook(preview.Price);
-            StockStatistics.Instance?.ResetInitialStock(playerStock);
+            if (playerStock.IsListed) { StockStatistics.Instance?.ResetInitialStock(playerStock); }
             for (int i = 0; i < economy.companies.Length; i++)
             {
                 var definition = economy.companies[i];
@@ -253,10 +291,7 @@ public partial class StockManager
                 decimal transfer = playerAccount.cash - economy.retailStartingCash;
                 playerAccount.ApplyTradeCash(-transfer);
                 exchange.ApplyTradeCash(transfer);
-                decimal shares = playerAccount.GetOwnedVolume(playerStock);
-                playerAccount.ForceRemoveHolding(playerStock, shares);
-                exchange.GrantShares(playerStock, shares, playerStock.currentPrice);
-                exchange.ResetInitialInventory(playerStock);
+                // Founder keeps all private shares. Only liquid personal starting cash is normalized.
             }
 
             EconomyInitialized = true;
@@ -354,13 +389,13 @@ public partial class StockManager
     public Stock ListOwnerCompany(string id)
     {
         var stock = FindStock(id);
-        if (!EconomyInitialized || stock == null || stock.IsListed || stock.IsDelisting || !UnlistedStocks.Remove(stock))
+        if (!EconomyInitialized || stock == null || stock.IsListed || stock.IsDelisting || stock.business?.growth==null || !stock.business.growth.ListingApproved || !UnlistedStocks.Remove(stock))
         { return null; }
 
         stock.IsListed = true;
         stock.IsNewListing = true;
         stocks.Add(stock);
-        DistributePublicShares(stock);
+        // Public shares were purchased by the underwriter with finite cash; subsequent trades use the book.
         CandleHistoryManager.Instance?.RegisterStock(stock);
         StockInterestManager.Instance?.RegisterStock(stock);
         StockStatistics.Instance?.RegisterStock(stock);

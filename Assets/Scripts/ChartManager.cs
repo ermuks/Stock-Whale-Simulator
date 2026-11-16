@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -9,7 +9,7 @@ using TMPro;
 /// (Display는 2종: StockList용 / Chart용 → 각각 DisplayAimCursor 1개씩 붙이면 됨)
 /// </summary>
 [DefaultExecutionOrder(-190)]
-public class ChartManager : MonoBehaviour
+public partial class ChartManager : MonoBehaviour
 {
     public CandleDrawManager candleRenderer;
     [Tooltip("선택 캔들 데이터. 비어 있으면 같은 GameObject에서 GetComponent 시도")]
@@ -105,10 +105,10 @@ public class ChartManager : MonoBehaviour
     private readonly Dictionary<Stock, (decimal volume, decimal turnover)> _sessionStats = new Dictionary<Stock, (decimal, decimal)>();
     private float _lastStatsRefreshTime;
     private const float StatsRefreshInterval = 0.5f;
-    const int MaxHistoryFetch = 100;
     void Start()
     {
         mainCam = Camera.main;
+        ConfigureHeaderLayout();
         _rayCam = chartRaycastCamera != null ? chartRaycastCamera : mainCam;
         if (chartLayerMask == 0)
         {
@@ -121,6 +121,7 @@ public class ChartManager : MonoBehaviour
         }
 
         EnsureGuides();
+        CreateNavigation();
         // Collider는 CandleDrawManager.GenerateMesh()에서 추가되므로 1프레임 뒤에 잡힘 → HandleChartDrag에서 null이면 재시도
         if (StockManager.Instance != null)
         {
@@ -147,8 +148,52 @@ public class ChartManager : MonoBehaviour
         StartCoroutine(RefreshNextFrame());
     }
 
+    /// <summary>기존 헤더의 텍스트만 한 번 정렬한다. 차트·호가·월드 Canvas 영역은 유지한다.</summary>
+    public void ConfigureHeaderLayout()
+    {
+        if (textName == null || textName.transform.parent is not RectTransform header)
+        { return; }
+        PlaceHeaderText(textName,header,.025f,.035f,.30f,.28f,36f);
+        PlaceHeaderText(textSymbol,header,.025f,.31f,.30f,.20f,22f,true);
+        PlaceHeaderText(textRiskBadge,header,.35f,.075f,.15f,.215f,22f,true);
+        PlaceHeaderText(textLastPrice,header,.025f,.50f,.30f,.48f,58f);
+        PlaceHeaderText(textChangePct,header,.35f,.48f,.22f,.28f,36f);
+        PlaceHeaderText(textChangeAmount,header,.35f,.76f,.22f,.23f,26f);
+        // Both statistics columns share caption/value baselines and right edges.
+        PlaceHeaderText(textRealValue,header,.63f,.27f,.14f,.23f,25f,true,true);
+        PlaceHeaderText(textFakeValue,header,.63f,.72f,.14f,.23f,25f,true,true);
+        PlaceHeaderText(textVolume,header,.80f,.27f,.175f,.23f,25f,true,true);
+        PlaceHeaderText(textTurnover,header,.80f,.72f,.175f,.23f,25f,true,true);
+        PlaceHeaderCaption(header,"Real Caption",.63f,.08f,.14f);
+        PlaceHeaderCaption(header,"Fake Caption",.63f,.53f,.14f);
+        PlaceHeaderCaption(header,"Volume Caption",.80f,.08f,.175f);
+        PlaceHeaderCaption(header,"Turnover Caption",.80f,.53f,.175f);
+    }
+    private static void PlaceHeaderCaption(RectTransform header,string name,float x,float y,float width)
+    {
+        var child = header.Find("Text :: " + name);
+        if (child != null)
+        { PlaceHeaderText(child.GetComponent<TextMeshProUGUI>(),header,x,y,width,.16f,19f,true,true); }
+    }
+    private static void PlaceHeaderText(TextMeshProUGUI text,RectTransform parent,float x,float y,float width,float height,float size,bool muted = false,bool right = false)
+    {
+        if (text == null)
+        { return; }
+        var rect = text.rectTransform;
+        if (rect.parent != parent) { rect.SetParent(parent,false); }
+        rect.anchorMin = new Vector2(x,1-y-height); rect.anchorMax = new Vector2(x+width,1-y);
+        rect.offsetMin = rect.offsetMax = Vector2.zero;
+        text.margin = Vector4.zero;
+        text.fontSize = size; text.enableAutoSizing = false;
+        text.textWrappingMode = TextWrappingModes.NoWrap; text.overflowMode = TextOverflowModes.Ellipsis;
+        text.alignment = right ? TextAlignmentOptions.MidlineRight : TextAlignmentOptions.MidlineLeft;
+        text.raycastTarget = false;
+        text.color = muted ? new Color32(138,150,163,255) : new Color32(230,235,239,255);
+    }
+
     void OnEnable()
     {
+        MarketColors.Changed += RefreshMarketColors;
         StockManager.OnStockSelected += SetStock;
         StockManager.OnStockDelisted += OnStockDelisted;
         StockManager.OnStockListed += OnStockListed;
@@ -156,6 +201,7 @@ public class ChartManager : MonoBehaviour
 
     void OnDisable()
     {
+        MarketColors.Changed -= RefreshMarketColors;
         ReleaseChartPointer();
         if (_guides != null) { _guides.HideCursor(); }
         StockManager.OnStockSelected -= SetStock;
@@ -163,6 +209,11 @@ public class ChartManager : MonoBehaviour
         StockManager.OnStockListed -= OnStockListed;
     }
 
+    private void RefreshMarketColors()
+    {
+        RefreshTradeBasedValues(); RefreshStatistics(); RefreshTradeHistory();
+        if (_guides != null && currentStock != null) { _guides.Refresh(currentStock); }
+    }
     void OnStockListed(Stock stock)
     {
         stock.OnTradeExecutedWithStock -= OnAnyStockTraded;
@@ -199,24 +250,26 @@ public class ChartManager : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.BlocksInput) { ReleaseChartPointer(); return; }
         HandleChartDrag();
+        UpdateNavigation();
         float interval = isDraggingChart ? refreshIntervalWhileDragging : refreshInterval;
         if (interval <= 0f && isDraggingChart)
         {
             RefreshChartFromHistory();
         }
-        else if (Time.time - _lastRefreshTime >= interval)
+        else if (SessionClock.Time - _lastRefreshTime >= interval)
         {
             RefreshChartFromHistory();
         }
 
-        if (Time.time - _lastStatsRefreshTime >= StatsRefreshInterval)
+        if (SessionClock.Time - _lastStatsRefreshTime >= StatsRefreshInterval)
         {
             RefreshSymbolAndName();
             RefreshTradeBasedValues();
             RefreshStatistics();
             RefreshTradeHistory();
-            _lastStatsRefreshTime = Time.time;
+            _lastStatsRefreshTime = SessionClock.Time;
         }
     }
 
@@ -254,6 +307,8 @@ public class ChartManager : MonoBehaviour
                 {
                     startIndex = Mathf.Clamp(startIndex - steps, 0, maxStartIndex);
                     followLatest = startIndex == maxStartIndex;
+                    CaptureHistoryAnchor();
+                    candleSelectData?.Clear();
                     _lastRefreshTime = -999f;
                 }
             }
@@ -286,6 +341,7 @@ public class ChartManager : MonoBehaviour
 
     void LateUpdate()
     {
+        if (PauseMenuController.BlocksInput) { _guides?.HideCursor(); return; }
         if (_guides == null)
         { return; }
         if (ChartInputBlocked() || isDraggingChart || !TryGetChartPoint(out Vector3 point) || point.x >= candleRenderer.PlotWidth || point.y < 0f)
@@ -293,6 +349,12 @@ public class ChartManager : MonoBehaviour
         if (!candleRenderer.TryCandleAt(point.x, out int index) || index >= _currentVisibleCandles.Count)
         { _guides.ShowCursor(point, default, false); return; }
         bool forming = startIndex + index == _fullCandles.Count - 1;
+        if (periodMinutes > 0)
+        {
+            var clock = MarketDayController.Instance;
+            var now = new CandleData { marketDay = clock == null ? 0 : clock.Day, marketMinute = clock == null ? 0 : clock.GameMinute };
+            forming = forming && MarketDayController.CanTrade && ChartHistorySeries.Key(now, periodMinutes) == ChartHistorySeries.Key(_currentVisibleCandles[index], periodMinutes);
+        }
         _guides.ShowCursor(point, _currentVisibleCandles[index], forming);
     }
 
@@ -316,7 +378,7 @@ public class ChartManager : MonoBehaviour
         point = chart.InverseTransformPoint(ray.GetPoint(distance));
         return point.x >= 0f && point.x <= candleRenderer.ChartWidth && point.y >= -candleRenderer.VolumePlotHeight && point.y <= candleRenderer.chartHeight;
     }
-    static bool ChartInputBlocked() => DeskViewController.BlockChartPointer || TabletViewController.IsTabletHeld || PhoneCallController.IsRaised || MouseCameraController.TextEntryActive || (StockManager.Instance != null && !StockManager.Instance.SetupConfirmed);
+    static bool ChartInputBlocked() => PauseMenuController.BlocksInput || DeskViewController.Instance == null || DeskViewController.BlockChartPointer || TabletViewController.IsTabletHeld || PhoneCallController.IsRaised || MouseCameraController.TextEntryActive || (StockManager.Instance != null && !StockManager.Instance.SetupConfirmed);
     void ReleaseChartPointer()
     {
         _potentialChartDrag = false; isDraggingChart = false;
@@ -362,16 +424,16 @@ public class ChartManager : MonoBehaviour
 
         if (textSymbol != null)
         {
-            textSymbol.text = currentStock.symbol;
+            GameLocalizedText.Set(textSymbol,currentStock.symbol);
         }
 
         if (textName != null)
         {
-            textName.text = currentStock.stockName;
+            GameLocalizedText.Set(textName,currentStock.stockName);
         }
         if (textRiskBadge != null)
         {
-            textRiskBadge.text = currentStock.RiskLabel;
+            GameLocalizedText.Set(textRiskBadge,currentStock.RiskLabel);
             textRiskBadge.color = currentStock.IsTradingHalted ? new Color32(145, 152, 158, 255) : currentStock.RiskGrade == StockRiskGrade.Safe ? new Color32(127, 165, 140, 255) : currentStock.RiskGrade == StockRiskGrade.Warning ? new Color32(205, 182, 116, 255) : currentStock.RiskGrade == StockRiskGrade.Danger ? new Color32(217, 151, 102, 255) : new Color32(221, 119, 127, 255);
         }
     }
@@ -394,23 +456,23 @@ public class ChartManager : MonoBehaviour
 
         if (textLastPrice != null)
         {
-            textLastPrice.text = PriceTickPolicy.FormatPrice(currentStock.currentPrice);
+            GameLocalizedText.Set(textLastPrice,PriceTickPolicy.FormatPrice(currentStock.currentPrice));
         }
 
         decimal refPrice = GetReferencePriceForChangePct();
         decimal change = refPrice > 0m ? currentStock.currentPrice - refPrice : 0m;
         decimal pct = refPrice > 0m ? change / refPrice * 100m : 0m;
-        Color changeColor = change > 0m ? new Color32(239, 89, 100, 255) : change < 0m ? new Color32(76, 150, 232, 255) : new Color32(138, 150, 163, 255);
+        Color changeColor = change > 0m ? MarketColors.Up : change < 0m ? MarketColors.Down : new Color32(138, 150, 163, 255);
         if (textChangePct != null)
         {
-            textChangePct.text = refPrice > 0m ? (pct > 0m ? $"+{pct:N2}%" : $"{pct:N2}%") : "—";
+            GameLocalizedText.Set(textChangePct,refPrice > 0m ? (pct > 0m ? $"+{pct:N2}%" : $"{pct:N2}%") : "—");
             textChangePct.color = changeColor;
         }
         if (textChangeAmount != null)
         {
             string value = FormatDailyChange(currentStock.currentPrice, refPrice);
-            if (textChangeAmount.text != value)
-            { textChangeAmount.text = value; }
+            if (!GameLocalizedText.Matches(textChangeAmount,value))
+            { GameLocalizedText.Set(textChangeAmount,value); }
             if (textChangeAmount.color != changeColor)
             { textChangeAmount.color = changeColor; }
         }
@@ -419,24 +481,24 @@ public class ChartManager : MonoBehaviour
         {
             if (textVolume != null)
             {
-                textVolume.text = stats.volume.ToString("N0");
+                GameLocalizedText.Set(textVolume,stats.volume.ToString("N0"));
             }
 
             if (textTurnover != null)
             {
-                textTurnover.text = stats.turnover.ToString("N0");
+                GameLocalizedText.Set(textTurnover,stats.turnover.ToString("N0"));
             }
         }
         else
         {
             if (textVolume != null)
             {
-                textVolume.text = "0";
+                GameLocalizedText.Set(textVolume,"0");
             }
 
             if (textTurnover != null)
             {
-                textTurnover.text = "0";
+                GameLocalizedText.Set(textTurnover,"0");
             }
         }
     }
@@ -449,12 +511,13 @@ public class ChartManager : MonoBehaviour
 
         if (textRealValue != null)
         {
-            textRealValue.text = PriceTickPolicy.FormatPrice(currentStock.realValue);
+            // 기업 실제 가치와 시장이 믿는 가격은 플레이어가 해금한 뒤에만 보인다.
+            GameLocalizedText.Set(textRealValue,PlayerProgression.Has(PlayerProgression.RealValueUnlock) ? PriceTickPolicy.FormatPrice(currentStock.realValue) : "—");
         }
 
         if (textFakeValue != null)
         {
-            textFakeValue.text = PriceTickPolicy.FormatPrice(currentStock.fakeValue);
+            GameLocalizedText.Set(textFakeValue,PlayerProgression.Has(PlayerProgression.CrowdValueUnlock) ? PriceTickPolicy.FormatPrice(currentStock.fakeValue) : "—");
         }
     }
 
@@ -477,48 +540,48 @@ public class ChartManager : MonoBehaviour
 
         if (text52WeekHigh != null)
         {
-            text52WeekHigh.text = PriceTickPolicy.FormatPrice(stats.week52High);
+            GameLocalizedText.Set(text52WeekHigh,PriceTickPolicy.FormatPrice(stats.week52High));
         }
 
         if (text52WeekLow != null)
         {
-            text52WeekLow.text = PriceTickPolicy.FormatPrice(stats.week52Low);
+            GameLocalizedText.Set(text52WeekLow,PriceTickPolicy.FormatPrice(stats.week52Low));
         }
 
         if (textPrevClose != null)
         {
-            textPrevClose.text = PriceTickPolicy.FormatPrice(stats.prevDayClose);
+            GameLocalizedText.Set(textPrevClose,PriceTickPolicy.FormatPrice(stats.prevDayClose));
         }
 
         if (textDayHigh != null)
         {
-            textDayHigh.text = PriceTickPolicy.FormatPrice(stats.dayHigh);
+            GameLocalizedText.Set(textDayHigh,PriceTickPolicy.FormatPrice(stats.dayHigh));
         }
 
         if (textDayHighPct != null && stats.prevDayClose > 0m)
         {
             decimal pct = (stats.dayHigh - stats.prevDayClose) / stats.prevDayClose * 100m;
-            textDayHighPct.text = pct >= 0m ? $"+{pct:N2}%" : $"{pct:N2}%";
-            textDayHighPct.color = pct >= 0m ? new Color32(239, 89, 100, 255) : new Color32(76, 150, 232, 255);
+            GameLocalizedText.Set(textDayHighPct,pct >= 0m ? $"+{pct:N2}%" : $"{pct:N2}%");
+            textDayHighPct.color = pct >= 0m ? MarketColors.Up : MarketColors.Down;
         }
 
         if (textDayLow != null)
         {
-            textDayLow.text = PriceTickPolicy.FormatPrice(stats.dayLow);
+            GameLocalizedText.Set(textDayLow,PriceTickPolicy.FormatPrice(stats.dayLow));
         }
 
         if (textDayLowPct != null && stats.prevDayClose > 0m)
         {
             decimal pct = (stats.dayLow - stats.prevDayClose) / stats.prevDayClose * 100m;
-            textDayLowPct.text = pct >= 0m ? $"+{pct:N2}%" : $"{pct:N2}%";
-            textDayLowPct.color = pct >= 0m ? new Color32(239, 89, 100, 255) : new Color32(76, 150, 232, 255);
+            GameLocalizedText.Set(textDayLowPct,pct >= 0m ? $"+{pct:N2}%" : $"{pct:N2}%");
+            textDayLowPct.color = pct >= 0m ? MarketColors.Up : MarketColors.Down;
         }
 
         if (textTradeStrength != null)
         {
             float strength = StockStatistics.Instance.GetTradeStrength(currentStock);
-            textTradeStrength.text = strength >= 999f ? "999+" : $"{strength:N1}%";
-            textTradeStrength.color = strength >= 100f ? new Color32(239, 89, 100, 255) : new Color32(76, 150, 232, 255);
+            GameLocalizedText.Set(textTradeStrength,strength >= 999f ? "999+" : $"{strength:N1}%");
+            textTradeStrength.color = strength >= 100f ? MarketColors.Up : MarketColors.Down;
         }
     }
 
@@ -604,17 +667,18 @@ public class ChartManager : MonoBehaviour
         if (CandleHistoryManager.Instance == null)
         { return; }
 
-        var closed = CandleHistoryManager.Instance.Completed(currentStock);
+        var closed = CandleHistoryManager.Instance.ChartHistory(currentStock);
         var forming = CandleHistoryManager.Instance.GetFormingCandle(currentStock);
-        _fullCandles.Clear();
-        for (int i = Mathf.Max(0, closed.Count - MaxHistoryFetch); i < closed.Count; i++)
-        { _fullCandles.Add(closed[i]); }
         float price = (float)currentStock.currentPrice;
         if (forming.low == forming.high && forming.high == 0f && price > 0f)
         { forming.open = forming.close = forming.high = forming.low = price; }
-        _fullCandles.Add(forming);
+        if (periodMinutes == 0)
+        { ChartHistorySeries.Build(closed, forming, 0, _fullCandles); }
+        else
+        { ChartHistorySeries.Build(CandleHistoryManager.Instance.MinuteHistory(currentStock), default, periodMinutes, _fullCandles, false); }
         int take = Mathf.Min(maxVisibleCandles, _fullCandles.Count);
         maxStartIndex = Mathf.Max(0, _fullCandles.Count - take);
+        RestoreHistoryAnchor();
         startIndex = followLatest ? maxStartIndex : Mathf.Clamp(startIndex, 0, maxStartIndex);
         _currentVisibleCandles.Clear();
         for (int i = 0; i < take; i++)
@@ -622,7 +686,7 @@ public class ChartManager : MonoBehaviour
         candleRenderer.candles = _currentVisibleCandles;
         candleRenderer.GenerateMesh();
         if (_guides != null) { _guides.Refresh(currentStock); }
-        _lastRefreshTime = Time.time;
+        _lastRefreshTime = SessionClock.Time;
         // 기존 클릭 선택의 OHLC 정보 유지. 커서 정보는 LateUpdate에서 따로 처리한다.
         if (candleSelectData != null && candleSelectData.HasSelection && candleSelectData.SelectedGlobalIndex.HasValue)
         {

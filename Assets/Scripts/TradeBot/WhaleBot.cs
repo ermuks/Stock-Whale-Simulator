@@ -78,7 +78,22 @@ public partial class WhaleBot : TradeBot
     /// <summary>이번 펌프 목표가. 이 가격에 도달하면 fakeValue를 realValue에 맞춤.</summary>
     private decimal _pumpTargetPrice = 0m;
     // 소유주 계좌는 기존 기준가 투자 전략을 사용하고, 비소유주 컨트롤러만 직접 거래를 쉬게 한다.
-    protected override Stock PickStock() => IsCompanyOwner ? base.PickStock() : null;
+    protected override Stock PickStock()
+    {
+        if (!IsCompanyOwner)
+        { return null; }
+
+        // 자기 회사가 진짜 가치에서 크게 벗어나 있으면 그 종목부터 본다. 세력은 가치를 알고 움직이는 주체다.
+        var own = OwnedCompany;
+        if (own != null && own.AcceptsOrders && own.realValue > 0m && own.currentPrice > 0m)
+        {
+            decimal gap = System.Math.Abs(own.currentPrice / own.realValue - 1m);
+            if (gap > 0.15m && Random.value < 0.6f)
+            { return own; }
+        }
+
+        return base.PickStock();
+    }
     protected override void ThinkForStock(Stock stock)
     {
         InvestOwnerAccount(stock);
@@ -96,7 +111,7 @@ public partial class WhaleBot : TradeBot
             reservedCash = 0m;
         }
 
-        ScheduleNextAction(Time.time);
+        ScheduleNextAction(SessionClock.Time);
     }
 
     void Update()
@@ -121,7 +136,7 @@ public partial class WhaleBot : TradeBot
             RefreshFollowersIfNeeded();
         }
 
-        float now = Time.time;
+        float now = SessionClock.Time;
         // 0.1초마다 FakePrice 모니터링: 목표 도달 시 fakeValue = realValue 로 맞춤
         if (now - _lastPumpMonitorTime >= pumpMonitorInterval)
         {
@@ -179,10 +194,10 @@ public partial class WhaleBot : TradeBot
         if (followers.Count > 0)
         { return; }
 
-        if (Time.time < _nextFollowerSearch)
+        if (SessionClock.Time < _nextFollowerSearch)
         { return; }
 
-        _nextFollowerSearch = Time.time + 5f;
+        _nextFollowerSearch = SessionClock.Time + 5f;
         foreach (var follower in WhaleFollowerBot.RegisteredFollowers)
         {
             if (follower != null && follower.TryAssignCommander(this))

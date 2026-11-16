@@ -146,6 +146,10 @@ public class FomoBot : TradeBot
         if (Random.value > surgeReactionChance)
         { return; }
 
+        // 전원이 같은 순간 반응하지 않는다. 그때 시장을 보고 있던 봇만, 추격 성향만큼 따라간다.
+        if (Social != null && (!Social.Psychology.ActiveAt(SessionClock.Time) || Random.value > 0.3f + Social.Chase * 0.7f))
+        { return; }
+
         SellProfitableHoldingsAndMoveTo(stock);
     }
 
@@ -182,7 +186,7 @@ public class FomoBot : TradeBot
         }
 
         _surgeTargetStock = targetStock;
-        _surgeTargetTime = Time.time + Random.Range(5f, 15f);
+        _surgeTargetTime = SessionClock.Time + Random.Range(5f, 15f);
     }
 
     protected override Stock PickStock()
@@ -190,7 +194,7 @@ public class FomoBot : TradeBot
         if (_isSingleStockTrader && _specializedStock != null)
         { return _specializedStock; }
 
-        if (_surgeTargetStock != null && Time.time < _surgeTargetTime)
+        if (_surgeTargetStock != null && SessionClock.Time < _surgeTargetTime)
         { return _surgeTargetStock; }
 
         _surgeTargetStock = null;
@@ -211,7 +215,7 @@ public class FomoBot : TradeBot
         if (lastPrice <= 0m)
         { return; }
 
-        bool isUndervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsUndervalued(stock);
+        bool isUndervalued = FeelsCheap(stock);
         if (isUndervalued && refPrice > current)
         {
             float buyBoost = (float)((refPrice - current) / current);
@@ -231,6 +235,7 @@ public class FomoBot : TradeBot
                         DelayedBuyLimit(bidPrice, vol, 0, stock);
                     }
 
+                    TryTakeProfitSell(stock, current, refPrice);
                     return;
                 }
             }
@@ -249,11 +254,12 @@ public class FomoBot : TradeBot
             }
 
             decimal vol = ClampMinVolume(GetBuyVolume(buyRatio, stock, refPrice));
-            if (vol <= 0m || cash < refPrice * vol)
-            { return; }
-
             float roll = Random.value;
-            if (roll < marketBuyChance)
+            if (vol <= 0m || cash < refPrice * vol)
+            {
+                // 살 돈이 없어도 아래의 보유분 차익실현 판단은 계속한다.
+            }
+            else if (roll < marketBuyChance)
             {
                 DelayedBuyMarket(vol, stock);
             }

@@ -75,8 +75,8 @@ public class HolderBot : TradeBot
         decimal holding = GetHolding(stock);
         decimal avg = (holdings.ContainsKey(stock) && avgPrice.ContainsKey(stock)) ? avgPrice[stock] : 0m;
 
-        bool isOvervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsOvervalued(stock);
-        bool isUndervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsUndervalued(stock);
+        bool isOvervalued = FeelsExpensive(stock);
+        bool isUndervalued = FeelsCheap(stock);
 
         if (holding > 0m && avg > 0m)
         {

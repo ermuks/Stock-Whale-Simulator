@@ -39,6 +39,33 @@ public class CandleDrawManager : MonoBehaviour
     private readonly List<int> triangles = new();
     private readonly List<Color> colors = new();
     private readonly Material[] _materials = new Material[3];
+    private MaterialPropertyBlock marketBlock;
+    private int materialColorVersion=-1;
+    private static readonly int TintColor=Shader.PropertyToID("_Color"), BaseColor=Shader.PropertyToID("_BaseColor");
+    void OnEnable() { MarketColors.Changed += RefreshMarketColors; RefreshMarketColors(); }
+    void OnDisable() { MarketColors.Changed -= RefreshMarketColors; }
+    private void RefreshMarketColors()
+    {
+        upColor=MarketColors.Up; downColor=MarketColors.Down;
+        if (mesh==null)
+        { return; }
+        if (materialUp!=null && materialDown!=null) { ApplyMaterialColors(); }
+        else { GenerateMesh(); }
+    }
+    private void ApplyMaterialColors()
+    {
+        if (meshRenderer==null || mesh.subMeshCount<2 || materialColorVersion==MarketColors.Version)
+        { return; }
+        marketBlock ??= new MaterialPropertyBlock();
+        for (int i=0;i<2;i++)
+        {
+            meshRenderer.GetPropertyBlock(marketBlock,i);
+            Color tint=i==0 ? MarketColors.Up : MarketColors.Down;
+            marketBlock.SetColor(TintColor,tint); marketBlock.SetColor(BaseColor,tint);
+            meshRenderer.SetPropertyBlock(marketBlock,i); marketBlock.Clear();
+        }
+        materialColorVersion=MarketColors.Version;
+    }
     void OnDestroy()
     {
         if (mesh != null)
@@ -194,6 +221,7 @@ public class CandleDrawManager : MonoBehaviour
         _materials[1] = materialDown;
         _materials[2] = materialVolume != null ? materialVolume : materialDown;
         meshRenderer.sharedMaterials = _materials;
+        ApplyMaterialColors();
     }
 
     void AddQuadVertices(List<Vector3> vertices, List<int> triangles, Vector3 bl, Vector3 br, Vector3 tr, Vector3 tl, ref int vertexIndex)

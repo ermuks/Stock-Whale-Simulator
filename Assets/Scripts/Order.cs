@@ -1,4 +1,4 @@
-﻿/// <summary>호가창에 남은 내 주문이 체결될 때 알림 받기 (예치금 해제·현금 차감·보유 반영)</summary>
+/// <summary>호가창에 남은 내 주문이 체결될 때 알림 받기 (예치금 해제·현금 차감·보유 반영)</summary>
 public interface IOrderOwner
 {
     void OnOrderFilled(Stock stock, decimal filledVolume, decimal totalCost);
@@ -13,7 +13,10 @@ public enum OrderPurpose
     Ordinary,
     ExchangeDefense,
     ExchangeInitialSupply,
-    OwnerPreDisposal
+    OwnerPreDisposal,
+    Rhythm,
+    /// <summary>현재가에서 떨어진 가격에 오래 걸어 두는 대기 주문("이 가격이면 산다/판다").</summary>
+    Resting
 }
 
 public class Order
@@ -34,9 +37,9 @@ public class Order
         this.volume = volume;
         this.isBuy = isBuy;
         this.timestamp = timestamp;
-        createdAt = UnityEngine.Time.time;
+        createdAt = SessionClock.Time;
         this.owner = owner;
-        purpose = owner is ExchangeBot exchange ? exchange.SubmittedPurpose : owner is WhaleBot whale && whale.IsDisposalSubmission ? OrderPurpose.OwnerPreDisposal : OrderPurpose.Ordinary;
+        purpose = owner is ExchangeBot exchange ? exchange.SubmittedPurpose : owner is WhaleBot whale && whale.IsDisposalSubmission ? OrderPurpose.OwnerPreDisposal : MarketRhythmDirector.SubmittingResting ? OrderPurpose.Resting : MarketRhythmDirector.Submitting ? OrderPurpose.Rhythm : OrderPurpose.Ordinary;
         purposeSlot = owner is ExchangeBot bot ? bot.SubmittedSlot : -1;
         costBasis = !isBuy && owner is Trader trader ? trader.SubmittedSellCost : 0m;
     }

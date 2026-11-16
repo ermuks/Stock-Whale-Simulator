@@ -51,7 +51,7 @@ public sealed partial class InvestorSociety
     private readonly Dictionary<int, int> emotionalThresholds = new();
     public int VoluntaryExits { get; private set; }
     public int SympathyExits { get; private set; }
-    public event Action<TradeBot, int, string> SocialDeparted;
+    public event Action<TradeBot, int, string, ChatRoomNotice> SocialDeparted;
     private double Effect(SocialAct act, string field)
     {
         foreach (var row in ChatSocialAssets.Acts.effects)
@@ -160,6 +160,8 @@ public sealed partial class InvestorSociety
             if (witness.Social.Id == message.targetId)
             { continue; }
             var mind = witness.Social.Psychology;
+            ObserveRoomReferral(witness, bot, message);
+            WitnessCompanyOpinion(witness, message);
             RememberWitnessedResult(witness, message);
             if (mind.AngerStage(message.senderId) >= 2 && mind.ActiveThread == 0 && !pendingReplies.ContainsKey(mind.SocialId) && !pendingOrigins.ContainsKey(mind.SocialId))
             {
@@ -227,6 +229,8 @@ public sealed partial class InvestorSociety
     }
     private void Mediate(TradeBot mediator, SocialMessage message, SocialThread thread)
     {
+        if (thread.kind != SocialThreadKind.ARGUMENT || !thread.Active)
+        { return; }
         double affinity = 0; int count = 0; bool severe = false;
         foreach (int id in thread.participants)
         {
@@ -237,6 +241,7 @@ public sealed partial class InvestorSociety
         double chance = Config.Get("mediationBase") + (count == 0 ? 0 : affinity / count) / Config.Get("mediationAffinityDivisor");
         if (severe) { chance *= Config.Get("mediationStage3Scale"); }
         bool success = mediator.Social.Psychology.SocialRng.Next() < Math.Max(0, Math.Min(1, chance));
+        ChatSocialAudit.Journal.Event(new SocialEvent { kind = "MEDIATION", id = message.id, threadId = thread.id, room = message.roomId, actor = mediator.Social.Id, time = SocialTime.GameMinute, value = success ? 1 : 0, reason = success ? "accepted" : "rejected" });
         foreach (int id in thread.participants)
         {
             if (id == mediator.Social.Id || !SocialBots.TryGetValue(id, out var member)) { continue; }
@@ -247,6 +252,7 @@ public sealed partial class InvestorSociety
             }
             else { ChangeRelation(member, mediator.Social.Id, "anger", Config.Get("mediationFailAnger"), "mediation", message.id, message.roomId); }
             ChangeRelation(member, mediator.Social.Id, "affinity", Config.Get(success ? "mediationSuccessAffinity" : "mediationFailAffinity"), "mediation", message.id, message.roomId, false);
+            ConsiderMediationExit(member, mediator, message, thread);
         }
         if (success) { CloseSocialThread(thread, SocialEnd.RESOLVED); }
     }
@@ -282,6 +288,7 @@ public sealed partial class InvestorSociety
         }
         ObserveEmotionalThresholds(bot);
         TickSocialAutonomy(bot);
+        TickMediationReaction(bot);
     }
     partial void TickSocialEmotions()
     {
@@ -325,7 +332,7 @@ public sealed partial class InvestorSociety
         mind.SocialDelta("trust", Config.Get(sympathy ? "sympathyTrust" : "exitTrust"), sympathy ? "sympathy-exit" : "voluntary-exit", farewell.id);
         mind.RejoinAt[room] = SocialTime.GameMinute + Config.Get(sympathy ? "sympathyRejoinMinutes" : "exitRejoinMinutes");
         int members = 0; foreach (var candidate in socialBots) { if (candidate.Social.Psychology.Room == room) { members++; } }
-        SocialDeparted?.Invoke(bot, room, sympathy ? "친구의 퇴장에 동조" : "언쟁 방치 후 이탈");
+        SocialDeparted?.Invoke(bot, room, sympathy ? "친구의 퇴장에 동조" : "언쟁 방치 후 이탈", ChatRoomNotice.Leave);
         GetRoom(room)?.Members.Remove(mind.SocialId); mind.Room = 0; mind.ExitAt = -1; mind.Intentions.Clear();
         ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = sympathy ? "SYMPATHY_EXIT" : "VOLUNTARY_EXIT", id = farewell.id, threadId = mind.ExitThread, room = room, actor = mind.SocialId,
             target = sympathy ? mind.ExitOrigin : mind.ExitOpponent, value = sympathy ? mind.Relation(mind.ExitOrigin).affinity : mind.Relation(mind.ExitOpponent).anger, reason = sympathy ? "depth=1" : "anger-grace" });
@@ -338,6 +345,7 @@ public sealed partial class InvestorSociety
             { SchedulePublicWarning(bot, room, farewell.id, false); }
         }
         mind.ExitIsSympathy = false;
+        OfferDepartureReaction(bot, room, mind.ExitOpponent, farewell.id);
     }
     private void ScheduleSympathy(TradeBot departed, int room, List<TradeBot> witnesses, int members, long eventId)
     {

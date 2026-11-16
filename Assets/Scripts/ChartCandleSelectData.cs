@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using TMPro;
 
@@ -39,8 +39,10 @@ public class ChartCandleSelectData : MonoBehaviour
     /// <summary>선택이 바뀌었을 때 (설정/해제 시). (캔들, 전역인덱스) 또는 (null, null)</summary>
     public event Action<CandleData?, int?> OnSelectionChanged;
 
-    static readonly Color Up = new Color(239f / 255f, 89f / 255f, 100f / 255f);
-    static readonly Color Down = new Color(76f / 255f, 150f / 255f, 232f / 255f);
+    private static Color Up => MarketColors.Up;
+    private static Color Down => MarketColors.Down;
+    void OnEnable() { MarketColors.Changed += RefreshTexts; RefreshTexts(); }
+    void OnDisable() { MarketColors.Changed -= RefreshTexts; }
 
     /// <summary>해당 캔들로 선택 설정. previousClose: 전캔들 종가(전캔들 대비 색상용). 캔들 값이 바뀔 때마다 ChartManager가 다시 호출하면 TMP가 이벤트성 Refresh됨.</summary>
     public void SetSelection(CandleData candle, int globalIndex, float? previousClose = null)
@@ -110,14 +112,14 @@ public class ChartCandleSelectData : MonoBehaviour
     static void SetTxt(TextMeshProUGUI t, string s, float? value, float? previousClose)
     {
         if (t == null) return;
-        t.text = s;
+        GameLocalizedText.Set(t,s);
         if (value.HasValue && previousClose.HasValue)
             t.color = value.Value > previousClose.Value ? Up : (value.Value < previousClose.Value ? Down : Color.white);
     }
 
     static void SetTxt(TextMeshProUGUI t, string s)
     {
-        if (t != null) t.text = s;
+        if (t != null) GameLocalizedText.Set(t,s);
     }
 
     static string FormatPct(float pct)

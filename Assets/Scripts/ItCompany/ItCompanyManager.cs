@@ -85,7 +85,15 @@ public class ItCompanyManager : MonoBehaviour
         int before = ExchangeBot.Instance == null ? 0 : ExchangeBot.Instance.PublishedCompanyNode(stock);
         if (applyRealValueOnNodeChange)
         {
-            stock.SetRealValue(Math.Max(0.00000001m, baseValue * (decimal)item.CriticalValue));
+            if (CorporateEconomy.Instance != null)
+            {
+                // 기업 평가가 있는 종목은 평가식의 사건 배율로 반영한다. 직접 덮어쓰면 마감 재평가와 충돌한다.
+                CorporateEconomy.Instance.ApplyCompanyEvent(stock, (decimal)item.CriticalValue);
+            }
+            else
+            {
+                stock.SetRealValue(Math.Max(0.00000001m, baseValue * (decimal)item.CriticalValue));
+            }
         }
 
         if (NewsManager.Instance != null && NewsManager.Instance.addNewsOnNodeChange)

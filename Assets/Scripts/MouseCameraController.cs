@@ -77,6 +77,7 @@ public class MouseCameraController : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.BlocksInput) { return; }
         if (StockManager.Instance != null && !StockManager.Instance.SetupConfirmed)
         {
             Cursor.lockState = CursorLockMode.None;
@@ -99,8 +100,8 @@ public class MouseCameraController : MonoBehaviour
         ApplyMouseWheelFov();
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
-        _currentAngleY += mouseX * sensitivity;
-        _currentAngleX -= mouseY * sensitivity;
+        _currentAngleY += mouseX * sensitivity * GameSettings.Current.sensitivity;
+        _currentAngleX -= mouseY * sensitivity * GameSettings.Current.sensitivity;
         _currentAngleX = Mathf.Clamp(_currentAngleX, minAngleX, maxAngleX);
         _currentAngleY = Mathf.Clamp(_currentAngleY, minAngleY, maxAngleY);
         transform.eulerAngles = new Vector3(_currentAngleX, _currentAngleY, 0f);
@@ -117,7 +118,7 @@ public class MouseCameraController : MonoBehaviour
         }
         if (Mathf.Approximately(wheel, 0f))
         { return; }
-        _cam.fieldOfView = Mathf.Clamp(_cam.fieldOfView - wheel * wheelFovSensitivity, MinFov, MaxFov);
+        _cam.fieldOfView = Mathf.Clamp(_cam.fieldOfView - wheel * GameSettings.Current.wheel, MinFov, MaxFov);
     }
 
     public void CompleteInitialSetup()

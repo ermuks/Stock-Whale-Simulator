@@ -64,9 +64,9 @@ public sealed class IncumbentExchangeAI : MonoBehaviour
     {
         if (!MarketDayController.CanTrade)
         { ClearResponse(); return; }
-        if (Time.time >= expires)
+        if (SessionClock.Time >= expires)
         { ClearResponse(); }
-        Observe(Time.time);
+        Observe(SessionClock.Time);
     }
     public bool Observe(float now)
     {
@@ -75,14 +75,22 @@ public sealed class IncumbentExchangeAI : MonoBehaviour
         { return false; }
         NextObservationAt = now + Mathf.Clamp(policy.observationSeconds,.5f,60f);
         var player = manager.playerAccount;
-        Snapshot.ObservedAt = now; Snapshot.Cash = player.cash; Snapshot.ReservedCash = player.ReservedCash; Snapshot.Equity = player.Equity();
+        Snapshot.ObservedAt = now; Snapshot.Cash = player.cash; Snapshot.ReservedCash = player.ReservedCash + PlayerAccounts.TaxDebt(player); Snapshot.Equity = player.Equity() - PlayerAccounts.TaxDebt(player);
         var secondary = PlayerAccounts.Instance == null ? null : PlayerAccounts.Instance.automated;
         if (secondary != null)
         { Snapshot.Cash += secondary.cash; Snapshot.ReservedCash += secondary.ReservedCash; Snapshot.Equity += secondary.Equity(); }
         Snapshot.AccountIntents.Clear();
-        if (manual != null && manual.Active) { Snapshot.AccountIntents.Add((manual.Target.symbol,manual.Buy,manual.Limit,manual.Unsubmitted + manual.PendingVolume)); }
+        if (manual != null)
+        {
+            foreach (var request in manual.ActiveOrders)
+            { Snapshot.AccountIntents.Add((request.Stock.symbol,request.Buy,request.Limit,request.Unsubmitted + request.PendingVolume)); }
+        }
         var autoManual = PlayerAccounts.Instance == null ? null : PlayerAccounts.Instance.automatedOrders;
-        if (autoManual != null && autoManual.Active) { Snapshot.AccountIntents.Add((autoManual.Target.symbol,autoManual.Buy,autoManual.Limit,autoManual.Unsubmitted + autoManual.PendingVolume)); }
+        if (autoManual != null)
+        {
+            foreach (var request in autoManual.ActiveOrders)
+            { Snapshot.AccountIntents.Add((request.Stock.symbol,request.Buy,request.Limit,request.Unsubmitted + request.PendingVolume)); }
+        }
         Snapshot.SelectedSymbol = manager.CurrentStock == null ? "" : manager.CurrentStock.symbol;
         Snapshot.OwnedCompanySymbol = player.OwnedCompany == null ? "" : player.OwnedCompany.symbol;
         var career = PlayerProgression.Instance;
@@ -94,7 +102,7 @@ public sealed class IncumbentExchangeAI : MonoBehaviour
         Snapshot.OperationBudget = operation == null ? 0m : operation.Budget;
         Snapshot.OperationSpent = operation == null ? 0m : operation.Spent;
         Snapshot.OperationInventory = operation == null ? 0m : operation.Inventory;
-        Snapshot.OrderSymbol = manual != null && manual.Target != null ? manual.Target.symbol : "";
+        Snapshot.OrderSymbol = manual?.Latest != null ? manual.Latest.Stock.symbol : "";
         Snapshot.ManualBuy = manual != null && manual.Buy;
         Snapshot.ManualRemaining = manual != null && manual.Active ? manual.Unsubmitted + manual.PendingVolume : 0m;
         Snapshot.ManualLimit = manual == null ? 0m : manual.Limit; Snapshot.ManualBudget = manual == null ? 0m : manual.Budget;
@@ -165,10 +173,16 @@ public sealed class IncumbentExchangeAI : MonoBehaviour
                 else { position.PendingSell += order.volume; }
             }
             decimal pressure = position.Change + (position.PendingBuy - position.PendingSell) * .25m;
-            if (manual != null && manual.Target == stock && manual.Active)
-            { pressure += manual.Unsubmitted * (manual.Buy ? .25m : -.25m); }
-            if (autoManual != null && autoManual.Target == stock && autoManual.Active)
-            { pressure += autoManual.Unsubmitted * (autoManual.Buy ? .25m : -.25m); }
+            if (manual != null)
+            {
+                foreach (var request in manual.ActiveOrders)
+                { if (request.Stock == stock) { pressure += request.Unsubmitted * (request.Buy ? .25m : -.25m); } }
+            }
+            if (autoManual != null)
+            {
+                foreach (var request in autoManual.ActiveOrders)
+                { if (request.Stock == stock) { pressure += request.Unsubmitted * (request.Buy ? .25m : -.25m); } }
+            }
             if (roomPressure.TryGetValue(stock,out decimal roomIntent))
             { pressure += roomIntent * .1m; }
             if (stock.AcceptsOrders && Math.Abs(pressure) > Math.Abs(strongestPressure))

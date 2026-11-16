@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 종목별 통계 관리: 52주 최고/최저, 전일 종가, 당일 고가/저가, 체결강도, 최근 거래 기록
+/// 종목별 통계 관리: 52주 최고/최저, 전일 종가, 당일 시가/고가/저가, 체결강도, 최근 거래 기록
 /// </summary>
 public class StockStatistics : MonoBehaviour
 {
@@ -58,6 +58,7 @@ public class StockStatistics : MonoBehaviour
         { return; }
 
         stock.OnTradeExecutedWithStock -= OnTradeExecuted;
+        stock.OnMatchedTrade -= OnMatchedPrice;
         _stats.Remove(stock);
         _lastSurgeTime.Remove(stock);
         _prevWindowVolume.Remove(stock);
@@ -86,6 +87,7 @@ public class StockStatistics : MonoBehaviour
                 if (stock != null)
                 {
                     stock.OnTradeExecutedWithStock -= OnTradeExecuted;
+                    stock.OnMatchedTrade -= OnMatchedPrice;
                 }
             }
         }
@@ -115,10 +117,11 @@ public class StockStatistics : MonoBehaviour
                 week52High = stock.currentPrice,
                 week52Low = stock.currentPrice,
                 prevDayClose = stock.currentPrice,
+                dayOpen = stock.currentPrice,
                 dayHigh = stock.currentPrice,
                 dayLow = stock.currentPrice,
-                dayStartTime = Time.time,
-                week52StartTime = Time.time,
+                dayStartTime = SessionClock.Time,
+                week52StartTime = SessionClock.Time,
                 recentTrades = new List<TradeRecord>(),
                 strengthTrades = new List<TradeRecord>()
             };
@@ -126,7 +129,7 @@ public class StockStatistics : MonoBehaviour
             _lastSurgeTime[stock] = 0f;
             _prevWindowVolume[stock] = 0m;
             _currentWindowVolume[stock] = 0m;
-            _windowStartTime[stock] = Time.time;
+            _windowStartTime[stock] = SessionClock.Time;
         }
 
         if (!_sessionTurnover.ContainsKey(stock))
@@ -136,6 +139,8 @@ public class StockStatistics : MonoBehaviour
 
         stock.OnTradeExecutedWithStock -= OnTradeExecuted;
         stock.OnTradeExecutedWithStock += OnTradeExecuted;
+        stock.OnMatchedTrade -= OnMatchedPrice;
+        stock.OnMatchedTrade += OnMatchedPrice;
     }
 
     /// <summary>새 장이 열릴 때만 전일 종가를 확정한다. 마감 후에는 그날 등락률을 유지한다.</summary>
@@ -147,8 +152,8 @@ public class StockStatistics : MonoBehaviour
             var stats = _stats[stock];
             if (previousCloses != null && previousCloses.TryGetValue(stock, out decimal close) && close > 0m)
             { stats.prevDayClose = close; }
-            stats.dayHigh = stats.dayLow = stock.currentPrice;
-            stats.dayStartTime = Time.time;
+            stats.dayOpen = stats.dayHigh = stats.dayLow = stock.currentPrice;
+            stats.dayStartTime = SessionClock.Time;
             _stats[stock] = stats;
         }
     }
@@ -161,12 +166,39 @@ public class StockStatistics : MonoBehaviour
         return true;
     }
 
+    /// <summary>미니 캔들용 당일 OHLC. 시가는 개장 때 고정하고 종가는 현재 체결가를 사용한다.</summary>
+    public bool TryGetDailyCandle(Stock stock, out CandleData candle)
+    {
+        candle = default;
+        if (stock == null || !_stats.TryGetValue(stock, out var stats) || stats.dayOpen <= 0m || stock.currentPrice <= 0m)
+        { return false; }
+        candle = new CandleData
+        {
+            open = (float)stats.dayOpen,
+            high = (float)Math.Max(stats.dayHigh, stock.currentPrice),
+            low = (float)Math.Min(stats.dayLow, stock.currentPrice),
+            close = (float)stock.currentPrice,
+            exactClose = stock.currentPrice
+        };
+        return true;
+    }
+
+    private void OnMatchedPrice(Stock stock, decimal price, decimal volume, IOrderOwner buyer, IOrderOwner seller, Order resting)
+    {
+        if (stock == null || volume <= 0m || price <= 0m || ReferenceEquals(buyer,seller) || !_stats.TryGetValue(stock,out var stats))
+        { return; }
+        // One submitted order can fill across several price levels before the aggregate trade callback.
+        stats.dayHigh = Math.Max(stats.dayHigh,price); stats.dayLow = Math.Min(stats.dayLow,price);
+        stats.week52High = Math.Max(stats.week52High,price); stats.week52Low = Math.Min(stats.week52Low,price);
+        _stats[stock] = stats;
+    }
+
     void OnTradeExecuted(Stock stock, decimal price, decimal volume)
     {
         if (stock == null || !_stats.TryGetValue(stock, out var stats))
         { return; }
 
-        float now = Time.time;
+        float now = SessionClock.Time;
         if (price > stats.week52High)
         {
             stats.week52High = price;
@@ -274,7 +306,7 @@ public class StockStatistics : MonoBehaviour
     private const float CLEANUP_INTERVAL = 5f;
     void Update()
     {
-        float now = Time.time;
+        float now = SessionClock.Time;
         _updateKeys.Clear();
         _updateKeys.AddRange(_stats.Keys);
         bool doCleanup = now - _lastCleanupTime >= CLEANUP_INTERVAL;
@@ -334,7 +366,7 @@ public class StockStatistics : MonoBehaviour
         { return 100f; }
 
         float candleDuration = CandleHistoryManager.Instance != null ? CandleHistoryManager.Instance.candleDuration : 5f;
-        float now = Time.time;
+        float now = SessionClock.Time;
         float cutoffTime = now - candleDuration;
         stats.strengthTrades.RemoveAll(t => t.time < cutoffTime);
         _stats[stock] = stats;
@@ -373,6 +405,7 @@ public struct StockStats
     public decimal week52High;
     public decimal week52Low;
     public decimal prevDayClose;
+    public decimal dayOpen;
     public decimal dayHigh;
     public decimal dayLow;
     public float dayStartTime;
@@ -385,10 +418,11 @@ public struct StockStats
         week52High = s?.currentPrice ?? 0m;
         week52Low = s?.currentPrice ?? 0m;
         prevDayClose = s?.currentPrice ?? 0m;
+        dayOpen = s?.currentPrice ?? 0m;
         dayHigh = s?.currentPrice ?? 0m;
         dayLow = s?.currentPrice ?? 0m;
-        dayStartTime = Time.time;
-        week52StartTime = Time.time;
+        dayStartTime = SessionClock.Time;
+        week52StartTime = SessionClock.Time;
         recentTrades = new List<TradeRecord>();
         strengthTrades = new List<TradeRecord>();
     }

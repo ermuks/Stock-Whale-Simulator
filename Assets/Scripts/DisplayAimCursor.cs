@@ -42,6 +42,7 @@ public class DisplayAimCursor : MonoBehaviour
 
     void Update()
     {
+        if (PauseMenuController.BlocksInput) { EndPointer(false); if (displayCursor != null) { displayCursor.gameObject.SetActive(false); } return; }
         if (displayCanvas == null || displayCursor == null || _mainCam == null || _collider == null)
         { EndPointer(false); return; }
         if (DeskViewController.Instance != null || TabletViewController.IsTabletHeld || PhoneCallController.IsRaised)

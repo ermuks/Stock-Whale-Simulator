@@ -1,0 +1,178 @@
+DonDon 태블릿·휴대폰 UI 2차 시안
+2026-11-14
+
+이번 산출물은 내장 image_gen 도구로 만든 디자인 이미지입니다.
+Unity Editor 및 시장 시뮬레이션을 실행하지 않았고, Assets의 씬·프리팹·스크립트를 수정하지 않았습니다.
+수치와 사건은 화면 설계를 위한 예시입니다. 실제 사용자 테스트나 게임 카메라 검증 결과가 아닙니다.
+기존 1차 시안은 덮어쓰지 않았습니다.
+
+이미지
+1. Tablet-01-Order-v2.png
+2. Tablet-02-Events-v2.png
+3. Phone-03-Incoming-v2.png
+
+평가와 와이어프레임에서 반영한 내용
+- 현재가, 등락률, 평단, 보유 수량, 평가손익을 주문 설정과 함께 표시합니다.
+- 매수/매도 방향과 지정가/분할 설정을 분리합니다.
+- 설정 단계는 미제출 상태이며, 주문 내용 확인 이후 별도 최종 제출을 제안합니다.
+- 예상 값은 5,390원에 전량 체결되는 경우로 명시하며, 실제 체결을 보장하지 않습니다.
+- 두 태블릿에서 선택 종목과 현재가를 공통으로 유지합니다.
+- 사건은 출처·확인 여부·관측된 시장 반응·다른 참여자의 발언으로 구분합니다.
+- 사건의 호재/악재를 정답처럼 판정하거나, 봇 내부의 신뢰·배신 수치를 공개하지 않습니다.
+- 같은 손익 요약을 반복하는 대신 주문별 체결 시각, 가격, 수량, 잔여량을 제안합니다.
+- 경영 기능이 잠겨 있을 때는 현재 지분과 해제 조건만 보여주고 조건 보기로 접근합니다.
+- 휴대폰의 받기/거절/화면 닫기가 무엇을 하는지 각 버튼 주변에 명시합니다.
+- 이전 연락 기록은 현재 미확인 발신자와 같은 사람의 기록이라고 연결하지 않습니다.
+
+원래 코드에서 확인한 동작
+- TradingOperationController.Prepare: 준비 시점의 가용 현금에 BudgetFraction을 곱해 예산을 고정합니다.
+- 예산 50,000원은 준비 당시 1,000,000원의 5%입니다. 현재 현금 970,000원의 5%라는 뜻이 아닙니다.
+- PhoneCallController.Lower: 화면/그립을 내리며 Ringing을 거절 처리하지 않습니다.
+- PhoneCallController.Decline: 현재 수신을 종료합니다.
+- PhoneCallController.Ring: 알림을 생성하지만 자동으로 휴대폰 화면을 열지 않습니다.
+
+추가 구현이 필요한 제안
+- 가격·수량 직접 입력과 주문 확인 단계: 현재 태블릿의 모드 실행 버튼을 그대로 바꿔 그리기만 해서는 동작하지 않습니다.
+- 사건 상세와 관련 채팅·출처 연결, 개별 체결 로그와 주문 식별자, 최근 연락 시각/상대 기록: 실제 데이터에 연결하는 작업이 필요합니다.
+- 분할 설정을 바꾸는 것과 실제 실행을 명시적으로 분리하고, 최종 제출 시 잔고·예산·수량·호가 단위를 다시 검증해야 합니다.
+- 이벤트 숫자와 배지는 실제 데이터가 있을 때만 표시해야 하며, 공개되지 않은 봇 상태를 추정 사실로 넣지 않습니다.
+- '매수 체결 비중'은 매수 주도 체결량/전체 체결량으로 정의해야 합니다. 모든 체결에 매수자와 매도자가 동시에 있다는 점과 구분합니다.
+- 실제 3D 모니터/태블릿 거리에서의 글자 크기, 클릭 영역, 긴 문자열, 입력 중 단축키 차단은 적용 단계에서 별도로 검증해야 합니다.
+
+시안 숫자 교차 확인
+준비 당시 가용 현금 1,000,000원 × 5% = 예산 50,000원
+6주 × 평균 5,000원 = 사용 금액 30,000원
+가용 현금 970,000원, 예치 0원, 계획 잔여 20,000원
+현재 5,390원: 6주 × 390원 = 평가손익 +2,340원 (+7.8%)
+전일 대비 예시: 기준가 5,160원 → 5,390원, +230원, +4.5%(반올림)
+3주 × 5,390원 = 예상 주문액 16,170원
+전량 체결 가정: 현금 953,830원 / 보유 9주 / 계획 잔여 3,830원
+5주 입력 시: 26,950원으로 계획 잔여 대비 6,950원 초과 → 확인 버튼 비활성
+6 / 10,000,000주의 기업 지분은 사실상 빈 진행 막대로 표현하며, 경영권은 50% 초과 조건을 유지합니다.
+
+아래는 내장 image_gen에 사용한 최종 프롬프트 전문입니다.
+
+
+=== 01 · 자산·주문 ===
+Use case: ui-mockup, precise interface redesign.
+Reference image 1 is the previous DonDon 3-screen UI board: preserve its restrained charcoal, off-white and muted teal design language and thin worn dark device edging, but redesign ONLY tablet 01 as a single large detailed screen.
+Reference image 2 is the user's rough order-flow wireframe: use it as functional guidance for price, holdings and order context. DO NOT copy its green gains, its inconsistent 5-share order or its sparse sizing.
+OUTPUT: a SINGLE high-fidelity landscape tablet Canvas concept, approximately 1920x1200 / 16:10 proportions, crisp high resolution, straight front view, UI occupies almost the whole image. NOT another three-device board. One small outside label "01 · 자산·주문 / 2차 시안". Minimal flat frame, no 3D room or hands. Footer outside UI "디자인 시안 · 예시 데이터 · 기능 추가 제안 포함".
+Purpose: a real decision flow "market context -> draft order -> projected result -> review -> submit"; emphasize current price, average cost and order consequences. Preserve dark professional economic-thriller atmosphere, but increase small-text readability. Matte #10171B, panels #172126, primary #E6EBEF, secondary #A6B1BA. Teal #25AFC0 for selection and next action only. All positive prices/PnL use RED #EF5964, negative uses BLUE #4C96E8. No green gains. Fine dividers, very few boxes, NO gloss/bevel/glow, no neon. Pretendard-like Korean sans serif, clean tabular numerals, generously usable controls, readable Korean.
+
+COMPOSITION:
+A compact navigation "자산·주문" selected with fine teal underline, "자산·뉴스·대화" inactive. The top market-context header spans the full tablet. It contains "노보손해보험" with small "NM", dominant current price "5,390원" and red "+230 (+4.5%)". Opposite is a modest neutral state "관망 중". A small genuine-looking upward zigzag price sparkline, RED, with small time labels "14:30" and "14:59", supports the market context. Never let chart take the place of order details.
+Below use a balanced 48% left account/context section and 52% right order composer, one thin vertical separator.
+
+LEFT:
+Heading "내 포지션". Compact clear pairs:
+"평균 매수가" "5,000원"
+"보유 수량" "6주"
+"평가손익" "+2,340원 (+7.8%)" red, prominent but smaller than current price.
+"가용 현금" "970,000원"
+"예치" "0원"
+Then a distinct quieter section "현재 계획 예산".
+"총 50,000원" / "사용 30,000원" / "주문 가능 20,000원".
+A thin 60%-filled teal budget bar.
+The budget basis MUST be clear and readable: "준비 당시 가용 현금 1,000,000원 × 5%".
+Below a calm actual-market context strip, amber small "새 소문 · 미확인", title "인수설 확산", compact text "공시 확인 전 · 사건 화면에서 출처 보기" with a small right chevron. Treat this as a link to evidence, not a buy recommendation.
+At bottom show "미체결 0건" and quiet "계획 관리" text button (preserves access to preparation, budget and finish actions without a wall of disabled controls).
+
+RIGHT:
+Heading "주문 설정" with small status "미제출".
+Two clear segmented DIRECTION choices "매수" (selected) and "매도" (not selected); choosing does NOT execute.
+Separate row "체결 방식" with "지정가" selected, and "분할 주문" with an OFF toggle. These are configuration, not competing immediate-action buttons.
+Two large clearly labeled fields: "주문 가격" value "5,390원"; "수량" value "3주". Simple small minus/plus controls allowed. Below, helper "현재 예산으로 최대 3주".
+A strong but compact summary "예상 주문 금액" "16,170원".
+A calm preview section labeled "전량 체결 시 예상". Three aligned rows:
+"가용 현금" "970,000 → 953,830원"
+"보유 수량" "6 → 9주"
+"계획 잔여" "20,000 → 3,830원".
+Note visibly but secondary: "5,390원 전량 체결 가정 · 실제 체결은 달라질 수 있음".
+One full-width teal main button "주문 내용 확인". Directly beneath in readable text: "확인 화면에서 최종 제출 · 설정만으로 주문되지 않음".
+Do NOT label this as already submitted. Do NOT imply guaranteed fills.
+
+Outside the device, a compact separated design-state note, NOT part of the current valid order: "초과 입력 예시: 5주 → 예산 6,950원 초과 · 주문 확인 비활성". Make clear the actual main example is 3 shares, not 5.
+Maintain correct arithmetic throughout: 3*5390=16170, 970000-16170=953830, 20000-16170=3830, current 6 shares at average5000 gives +2340 at5390. No fractional won. No time acceleration controls, no new stop loss or leverage, no omniscient AI sentiment scores. This is a polished interactive-layout proposal rendered as an image, not an implemented screen.
+
+
+=== 02 · 사건·경영 ===
+Use case: ui-mockup, detailed redesign.
+Reference 1 is the completed DonDon v2 ORDER tablet. Match its Korean typography, flat charcoal palette, restrained red financial gain indicators, subtle teal selection, clean hierarchy, slim worn bezel and generous readable controls.
+Reference 2 is the original three-screen v1 board: extract the IDEA of its tablet 02 event/management screen and redesign it. Do NOT recreate the entire board.
+OUTPUT: ONE large landscape 1920:1200 (16:10) tablet screen, orthographic front view, high resolution, almost the entire image occupied by interface. Small outside title "02 · 사건·경영 / 2차 시안"; small outside footer "디자인 시안 · 예시 데이터 · 기능 추가 제안 포함". No other devices or environment.
+Design goal: evidence, conflicting market reactions, and causal order execution records. Do not declare rumors to be definitely bullish or bearish. No hidden AI psychological scores, trust percentages, fake verified badges, or predictions. Important fresh event stands out, older events recede. Clearly distinguish observed facts from unconfirmed statements.
+Palette: matte #10171B, #172126; readable white #E6EBEF and secondary #A6B1BA; teal #25AFC0 for navigational selection; gains RED #EF5964 and falls BLUE #4C96E8; muted amber for unconfirmed information. NO neon glow, glossy effects, heavy boxes or a wall of disabled controls. Use fine structural separators. Crisp Pretendard-style Korean, tabular numbers. Small text must still read clearly.
+
+LAYOUT:
+Top tabs "사건·경영" selected / "보유 상세".
+Persistent common stock-context strip matching reference 1: "노보손해보험" small "NM", price "5,390원" and RED "+230 (+4.5%)"; quiet right side "보유 6주 · 평가손익 +2,340원" with only PnL red. This provides context without repeating the big account dashboard.
+
+Main area (roughly upper 60% of body): LEFT 33% event navigation list and RIGHT 67% selected evidence.
+Left heading "최근 사건".
+Four events newest first, no card for every row:
+selected 14:58 "인수설 확산" with small amber "새 소문 · 미확인", subtle active background and slim teal left marker.
+14:55 "블랙리버 매도 보도", small muted source "시장 뉴스".
+14:51 "매수·매도 체결 충돌", small muted source "체결 관측".
+14:46 "리서치 연락 수신", small muted source "통화 기록".
+The selected event is visibly stronger than others. No artificial up/down prediction arrows on news.
+
+Right evidence heading "인수설 확산" large, amber tag "공식 확인 없음".
+Readable metadata "출처  시장 라운지 · 14:58".
+Subheading "관측된 시장 반응". Two compact figures "최근 1분 체결 1,240주" and "매수 체결 비중 58%". They are example observations, not mood gauges.
+A separate clearly labeled contrary clue: "반대 단서" and "가격 상승 중에도 매도 체결이 이어짐".
+Then "채팅에서 나온 주장" with two small clean quote lines, subdued anonymous avatars:
+"개미왕  공시부터 확인해야 하는 거 아냐?"
+"Whale_0917  거래는 늘었는데 매물도 계속 나오네."
+No statement that these speakers are certainly correct. No invented causal conclusion that the player's six shares moved the market.
+Small reasonable action at lower right "이 종목 주문 화면으로 →", teal text or restrained outlined button, not an immediate buy action.
+
+LOWER section full width:
+Heading "내 주문 · 실제 체결 기록". Do not repeat cumulative buy/sell/PnL totals. Three compact rows of a real example order's fills, latest first. Columns "시각", "체결", "가격", "체결 사유 / 진행".
+"14:38:12" | "매수 2주" | "5,000원" | "지정가 조건 충족 · 잔여 0주"
+"14:35:40" | "매수 2주" | "5,000원" | "부분 체결 · 잔여 2주"
+"14:33:04" | "매수 2주" | "5,000원" | "부분 체결 · 잔여 4주"
+A small shared label "주문 #0142 · 6주 지정가 매수" accurately ties the three fills together. Arithmetic is 6 shares total, average cost5000, current5390, unrealized PnL2340. No extra fake returns.
+
+BOTTOM management strip:
+A single compact collapsed progression row, not four disabled buttons.
+"기업 경영" and subtle lock glyph, "지분 6 / 10,000,000주", "경영권 확보: 50% 초과 필요", text button "조건 보기 ›".
+If using a progress bar it must be effectively empty because 6/10million is tiny; NEVER draw a fake 20% ownership fill. Management controls unfold only after eligibility. Show the currently useful ownership condition, preserve conceptual access to management.
+Ensure all Korean text is correctly spelled, no overlaps, enough margins, integer won only. Do not add simulation speed controls. This is a UI proposal including future presentation bindings, not a claim that all displayed features are already implemented.
+
+
+=== 03 · 전화 ===
+Use case: ui-mockup, precise interface redesign.
+Reference 1 is the original DonDon UI board, including the phone on the right. Redesign ONLY that portrait phone as ONE large, readable image, preserving its recognizable calm incoming-call composition and thin dark worn frame.
+Reference 2 is the finished v2 tablet, the style and contrast guide: match its matte charcoal, off-white typography, muted teal controls and restrained amber unknown-status labels.
+Output ONE isolated straight-on portrait phone screen, screen proportions 978:2146, high resolution. No hands, no 3D room, no other devices or comparison board. Small external top label "03 · 전화 / 2차 시안", small footer "디자인 시안 · 예시 데이터". Keep the entire bezel and safe margins visible. The phone should occupy nearly the full canvas.
+Purpose: incoming caller identity first, uncertainty second, decision and timeout third. Clearly differentiate ANSWER vs DECLINE vs DISMISS SCREEN WHILE STILL RINGING. Never turn unknown caller identity into a verified relationship.
+Matte #10171B and #172126, main #E6EBEF, supporting text #A6B1BA; teal #25AFC0 for primary action, muted red #EF5964 for decline icon, amber for unverified identity. Pretendard-like crisp Korean, unusually readable secondary text, enough spacing to distinguish groups. No glossy effects, bright halo, sci-fi rings, meaningless meters or percentages. Keep just a few structural hairlines. Large but not gigantic caller text.
+
+UI CONTENT, TOP TO BOTTOM:
+Top compact title "연락" at left and "14:59" at right, thin divider.
+Small amber state "수신 중".
+A simple quiet outline building/caller glyph, subordinate to identity. No large decorative avatar.
+Dominant two-line identity "기관 담당자" then smaller "(자칭)".
+Amber low-alpha tag "신원 미확인".
+A short meaningful uncertainty line: "동일 발신자 여부는 확인되지 않았습니다."
+Small but readable explanatory copy: "발신자의 주장과 실제 시장은 다를 수 있습니다."
+
+Mid-screen compact context area, quiet open card with heading "최근 연락 기록".
+Row: "14:46  리서치 데스크"
+Second line: "관찰된 체결 흐름 요약"
+Important provenance disclaimer directly below: "현재 발신자와 연결된 기록은 아닙니다."
+This is the last contact on the device, NOT an assertion that this unknown institution caller is the same person. Do NOT add trust score, success rate, verified identity, or link the two identities.
+
+Lower group:
+Subordinate phone-ring glyph and clear text "52초 후 종료".
+Small supporting line "응답하지 않으면 부재중으로 기록".
+Primary action row two equal large usable rectangles:
+LEFT: restrained teal filled, white receiver icon, large "받기", smaller second line "통화 내용 확인".
+RIGHT: neutral dark fill with muted red hangup icon, large "거절", smaller second line "이번 수신 종료".
+Visually separate the third action below with extra space and a fine separator. Full-width quiet neutral button "화면 닫기".
+Directly underneath, readable precise helper "전화 수신은 계속됩니다 · 3 / Esc".
+The third button must NOT look like a hangup and must NOT be labeled '거절' or '보류'. It returns the player to the market while the existing timer continues.
+A final small calm line "수신 알림만 표시 · 화면 자동 전환 없음". There is no automatic camera interruption, no simulation pause and no speed feature.
+Keep identity, countdown and primary action the three visual anchors. Do not fill the screen with many equally boxed sections or huge dead empty gaps. All exact Korean strings correctly spelled and comfortably readable; all text fits inside the safe margins. This is a refined design proposal, including a proposed last-contact context area, not a screenshot claiming implemented features.
+

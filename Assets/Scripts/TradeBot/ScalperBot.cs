@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections.Generic;
 
 /// <summary>
@@ -158,12 +158,12 @@ public class ScalperBot : TradeBot
         }
 
         _surgeTargetStock = targetStock;
-        _surgeTargetTime = Time.time + Random.Range(10f, 30f);
+        _surgeTargetTime = SessionClock.Time + Random.Range(10f, 30f);
     }
 
     protected override Stock PickStock()
     {
-        if (_surgeTargetStock != null && Time.time < _surgeTargetTime)
+        if (_surgeTargetStock != null && SessionClock.Time < _surgeTargetTime)
         { return _surgeTargetStock; }
 
         _surgeTargetStock = null;
@@ -183,8 +183,8 @@ public class ScalperBot : TradeBot
         var bids = stock.orderBook.GetTopBids();
         var asks = stock.orderBook.GetTopAsks();
         decimal holding = GetHolding(stock);
-        bool isUndervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsUndervalued(stock);
-        bool isOvervalued = MarketSentiment.Instance != null && MarketSentiment.Instance.IsOvervalued(stock);
+        bool isUndervalued = FeelsCheap(stock);
+        bool isOvervalued = FeelsExpensive(stock);
         if (holding > 0m)
         {
             float actualSellChance = marketSellChance;

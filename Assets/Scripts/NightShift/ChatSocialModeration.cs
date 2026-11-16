@@ -28,7 +28,7 @@ public sealed partial class InvestorSociety
     private readonly Dictionary<(int, string), RoomReaction> roomReactions = new();
     private readonly List<(int, string)> expiredReactions = new();
     public Func<int, bool> CanModerateRoom;
-    public event Action<int, string, long> SocialSystemNotice;
+    public event Action<int, string, long, ChatRoomNotice> SocialSystemNotice;
 
     public bool Moderate(int roomId, int botId, SocialModeration action, out string feedback)
     {
@@ -111,7 +111,7 @@ public sealed partial class InvestorSociety
             mind.Remember(new SocialMemory { type = SocialMemoryKind.KICKED, actorId = -1, targetId = botId, eventId = id, at = SocialTime.GameMinute, salience = Config.Int("memoryKickedSalience") });
             int members = 0; foreach (var member in socialBots) { if (member.Social.Psychology.Room == roomId) { members++; } }
             room.banned.Add(botId); CloseSocialThread(thread, SocialEnd.PLAYER_ACTION);
-            SocialDeparted?.Invoke(bot, roomId, "방장에 의한 추방"); GetRoom(roomId).Members.Remove(botId); mind.Room = 0; mind.ExitAt = -1; mind.ExitIsSympathy = false; mind.Intentions.Clear();
+            SocialDeparted?.Invoke(bot, roomId, "방장에 의한 추방", ChatRoomNotice.None); GetRoom(roomId).Members.Remove(botId); mind.Room = 0; mind.ExitAt = -1; mind.ExitIsSympathy = false; mind.Intentions.Clear();
             departureCaps[id] = (roomId, (int)Math.Floor(members * Config.Get("sympathyCapFraction")), 0);
             ScheduleSympathy(bot, roomId, witnesses, members, id);
             if (mind.SocialRng.Next() < Config.Get("kickWarnBase") + mind.Traits.Grudge / Config.Get("kickWarnGrudgeDivisor")) { SchedulePublicWarning(bot, roomId, id, true); }
@@ -126,7 +126,7 @@ public sealed partial class InvestorSociety
         if (mind.ExitAt >= 0 && mind.Relation(mind.ExitOpponent).anger < Config.Get("exitAngerMin")) { mind.ExitAt = -1; }
         sanctions.Add(actionRecord);
         ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, id = id, threadId = actionRecord.thread, room = roomId, actor = -1, target = botId, kind = "PLAYER_" + action.ToString().ToUpperInvariant(), reason = feedback });
-        SocialSystemNotice?.Invoke(roomId, feedback, id);
+        SocialSystemNotice?.Invoke(roomId, feedback, id, action == SocialModeration.Kick ? ChatRoomNotice.Kick : ChatRoomNotice.Moderation);
         return true;
     }
     private List<TradeBot> ModerationWitnesses(TradeBot target, int roomId)

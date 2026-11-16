@@ -1,0 +1,17 @@
+{
+  "titles": ["部屋に参加", "売買実績", "自分の部屋"],
+  "observing": "主催者を観察",
+  "waiting": "参加待ち",
+  "firstSignal": "売買サインを待つ",
+  "turnover": "売買",
+  "profit": "損益",
+  "preparing": "開設準備",
+  "eligible": "開設可能",
+  "operate": "自分で運営する",
+  "complete": "達成",
+  "current": "今",
+  "tenThousand": "万",
+  "hundredMillion": "億",
+  "trillion": "兆",
+  "won": "ウォン"
+}

@@ -4,7 +4,7 @@ using System.Globalization;
 using UnityEngine;
 
 /// <summary>실제 플레이어 체결로 얻는 첫 운영 권한. 시세·봇 심리·계좌를 직접 변경하지 않는다.</summary>
-public sealed class PlayerProgression : MonoBehaviour
+public sealed partial class PlayerProgression : MonoBehaviour
 {
     [Serializable]
     public sealed class Rules
@@ -18,12 +18,18 @@ public sealed class PlayerProgression : MonoBehaviour
         public int version = 1;
         public string worldId, turnover, realizedProfit;
         public bool roomsOpened;
+        public int invitedRoomMask;
+        public int journeyMilestones;
+        public double newsCooldownRemaining;
+        public long newsSavedUtc;
+        public DailyIncomeController.SaveData income;
     }
     public static PlayerProgression Instance { get; private set; }
     public Rules rules = new();
     public decimal Turnover { get; private set; }
     public decimal RealizedProfit { get; private set; }
     public bool CanOperateRooms { get; private set; }
+    public int JourneyMilestones { get; private set; }
     public bool Eligible => Turnover >= rules.leadingTurnover && RealizedProfit >= rules.leadingRealizedProfit;
     public string WorldId { get; private set; }
     public string LockReason => "운영 권한 필요 · 실제 거래대금 " + Turnover.ToString("N0") + "/" + rules.leadingTurnover.ToString("N0") + "원, 실현손익 " + RealizedProfit.ToString("N0") + "/" + rules.leadingRealizedProfit.ToString("N0") + "원";
@@ -31,6 +37,7 @@ public sealed class PlayerProgression : MonoBehaviour
     void Awake()
     {
         Instance = this; WorldId = Guid.NewGuid().ToString("N");
+        if (GetComponent<DailyIncomeController>() == null) { gameObject.AddComponent<DailyIncomeController>(); }
         var data = Resources.Load<TextAsset>("Progression/PlayerProgression");
         if (data != null)
         {
@@ -50,8 +57,8 @@ public sealed class PlayerProgression : MonoBehaviour
     }
     private void Register(Stock stock)
     {
-        if (stock != null && watched.Add(stock))
-        { stock.OnMatchedTrade += Trade; }
+        if (stock==null) { return; }
+        watched.Add(stock); stock.OnMatchedTrade -= Trade; stock.OnMatchedTrade += Trade;
     }
     private void Remove(Stock stock)
     {
@@ -77,12 +84,14 @@ public sealed class PlayerProgression : MonoBehaviour
         if (!Eligible)
         { return false; }
         CanOperateRooms = true;
-        MarketEventFeed.Instance?.Notify("리딩방 운영을 시작했습니다. 참가자는 실제 수익과 경험으로 당신을 판단합니다.");
+        MarketEventFeed.Instance?.Notify("리딩방 개설 완료 · 공용 라운지에서 첫 회원을 직접 초대하세요.");
         return true;
     }
     public string Capture()
     {
-        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = CanOperateRooms });
+        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = CanOperateRooms,
+            invitedRoomMask = InvestorSociety.Instance?.InvitedRoomMask ?? 0, journeyMilestones = JourneyMilestones, newsCooldownRemaining = FakeNewsManager.Instance?.PlayerCooldown ?? 0, newsSavedUtc = DateTime.UtcNow.Ticks,
+            income = DailyIncomeController.Instance?.Capture() });
     }
     public bool Restore(string json, string restoredWorldId)
     {
@@ -90,12 +99,28 @@ public sealed class PlayerProgression : MonoBehaviour
         Snapshot saved;
         try { saved = JsonUtility.FromJson<Snapshot>(json); }
         catch (ArgumentException) { return false; }
-        if (saved == null || saved.version != 1 || saved.worldId != WorldId || restoredWorldId != WorldId ||
+        if (saved == null || saved.version != 1 || saved.worldId != WorldId || restoredWorldId != WorldId || saved.invitedRoomMask < 0 || saved.invitedRoomMask >= 1 << InvestorSociety.PlayerRoomCount || saved.journeyMilestones < 0 || saved.journeyMilestones > 7 ||
             !decimal.TryParse(saved.turnover, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal turnover) || turnover < 0m ||
             !decimal.TryParse(saved.realizedProfit, NumberStyles.Number, CultureInfo.InvariantCulture, out decimal profit))
         { return false; }
+        if (double.IsNaN(saved.newsCooldownRemaining) || double.IsInfinity(saved.newsCooldownRemaining) || saved.newsCooldownRemaining < 0 || saved.newsCooldownRemaining > 600 ||
+            saved.newsSavedUtc < 0 || saved.newsSavedUtc > DateTime.MaxValue.Ticks)
+        { return false; }
+        if (saved.income != null && (DailyIncomeController.Instance == null || !DailyIncomeController.Instance.CanRestore(saved.income,WorldId)))
+        { return false; }
         Turnover = turnover; RealizedProfit = profit; CanOperateRooms = saved.roomsOpened;
+        JourneyMilestones = saved.journeyMilestones;
+        if (saved.income != null) { DailyIncomeController.Instance.Restore(saved.income,WorldId); }
+        FakeNewsManager.Instance?.RestorePlayerCooldown(saved.newsCooldownRemaining, saved.newsSavedUtc);
+        InvestorSociety.Instance?.RestoreInvitedRooms(saved.invitedRoomMask);
         return true;
+    }
+    /// <summary>Presentation history only: a completed paper goal never returns after later losses or leaving a room.</summary>
+    public void RememberJourneyMilestones(bool joinedNpcRoom)
+    {
+        if (joinedNpcRoom) { JourneyMilestones |= 1; }
+        if (Eligible || CanOperateRooms) { JourneyMilestones |= 2; }
+        if (CanOperateRooms) { JourneyMilestones |= 4; }
     }
     void OnDisable()
     {

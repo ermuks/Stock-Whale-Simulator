@@ -29,13 +29,14 @@ public sealed partial class InvestorSociety
         { return false; }
         return !pairCooldown.TryGetValue(Pair(sender.Social.Id, other.Social.Id), out double until) || SocialTime.Seconds >= until;
     }
-    private int ChooseTarget(TradeBot bot, int room, SocialFacts facts)
+    private int ChooseTarget(TradeBot bot, int room, SocialFacts facts, out SocialMessage about)
     {
+        about = null;
         var recent = SocialRoom(room).recent.ToArray();
         for (int i = recent.Length - 1; i >= 0; i--)
         {
             if (SocialBots.TryGetValue(recent[i].senderId, out var other) && CanStartWith(bot, other, room))
-            { return other.Social.Id; }
+            { about = recent[i]; return other.Social.Id; }
         }
         var stock = FindSocialStock(facts.symbol);
         if (stock != null && facts.held)
@@ -68,7 +69,24 @@ public sealed partial class InvestorSociety
         if (intent.targetId == 0 && intent.threadId == 0 && mind.ActiveThread == 0 && !pendingReplies.ContainsKey(mind.SocialId) && !pendingOrigins.ContainsKey(mind.SocialId) &&
             ActiveThreads(intent.roomId) < Config.Int("maxThreads") &&
             mind.SocialRng.Next() < Config.Get("initiateTargetChance"))
-        { intent.targetId = ChooseTarget(bot, intent.roomId, facts); }
+        {
+            intent.targetId = ChooseTarget(bot, intent.roomId, facts, out var about);
+            if (about != null)
+            {
+                // 방금 말한 사람에게 말을 걸 때는 그 사람이 한 말에 답한다: 같은 종목을 화제로 삼고, 그 말의 종류에 맞는 답을 고른다.
+                var subject = FindSocialStock(about.facts?.symbol);
+                if (subject != null && socialMessageIndex.ContainsKey(about.id) && !facts.directLead && !facts.signal && facts.notice == null)
+                {
+                    intent.replyToId = about.id;
+                    facts = CaptureFacts(bot, subject);
+                }
+                else
+                {
+                    // 이어 말할 화제가 없으면 이름을 부르지 않는다.
+                    intent.targetId = 0;
+                }
+            }
+        }
         PrepareMemoryFacts(bot, intent, facts);
     }
     partial void SelectSocialReplyTable(SocialIntent intent, ref SocialActTable table)
@@ -97,6 +115,16 @@ public sealed partial class InvestorSociety
         AdjustAngerWeight(bot, intent, act, ref weight);
         AdjustQuadrantWeight(bot, intent, act, ref weight);
         if (act == SocialAct.MEDIATE && (intent.threadId == 0 || FindSocialThread(intent.threadId)?.kind != SocialThreadKind.ARGUMENT)) { weight = 0; }
+        // 의심은 상대가 무언가를 주장했을 때만 한다(수익 자랑, 답변, 반박, 리딩 평가, 소식 등). 혼잣말이나 감탄에 "근거가 뭐냐"고 묻지 않는다.
+        if (act == SocialAct.DOUBT && intent.threadId == 0)
+        {
+            bool claim = intent.replyToId > 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var said) &&
+                (said.act == SocialAct.BRAG || said.act == SocialAct.ANSWER || said.act == SocialAct.REBUT || said.act == SocialAct.AGREE || said.act == SocialAct.PRAISE_PLAYER || said.act == SocialAct.WARN_PLAYER ||
+                 said.facts != null && (said.facts.companyNewsId > 0 || !string.IsNullOrEmpty(said.facts.newsHeadline) || said.facts.signal || said.facts.directLead));
+            if (!claim) { weight = 0; }
+        }
+        // 답변은 질문이나 의심에만 한다.
+        if (act == SocialAct.ANSWER && intent.replyToId > 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var asked) && asked.act != SocialAct.ASK && asked.act != SocialAct.DOUBT) { weight = 0; }
     }
     partial void CheckSocialThread(TradeBot bot, SocialIntent intent, ref bool valid)
     {
@@ -165,6 +193,7 @@ public sealed partial class InvestorSociety
             witnesses.Add(observer);
         }
         ApplySocialEffects(bot, message, witnesses);
+        ReactToRejectedMediation(message, thread, witnesses);
         if (message.targetId > 0)
         {
             DirectedMessages++;
@@ -198,7 +227,7 @@ public sealed partial class InvestorSociety
     }
     private void InviteThirdParty(SocialThread thread, SocialMessage message, List<TradeBot> witnesses)
     {
-        if (thread.participants.Count >= Config.Int("maxParticipants"))
+        if (!thread.Active || thread.kind != SocialThreadKind.ARGUMENT || thread.participants.Count >= Config.Int("maxParticipants"))
         { return; }
         foreach (var witness in witnesses)
         {
@@ -207,8 +236,8 @@ public sealed partial class InvestorSociety
                 mind.SocialRng.Next() >= Config.Get("thirdPartyChance") * mind.Traits.Sociability / 50d)
             { continue; }
             SocialAct? act = null;
-            if (message.targetId > 0 && mind.Relation(message.targetId).affinity >= Config.Get("friendThreshold")) { act = SocialAct.REBUT; }
-            else if (mind.Traits.Sociability >= Config.Get("mediatorSociability") && mind.Traits.Temper <= Config.Get("mediatorTemper")) { act = SocialAct.MEDIATE; }
+            if (mind.Traits.Sociability >= Config.Get("mediatorSociability") && mind.Traits.Temper <= Config.Get("mediatorTemper")) { act = SocialAct.MEDIATE; }
+            else if (message.targetId > 0 && mind.Relation(message.targetId).affinity >= Config.Get("friendThreshold")) { act = SocialAct.REBUT; }
             else if (mind.Traits.Bravado >= Config.Get("spectatorBravado") && mind.Relation(message.senderId).affinity < Config.Get("spectatorAffinity") && mind.Relation(message.targetId).affinity < Config.Get("spectatorAffinity")) { act = SocialAct.REACT; }
             if (!act.HasValue)
             { continue; }

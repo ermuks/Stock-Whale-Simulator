@@ -511,7 +511,7 @@ public class OrderBook
             for (int n = 0; n < count; n++)
             {
                 var order = queue.Dequeue();
-                if (order.purpose != OrderPurpose.Ordinary)
+                if (order.purpose != OrderPurpose.Ordinary && order.purpose != OrderPurpose.Rhythm && order.purpose != OrderPurpose.Resting)
                 {
                     queue.Enqueue(order);
                     continue;

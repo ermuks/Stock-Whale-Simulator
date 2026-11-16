@@ -1,4 +1,4 @@
-﻿using TMPro;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +12,7 @@ public sealed class PhoneCallController : MonoBehaviour
     public TextMeshProUGUI title, body, alert;
     public Button answer, decline, close;
     public PhoneScreenUI screenUI;
-    public int RemainingSeconds => Mathf.CeilToInt(Mathf.Max(0f, expires - Time.time));
+    public int RemainingSeconds => Mathf.CeilToInt(Mathf.Max(0f, expires - SessionClock.Time));
     public string LastMessage => message;
     public bool Ringing { get; private set; }
     public Caller CurrentCaller { get; private set; }
@@ -30,10 +30,11 @@ public sealed class PhoneCallController : MonoBehaviour
         answer.onClick.AddListener(Answer);
         decline.onClick.AddListener(Decline);
         close.onClick.AddListener(Lower);
-        nextCall = Time.time + 35f;
+        nextCall = SessionClock.Time + 35f;
     }
     void Update()
     {
+        if (PauseMenuController.BlocksInput) { return; }
         if (StockManager.Instance == null || !StockManager.Instance.SetupConfirmed)
         { return; }
         if (DeskViewController.Instance == null && !MouseCameraController.TextEntryActive && Input.GetKeyDown(KeyCode.Tab) && !TabletViewController.IsTabletHeld)
@@ -41,8 +42,8 @@ public sealed class PhoneCallController : MonoBehaviour
         if (raised && Input.GetKeyDown(KeyCode.Escape)) { Lower(); }
         if (MarketDayController.CanTrade)
         {
-            if (!Ringing && Time.time >= nextCall) { Ring((Caller)random.Next(3)); }
-            if (Ringing && Time.time >= expires) { Decline(); message = "부재중 전화. 같은 기회가 다시 오지는 않습니다."; }
+            if (!Ringing && SessionClock.Time >= nextCall) { Ring((Caller)random.Next(3)); }
+            if (Ringing && SessionClock.Time >= expires) { Decline(); message = "부재중 전화. 같은 기회가 다시 오지는 않습니다."; }
         }
         if (Time.unscaledTime < nextUi)
         { return; }
@@ -51,17 +52,16 @@ public sealed class PhoneCallController : MonoBehaviour
         { screenUI.Refresh(this); }
         else
         {
-            title.text = Ringing ? (CurrentCaller == Caller.Institution ? "발신자: 기관 담당자 (자칭)" : CurrentCaller == Caller.Research ? "발신자: 리서치 데스크" : "발신자: 알 수 없는 번호") : "연락 기록";
-            body.text = Ringing ? "전화를 받으시겠습니까?\n발신자의 주장과 실제 체결 흐름은 다를 수 있습니다.\n\n" + RemainingSeconds + "초 후 종료" : message;
+            GameLocalizedText.Set(title,Ringing ? (CurrentCaller == Caller.Institution ? "발신자: 기관 담당자 (자칭)" : CurrentCaller == Caller.Research ? "발신자: 리서치 데스크" : "발신자: 알 수 없는 번호") : "연락 기록");
+            GameLocalizedText.Set(body,Ringing ? "전화를 받으시겠습니까?\n발신자의 주장과 실제 체결 흐름은 다를 수 있습니다.\n\n" + RemainingSeconds + "초 후 종료" : message);
         }
         answer.interactable = decline.interactable = Ringing && MarketDayController.CanTrade;
-        alert.text = Ringing ? "전화 수신 · Tab" : "";
     }
     public void Ring(Caller caller)
     {
         if (Ringing)
         { return; }
-        CurrentCaller = caller; Ringing = true; expires = Time.time + 70f;
+        CurrentCaller = caller; Ringing = true; expires = SessionClock.Time + 70f;
     }
     public void Answer()
     {
@@ -83,7 +83,7 @@ public sealed class PhoneCallController : MonoBehaviour
         message = "전화를 거절했습니다. 시장은 계속 움직입니다.";
         Resolve();
     }
-    private void Resolve() { Ringing = false; ResolvedCalls++; nextCall = Time.time + random.Next(210, 360); }
+    private void Resolve() { Ringing = false; ResolvedCalls++; nextCall = SessionClock.Time + random.Next(210, 360); }
     public void Raise()
     {
         DeskViewController.Instance?.ExitView(true);

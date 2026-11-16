@@ -228,7 +228,7 @@
       "weights": [
         {
           "key": "ANSWER",
-          "value": 60.0
+          "value": 70.0
         },
         {
           "key": "REBUT",
@@ -237,10 +237,6 @@
         {
           "key": "MOCK",
           "value": 15
-        },
-        {
-          "key": "BRAG",
-          "value": 10
         }
       ]
     },
@@ -253,10 +249,6 @@
         },
         {
           "key": "ASK",
-          "value": 10
-        },
-        {
-          "key": "SMALLTALK",
           "value": 10
         }
       ]
@@ -386,6 +378,23 @@
         {
           "key": "SMALLTALK",
           "value": 40
+        }
+      ]
+    },
+    {
+      "key": "REACT",
+      "weights": [
+        {
+          "key": "AGREE",
+          "value": 45
+        },
+        {
+          "key": "ASK",
+          "value": 40
+        },
+        {
+          "key": "COMFORT",
+          "value": 15
         }
       ]
     }

@@ -10,6 +10,11 @@ public class NewsManager : MonoBehaviour
     public static event System.Action<Stock, long, float> OnMarketNews;
     public static event System.Action<Stock, long, string> OnNewsPublished;
     private long nextNewsId;
+    public static event System.Action<NewsArticle> OnArticlePublished;
+    public readonly List<NewsArticle> Articles = new(40);
+    public int ArticleVersion { get; private set; }
+    public NewsWritingCatalog Writing { get; private set; }
+    public NewsArticle FindArticle(long id) => Articles.Find(article => article.id == id);
     private readonly Dictionary<Stock, HashSet<long>> reservedIds = new();
     public long ReserveEventId(Stock stock)
     {
@@ -58,6 +63,10 @@ public class NewsManager : MonoBehaviour
         }
 
         Instance = this;
+        var writing = Resources.Load<TextAsset>("News/news_writing");
+        if (writing == null) { throw new System.InvalidOperationException("Missing News/news_writing"); }
+        Writing = JsonUtility.FromJson<NewsWritingCatalog>(writing.text);
+        if (GetComponent<CompanyNewsAudience>() == null) { gameObject.AddComponent<CompanyNewsAudience>(); }
         StockManager.OnStockDelisted += OnDelisted;
         // FakeNewsManager가 없으면 이 오브젝트에 추가 (FakeValueAndNews.md 설계용)
         if (FakeNewsManager.Instance == null)
@@ -98,7 +107,13 @@ public class NewsManager : MonoBehaviour
     /// 뉴스 추가. 목록에 넣고(최대 20개), 해당 종목 관심도에 Mathf.Abs(criticalValue - 1) * 1000 반영.
     /// </summary>
     public void AddNews(Stock stock, float criticalValue, string title, long newsId = 0)
+    { Publish(stock, criticalValue, title, newsId); }
+
+    public NewsArticle Publish(Stock stock, float criticalValue, string title, long newsId = 0, bool fabricated = false,
+        string category = null, int variant = 0, long storyId = 0, bool correction = false, NewsArticle authored = null)
     {
+        if (float.IsNaN(criticalValue) || float.IsInfinity(criticalValue) || criticalValue <= 0 || string.IsNullOrWhiteSpace(title))
+        { return null; }
         if (newsId <= 0)
         {
             newsId = ++nextNewsId;
@@ -111,7 +126,7 @@ public class NewsManager : MonoBehaviour
         if (stock != null)
         {
             if (!(reservedIds.TryGetValue(stock, out var reservations) && reservations.Remove(newsId)) && publishedIds.TryGetValue(stock, out long lastId) && newsId <= lastId)
-            { return; }
+            { return null; }
 
             publishedIds[stock] = publishedIds.TryGetValue(stock, out long previousId) ? System.Math.Max(previousId, newsId) : newsId;
             OnMarketNews?.Invoke(stock, newsId, criticalValue);
@@ -139,9 +154,33 @@ public class NewsManager : MonoBehaviour
         }
 
         RefreshUI();
+        NewsArticle article = null;
+        if (stock != null)
+        {
+            article = authored ?? NewsWriting.Compose(Writing, newsId, stock.symbol, stock.stockName, title, (criticalValue - 1) * 8,
+                DeviceMarketJournal.FullStamp(), SessionClock.Time, fabricated, category, variant, storyId, correction);
+            if (authored != null) { article.id = newsId; article.storyId = newsId; }
+            Articles.Insert(0, article);
+            if (Articles.Count > 40) { Articles.RemoveAt(40); }
+            ArticleVersion++;
+        }
         OnNewsPublished?.Invoke(stock, newsId, title ?? "");
+        if (article != null) { OnArticlePublished?.Invoke(article); }
+        return article;
     }
 
+    public NewsArticle PublishAcquisition(Stock stock, decimal ownership)
+    {
+        string title = stock.stockName + " 경영권 인수 확정";
+        var article = new NewsArticle { symbol = stock.symbol, company = stock.stockName, title = title,
+            summary = "플레이어가 과반 지분을 확보했습니다. 새 경영 전략과 주주환원 확대에 대한 기대가 커지고 있습니다.",
+            body = "주주 원장에서 플레이어의 지분 " + ownership.ToString("0.00####") + "%가 확인됐습니다. 실제 체결이 완료된 지분을 기준으로 경영권이 이전됐습니다.\n\n" +
+                "새 지배주주는 배당·재투자·현금 비축 정책을 결정할 수 있습니다. 시장에서는 자본 배분 개선과 성장 투자 가능성을 주요 호재로 평가하고 있습니다.\n\n" +
+                "기업의 일일 배당은 장 마감 실적과 보유 현금에 따라 결정됩니다. 인수 자체가 이익이나 주가 상승을 보장하지는 않습니다.",
+            category = "corporate", categoryLabel = "기업 인수", source = "기업 공시", verification = "지분 확인",
+            time = DeviceMarketJournal.FullStamp(), publishedAt = SessionClock.Time, sentiment = 1, credibility = .98 };
+        return Publish(stock, 1.30f, title, authored: article);
+    }
     void RefreshUI()
     {
         if (content == null || itemPrefab == null)

@@ -193,13 +193,19 @@ public sealed class BotSocialState
         Sensitivity = 0.7f + (float)rng.NextDouble() * 0.6f;
         Recovery = 0.7f + (float)rng.NextDouble() * 0.6f;
         Psychology = new InvestorPsychology(id, seed);
+        // 별도 난수열을 써서 기존 성향·닉네임 생성 순서를 바꾸지 않는다.
+        var skillRng = new System.Random(unchecked(seed * 31 + id * 104729));
+        float startSkill = type.Contains("Smart") ? .55f + (float)skillRng.NextDouble() * .3f : type.Contains("Book") || type.Contains("Monitor") ? .25f + (float)skillRng.NextDouble() * .3f :
+            type.Contains("Holder") ? .15f + (float)skillRng.NextDouble() * .25f : (float)skillRng.NextDouble() * .15f;
+        Psychology.InitializeChartSkill(startSkill, System.Math.Max(startSkill, .25f + (float)skillRng.NextDouble() * .75f));
         Impulsiveness = (float)rng.NextDouble();
         Articulation = (float)rng.NextDouble();
         Confidence = .2f + .75f * (float)rng.NextDouble();
         Suspicion = .15f + .55f * (float)rng.NextDouble();
         Role = type.Contains("Whale") ? "고래" : type.Contains("Smart") || type.Contains("Book") ? "기관" : "개인";
-        string[] names = { "새벽개미", "종가메모", "관망수달", "느린호가", "파란노트", "커피두잔", "야간정찰", "먼지상자", "잔고지킴", "우산너구리" };
-        Nickname = names[rng.Next(names.Length)] + id.ToString("D3");
+        // 예전에는 이름 10개에 번호를 붙였다. 난수열 순서는 그대로 두고 이름만 파츠 조합으로 만든다.
+        rng.Next(10);
+        Nickname = BotNicknames.Make(seed, id);
         Profile = Role + " · " + (Articulation < .3f ? "짧게 말함" : Articulation > .7f ? "분석적으로 말함" : "대화형");
         for (int i = 0; i < LastEvents.Length; i++)
         {
@@ -216,6 +222,7 @@ public sealed class BotSocialState
     }
 }
 
+public enum ChatRoomNotice { None, Join, Leave, Kick, Moderation }
 public readonly struct BotChatMessage
 {
     public readonly long Sequence;
@@ -225,16 +232,19 @@ public readonly struct BotChatMessage
     public readonly ChatEvent Event;
     public readonly InvestorMessageContext Context;
     public readonly SocialMessage Social;
-    public BotChatMessage(long sequence, TradeBot bot, int day, int minute, string text, string templateId, ChatEvent kind, InvestorMessageContext context = default, SocialMessage social = null)
+    public readonly ChatRoomNotice Notice;
+    public bool IsRoomNotice => Notice != ChatRoomNotice.None;
+    public BotChatMessage(long sequence, TradeBot bot, int day, int minute, string text, string templateId, ChatEvent kind, InvestorMessageContext context = default, SocialMessage social = null, ChatRoomNotice notice = ChatRoomNotice.None)
     {
+        Notice = notice;
         Social = social ?? new SocialMessage { id = ChatSocialIds.Next(), senderId = bot == null ? 0 : bot.Social.Id, roomId = context.Room,
             at = (day - 1) * 1440d + minute, act = SocialAct.REACT, templateKey = templateId, text = text, facts = new SocialFacts(),
             debug = new SocialMessageDebug { trigger = bot == null ? "SYSTEM" : "LEGACY", weights = Array.Empty<SocialWeight>(), slots = new SocialFacts() } };
         Context = context.EventId > 0 ? context : new InvestorMessageContext(0, 0, 0f, bot == null ? 1f : bot.Social.Confidence, bot == null ? 0f : bot.Social.Psychology.Trust, false, target: 0);
         Sequence = sequence;
         BotId = bot == null ? 0 : bot.Social.Id;
-        Day = day;
-        Minute = minute;
+        Day = day + minute / 1440;
+        Minute = minute % 1440;
         Nickname = bot == null ? "시장 안내" : bot.Social.Nickname;
         Profile = bot == null ? "공개 종목 상태 안내" : bot.Social.Profile;
         Text = text;

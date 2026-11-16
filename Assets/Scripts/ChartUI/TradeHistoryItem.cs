@@ -12,6 +12,12 @@ public class TradeHistoryItem : MonoBehaviour
     public TextMeshProUGUI txtVolume;
 
     private bool _isBuyInitiated;
+    void OnEnable() { MarketColors.Changed += RefreshColors; RefreshColors(); }
+    void OnDisable() { MarketColors.Changed -= RefreshColors; }
+    private void RefreshColors()
+    {
+        if (txtPrice!=null) { txtPrice.color=_isBuyInitiated ? MarketColors.Up : MarketColors.Down; }
+    }
 
     public void Set(decimal price, decimal volume, bool isBuyInitiated)
     {
@@ -19,14 +25,14 @@ public class TradeHistoryItem : MonoBehaviour
 
         if (txtPrice != null)
         {
-            txtPrice.text = PriceTickPolicy.FormatPrice(price);
-            txtPrice.color = isBuyInitiated ? new Color(0.6f, 0.9f, 0.6f) : new Color(0.9f, 0.3f, 0.3f);
+            GameLocalizedText.Set(txtPrice,PriceTickPolicy.FormatPrice(price));
+            RefreshColors();
         }
 
         if (txtVolume != null)
         {
             decimal totalAmount = price * volume;
-            txtVolume.text = totalAmount.ToString("N0");
+            GameLocalizedText.Set(txtVolume,totalAmount.ToString("N0"));
         }
     }
 }

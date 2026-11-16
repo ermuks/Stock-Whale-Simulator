@@ -1,0 +1,8 @@
+{
+  "version": 1, "maximumLevel": 5, "projectDays": 2,
+  "founderShares": 10000, "founderValue": 20000000,
+  "listingValue": 50000000, "listingProfitableCloses": 3, "listingProjects": 2,
+  "projectCostRatio": 0.05, "levelCostScale": 0.35,
+  "capacityGain": 0.25, "salesGain": 0.05, "researchSaving": 0.04,
+  "earningsMultiple": 20, "publicIssueRatio": 0.25, "npcCashReserve": 0.25
+}

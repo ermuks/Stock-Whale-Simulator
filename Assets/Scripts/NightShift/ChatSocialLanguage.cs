@@ -22,10 +22,12 @@ public sealed partial class InvestorSociety
             if (group.key != key || group.style != template.style) { continue; }
             int split = template.key.LastIndexOf('.');
             if (!int.TryParse(template.key.Substring(split + 1), out int index) || index < 1) { return template.text; }
-            string text = group.texts[(index - 1) % group.texts.Length];
+            // 같은 번호의 문장만 되풀이하지 않도록 메시지마다 다른 문장을 고른다. 난수열은 쓰지 않는다.
+            int pick = (int)((uint)(index - 1 + (int)(CompanyBusiness.Hash("CTX:" + message.id) % 997)) % (uint)group.texts.Length);
+            string text = group.texts[pick];
             foreach (System.Text.RegularExpressions.Match slot in SlotPattern.Matches(text))
             { if (string.IsNullOrEmpty(Slot(message.facts, slot.Groups[1].Value, "target"))) { return template.text; } }
-            message.debug.contextKey = key + "." + template.style + "." + index;
+            message.debug.contextKey = key + "." + template.style + "." + (pick + 1);
             return text;
         }
         return template.text;
@@ -34,6 +36,8 @@ public sealed partial class InvestorSociety
     public static string DecorateSocialText(InvestorPsychology mind, SocialMessage message, string text)
     {
         var config = ChatSocialConfig.Current;
+        if (mind.Traits.Serious && CosmeticRandom(mind, message, 0x271cfa39u).Next() >= config.Get("communitySeriousChance"))
+        { return text; }
         if (mind.Traits.Politeness >= 67 || ChatSocialAssets.Templates.suffixes == null)
         { return text; }
         double anger = message.targetId > 0 && mind.Relations.TryGetValue(message.targetId, out var relation) ? relation.anger : 0;

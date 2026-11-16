@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>플레이어가 정한 예산 안에서 실제 계좌 주문을 실행하는 작업 세션. 가격이나 잔고를 생성하지 않는다.</summary>
-public sealed class TradingOperationController : MonoBehaviour
+/// <summary>실제 계좌와 호가를 사용하는 자동 주문 세션. 가격이나 잔고를 생성하지 않는다.</summary>
+public sealed partial class TradingOperationController : MonoBehaviour
 {
-    public enum Mode { Standby, Prepared, Build, Drive, Unwind, Paused, Review }
+    public enum Mode { Standby, Prepared, Build, Drive, Unwind, Paused, Review, Spread }
     public static TradingOperationController Instance { get; private set; }
     public Trader account;
     public Mode CurrentMode { get; private set; }
@@ -47,7 +47,7 @@ public sealed class TradingOperationController : MonoBehaviour
     private readonly List<(decimal price, decimal volume)> levels = new(3);
     private bool submitting;
     private float nextOrder;
-    private static readonly string[] ModeNames = { "대기", "준비 완료", "지정가 매수", "즉시 분할 매수", "분할 매도", "관망", "주문 기록" };
+    private static readonly string[] ModeNames = { "대기", "준비 완료", "지정가 매수", "즉시 분할 매수", "분할 매도", "관망", "주문 기록", "스프레드" };
     public string ModeName => ModeNames[(int)CurrentMode];
 
     void Awake()
@@ -55,6 +55,11 @@ public sealed class TradingOperationController : MonoBehaviour
         if (Instance != null && Instance != this)
         { enabled = false; return; }
         Instance = this;
+    }
+    public void ReconnectSession()
+    {
+        foreach (var stock in StockManager.Instance.stocks) { stock.OnMatchedTrade -= OnFill; }
+        if (Target != null && Active) { Target.OnMatchedTrade += OnFill; }
     }
     void Start()
     {
@@ -102,13 +107,15 @@ public sealed class TradingOperationController : MonoBehaviour
         { return; }
         CancelPending();
         CurrentMode = mode;
-        nextOrder = Time.time;
+        nextOrder = SessionClock.Time;
         Feedback = mode == Mode.Paused ? "내 미체결 주문을 회수했습니다. 시장은 계속 움직입니다." : ModeName + " 실행. 주문·체결·잔여 물량을 확인하세요.";
     }
     void Update()
     {
         if (!Active || Time.timeScale <= 0f)
         { return; }
+        if (CurrentMode == Mode.Spread)
+        { RefreshSpread(); return; }
         if (Target.IsDelisted || Target.IsDelisting || !Target.IsListed)
         { Finish("대상 종목 거래 종료"); return; }
         if (!MarketDayController.CanTrade)
@@ -122,14 +129,16 @@ public sealed class TradingOperationController : MonoBehaviour
         if (CurrentMode == Mode.Prepared)
         { return; }
         Elapsed += Time.deltaTime;
-        if (CurrentMode == Mode.Paused || Time.time < nextOrder)
+        if (CurrentMode == Mode.Paused || SessionClock.Time < nextOrder)
         { return; }
-        nextOrder = Time.time + (CurrentMode == Mode.Drive ? 2f : 3.5f);
+        nextOrder = SessionClock.Time + (CurrentMode == Mode.Drive ? 2f : 3.5f);
         CancelPending();
         SubmitSlice();
     }
     public bool SubmitSlice()
     {
+        if (CurrentMode == Mode.Spread)
+        { return false; }
         if (!Active || !MarketDayController.CanTrade || !Target.AcceptsOrders || CurrentMode == Mode.Prepared || CurrentMode == Mode.Paused)
         { return false; }
         bool buy = CurrentMode != Mode.Unwind;
@@ -186,10 +195,20 @@ public sealed class TradingOperationController : MonoBehaviour
     {
         if (!Active || (!submitting && !pending.Contains(resting)))
         { return; }
-        if (buyer == account && seller != account)
+        if (CurrentMode==Mode.Spread && buyer!=seller && (ReferenceEquals(buyer,account) || ReferenceEquals(seller,account)))
+        {
+            bool buy=ReferenceEquals(buyer,account);
+            SpreadFills.Insert(0,new DeviceMarketJournal.Fill { Stock=stock,Time=DeviceMarketJournal.FullStamp(),Buy=buy,Price=price,Quantity=volume,Realized=buy ? 0 : (price-(resting?.costBasis ?? account.SubmittedSellCost))*volume });
+            if (SpreadFills.Count>32) { SpreadFills.RemoveAt(32); }
+        }
+        if (ReferenceEquals(buyer, account) && !ReferenceEquals(seller, account))
         { Bought += volume; Spent += price * volume; Inventory += volume; FillCount++; }
-        else if (seller == account && buyer != account)
-        { Sold += volume; Proceeds += price * volume; Inventory -= volume; FillCount++; }
+        else if (ReferenceEquals(seller, account) && !ReferenceEquals(buyer, account))
+        {
+            Sold += volume; Proceeds += price * volume; Inventory -= volume; FillCount++;
+            if (CurrentMode == Mode.Spread)
+            { SpreadRealized += (price - resting.costBasis) * volume; }
+        }
     }
     private void CancelPending()
     {
@@ -204,6 +223,7 @@ public sealed class TradingOperationController : MonoBehaviour
     {
         if (!Active)
         { return; }
+        if (SpreadRunning) { SpreadEndedGameMinute=DeviceMarketJournal.GameNow; }
         CancelPending();
         Result = MarkedResult;
         CompletedSessions++;

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -65,6 +65,13 @@ public sealed class LeadingRoomOrders : IDisposable
         subscribed.Add(stock); stock.OnMatchedTrade += Fill;
     }
     public Plan Get(TradeBot bot) => plans.TryGetValue(bot, out var plan) ? plan : null;
+    public void ReconnectSession()
+    {
+        foreach (var stock in StockManager.Instance.stocks)
+        { stock.OnMatchedTrade -= Fill; stock.OnMatchedTrade += Fill; }
+    }
+    /// <summary>지금 제출 중인 주문이 이 봇이 수락한 리딩방 지시인지.</summary>
+    public bool IsSubmitting(TradeBot bot) => submitting != null && plans.TryGetValue(bot, out var plan) && plan == submitting;
     public bool AllowsRegular(TradeBot bot, Stock stock)
     {
         return !plans.TryGetValue(bot, out var plan) || plan.Command.Stock != stock || submitting == plan ||
@@ -201,11 +208,11 @@ public sealed class LeadingRoomOrders : IDisposable
             if (!room.PlayerOwned || command == null || command.Stock != stock || !command.ObserveTrade(price, day, MarketDayController.CanTrade))
             { continue; }
             long eventId = society.NextEventId();
-            var observation = new InvestorForecastObservation(eventId, command.Id, command.Room, stock.symbol, command.Buy, command.Sell, Time.time);
+            var observation = new InvestorForecastObservation(eventId, command.Id, command.Room, stock.symbol, command.Buy, command.Sell, SessionClock.Time);
             foreach (var plan in command.Observers)
             {
                 var bot = plan.Bot;
-                if (plan.State != Stage.Rejected || bot == null || !bot.isActiveAndEnabled || bot.Social.Psychology.Room != command.Room || !bot.Social.Psychology.ActiveAt(Time.time))
+                if (plan.State != Stage.Rejected || bot == null || !bot.isActiveAndEnabled || bot.Social.Psychology.Room != command.Room || !bot.Social.Psychology.ActiveAt(SessionClock.Time))
                 { continue; }
                 if (observedResults.Count >= 256) { FlushObservedResults(1); }
                 observedResults.Enqueue((bot, observation));
@@ -242,7 +249,7 @@ public sealed class LeadingRoomOrders : IDisposable
             if (plan.Remaining <= 0m)
             {
                 plan.Reported = true; plan.State = Stage.Completed;
-                society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, Time.time, assetBefore: plan.AssetBefore));
+                society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, SessionClock.Time, assetBefore: plan.AssetBefore));
             }
         }
     }
@@ -263,7 +270,7 @@ public sealed class LeadingRoomOrders : IDisposable
             { plan.State = Stage.Canceled; continue; }
             plan.RealizedCost += plan.Basis; plan.Basis = plan.Remaining = 0m;
             plan.State = Stage.Completed; plan.Reported = true;
-            society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, Time.time, "상장폐지 손실", plan.AssetBefore));
+            society.RecordOutcome(plan.Bot, new InvestorExperience(society.NextEventId(), plan.Command.Id, plan.Command.Room, stock.symbol, plan.RealizedCost, plan.Proceeds, SessionClock.Time, "상장폐지 손실", plan.AssetBefore));
         }
         stock.OnMatchedTrade -= Fill; subscribed.Remove(stock);
     }
