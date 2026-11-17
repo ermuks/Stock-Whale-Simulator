@@ -22,7 +22,17 @@ public sealed class PhoneCallController : MonoBehaviour
     private float nextCall = 35f, expires, nextUi;
     private System.Random random = new System.Random(34117);
     private string message = "수신 기록 없음";
-    void Awake() { Instance = this; }
+    /// <summary>전화 기능은 쓰지 않기로 했다. false인 동안에는 전화가 오지 않고, Tab으로 휴대폰을 들 수도 없다. 씬의 물체와 이 코드는 남겨 두었으니 true로 바꾸면 되살아난다.</summary>
+    public static readonly bool Available = false;
+    void Awake()
+    {
+        if (!Available)
+        {
+            if (grip != null) { grip.gameObject.SetActive(false); }
+            enabled = false; return;
+        }
+        Instance = this;
+    }
     void Start()
     {
         authoredScale = grip.localScale; authoredPosition = grip.localPosition;

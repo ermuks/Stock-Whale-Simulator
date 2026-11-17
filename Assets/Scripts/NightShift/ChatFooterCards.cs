@@ -125,6 +125,8 @@ public static class ChatFooterText
         ["참여하면 운영자의 실제 주문과 대화를 볼 수 있습니다."] = ("Join to see the host's real orders and chat.", "参加すると運営者の実際の注文と会話が見られます。"),
         ["내 리딩방"] = ("My own room", "自分の部屋"), ["참여 {0}명"] = ("{0} members", "参加 {0}人"),
         ["지시"] = ("Signal", "指示"),
+        ["장 시작 몰아주기"] = ("Opening rush", "寄り付き集中"), ["예약 취소"] = ("Cancel rush", "予約取消"),
+        ["장 시작 예약 · {0} · 회원 {1}까지 매수, 내 물량 매도"] = ("Queued for the open · {0} · members buy up to {1}, you sell", "寄り付き予約 · {0} · メンバーは{1}まで買い、自分は売り"),
         ["내 리딩방 탭에서 개설할 수 있습니다"] = ("Open it from the My own room tab", "「自分の部屋」タブから開設できます"),
         ["새 리딩방을 개설하세요"] = ("Open your own room", "自分の部屋を開設しましょう"),
         ["회원을 초대하고 매매 지시를 직접 내릴 수 있습니다."] = ("Invite members and send them your own calls.", "メンバーを招待して、自分で売買指示を出せます。"),
@@ -267,12 +269,19 @@ public sealed class ChatFooterCards : MonoBehaviour
             if (label != null) { label.gameObject.SetActive(false); }
         }
         ownBuyCaption = ChatFooterKit.Label("Text :: Buy Caption", ownCard, like, .024f, .29f, .07f, .27f, 30f, ChatFooterKit.Muted);
-        ChatFooterKit.Place((RectTransform)rooms.buyPrice.transform, ownCard, .094f, .29f, .235f, .27f);
-        ownSellCaption = ChatFooterKit.Label("Text :: Sell Caption", ownCard, like, .349f, .29f, .07f, .27f, 30f, ChatFooterKit.Muted);
-        ChatFooterKit.Place((RectTransform)rooms.sellPrice.transform, ownCard, .419f, .29f, .235f, .27f);
-        ChatFooterKit.Place((RectTransform)rooms.issue.transform, ownCard, .676f, .29f, .145f, .27f);
-        ChatFooterKit.Place((RectTransform)rooms.cancel.transform, ownCard, .831f, .29f, .145f, .27f);
+        ChatFooterKit.Place((RectTransform)rooms.buyPrice.transform, ownCard, .094f, .29f, .175f, .27f);
+        ownSellCaption = ChatFooterKit.Label("Text :: Sell Caption", ownCard, like, .284f, .29f, .07f, .27f, 30f, ChatFooterKit.Muted);
+        ChatFooterKit.Place((RectTransform)rooms.sellPrice.transform, ownCard, .354f, .29f, .175f, .27f);
+        ChatFooterKit.Place((RectTransform)rooms.issue.transform, ownCard, .544f, .29f, .12f, .27f);
+        ChatFooterKit.Place((RectTransform)rooms.cancel.transform, ownCard, .674f, .29f, .12f, .27f);
         ChatFooterKit.StyleButton(rooms.issue, 38f); ChatFooterKit.StyleButton(rooms.cancel, 38f);
+        // 장 시작 몰아주기: 장이 열리기 전에 예약해 두면, 장이 열릴 때 회원들에게 +30%까지 사라는 지시가 나가고 내 물량은 그 매수에 넘어간다.
+        rushButton = Instantiate(rooms.issue, ownCard);
+        rushButton.name = "Button :: Opening Rush"; rushButton.gameObject.SetActive(true);
+        rushButton.onClick = new Button.ButtonClickedEvent(); rushButton.onClick.AddListener(ToggleRush);
+        ChatFooterKit.Place((RectTransform)rushButton.transform, ownCard, .804f, .29f, .172f, .27f);
+        ChatFooterKit.StyleButton(rushButton, 32f);
+        rushLabel = rushButton.GetComponentInChildren<TextMeshProUGUI>(true);
         // 셋째 줄은 걸려 있는 지시와 따르는 사람 수, 넷째 줄은 방금 한 일. 둘 다 카드 너비를 다 쓴다.
         ownCommand = ChatFooterKit.Label("Text :: Active Command", ownCard, like, .024f, .61f, .952f, .16f, 28f, ChatFooterKit.Ink);
         ChatFooterKit.Place(rooms.feedback.rectTransform, ownCard, .024f, .79f, .952f, .16f);
@@ -524,6 +533,21 @@ public sealed class ChatFooterCards : MonoBehaviour
         ChatFooterKit.Lit(value, has ? DeviceTerminalUI.Money(price) : ChatFooterText.T("신호 없음"));
         value.color = has ? ChatFooterKit.Ink : ChatFooterKit.Faint; value.fontSize = has ? 44f : 34f;
     }
+    private Button rushButton;
+    private TextMeshProUGUI rushLabel;
+    private void ToggleRush()
+    {
+        var rush = OpeningRush.Instance;
+        if (rush == null) { return; }
+        if (rush.PlayerPending != null) { rush.CancelPlayer(); }
+        else
+        {
+            // 매수 칸에 적은 값이 회원들이 받아 줄 값이 된다. 비어 있거나 지금 값보다 낮으면 +30%로 잡힌다.
+            decimal.TryParse(rooms.buyPrice.text.Replace(",", ""), System.Globalization.NumberStyles.None, System.Globalization.CultureInfo.InvariantCulture, out decimal top);
+            rush.SchedulePlayer(chat.SelectedRoom, StockManager.Instance.CurrentStock, top);
+        }
+        Refresh();
+    }
     private void RefreshOwn(InvestorSociety society, InvestorSociety.Room room)
     {
         ChatFooterKit.Lit(ownTitle, ChatFooterText.T("내 리딩방"));
@@ -551,7 +575,14 @@ public sealed class ChatFooterCards : MonoBehaviour
         {
             if (counts[i] > 0) { line += "  ·  " + ChatFooterText.T(CountNames[i]) + " " + counts[i]; }
         }
+        var rush = OpeningRush.Instance; var current = StockManager.Instance == null ? null : StockManager.Instance.CurrentStock;
+        bool queued = rush != null && rush.PlayerPending != null;
+        // 예약은 장이 닫혀 있을 때만, 지금 보는 종목을 1번 계좌에 들고 있을 때만 할 수 있다.
+        bool ready = rush != null && !rush.PlayerRunning && !MarketDayController.CanTrade && current != null && current.IsListed && PlayerAccounts.Instance != null && PlayerAccounts.Instance.primary.GetHolding(current) >= 1m;
+        ChatFooterKit.Lit(rushLabel, ChatFooterText.T(queued ? "예약 취소" : "장 시작 몰아주기"));
+        rushButton.interactable = queued || ready; ChatFooterKit.Dim(rushButton);
+        if (queued) { line = ChatFooterText.F("장 시작 예약 · {0} · 회원 {1}까지 매수, 내 물량 매도", GameLocale.Text(rush.PlayerPending.stockName), rush.PlayerTop.ToString("N0")); }
         ChatFooterKit.Lit(ownCommand, line);
-        ownCommand.color = active ? ChatFooterKit.Ink : ChatFooterKit.Faint;
+        ownCommand.color = active || queued ? ChatFooterKit.Ink : ChatFooterKit.Faint;
     }
 }

@@ -34,6 +34,7 @@ public static class ScreenTourCapture
     private static readonly string[] languages = { "ko", "en", "ja" };
     private static int stepIndex, languageIndex;
     private static bool sawPlaying;
+    private static string only = "";
     private const string LanguageKey = "DonDon.ScreenTour.Language";
 
     private const string RunningKey = "DonDon.ScreenTour.Running", OptionsEnabledKey = "DonDon.ScreenTour.OptionsEnabled", OptionsKey = "DonDon.ScreenTour.Options",
@@ -118,12 +119,22 @@ public static class ScreenTourCapture
         if (EditorApplication.timeSinceStartup - SessionState.GetFloat(RefreshedAtKey, 0f) < 8 || EditorApplication.isCompiling || EditorApplication.isUpdating) { return; }
         string request = File.ReadAllText(Request);
         audit = request.Contains("audit");
+        only = request.Contains("only:") ? request.Substring(request.IndexOf("only:") + 5).Trim() : "";
         // 요청에 import가 있으면 번역 표를 먼저 다시 들여온다(편집기 메뉴와 같은 동작).
         if (request.Contains("import"))
         {
             File.WriteAllText(Request, request.Replace("import", ""));
             try { DonDonLocalizationSetup.Import(); AssetDatabase.SaveAssets(); }
             catch (Exception error) { File.Delete(Request); File.WriteAllText(Path.Combine(Folder, "report.txt"), "STOPPED: translation import failed: " + error.Message + Environment.NewLine); return; }
+            SessionState.SetBool(RefreshedKey, true); SessionState.SetFloat(RefreshedAtKey, (float)EditorApplication.timeSinceStartup);
+            return;
+        }
+        // 요청에 textures가 있으면 방의 벽지·책상 그림을 먼저 다시 만든다(편집기 메뉴와 같은 동작).
+        if (request.Contains("textures"))
+        {
+            File.WriteAllText(Request, request.Replace("textures", ""));
+            try { RoomTextureGenerator.Generate(); }
+            catch (Exception error) { File.Delete(Request); File.WriteAllText(Path.Combine(Folder, "report.txt"), "STOPPED: texture build failed: " + error + Environment.NewLine); return; }
             SessionState.SetBool(RefreshedKey, true); SessionState.SetFloat(RefreshedAtKey, (float)EditorApplication.timeSinceStartup);
             return;
         }
@@ -177,6 +188,7 @@ public static class ScreenTourCapture
             if (phase == 0)
             {
                 camera = Camera.main;
+                report.AppendLine("CLOCK at start " + DeviceMarketJournal.Stamp() + " phase " + MarketDayController.Instance.Phase + " day " + MarketDayController.Instance.Day + " intro playing " + DayIntroOverlay.Instance.Playing);
                 chat = Object.FindObjectsByType<TabletGroupChatUI>().Single(c => c.monitorChat); rooms = chat.GetComponent<LeadingRoomUI>();
                 var manager = Object.FindAnyObjectByType<ChartManager>();
                 chartScreen = (RectTransform)manager.textName.transform.parent.parent;
@@ -265,7 +277,7 @@ public static class ScreenTourCapture
             {
                 try { steps[stepIndex].prepare(); }
                 catch (Exception error) { report.AppendLine("STEP FAILED " + steps[stepIndex].name + " prepare: " + error.Message); }
-                phase = 101; ready = EditorApplication.timeSinceStartup + 1.8; return;
+                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
             }
             if (phase == 101)
             {
@@ -273,7 +285,8 @@ public static class ScreenTourCapture
                 try
                 {
                     var target = step.target();
-                    if (target == null) { if (step.name != "menu-closed" && step.name != "large-caps") { report.AppendLine("STEP SKIPPED " + step.name + ": screen not found"); } }
+                    if (only.Length > 0 && !step.name.Contains(only)) { target = null; }
+                    if (target == null) { if (only.Length == 0 && step.name != "menu-closed" && step.name != "large-caps") { report.AppendLine("STEP SKIPPED " + step.name + ": screen not found"); } }
                     else if (target.GetComponent<Canvas>() is Canvas overlay && overlay.renderMode == RenderMode.ScreenSpaceOverlay)
                     { ShootOverlay(overlay, "audit/" + languages[languageIndex] + "-" + (stepIndex + 1).ToString("00") + "-" + step.name); }
                     else
@@ -291,6 +304,13 @@ public static class ScreenTourCapture
         catch (Exception error) { Finish(error); }
     }
 
+    private static void LogAccumulate(string moment)
+    {
+        var operation = TradingOperationController.Instance;
+        report.AppendLine("accumulate " + moment + ": status=" + operation.AccumulateStatus + " bought=" + operation.Bought.ToString("N0") + " spent=" + operation.Spent.ToString("N0") +
+            " average=" + operation.AccumulateAverage.ToString("N1") + " price=" + (operation.Target == null ? 0m : operation.Target.currentPrice).ToString("N0") +
+            " resting=" + operation.AccumulateRestingPrice.ToString("N0") + "x" + operation.AccumulateRestingQuantity.ToString("N0") + " fills=" + operation.FillCount + " left=" + operation.AccumulateBudgetLeft.ToString("N0"));
+    }
     private static void LogLargeCaps()
     {
         if (StockManager.Instance == null || StockStatistics.Instance == null) { return; }
@@ -318,9 +338,38 @@ public static class ScreenTourCapture
         steps.Add(("chat-my-room", () => chat.SelectRoom(1), () => chatScreen));
         steps.Add(("chat-host-room", () => rooms.ShowNpc(), () => chatScreen));
         steps.Add(("monitor-chart", () => chat.SelectRoom(0), () => chartScreen));
+        // 보유 현황 칸의 수익·손실 모습. 요청에 only:monitor-holding 이 있을 때만 주식을 쥐여 준다(다른 화면에 영향을 주지 않게).
+        steps.Add(("monitor-holding-profit", () =>
+        {
+            if (!only.Contains("holding")) { return; }
+            var stock = StockManager.Instance.CurrentStock;
+            PlayerAccounts.Instance.primary.GrantShares(stock, 1000, stock.currentPrice * .8m);
+        }, () => chartScreen));
+        steps.Add(("monitor-holding-loss", () =>
+        {
+            if (!only.Contains("holding")) { return; }
+            var stock = StockManager.Instance.CurrentStock;
+            PlayerAccounts.Instance.primary.GrantShares(stock, 1000, stock.currentPrice * 1.7m);
+        }, () => chartScreen));
         steps.Add(("monitor-information", () => Press("Button :: Information"), () => chartScreen));
         steps.Add(("monitor-article", () => Press("Button :: Article Row 1"), () => chartScreen));
+        // 세력의 장 시작 몰아주기. 요청에 only:rush 가 있을 때만, 첫 언어에서 한 번 벌이고 66초 뒤의 차트와 결과를 남긴다.
+        steps.Add(("rush-npc", () =>
+        {
+            if (!only.Contains("rush") || languageIndex != 0) { return; }
+            bool started = OpeningRush.Instance.ForceNpc();
+            report.AppendLine("RUSH started=" + started + (started ? " " + OpeningRush.Instance.NpcStock.symbol + " price " + OpeningRush.Instance.NpcStock.currentPrice.ToString("N0") : ""));
+            if (started) { StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(OpeningRush.Instance.NpcStock)); }
+        }, () => { if (only.Contains("rush") && languageIndex == 0) { report.AppendLine("RUSH result " + OpeningRush.Instance.LastReport); } return chartScreen; }));
         steps.Add(("stock-list", () => Press("Button :: Back To Chart"), () => Named("Panel :: Stock List Screen")));
+        // 거래정지 종목의 모습. 요청에 only:stock-list-halted 가 있을 때만 두 번째 종목을 정지 상태로 바꿔 놓는다(촬영용 주입).
+        steps.Add(("stock-list-halted", () =>
+        {
+            if (!only.Contains("halted")) { return; }
+            var stock = StockManager.Instance.stocks[1];
+            typeof(Stock).GetProperty("RiskGrade").SetValue(stock, StockRiskGrade.Halted);
+            typeof(Stock).GetProperty("HaltUntil").SetValue(stock, SessionClock.Time + 90f);
+        }, () => Named("Panel :: Stock List Screen")));
         foreach (string panel in new[] { "Panel :: Stock Holdings Screen", "Panel :: Operation Monitor", "Panel :: Market Clock Canvas", "Panel :: Phone Screen" })
         {
             string name = panel;
@@ -339,6 +388,28 @@ public static class ScreenTourCapture
                     var accounts = device.accounts; accounts.GetType().GetProperty("AutomatedUnlocked").SetValue(accounts, true);
                     device.lockRoot.SetActive(false); device.contentRoot.SetActive(true); device.ShowPage(TabletAccountUI.Page.Automation);
                 }, () => screen));
+                steps.Add((prefix + "accumulate", () =>
+                {
+                    foreach (var button in device.GetComponentsInChildren<Button>(true)) { if (button.name == "Button :: Tab Accumulate") { button.onClick.Invoke(); break; } }
+                }, () => screen));
+                // 매집을 실제로 돌려 본다: 작업 계좌에 현금을 옮기고, 현재가 −5%~현재가로 시작한다.
+                steps.Add((prefix + "accumulate-running", () =>
+                {
+                    var operation = TradingOperationController.Instance; var stock = StockManager.Instance.CurrentStock;
+                    bool moved = device.accounts.Transfer(device.accounts.primary, 20_000_000m, out string reason);
+                    bool started = operation.StartAccumulate(stock, stock.currentPrice * .95m, stock.currentPrice, .5f);
+                    report.AppendLine("accumulate transfer=" + moved + " (" + reason + ") started=" + started + " stock=" + stock.symbol + " price=" + stock.currentPrice.ToString("N0") + " band=" + operation.AccumulateLow.ToString("N0") + "~" + operation.AccumulateHigh.ToString("N0") + " budget=" + operation.Budget.ToString("N0") + " feedback=" + operation.Feedback);
+                }, () => { LogAccumulate("after 25s"); return screen; }));
+                // 폭락 대응: 최근 가격 기록에 높은 값을 하나 넣어 "30초 안에 4% 넘게 떨어진" 상황을 만든다(시장 가격은 건드리지 않는다).
+                steps.Add((prefix + "accumulate-crash", () =>
+                {
+                    var operation = TradingOperationController.Instance;
+                    var field = operation.GetType().GetField("accumulatePrices", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+                    var queue = (Queue<(float time, decimal price)>)field.GetValue(operation);
+                    queue.Enqueue((SessionClock.Time, operation.Target.currentPrice * 1.06m));
+                    LogAccumulate("before crash");
+                }, () => { LogAccumulate("12s into crash"); return screen; }));
+                steps.Add((prefix + "accumulate-stopped", () => TradingOperationController.Instance.CancelAccumulate(), () => { LogAccumulate("stopped"); return screen; }));
                 steps.Add((prefix + "assets", () => device.ShowPage(TabletAccountUI.Page.Dashboard), () => screen));
                 steps.Add((prefix + "special", () => device.ShowPage(TabletAccountUI.Page.Special), () => screen));
                 steps.Add((prefix + "records", () => device.ShowPage(TabletAccountUI.Page.Records), () => screen));
@@ -360,6 +431,26 @@ public static class ScreenTourCapture
             steps.Add(("day-intro", () => DayIntroOverlay.Instance.Play(2), () => intro));
         }
         steps.Add(("large-caps", LogLargeCaps, () => null));
+        // 방 전체 모습(화면 빛을 끈 것과 켠 것)과 잠자기 안내. 요청에 only:room 이 있을 때만 찍는다.
+        steps.Add(("room-glow-off", () => { if (only.Contains("room")) { report.AppendLine("CLOCK " + DeviceMarketJournal.Stamp() + " phase " + MarketDayController.Instance.Phase + " day " + MarketDayController.Instance.Day); MarketDayController.Instance.GetComponent<ScreenGlow>().enabled = false; } },
+            () => { if (only.Contains("room") && languageIndex == 0) { ShootView("audit/room-glow-off"); } return null; }));
+        steps.Add(("room-glow-on", () => { if (only.Contains("room")) { MarketDayController.Instance.GetComponent<ScreenGlow>().enabled = true; } },
+            () => { if (only.Contains("room") && languageIndex == 0) { ShootView("audit/room-glow-on"); } return null; }));
+        // 책상을 비스듬히 위에서 내려다본 모습. 어두워서 안 보이니 찍는 동안만 등을 하나 켠다. 게임의 카메라는 건드리지 않는다.
+        steps.Add(("room-desk", () => { }, () => { if (only.Contains("room") && languageIndex == 0) { ShootDesk("audit/room-desk"); } return null; }));
+        // 서랍: 열어서 들여다본 모습. 게임과 같은 길(시선 옮기기)로 연다.
+        steps.Add(("room-drawer", () =>
+        {
+            if (!only.Contains("room")) { return; }
+            bool opened = DrawerProp.Instance.Found && DeskViewController.Instance.FocusCustom((Pose)typeof(DrawerProp).GetMethod("ViewPose", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(DrawerProp.Instance, new object[] { camera }), 52f);
+            if (opened) { typeof(DrawerProp).GetProperty("Open").SetValue(DrawerProp.Instance, true); }
+            report.AppendLine("DRAWER opened=" + opened + " fortune " + DrawerProp.Instance.FortuneIndex);
+        }, () => { if (only.Contains("room")) { ShootView("audit/" + languages[languageIndex] + "-room-drawer"); } return null; }));
+        steps.Add(("room-drawer-close", () => { if (only.Contains("room")) { DeskViewController.Instance.ExitView(true); } },
+            () => { if (only.Contains("room")) { report.AppendLine("DRAWER closed, fortune now " + DrawerProp.Instance.FortuneIndex); } return null; }));
+        steps.Add(("room-sleep", () => { if (only.Contains("room")) { typeof(MarketDayController).GetProperty("Phase").SetValue(MarketDayController.Instance, MarketPhase.PostClose); } },
+            () => only.Contains("room") ? (RectTransform)SleepPrompt.Instance.Root.transform : null));
+        steps.Add(("room-restore", () => { if (only.Contains("room")) { typeof(MarketDayController).GetProperty("Phase").SetValue(MarketDayController.Instance, MarketPhase.Trading); } }, () => null));
         // 시스템 메뉴(ESC): 일시정지 화면과 언어 설정.
         var menu = PauseMenuController.Instance;
         if (menu != null)
@@ -369,7 +460,8 @@ public static class ScreenTourCapture
             steps.Add(("menu-language", () => { menu.Settings(); menu.UI.Settings("게임"); }, () => menuScreen));
             steps.Add(("menu-closed", () => { menu.Back(); menu.Resume(); }, () => null));
         }
-        report.AppendLine("audit steps=" + steps.Count);
+        // 요청에 only:이름 이 있으면 그 이름이 들어간 화면만 찍는다(준비 단계는 그대로 밟는다).
+        report.AppendLine("audit steps=" + steps.Count + (only.Length > 0 ? " only=" + only : ""));
     }
 
     private static bool Press(string name)
@@ -427,6 +519,58 @@ public static class ScreenTourCapture
         return false;
     }
     /// <summary>화면 위에 덮어 그리는 메뉴는 카메라에 잠깐 붙여서 찍는다.</summary>
+    /// <summary>플레이어 카메라가 보는 방 그대로를 찍는다.</summary>
+    private static void ShootView(string name)
+    {
+        const int width = 1600, height = 900;
+        var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
+        camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
+        var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+        File.WriteAllBytes(Path.Combine(Folder, name + ".png"), pixels.EncodeToPNG());
+        camera.targetTexture = old; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
+        report.AppendLine("VIEW " + name);
+    }
+    private static void ShootDesk(string name)
+    {
+        var desk = GameObject.Find("desk_body"); if (desk == null) { report.AppendLine("VIEW " + name + " skipped: no desk"); return; }
+        var bounds = desk.GetComponent<Renderer>().bounds; float reach = Mathf.Max(bounds.size.x, bounds.size.z);
+        report.AppendLine("DESK bounds size " + bounds.size.ToString("F2") + " center " + bounds.center.ToString("F2") + " view forward " + camera.transform.forward.ToString("F2"));
+        var clutter = Object.FindAnyObjectByType<DeskClutter>();
+        if (clutter != null) { report.AppendLine("CLUTTER moved " + clutter.Moved + " removed " + clutter.Removed + " left " + (GameObject.Find("Area :: Desk Clutter") == null ? 0 : GameObject.Find("Area :: Desk Clutter").transform.childCount)); }
+        foreach (var note in Object.FindObjectsByType<StickyNotePaper>(FindObjectsInactive.Include))
+        {
+            report.AppendLine("NOTE " + note.name + " active " + note.gameObject.activeInHierarchy + " released " + note.Released + " settled " + note.Settled + " position " + note.transform.position.ToString("F2") + " up " + note.transform.up.ToString("F2"));
+            var resting = note.transform.Find("Mesh :: Resting Paper");
+            if (resting != null)
+            {
+                var shape = resting.GetComponent<MeshFilter>().sharedMesh; var drawn = resting.GetComponent<MeshRenderer>();
+                report.AppendLine("  resting vertices " + shape.vertexCount + " local bounds " + shape.bounds.center.ToString("F3") + " / " + shape.bounds.size.ToString("F3") + " world bounds " + drawn.bounds.center.ToString("F2") + " / " + drawn.bounds.size.ToString("F2") + " enabled " + drawn.enabled + " cull " + drawn.sharedMaterial.GetFloat("_Cull") + " first vertex " + shape.vertices[0].ToString("F3"));
+            }
+        }
+        var drawer = GameObject.Find("desk_drawer");
+        if (drawer != null)
+        {
+            var mesh = drawer.GetComponent<MeshFilter>().sharedMesh; var box = drawer.GetComponent<Renderer>().bounds;
+            report.AppendLine("DRAWER world size " + box.size.ToString("F2") + " center " + box.center.ToString("F2") + " vertices " + mesh.vertexCount + " triangles " + mesh.triangles.Length / 3 + " local size " + mesh.bounds.size.ToString("F3") + " forward " + drawer.transform.forward.ToString("F2") + " up " + drawer.transform.up.ToString("F2") + " camera " + camera.transform.position.ToString("F2"));
+            // 서랍이 속이 빈 통인지 보려고, 찍는 동안만 플레이어 쪽으로 빼 놓는다.
+            if (only.Contains("drawerout")) { Vector3 pull = -camera.transform.forward; pull.y = 0f; drawer.transform.position += pull.normalized * box.size.z * .7f; }
+        }
+        var holder = new GameObject("Camera :: Desk Check"); var view = holder.AddComponent<Camera>(); view.CopyFrom(camera); view.fieldOfView = 55f;
+        // 플레이어 자리 쪽 위에서 책상을 내려다본다.
+        Vector3 back = -camera.transform.forward; back.y = 0f; back.Normalize();
+        Vector3 top = new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
+        holder.transform.position = top + back * reach * .75f + Vector3.up * reach * .55f; holder.transform.LookAt(top);
+        var lamp = new GameObject("Light :: Desk Check").AddComponent<Light>(); lamp.type = LightType.Point; lamp.range = reach * 4f; lamp.intensity = reach * reach * .9f;
+        lamp.transform.position = top + back * reach * .3f + Vector3.up * reach * .8f;
+        const int width = 1600, height = 900;
+        var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active;
+        view.targetTexture = texture; view.Render(); RenderTexture.active = texture;
+        var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+        File.WriteAllBytes(Path.Combine(Folder, name + ".png"), pixels.EncodeToPNG());
+        view.targetTexture = null; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
+        Object.Destroy(holder); Object.Destroy(lamp.gameObject);
+        report.AppendLine("VIEW " + name);
+    }
     private static void ShootOverlay(Canvas canvas, string name)
     {
         const int width = 1600, height = 900;

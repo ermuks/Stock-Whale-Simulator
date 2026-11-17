@@ -14,7 +14,7 @@ using Object = UnityEngine.Object;
 
 public static class VisualHierarchyValidation
 {
-    private const string Output = "D:/GitHub/DonDon/Validation/VisualHierarchy/";
+    private const string Output = "Validation/VisualHierarchy/";
     private static readonly StringBuilder results = new(), visual = new();
     private static readonly List<string> errors = new();
     private static bool oldOptions;

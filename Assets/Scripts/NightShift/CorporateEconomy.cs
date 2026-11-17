@@ -121,9 +121,10 @@ public sealed partial class CorporateEconomy : MonoBehaviour
             }
             // Closing already validates the share ledger; do not mint missing-holder dividends.
             if (shares + ExchangeWarehouse.Instance.GetHolding(stock) != stock.issuedShares) { throw new InvalidOperationException("Corporate shareholder ledger mismatch: " + stock.symbol); }
-            decimal demand=data.DemandFor(day,stock.symbol,Rules)+data.growth.Sales*(decimal)GrowthRules.salesGain;
-            decimal efficiency=1-data.growth.Research*(decimal)GrowthRules.researchSaving;
-            if (!data.BeginClose(day, stock.currentPrice, stock.issuedShares, demand, Rules,efficiency))
+            decimal demand=data.growth.Demand(data.DemandFor(day,stock.symbol,Rules),GrowthRules);
+            decimal efficiency=data.growth.Efficiency(GrowthRules);
+            if (!data.BeginClose(day, stock.currentPrice, stock.issuedShares, demand, Rules,efficiency,data.growth.FixedSaving(GrowthRules),
+                data.growth.ExportShare(GrowthRules),data.ExportDemandFor(day,stock.symbol,Rules)))
             { continue; }
             decimal budget = data.DividendBudget(Rules), paid = 0, playerPaid = 0;
             foreach (var owner in payees)
@@ -132,7 +133,7 @@ public sealed partial class CorporateEconomy : MonoBehaviour
                 payments.Add(payment); paid += payment;
                 if (PlayerAccounts.IsPlayer(owner)) { playerPaid += payment; }
             }
-            data.FinishClose(paid, playerPaid, Rules);
+            data.FinishClose(paid, playerPaid, Rules, data.growth.FounderBusiness ? (decimal)GrowthRules.founderProductivity : 0m, data.growth.FounderBusiness ? (decimal)GrowthRules.founderProductivityGain : 0m);
             float payoutFrameStart=Time.realtimeSinceStartup;
             for (int i = 0; i < payees.Count; i++)
             {

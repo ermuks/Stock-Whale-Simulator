@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>실제 계좌와 호가를 사용하는 자동 주문 세션. 가격이나 잔고를 생성하지 않는다.</summary>
 public sealed partial class TradingOperationController : MonoBehaviour
 {
-    public enum Mode { Standby, Prepared, Build, Drive, Unwind, Paused, Review, Spread }
+    public enum Mode { Standby, Prepared, Build, Drive, Unwind, Paused, Review, Spread, Accumulate }
     public static TradingOperationController Instance { get; private set; }
     public Trader account;
     public Mode CurrentMode { get; private set; }
@@ -47,7 +47,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
     private readonly List<(decimal price, decimal volume)> levels = new(3);
     private bool submitting;
     private float nextOrder;
-    private static readonly string[] ModeNames = { "대기", "준비 완료", "지정가 매수", "즉시 분할 매수", "분할 매도", "관망", "주문 기록", "스프레드" };
+    private static readonly string[] ModeNames = { "대기", "준비 완료", "지정가 매수", "즉시 분할 매수", "분할 매도", "관망", "주문 기록", "스프레드", "매집" };
     public string ModeName => ModeNames[(int)CurrentMode];
 
     void Awake()
@@ -70,7 +70,8 @@ public sealed partial class TradingOperationController : MonoBehaviour
     {
         if (Active)
         { Feedback = "작업 종료 후 다음 예산을 변경할 수 있습니다."; return; }
-        BudgetFraction = BudgetFraction < .03f ? .05f : BudgetFraction < .08f ? .1f : .02f;
+        // 예산은 2% → 5% → 10% → 25% → 50% 순으로 돈다. 큰 예산이어야 주가를 실제로 밀 수 있다.
+        BudgetFraction = BudgetFraction < .03f ? .05f : BudgetFraction < .08f ? .1f : BudgetFraction < .2f ? .25f : BudgetFraction < .4f ? .5f : .02f;
     }
     public bool Prepare()
     {
@@ -116,6 +117,8 @@ public sealed partial class TradingOperationController : MonoBehaviour
         { return; }
         if (CurrentMode == Mode.Spread)
         { RefreshSpread(); return; }
+        if (CurrentMode == Mode.Accumulate)
+        { RefreshAccumulate(); return; }
         if (Target.IsDelisted || Target.IsDelisting || !Target.IsListed)
         { Finish("대상 종목 거래 종료"); return; }
         if (!MarketDayController.CanTrade)
@@ -137,7 +140,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
     }
     public bool SubmitSlice()
     {
-        if (CurrentMode == Mode.Spread)
+        if (CurrentMode == Mode.Spread || CurrentMode == Mode.Accumulate)
         { return false; }
         if (!Active || !MarketDayController.CanTrade || !Target.AcceptsOrders || CurrentMode == Mode.Prepared || CurrentMode == Mode.Paused)
         { return false; }
@@ -155,10 +158,12 @@ public sealed partial class TradingOperationController : MonoBehaviour
         { Feedback = "해당 호가가 비었습니다. 다음 주문 시점을 기다립니다."; return false; }
         decimal price = levels[levels.Count - 1].price;
         // A bounded game action, never an unlimited market sweep into an empty book.
-        if (Math.Abs(price / Target.currentPrice - 1m) > .025m)
+        // 즉시 분할 매수(끌어올리기)는 호가가 얇아져도 5%까지 따라 올라간다.
+        if (Math.Abs(price / Target.currentPrice - 1m) > (CurrentMode == Mode.Drive ? .05m : .025m))
         { Feedback = "호가 간격이 큽니다. 현재가 2.5% 이내 호가를 기다립니다."; return false; }
         decimal cashLeft = Math.Max(0m, Math.Min(Budget - Spent - CommittedCash, account.cash - account.ReservedCash));
-        decimal desired = Math.Max(20m, Math.Min(CurrentMode == Mode.Drive ? 500m : 200m, decimal.Floor(Budget / EntryPrice / 30m)));
+        // 한 번에 내는 수량은 예산의 1/30(끌어올릴 때는 1/20). 주식 수로 묶지 않아서 예산이 크면 그만큼 세게 민다.
+        decimal desired = Math.Max(20m, decimal.Floor(Budget / EntryPrice / (CurrentMode == Mode.Drive ? 20m : 30m)));
         decimal quantity = decimal.Floor(buy ? Math.Min(desired, cashLeft / price) : Math.Min(desired * 2m, Math.Min(Inventory, account.GetHolding(Target))));
         if (quantity < 1m)
         {
@@ -202,7 +207,14 @@ public sealed partial class TradingOperationController : MonoBehaviour
             if (SpreadFills.Count>32) { SpreadFills.RemoveAt(32); }
         }
         if (ReferenceEquals(buyer, account) && !ReferenceEquals(seller, account))
-        { Bought += volume; Spent += price * volume; Inventory += volume; FillCount++; }
+        {
+            Bought += volume; Spent += price * volume; Inventory += volume; FillCount++;
+            if (CurrentMode == Mode.Accumulate)
+            {
+                AccumulateFills.Insert(0,new DeviceMarketJournal.Fill { Stock=stock,Time=DeviceMarketJournal.FullStamp(),Buy=true,Price=price,Quantity=volume });
+                if (AccumulateFills.Count>32) { AccumulateFills.RemoveAt(32); }
+            }
+        }
         else if (ReferenceEquals(seller, account) && !ReferenceEquals(buyer, account))
         {
             Sold += volume; Proceeds += price * volume; Inventory -= volume; FillCount++;

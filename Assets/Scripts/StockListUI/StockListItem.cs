@@ -108,6 +108,7 @@ public class StockListItem : MonoBehaviour
         }
 
         ApplyRiskBadge(stock);
+        ApplyHalt(stock.IsTradingHalted);
         LayoutBadge();
         bool nextSelected = StockManager.Instance != null && StockManager.Instance.CurrentStock == stock;
         if (!selectionInitialized || selected != nextSelected)
@@ -211,6 +212,44 @@ public class StockListItem : MonoBehaviour
         return (turnover / 1000000000f).ToString("#,##0.00") + "B";
     }
 
+    // 거래정지: 행 전체를 붉게 덮고 왼쪽에 붉은 띠를 세운다. 이름·가격도 붉게 흐려서 주문할 수 없는 종목임이 한눈에 보이게 한다.
+    private static readonly Color32 HaltInk = new(236, 96, 104, 255), HaltDim = new(196, 124, 128, 255);
+    private Image haltTint, haltBar;
+    private bool haltShown;
+    private Color nameColor, priceColor, symbolColor;
+    void ApplyHalt(bool halted)
+    {
+        if (halted == haltShown)
+        { return; }
+        haltShown = halted;
+        if (haltTint == null)
+        {
+            haltTint = HaltImage("Image :: Halt Tint", new Color32(214, 54, 66, 46));
+            haltTint.rectTransform.anchorMin = Vector2.zero; haltTint.rectTransform.anchorMax = Vector2.one;
+            haltBar = HaltImage("Image :: Halt Bar", HaltInk);
+            haltBar.rectTransform.anchorMin = Vector2.zero; haltBar.rectTransform.anchorMax = new Vector2(0f, 1f);
+            haltBar.rectTransform.pivot = new Vector2(0f, .5f); haltBar.rectTransform.sizeDelta = new Vector2(8f, 0f);
+            // 바탕 그림 바로 위, 글자와 캔들 아래에 둔다.
+            int index = rowBackground != null && rowBackground.transform.parent == transform ? rowBackground.transform.GetSiblingIndex() + 1 : 0;
+            haltTint.transform.SetSiblingIndex(index); haltBar.transform.SetSiblingIndex(index + 1);
+            if (textName != null) { nameColor = textName.color; }
+            if (textPrice != null) { priceColor = textPrice.color; }
+            if (textSymbol != null) { symbolColor = textSymbol.color; }
+        }
+        haltTint.enabled = haltBar.enabled = halted;
+        if (textName != null) { textName.color = halted ? HaltInk : nameColor; }
+        if (textPrice != null) { textPrice.color = halted ? HaltDim : priceColor; }
+        if (textSymbol != null) { textSymbol.color = halted ? HaltDim : symbolColor; }
+    }
+    private Image HaltImage(string name, Color color)
+    {
+        var image = new GameObject(name, typeof(RectTransform)).AddComponent<Image>();
+        image.transform.SetParent(transform, false);
+        image.rectTransform.offsetMin = image.rectTransform.offsetMax = Vector2.zero;
+        image.color = color; image.raycastTarget = false;
+        return image;
+    }
+
     void ApplyRiskBadge(Stock stock)
     {
         Color color = stock.RiskPending ? new Color32(157, 166, 175, 255) : stock.RiskGrade switch
@@ -219,6 +258,7 @@ public class StockListItem : MonoBehaviour
             StockRiskGrade.Warning => new Color32(218, 195, 111, 255),
             StockRiskGrade.Danger => new Color32(225, 160, 104, 255),
             StockRiskGrade.HighRisk => new Color32(228, 127, 135, 255),
+            StockRiskGrade.Halted => HaltInk,
             _ => new Color32(157, 166, 175, 255)
         };
         if (textRisk != null)

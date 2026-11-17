@@ -15,7 +15,7 @@ using Object = UnityEngine.Object;
 /// <summary>Bounded edit-mode fixture using the existing scene Canvas/camera and real order book. Never runs bots or saves the scene.</summary>
 public static class TerminalOrdersValidation
 {
-    private const string Output = "D:/GitHub/DonDon/Validation/TerminalOrders/";
+    private const string Output = "Validation/TerminalOrders/";
     private static readonly StringBuilder report = new();
     private static Camera camera;
     public static void Run()

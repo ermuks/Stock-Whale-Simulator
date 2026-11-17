@@ -170,24 +170,26 @@ public partial class ChartManager : MonoBehaviour
     {
         if (textName == null || textName.transform.parent is not RectTransform header)
         { return; }
-        PlaceHeaderText(textName,header,.025f,.035f,.30f,.28f,36f);
-        PlaceHeaderText(textSymbol,header,.025f,.31f,.30f,.20f,22f,true);
-        PlaceHeaderText(textRiskBadge,header,.35f,.075f,.15f,.215f,22f,true);
-        PlaceHeaderText(textLastPrice,header,.025f,.50f,.30f,.48f,58f);
-        PlaceHeaderText(textChangePct,header,.35f,.48f,.22f,.28f,36f);
-        PlaceHeaderText(textChangeAmount,header,.35f,.76f,.22f,.23f,26f);
+        PlaceHeaderText(textName,header,.025f,.035f,.22f,.28f,36f);
+        PlaceHeaderText(textSymbol,header,.025f,.31f,.22f,.20f,22f,true);
+        PlaceHeaderText(textRiskBadge,header,.25f,.075f,.13f,.215f,22f,true);
+        PlaceHeaderText(textLastPrice,header,.025f,.50f,.22f,.48f,58f);
+        PlaceHeaderText(textChangePct,header,.25f,.48f,.14f,.28f,36f);
+        PlaceHeaderText(textChangeAmount,header,.25f,.76f,.14f,.23f,26f);
         // Both statistics columns share caption/value baselines and right edges.
-        PlaceHeaderText(textRealValue,header,.63f,.27f,.14f,.23f,25f,true,true);
-        PlaceHeaderText(textFakeValue,header,.63f,.72f,.14f,.23f,25f,true,true);
-        PlaceHeaderText(textVolume,header,.80f,.27f,.175f,.23f,25f,true,true);
-        PlaceHeaderText(textTurnover,header,.80f,.72f,.175f,.23f,25f,true,true);
-        PlaceHeaderCaption(header,"Real Caption",.63f,.08f,.14f);
-        PlaceHeaderCaption(header,"Fake Caption",.63f,.53f,.14f);
+        PlaceHeaderText(textRealValue,header,.40f,.27f,.13f,.23f,25f,true,true);
+        PlaceHeaderText(textFakeValue,header,.40f,.72f,.13f,.23f,25f,true,true);
+        PlaceHeaderText(textVolume,header,.545f,.27f,.14f,.23f,25f,true,true);
+        PlaceHeaderText(textTurnover,header,.545f,.72f,.14f,.23f,25f,true,true);
+        PlaceHeaderCaption(header,"Real Caption",.40f,.08f,.13f);
+        PlaceHeaderCaption(header,"Fake Caption",.40f,.53f,.13f);
         // 해금 화면에서는 "기업 실제 가치", "시장이 믿는 가격"이라고 부른다. 여기서도 같은 이름을 쓴다.
         RenameHeaderCaption(header,"Real Caption","기업 실제 가치");
         RenameHeaderCaption(header,"Fake Caption","시장이 믿는 가격");
-        PlaceHeaderCaption(header,"Volume Caption",.80f,.08f,.175f);
-        PlaceHeaderCaption(header,"Turnover Caption",.80f,.53f,.175f);
+        PlaceHeaderCaption(header,"Volume Caption",.545f,.08f,.14f);
+        PlaceHeaderCaption(header,"Turnover Caption",.545f,.53f,.14f);
+        // 오른쪽에 남긴 자리에는 이 종목의 내 보유 현황을 둔다.
+        ConfigureHoldingPanel(header);
     }
     private static void RenameHeaderCaption(RectTransform header,string name,string caption)
     {
@@ -559,6 +561,7 @@ public partial class ChartManager : MonoBehaviour
         {
             GameLocalizedText.Set(textFakeValue,PlayerProgression.Has(PlayerProgression.CrowdValueUnlock) ? PriceTickPolicy.FormatPrice(currentStock.fakeValue) : LockedValue,true);
         }
+        RefreshHolding();
     }
 
     decimal GetReferencePriceForChangePct()

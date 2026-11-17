@@ -26,7 +26,10 @@ public sealed class DeskViewController : MonoBehaviour
     public bool IsTransitioning => moving;
     public bool Ready => StockManager.Instance == null || StockManager.Instance.SetupConfirmed;
     public Camera ViewCamera => viewCamera;
-    public static bool OwnsView => Instance != null && (Instance.IsFocused || Instance.moving);
+    public static bool OwnsView => Instance != null && (Instance.IsFocused || Instance.moving || Instance.custom);
+    /// <summary>모니터·태블릿이 아닌 곳(서랍 같은 소품)을 들여다보는 중인가.</summary>
+    public bool IsCustomView => custom;
+    private bool custom;
     public static bool BlockChartPointer => Instance != null && (Instance.Target != DeskViewTarget.Chart || Instance.moving || Instance.consumedFrame == Time.frameCount);
     private Camera viewCamera;
     private MouseCameraController mouseLook;
@@ -98,7 +101,7 @@ public sealed class DeskViewController : MonoBehaviour
         {
             if (PhoneCallController.IsRaised)
             { PhoneCallController.Instance.Lower(); }
-            else if (IsFocused || moving)
+            else if (IsFocused || moving || custom)
             { ExitView(); }
             else
             { Focus(DeskViewTarget.Chart); }
@@ -113,6 +116,13 @@ public sealed class DeskViewController : MonoBehaviour
         }
         if (PhoneCallController.IsRaised)
         { Hovered = DeskViewTarget.None; return; }
+        if (custom)
+        {
+            Hovered = DeskViewTarget.None;
+            if (Input.GetKeyDown(KeyCode.Escape))
+            { ExitView(); }
+            return;
+        }
         if (IsFocused)
         {
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -131,10 +141,28 @@ public sealed class DeskViewController : MonoBehaviour
         { Focus(Hovered); }
     }
 
+    /// <summary>소품을 들여다보는 자리로 시선을 옮긴다. 돌아올 때는 ExitView를 쓴다.</summary>
+    public bool FocusCustom(Pose pose, float fieldOfView)
+    {
+        if (!Ready || IsFocused || moving || custom)
+        { return false; }
+        if (!hasHome)
+        {
+            home = new Pose(transform.position, transform.rotation); homeFov = viewCamera.fieldOfView;
+            homeCursorLocked = MouseCameraController.IsCursorLocked; hasHome = true;
+        }
+        custom = true; Hovered = DeskViewTarget.None; consumedFrame = Time.frameCount; sway = Vector2.zero;
+        mouseLook?.SetViewCursor(false);
+        SetPointerTarget(DeskViewTarget.None);
+        BeginTransition(pose, fieldOfView);
+        return true;
+    }
+
     public void Focus(DeskViewTarget next)
     {
         if (!Ready || next == DeskViewTarget.None || next == Target || ScreenFor(next) == null)
         { return; }
+        custom = false;
         if (PhoneCallController.IsRaised)
         { PhoneCallController.Instance.Lower(); }
         if (!hasHome)
@@ -191,7 +219,7 @@ public sealed class DeskViewController : MonoBehaviour
     {
         if (!hasHome)
         { return; }
-        ReleaseHeldTablet(); Target = DeskViewTarget.None; Hovered = DeskViewTarget.None;
+        ReleaseHeldTablet(); Target = DeskViewTarget.None; Hovered = DeskViewTarget.None; custom = false;
         consumedFrame = Time.frameCount; sway = Vector2.zero; SetPointerTarget(DeskViewTarget.None);
         if (immediate)
         { transform.SetPositionAndRotation(home.position, home.rotation); CompleteReturn(); }
@@ -249,6 +277,8 @@ public sealed class DeskViewController : MonoBehaviour
         if (t < 1f)
         { return; }
         moving = false;
+        if (custom)
+        { return; }
         if (!IsFocused)
         { CompleteReturn(); }
         else

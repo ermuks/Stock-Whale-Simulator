@@ -65,7 +65,7 @@ public sealed class DeskOperationUI : MonoBehaviour
         var selected = manager == null ? null : manager.CurrentStock;
         var target = operation.Active ? operation.Target : selected;
         string observation = MarketRhythmDirector.Instance == null ? "체결 관찰 대기" : MarketRhythmDirector.Instance.Observation(selected);
-        Text(monitorStatus, observation + "\n\n" + (operation.Active ? operation.Target.stockName + " · " + operation.ModeName + $"\n체결 {operation.FillCount}건 · 잔여 {operation.Inventory:N0}주" : "주문 없이도 시장은 계속 움직입니다.") + "\n1 기본 계좌 / 2 자동 계좌 / 3 전화");
+        Text(monitorStatus, observation + "\n\n" + (operation.Active ? operation.Target.stockName + " · " + operation.ModeName + $"\n체결 {operation.FillCount}건 · 잔여 {operation.Inventory:N0}주" : "주문 없이도 시장은 계속 움직입니다."));
         if (!deskPanel.activeInHierarchy)
         { return; }
         Text(heading, (journal ? "시장 기록" : "포지션 관리") + "     " + (target == null ? "" : target.stockName));

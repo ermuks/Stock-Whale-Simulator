@@ -14,6 +14,8 @@ public sealed class LeadingRoomOrders : IDisposable
         public decimal Buy, Sell;
         public float IssuedAt;
         public bool Canceled;
+        /// <summary>장 시작 몰아주기 지시. 회원은 Buy 값까지 한 번에 따라 사고, 평소보다 큰돈을 건다.</summary>
+        public bool Rush;
         public int IssuedDay;
         public bool EntryReached { get; private set; }
         public bool TargetReached { get; private set; }
@@ -72,6 +74,8 @@ public sealed class LeadingRoomOrders : IDisposable
     }
     /// <summary>지금 제출 중인 주문이 이 봇이 수락한 리딩방 지시인지.</summary>
     public bool IsSubmitting(TradeBot bot) => submitting != null && plans.TryGetValue(bot, out var plan) && plan == submitting;
+    /// <summary>지금 제출 중인 주문이 장 시작 몰아주기 지시인지.</summary>
+    public bool IsRushSubmitting(TradeBot bot) => submitting != null && ReferenceEquals(submitting.Bot, bot) && submitting.Command.Rush;
     public bool AllowsRegular(TradeBot bot, Stock stock)
     {
         return !plans.TryGetValue(bot, out var plan) || plan.Command.Stock != stock || submitting == plan ||
@@ -105,6 +109,9 @@ public sealed class LeadingRoomOrders : IDisposable
         if (roll >= mind.Acceptance)
         { plan.State = Stage.Deferred; society.Trace(plan.Bot, "명령 보류 #" + plan.Command.Id); return; }
         plan.Goal = Math.Max(1m, decimal.Floor(Math.Min(society.settings.maxOrderShares, cash * (decimal)(society.settings.commandCashFraction * mind.LeadingAmountScale) / plan.Command.Buy)));
+        // 몰아주기는 평소 지시의 세 배까지(가용 현금의 90% 한도) 건다. 주문 수량 상한도 받지 않는다.
+        if (plan.Command.Rush)
+        { plan.Goal = Math.Max(1m, decimal.Floor(cash * (decimal)Math.Min(.9d, society.settings.commandCashFraction * mind.LeadingAmountScale * 3d) / plan.Command.Buy)); }
         plan.AcceptedQuadrant = mind.Quadrant;
         plan.ExitTarget = PriceTickPolicy.RoundToTick(mind.LeadingTarget(plan.Command.Buy, plan.Command.Sell, mind.SocialRng.Next()));
         var config = ChatSocialConfig.Current;

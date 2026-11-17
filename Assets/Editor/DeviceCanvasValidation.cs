@@ -14,7 +14,7 @@ using Object = UnityEngine.Object;
 
 public static class DeviceCanvasValidation
 {
-    private const string Output = "D:/GitHub/DonDon/Validation/DeviceCanvasUI/";
+    private const string Output = "Validation/DeviceCanvasUI/";
     private static readonly StringBuilder results = new(), visual = new();
     private static readonly List<string> errors = new();
     private static int overflowCount;

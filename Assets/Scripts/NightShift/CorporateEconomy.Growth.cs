@@ -66,7 +66,7 @@ public sealed partial class CorporateEconomy
         if (amount<1 || amount!=decimal.Floor(amount) || PlayerAccounts.Available(payer)<amount)
         { GrowthResult="가용 현금 부족"; return false; }
         if (!payer.ContributePrivateCapital(stock,amount)) { GrowthResult="가용 현금 부족"; return false; }
-        var data=Ensure(stock); data.Cash+=amount; data.growth.Contributions+=amount;
+        var data=Ensure(stock); data.Cash+=amount; data.growth.Contributions+=amount; data.growth.AddCapital(data,amount,GrowthRules);
         data.growth.Revalue(GrowthRules); ApplyValuation(stock); GrowthResult="출자 완료"; return true;
     }
     public bool RequestListing(Stock stock)
@@ -94,7 +94,13 @@ public sealed partial class CorporateEconomy
         }
         if (!stock.IsListed && growth.Eligible(data,GrowthRules)) { growth.Request(data,day,GrowthRules); }
     }
-    public static string ProjectName(CompanyProject type) => type==CompanyProject.Capacity ? "설비 확장" : type==CompanyProject.Sales ? "영업 확대" : "기술 연구";
+    public static string ProjectName(CompanyProject type) => type switch
+    {
+        CompanyProject.Capacity => "설비 확장", CompanyProject.Sales => "영업 확대", CompanyProject.Research => "기술 연구", CompanyProject.Brand => "브랜드 구축",
+        CompanyProject.Automation => "공정 자동화", CompanyProject.Export => "해외 진출", _ => "품질 관리"
+    };
+    /// <summary>기업 등급의 이름. 평가액이 커질수록 올라간다.</summary>
+    public static string RankName(int rank) => rank<=0 ? "동네 가게" : rank==1 ? "소기업" : rank==2 ? "중소기업" : rank==3 ? "중견기업" : "대기업";
     /// <summary>회사 사건이 진짜 가치를 바꾼다. 마감 재평가에도 같은 배율이 유지되어 값이 튀지 않는다.</summary>
     public void ApplyCompanyEvent(Stock stock,decimal factor)
     {
@@ -124,6 +130,8 @@ public sealed partial class CorporateEconomy
     {
         var data=stock.business; data.growth.Close(data,GrowthRules);
         if (stock.IsListed) { data.growth.ListedCloseDay=data.LastDay; }
+        // 내 기업이 최종 목표를 처음 이룬 날을 적어 둔다. 연출은 EndingOverlay가 맡는다.
+        if (stock==PlayerCompany && data.growth.EndingDay==0 && data.growth.EndingReached(data,stock.IsListed,GrowthRules)) { data.growth.EndingDay=Math.Max(1,data.LastDay); }
         else { data.MarketCap=0; }
         ApplyValuation(stock);
     }
@@ -140,7 +148,7 @@ public sealed partial class CorporateEconomy
             if (underwriter==null || underwriter.cash-underwriter.ReservedCash<funding) { continue; }
             // Primary issue: cash moves from the actual underwriter to the company; founder shares are not sold or duplicated.
             if (!underwriter.SubscribeShares(stock,issue,price)) { continue; }
-            data.Cash+=funding; growth.Contributions+=funding; stock.issuedShares+=issue;
+            data.Cash+=funding; growth.Contributions+=funding; growth.AddCapital(data,funding,GrowthRules); stock.issuedShares+=issue;
             growth.Revalue(GrowthRules); stock.currentPrice=price; stock.orderBook=new OrderBook(price);
             growth.ListingApproved=true; stock.SetRealValue(growth.Appraisal/stock.issuedShares); stock.SetFakeValue(stock.realValue);
             if (StockManager.Instance.ListOwnerCompany(stock.symbol)==null) { throw new InvalidOperationException("Approved IPO failed: "+stock.symbol); }

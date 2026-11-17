@@ -15,7 +15,7 @@ using Object = UnityEngine.Object;
 /// <summary>One bounded play session: actual device/tab interactions and isolated account display fixtures.</summary>
 public static class HoldingsTabletValidation
 {
-    private const string Output = "D:/GitHub/DonDon/Validation/HoldingsTablet/";
+    private const string Output = "Validation/HoldingsTablet/";
     private static readonly StringBuilder results = new();
     private static readonly List<string> errors = new();
     private static bool oldOptions;

@@ -16,7 +16,7 @@ using Object = UnityEngine.Object;
 /// <summary>Single bounded game run. Financial fixtures are transient and never saved into the scene.</summary>
 public static class AccountDashboardValidation
 {
-    private const string Output = "D:/GitHub/DonDon/Validation/AccountDashboard/";
+    private const string Output = "Validation/AccountDashboard/";
     private static readonly StringBuilder results = new();
     private static readonly List<string> errors = new();
     private static readonly List<Stock> fixtures = new();

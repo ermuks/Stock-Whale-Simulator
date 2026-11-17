@@ -15,7 +15,7 @@ using Object = UnityEngine.Object;
 /// <summary>One bounded, normal-speed play session. Financial fixtures use real finite accounts and the real order book.</summary>
 public static class OnboardingValidation
 {
-    private const string Output = "D:/GitHub/DonDon/Validation/Onboarding/";
+    private const string Output = "Validation/Onboarding/";
     private static readonly StringBuilder results = new(), visual = new();
     private static readonly List<string> errors = new();
     private static int phase, overflow;

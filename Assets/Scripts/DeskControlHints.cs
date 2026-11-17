@@ -131,13 +131,22 @@ public sealed class DeskControlHints : MonoBehaviour
         {
             Arrange(4, true);
             Hint(0, "Space", labels.back); Hint(1, "A / D", views.Target >= DeskViewTarget.TabletOne ? labels.accounts : labels.screens);
-            Hint(2, "W / S", labels.stocks); Hint(3, "Tab", labels.phone);
+            Hint(2, "W / S", labels.stocks);
+            if (PhoneCallController.Available) { Hint(3, "Tab", labels.phone); } else { cells[3].gameObject.SetActive(false); }
             return;
         }
-        Arrange(6, false);
+        if (PhoneCallController.Available)
+        {
+            Arrange(6, false);
+            Hint(0, "Space", labels.chart); Hint(1, "Click / E", labels.interact);
+            Hint(2, "1 / 2", labels.tablets); Hint(3, "Tab", labels.phone); Hint(4, "W / S", labels.stocks);
+            Hint(5, PauseKey(), paused ? labels.resume : labels.pause);
+            return;
+        }
+        Arrange(5, false);
         Hint(0, "Space", labels.chart); Hint(1, "Click / E", labels.interact);
-        Hint(2, "1 / 2", labels.tablets); Hint(3, "Tab", labels.phone); Hint(4, "W / S", labels.stocks);
-        Hint(5, PauseKey(), paused ? labels.resume : labels.pause);
+        Hint(2, "1 / 2", labels.tablets); Hint(3, "W / S", labels.stocks);
+        Hint(4, PauseKey(), paused ? labels.resume : labels.pause);
     }
 
     private void Arrange(int count, bool singleRow)

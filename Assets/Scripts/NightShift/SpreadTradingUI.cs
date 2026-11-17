@@ -33,6 +33,8 @@ public sealed class SpreadTradingUI : MonoBehaviour
         if (view.operation != null)
         { view.operation.account = tablet.account; view.operation.spreadSession = tablet.orders.session; }
         view.Build();
+        // 같은 자리에 매집 패널을 겹쳐 두고 위쪽 탭으로 오간다.
+        AccumulationUI.Install(view, view.operation, view.scale);
         var label = tablet.autoButton.GetComponentInChildren<TextMeshProUGUI>(true);
         if (label != null) { GameLocalizedText.Set(label,"스프레드"); }
         return view;
@@ -165,7 +167,9 @@ public sealed class SpreadTradingUI : MonoBehaviour
         var stock = operation.SpreadRunning ? operation.Target : StockManager.Instance == null ? null : StockManager.Instance.CurrentStock;
         DeviceTerminalUI.Set(stockName,stock == null ? "—" : stock.stockName);
         DeviceTerminalUI.Set(currentPrice,stock == null ? "—" : TradingOrderView.Number(stock.currentPrice));
-        DeviceTerminalUI.Set(state,operation.SpreadRunning ? operation.Feedback : operation.CurrentMode == TradingOperationController.Mode.Standby ? "" : operation.Feedback);
+        // 매집이 돌고 있거나 방금 끝났으면 그쪽 상태는 매집 화면에서 보여 준다. 여기에는 적지 않는다.
+        bool accumulating = operation.AccumulateRunning || operation.AccumulateStatus == TradingOperationController.AccumulatePhase.Closed && operation.CurrentMode == TradingOperationController.Mode.Review;
+        DeviceTerminalUI.Set(state,operation.SpreadRunning ? operation.Feedback : operation.CurrentMode == TradingOperationController.Mode.Standby || accumulating ? "" : operation.Feedback);
         bool prices = TradingOperationController.SpreadPrices(stock == null ? 0m : stock.currentPrice,operation.SpreadTicks,out decimal buyPrice,out decimal sellPrice);
         DeviceTerminalUI.Set(range,"± " + operation.SpreadTicks + " 틱");
         DeviceTerminalUI.Set(bid,prices ? TradingOrderView.Number(operation.SpreadRunning ? operation.SpreadBid : buyPrice) : "—");

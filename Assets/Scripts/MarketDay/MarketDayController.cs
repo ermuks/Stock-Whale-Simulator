@@ -119,8 +119,9 @@ public sealed class MarketDayController : MonoBehaviour
         get
         {
             float progress = Mathf.Clamp01(elapsed / Mathf.Max(0.1f, Duration));
+            // 첫날은 08:30에 시작해 30분 동안 둘러본다. 둘째 날부터는 일어난 08:00부터다.
             if (Phase == MarketPhase.PreOpen)
-            { return 8 * 60 + 60d * progress; }
+            { return Day == 1 ? 8 * 60 + 30 + 30d * progress : 8 * 60 + 60d * progress; }
 
             if (Phase == MarketPhase.Trading)
             { return 9 * 60 + 480d * progress; }
@@ -129,7 +130,7 @@ public sealed class MarketDayController : MonoBehaviour
         }
     }
 
-    private float Duration => Phase == MarketPhase.PreOpen ? (Day == 1 ? preOpenSeconds : tradingSeconds / 8f) :
+    private float Duration => Phase == MarketPhase.PreOpen ? (Day == 1 ? Mathf.Max(preOpenSeconds, tradingSeconds / 16f) : tradingSeconds / 8f) :
         Phase == MarketPhase.Trading ? tradingSeconds : tradingSeconds * 15f / 8f;
 
     public void AcknowledgeReport() { ReportPending = false; }
@@ -155,13 +156,20 @@ public sealed class MarketDayController : MonoBehaviour
         Instance = this;
         if (GetComponent<PlayerRestController>() == null) { gameObject.AddComponent<PlayerRestController>(); }
         if (GetComponent<DayIntroOverlay>() == null) { gameObject.AddComponent<DayIntroOverlay>(); }
+        if (GetComponent<EndingOverlay>() == null) { gameObject.AddComponent<EndingOverlay>(); }
+        if (GetComponent<OpeningRush>() == null) { gameObject.AddComponent<OpeningRush>(); }
+        if (GetComponent<SleepPrompt>() == null) { gameObject.AddComponent<SleepPrompt>(); }
+        if (GetComponent<ScreenGlow>() == null) { gameObject.AddComponent<ScreenGlow>(); }
+        if (GetComponent<DeskSurface>() == null) { gameObject.AddComponent<DeskSurface>(); }
+        if (GetComponent<DrawerProp>() == null) { gameObject.AddComponent<DrawerProp>(); }
+        if (GetComponent<DeskClutter>() == null) { gameObject.AddComponent<DeskClutter>(); }
         ChatSocialDebugUnity.ApplySeed(this);
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;
         ConversationFocus.GameMinutes = () => (Day - 1) * 1440d + GameMinute;
         UnityEngine.Random.InitState(seed);
         messages = new BotChatMessage[Mathf.Clamp(messageLimit, 16, 1024)];
-        RemainingSeconds = preOpenSeconds;
+        RemainingSeconds = Duration;
         var asset = Resources.Load<TextAsset>("Chat/BotChatTemplates.ko");
         Catalog = new BotChatTemplateCatalog(asset == null ? "" : asset.text, Debug.LogWarning);
         StockManager.OnStockDelisted += OnDelisted;

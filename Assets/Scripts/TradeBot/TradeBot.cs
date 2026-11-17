@@ -222,8 +222,10 @@ public abstract partial class TradeBot : Trader
         { return; }
         if (Social != null && Social.Psychology.HasFomoFor(ResolveStock(stock)))
         { volume = decimal.Floor(System.Math.Min(volume * (decimal)ChatSocialConfig.Current.Get("fomoAmountScale"), System.Math.Max(0m, cash - ReservedCash) / System.Math.Max(1m, price))); }
-        MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), true, ref price, ref volume);
-        if (!IsExchangeParticipant && Social != null)
+        // 장 시작 몰아주기 매수는 방장이 시킨 값 그대로 낸다. 가격 범위·위험 축소·비중 제한을 받지 않는다.
+        bool rush = OpeningRush.Buying(this);
+        if (!rush) { MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), true, ref price, ref volume); }
+        if (!rush && !IsExchangeParticipant && Social != null)
         {
             double riskScale = Social.Psychology.MarketRiskBuyScale(ResolveStock(stock)?.symbol, SessionClock.Time);
             double newsScale = Social.Psychology.Companies.TradeScale(ResolveStock(stock)?.symbol, true, SessionClock.Time);
@@ -236,7 +238,7 @@ public abstract partial class TradeBot : Trader
             volume = System.Math.Min(volume, decimal.Floor(System.Math.Max(0m, cash - ReservedCash) / price));
             if (volume < 1m) { return; }
             // 목표 비중을 넘는 매수는 하지 않는다. 리딩방 지시 주문은 수락한 약속이므로 제외한다.
-            bool commanded = InvestorSociety.Instance?.Orders != null && InvestorSociety.Instance.Orders.IsSubmitting(this);
+            bool commanded = rush || InvestorSociety.Instance?.Orders != null && InvestorSociety.Instance.Orders.IsSubmitting(this);
             decimal room = commanded ? decimal.MaxValue : PositionRoom(ResolveStock(stock));
             if (room != decimal.MaxValue)
             {
