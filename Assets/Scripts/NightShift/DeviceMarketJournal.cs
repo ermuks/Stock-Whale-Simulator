@@ -35,7 +35,7 @@ public sealed class DeviceMarketJournal : MonoBehaviour
     private float next;
     public static double GameNow => MarketDayController.Instance?.AbsoluteGameMinute ?? 0;
     public static double GameSecondsPerRealSecond => 28800d / Math.Max(.1d,MarketDayController.Instance?.tradingSeconds ?? 900d);
-    public static string FullStamp() => MarketDayController.Instance==null ? "DAY — —:—" : "DAY "+MarketDayController.Instance.CalendarDay+" "+Stamp();
+    public static string FullStamp() => MarketDayController.Instance==null ? "— —:—" : MarketDayController.Instance.CalendarDay+"일 "+Stamp();
     public static string Duration(double gameMinutes)
     {
         long minutes=(long)Math.Ceiling(Math.Max(0,gameMinutes));

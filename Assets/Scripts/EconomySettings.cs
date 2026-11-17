@@ -16,6 +16,8 @@ public class EconomySettings
     public bool marketCapExchangeCash = true;
     public float exchangeCashRatio = 0.2f;
     public long directExchangeCash = 59_600_000_000L;
+    /// <summary>거래소 초기 현금을 잴 때 한 종목의 시가총액을 이만큼까지만 센다. 대형주 몇 개가 거래소 현금을 수십 배로 불리지 않게 한다.</summary>
+    public long exchangeCashCapPerStock = 100_000_000_000L;
     [Range(0f, 1f)]
     public float publicDistributionRatio = 0.5f, participationProbability = 0.4f;
     public float allocationWeightMin = 0.5f, allocationWeightMax = 1.5f, initialBasisMin = 0.8f, initialBasisMax = 1.2f;
@@ -55,6 +57,26 @@ public class EconomySettings
     };
     public Color safeColor = Color.green, warningColor = Color.yellow, dangerColor = new(1f, 0.5f, 0f), highColor = Color.red, haltedColor = Color.gray;
     public OwnerCompanyDefinition[] companies = Defaults();
+    /// <summary>
+    /// 종목 목록은 씬에 저장돼 있어서 코드의 기본 목록에 종목을 더해도 반영되지 않는다.
+    /// 저장된 목록에 없는 기본 종목을 뒤에 붙인다. 이미 있는 종목의 값은 건드리지 않는다.
+    /// </summary>
+    public void IncludeNewDefaults()
+    {
+        var merged = new System.Collections.Generic.List<OwnerCompanyDefinition>(companies ?? Array.Empty<OwnerCompanyDefinition>());
+        foreach (var candidate in Defaults())
+        {
+            bool known = false;
+            foreach (var existing in merged)
+            {
+                if (existing != null && (existing.stockId == candidate.stockId || existing.ownerId == candidate.ownerId)) { known = true; break; }
+            }
+
+            if (!known) { merged.Add(candidate); }
+        }
+
+        companies = merged.ToArray();
+    }
     public static OwnerCompanyDefinition[] Defaults()
     {
         string[] symbols =
@@ -69,7 +91,11 @@ public class EconomySettings
             "GFD",
             "CBT",
             "CED",
-            "NXT"
+            "NXT",
+            "SSE",
+            "SQH",
+            "TZM",
+            "AMV"
         };
         string[] names =
         {
@@ -83,7 +109,11 @@ public class EconomySettings
             "그린푸드",
             "코어바이오",
             "코어전자",
-            "넥스트테크"
+            "넥스트테크",
+            "산삼전자",
+            "스퀘어하이테크",
+            "테줌마",
+            "AMDIVIA"
         };
         long[] prices =
         {
@@ -97,7 +127,11 @@ public class EconomySettings
             10000,
             1500,
             4000,
-            8000
+            8000,
+            200000,
+            1200000,
+            250000,
+            750000
         };
         long[] shares =
         {
@@ -111,7 +145,12 @@ public class EconomySettings
             10000000,
             10000000,
             10000000,
-            10000000
+            10000000,
+            // 대형주 넷의 시가총액: 2조, 1.5조, 1조, 1.2조. 전 종목이 50억~2조 안에 든다.
+            10000000,
+            1250000,
+            4000000,
+            1600000
         };
         float[] ratios =
         {
@@ -125,7 +164,14 @@ public class EconomySettings
             0.9f,
             0.55f,
             0.7f,
-            0.85f
+            0.85f,
+            // 대형주는 대주주 몫이 거의 전부다. 시장에 도는 물량은 200억·180억·150억·156억 원어치로,
+            // 기존 종목에서 가장 큰 유통 물량(150억)보다 조금 큰 정도다.
+            // 유통 물량까지 시가총액만큼 키우면 처음에 주식을 나눠 받는 개미의 재산이 수십 배로 불어난다.
+            0.99f,
+            0.988f,
+            0.985f,
+            0.987f
         };
         long[] cash =
         {
@@ -139,9 +185,15 @@ public class EconomySettings
             5000000000,
             700000000,
             2000000000,
-            4000000000
+            4000000000,
+            3500000000,
+            3500000000,
+            3000000000,
+            2500000000
         };
-        var result = new OwnerCompanyDefinition[11];
+        // 처음부터 상장돼 있는 종목. 나머지는 나중에 상장한다.
+        var unlisted = new System.Collections.Generic.HashSet<string> { "CBT", "CED", "NXT" };
+        var result = new OwnerCompanyDefinition[symbols.Length];
         for (int i = 0; i < result.Length; i++)
         {
             result[i] = new OwnerCompanyDefinition
@@ -153,7 +205,7 @@ public class EconomySettings
                 issuedShares = shares[i],
                 ownerRatio = ratios[i],
                 initialCash = cash[i],
-                initiallyListed = i < 8
+                initiallyListed = !unlisted.Contains(symbols[i])
             };
         }
 

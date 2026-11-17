@@ -175,7 +175,8 @@ public partial class ExchangeBot : TradeBot
         decimal marketCap = 0m;
         foreach (var stock in StockManager.Instance.stocks)
         {
-            marketCap += stock.issuedShares * stock.currentPrice;
+            // 시가총액 비례 현금은 종목마다 상한까지만 센다(기존 종목은 모두 상한 아래라 전과 같다).
+            marketCap += System.Math.Min(stock.issuedShares * stock.currentPrice, System.Math.Max(1L, StockManager.Instance.economy.exchangeCashCapPerStock));
             decimal remaining = ExchangeWarehouse.Instance.TakeRemaining(stock);
             if (remaining > 0m)
             {

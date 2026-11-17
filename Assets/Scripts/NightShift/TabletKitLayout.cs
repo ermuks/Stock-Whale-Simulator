@@ -7,6 +7,18 @@ using UnityEngine.UI;
 public sealed class TabletKitLayout : MonoBehaviour
 {
     private TabletAccountUI owner;
+    private TextMeshProUGUI lockHint;
+    /// <summary>작업 계좌가 언제 열리는지 한 줄로 알려 준다.</summary>
+    private void RefreshLockHint()
+    {
+        if (lockHint==null || owner==null || owner.accounts==null) { return; }
+        string amount=DeviceTerminalUI.Money(owner.accounts.unlockAssets);
+        string text=GameLocale.Code=="ja" ? "基本口座の総資産が"+amount+"を超えると作業口座が開きます" :
+            GameLocale.Code=="en" ? "The work account opens once the main account's total assets exceed "+amount :
+            "기본 계좌의 총자산이 "+amount+"을 넘으면 작업 계좌가 열립니다";
+        GameLocalizedText.Set(lockHint,text,true);
+    }
+    void OnDestroy() { GameLocale.Changed-=RefreshLockHint; }
     private readonly List<Button> buttons=new();
     private readonly List<TabletAccountUI.Page> pages=new();
     public static TabletKitLayout Install(TabletAccountUI tablet)
@@ -49,6 +61,12 @@ public sealed class TabletKitLayout : MonoBehaviour
             if (image.gameObject==owner.lockRoot) { TabletKitStyle.Flat(image,TabletKitStyle.Background); }
             else { image.sprite=TabletKitStyle.Icon("lock"); image.color=TabletKitStyle.Ink; image.preserveAspect=true; }
         }
+        if (owner.second)
+        {
+            lockHint=TabletKitStyle.Label("Lock Hint",owner.lockRoot.transform,"",.10f,.64f,.80f,.07f,30);
+            lockHint.alignment=TextAlignmentOptions.Center; lockHint.color=TabletKitStyle.Muted;
+            RefreshLockHint(); GameLocale.Changed+=RefreshLockHint;
+        }
         // Records retain the original account fill journal; related screens are explicit sub-pages.
         var records=owner.recordsPanel.transform;
         var heading=records.Find("Text :: Record Heading"); if (heading!=null) { heading.gameObject.SetActive(false); }
@@ -58,6 +76,7 @@ public sealed class TabletKitLayout : MonoBehaviour
         if (income!=null)
         { TabletKitStyle.Action("Record Settlement",records,"정산",.48f,0,.22f,.075f,income.OpenStatement); }
         TabletKitStyle.Action("Record Holdings",records,"보유 상세",.72f,0,.28f,.075f,()=>owner.ShowPage(TabletAccountUI.Page.Detail));
+        owner.recordsView=TabletRecordsView.Install(owner);
         owner.transferPanel.transform.SetAsLastSibling();
     }
     private void Add(string text,string icon,TabletAccountUI.Page page,int index)

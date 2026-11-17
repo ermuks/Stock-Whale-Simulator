@@ -68,7 +68,7 @@ public sealed partial class InvestorSociety
         if (facts.directLead && intent.replyToId == 0) { intent.targetId = -1; }
         if (intent.targetId == 0 && intent.threadId == 0 && mind.ActiveThread == 0 && !pendingReplies.ContainsKey(mind.SocialId) && !pendingOrigins.ContainsKey(mind.SocialId) &&
             ActiveThreads(intent.roomId) < Config.Int("maxThreads") &&
-            mind.SocialRng.Next() < Config.Get("initiateTargetChance"))
+            mind.SocialRng.Next() < (mind.Chatterbox ? Math.Max(ChatterInitiateChance, Config.Get("initiateTargetChance")) : Config.Get("initiateTargetChance")))
         {
             intent.targetId = ChooseTarget(bot, intent.roomId, facts, out var about);
             if (about != null)
@@ -116,12 +116,22 @@ public sealed partial class InvestorSociety
         AdjustQuadrantWeight(bot, intent, act, ref weight);
         if (act == SocialAct.MEDIATE && (intent.threadId == 0 || FindSocialThread(intent.threadId)?.kind != SocialThreadKind.ARGUMENT)) { weight = 0; }
         // 의심은 상대가 무언가를 주장했을 때만 한다(수익 자랑, 답변, 반박, 리딩 평가, 소식 등). 혼잣말이나 감탄에 "근거가 뭐냐"고 묻지 않는다.
-        if (act == SocialAct.DOUBT && intent.threadId == 0)
+        // 누구를 지목하지 않고 종목을 두고 혼자 하는 의심("더 갈 근거가 있나")은 막지 않는다. 그런 말에 남이 반박하면서 대화와 다툼이 시작된다.
+        // 방장을 향한 의심(리딩 결과를 겪고 나서)도 막지 않는다. 막는 것은 다른 참가자의 주장 아닌 말에 붙는 의심뿐이다.
+        if (act == SocialAct.DOUBT && intent.threadId == 0 && (intent.replyToId > 0 || intent.targetId > 0))
         {
             bool claim = intent.replyToId > 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var said) &&
                 (said.act == SocialAct.BRAG || said.act == SocialAct.ANSWER || said.act == SocialAct.REBUT || said.act == SocialAct.AGREE || said.act == SocialAct.PRAISE_PLAYER || said.act == SocialAct.WARN_PLAYER ||
                  said.facts != null && (said.facts.companyNewsId > 0 || !string.IsNullOrEmpty(said.facts.newsHeadline) || said.facts.signal || said.facts.directLead));
             if (!claim) { weight = 0; }
+        }
+        // 위로는 상대가 힘들다는 말을 했을 때만 한다(한탄, 손실 중, 손절, 팔고 나서 오름, 못 타서 조급함). 가벼운 혼잣말에는 위로하지 않는다.
+        if (act == SocialAct.COMFORT && intent.replyToId > 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var heard))
+        {
+            var said = heard.facts;
+            bool hardship = heard.act == SocialAct.LAMENT || said != null &&
+                (said.losing || said.recentSellLoss || said.sellThenRise || said.notice == "FOMO" || said.notice == "WATCH_RISE");
+            if (!hardship) { weight = 0; }
         }
         // 답변은 질문이나 의심에만 한다.
         if (act == SocialAct.ANSWER && intent.replyToId > 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var asked) && asked.act != SocialAct.ASK && asked.act != SocialAct.DOUBT) { weight = 0; }

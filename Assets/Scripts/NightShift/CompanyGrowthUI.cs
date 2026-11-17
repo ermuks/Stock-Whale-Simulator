@@ -42,7 +42,7 @@ public sealed class CompanyGrowthUI : MonoBehaviour
         cash=Label("Cash","—",.25f,.215f,.23f,.065f,36);
         earnings=Label("Daily Earnings","—",.5f,.215f,.23f,.065f,32);
         profit=Label("Daily Profit","—",.75f,.215f,.25f,.065f,32);
-        foreach (var value in new[]{valuation,cash,earnings,profit}) { TradingOrderView.Numeric(value); value.alignment=TextAlignmentOptions.MidlineRight; }
+        foreach (var value in new[]{valuation,cash,earnings,profit}) { TradingOrderView.Numeric(value); value.alignment=TextAlignmentOptions.MidlineLeft; value.fontSize=36; }
         Surface("Company Summary Divider",0,.30f,1,.0015f,TabletKitStyle.Line);
         string[] policyNames={"배당","재투자","비축"};
         for (int i=0;i<3;i++)
@@ -105,7 +105,7 @@ public sealed class CompanyGrowthUI : MonoBehaviour
             projects[i].interactable=manage && data.Debt==0 && growth.Project<0 && growth.LastProjectDay!=MarketDayController.Instance.Day && level<rules.maximumLevel && data.Cash>=cost;
             projects[i].GetComponentInChildren<TMP_Text>().color=projects[i].interactable ? TabletKitStyle.Ink : Muted;
         }
-        Set(progress,growth.Project>=0 ? CorporateEconomy.ProjectName((CompanyProject)growth.Project)+" · DAY "+growth.CompleteDay+" 완료" : "진행 중인 투자 없음");
+        Set(progress,growth.Project>=0 ? CorporateEconomy.ProjectName((CompanyProject)growth.Project)+" · "+GameLocale.Day(growth.CompleteDay)+" 완료" : "진행 중인 투자 없음");
         float fraction=growth.Project<0 ? 0 : Mathf.Clamp01((MarketDayController.Instance.Day-growth.LastProjectDay)/(float)Math.Max(1,growth.CompleteDay-growth.LastProjectDay));
         var rect=(RectTransform)progressFill.transform; rect.anchorMax=new Vector2(fraction,1);
         Set(criteria[0],"상장 평가액\n"+Money(rules.listingValue));

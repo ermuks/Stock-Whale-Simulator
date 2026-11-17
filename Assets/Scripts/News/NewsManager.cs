@@ -66,6 +66,7 @@ public class NewsManager : MonoBehaviour
         var writing = Resources.Load<TextAsset>("News/news_writing");
         if (writing == null) { throw new System.InvalidOperationException("Missing News/news_writing"); }
         Writing = JsonUtility.FromJson<NewsWritingCatalog>(writing.text);
+        LoadTitleVariants();
         if (GetComponent<CompanyNewsAudience>() == null) { gameObject.AddComponent<CompanyNewsAudience>(); }
         StockManager.OnStockDelisted += OnDelisted;
         // FakeNewsManager가 없으면 이 오브젝트에 추가 (FakeValueAndNews.md 설계용)
@@ -109,6 +110,31 @@ public class NewsManager : MonoBehaviour
     public void AddNews(Stock stock, float criticalValue, string title, long newsId = 0)
     { Publish(stock, criticalValue, title, newsId); }
 
+    [System.Serializable] private sealed class TitleVariants { public string source; public string[] variants; }
+    [System.Serializable] private sealed class TitleCatalog { public int schemaVersion; public TitleVariants[] titles; }
+    private readonly Dictionary<string, string[]> titleVariants = new();
+    private void LoadTitleVariants()
+    {
+        var asset = Resources.Load<TextAsset>("News/news_titles");
+        if (asset == null) { return; }
+        var catalog = JsonUtility.FromJson<TitleCatalog>(asset.text);
+        if (catalog == null || catalog.titles == null) { return; }
+        foreach (var item in catalog.titles)
+        {
+            if (item != null && !string.IsNullOrEmpty(item.source) && item.variants != null && item.variants.Length > 0) { titleVariants[item.source] = item.variants; }
+        }
+    }
+    /// <summary>
+    /// 같은 소식이라도 종목과 기사마다 제목 문장이 달라지게 한다. 여러 회사가 같은 사건 흐름을 밟기 때문에 제목이 똑같이 반복됐다.
+    /// 종목 기호와 기사 번호로 고르므로 난수를 쓰지 않고, 같은 기사는 언제나 같은 제목이 된다.
+    /// </summary>
+    private string VariedTitle(Stock stock, string title, long newsId)
+    {
+        if (stock == null || string.IsNullOrEmpty(title) || !titleVariants.TryGetValue(title, out var variants)) { return title; }
+        int pick = (int)(NewsWriting.Hash(stock.symbol + ":" + newsId + ":" + title) % (uint)(variants.Length + 1));
+        return pick == 0 ? title : variants[pick - 1];
+    }
+
     public NewsArticle Publish(Stock stock, float criticalValue, string title, long newsId = 0, bool fabricated = false,
         string category = null, int variant = 0, long storyId = 0, bool correction = false, NewsArticle authored = null)
     {
@@ -132,6 +158,7 @@ public class NewsManager : MonoBehaviour
             OnMarketNews?.Invoke(stock, newsId, criticalValue);
         }
 
+        if (authored == null && !fabricated && !correction) { title = VariedTitle(stock, title, newsId); }
         string symbol = stock != null ? stock.symbol : "";
         _news.Insert(0, new NewsEntry { symbol = symbol, criticalValue = criticalValue, title = title ?? "" });
         while (_news.Count > MaxNewsCount)

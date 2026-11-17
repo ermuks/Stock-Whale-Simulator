@@ -39,7 +39,7 @@ public static partial class ChatSocialTests
             if(stage>=5) { ModerationScenarios(stage); }
             if(stage>=6) { DecisionScenarios(stage); }
             if(stage>=7) { FocusScenarios(); }
-            if(stage>=8) { PolishScenarios(); }
+            if(stage>=8) { PolishScenarios(); AfterHoursScenarios(); RoomTalkScenarios(); }
             if(stage>=8) { WatchScenarios(); }
             if(stage>=8) { SpeechScenarios(); }
             if(stage>=8) { MediationScenarios(); }
@@ -190,6 +190,7 @@ public static partial class ChatSocialTests
                 double r1=directed.Length==0?0:(double)answered/directed.Length;
                 double r2=closed.Length==0?0:closed.Average(t=>t.turnCount);
                 double r3=(double)roomMessages.Count(m=>m.targetId!=0)/roomMessages.Length;
+                Console.WriteLine("R1 by act: "+string.Join(", ",directed.GroupBy(m=>m.act).OrderByDescending(g=>g.Count()).Select(g=>$"{g.Key} {g.Count(m=>roomMessages.Any(reply=>reply.replyToId==m.id && reply.senderId==m.targetId))}/{g.Count()}")));
                 Check(r1>=ChatSocialConfig.Current.Get("R1Min") && r1<=ChatSocialConfig.Current.Get("R1Max"),$"R1 room=1 seed={seed} {answered}/{directed.Length} = {r1:P3}");
                 Check(r2>=ChatSocialConfig.Current.Get("R2Min") && r2<=ChatSocialConfig.Current.Get("R2Max"),$"R2 room=1 seed={seed} mean={r2:F4}, threads={closed.Length}");
                 Check(r3>=ChatSocialConfig.Current.Get("R3Min") && r3<=ChatSocialConfig.Current.Get("R3Max"),$"R3 seed={seed} targeted={r3:P3}");

@@ -102,8 +102,9 @@ public sealed class InvestorJourneyNotes : MonoBehaviour
         if ((completedMask & 2) == 0)
         {
             Set(notes[1].title, copy.titles[1]);
-            Set(notes[1].detail, copy.turnover + " " + Amount(career.Turnover) + " / " + Amount(career.rules.leadingTurnover));
-            Set(notes[1].footer, copy.profit + " " + Amount(career.RealizedProfit) + " / " + Amount(career.rules.leadingRealizedProfit));
+            // 개설 비용까지 모은 돈. 거래한 금액과 손익은 참고로 적는다.
+            Set(notes[1].detail, Amount(decimal.Floor(career.OpeningCash)) + " / " + Amount(career.OpeningCost));
+            Set(notes[1].footer, copy.profit + " " + Amount(career.RealizedProfit));
         }
         if ((completedMask & 4) == 0)
         {

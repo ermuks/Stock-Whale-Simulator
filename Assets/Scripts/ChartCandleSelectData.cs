@@ -41,6 +41,34 @@ public class ChartCandleSelectData : MonoBehaviour
 
     private static Color Up => MarketColors.Up;
     private static Color Down => MarketColors.Down;
+    private bool compacted;
+    void Awake() { Compact(); }
+
+    /// <summary>
+    /// 캔들 정보는 제목·값·등락률 세 줄이었고, 셋째 줄이 차트 위의 시간 버튼 줄까지 내려와 겹쳤다.
+    /// 시가·고가·저가·종가는 제목과 값을 한 줄에 두고(제목 왼쪽, 값 오른쪽) 등락률을 둘째 줄로 올려 두 줄로 줄인다.
+    /// </summary>
+    private void Compact()
+    {
+        if (compacted || panelRoot == null)
+        { return; }
+
+        compacted = true;
+        const float lift = 12f, secondRow = -24f;
+        panelRoot.anchoredPosition += new Vector2(0f, lift);
+        foreach (var value in new[] { txtOpen, txtHigh, txtLow, txtClose })
+        {
+            if (value != null)
+            { value.rectTransform.anchoredPosition = new Vector2(value.rectTransform.anchoredPosition.x, 0f); }
+        }
+
+        foreach (var change in new[] { txtOpenPer, txtHighPer, txtLowPer, txtClosePer })
+        {
+            if (change != null)
+            { change.rectTransform.anchoredPosition = new Vector2(change.rectTransform.anchoredPosition.x, secondRow); }
+        }
+    }
+
     void OnEnable() { MarketColors.Changed += RefreshTexts; RefreshTexts(); }
     void OnDisable() { MarketColors.Changed -= RefreshTexts; }
 
@@ -71,6 +99,8 @@ public class ChartCandleSelectData : MonoBehaviour
 
     void RefreshTexts()
     {
+        // 고른 봉이 없으면 제목만 빈 채로 남는다. 그때는 줄 전체를 숨긴다.
+        if (panelRoot != null && panelRoot.gameObject.activeSelf != SelectedCandle.HasValue) { panelRoot.gameObject.SetActive(SelectedCandle.HasValue); }
         if (!SelectedCandle.HasValue)
         {
             SetTxt(txtOpen, "");

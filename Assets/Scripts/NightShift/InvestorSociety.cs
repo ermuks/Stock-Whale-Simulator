@@ -66,8 +66,12 @@ public sealed partial class InvestorSociety : MonoBehaviour
     void Update()
     {
         if (Time.timeScale > 0f) { Orders?.FlushObservedResults(settings.botsPerTick); }
-        if (!MarketDayController.CanTrade || SessionClock.Time < nextTick)
+        // 장이 닫혀 있는 동안에는 매매와 심리는 멈추고 장외 채팅만 잇는다.
+        if (!MarketDayController.CanTrade)
+        { TickAfterHours(); return; }
+        if (SessionClock.Time < nextTick)
         { return; }
+        EndAfterHours();
         day = MarketDayController.Instance;
         if (day != null) { ChatSocialAudit.GameMinute = (day.Day - 1) * 1440d + day.GameMinute; }
         if (day == null || !day.Ready || StockManager.Instance == null)
@@ -152,6 +156,8 @@ public sealed partial class InvestorSociety : MonoBehaviour
             {
                 int target = ChooseRoom(bot);
                 float interest = target == NpcLeadingRoom.RoomId ? .3f + .4f * mind.Activity : mind.JoinChance;
+                // 플레이어의 방은 잘 알고 믿을수록 들어갈 마음이 커진다.
+                if (target > 0 && GetRoom(target).PlayerOwned) { interest *= RoomInterest(mind); }
                 if (target > 0 && random.NextDouble() < settings.joinProbability * interest)
                 { Join(bot,target); }
             }
@@ -296,8 +302,13 @@ public sealed partial class InvestorSociety : MonoBehaviour
         { return false; }
         if (room.PlayerOwned && DailyIncomeController.Instance != null && !DailyIncomeController.Instance.Enter(bot,roomId,out string feeReason))
         { LastAction = bot.Social.Nickname + ": " + feeReason; Trace(bot,"이용료 거절: " + feeReason); return false; }
-        if (room.PlayerOwned && playerInvited)
-        { room.Social.firstMemberInvited = true; mind.InvitedPlayerRooms |= 1 << (roomId - 1); }
+        // 초대로 들어왔든 홍보를 보고 들어왔든, 첫 회원이 생기면 방은 알려진 것으로 본다.
+        if (room.PlayerOwned)
+        {
+            room.Social.firstMemberInvited = true;
+            if (playerInvited) { mind.InvitedPlayerRooms |= 1 << (roomId - 1); }
+            RememberRoomJoin(mind, roomId);
+        }
         mind.Room = roomId; mind.JoinedRoomAt = SessionClock.Time; room.Members.Add(bot.Social.Id); Joins++;
         mind.LastWitnessRoom = 0;
         mind.LastRead[roomId] = room.Version; // Pre-join private messages were not witnessed.

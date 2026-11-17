@@ -124,7 +124,7 @@ public class StockListItem : MonoBehaviour
             }
         }
 
-        // 거래량/거래대금: 최근 18캔들 전체 합
+        // 거래량/거래대금: 게임 시간으로 최근 24시간의 실제 체결 합
         // 미니 캔들은 당일 OHLC. 등락률/등락률 정렬은 고정된 전일 종가 기준.
         float volumeSum = 0f;
         float turnoverSum = 0f;
@@ -137,14 +137,10 @@ public class StockListItem : MonoBehaviour
         {
             summary = dailyCandle;
         }
-        int nAll = last10 != null ? last10.Count : 0;
-        if (nAll > 0)
+        if (statistics != null)
         {
-            for (int i = 0; i < nAll; i++)
-            {
-                volumeSum += last10[i].volume;
-                turnoverSum += last10[i].close * last10[i].volume;
-            }
+            statistics.GetDayWindow(stock, out decimal dayVolume, out decimal dayTurnover);
+            volumeSum = (float)dayVolume; turnoverSum = (float)dayTurnover;
         }
 
         if (textVolume10 != null)
@@ -154,7 +150,7 @@ public class StockListItem : MonoBehaviour
 
         if (textTurnover != null)
         {
-            DeviceTerminalUI.Set(textTurnover,"거래대금(추정) " + FormatTurnover(turnoverSum) + "원");
+            DeviceTerminalUI.Set(textTurnover,"거래대금 " + FormatTurnover(turnoverSum) + "원");
         }
 
         if (textChangePct10 != null)
@@ -168,14 +164,16 @@ public class StockListItem : MonoBehaviour
         ApplyCandleAnchors(summary, reference);
     }
 
+    private int badgeLayoutLocale = -1;
     private void LayoutBadge()
     {
         if (textName == null || textRisk == null || riskBadgeBackground == null || rowRect == null)
         { return; }
         float width = rowRect.rect.width;
-        if (!badgeLayoutDirty && Mathf.Approximately(width,badgeLayoutWidth))
+        // 언어를 바꾸면 종목 이름의 길이가 달라진다. 그때도 꼬리표 자리를 다시 잡는다(영어 이름 위에 꼬리표가 겹쳤다).
+        if (!badgeLayoutDirty && Mathf.Approximately(width,badgeLayoutWidth) && badgeLayoutLocale == GameLocale.Revision)
         { return; }
-        badgeLayoutDirty = false; badgeLayoutWidth = width;
+        badgeLayoutDirty = false; badgeLayoutWidth = width; badgeLayoutLocale = GameLocale.Revision;
         float badgeWidth = Mathf.Clamp(textRisk.GetPreferredValues(textRisk.text).x + 28f,160f,248f);
         float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - 16f - textName.rectTransform.anchoredPosition.x,120f,650f);
         textName.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,nameWidth);
@@ -250,8 +248,9 @@ public class StockListItem : MonoBehaviour
         }
     }
 
-    // 미니 캔들 세로 눈금은 고정이다. 가운데가 0%, 맨 아래가 -50%, 맨 위가 +50%.
-    private const float CandleScalePercent = 50f;
+    // 미니 캔들 세로 눈금은 고정이다. 가운데가 0%, 맨 아래가 -10%, 맨 위가 +10%. 그보다 큰 움직임은 끝에 붙는다.
+    // (±50%였을 때는 하루 1~3% 움직임이 점처럼 보였다.)
+    private const float CandleScalePercent = 10f;
     void ApplyCandleAnchors(CandleData? summary, float reference)
     {
         if (imgLine != null)
@@ -282,11 +281,11 @@ public class StockListItem : MonoBehaviour
             var rect = imgBong.rectTransform;
             float bottom = Mathf.Min(Map(candle.open), Map(candle.close));
             float top = Mathf.Max(Map(candle.open), Map(candle.close));
-            if (top - bottom < .025f)
+            if (top - bottom < .06f)
             {
-                float center = (top + bottom) * .5f;
-                bottom = center - .0125f;
-                top = center + .0125f;
+                float center = Mathf.Clamp((top + bottom) * .5f, .03f, .97f);
+                bottom = center - .03f;
+                top = center + .03f;
             }
             rect.anchorMin = new Vector2(bongAnchorMinX, bottom);
             rect.anchorMax = new Vector2(bongAnchorMaxX, top);

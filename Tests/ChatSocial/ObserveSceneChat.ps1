@@ -1,7 +1,7 @@
 param([string]$Run = 'run-01', [ValidateRange(0,300)][int]$SmokeSeconds = 0)
 $ErrorActionPreference = 'Stop'
 if ($Run -notmatch '^run-[0-9]+$') { throw 'Use a simple run-NN label.' }
-if (Get-Process -Name Unity,dotnet,DonDon -ErrorAction SilentlyContinue) { throw 'Another editor or validation process is running.' }
+if (Get-Process -Name Unity,dotnet,DonDon,'Stock Whale Simulator' -ErrorAction SilentlyContinue) { throw 'Another editor or validation process is running.' }
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
 $taskOut = Join-Path $taskRoot ('Validation/AutonomousChat/' + $Run)
 if (Test-Path -LiteralPath $taskOut) { throw 'Preserve prior evidence: select a new run label.' }

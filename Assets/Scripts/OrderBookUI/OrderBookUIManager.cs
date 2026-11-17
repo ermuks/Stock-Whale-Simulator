@@ -87,6 +87,9 @@ public class OrderBookUIManager : MonoBehaviour
     {
         if (toggleButtonText != null)
         {
+            // 글자가 단추보다 커서 위아래로 삐져나왔다. 단추 높이에 맞는 크기로 고정한다.
+            toggleButtonText.enableAutoSizing = false; toggleButtonText.fontSize = 22f;
+            toggleButtonText.alignment = TMPro.TextAlignmentOptions.Center; toggleButtonText.textWrappingMode = TMPro.TextWrappingModes.NoWrap;
             GameLocalizedText.Set(toggleButtonText,_displayMode == VolumeDisplayMode.Volume ? "거래량 보기" : "거래대금 보기");
         }
     }

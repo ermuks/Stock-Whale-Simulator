@@ -29832,7 +29832,6 @@
         "나도 같은 처지라 할 말이 없다",
         "동지여… 같이 버티자",
         "나만 그런 게 아니었네",
-        "평단 보면 한숨만 나옴 ㅋㅋ",
         "오늘은 다 같이 힘든 날이네",
         "나도,,, 계좌 열기가 무섭다",
         "같이 울자 ㅠㅠ",
@@ -30391,6 +30390,610 @@
         "조급한 돈이 제일 먼저 나감",
         "오늘 아니어도 장은 매일 열림",
         "현금도 종목임. 들고 있어도 됨"
+      ]
+    },
+    {
+      "key": "community.MKT_SPIKE.REACT",
+      "act": "REACT",
+      "context": "MKT_SPIKE",
+      "requires": [],
+      "texts": [
+        "{symbol} 뭐임 몇 분 새 {fastPct} ㄷㄷ",
+        "{symbol} 방금 쏜 거 봄? {price}원까지 순식간이네",
+        "{symbol} 갑자기 {fastPct}. 누가 긁는 거냐 이거",
+        "와 {symbol} {price}원 ㅋㅋㅋ 잠깐 눈 뗀 사이에 {fastPct}",
+        "{symbol} 불 붙었다. 몇 분 만에 {fastPct}, 지금 {price}원",
+        "{symbol} 매도 호가 순삭되는 중. {fastPct} 실화냐"
+      ]
+    },
+    {
+      "key": "community.MKT_SPIKE_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_SPIKE_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 몇 분 사이에 {fastPct} 움직였네요. 지금 {price}원입니다.",
+        "{symbol} 갑자기 강하게 올라오네요. 방금 {fastPct}였습니다.",
+        "{symbol} {price}원까지 순식간이네요. 이 속도면 조심스럽습니다.",
+        "{symbol} 단기간에 {fastPct}라니, 물량이 꽤 들어온 것 같네요."
+      ]
+    },
+    {
+      "key": "community.MKT_DUMP.REACT",
+      "act": "REACT",
+      "context": "MKT_DUMP",
+      "requires": [],
+      "texts": [
+        "{symbol} 뭐야 몇 분 새 {fastPct}... 누가 던지냐",
+        "{symbol} 방금 쭉 빠진 거 봄? {price}원까지 밀림",
+        "아 {symbol} {fastPct}. 잠깐 사이에 이게 뭐냐",
+        "{symbol} 매수 호가 뚫리는 중. {price}원까지 내려옴",
+        "{symbol} 갑자기 {fastPct} ㄷㄷ 무슨 일 있음?",
+        "{symbol} 쏟아진다... 지금 {price}원. 받는 사람이 없네"
+      ]
+    },
+    {
+      "key": "community.MKT_DUMP_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_DUMP_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 몇 분 사이에 {fastPct} 빠졌네요. 지금 {price}원입니다.",
+        "{symbol} 갑자기 매물이 쏟아지네요. 방금 {fastPct}였습니다.",
+        "{symbol} {price}원까지 밀렸습니다. 받아 주는 물량이 얇아 보이네요.",
+        "{symbol} 단기간에 {fastPct}라니, 섣불리 받기는 어렵겠습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_HIGH.REACT",
+      "act": "REACT",
+      "context": "MKT_HIGH",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 고점 {dayHigh}원 뚫는 중 ㅋㅋ {dayPct}네",
+        "{symbol} {dayPct}... 고점에서 안 내려오네",
+        "{symbol} 지금 {price}원. 오늘 제일 높은 자리임",
+        "{symbol} 오늘 {dayPct}인데 아직도 고점 근처에서 버팀",
+        "와 {symbol} {dayHigh}원 찍었네. 어디까지 가는 거냐",
+        "{symbol} 오늘 고가 계속 갱신 중. 들고 있는 사람들 좋겠다"
+      ]
+    },
+    {
+      "key": "community.MKT_HIGH_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_HIGH_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 고가 {dayHigh}원 부근입니다. 전일 대비 {dayPct}네요.",
+        "{symbol} {dayPct}인데도 고점에서 밀리지 않네요.",
+        "{symbol} 지금 {price}원, 오늘 가장 높은 가격대입니다.",
+        "{symbol} 고가를 계속 높이고 있네요. 추격은 조심스럽습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_LOW.REACT",
+      "act": "REACT",
+      "context": "MKT_LOW",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 저점 {dayLow}원 깨는 중... {dayPct}",
+        "{symbol} {dayPct}. 바닥이 어디냐 진짜",
+        "{symbol} 지금 {price}원. 오늘 제일 낮은 자리네",
+        "{symbol} 오늘 {dayPct}인데 반등 한 번을 안 주네",
+        "아 {symbol} {dayLow}원까지 찍음. 지지 같은 건 없구나",
+        "{symbol} 오늘 저가 계속 갱신 중. 들고 있는 분들 괜찮음?"
+      ]
+    },
+    {
+      "key": "community.MKT_LOW_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_LOW_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 저가 {dayLow}원 부근입니다. 전일 대비 {dayPct}네요.",
+        "{symbol} {dayPct}인데 반등 시도가 보이지 않네요.",
+        "{symbol} 지금 {price}원, 오늘 가장 낮은 가격대입니다.",
+        "{symbol} 저가를 계속 낮추고 있네요. 섣불리 받기는 어렵습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_PULLBACK.REACT",
+      "act": "REACT",
+      "context": "MKT_PULLBACK",
+      "requires": [],
+      "texts": [
+        "{symbol} {dayHigh}원 찍고 {fromHigh} 밀림. 고점에 산 사람 어떡하냐",
+        "{symbol} 아까 {dayHigh}원이었는데 지금 {price}원 ㅋㅋ 차익 나오네",
+        "{symbol} 고점 대비 {fromHigh}. 여기서 받아야 되나",
+        "{symbol} 위꼬리 길게 달았네. {dayHigh}원이 오늘 끝인가",
+        "{symbol} 올린 만큼 도로 뱉는 중. 고점에서 {fromHigh}",
+        "{symbol} {price}원까지 내려옴. 고점에서 판 사람이 승자네"
+      ]
+    },
+    {
+      "key": "community.MKT_PULLBACK_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_PULLBACK_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 고가 {dayHigh}원을 찍은 뒤 {fromHigh} 밀렸네요.",
+        "{symbol} 차익 매물이 나오는 것 같습니다. 지금 {price}원입니다.",
+        "{symbol} 고점 대비 {fromHigh}입니다. 눌림인지 꺾인 건지 지켜보겠습니다.",
+        "{symbol} 위꼬리가 길어졌네요. {dayHigh}원을 다시 넘는지가 관건이겠습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_REBOUND.REACT",
+      "act": "REACT",
+      "context": "MKT_REBOUND",
+      "requires": [],
+      "texts": [
+        "{symbol} {dayLow}원 찍고 {fromLow} 올라옴. 바닥에 주운 사람 부럽다",
+        "{symbol} 아까 {dayLow}원이었는데 지금 {price}원. 반등 나오네",
+        "{symbol} 저점 대비 {fromLow}. 이거 진짜 반등임? 잠깐 튀는 거임?",
+        "{symbol} 아래꼬리 길게 달았네. {dayLow}원이 오늘 바닥인가",
+        "{symbol} 빠진 만큼 도로 올리는 중. 저점에서 {fromLow}",
+        "{symbol} {price}원까지 올라옴. 아까 던진 사람들 속 쓰리겠다"
+      ]
+    },
+    {
+      "key": "community.MKT_REBOUND_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_REBOUND_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 저가 {dayLow}원을 찍은 뒤 {fromLow} 올라왔네요.",
+        "{symbol} 저가 매수가 들어오는 것 같습니다. 지금 {price}원입니다.",
+        "{symbol} 저점 대비 {fromLow}입니다. 반등이 이어질지 지켜보겠습니다.",
+        "{symbol} 아래꼬리가 길어졌네요. {dayLow}원이 지켜지는지가 관건이겠습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_UP.REACT",
+      "act": "REACT",
+      "context": "MKT_UP",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 {dayPct}. 조용히 잘 가네",
+        "{symbol} 지금 {price}원, {dayPct}네. 고점 {dayHigh}원 다시 보러 가나",
+        "{symbol} {dayPct}면 나쁘지 않은데 더 갈 힘이 있나",
+        "{symbol} 슬금슬금 올라서 {dayPct}. 이런 게 무섭더라",
+        "{symbol} 오늘 {dayPct}인데 고점 {dayHigh}원은 아직 못 넘음",
+        "{symbol} {price}원. {dayPct}면 오늘은 이긴 날이지"
+      ]
+    },
+    {
+      "key": "community.MKT_UP_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_UP_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 전일 대비 {dayPct}입니다. 무난하게 오르고 있네요.",
+        "{symbol} 지금 {price}원이고, 오늘 고가는 {dayHigh}원입니다.",
+        "{symbol} {dayPct}네요. 고가 {dayHigh}원을 넘는지 보고 있습니다.",
+        "{symbol} 천천히 올라 {dayPct}까지 왔습니다. 급하지 않아서 오히려 좋네요."
+      ]
+    },
+    {
+      "key": "community.MKT_DOWN.REACT",
+      "act": "REACT",
+      "context": "MKT_DOWN",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 {dayPct}. 힘이 없네",
+        "{symbol} 지금 {price}원, {dayPct}네. 저점 {dayLow}원 다시 가나",
+        "{symbol} {dayPct}면 아직 버틸 만한데 더 빠지면 골치 아픔",
+        "{symbol} 슬금슬금 빠져서 {dayPct}. 이런 게 제일 지침",
+        "{symbol} 오늘 {dayPct}인데 저점 {dayLow}원은 아직 안 깨짐",
+        "{symbol} {price}원. {dayPct}... 오늘은 쉬는 날인가"
+      ]
+    },
+    {
+      "key": "community.MKT_DOWN_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_DOWN_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 전일 대비 {dayPct}입니다. 힘이 약해 보이네요.",
+        "{symbol} 지금 {price}원이고, 오늘 저가는 {dayLow}원입니다.",
+        "{symbol} {dayPct}네요. 저가 {dayLow}원이 지켜지는지 보고 있습니다.",
+        "{symbol} 천천히 밀려 {dayPct}까지 왔습니다. 반등 신호는 아직 없네요."
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT.REACT",
+      "act": "REACT",
+      "context": "MKT_FLAT",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 {dayLow}~{dayHigh}원에서만 놀고 있음. 지겹다",
+        "{symbol} {dayPct}... 횡보 언제 끝나냐",
+        "{symbol} 지금 {price}원. 아까도 이 가격이었던 것 같은데 ㅋㅋ",
+        "{symbol} 오늘 진짜 안 움직이네. {dayPct}에서 꼼짝을 안 함",
+        "{symbol} 차트 일자로 누웠다. 누가 좀 깨워 봐",
+        "{symbol} {dayHigh}원도 못 넘고 {dayLow}원도 안 깨고. 뭐 하자는 거임"
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT_POLITE.REACT",
+      "act": "REACT",
+      "context": "MKT_FLAT_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘은 {dayLow}~{dayHigh}원 사이에서만 움직이네요.",
+        "{symbol} 전일 대비 {dayPct}, 사실상 제자리입니다.",
+        "{symbol} 지금 {price}원입니다. 방향이 나올 때까지 기다리겠습니다.",
+        "{symbol} 움직임이 거의 없네요. {dayHigh}원을 넘겨야 관심이 붙겠습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_RISE.DOUBT",
+      "act": "DOUBT",
+      "context": "MKT_RISE",
+      "requires": [],
+      "texts": [
+        "{symbol} {price}원까지 올린 거 진짜 수급임? 고점 {dayHigh}원에서 물리기 싫은데",
+        "{symbol} {price}원인데 왜 오르는지 아는 사람이 없네. 좀 찜찜함",
+        "이렇게 올리고 한 번에 던지는 거 많이 봄. {symbol} {dayLow}원까지 되돌려도 안 이상함",
+        "{symbol} 지금 따라 사는 건 좀... {dayHigh}원 넘는 거 확인하고 봐도 안 늦음"
+      ]
+    },
+    {
+      "key": "community.MKT_RISE_POLITE.DOUBT",
+      "act": "DOUBT",
+      "context": "MKT_RISE_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} {price}원까지 오른 이유가 분명하지 않네요. 고가 {dayHigh}원 부근은 조심하고 싶습니다.",
+        "{symbol} 오름세가 이어질지는 모르겠습니다. {dayHigh}원을 넘는지 확인하고 싶네요.",
+        "급하게 오른 종목은 되돌림도 빠르더군요. {symbol} 저가 {dayLow}원까지는 열어 두겠습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_FALL.DOUBT",
+      "act": "DOUBT",
+      "context": "MKT_FALL",
+      "requires": [],
+      "texts": [
+        "{symbol} {price}원이면 싸 보이긴 하는데 저점 {dayLow}원 깨지면 답 없음",
+        "{symbol} 여기가 바닥이라는 근거가 있음? 떨어지는 칼 같은데",
+        "{symbol} 반등 나와도 {dayHigh}원까지는 멀다. 섣불리 물타면 안 될 듯",
+        "{symbol} 왜 빠지는지 아는 사람 있음? 이유 모르는 하락이 제일 무서움"
+      ]
+    },
+    {
+      "key": "community.MKT_FALL_POLITE.DOUBT",
+      "act": "DOUBT",
+      "context": "MKT_FALL_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} {price}원이 싸 보이지만, 저가 {dayLow}원이 깨지면 더 밀릴 수 있겠습니다.",
+        "{symbol} 여기가 바닥이라는 근거는 아직 못 찾았습니다.",
+        "{symbol} 하락 이유가 확인되지 않아 조심스럽습니다. 반등해도 {dayHigh}원까지는 멀어 보이네요."
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT.DOUBT",
+      "act": "DOUBT",
+      "context": "MKT_FLAT",
+      "requires": [],
+      "texts": [
+        "{symbol} {dayLow}~{dayHigh}원에서 이렇게 조용한 게 더 수상함",
+        "{symbol} 간다 간다 하는데 {price}원에서 꿈쩍도 안 하잖아",
+        "{symbol} 횡보 끝에 위로 간다는 보장 있음? 아래로 깨질 수도 있는데",
+        "{dayHigh}원도 못 넘는 {symbol}에 뭘 기대함"
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT_POLITE.DOUBT",
+      "act": "DOUBT",
+      "context": "MKT_FLAT_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} {dayLow}~{dayHigh}원에서 너무 조용한 점이 오히려 마음에 걸립니다.",
+        "{symbol} {price}원에서 움직이지 않는데, 기대만으로 사기는 어렵겠습니다.",
+        "{symbol} 횡보 뒤 방향은 알 수 없습니다. 아래로 열릴 가능성도 봅니다."
+      ]
+    },
+    {
+      "key": "community.MKT_RISE.ASK",
+      "act": "ASK",
+      "context": "MKT_RISE",
+      "requires": [],
+      "texts": [
+        "{symbol} 왜 오르는 거임? {price}원까지 온 이유 아는 사람?",
+        "{symbol} 지금 {price}원인데 들어가도 됨? 고점 {dayHigh}원이 코앞이라 고민됨",
+        "{symbol} 들고 있는 사람들 어디서 팔 거임? {dayHigh}원 넘으면?",
+        "{symbol} 이거 더 감? 아니면 {dayLow}원까지 다시 내려옴?"
+      ]
+    },
+    {
+      "key": "community.MKT_RISE_POLITE.ASK",
+      "act": "ASK",
+      "context": "MKT_RISE_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 오르는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
+        "{symbol} {price}원인데 지금 들어가도 괜찮을까요? 고가 {dayHigh}원이 가까워 망설여집니다.",
+        "{symbol} 보유하신 분들은 어느 가격에서 정리하실 계획인가요?"
+      ]
+    },
+    {
+      "key": "community.MKT_FALL.ASK",
+      "act": "ASK",
+      "context": "MKT_FALL",
+      "requires": [],
+      "texts": [
+        "{symbol} 왜 빠지는 거임? 뭐 나온 거 있음?",
+        "{symbol} {price}원이면 주워도 됨? 저점 {dayLow}원 근처라 고민되네",
+        "{symbol} 들고 있는 사람들 버팀? 손절함?",
+        "{symbol} 어디까지 빠질 것 같음? {dayLow}원은 지켜주나"
+      ]
+    },
+    {
+      "key": "community.MKT_FALL_POLITE.ASK",
+      "act": "ASK",
+      "context": "MKT_FALL_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 빠지는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
+        "{symbol} {price}원이면 매수해도 괜찮을까요? 저가 {dayLow}원 부근이라 고민됩니다.",
+        "{symbol} 보유하신 분들은 버티실 건가요, 정리하실 건가요?"
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT.ASK",
+      "act": "ASK",
+      "context": "MKT_FLAT",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 왜 이렇게 조용함? {dayLow}~{dayHigh}원에서 안 벗어나네",
+        "{symbol} 횡보할 때 모으는 사람 있음? 아니면 다들 딴 거 봄?",
+        "{symbol} {price}원에서 위로 갈까 아래로 갈까. 다들 어떻게 봄?",
+        "{symbol} 이거 기다릴 가치 있음? 오늘 내내 {price}원 근처인데"
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT_POLITE.ASK",
+      "act": "ASK",
+      "context": "MKT_FLAT_POLITE",
+      "requires": [],
+      "texts": [
+        "{symbol} 오늘 유난히 조용한데, 이유를 아시는 분 계신가요?",
+        "{symbol} {dayLow}~{dayHigh}원 구간에서 모으시는 분 계신가요?",
+        "{symbol} {price}원에서 어느 쪽으로 움직일 것 같으신가요?"
+      ]
+    },
+    {
+      "key": "community.MKT_RISE.AGREE",
+      "act": "AGREE",
+      "context": "MKT_RISE",
+      "requires": [],
+      "texts": [
+        "ㅇㅇ {symbol} {price}원까지 온 거 보면 힘은 있음",
+        "나도 그렇게 봄. {dayHigh}원 넘기면 더 갈 듯",
+        "맞음. 저점 {dayLow}원에서 여기까지 올린 게 그냥은 아니지",
+        "ㄹㅇ {symbol} 오늘 분위기 다르긴 함"
+      ]
+    },
+    {
+      "key": "community.MKT_RISE_POLITE.AGREE",
+      "act": "AGREE",
+      "context": "MKT_RISE_POLITE",
+      "requires": [],
+      "texts": [
+        "동의합니다. {symbol} {price}원까지 올라온 걸 보면 힘이 있네요.",
+        "저도 같은 생각입니다. {dayHigh}원을 넘기면 더 이어질 것 같습니다.",
+        "맞는 말씀입니다. 저가 {dayLow}원에서 여기까지 온 흐름은 무시하기 어렵네요."
+      ]
+    },
+    {
+      "key": "community.MKT_FALL.AGREE",
+      "act": "AGREE",
+      "context": "MKT_FALL",
+      "requires": [],
+      "texts": [
+        "ㅇㅇ {symbol} {price}원까지 밀린 거 보면 약하긴 함",
+        "나도 그렇게 봄. {dayLow}원 깨지면 더 빠질 듯",
+        "맞음. 고점 {dayHigh}원에서 여기까지 온 거면 분위기 꺾인 거지",
+        "ㄹㅇ {symbol} 오늘은 건드리면 안 될 듯"
+      ]
+    },
+    {
+      "key": "community.MKT_FALL_POLITE.AGREE",
+      "act": "AGREE",
+      "context": "MKT_FALL_POLITE",
+      "requires": [],
+      "texts": [
+        "동의합니다. {symbol} {price}원까지 밀린 걸 보면 약해 보이네요.",
+        "저도 같은 생각입니다. {dayLow}원이 깨지면 더 밀릴 것 같습니다.",
+        "맞는 말씀입니다. 고가 {dayHigh}원에서 여기까지 내려온 흐름은 가볍지 않네요."
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT.AGREE",
+      "act": "AGREE",
+      "context": "MKT_FLAT",
+      "requires": [],
+      "texts": [
+        "ㅇㅇ {symbol} 오늘은 볼 게 없음. {price}원에서 그대로임",
+        "나도 그 생각함. {dayHigh}원 넘기 전엔 관심 끄는 게 맞음",
+        "맞음. {dayLow}~{dayHigh}원 박스 깨질 때까지는 그냥 구경",
+        "ㄹㅇ 이럴 땐 가만히 있는 게 돈 버는 거임"
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT_POLITE.AGREE",
+      "act": "AGREE",
+      "context": "MKT_FLAT_POLITE",
+      "requires": [],
+      "texts": [
+        "동의합니다. {symbol} 오늘은 {price}원에서 변화가 없네요.",
+        "저도 그렇게 봅니다. {dayHigh}원을 넘기 전에는 지켜보기만 하겠습니다.",
+        "맞는 말씀입니다. {dayLow}~{dayHigh}원 구간을 벗어날 때까지 기다리겠습니다."
+      ]
+    },
+    {
+      "key": "community.MKT_RISE.REBUT",
+      "act": "REBUT",
+      "context": "MKT_RISE",
+      "requires": [],
+      "texts": [
+        "오른 건 맞는데 {price}원에서 따라 사는 건 다른 얘기임",
+        "글쎄. {dayHigh}원 못 넘으면 여기가 고점일 수도 있음",
+        "너무 좋게만 보는 거 아님? 저점 {dayLow}원에서 이미 많이 왔는데",
+        "이럴 때 들어가면 꼭 물리던데. 난 좀 식는 거 보고 판단함"
+      ]
+    },
+    {
+      "key": "community.MKT_RISE_POLITE.REBUT",
+      "act": "REBUT",
+      "context": "MKT_RISE_POLITE",
+      "requires": [],
+      "texts": [
+        "오른 것은 맞지만, {price}원에서 따라 사는 것은 다른 문제라고 봅니다.",
+        "저는 조금 다르게 봅니다. {dayHigh}원을 넘지 못하면 여기가 고점일 수 있습니다.",
+        "저가 {dayLow}원에서 이미 많이 올라왔습니다. 지금은 서두를 자리가 아닌 것 같네요."
+      ]
+    },
+    {
+      "key": "community.MKT_FALL.REBUT",
+      "act": "REBUT",
+      "context": "MKT_FALL",
+      "requires": [],
+      "texts": [
+        "빠진 건 맞는데 {price}원이면 오히려 볼 만한 자리 아님?",
+        "글쎄. {dayLow}원 안 깨지면 여기서 반등 나올 수도 있음",
+        "너무 겁먹은 거 아님? 고점 {dayHigh}원에서 이 정도 눌리는 건 흔함",
+        "다들 무섭다 할 때가 살 때라던데. 난 좀 더 보고 주울 생각"
+      ]
+    },
+    {
+      "key": "community.MKT_FALL_POLITE.REBUT",
+      "act": "REBUT",
+      "context": "MKT_FALL_POLITE",
+      "requires": [],
+      "texts": [
+        "빠진 것은 맞지만, {price}원이면 오히려 살펴볼 만한 자리라고 봅니다.",
+        "저는 조금 다르게 봅니다. {dayLow}원이 지켜지면 반등이 나올 수 있습니다.",
+        "고가 {dayHigh}원에서 이 정도 조정은 흔한 일입니다. 너무 걱정하실 필요는 없어 보이네요."
+      ]
+    },
+    {
+      "key": "community.MKT_RISE.ANSWER",
+      "act": "ANSWER",
+      "context": "MKT_RISE",
+      "requires": [],
+      "texts": [
+        "이유는 나도 모름. 근데 {dayHigh}원 넘기면 사고, 못 넘기면 안 삼",
+        "난 {price}원에선 안 들어감. {dayLow}원 근처까지 눌리면 그때 봄",
+        "산다면 조금만. 틀리면 {dayLow}원 깨질 때 자르면 됨",
+        "뉴스는 못 봤음. 그냥 사는 사람이 많아서 오르는 듯"
+      ]
+    },
+    {
+      "key": "community.MKT_RISE_POLITE.ANSWER",
+      "act": "ANSWER",
+      "context": "MKT_RISE_POLITE",
+      "requires": [],
+      "texts": [
+        "이유는 저도 모르겠습니다. 다만 {dayHigh}원을 넘는지를 기준으로 보고 있습니다.",
+        "저는 {price}원에서는 들어가지 않습니다. {dayLow}원 부근까지 눌리면 다시 보겠습니다.",
+        "관련 소식은 확인하지 못했습니다. 매수세가 우위인 것으로만 보입니다."
+      ]
+    },
+    {
+      "key": "community.MKT_FALL.ANSWER",
+      "act": "ANSWER",
+      "context": "MKT_FALL",
+      "requires": [],
+      "texts": [
+        "이유는 나도 모름. 근데 {dayLow}원 깨지면 더 보고, 지키면 조금 주울 생각",
+        "난 {price}원에선 아직 안 삼. 반등 확인하고 들어가도 안 늦음",
+        "뉴스는 못 봤음. 그냥 파는 사람이 많아서 빠지는 듯",
+        "버틸 거면 {dayLow}원 기준으로 잡는 게 맞음. 그 밑은 나도 모름"
+      ]
+    },
+    {
+      "key": "community.MKT_FALL_POLITE.ANSWER",
+      "act": "ANSWER",
+      "context": "MKT_FALL_POLITE",
+      "requires": [],
+      "texts": [
+        "이유는 저도 모르겠습니다. 다만 {dayLow}원이 지켜지는지를 기준으로 보고 있습니다.",
+        "저는 {price}원에서는 아직 사지 않습니다. 반등을 확인한 뒤에 들어가도 늦지 않습니다.",
+        "관련 소식은 확인하지 못했습니다. 매도세가 우위인 것으로만 보입니다."
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT.ANSWER",
+      "act": "ANSWER",
+      "context": "MKT_FLAT",
+      "requires": [],
+      "texts": [
+        "이유 없음. 그냥 다들 딴 종목 보는 중인 듯",
+        "난 {dayHigh}원 넘기 전엔 안 건드림. 횡보에 돈 묶이기 싫어서",
+        "위든 아래든 {dayLow}~{dayHigh}원 벗어나는 쪽 따라갈 생각",
+        "기다릴 거면 {price}원 근처에서 조금씩 모으는 것도 방법이긴 함"
+      ]
+    },
+    {
+      "key": "community.MKT_FLAT_POLITE.ANSWER",
+      "act": "ANSWER",
+      "context": "MKT_FLAT_POLITE",
+      "requires": [],
+      "texts": [
+        "특별한 이유는 없어 보입니다. 관심이 다른 종목에 쏠린 것 같네요.",
+        "저는 {dayHigh}원을 넘기 전에는 손대지 않을 생각입니다.",
+        "{dayLow}~{dayHigh}원 구간을 벗어나는 방향을 따라가려 합니다."
+      ]
+    },
+    {
+      "key": "community.CHATTER.REACT",
+      "act": "REACT",
+      "context": "CHATTER",
+      "requires": [],
+      "texts": [
+        "자 여러분 {symbol} {price}원입니다. 중계는 제가 합니다 ㅋㅋ",
+        "{symbol} 보고 있는 사람 나밖에 없음? 나 혼자 떠드는 기분인데",
+        "아니 근데 {symbol} 얘기 아무도 안 함? 그럼 내가 함",
+        "{symbol} {price}원. 아까도 말했지만 또 말함 ㅋㅋ",
+        "오늘 {symbol} 얘기만 몇 번째인지 모르겠는데 그래도 할 말이 있음",
+        "{symbol} 지금 {price}원인 거 다들 알고 있지? 모르면 내가 계속 알려줌",
+        "나 {symbol} 화면 하루 종일 켜놓고 있음. 궁금한 거 있으면 물어봐",
+        "조용하길래 한마디 함. {symbol} {price}원임. 이상."
+      ]
+    },
+    {
+      "key": "community.CHATTER.SMALLTALK",
+      "act": "SMALLTALK",
+      "context": "CHATTER",
+      "requires": [],
+      "texts": [
+        "다들 어디 갔음? 나만 떠드네 ㅋㅋ",
+        "방 조용하면 불안해서 내가 뭐라도 말해야 됨",
+        "아 맞다 나 방금 라면 끓였음. 장 보면서 먹는 라면이 최고임",
+        "여기 눈팅만 하는 사람 손 들어 봐. 다 보이거든?",
+        "내가 말 많은 건 아는데 조용한 것보단 낫잖아 ㅋㅋ",
+        "오늘도 출석 완료. 제일 먼저 와서 제일 늦게 가는 사람 나임",
+        "심심한데 누가 종목 하나만 던져 줘. 같이 떠들게",
+        "아까 한 얘기 또 해도 됨? 안 된다 해도 할 거긴 함"
+      ]
+    },
+    {
+      "key": "community.CHATTER.ASK",
+      "act": "ASK",
+      "context": "CHATTER",
+      "requires": [],
+      "texts": [
+        "{symbol} 보는 사람 손! 나만 보는 거 아니지?",
+        "자 투표 갑니다. {symbol} 오늘 오른다 내린다?",
+        "{symbol} 지금 {price}원인데 다들 한마디씩만 해 봐. 궁금해서 그럼",
+        "오늘 뭐 샀는지 자랑할 사람 없음? 나 들을 준비 됨",
+        "{symbol} 들고 있는 사람 있으면 근황 좀. 심심함",
+        "다들 오늘 수익 어떰? 말하기 싫으면 표정만이라도 ㅋㅋ",
+        "{symbol} 얘기 나만 재밌어? 반응 좀 해 줘 ㅋㅋ",
+        "아무나 대답 좀. {symbol} {price}원 싼 거임 비싼 거임?"
       ]
     }
   ],

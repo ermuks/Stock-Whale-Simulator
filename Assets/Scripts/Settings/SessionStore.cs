@@ -42,6 +42,31 @@ public static partial class SessionStore
         MarketDayController.Instance.CheckpointReady && !MarketDayController.Instance.IntegrityFailed &&
         !StockManager.Instance.stocks.Any(stock=>stock.IsDelisting);
     private static bool Root(Component value) => value is Trader || RootNames.Contains(value.GetType().Name);
+    /// <summary>게임 이름을 바꾸기 전의 제품 이름. 저장 폴더가 이 이름으로 만들어져 있었다.</summary>
+    private const string FormerProductName = "DonDon";
+    /// <summary>
+    /// 제품 이름이 바뀌면 저장 폴더도 바뀐다. 새 폴더에 저장이 없고 예전 폴더에 있으면 한 번 복사해 온다.
+    /// 예전 폴더는 지우지 않는다.
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void CarryOverFormerSaves()
+    {
+        if (ValidationMode || Exists) { return; }
+        try
+        {
+            var parent = Directory.GetParent(Application.persistentDataPath);
+            if (parent == null) { return; }
+            string former = Path.Combine(parent.FullName, FormerProductName);
+            if (!Directory.Exists(former) || Path.GetFullPath(former) == Path.GetFullPath(Application.persistentDataPath)) { return; }
+            Directory.CreateDirectory(Application.persistentDataPath);
+            foreach (string name in new[] { "session-v3.dat", "session-v2.json" })
+            {
+                string source = Path.Combine(former, name), target = Path.Combine(Application.persistentDataPath, name);
+                if (File.Exists(source) && !File.Exists(target)) { File.Copy(source, target); Debug.Log("이전 저장을 새 폴더로 가져왔습니다: " + name); }
+            }
+        }
+        catch (Exception error) { Debug.LogWarning("이전 저장을 가져오지 못했습니다: " + error.Message); }
+    }
     /// <summary>동기 저장. 검증 도구용이며 게임의 마감 저장은 BeginSave의 비동기 경로를 쓴다.</summary>
     public static void Save()
     {

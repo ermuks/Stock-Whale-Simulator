@@ -19,9 +19,13 @@ public sealed partial class InvestorSociety
         double communityChance = ChatSocialConfig.Current.Get(mind.Traits.Serious ? "communitySeriousChance" : "communityPlayfulChance");
         string phrase = ContextualSocialText(template, message, parent);
         bool community = false;
-        if (random.Next() < communityChance)
+        // 시세를 말할 수 있으면 성격과 상관없이 대부분 시세를 말한다. 난수는 먼저 뽑아 두어 다른 선택의 순서가 바뀌지 않게 한다.
+        bool communityRoll = random.Next() < communityChance;
+        bool marketLine = PrefersMarketLine(message) && CommunityAllowed(template, message) && MarketGroup(template, message, parent) != null;
+        var chatterGroup = ChatterGroup(mind, template, message, parent);
+        if (communityRoll || marketLine || chatterGroup != null)
         {
-            var group = CommunityGroup(template, message, parent);
+            var group = chatterGroup ?? (marketLine ? MarketGroup(template, message, parent) : CommunityGroup(template, message, parent));
             if (group != null)
             {
                 var candidates = new List<int>();
@@ -95,6 +99,13 @@ public sealed partial class InvestorSociety
     {
         bool shared = group.context == "TARGET" && (group.act == "BRAG" || group.act == "LAMENT" || group.act == "ASK" || group.act == "REACT" || group.act == "SMALLTALK");
         return (shared ? group.key.Replace(".TARGET.", ".NONE.") : group.key) + "." + index;
+    }
+    /// <summary>약속·신호·기억·공지처럼 문장을 바꾸면 안 되는 말이 아닌가.</summary>
+    private static bool CommunityAllowed(SocialTemplate template, SocialMessage message)
+    {
+        var facts = message.facts;
+        return facts != null && !facts.signal && !message.memory && template.variant != "memory" && template.promisedAction == SocialPromisedAction.None &&
+            string.IsNullOrEmpty(facts.notice) && template.key.Contains(".plain.");
     }
     private static SocialCommunityPhrases CommunityGroup(SocialTemplate template, SocialMessage message, SocialMessage parent)
     {

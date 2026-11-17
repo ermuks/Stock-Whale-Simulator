@@ -157,7 +157,7 @@ public sealed class DeviceTerminalUI : MonoBehaviour
         if (leadingRooms == null || leadingRooms.chat == null)
         { visualGrowth?.ShowFeedback("라운지를 준비하는 중입니다. 잠시 후 다시 눌러 주세요."); return; }
         leadingRooms.chat.SelectRoom(1); HideGrowth(); thisTablet.ReturnTablet();
-        MarketEventFeed.Instance?.Notify("내 리딩방을 열었습니다. 공용 라운지에서 첫 회원을 직접 초대하세요.");
+        MarketEventFeed.Instance?.Notify("내 리딩방을 열었습니다. 공용 라운지 채팅에서 + 를 눌러 회원을 초대하세요.");
     }
     private void Buy() { buying = true; Edited(""); }
     private void Sell() { buying = false; Edited(""); }
@@ -351,7 +351,7 @@ public sealed class DeviceTerminalUI : MonoBehaviour
         {
             var career = PlayerProgression.Instance;
             if (visualGrowth != null) { visualGrowth.Refresh(career); }
-            else { Set(growthText,"거래대금 " + Money(career.Turnover) + " / " + Money(career.rules.leadingTurnover) + "\n실현손익 " + Money(career.RealizedProfit) + " / " + Money(career.rules.leadingRealizedProfit)); }
+            else { Set(growthText,"개설 비용 " + Money(decimal.Floor(career.OpeningCash)) + " / " + Money(career.OpeningCost)); }
             openRooms.interactable = true;
         }
         if (selectedEvent == null && records.Events.Count > 0)

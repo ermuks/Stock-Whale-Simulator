@@ -10,7 +10,8 @@ public sealed partial class PlayerProgression : MonoBehaviour
     public sealed class Rules
     {
         public int schemaVersion = 1;
-        public long leadingTurnover = 100000, leadingRealizedProfit = 5000;
+        // 리딩방을 여는 데 한 번 내는 돈.
+        public long leadingOpeningCost = 20000000;
     }
     [Serializable]
     public sealed class Snapshot
@@ -30,9 +31,13 @@ public sealed partial class PlayerProgression : MonoBehaviour
     public decimal RealizedProfit { get; private set; }
     public bool CanOperateRooms { get; private set; }
     public int JourneyMilestones { get; private set; }
-    public bool Eligible => Turnover >= rules.leadingTurnover && RealizedProfit >= rules.leadingRealizedProfit;
+    public decimal OpeningCost => rules.leadingOpeningCost;
+    private static Trader OpeningAccount => PlayerAccounts.Instance != null ? PlayerAccounts.Instance.primary : StockManager.Instance != null ? StockManager.Instance.playerAccount : null;
+    /// <summary>개설 비용으로 쓸 수 있는 돈: 1번 계좌의 주문 가능 현금.</summary>
+    public decimal OpeningCash => PlayerAccounts.Available(OpeningAccount);
+    public bool Eligible => OpeningCash >= OpeningCost;
     public string WorldId { get; private set; }
-    public string LockReason => "운영 권한 필요 · 실제 거래대금 " + Turnover.ToString("N0") + "/" + rules.leadingTurnover.ToString("N0") + "원, 실현손익 " + RealizedProfit.ToString("N0") + "/" + rules.leadingRealizedProfit.ToString("N0") + "원";
+    public string LockReason => "리딩방 개설 필요 · 개설 비용 " + OpeningCost.ToString("N0") + "원";
     private readonly HashSet<Stock> watched = new();
     void Awake()
     {
@@ -42,7 +47,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
         if (data != null)
         {
             var candidate = JsonUtility.FromJson<Rules>(data.text);
-            if (candidate != null && candidate.schemaVersion == 1 && candidate.leadingTurnover > 0 && candidate.leadingRealizedProfit > 0)
+            if (candidate != null && candidate.schemaVersion == 1 && candidate.leadingOpeningCost > 0)
             { rules = candidate; }
         }
     }
@@ -81,10 +86,12 @@ public sealed partial class PlayerProgression : MonoBehaviour
     {
         if (CanOperateRooms)
         { return true; }
-        if (!Eligible)
+        var account = OpeningAccount;
+        if (account == null || !Eligible)
         { return false; }
+        account.cash -= OpeningCost;
         CanOperateRooms = true;
-        MarketEventFeed.Instance?.Notify("리딩방 개설 완료 · 공용 라운지에서 첫 회원을 직접 초대하세요.");
+        MarketEventFeed.Instance?.Notify("리딩방 개설 완료 · 공용 라운지 채팅에서 + 를 눌러 회원을 초대하세요.");
         return true;
     }
     public string Capture()

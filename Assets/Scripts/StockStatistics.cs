@@ -65,6 +65,7 @@ public class StockStatistics : MonoBehaviour
         _currentWindowVolume.Remove(stock);
         _windowStartTime.Remove(stock);
         _sessionTurnover.Remove(stock);
+        _dayWindows?.Remove(stock);
     }
 
     void Start()
@@ -244,7 +245,54 @@ public class StockStatistics : MonoBehaviour
             _sessionTurnover[stock] = price * volume;
         }
 
+        RecordDayWindow(stock, price, volume);
         TrackVolumeAndDetectSurge(stock, volume, now);
+    }
+
+    /// <summary>게임 시간으로 최근 24시간(1440분) 동안의 체결. 분 단위로 묶어 두고 오래된 분은 버린다.</summary>
+    public sealed class DayWindow
+    {
+        public readonly Queue<(int minute, decimal volume, decimal turnover)> Minutes = new();
+        public int LastMinute = int.MinValue;
+        public decimal LastVolume, LastTurnover, Volume, Turnover;
+    }
+    public const int DayWindowMinutes = 1440;
+    private Dictionary<Stock, DayWindow> _dayWindows = new Dictionary<Stock, DayWindow>();
+    private static int NowMinute => MarketDayController.Instance == null ? 0 : (int)MarketDayController.Instance.AbsoluteGameMinute;
+    private DayWindow WindowFor(Stock stock)
+    {
+        _dayWindows ??= new Dictionary<Stock, DayWindow>();
+        if (!_dayWindows.TryGetValue(stock, out var window) || window == null) { window = new DayWindow(); _dayWindows[stock] = window; }
+        return window;
+    }
+    private static void Roll(DayWindow window, int minute)
+    {
+        // 지금 쌓는 분이 바뀌면 지난 분을 줄에 넣는다.
+        if (window.LastMinute != minute)
+        {
+            if (window.LastMinute != int.MinValue && (window.LastVolume > 0m || window.LastTurnover > 0m))
+            { window.Minutes.Enqueue((window.LastMinute, window.LastVolume, window.LastTurnover)); }
+            window.LastMinute = minute; window.LastVolume = 0m; window.LastTurnover = 0m;
+        }
+        while (window.Minutes.Count > 0 && window.Minutes.Peek().minute <= minute - DayWindowMinutes)
+        {
+            var old = window.Minutes.Dequeue();
+            window.Volume -= old.volume; window.Turnover -= old.turnover;
+        }
+    }
+    private void RecordDayWindow(Stock stock, decimal price, decimal volume)
+    {
+        var window = WindowFor(stock); Roll(window, NowMinute);
+        window.LastVolume += volume; window.LastTurnover += price * volume;
+        window.Volume += volume; window.Turnover += price * volume;
+    }
+    /// <summary>게임 시간 기준 최근 24시간의 거래량과 거래대금(실제 체결 가격×수량의 합).</summary>
+    public void GetDayWindow(Stock stock, out decimal volume, out decimal turnover)
+    {
+        volume = turnover = 0m;
+        if (stock == null) { return; }
+        var window = WindowFor(stock); Roll(window, NowMinute);
+        volume = System.Math.Max(0m, window.Volume); turnover = System.Math.Max(0m, window.Turnover);
     }
 
     /// <summary>세션 누적 거래대금 (가격×체결량 합계). RandomBot 등 가중치 계산용.</summary>

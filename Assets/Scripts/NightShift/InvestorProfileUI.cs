@@ -43,8 +43,8 @@ public sealed class InvestorProfileUI : MonoBehaviour
     // 플레이에 쓰는 것만 보인다: 누구인가, 나와의 관계(성향·신뢰·배신감), 내 리딩을 따른 결과.
     // 예전 게이지와 상세 창은 남겨 두되 화면에는 내지 않는다.
     private GameObject emptyState, filledState;
-    private TextMeshProUGUI cardName, cardQuadrant, cardFomo, cardHint, trustCaption, trustValue, betrayalCaption, betrayalValue, recordCaption, recordValue;
-    private RectTransform trustFill, betrayalFill, winFill, lossFill;
+    private TextMeshProUGUI cardName, cardQuadrant, cardFomo, cardHint, trustCaption, trustValue, betrayalCaption, betrayalValue, recordCaption, recordValue, roomCaption, roomValue;
+    private RectTransform trustFill, betrayalFill, winFill, lossFill, roomFill;
     private int cardRevision = -1;
     private string emptyCaption = "메시지를 눌러 참여자를 확인하세요";
     private void BuildCard()
@@ -61,23 +61,25 @@ public sealed class InvestorProfileUI : MonoBehaviour
         icon.sprite = Resources.Load<Sprite>("UI/TradingTerminal/Icons/Icon_People"); icon.preserveAspect = true; icon.color = ChatFooterKit.Faint; icon.raycastTarget = false;
         cardHint = ChatFooterKit.Label("Text :: Investor Hint", emptyState.transform, like, .05f, .57f, .90f, .26f, 34f, ChatFooterKit.Muted, TextAlignmentOptions.Center);
 
-        // 머리줄: 누구인가, 나와 어떤 사이인가. 그 아래 세 칸: 신뢰, 배신감, 내 리딩을 따른 결과.
+        // 머리줄: 누구인가, 나와 어떤 사이인가. 그 아래 네 칸: 신뢰, 배신감, 내 리딩을 따른 결과, 내 리딩방에 대한 신뢰.
         filledState = ChatFooterKit.Area("Area :: Investor", panel, 0, 0, 1, 1).gameObject;
         var root = filledState.transform;
         cardName = ChatFooterKit.Label("Text :: Investor Name", root, like, .024f, .11f, .44f, .27f, 48f, ChatFooterKit.Ink);
         cardQuadrant = ChatFooterKit.Tag("Relationship", root, like, .47f, .15f, .13f, .19f, 28f);
         cardFomo = ChatFooterKit.Tag("Fomo", root, like, .61f, .15f, .11f, .19f, 28f); cardFomo.color = ChatFooterKit.Amber;
         trustFill = Meter(root, like, .024f, ChatFooterKit.Teal, out trustCaption, out trustValue, out _);
-        betrayalFill = Meter(root, like, .349f, ChatFooterKit.Rose, out betrayalCaption, out betrayalValue, out _);
-        winFill = Meter(root, like, .674f, ChatFooterKit.Teal, out recordCaption, out recordValue, out var recordTrack);
+        betrayalFill = Meter(root, like, .266f, ChatFooterKit.Rose, out betrayalCaption, out betrayalValue, out _);
+        winFill = Meter(root, like, .508f, ChatFooterKit.Teal, out recordCaption, out recordValue, out var recordTrack);
+        // 초대 단추 바로 아래: 이 사람이 내 리딩방을 얼마나 믿는가. 초대할지 정할 때 본다.
+        roomFill = Meter(root, like, .750f, ChatFooterKit.Amber, out roomCaption, out roomValue, out _);
         lossFill = (RectTransform)ChatFooterKit.Flat("Image :: Loss Fill", recordTrack, 0, 0, 1, 1, ChatFooterKit.Rose).transform;
     }
     /// <summary>이름표·값·막대 한 벌. 막대는 0~100을 채우고, 값은 100을 넘어도 그대로 적는다.</summary>
     private static RectTransform Meter(Transform root, TextMeshProUGUI like, float x, Color color, out TextMeshProUGUI caption, out TextMeshProUGUI value, out Transform track)
     {
-        const float width = .302f;
+        const float width = .226f;
         caption = ChatFooterKit.Label("Text :: Meter Caption", root, like, x, .50f, width * .5f, .20f, 30f, ChatFooterKit.Muted);
-        value = ChatFooterKit.Label("Text :: Meter Value", root, like, x + width * .4f, .50f, width * .6f, .20f, 38f, ChatFooterKit.Ink, TextAlignmentOptions.MidlineRight);
+        value = ChatFooterKit.Label("Text :: Meter Value", root, like, x + width * .4f, .50f, width * .6f, .20f, 34f, ChatFooterKit.Ink, TextAlignmentOptions.MidlineRight);
         track = ChatFooterKit.Flat("Image :: Meter Track", root, x, .76f, width, .05f, ChatFooterKit.Track).transform;
         return (RectTransform)ChatFooterKit.Flat("Image :: Meter Fill", track, 0, 0, 1, 1, color).transform;
     }
@@ -106,6 +108,11 @@ public sealed class InvestorProfileUI : MonoBehaviour
         ChatFooterKit.Lit(recordCaption, ChatFooterText.T("직접 경험")); ChatFooterKit.Lit(recordValue, ChatFooterText.F("{0}승 · {1}패", mind.Wins, mind.Losses));
         recordValue.color = total == 0 ? ChatFooterKit.Faint : ChatFooterKit.Ink;
         Fill(winFill, 0f, won); Fill(lossFill, total == 0 ? 1f : won, 1f);
+        // 방을 아직 모르는 사람은 믿고 말고가 없다.
+        bool knows = mind.RoomAwareness >= InvestorSociety.AwarenessKnows || mind.JoinedPlayerRooms != 0;
+        ChatFooterKit.Lit(roomCaption, ChatFooterText.T("리딩방 신뢰")); ChatFooterKit.Lit(roomValue, knows ? mind.RoomTrust.ToString("0") + "%" : ChatFooterText.T("모름"));
+        roomValue.color = knows ? ChatFooterKit.Ink : ChatFooterKit.Faint;
+        Fill(roomFill, 0f, knows ? (float)mind.RoomTrust / 100f : 0f);
     }
     void Update()
     { if (cardRevision != GameLocale.Revision) { RefreshCard(); } }

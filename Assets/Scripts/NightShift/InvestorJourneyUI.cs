@@ -63,11 +63,11 @@ public sealed class InvestorJourneyUI : MonoBehaviour
         }
         else if (Step == 2)
         {
-            title = "내 리딩방 준비"; body = "실현손익 " + career.RealizedProfit.ToString("+#,##0;-#,##0;0") + "원"; button = "성과 보기";
+            title = "내 리딩방 준비"; body = "개설 비용 " + career.OpeningCost.ToString("N0") + "원"; button = "비용 보기";
         }
         else if (Step == 3)
         {
-            title = "개설 준비 완료"; body = "운영 조건 달성"; button = "방 열기";
+            title = "개설 준비 완료"; body = "개설 비용 준비됨"; button = "방 열기";
         }
         else
         {

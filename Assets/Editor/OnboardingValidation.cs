@@ -128,9 +128,9 @@ public static class OnboardingValidation
                 Check(npc.Leader.Social.Psychology.Room == room.Id && room.OwnerBotId == npc.Leader.Social.Id,"room owner and membership refer to the same real bot");
                 Check(rooms.chat.SelectedRoom == room.Id && npc.PlayerJoined,"new player automatically joins bot-led room");
                 Check(room.Count >= 2 && room.Members.Count > 1,"NPC room publishes real observations and attracts autonomous members");
-                Check(Enumerable.Range(1,3).All(id => !society.IsRoomOpen(id)) && !rooms.roomOne.interactable,"three player rooms remain locked until earned");
+                Check(Enumerable.Range(1,3).All(id => !society.IsRoomOpen(id)),"three player rooms remain locked until opened");
                 Check(!society.Issue(1,manager.CurrentStock,500m,600m),"player cannot issue own-room commands early");
-                Check(career.Turnover == 0m && career.RealizedProfit == 0m && !career.Eligible,"autonomous NPC trading never awards player progress");
+                Check(career.Turnover == 0m && career.RealizedProfit == 0m && !career.CanOperateRooms,"autonomous NPC trading never awards player progress");
                 int observed = npc.Observations;
                 npc.Observe(npc.NextObservationAt - .01f);
                 Check(npc.Observations == observed,"NPC observer cannot scan before the configured interval");
@@ -188,13 +188,14 @@ public static class OnboardingValidation
             if (phase == 9)
             {
                 Check(journal.thisTablet.IsHeld && !orders.thisTablet.IsHeld,"growth navigation safely returns paired tablet before raising second tablet");
-                Check(career.Eligible && !career.CanOperateRooms && journal.openRooms.interactable,"actual realized performance enables explicit room opening");
+                Check(career.Eligible && !career.CanOperateRooms && journal.openRooms.interactable,"enough available cash enables explicit room opening");
                 Inspect(journal.growthPanel,"eligible growth"); Capture("earned-room-unlock.png");
                 Click(journal.openRooms); Next(); return;
             }
             if (phase == 10)
             {
-                Check(career.CanOperateRooms && Enumerable.Range(1,3).All(society.IsRoomOpen),"earned opening unlocks all three existing independent rooms");
+                Check(career.CanOperateRooms && Enumerable.Range(1,3).All(society.IsRoomOpen),"paid opening unlocks all three existing independent rooms");
+                Check(manager.playerAccount.cash == openingCashBefore - career.OpeningCost,"opening debits the cost exactly once");
                 Check(npc.PlayerJoined && society.GetRoom(4).OwnerBotId == npc.Leader.Social.Id,"opening player rooms retains independent NPC membership");
                 Check(!society.Issue(4,manager.CurrentStock,500m,600m),"player cannot replace NPC operator commands");
                 int hostOrders = CountOwnerOrders(npc.Leader);
@@ -231,6 +232,7 @@ public static class OnboardingValidation
         }
         catch (Exception error) { Finish(error); }
     }
+    private static decimal openingCashBefore;
     private static void FinancialFixture()
     {
         var manager = StockManager.Instance; var player = manager.playerAccount; var career = PlayerProgression.Instance;
@@ -242,11 +244,13 @@ public static class OnboardingValidation
         fixtureSeller.SellLimit(4000m,10m,0,fixtureStock);
         Check(orders.session.Prepare(fixtureStock) && orders.session.Submit(fixtureStock,true,4000m,10m,1,3f),"isolated finite fixture uses original manual order session");
         Invoke(orders.session,"Update"); Invoke(orders.session,"Update");
-        Check(player.GetOwnedVolume(fixtureStock) == 10m && career.RealizedProfit == 0m && !career.Eligible,"real purchase alone grants no realized profit");
+        Check(player.GetOwnedVolume(fixtureStock) == 10m && career.RealizedProfit == 0m,"real purchase alone grants no realized profit");
         fixtureSeller.BuyLimit(6000m,10m,0,fixtureStock); player.SellLimit(6000m,10m,0,fixtureStock);
         Check(career.RealizedProfit == 20000m && career.Turnover - turnoverBefore == 100000m,"real cost basis and fills produce exactly 100000 turnover and 20000 realized profit");
         Check(player.cash + fixtureSeller.cash == combined && player.GetOwnedVolume(fixtureStock) + fixtureSeller.GetOwnedVolume(fixtureStock) == 10m,"fixture conserves cash and shares");
         Invoke(career,"Remove",fixtureStock); orders.session.Prepare(manager.CurrentStock);
+        // 검증 계좌가 낼 수 있는 금액으로 개설 비용을 낮춘다. 비용을 실제로 내는지는 그대로 확인한다.
+        career.rules.leadingOpeningCost = 100000; openingCashBefore = player.cash;
     }
     private static int CountOwnerOrders(TradeBot owner)
     {

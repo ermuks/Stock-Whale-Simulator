@@ -104,6 +104,22 @@ public partial class ChartManager : MonoBehaviour
     /// <summary>종목별 세션 거래량·거래대금 (거래 체결 시 누적, 차트 표시용)</summary>
     private readonly Dictionary<Stock, (decimal volume, decimal turnover)> _sessionStats = new Dictionary<Stock, (decimal, decimal)>();
     private float _lastStatsRefreshTime;
+    private bool informationOpen, historyLifted;
+    /// <summary>해금 전의 가치 칸에 적는 글자.</summary>
+    private static string LockedValue => GameLocale.Code == "ja" ? "未解放" : GameLocale.Code == "en" ? "Locked" : "해금 필요";
+    /// <summary>정보 페이지가 열리면 차트 입력과 그리기를 쉬고, 닫히면 바로 다시 그린다.</summary>
+    public void SetInformationOpen(bool open)
+    {
+        informationOpen = open;
+        ReleaseChartPointer();
+        if (_guides != null) { _guides.HideCursor(); }
+        if (!open)
+        {
+            RefreshChartFromHistory();
+            RefreshStatistics();
+            RefreshTradeHistory();
+        }
+    }
     private const float StatsRefreshInterval = 0.5f;
     void Start()
     {
@@ -122,6 +138,7 @@ public partial class ChartManager : MonoBehaviour
 
         EnsureGuides();
         CreateNavigation();
+        ChartInformationPage.Install(this);
         // Collider는 CandleDrawManager.GenerateMesh()에서 추가되므로 1프레임 뒤에 잡힘 → HandleChartDrag에서 null이면 재시도
         if (StockManager.Instance != null)
         {
@@ -166,8 +183,16 @@ public partial class ChartManager : MonoBehaviour
         PlaceHeaderText(textTurnover,header,.80f,.72f,.175f,.23f,25f,true,true);
         PlaceHeaderCaption(header,"Real Caption",.63f,.08f,.14f);
         PlaceHeaderCaption(header,"Fake Caption",.63f,.53f,.14f);
+        // 해금 화면에서는 "기업 실제 가치", "시장이 믿는 가격"이라고 부른다. 여기서도 같은 이름을 쓴다.
+        RenameHeaderCaption(header,"Real Caption","기업 실제 가치");
+        RenameHeaderCaption(header,"Fake Caption","시장이 믿는 가격");
         PlaceHeaderCaption(header,"Volume Caption",.80f,.08f,.175f);
         PlaceHeaderCaption(header,"Turnover Caption",.80f,.53f,.175f);
+    }
+    private static void RenameHeaderCaption(RectTransform header,string name,string caption)
+    {
+        var child = header.Find("Text :: " + name);
+        if (child != null && child.GetComponent<TextMeshProUGUI>() is TextMeshProUGUI label) { GameLocalizedText.Set(label,caption); }
     }
     private static void PlaceHeaderCaption(RectTransform header,string name,float x,float y,float width)
     {
@@ -251,6 +276,20 @@ public partial class ChartManager : MonoBehaviour
     void Update()
     {
         if (PauseMenuController.BlocksInput) { ReleaseChartPointer(); return; }
+        if (informationOpen)
+        {
+            // 머리줄(종목명·가격·거래량)은 계속 갱신한다.
+            if (SessionClock.Time - _lastStatsRefreshTime >= StatsRefreshInterval)
+            {
+                RefreshSymbolAndName();
+                RefreshTradeBasedValues();
+                RefreshRealFakeValues();
+                _lastStatsRefreshTime = SessionClock.Time;
+            }
+
+            return;
+        }
+
         HandleChartDrag();
         UpdateNavigation();
         float interval = isDraggingChart ? refreshIntervalWhileDragging : refreshInterval;
@@ -267,6 +306,7 @@ public partial class ChartManager : MonoBehaviour
         {
             RefreshSymbolAndName();
             RefreshTradeBasedValues();
+            RefreshRealFakeValues();
             RefreshStatistics();
             RefreshTradeHistory();
             _lastStatsRefreshTime = SessionClock.Time;
@@ -342,7 +382,7 @@ public partial class ChartManager : MonoBehaviour
     void LateUpdate()
     {
         if (PauseMenuController.BlocksInput) { _guides?.HideCursor(); return; }
-        if (_guides == null)
+        if (_guides == null || informationOpen)
         { return; }
         if (ChartInputBlocked() || isDraggingChart || !TryGetChartPoint(out Vector3 point) || point.x >= candleRenderer.PlotWidth || point.y < 0f)
         { _guides.HideCursor(); return; }
@@ -512,12 +552,12 @@ public partial class ChartManager : MonoBehaviour
         if (textRealValue != null)
         {
             // 기업 실제 가치와 시장이 믿는 가격은 플레이어가 해금한 뒤에만 보인다.
-            GameLocalizedText.Set(textRealValue,PlayerProgression.Has(PlayerProgression.RealValueUnlock) ? PriceTickPolicy.FormatPrice(currentStock.realValue) : "—");
+            GameLocalizedText.Set(textRealValue,PlayerProgression.Has(PlayerProgression.RealValueUnlock) ? PriceTickPolicy.FormatPrice(currentStock.realValue) : LockedValue,true);
         }
 
         if (textFakeValue != null)
         {
-            GameLocalizedText.Set(textFakeValue,PlayerProgression.Has(PlayerProgression.CrowdValueUnlock) ? PriceTickPolicy.FormatPrice(currentStock.fakeValue) : "—");
+            GameLocalizedText.Set(textFakeValue,PlayerProgression.Has(PlayerProgression.CrowdValueUnlock) ? PriceTickPolicy.FormatPrice(currentStock.fakeValue) : LockedValue,true);
         }
     }
 
@@ -590,6 +630,10 @@ public partial class ChartManager : MonoBehaviour
         if (tradeHistoryContainer == null || tradeHistoryItemPrefab == null)
         { return; }
 
+        // 체결 목록의 마지막 줄이 패널 아래 테두리에 걸쳤다. 목록 영역을 조금 올린다(한 번만).
+        if (!historyLifted && tradeHistoryContainer.parent is RectTransform historyArea)
+        { historyLifted = true; historyArea.anchoredPosition += new Vector2(0f, 12f); }
+
         _tradeHistoryItems.Clear();
         foreach (Transform child in tradeHistoryContainer)
         {
@@ -650,6 +694,10 @@ public partial class ChartManager : MonoBehaviour
     /// <summary>해당 Stock의 과거 캔들 + 형성중 캔들 중 최대 56개만 슬라이스해서 차트 갱신.</summary>
     void RefreshChartFromHistory()
     {
+        // 정보 페이지가 차트 자리를 덮고 있는 동안에는 그리지 않는다. 닫을 때 한 번 다시 그린다.
+        if (informationOpen)
+        { return; }
+
         if (candleRenderer == null)
         { return; }
 

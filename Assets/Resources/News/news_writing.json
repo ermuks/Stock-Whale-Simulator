@@ -501,6 +501,54 @@
           "transmission": 0.2
         }
       ]
+    },
+    {
+      "symbol": "SSE",
+      "sector": "전자",
+      "community": "가전과 휴대폰을 쓰는 소비자",
+      "links": [
+        {
+          "symbol": "SQH",
+          "relation": "반도체 수요의 연관",
+          "transmission": 0.25
+        }
+      ]
+    },
+    {
+      "symbol": "SQH",
+      "sector": "반도체",
+      "community": "부품을 받아 쓰는 제조사와 기술자",
+      "links": [
+        {
+          "symbol": "SSE",
+          "relation": "반도체 수요의 연관",
+          "transmission": 0.25
+        }
+      ]
+    },
+    {
+      "symbol": "TZM",
+      "sector": "전기차",
+      "community": "전기차 운전자와 예약 고객",
+      "links": [
+        {
+          "symbol": "SQH",
+          "relation": "차량용 반도체 수급의 연관",
+          "transmission": 0.15
+        }
+      ]
+    },
+    {
+      "symbol": "AMV",
+      "sector": "반도체",
+      "community": "게이머와 개발자",
+      "links": [
+        {
+          "symbol": "DSA",
+          "relation": "인공지능 연산 수요의 연관",
+          "transmission": 0.3
+        }
+      ]
     }
   ]
 }

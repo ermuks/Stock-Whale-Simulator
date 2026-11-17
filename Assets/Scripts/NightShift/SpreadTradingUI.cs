@@ -100,7 +100,7 @@ public sealed class SpreadTradingUI : MonoBehaviour
         slider.direction = Slider.Direction.LeftToRight;
         slider.SetValueWithoutNotify(operation == null ? 2 : operation.SpreadTicks);
         slider.onValueChanged.AddListener(value => { operation?.SetSpreadTicks(Mathf.RoundToInt(value)); next = 0f; });
-        Label("Minimum Range","1틱",32,392,160,32,24).color = Muted;
+        Label("Minimum Range","1 틱",32,392,160,32,24).color = Muted;
         var max = Label("Maximum Range",TradingOperationController.MaxSpreadTicks+" 틱",720,392,160,32,24); max.color = Muted; max.alignment = TextAlignmentOptions.MidlineRight;
     }
     public void FitCanvas()

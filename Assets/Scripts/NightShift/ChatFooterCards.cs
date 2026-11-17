@@ -114,8 +114,9 @@ public static class ChatFooterText
         ["메시지를 눌러 참여자를 확인하세요"] = ("Tap a message to view that investor", "メッセージを押すと参加者を確認できます"),
         ["참여자"] = ("Investor", "参加者"),
         ["참여자 퇴장"] = ("Investor left", "参加者退出"),
-        ["신뢰"] = ("Trust", "信頼"), ["배신감"] = ("Betrayal", "裏切り"), ["직접 경험"] = ("Direct results", "直接経験"),
+        ["신뢰"] = ("Trust", "信頼"), ["배신감"] = ("Betrayal", "裏切り"), ["직접 경험"] = ("Results", "直接経験"),
         ["{0}승 · {1}패"] = ("{0} W · {1} L", "{0}勝 · {1}敗"),
+        ["리딩방 신뢰"] = ("Room trust", "部屋への信頼"), ["모름"] = ("Unaware", "知らない"),
         ["충성"] = ("Loyal", "支持"), ["애증"] = ("Conflicted", "愛憎"), ["적대"] = ("Hostile", "敵対"), ["무관심"] = ("Indifferent", "無関心"),
         ["운영자"] = ("Host", "運営者"), ["체결 {0}건"] = ("{0} fills", "約定 {0}件"), ["실현 {0}"] = ("Realized {0}", "実現 {0}"),
         ["{0} 관측"] = ("Seen {0}", "{0} 観測"), ["매수"] = ("Buy", "買い"), ["매도"] = ("Sell", "売り"),
@@ -123,7 +124,20 @@ public static class ChatFooterText
         ["신호 없음"] = ("No signal", "シグナルなし"),
         ["참여하면 운영자의 실제 주문과 대화를 볼 수 있습니다."] = ("Join to see the host's real orders and chat.", "参加すると運営者の実際の注文と会話が見られます。"),
         ["내 리딩방"] = ("My own room", "自分の部屋"), ["참여 {0}명"] = ("{0} members", "参加 {0}人"),
-        ["운영 권한 필요"] = ("Hosting not unlocked yet", "運営権限が必要"), ["실제 거래대금"] = ("Traded value", "売買代金"), ["실현손익"] = ("Realized P&L", "実現損益"), ["지시"] = ("Signal", "指示"),
+        ["지시"] = ("Signal", "指示"),
+        ["내 리딩방 탭에서 개설할 수 있습니다"] = ("Open it from the My own room tab", "「自分の部屋」タブから開設できます"),
+        ["새 리딩방을 개설하세요"] = ("Open your own room", "自分の部屋を開設しましょう"),
+        ["회원을 초대하고 매매 지시를 직접 내릴 수 있습니다."] = ("Invite members and send them your own calls.", "メンバーを招待して、自分で売買指示を出せます。"),
+        ["개설 비용"] = ("Opening cost", "開設費用"), ["주문 가능 현금"] = ("Available cash", "注文可能な現金"),
+        ["개설하기"] = ("Open room", "開設する"),
+        ["리딩방 개설하기"] = ("Open my own room", "自分の部屋を開設する"),
+        ["개설 조건"] = ("Requirements", "開設条件"), ["부족한 조건"] = ("What's missing", "足りない条件"),
+        ["충족"] = ("Met", "達成"), ["부족"] = ("Short", "不足"),
+        ["개설 비용 · 주문 가능 현금이 {0} 부족합니다"] = ("Opening cost · {0} more available cash needed", "開設費用 · 注文可能な現金が{0}足りません"),
+        ["부족한 조건이 없습니다. 개설 비용은 주문 가능 현금에서 한 번만 냅니다."] = ("Nothing is missing. The cost is paid once from your available cash.", "足りない条件はありません。費用は注文可能な現金から一度だけ支払います。"),
+        ["홍보하기"] = ("Promote", "宣伝する"), ["홍보 {0}초"] = ("Promote {0}s", "宣伝 {0}秒"),
+        ["{0} 부족합니다"] = ("{0} short", "{0} 足りません"),
+        ["주문 가능 현금에서 한 번만 냅니다."] = ("Paid once from your available cash.", "注文可能な現金から一度だけ支払います。"),
         ["라운지 화제"] = ("Lounge buzz", "ラウンジの話題"), ["{0}회"] = ("{0}×", "{0}回"), ["아직 화제가 없습니다"] = ("Nothing trending yet", "まだ話題はありません"),
         ["경각심"] = ("Alertness", "警戒"), ["위축"] = ("Inhibition", "萎縮"), ["활성 지시 없음"] = ("No active call", "有効な指示なし"),
         ["매수 ≤ {0}"] = ("Buy ≤ {0}", "買い ≤ {0}"), ["매도 ≥ {0}"] = ("Sell ≥ {0}", "売り ≥ {0}"),
@@ -138,15 +152,25 @@ public static class ChatFooterText
 public sealed class ChatFooterCards : MonoBehaviour
 {
     // 화면 전체 기준 자리. 채팅 목록은 0.655에서 끝난다.
-    public const float CardX = .025f, CardWidth = .95f, ProfileTop = .664f, ProfileHeight = .098f, RoomTop = .770f, RoomHeight = .192f, LoungeHeight = .192f;
+    public const float CardX = .025f, CardWidth = .95f, ProfileTop = .664f, ProfileHeight = .098f, RoomTop = .770f, RoomHeight = .192f, LoungeHeight = .192f, OwnShift = .075f;
     private LeadingRoomUI rooms;
     private TabletGroupChatUI chat;
     private RectTransform profilePanel, ownCard, npcCard, lobbyCard;
     private TextMeshProUGUI npcName, npcStats, npcStock, npcSeen, npcBuyCaption, npcBuyValue, npcSellCaption, npcSellValue, npcMessage, npcRole;
-    private TextMeshProUGUI ownTitle, ownMembers, ownMood, ownCommand, lobbyHint;
+    private TextMeshProUGUI ownTitle, ownMembers, ownMood, ownCommand, ownBuyCaption, ownSellCaption, lobbyHint;
+    private RectTransform messages;
+    private float messagesBottom;
+    private bool compact;
+    private int shownRoom = -1;
     private GameObject lockedGroup, openGroup;
-    private TextMeshProUGUI turnoverCaption, turnoverValue, profitCaption, profitValue, roomCaption, roomValue, callCaption, callValue;
-    private RectTransform turnoverFill, profitFill;
+    private TextMeshProUGUI costCaption, costValue, roomCaption, roomValue, callCaption, callValue;
+    private RectTransform costFill;
+    // 개설 카드: 방을 열기 전에 내 리딩방을 누르면 나온다.
+    private RectTransform openCard;
+    private TextMeshProUGUI openTitle, openHint, openCostCaption, openCostValue, openCashCaption, openCashValue, openNote, openLabel, openRequirementHeading, openShortageHeading, openState;
+    private Button openButton, promoteButton;
+    private TextMeshProUGUI promoteLabel;
+    public bool Built => built;
     // 라운지 화제: 지금 공용 라운지 대화에 가장 많이 오른 종목 셋. 화면에 보이는 대화를 센 것뿐이다.
     private const int TopicCount = 3, TopicWindow = 40;
     private TextMeshProUGUI topicHeading, topicEmpty;
@@ -156,7 +180,6 @@ public sealed class ChatFooterCards : MonoBehaviour
     private readonly Dictionary<string, int> topicTally = new();
     private readonly List<KeyValuePair<string, int>> topicRank = new();
     private GameObject npcCells;
-    private readonly TextMeshProUGUI[] ownCounts = new TextMeshProUGUI[6], ownCountCaptions = new TextMeshProUGUI[6];
     private static readonly string[] CountNames = { "대기", "보유", "보류", "거부", "완료", "취소" };
     private readonly int[] counts = new int[6];
     private float next;
@@ -173,10 +196,10 @@ public sealed class ChatFooterCards : MonoBehaviour
         var legacy = ChatFooterKit.Area("Area :: Legacy Footer Text", root, 0, 0, 1, 1); legacy.gameObject.SetActive(false);
         foreach (var old in new[] { rooms.npcSummary, rooms.npcSignal, rooms.commandStatus }) { if (old != null) { old.transform.SetParent(legacy, false); } }
 
-        BuildNpc(like); BuildOwn(like); BuildLobby(like);
+        BuildNpc(like); BuildOwn(like); BuildLobby(like); BuildOpen(like, root);
 
         // 초대는 참여자 카드의 머리줄 오른쪽에 둔다. 누구를 초대하는지가 바로 옆에 보인다.
-        ChatFooterKit.Place((RectTransform)rooms.invite.transform, profilePanel, .776f, .11f, .20f, .27f);
+        ChatFooterKit.Place((RectTransform)rooms.invite.transform, profilePanel, .70f, .11f, .276f, .27f);
         ChatFooterKit.StyleButton(rooms.invite, 36f);
         if (chat.status != null)
         {
@@ -223,39 +246,100 @@ public sealed class ChatFooterCards : MonoBehaviour
     }
     private void BuildOwn(TextMeshProUGUI like)
     {
-        ownCard = CardArea("Area :: Own Room Card", rooms.playerControls);
+        // 내 리딩방 카드는 네 줄이다: 머리줄, 가격 두 칸과 단추 두 개, 걸려 있는 지시, 방금 한 일. 줄인 만큼 채팅이 길어진다.
+        var holder = (RectTransform)rooms.playerControls.transform;
+        ownCard = ChatFooterKit.Area("Area :: Own Room Card", holder, CardX, RoomTop + OwnShift, CardWidth, RoomHeight - OwnShift);
+        ChatFooterKit.Card("Panel :: Card", ownCard, 0, 0, 1, 1);
         var controls = rooms.playerControls.transform;
-        // 머리줄: 방 이름, 인원, 방 분위기.
-        ownTitle = ChatFooterKit.Label("Text :: Room Title", ownCard, like, .024f, .04f, .30f, .11f, 46f, ChatFooterKit.Ink);
-        ownMembers = ChatFooterKit.Tag("Room Members", ownCard, like, .29f, .058f, .15f, .075f, 28f); ownMembers.color = ChatFooterKit.Muted;
-        ownMood = ChatFooterKit.Label("Text :: Room Mood", ownCard, like, .44f, .04f, .30f, .11f, 30f, ChatFooterKit.Muted, TextAlignmentOptions.MidlineRight);
-        // 이용료 단추는 원래 이 자리 근처에 따로 떠 있었다. 머리줄 오른쪽 끝에 붙인다.
+        // 머리줄: 방 이름, 인원, 방 분위기, 이용료.
+        ownTitle = ChatFooterKit.Label("Text :: Room Title", ownCard, like, .024f, .04f, .30f, .20f, 44f, ChatFooterKit.Ink);
+        ownMembers = ChatFooterKit.Tag("Room Members", ownCard, like, .29f, .075f, .15f, .13f, 28f); ownMembers.color = ChatFooterKit.Muted;
+        ownMood = ChatFooterKit.Label("Text :: Room Mood", ownCard, like, .44f, .04f, .31f, .20f, 28f, ChatFooterKit.Muted, TextAlignmentOptions.MidlineRight);
         foreach (var button in controls.GetComponentsInChildren<Button>(true))
         {
             if (button.transform.parent != controls || !button.name.Contains("Room Fee")) { continue; }
-            ChatFooterKit.Place((RectTransform)button.transform, ownCard, .776f, .045f, .20f, .10f); ChatFooterKit.StyleButton(button, 34f);
+            ChatFooterKit.Place((RectTransform)button.transform, ownCard, .776f, .05f, .20f, .18f); ChatFooterKit.StyleButton(button, 34f);
         }
-        // 지금 걸려 있는 지시와 그 지시를 따르는 사람 수.
-        var box = ChatFooterKit.CellBox("Panel :: Room Command", ownCard, .024f, .175f, .952f, .355f).transform;
-        ownCommand = ChatFooterKit.Label("Text :: Active Command", box, like, .03f, .07f, .94f, .34f, 40f, ChatFooterKit.Ink);
-        ChatFooterKit.Flat("Image :: Command Divider", box, .03f, .44f, .94f, .008f, ChatFooterKit.Track);
-        for (int i = 0; i < 6; i++)
+        // 지시 한 줄: 매수 [가격] 매도 [가격] [지시] [취소]. 씬에 있던 긴 설명 글자는 쓰지 않는다.
+        foreach (string old in new[] { "Text :: Buy Trigger Label", "Text :: Sell Trigger Label" })
         {
-            float x = .03f + i * .94f / 6f, w = .94f / 6f;
-            ownCountCaptions[i] = ChatFooterKit.Label("Text :: Count Caption " + i, box, like, x, .49f, w, .20f, 28f, ChatFooterKit.Muted, TextAlignmentOptions.Center);
-            ownCounts[i] = ChatFooterKit.Label("Text :: Count " + i, box, like, x, .68f, w, .27f, 40f, ChatFooterKit.Ink, TextAlignmentOptions.Center);
+            var label = controls.Find(old);
+            if (label != null) { label.gameObject.SetActive(false); }
         }
-        // 새 지시 입력: 가격 두 칸과 버튼 두 개가 한 줄.
-        var buyLabel = controls.Find("Text :: Buy Trigger Label") as RectTransform; var sellLabel = controls.Find("Text :: Sell Trigger Label") as RectTransform;
-        if (buyLabel != null) { ChatFooterKit.Place(buyLabel, ownCard, .024f, .56f, .28f, .06f); ChatFooterKit.Restyle(buyLabel.GetComponent<TextMeshProUGUI>(), 28f, ChatFooterKit.Muted, TextAlignmentOptions.MidlineLeft, false); }
-        if (sellLabel != null) { ChatFooterKit.Place(sellLabel, ownCard, .320f, .56f, .28f, .06f); ChatFooterKit.Restyle(sellLabel.GetComponent<TextMeshProUGUI>(), 28f, ChatFooterKit.Muted, TextAlignmentOptions.MidlineLeft, false); }
-        ChatFooterKit.Place((RectTransform)rooms.buyPrice.transform, ownCard, .024f, .63f, .28f, .15f);
-        ChatFooterKit.Place((RectTransform)rooms.sellPrice.transform, ownCard, .320f, .63f, .28f, .15f);
-        ChatFooterKit.Place((RectTransform)rooms.issue.transform, ownCard, .636f, .63f, .165f, .15f);
-        ChatFooterKit.Place((RectTransform)rooms.cancel.transform, ownCard, .811f, .63f, .165f, .15f);
-        ChatFooterKit.StyleButton(rooms.issue, 40f); ChatFooterKit.StyleButton(rooms.cancel, 40f);
-        ChatFooterKit.Place(rooms.feedback.rectTransform, ownCard, .024f, .825f, .952f, .11f);
-        ChatFooterKit.Restyle(rooms.feedback, 28f, ChatFooterKit.Faint, TextAlignmentOptions.MidlineLeft, false);
+        ownBuyCaption = ChatFooterKit.Label("Text :: Buy Caption", ownCard, like, .024f, .29f, .07f, .27f, 30f, ChatFooterKit.Muted);
+        ChatFooterKit.Place((RectTransform)rooms.buyPrice.transform, ownCard, .094f, .29f, .235f, .27f);
+        ownSellCaption = ChatFooterKit.Label("Text :: Sell Caption", ownCard, like, .349f, .29f, .07f, .27f, 30f, ChatFooterKit.Muted);
+        ChatFooterKit.Place((RectTransform)rooms.sellPrice.transform, ownCard, .419f, .29f, .235f, .27f);
+        ChatFooterKit.Place((RectTransform)rooms.issue.transform, ownCard, .676f, .29f, .145f, .27f);
+        ChatFooterKit.Place((RectTransform)rooms.cancel.transform, ownCard, .831f, .29f, .145f, .27f);
+        ChatFooterKit.StyleButton(rooms.issue, 38f); ChatFooterKit.StyleButton(rooms.cancel, 38f);
+        // 셋째 줄은 걸려 있는 지시와 따르는 사람 수, 넷째 줄은 방금 한 일. 둘 다 카드 너비를 다 쓴다.
+        ownCommand = ChatFooterKit.Label("Text :: Active Command", ownCard, like, .024f, .61f, .952f, .16f, 28f, ChatFooterKit.Ink);
+        ChatFooterKit.Place(rooms.feedback.rectTransform, ownCard, .024f, .79f, .952f, .16f);
+        ChatFooterKit.Restyle(rooms.feedback, 26f, ChatFooterKit.Faint, TextAlignmentOptions.MidlineLeft, false);
+        messages = chat.scroll == null ? null : (RectTransform)chat.scroll.transform;
+        if (messages != null) { messagesBottom = messages.anchorMin.y; }
+    }
+    /// <summary>내 리딩방에서는 카드가 작아진 만큼 채팅 목록과 참여자 카드를 아래로 내린다.</summary>
+    private void Compact(bool on)
+    {
+        if (compact == on) { return; }
+        compact = on; float shift = on ? OwnShift : 0f;
+        ChatFooterKit.Place(profilePanel, profilePanel.parent, CardX, ProfileTop + shift, CardWidth, ProfileHeight);
+        if (messages != null) { messages.anchorMin = new Vector2(messages.anchorMin.x, messagesBottom - shift); messages.offsetMin = new Vector2(messages.offsetMin.x, 0f); }
+    }
+    private void BuildOpen(TextMeshProUGUI like, RectTransform root)
+    {
+        // 방을 열기 전의 내 리딩방: 대화 자리 한가운데에 개설 단추, 그 아래 개설 조건과 부족한 조건.
+        openCard = ChatFooterKit.Area("Area :: Open Room Card", root, .10f, .19f, .80f, .40f);
+        ChatFooterKit.Card("Panel :: Card", openCard, 0, 0, 1, 1);
+        openTitle = ChatFooterKit.Label("Text :: Open Title", openCard, like, .05f, .045f, .90f, .10f, 52f, ChatFooterKit.Ink, TextAlignmentOptions.Center);
+        openHint = ChatFooterKit.Label("Text :: Open Hint", openCard, like, .05f, .15f, .90f, .07f, 30f, ChatFooterKit.Muted, TextAlignmentOptions.Center);
+        // 단추는 지시 단추와 같은 모양을 쓴다.
+        openButton = Instantiate(rooms.issue, openCard);
+        openButton.name = "Button :: Open Room"; openButton.gameObject.SetActive(true);
+        openButton.onClick = new Button.ButtonClickedEvent(); openButton.onClick.AddListener(OpenRoom);
+        ChatFooterKit.Place((RectTransform)openButton.transform, openCard, .22f, .255f, .56f, .14f);
+        ChatFooterKit.StyleButton(openButton, 46f);
+        openLabel = openButton.GetComponentInChildren<TextMeshProUGUI>(true);
+        // 개설 조건: 조건마다 한 칸. 윗줄은 필요한 것, 아랫줄은 지금 가진 것.
+        ChatFooterKit.Flat("Image :: Requirement Divider", openCard, .05f, .435f, .90f, .004f, ChatFooterKit.Track);
+        openRequirementHeading = ChatFooterKit.Label("Text :: Requirement Heading", openCard, like, .05f, .455f, .60f, .06f, 28f, ChatFooterKit.Muted);
+        var row = ChatFooterKit.CellBox("Panel :: Requirement Cost", openCard, .05f, .525f, .90f, .185f).transform;
+        openCostCaption = ChatFooterKit.Label("Text :: Requirement Caption", row, like, .04f, .10f, .36f, .40f, 36f, ChatFooterKit.Ink);
+        openCostValue = ChatFooterKit.Label("Text :: Requirement Value", row, like, .40f, .10f, .37f, .40f, 38f, ChatFooterKit.Ink, TextAlignmentOptions.MidlineRight);
+        openCashCaption = ChatFooterKit.Label("Text :: Holding Caption", row, like, .04f, .52f, .36f, .38f, 28f, ChatFooterKit.Muted);
+        openCashValue = ChatFooterKit.Label("Text :: Holding Value", row, like, .40f, .52f, .37f, .38f, 32f, ChatFooterKit.Ink, TextAlignmentOptions.MidlineRight);
+        openState = ChatFooterKit.Tag("Requirement State", row, like, .81f, .28f, .15f, .44f, 30f);
+        // 부족한 조건: 무엇이 얼마나 모자라는지.
+        ChatFooterKit.Flat("Image :: Shortage Divider", openCard, .05f, .745f, .90f, .004f, ChatFooterKit.Track);
+        openShortageHeading = ChatFooterKit.Label("Text :: Shortage Heading", openCard, like, .05f, .765f, .60f, .06f, 28f, ChatFooterKit.Muted);
+        openNote = ChatFooterKit.Label("Text :: Shortage", openCard, like, .05f, .83f, .90f, .12f, 34f, ChatFooterKit.Faint, TextAlignmentOptions.TopLeft, true);
+        openCard.gameObject.SetActive(false);
+    }
+    private void OpenRoom()
+    {
+        var career = PlayerProgression.Instance;
+        if (career == null || !career.OpenLeadingRooms()) { return; }
+        rooms.RefreshNow(); next = 0f;
+    }
+    private void RefreshOpen(PlayerProgression career)
+    {
+        decimal cost = career.OpeningCost, cash = decimal.Floor(career.OpeningCash);
+        bool enough = cash >= cost;
+        ChatFooterKit.Lit(openTitle, ChatFooterText.T("내 리딩방"));
+        ChatFooterKit.Lit(openHint, ChatFooterText.T("회원을 초대하고 매매 지시를 직접 내릴 수 있습니다."));
+        ChatFooterKit.Lit(openLabel, ChatFooterText.T("리딩방 개설하기"));
+        ChatFooterKit.Lit(openRequirementHeading, ChatFooterText.T("개설 조건"));
+        ChatFooterKit.Lit(openCostCaption, ChatFooterText.T("개설 비용")); ChatFooterKit.Lit(openCostValue, DeviceTerminalUI.Money(cost));
+        ChatFooterKit.Lit(openCashCaption, ChatFooterText.T("주문 가능 현금")); ChatFooterKit.Lit(openCashValue, DeviceTerminalUI.Money(cash));
+        openCashValue.color = enough ? ChatFooterKit.Ink : ChatFooterKit.Rose;
+        ChatFooterKit.Lit(openState, ChatFooterText.T(enough ? "충족" : "부족")); openState.color = enough ? ChatFooterKit.Teal : ChatFooterKit.Rose;
+        ChatFooterKit.Lit(openShortageHeading, ChatFooterText.T("부족한 조건"));
+        ChatFooterKit.Lit(openNote, enough ? ChatFooterText.T("부족한 조건이 없습니다. 개설 비용은 주문 가능 현금에서 한 번만 냅니다.")
+            : ChatFooterText.F("개설 비용 · 주문 가능 현금이 {0} 부족합니다", DeviceTerminalUI.Money(decimal.Ceiling(cost - cash))));
+        openNote.color = enough ? ChatFooterKit.Faint : ChatFooterKit.Rose;
+        openButton.interactable = enough; ChatFooterKit.Dim(openButton);
     }
     private void BuildLobby(TextMeshProUGUI like)
     {
@@ -275,11 +359,17 @@ public sealed class ChatFooterCards : MonoBehaviour
         }
         ChatFooterKit.Flat("Image :: Lounge Divider", lobbyCard, .024f, .30f, .952f, .005f, ChatFooterKit.Track);
         lockedGroup = ChatFooterKit.Area("Area :: Opening Progress", lobbyCard, 0, .315f, 1, .27f).gameObject;
-        turnoverFill = Progress(lockedGroup.transform, like, .024f, out turnoverCaption, out turnoverValue);
-        profitFill = Progress(lockedGroup.transform, like, .512f, out profitCaption, out profitValue);
+        costFill = Progress(lockedGroup.transform, like, .024f, .952f, out costCaption, out costValue);
         openGroup = ChatFooterKit.Area("Area :: Own Room Glance", lobbyCard, 0, .315f, 1, .27f).gameObject;
-        Glance(openGroup.transform, like, .024f, .30f, out roomCaption, out roomValue);
-        Glance(openGroup.transform, like, .34f, .636f, out callCaption, out callValue);
+        Glance(openGroup.transform, like, .024f, .22f, out roomCaption, out roomValue);
+        Glance(openGroup.transform, like, .256f, .47f, out callCaption, out callValue);
+        // 홍보: 지금 보고 있는 공개방에 내 방을 알리는 글을 올린다.
+        promoteButton = Instantiate(rooms.issue, openGroup.transform);
+        promoteButton.name = "Button :: Promote Room"; promoteButton.gameObject.SetActive(true);
+        promoteButton.onClick = new Button.ButtonClickedEvent(); promoteButton.onClick.AddListener(Promote);
+        ChatFooterKit.Place((RectTransform)promoteButton.transform, openGroup.transform, .738f, .12f, .238f, .68f);
+        ChatFooterKit.StyleButton(promoteButton, 38f);
+        promoteLabel = promoteButton.GetComponentInChildren<TextMeshProUGUI>(true);
         ChatFooterKit.Flat("Image :: Topic Divider", lobbyCard, .024f, .60f, .952f, .005f, ChatFooterKit.Track);
         topicHeading = ChatFooterKit.Label("Text :: Topic Heading", lobbyCard, like, .024f, .625f, .50f, .08f, 28f, ChatFooterKit.Muted);
         topicEmpty = ChatFooterKit.Label("Text :: Topic Empty", lobbyCard, like, .024f, .73f, .952f, .16f, 32f, ChatFooterKit.Faint);
@@ -326,9 +416,8 @@ public sealed class ChatFooterCards : MonoBehaviour
             topicFills[i].anchorMin = Vector2.zero; topicFills[i].anchorMax = new Vector2(topicRank[i].Value / (float)topicRank[0].Value, 1f); topicFills[i].offsetMin = topicFills[i].offsetMax = Vector2.zero;
         }
     }
-    private static RectTransform Progress(Transform root, TextMeshProUGUI like, float x, out TextMeshProUGUI caption, out TextMeshProUGUI value)
+    private static RectTransform Progress(Transform root, TextMeshProUGUI like, float x, float width, out TextMeshProUGUI caption, out TextMeshProUGUI value)
     {
-        const float width = .464f;
         caption = ChatFooterKit.Label("Text :: Progress Caption", root, like, x, .16f, width * .4f, .30f, 30f, ChatFooterKit.Muted);
         value = ChatFooterKit.Label("Text :: Progress Value", root, like, x + width * .35f, .16f, width * .65f, .30f, 34f, ChatFooterKit.Ink, TextAlignmentOptions.MidlineRight);
         var track = ChatFooterKit.Flat("Image :: Progress Track", root, x, .56f, width, .075f, ChatFooterKit.Track);
@@ -351,13 +440,14 @@ public sealed class ChatFooterCards : MonoBehaviour
         bool locked = !operate && career != null;
         lockedGroup.SetActive(locked); openGroup.SetActive(!locked);
         RefreshTopics();
-        ChatFooterKit.Lit(lobbyHint, locked ? ChatFooterText.T("운영 권한 필요") : "");
+        ChatFooterKit.Lit(lobbyHint, locked ? ChatFooterText.T("내 리딩방 탭에서 개설할 수 있습니다") : "");
         if (locked)
         {
-            ChatFooterKit.Lit(turnoverCaption, ChatFooterText.T("실제 거래대금")); ChatFooterKit.Lit(profitCaption, ChatFooterText.T("실현손익"));
-            ChatFooterKit.Lit(turnoverValue, career.Turnover.ToString("N0") + " / " + DeviceTerminalUI.Money(career.rules.leadingTurnover));
-            ChatFooterKit.Lit(profitValue, career.RealizedProfit.ToString("N0") + " / " + DeviceTerminalUI.Money(career.rules.leadingRealizedProfit));
-            Ratio(turnoverFill, career.Turnover, career.rules.leadingTurnover); Ratio(profitFill, career.RealizedProfit, career.rules.leadingRealizedProfit);
+            // 개설 비용까지 얼마나 모았는지.
+            decimal cash = decimal.Floor(career.OpeningCash);
+            ChatFooterKit.Lit(costCaption, ChatFooterText.T("개설 비용"));
+            ChatFooterKit.Lit(costValue, cash.ToString("N0") + " / " + DeviceTerminalUI.Money(career.OpeningCost));
+            Ratio(costFill, cash, career.OpeningCost);
             return;
         }
         var own = society.GetRoom(1);
@@ -366,13 +456,24 @@ public sealed class ChatFooterCards : MonoBehaviour
         ChatFooterKit.Lit(roomCaption, ChatFooterText.T("내 리딩방")); ChatFooterKit.Lit(roomValue, ChatFooterText.F("참여 {0}명", own.Members.Count));
         ChatFooterKit.Lit(callCaption, ChatFooterText.T("지시")); ChatFooterKit.Lit(callValue, active ? CommandText(own) : ChatFooterText.T("활성 지시 없음"));
         callValue.color = active ? ChatFooterKit.Ink : ChatFooterKit.Faint;
+        // 한 번 올리면 잠시 쉬어야 한다. 남은 시간을 단추에 적는다.
+        int wait = Mathf.CeilToInt((float)society.PromoteWait);
+        ChatFooterKit.Lit(promoteLabel, wait > 0 ? ChatFooterText.F("홍보 {0}초", wait) : ChatFooterText.T("홍보하기"));
+        promoteButton.interactable = wait <= 0 && MarketDayController.CanTrade && society.IsRoomOpen(1); ChatFooterKit.Dim(promoteButton);
+    }
+    private void Promote()
+    {
+        if (InvestorSociety.Instance != null && InvestorSociety.Instance.PromoteRoom(1)) { next = 0f; }
     }
     private static string CommandText(InvestorSociety.Room room)
         => GameLocale.Text(room.Command.Stock.stockName) + "    " + ChatFooterText.F("매수 ≤ {0}", room.Command.Buy.ToString("N0")) + "  /  " + ChatFooterText.F("매도 ≥ {0}", room.Command.Sell.ToString("N0"));
 
     void LateUpdate()
     {
-        if (!built || Time.unscaledTime < next) { return; }
+        if (!built) { return; }
+        // 방을 바꾸면 기다리지 않고 바로 자리를 맞춘다.
+        if (chat.SelectedRoom != shownRoom) { shownRoom = chat.SelectedRoom; next = 0f; }
+        if (Time.unscaledTime < next) { return; }
         next = Time.unscaledTime + .25f; Refresh();
     }
     private void Refresh()
@@ -382,10 +483,15 @@ public sealed class ChatFooterCards : MonoBehaviour
         var room = society.GetRoom(chat.SelectedRoom);
         bool npcSelected = room != null && !room.PlayerOwned, operate = PlayerProgression.Instance == null || PlayerProgression.Instance.CanOperateRooms;
         // 남의 방에서는 초대할 수 없으니 단추를 아예 내지 않는다.
-        bool inviting = !npcSelected && operate && chat.visualProfile.SelectedBotId > 0;
+        // 방을 아직 열지 않았어도 단추는 보인다. 누르면 개설 화면으로 간다.
+        bool inviting = !npcSelected && chat.visualProfile.SelectedBotId > 0;
         if (rooms.invite.gameObject.activeSelf != inviting) { rooms.invite.gameObject.SetActive(inviting); }
         foreach (var button in new[] { rooms.invite, rooms.npcBuy, rooms.npcSell, rooms.issue, rooms.cancel }) { ChatFooterKit.Dim(button); }
-        if (npcSelected) { RefreshNpc(); }
+        bool opening = room != null && room.PlayerOwned && !operate && PlayerProgression.Instance != null;
+        Compact(room != null && room.PlayerOwned && operate);
+        if (openCard.gameObject.activeSelf != opening) { openCard.gameObject.SetActive(opening); }
+        if (opening) { RefreshOpen(PlayerProgression.Instance); }
+        else if (npcSelected) { RefreshNpc(); }
         else if (room != null && room.PlayerOwned && operate) { RefreshOwn(society, room); }
         else { RefreshLounge(society, operate); }
     }
@@ -423,9 +529,8 @@ public sealed class ChatFooterCards : MonoBehaviour
         ChatFooterKit.Lit(ownTitle, ChatFooterText.T("내 리딩방"));
         ChatFooterKit.Lit(ownMembers, ChatFooterText.F("참여 {0}명", room.Members.Count)); ChatFooterKit.Follow(ownTitle, ownMembers, 22f, 26f);
         ChatFooterKit.Lit(ownMood, ChatFooterText.T("경각심") + " " + room.Social.discipline.ToString("0") + "  ·  " + ChatFooterText.T("위축") + " " + room.Social.chill.ToString("0"));
+        ChatFooterKit.Lit(ownBuyCaption, ChatFooterText.T("매수")); ChatFooterKit.Lit(ownSellCaption, ChatFooterText.T("매도"));
         bool active = room.Command != null && !room.Command.Canceled;
-        ChatFooterKit.Lit(ownCommand, active ? CommandText(room) : ChatFooterText.T("활성 지시 없음"));
-        ownCommand.color = active ? ChatFooterKit.Ink : ChatFooterKit.Faint;
         for (int i = 0; i < counts.Length; i++) { counts[i] = 0; }
         if (society.Orders != null)
         {
@@ -440,12 +545,13 @@ public sealed class ChatFooterCards : MonoBehaviour
                 else if (plan.State == LeadingRoomOrders.Stage.AwaitBuy || plan.State == LeadingRoomOrders.Stage.Buying) { counts[0]++; }
             }
         }
-        for (int i = 0; i < 6; i++)
+        // 숫자가 있는 칸만 지시 뒤에 붙인다.
+        string line = active ? CommandText(room) : ChatFooterText.T("활성 지시 없음");
+        for (int i = 0; i < counts.Length; i++)
         {
-            ChatFooterKit.Lit(ownCountCaptions[i], ChatFooterText.T(CountNames[i]));
-            ChatFooterKit.Lit(ownCounts[i], counts[i].ToString());
-            // 0은 흐리게: 숫자가 있는 칸만 눈에 들어온다.
-            ownCounts[i].color = counts[i] > 0 ? ChatFooterKit.Ink : ChatFooterKit.Faint;
+            if (counts[i] > 0) { line += "  ·  " + ChatFooterText.T(CountNames[i]) + " " + counts[i]; }
         }
+        ChatFooterKit.Lit(ownCommand, line);
+        ownCommand.color = active ? ChatFooterKit.Ink : ChatFooterKit.Faint;
     }
 }

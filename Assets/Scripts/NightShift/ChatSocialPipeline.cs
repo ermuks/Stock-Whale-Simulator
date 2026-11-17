@@ -60,7 +60,9 @@ public sealed partial class InvestorSociety
         if (!SocialReady)
         { return; }
         BeforeSocialTick();
+        RefreshChatterboxes(SocialTime.Seconds);
         FlushTyping();
+        TickRoomTalk();
         readySocialIntents.Clear();
         int count = Math.Min(Math.Max(1, budget), socialBots.Count);
         for (int i = 0; i < count; i++)
@@ -70,6 +72,7 @@ public sealed partial class InvestorSociety
             BeforeSocialBot(bot);
             if (!bot.isActiveAndEnabled)
             { continue; }
+            WitnessRoomTalk(bot);
             double now = SocialTime.Seconds;
             for (int j = mind.Intentions.Count - 1; j >= 0; j--)
             {
@@ -82,7 +85,9 @@ public sealed partial class InvestorSociety
                 nextIdle[mind.SocialId] = now + Config.Get("idleInterval");
                 double chill = SocialRoom(mind.Room).chill;
                 double probability = Config.Get("idleChance") * mind.Traits.Sociability / 50d * Math.Max(Config.Get("chillSpeechFloor"), 1 - chill / Config.Get("chillSpeechDivisor"));
-                if (Present(bot, mind.Room) && mind.Intentions.Count == 0 && mind.ActiveAt((float)now) && mind.SocialRng.Next() < probability)
+                // 수다쟁이는 쉬는 시간대 없이 훨씬 자주 말을 꺼낸다. 방 분위기가 얼어붙으면 같이 줄어든다.
+                if (mind.Chatterbox) { probability = now - mind.SocialLastSpeech < ChatterGapSeconds ? 0 : ChatterIdleChance * Math.Max(Config.Get("chillSpeechFloor"), 1 - chill / Config.Get("chillSpeechDivisor")); }
+                if (Present(bot, mind.Room) && mind.Intentions.Count == 0 && (mind.Chatterbox || mind.ActiveAt((float)now)) && mind.SocialRng.Next() < probability)
                 { Offer(bot, mind.Room, SocialMotive.IDLE); }
             }
             int selected = -1;
@@ -103,7 +108,9 @@ public sealed partial class InvestorSociety
         // A busy early bot must not consume the room quota before another bot's due reply.
         readySocialIntents.Sort((a, b) =>
         {
-            int order = a.intent.motive.CompareTo(b.intent.motive);
+            // 방이 꽉 차 있어도 수다쟁이의 말은 먼저 나간다. 대신 수다쟁이는 한 번 말하면 정해진 시간 동안 새 말을 꺼내지 않는다.
+            int order = b.bot.Social.Psychology.Chatterbox.CompareTo(a.bot.Social.Psychology.Chatterbox);
+            if (order == 0) { order = a.intent.motive.CompareTo(b.intent.motive); }
             if (order == 0) { order = a.intent.due.CompareTo(b.intent.due); }
             if (order == 0) { order = a.bot.Social.Psychology.SocialLastSpeech.CompareTo(b.bot.Social.Psychology.SocialLastSpeech); }
             return order != 0 ? order : a.bot.Social.Id.CompareTo(b.bot.Social.Id);
@@ -113,7 +120,7 @@ public sealed partial class InvestorSociety
             var bot = ready.bot; var mind = bot.Social.Psychology; var chosen = ready.intent; double now = SocialTime.Seconds;
             var room = SocialRoom(chosen.roomId);
             while (room.sent.Count > 0 && now - room.sent.Peek() >= Config.Get("roomWindowSec")) { room.sent.Dequeue(); }
-            if (room.sent.Count >= Config.Int("roomMaxMsgPer10Sec"))
+            if (room.sent.Count >= Config.Int("roomMaxMsgPer10Sec") && !mind.Chatterbox)
             {
                 // Pending high priority work is retained; idle overflow is discarded, never burst-published later.
                 if (chosen.motive < SocialMotive.WITNESSED_EVENT) { chosen.due = room.sent.Peek() + Config.Get("roomWindowSec"); mind.Intentions.Add(chosen); }
@@ -175,6 +182,7 @@ public sealed partial class InvestorSociety
         if (stock == null)
         { return facts; }
         facts.symbol = stock.symbol; facts.stockName = stock.stockName; facts.price = Money(stock.currentPrice);
+        CaptureMarketScene(stock, facts);
         facts.canPromise = bot.CanMakeSocialPromise && mind.PromisedAction == SocialPromisedAction.None;
         decimal qty = bot.GetOwnedVolume(stock), basis = bot.GetOwnedAverage(stock);
         facts.quantity = Money(qty); facts.held = qty > 0;
@@ -418,6 +426,7 @@ public sealed partial class InvestorSociety
         "avgPrice" => f.avgPrice, "price" => f.price, "quantity" => f.quantity, "profitKind" => f.profitKind, "memSymbol" => f.memSymbol, "memPct" => f.memPct, "memWhen" => f.memWhen,
         "bidStatus" => f.bidStatus, "askStatus" => f.askStatus, "signalResult" => f.signalResult, "departedName" => f.departedName, "memAmount" => f.memAmount,
         "seenPrice" => f.observationPrice, "movePct" => f.observationPercent,
+        "dayPct" => f.dayPct, "dayHigh" => f.dayHigh, "dayLow" => f.dayLow, "fastPct" => f.fastPct, "fromHigh" => f.fromHigh, "fromLow" => f.fromLow,
         "riskLabel" => IsMarketRiskNotice(f.notice) ? MarketRiskLabel(f.riskGrade) : null,
         "newsHeadline" => f.newsHeadline,
         "seenMinutes" => f.observationPrice != null ? (f.observedAt - f.observationAt).ToString("0.#", SocialCulture) : null, _ => null

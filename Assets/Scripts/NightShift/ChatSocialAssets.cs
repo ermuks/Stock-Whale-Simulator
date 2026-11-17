@@ -71,7 +71,7 @@ public static class ChatSocialAssets
             foreach (var group in templates.community)
             {
                 if (group == null || string.IsNullOrEmpty(group.key) || !communityKeys.Add(group.key) || !Enum.TryParse<SocialAct>(group.act, out _) ||
-                    string.IsNullOrEmpty(group.context) || group.texts == null || group.texts.Length < 6 || nextCommunity.ContainsKey((group.act, group.context)))
+                    string.IsNullOrEmpty(group.context) || group.texts == null || group.texts.Length < (group.context.StartsWith("MKT_", StringComparison.Ordinal) ? 3 : 6) || nextCommunity.ContainsKey((group.act, group.context)))
                 { throw new ArgumentException("Invalid community phrase group"); }
                 var unique = new HashSet<string>();
                 foreach (string text in group.texts)

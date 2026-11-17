@@ -40,7 +40,7 @@ public static class MarketBeliefValidation
     private static double savedBelief;
     private static int savedDay, savedBotId;
     private static bool savedUnlock;
-    private static StreamWriter closeLog, whaleLog, cardLog, replyLog;
+    private static StreamWriter closeLog, whaleLog, cardLog, replyLog, chatLog;
     private static bool hadLanguage, languageChanged;
     private static string languageBefore;
     private static readonly Dictionary<long, SocialMessage> spoken = new();
@@ -90,6 +90,8 @@ public static class MarketBeliefValidation
         closeLog = Writer("closing.txt");
         cardLog = Writer("cards.txt");
         replyLog = Writer("replies.txt");
+        chatLog = Writer("chat.tsv");
+        chatLog.WriteLine("at\tid\troom\tsender\ttarget\treplyTo\tthread\tact\tsymbol\ttemplate\ttext");
         whaleLog = Writer("whales.csv");
         whaleLog.WriteLine("t,symbol,price,real,ownerHolding,openingShares,playerShare,vigilance,pressure,buybackShares,averageSale,soldToday,ownerCash");
         accumulateSymbol = Environment.GetEnvironmentVariable("DONDON_PLAYER_ACCUMULATE");
@@ -515,6 +517,12 @@ public static class MarketBeliefValidation
             saleTalk++;
         }
 
+        // 품질 검토용 전체 대화 기록. 방, 화자, 상대, 답글 대상, 행위, 종목, 고른 문장 키를 함께 남긴다.
+        if (chatLog != null)
+        {
+            chatLog.WriteLine(message.at.ToString("0.0", CultureInfo.InvariantCulture) + "\t" + message.id + "\t" + message.roomId + "\t" + message.senderId + "\t" + message.targetId + "\t" + message.replyToId + "\t" + message.threadId + "\t" + message.act + "\t" + (message.facts == null ? "" : message.facts.symbol) + "\t" + message.templateKey + "\t" + (message.text ?? "").Replace("\n", " "));
+        }
+
         if (message.act == SocialAct.BRAG && message.facts != null && !message.facts.directLead &&
             decimal.TryParse(message.facts.amount, NumberStyles.Number | NumberStyles.AllowLeadingSign, CultureInfo.InvariantCulture, out decimal bragAmount))
         {
@@ -902,6 +910,16 @@ public static class MarketBeliefValidation
                 summary.WriteLine("errors=" + errors + " frames=" + frames + " timeScale=" + Time.timeScale + " observedSeconds=" + (readyAt < 0 ? 0 : Time.time - readyAt).ToString("F1", CultureInfo.InvariantCulture));
                 summary.WriteLine("wallSeconds=" + (EditorApplication.timeSinceStartup - began).ToString("F1", CultureInfo.InvariantCulture));
                 summary.WriteLine("bots=" + (day == null ? 0 : day.Bots.Count) + " integrityFailed=" + (day != null && day.IntegrityFailed));
+                if (InvestorSociety.Instance != null)
+                {
+                    var chatter = new StringBuilder("chatterboxes=");
+                    foreach (var talker in InvestorSociety.Instance.Chatterboxes)
+                    {
+                        chatter.Append(talker.Social.Id).Append(':').Append(talker.Social.Nickname).Append(":room").Append(talker.Social.Psychology.Room).Append(' ');
+                    }
+
+                    summary.WriteLine(chatter.ToString());
+                }
                 summary.WriteLine("day=" + (day == null ? 0 : day.Day) + " phase=" + (day == null ? "" : day.Phase.ToString()) + " gameMinute=" + (day == null ? 0 : day.GameMinute) + " reportPending=" + (day != null && day.ReportPending));
                 summary.WriteLine("panicStarts=" + panicStarts + " fomoStarts=" + fomoStarts + " rhythmOrders=" + (MarketRhythmDirector.Instance == null ? 0 : MarketRhythmDirector.Instance.DirectedOrders));
                 foreach (var pair in tallies)
@@ -945,6 +963,7 @@ public static class MarketBeliefValidation
             cardLog.Dispose();
         }
 
+        chatLog?.Dispose();
         if (replyLog != null)
         {
             replyLog.WriteLine("total: addressed=" + addressed + " withParent=" + addressedWithParent + " sameStock=" + sameSymbol + " noParent=" + addressedNoParent +

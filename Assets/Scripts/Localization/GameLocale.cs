@@ -149,6 +149,10 @@ public sealed class GameLocale : MonoBehaviour
         Changed?.Invoke();
     }
     public static string Text(string source) => Render(source,0);
+    /// <summary>게임 날짜. 한국어 "3일", 영어 "Day 3", 일본어 "3日目".</summary>
+    public static string Day(int day) => Code == "ja" ? day + "日目" : Code == "en" ? "Day " + day : day + "일";
+    // 저장된 시각 표기("3일 09:02")는 한국어로 적혀 있다. 다른 언어에서는 문장 안에 있어도 그 언어의 표기로 바꾼다.
+    private static readonly Regex DayStamp = new(@"(?<![\d가-힣])(?<d>\d+)일 (?<t>\d{1,2}:\d{2})", RegexOptions.Compiled);
     public static string Get(string key,string fallback) => table?.GetEntry(key)?.Value ?? fallback;
     public static void ProtectLiteral(string value)
     {
@@ -169,6 +173,11 @@ public sealed class GameLocale : MonoBehaviour
         if (rendered.TryGetValue(source,out string cached)) { return cached; }
         if (exact.TryGetValue(source,out var phrase)) { return Cache(source,phrase.translated); }
         if (!HasKorean(source)) { return source; }
+        if (depth == 0 && source.IndexOf('일') > 0)
+        {
+            string stamped = DayStamp.Replace(source, Code == "ja" ? "${d}日目 ${t}" : "Day ${d} ${t}");
+            if (stamped != source) { return Cache(source,Render(stamped,depth+1)); }
+        }
         foreach (var candidate in patterns)
         {
             if (!source.Contains(candidate.hint)) { continue; }

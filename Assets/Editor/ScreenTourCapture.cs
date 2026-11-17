@@ -1,0 +1,469 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using UnityEditor;
+using UnityEditor.SceneManagement;
+using UnityEngine;
+using UnityEngine.UI;
+using Object = UnityEngine.Object;
+
+// 채팅 화면과 메인 모니터의 여러 상태를 실제 씬에서 차례로 찍는다.
+// 열려 있는 편집기에서 돈다: 메뉴 DonDon/Capture/Screen tour, 또는 Validation/Screens/capture.request 파일을 만들면 시작한다.
+// 씬을 열거나 저장하지 않는다. 씬에 저장하지 않은 변경이 있으면 시작하지 않는다.
+// 게임 저장은 Validation/Screens/save 폴더로 돌려 실제 저장 파일을 건드리지 않는다.
+[InitializeOnLoad]
+public static class ScreenTourCapture
+{
+    private const string Folder = "Validation/Screens", Request = Folder + "/capture.request", ScenePath = "Assets/Scenes 1/TradeScene.unity";
+    private const string RefreshedKey = "DonDon.ScreenTour.Refreshed";
+    private static readonly StringBuilder report = new();
+    private static readonly List<string> errors = new();
+    private static bool running, oldOptions, oldBackground;
+    private static EnterPlayModeOptions oldFlags;
+    private static double began, ready, nextWatch;
+    private static int phase, waited;
+    private static Camera camera;
+    private static TabletGroupChatUI chat;
+    private static LeadingRoomUI rooms;
+    private static RectTransform chartScreen;
+    // 전체 화면 점검: 화면마다 한·영·일로 찍고 넘치는 글자를 적는다.
+    private static bool audit;
+    private static readonly List<(string name, Action prepare, Func<RectTransform> target)> steps = new();
+    private static readonly string[] languages = { "ko", "en", "ja" };
+    private static int stepIndex, languageIndex;
+    private static bool sawPlaying;
+    private const string LanguageKey = "DonDon.ScreenTour.Language";
+
+    private const string RunningKey = "DonDon.ScreenTour.Running", OptionsEnabledKey = "DonDon.ScreenTour.OptionsEnabled", OptionsKey = "DonDon.ScreenTour.Options",
+        BackgroundKey = "DonDon.ScreenTour.Background", RefreshedAtKey = "DonDon.ScreenTour.RefreshedAt";
+
+    static ScreenTourCapture()
+    {
+        EditorApplication.update += Watch;
+        // 캡처 도중에 스크립트가 다시 올라오면(도메인 재시작) 진행 상태가 사라진다. 그때는 바꿔 둔 설정을 되돌리고 플레이를 끝낸다.
+        if (SessionState.GetBool(RunningKey, false)) { EditorApplication.delayCall += Recover; }
+        else if (!SessionState.GetBool(RepairedKey, false)) { SessionState.SetBool(RepairedKey, true); EditorApplication.delayCall += MatchSavedPlayModeOptions; }
+    }
+    private const string RepairedKey = "DonDon.ScreenTour.Repaired";
+    /// <summary>
+    /// 이전 판의 이 도구는 끊긴 실행 뒤에 플레이 모드 설정을 되돌리지 못할 수 있었다.
+    /// 편집기를 켠 뒤 한 번, 메모리의 설정을 디스크에 저장된 프로젝트 설정과 맞춘다(프로젝트 설정 파일은 고치지 않는다).
+    /// </summary>
+    private static void MatchSavedPlayModeOptions()
+    {
+        const string path = "ProjectSettings/EditorSettings.asset";
+        if (!File.Exists(path) || EditorApplication.isPlayingOrWillChangePlaymode) { return; }
+        foreach (string line in File.ReadAllLines(path))
+        {
+            string text = line.Trim();
+            if (text.StartsWith("m_EnterPlayModeOptionsEnabled:") && int.TryParse(text.Substring(text.IndexOf(':') + 1).Trim(), out int enabled))
+            { if (EditorSettings.enterPlayModeOptionsEnabled != (enabled != 0)) { EditorSettings.enterPlayModeOptionsEnabled = enabled != 0; } }
+            else if (text.StartsWith("m_EnterPlayModeOptions:") && int.TryParse(text.Substring(text.IndexOf(':') + 1).Trim(), out int options))
+            { if ((int)EditorSettings.enterPlayModeOptions != options) { EditorSettings.enterPlayModeOptions = (EnterPlayModeOptions)options; } }
+        }
+    }
+    private static void Recover()
+    {
+        Restore();
+        Directory.CreateDirectory(Folder);
+        File.WriteAllText(Path.Combine(Folder, "report.txt"), "STOPPED: scripts reloaded during the capture" + Environment.NewLine);
+        orphanUntil = EditorApplication.timeSinceStartup + 30; EditorApplication.update += EndOrphanPlay;
+    }
+    private static double orphanUntil;
+    /// <summary>끊긴 캡처가 남긴 플레이를 끝낸다. 플레이로 넘어가는 중일 수 있으므로 잠시 지켜본다.</summary>
+    private static void EndOrphanPlay()
+    {
+        if (EditorApplication.isPlaying) { EditorApplication.ExitPlaymode(); EditorApplication.update -= EndOrphanPlay; return; }
+        if (!EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.timeSinceStartup > orphanUntil) { EditorApplication.update -= EndOrphanPlay; }
+    }
+    /// <summary>캡처를 위해 바꾼 편집기 설정을 원래대로 돌린다. 원래 값은 도메인이 다시 올라와도 남는 곳에 적어 둔다.</summary>
+    private static void Restore()
+    {
+        if (!SessionState.GetBool(RunningKey, false)) { return; }
+        EditorSettings.enterPlayModeOptionsEnabled = SessionState.GetBool(OptionsEnabledKey, false);
+        EditorSettings.enterPlayModeOptions = (EnterPlayModeOptions)SessionState.GetInt(OptionsKey, 0);
+        Application.runInBackground = SessionState.GetBool(BackgroundKey, false);
+        Environment.SetEnvironmentVariable("DONDON_SETTINGS_OUTPUT", null);
+        // 점검 중에 바꾼 언어 설정도 되돌린다.
+        string language = SessionState.GetString(LanguageKey, "");
+        if (language.Length > 0 && GameLocale.Code != language) { try { GameLocale.SetLanguage(language); } catch (Exception) { } }
+        SessionState.SetString(LanguageKey, "");
+        SessionState.SetBool(RunningKey, false);
+    }
+
+    private static void Watch()
+    {
+        if (running || EditorApplication.timeSinceStartup < nextWatch) { return; }
+        nextWatch = EditorApplication.timeSinceStartup + 1;
+        if (!File.Exists(Request)) { return; }
+        // 요청을 받으면 먼저 바뀐 스크립트를 불러들인다. 컴파일이 끝난 뒤(도메인이 다시 올라온 뒤) 시작한다.
+        // 누군가 플레이 중이면 건드리지 않는다. 플레이 중에 스크립트를 다시 올리면 그 플레이가 망가진다.
+        if (EditorApplication.isPlayingOrWillChangePlaymode)
+        {
+            File.Delete(Request); SessionState.SetBool(RefreshedKey, false);
+            Directory.CreateDirectory(Folder); File.WriteAllText(Path.Combine(Folder, "report.txt"), "REFUSED: play mode is already running" + Environment.NewLine);
+            return;
+        }
+        // 바뀐 스크립트가 있으면 플레이에 들어가는 순간 편집기가 다시 컴파일하면서 이 도구의 진행 상태가 사라진다.
+        // 그래서 먼저 불러들이고 컴파일을 직접 요청한 뒤, 스크립트가 다시 올라온 것을 보고 시작한다.
+        if (!SessionState.GetBool(RefreshedKey, false))
+        {
+            SessionState.SetBool(RefreshedKey, true); SessionState.SetFloat(RefreshedAtKey, (float)EditorApplication.timeSinceStartup);
+            AssetDatabase.Refresh(ImportAssetOptions.ForceSynchronousImport);
+            UnityEditor.Compilation.CompilationPipeline.RequestScriptCompilation();
+            return;
+        }
+        if (EditorApplication.timeSinceStartup - SessionState.GetFloat(RefreshedAtKey, 0f) < 8 || EditorApplication.isCompiling || EditorApplication.isUpdating) { return; }
+        string request = File.ReadAllText(Request);
+        audit = request.Contains("audit");
+        // 요청에 import가 있으면 번역 표를 먼저 다시 들여온다(편집기 메뉴와 같은 동작).
+        if (request.Contains("import"))
+        {
+            File.WriteAllText(Request, request.Replace("import", ""));
+            try { DonDonLocalizationSetup.Import(); AssetDatabase.SaveAssets(); }
+            catch (Exception error) { File.Delete(Request); File.WriteAllText(Path.Combine(Folder, "report.txt"), "STOPPED: translation import failed: " + error.Message + Environment.NewLine); return; }
+            SessionState.SetBool(RefreshedKey, true); SessionState.SetFloat(RefreshedAtKey, (float)EditorApplication.timeSinceStartup);
+            return;
+        }
+        SessionState.SetBool(RefreshedKey, false);
+        File.Delete(Request); Run();
+    }
+
+    /// <summary>편집기를 띄우지 않고 돌릴 때 쓴다: 씬을 열고, 번역 표를 들여오고, 전체 화면 점검을 한다.</summary>
+    public static void RunBatch()
+    {
+        EditorSceneManager.OpenScene(ScenePath);
+        DonDonLocalizationSetup.Import(); AssetDatabase.SaveAssets();
+        audit = true; Run();
+        if (!running) { EditorApplication.Exit(2); }
+    }
+
+    [MenuItem("DonDon/Capture/Screen tour")]
+    public static void Run()
+    {
+        if (running) { return; }
+        Directory.CreateDirectory(Folder); report.Clear(); errors.Clear();
+        if (File.Exists(Folder + "/report.txt")) { File.Delete(Folder + "/report.txt"); }
+        var scene = EditorSceneManager.GetActiveScene();
+        string refusal = EditorApplication.isPlayingOrWillChangePlaymode ? "play mode is already running" : EditorApplication.isCompiling ? "scripts are compiling" :
+            scene.path != ScenePath ? "active scene is " + scene.path : scene.isDirty ? "the scene has unsaved changes" : null;
+        if (refusal != null) { File.WriteAllText(Path.Combine(Folder, "report.txt"), "REFUSED: " + refusal + "\n"); return; }
+        running = true;
+        Directory.CreateDirectory(Folder + "/save");
+        foreach (string old in Directory.GetFiles(Folder + "/save")) { File.Delete(old); }
+        Environment.SetEnvironmentVariable("DONDON_SETTINGS_OUTPUT", Path.GetFullPath(Folder + "/save"));
+        oldOptions = EditorSettings.enterPlayModeOptionsEnabled; oldFlags = EditorSettings.enterPlayModeOptions; oldBackground = Application.runInBackground;
+        SessionState.SetBool(OptionsEnabledKey, oldOptions); SessionState.SetInt(OptionsKey, (int)oldFlags); SessionState.SetBool(BackgroundKey, oldBackground); SessionState.SetBool(RunningKey, true);
+        EditorSettings.enterPlayModeOptionsEnabled = true; EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
+        Application.runInBackground = true;
+        began = EditorApplication.timeSinceStartup; ready = began + 3; phase = 0; waited = 0; sawPlaying = false;
+        Application.logMessageReceived += Log; EditorApplication.update += Tick; EditorApplication.EnterPlaymode();
+    }
+    private static void Log(string message, string stack, LogType type)
+    { if ((type == LogType.Exception || type == LogType.Error) && !stack.Contains("UnityEditor.Search")) { errors.Add(message + "\n" + stack); } }
+    private static void Next(double seconds = 1.5) { phase++; ready = EditorApplication.timeSinceStartup + seconds; }
+
+    private static void Tick()
+    {
+        if (EditorApplication.timeSinceStartup - began > (audit ? 900 : 300)) { Finish(new Exception("timeout at phase " + phase + " playing=" + EditorApplication.isPlaying)); return; }
+        // 누군가 플레이를 멈추면 더 기다리지 않고 끝낸다.
+        if (EditorApplication.isPlaying) { sawPlaying = true; }
+        else if (sawPlaying && !EditorApplication.isPlayingOrWillChangePlaymode) { Finish(new Exception("play mode ended before the capture finished")); return; }
+        if (!EditorApplication.isPlaying || EditorApplication.timeSinceStartup < ready) { return; }
+        try
+        {
+            if (phase == 0)
+            {
+                camera = Camera.main;
+                chat = Object.FindObjectsByType<TabletGroupChatUI>().Single(c => c.monitorChat); rooms = chat.GetComponent<LeadingRoomUI>();
+                var manager = Object.FindAnyObjectByType<ChartManager>();
+                chartScreen = (RectTransform)manager.textName.transform.parent.parent;
+                Next(2); return;
+            }
+            if (!StockManager.Instance.SetupConfirmed)
+            {
+                var setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>();
+                if (setup != null && setup.confirm != null && setup.confirm.interactable && !StockManager.Instance.SetupInProgress) { setup.confirm.onClick.Invoke(); }
+                ready = EditorApplication.timeSinceStartup + 1; return;
+            }
+            // 점검 단계에서는 일시정지 메뉴를 열기도 한다. 그때는 거래가 멈춰 있어도 계속 진행한다.
+            if (phase < 100 && (!MarketDayController.CanTrade || !MarketDayController.Instance.Ready)) { return; }
+            if (phase == 1)
+            {
+                foreach (var mouse in Object.FindObjectsByType<MouseCameraController>()) { mouse.enabled = false; }
+                Time.timeScale = 1f;
+                Next(20); return;   // 대화와 기사가 쌓일 때까지.
+            }
+            if (phase == 2) { chat.SelectRoom(0); Next(); return; }
+            if (phase == 3)
+            {
+                var bot = InvestorSociety.Instance.SocialBots.Values.OrderBy(b => b.Social.Id).FirstOrDefault(b => b.Social.Psychology.Room == 0);
+                if (bot != null) { chat.SelectProfile(bot.Social.Id); }
+                report.AppendLine("lounge messages=" + MarketDayController.Instance.MessageCount + " rooms opened=" + PlayerProgression.Instance.CanOperateRooms);
+                Next(); return;
+            }
+            if (phase == 4) { Shoot((RectTransform)chat.transform, "1-chat-lounge-investor", 900, 1600); chat.SelectRoom(1); Next(2); return; }
+            if (phase == 5)
+            {
+                Shoot((RectTransform)chat.transform, "2-chat-my-room-before-opening", 900, 1600);
+                // 개설 뒤 화면을 찍기 위해 이 실행에서만 방을 연다(저장되지 않는다).
+                var career = PlayerProgression.Instance;
+                var property = career.GetType().GetProperty("CanOperateRooms");
+                property.SetValue(career, true);
+                chat.SelectRoom(1); Next(2.5); return;
+            }
+            if (phase == 6) { Shoot((RectTransform)chat.transform, "3-chat-my-room-opened", 900, 1600); chat.SelectRoom(0); Next(2); return; }
+            if (phase == 7)
+            {
+                var bot = InvestorSociety.Instance.SocialBots.Values.OrderBy(b => b.Social.Id).FirstOrDefault(b => b.Social.Psychology.Room == 0);
+                if (bot != null) { chat.SelectProfile(bot.Social.Id); }
+                Next(); return;
+            }
+            if (phase == 8) { Shoot((RectTransform)chat.transform, "4-chat-lounge-after-opening", 900, 1600); Next(.5); return; }
+            if (phase == 9)
+            {
+                var list = GameObject.Find("Panel :: Stock List Screen");
+                if (list != null)
+                {
+                    var area = ((RectTransform)list.transform).rect;
+                    Shoot((RectTransform)list.transform, "10-stock-list", area.width >= area.height ? 1920 : 1080, area.width >= area.height ? 1080 : 1920);
+                    var first = StockManager.Instance.stocks[0]; StockStatistics.Instance.GetDayWindow(first, out decimal volume, out decimal turnover);
+                    report.AppendLine("day window " + first.symbol + " volume=" + volume.ToString("N0") + " turnover=" + turnover.ToString("N0") + " session turnover=" + StockStatistics.Instance.GetSessionTurnover(first).ToString("N0"));
+                }
+            }
+            if (phase == 9) { Shoot(chartScreen, "5-monitor-chart", 1920, 1080); Press("Button :: Information"); Next(2); return; }
+            if (phase == 10)
+            {
+                // 기사가 아직 없으면 조금 더 기다린다.
+                int count = NewsManager.Instance == null ? 0 : NewsManager.Instance.Articles.Count;
+                if (count == 0 && waited++ < 20) { ready = EditorApplication.timeSinceStartup + 2; return; }
+                report.AppendLine("articles=" + count);
+                Next(1.5); return;
+            }
+            if (phase == 11) { Shoot(chartScreen, "6-monitor-information-list", 1920, 1080); report.AppendLine("article row pressed=" + Press("Button :: Article Row 1")); Next(2); return; }
+            if (phase == 12) { Shoot(chartScreen, "7-monitor-information-article", 1920, 1080); report.AppendLine("next pressed=" + Press("Button :: Next Article")); Next(2); return; }
+            if (phase == 13) { Shoot(chartScreen, "8-monitor-information-next-article", 1920, 1080); report.AppendLine("back pressed=" + Press("Button :: Back To Chart")); Next(2); return; }
+            if (phase == 14)
+            {
+                Shoot(chartScreen, "9-monitor-chart-after-closing", 1920, 1080);
+                if (!audit) { Finish(null); return; }
+                BuildAudit(); stepIndex = 0; languageIndex = 0;
+                SessionState.SetString(LanguageKey, GameLocale.Code);
+                Directory.CreateDirectory(Folder + "/audit");
+                foreach (string old in Directory.GetFiles(Folder + "/audit", "*.png")) { File.Delete(old); }
+                phase = 100; ready = EditorApplication.timeSinceStartup + .5; return;
+            }
+            if (phase == 100)
+            {
+                if (languageIndex >= languages.Length) { Finish(null); return; }
+                if (stepIndex == 0 && GameLocale.Code != languages[languageIndex]) { GameLocale.SetLanguage(languages[languageIndex]); ready = EditorApplication.timeSinceStartup + 3; phase = 102; return; }
+                phase = 102; return;
+            }
+            if (phase == 102)
+            {
+                try { steps[stepIndex].prepare(); }
+                catch (Exception error) { report.AppendLine("STEP FAILED " + steps[stepIndex].name + " prepare: " + error.Message); }
+                phase = 101; ready = EditorApplication.timeSinceStartup + 1.8; return;
+            }
+            if (phase == 101)
+            {
+                var step = steps[stepIndex];
+                try
+                {
+                    var target = step.target();
+                    if (target == null) { if (step.name != "menu-closed" && step.name != "large-caps") { report.AppendLine("STEP SKIPPED " + step.name + ": screen not found"); } }
+                    else if (target.GetComponent<Canvas>() is Canvas overlay && overlay.renderMode == RenderMode.ScreenSpaceOverlay)
+                    { ShootOverlay(overlay, "audit/" + languages[languageIndex] + "-" + (stepIndex + 1).ToString("00") + "-" + step.name); }
+                    else
+                    {
+                        var area = target.rect; bool wide = area.width >= area.height;
+                        Shoot(target, "audit/" + languages[languageIndex] + "-" + (stepIndex + 1).ToString("00") + "-" + step.name, wide ? 1920 : 1080, wide ? 1080 : 1920);
+                    }
+                }
+                catch (Exception error) { report.AppendLine("STEP FAILED " + step.name + " shot: " + error.Message); }
+                stepIndex++;
+                if (stepIndex >= steps.Count) { stepIndex = 0; languageIndex++; }
+                phase = 100; ready = EditorApplication.timeSinceStartup + .2; return;
+            }
+        }
+        catch (Exception error) { Finish(error); }
+    }
+
+    private static void LogLargeCaps()
+    {
+        if (StockManager.Instance == null || StockStatistics.Instance == null) { return; }
+        foreach (var stock in StockManager.Instance.stocks)
+        {
+            if (StockStatistics.Instance.TryGetDailyChange(stock, out decimal change))
+            { report.AppendLine((stock.currentPrice >= 100000m ? "large cap " : "stock ") + stock.symbol + " day change " + change.ToString("0.0") + "% at " + DeviceMarketJournal.Stamp()); }
+        }
+    }
+    private static RectTransform Named(string name)
+    {
+        var item = GameObject.Find(name);
+        return item == null ? null : item.transform as RectTransform;
+    }
+    private static void SelectInvestor()
+    {
+        var bot = InvestorSociety.Instance.SocialBots.Values.OrderBy(b => b.Social.Id).FirstOrDefault(b => b.Social.Psychology.Room == 0);
+        if (bot != null) { chat.SelectProfile(bot.Social.Id); }
+    }
+    private static void BuildAudit()
+    {
+        steps.Clear();
+        RectTransform chatScreen = (RectTransform)chat.transform;
+        steps.Add(("chat-lounge", () => { chat.SelectRoom(0); SelectInvestor(); }, () => chatScreen));
+        steps.Add(("chat-my-room", () => chat.SelectRoom(1), () => chatScreen));
+        steps.Add(("chat-host-room", () => rooms.ShowNpc(), () => chatScreen));
+        steps.Add(("monitor-chart", () => chat.SelectRoom(0), () => chartScreen));
+        steps.Add(("monitor-information", () => Press("Button :: Information"), () => chartScreen));
+        steps.Add(("monitor-article", () => Press("Button :: Article Row 1"), () => chartScreen));
+        steps.Add(("stock-list", () => Press("Button :: Back To Chart"), () => Named("Panel :: Stock List Screen")));
+        foreach (string panel in new[] { "Panel :: Stock Holdings Screen", "Panel :: Operation Monitor", "Panel :: Market Clock Canvas", "Panel :: Phone Screen" })
+        {
+            string name = panel;
+            steps.Add((name.Replace("Panel :: ", "").Replace(" ", "-").ToLowerInvariant(), () => { }, () => Named(name)));
+        }
+        foreach (var tablet in Object.FindObjectsByType<TabletAccountUI>().OrderBy(t => t.second))
+        {
+            var device = tablet; string prefix = device.second ? "tablet2-" : "tablet1-";
+            RectTransform screen = (RectTransform)device.transform;
+            if (device.second)
+            {
+                steps.Add((prefix + "locked", () => { }, () => screen));
+                // 잠긴 화면을 찍은 다음, 나머지 쪽을 보기 위해 이 실행에서만 연다(저장되지 않는다).
+                steps.Add((prefix + "automation", () =>
+                {
+                    var accounts = device.accounts; accounts.GetType().GetProperty("AutomatedUnlocked").SetValue(accounts, true);
+                    device.lockRoot.SetActive(false); device.contentRoot.SetActive(true); device.ShowPage(TabletAccountUI.Page.Automation);
+                }, () => screen));
+                steps.Add((prefix + "assets", () => device.ShowPage(TabletAccountUI.Page.Dashboard), () => screen));
+                steps.Add((prefix + "special", () => device.ShowPage(TabletAccountUI.Page.Special), () => screen));
+                steps.Add((prefix + "records", () => device.ShowPage(TabletAccountUI.Page.Records), () => screen));
+            }
+            else
+            {
+                steps.Add((prefix + "assets", () => device.ShowPage(TabletAccountUI.Page.Dashboard), () => screen));
+                steps.Add((prefix + "orders", () => device.ShowPage(TabletAccountUI.Page.Orders), () => screen));
+                steps.Add((prefix + "company", () => device.ShowPage(TabletAccountUI.Page.Management), () => screen));
+                steps.Add((prefix + "records", () => device.ShowPage(TabletAccountUI.Page.Records), () => screen));
+                steps.Add((prefix + "news", () => device.ShowPage(TabletAccountUI.Page.Events), () => screen));
+                steps.Add((prefix + "unlocks", () => device.ShowPage(TabletAccountUI.Page.Unlocks), () => screen));
+            }
+        }
+        // 새 날 연출: 흐림이 깔리고 큰 글자가 자리를 잡은 순간을 찍는다.
+        if (DayIntroOverlay.Instance != null)
+        {
+            RectTransform intro = (RectTransform)DayIntroOverlay.Instance.Root.transform;
+            steps.Add(("day-intro", () => DayIntroOverlay.Instance.Play(2), () => intro));
+        }
+        steps.Add(("large-caps", LogLargeCaps, () => null));
+        // 시스템 메뉴(ESC): 일시정지 화면과 언어 설정.
+        var menu = PauseMenuController.Instance;
+        if (menu != null)
+        {
+            RectTransform menuScreen = (RectTransform)menu.UI.Root.transform;
+            steps.Add(("menu-pause", () => menu.Open(), () => menuScreen));
+            steps.Add(("menu-language", () => { menu.Settings(); menu.UI.Settings("게임"); }, () => menuScreen));
+            steps.Add(("menu-closed", () => { menu.Back(); menu.Resume(); }, () => null));
+        }
+        report.AppendLine("audit steps=" + steps.Count);
+    }
+
+    private static bool Press(string name)
+    {
+        foreach (var button in chartScreen.GetComponentsInChildren<Button>(true))
+        {
+            if (button.name != name || !button.gameObject.activeInHierarchy || !button.interactable) { continue; }
+            button.onClick.Invoke(); return true;
+        }
+        return false;
+    }
+
+    /// <summary>화면을 정면에서 찍는다. 넘치는 글자가 있으면 적는다.</summary>
+    private static void Shoot(RectTransform rect, string name, int width, int height)
+    {
+        Canvas.ForceUpdateCanvases();
+        int overflow = 0, spill = 0, korean = 0;
+        foreach (var text in rect.GetComponentsInChildren<TMPro.TextMeshProUGUI>())
+        {
+            if (string.IsNullOrEmpty(text.text)) { continue; }
+            text.ForceMeshUpdate();
+            string shown = text.text.Replace("\n", " | "); if (shown.Length > 90) { shown = shown.Substring(0, 90) + "…"; }
+            // 영어·일본어 화면에 한글이 남아 있으면 번역이 빠진 것이다. 대화·목록 안의 글자(닉네임, 대사)는 뺀다.
+            if (GameLocale.Code != "ko" && text.GetComponentInParent<ScrollRect>() == null && HasHangul(text.text))
+            { korean++; if (korean <= 40) { report.AppendLine("KOREAN " + name + " / " + Trail(text.transform, rect) + " / " + shown); } }
+            if (text.isTextOverflowing)
+            { overflow++; if (overflow <= 30) { report.AppendLine("CUT " + name + " / " + Trail(text.transform, rect) + " / " + shown); } continue; }
+            // 넘쳐도 그대로 그리는 글자: 자기 칸보다 크면 옆 칸을 덮을 수 있다. 스크롤 안의 글자는 원래 길 수 있으므로 뺀다.
+            if (text.overflowMode != TMPro.TextOverflowModes.Overflow || text.GetComponentInParent<ScrollRect>() != null) { continue; }
+            var box = text.rectTransform.rect; var size = text.GetPreferredValues(text.text, text.textWrappingMode == TMPro.TextWrappingModes.NoWrap ? 0f : box.width, 0f);
+            if (size.x > box.width + 4f || size.y > box.height + 4f)
+            { spill++; if (spill <= 30) { report.AppendLine("SPILL " + name + " / " + Trail(text.transform, rect) + " / needs " + size.x.ToString("0") + "x" + size.y.ToString("0") + " has " + box.width.ToString("0") + "x" + box.height.ToString("0") + " / " + shown); } }
+        }
+        report.AppendLine("SHOT " + name + " cut=" + overflow + " spill=" + spill + (GameLocale.Code != "ko" ? " korean=" + korean : ""));
+        var area = rect.rect;
+        var position = camera.transform.position; var rotation = camera.transform.rotation; float fov = camera.fieldOfView;
+        Vector3 center = rect.TransformPoint(area.center), forward = -rect.forward;
+        float worldHeight = Vector3.Distance(rect.TransformPoint(new Vector3(0, area.yMin, 0)), rect.TransformPoint(new Vector3(0, area.yMax, 0)));
+        float worldWidth = Vector3.Distance(rect.TransformPoint(new Vector3(area.xMin, 0, 0)), rect.TransformPoint(new Vector3(area.xMax, 0, 0)));
+        // 화면이 가로·세로 어느 쪽으로도 잘리지 않는 거리.
+        const float view = 27f; float tangent = Mathf.Tan(view * .5f * Mathf.Deg2Rad);
+        float distance = Mathf.Max(worldHeight, worldWidth * height / width) * .53f / tangent;
+        camera.transform.position = center + forward * distance; camera.transform.rotation = Quaternion.LookRotation(center - camera.transform.position, rect.up); camera.fieldOfView = view;
+        var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
+        camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
+        var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+        File.WriteAllBytes(Path.Combine(Folder, name + ".png"), pixels.EncodeToPNG());
+        camera.targetTexture = old; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
+        camera.transform.SetPositionAndRotation(position, rotation); camera.fieldOfView = fov;
+    }
+
+    private static bool HasHangul(string value)
+    {
+        foreach (char letter in value) { if (letter >= 0xAC00 && letter <= 0xD7A3) { return true; } }
+        return false;
+    }
+    /// <summary>화면 위에 덮어 그리는 메뉴는 카메라에 잠깐 붙여서 찍는다.</summary>
+    private static void ShootOverlay(Canvas canvas, string name)
+    {
+        const int width = 1600, height = 900;
+        var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
+        camera.targetTexture = texture;
+        canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera; canvas.planeDistance = camera.nearClipPlane + .2f;
+        Canvas.ForceUpdateCanvases();
+        int cut = 0;
+        foreach (var text in canvas.GetComponentsInChildren<TMPro.TextMeshProUGUI>())
+        {
+            if (string.IsNullOrEmpty(text.text)) { continue; }
+            text.ForceMeshUpdate();
+            if (text.isTextOverflowing) { cut++; report.AppendLine("CUT " + name + " / " + text.name + " / " + text.text); }
+        }
+        report.AppendLine("SHOT " + name + " cut=" + cut);
+        camera.Render(); RenderTexture.active = texture;
+        var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+        File.WriteAllBytes(Path.Combine(Folder, name + ".png"), pixels.EncodeToPNG());
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay; canvas.worldCamera = null;
+        camera.targetTexture = old; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
+    }
+    private static string Trail(Transform item, Transform root)
+    {
+        string path = item.name;
+        for (var parent = item.parent; parent != null && parent != root && path.Length < 90; parent = parent.parent) { path = parent.name + " > " + path; }
+        return path;
+    }
+    private static void Finish(Exception error)
+    {
+        EditorApplication.update -= Tick; Application.logMessageReceived -= Log;
+        Restore();
+        if (error != null) { report.AppendLine("FAIL phase " + phase + " " + error); }
+        report.AppendLine("runtime errors: " + errors.Count); foreach (string line in errors.Take(12)) { report.AppendLine(line); }
+        report.AppendLine(error == null ? "DONE" : "STOPPED");
+        File.WriteAllText(Path.Combine(Folder, "report.txt"), report.ToString());
+        running = false;
+        if (Application.isBatchMode) { EditorApplication.Exit(error == null && errors.Count == 0 ? 0 : 1); }
+        else if (EditorApplication.isPlaying) { EditorApplication.ExitPlaymode(); }
+    }
+}

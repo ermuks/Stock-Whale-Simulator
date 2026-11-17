@@ -11,6 +11,8 @@ public sealed class TabletAccountUI : MonoBehaviour
 {
     public enum Page { Dashboard, Events, Records, Detail, Orders, Automation, Management, Special, Unlocks }
     private TabletKitLayout kit;
+    /// <summary>기록 탭의 요약과 표. 있으면 예전의 글자 나열은 쓰지 않는다.</summary>
+    [System.NonSerialized] public TabletRecordsView recordsView;
     public PlayerAccounts accounts;
     public Trader account;
     public bool second;
@@ -94,11 +96,11 @@ public sealed class TabletAccountUI : MonoBehaviour
         { return; }
         next = Time.unscaledTime + .3f;
         var day = MarketDayController.Instance;
-        DeviceTerminalUI.Set(clock,day == null ? "DAY —  —:—" : "DAY " + day.CalendarDay + "  " + DeviceMarketJournal.Stamp());
+        DeviceTerminalUI.Set(clock,day == null ? "—  —:—" : GameLocale.Day(day.CalendarDay) + "  " + DeviceMarketJournal.Stamp());
         transferButton.interactable = accounts.AutomatedUnlocked;
         tabs[3].interactable = dashboard.Selected != null && account.GetOwnedVolume(dashboard.Selected) > 0m;
         int version=events.records.Version+orders.session.Version;
-        if (CurrentPage != Page.Records || seenVersion == version)
+        if (CurrentPage != Page.Records || seenVersion == version || recordsView != null)
         { return; }
         seenVersion = version;
         text.Clear();

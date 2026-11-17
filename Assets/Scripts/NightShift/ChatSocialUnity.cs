@@ -15,6 +15,9 @@ public sealed partial class InvestorSociety
             ConfigureLiveConversation(day.ConversationFocus);
             ChooseSocialTopic = bot => ChooseRoomTopic(bot, bot.Social.Psychology.Room, bot.Social.Psychology.SocialRng.Next());
             ChooseWatchedStock = ChoosePersonalWatch;
+            ReadMarketDay = ReadDayBoard;
+            ChatterboxEnabled = true;
+            RoomTalkEnabled = true;
             RefreshOfferedFacts = RefreshNpcFacts;
             SocialRecentReturn = stock => (double)day.ConversationFocus.Read(stock, SessionClock.Time).ReturnPercent;
             WitnessChance = bot => Config.Get("witnessProbability") * (Config.Get("witnessActivityBase") + bot.Social.Psychology.Activity * Config.Get("witnessActivityScale"));
@@ -39,6 +42,64 @@ public sealed partial class InvestorSociety
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
     }
     private void WriteSocialChange(SocialChange change) { socialLog?.Write(JsonUtility.ToJson(change)); }
+    private readonly System.Collections.Generic.List<int> afterHoursRooms = new();
+    private float nextAfterHoursTick;
+    /// <summary>장 마감부터 다음 개장까지. 결산 화면이 떠 있는 동안에는 시간이 멈춰 있으므로 말도 멈춘다.</summary>
+    private void TickAfterHours()
+    {
+        var controller = MarketDayController.Instance; var manager = StockManager.Instance;
+        if (Time.timeScale <= 0f || controller == null || manager == null || !manager.SetupConfirmed || !controller.Ready || controller.ReportPending ||
+            controller.Phase != MarketPhase.PostClose && controller.Phase != MarketPhase.PreOpen || SessionClock.Time < nextAfterHoursTick && nextAfterHoursTick - SessionClock.Time < 1f)
+        { return; }
+        nextAfterHoursTick = SessionClock.Time + .5f;
+        day = controller; PrepareSocialRuntime();
+        afterHoursRooms.Clear(); afterHoursRooms.Add(0);
+        for (int id = 1; id <= Rooms.Length; id++)
+        {
+            if (IsRoomOpen(id) && GetRoom(id).Members.Count >= 2) { afterHoursRooms.Add(id); }
+        }
+        AfterHoursAdvance(manager.stocks, afterHoursRooms);
+    }
+    // 홍보: 플레이어가 공개방에 자기 리딩방을 알린다. 그 글을 본 사람의 인지가 오르고, 들어올지는 각자 정한다.
+    public const string PromoteTemplate = "PLAYER.PROMOTE";
+    private const double PromoteCooldownSeconds = 60;
+    private static readonly string[] PromoteLines =
+    {
+        "리딩방 열었습니다. 같이 하실 분 들어오세요.",
+        "제 리딩방 회원 모집합니다. 매매 지시는 제가 직접 드립니다.",
+        "혼자 고민하지 말고 제 방으로 오세요. 자리 있습니다.",
+        "리딩방 운영 중입니다. 관심 있으면 들어와서 구경하세요."
+    };
+    private double nextPromoteAt;
+    private int promoteCount;
+    /// <summary>다음 홍보까지 남은 시간(초).</summary>
+    public double PromoteWait => Math.Min(PromoteCooldownSeconds, Math.Max(0d, nextPromoteAt - SessionClock.Time));
+    public bool PromoteRoom(int roomId)
+    {
+        day ??= MarketDayController.Instance;
+        var room = GetRoom(roomId);
+        if (day == null || room == null || !room.PlayerOwned || !IsRoomOpen(roomId) || !MarketDayController.CanTrade || PromoteWait > 0d)
+        { return false; }
+        nextPromoteAt = SessionClock.Time + PromoteCooldownSeconds;
+        // 홍보 글은 방이 있다는 것을 알린다. 본 사람의 인지가 오르고, 몇 사람은 자기가 아는 만큼·믿는 만큼 답한다.
+        long promotion = day.PublishPlayerLine(PromoteLines[promoteCount++ % PromoteLines.Length], PromoteTemplate);
+        BeginRoomPromotionTalk(promotion);
+        return true;
+    }
+    // 종목 목록에 보이는 것과 같은 당일 시세판: 0% 기준가(전일 종가, 첫날은 시가)와 당일 고가·저가.
+    private static InvestorSociety.MarketDay ReadDayBoard(Stock stock)
+    {
+        var board = new InvestorSociety.MarketDay();
+        var statistics = StockStatistics.Instance;
+        if (statistics == null || !statistics.TryGetDailyCandle(stock, out var candle) || candle.open <= 0f || stock.currentPrice <= 0m)
+        { return board; }
+        board.high = (decimal)candle.high;
+        board.low = (decimal)candle.low;
+        board.reference = (decimal)candle.open;
+        if (statistics.TryGetDailyChange(stock, out decimal change) && change > -99m)
+        { board.reference = stock.currentPrice / (1m + change / 100m); }
+        return board;
+    }
     private Stock ChoosePersonalWatch(TradeBot bot)
     {
         if (bot.IsSingleStockTrader) { return bot.SpecializedStock; }

@@ -25,6 +25,7 @@ public sealed class LeadingRoomUI : MonoBehaviour
     private TextMeshProUGUI inviteLabel;
     private int invitationBot;
     private float inviteFeedbackUntil;
+    private ChatFooterCards footer;
     void Start()
     {
         ConfigureRoomTabs();
@@ -40,7 +41,9 @@ public sealed class LeadingRoomUI : MonoBehaviour
             npcBuy.onClick.AddListener(NpcBuy); npcSell.onClick.AddListener(NpcSell);
         }
         // 하단을 참여자 카드와 방 카드로 정리한다(씬은 그대로, 시작할 때 배치).
-        gameObject.AddComponent<ChatFooterCards>().Bind(this);
+        footer = gameObject.AddComponent<ChatFooterCards>(); footer.Bind(this);
+        // 채팅 줄의 + 단추: 닉네임을 고르고 방을 옮기지 않아도 그 자리에서 초대한다.
+        chat.InviteRequested = InviteFromChat;
     }
     private void ConfigureRoomTabs()
     {
@@ -68,6 +71,16 @@ public sealed class LeadingRoomUI : MonoBehaviour
         chat.SelectRoom(room); nextUpdate = 0f;
     }
     private void ShowGrowth() { growthScreen.FocusGrowth(); }
+    public void RefreshNow() { nextUpdate = 0f; }
+    private void InviteFromChat(int botId)
+    {
+        // 아직 방을 열지 않았으면 개설 화면으로 데려간다.
+        if (PlayerProgression.Instance != null && !PlayerProgression.Instance.CanOperateRooms)
+        { ShowPlayerRoom(1); return; }
+        if (SocialContactController.Instance != null) { SocialContactController.Instance.Contact(botId, 1); }
+        inviteFeedbackUntil = Time.unscaledTime + 6f;
+        nextUpdate = 0f;
+    }
     public void ShowNpc()
     { chat.SelectRoom(NpcLeadingRoom.RoomId); NpcLeadingRoom.Instance?.MarkViewed(); }
     private void Membership()
@@ -96,6 +109,9 @@ public sealed class LeadingRoomUI : MonoBehaviour
     }
     private void Invite()
     {
+        // 아직 방을 열지 않았으면 개설 화면으로 데려간다.
+        if (PlayerProgression.Instance != null && !PlayerProgression.Instance.CanOperateRooms)
+        { ShowPlayerRoom(1); return; }
         int roomId = chat.SelectedRoom > 0 ? chat.SelectedRoom : 1;
         int candidate = chat.SelectedBotId > 0 ? chat.SelectedBotId : invitationBot;
         bool joined = SocialContactController.Instance != null && SocialContactController.Instance.Contact(candidate, roomId);
@@ -126,7 +142,8 @@ public sealed class LeadingRoomUI : MonoBehaviour
         }
         var room = InvestorSociety.Instance.GetRoom(chat.SelectedRoom);
         bool operate = PlayerProgression.Instance == null || PlayerProgression.Instance.CanOperateRooms;
-        roomOne.interactable = operate;
+        // 방을 열기 전에도 누를 수 있다. 누르면 개설 안내가 나온다.
+        roomOne.interactable = true;
         roomTwo.interactable = roomThree.interactable = false;
         bool npcSelected = room != null && !room.PlayerOwned;
         bool ownSelected = room != null && room.PlayerOwned;
@@ -134,8 +151,9 @@ public sealed class LeadingRoomUI : MonoBehaviour
         { playerControls.SetActive(!npcSelected && (lobbyControls == null || ownSelected && operate)); npcControls.SetActive(npcSelected); }
         if (lobbyControls != null)
         {
-            lobbyControls.SetActive(!npcSelected && (!ownSelected || !operate));
-            Set(lobbyStatus,operate ? InvestorSociety.Instance.InvitedRoomMask == 0 && Time.unscaledTime >= inviteFeedbackUntil ? "첫 회원 초대 · 닉네임 선택 → 내 리딩방" : InvestorSociety.Instance.LastAction : "내 리딩방 · 개설 전");
+            bool opening = ownSelected && !operate && footer != null && footer.Built;
+            lobbyControls.SetActive(!npcSelected && (!ownSelected || !operate) && !opening);
+            Set(lobbyStatus,operate ? InvestorSociety.Instance.InvitedRoomMask == 0 && Time.unscaledTime >= inviteFeedbackUntil ? "첫 회원 초대 · 채팅에서 + 를 누르세요" : InvestorSociety.Instance.LastAction : "내 리딩방 · 개설 전");
         }
         if (npcSelected && npcControls != null)
         {
@@ -160,18 +178,18 @@ public sealed class LeadingRoomUI : MonoBehaviour
         }
         string active = room?.Command == null || room.Command.Canceled ? "활성 지시 없음" : $"{room.Command.Stock.stockName}  매수 ≤ {room.Command.Buy:N0} / 매도 ≥ {room.Command.Sell:N0}";
         Set(commandStatus, title + "\n" + active + $"\n대기 {waiting} · 보유 {holding} · 보류 {deferred} · 거부 {rejected}\n완료 {completed} · 취소 {canceled}");
-        Set(feedback, operate ? InvestorSociety.Instance.LastAction : "관전 가능 · 태블릿 2의 성장·권한에서 리딩방을 개설하세요.\n" + PlayerProgression.Instance.LockReason);
+        Set(feedback, operate ? InvestorSociety.Instance.LastAction : PlayerProgression.Instance.LockReason);
         var invitationRoom = room ?? InvestorSociety.Instance.GetRoom(1);
         bool firstInvite = invitationRoom.PlayerOwned && !invitationRoom.Social.firstMemberInvited;
         if (inviteLabel != null) { Set(inviteLabel, firstInvite ? "첫 회원 초대" : "초대"); }
         if (operate && firstInvite && Time.unscaledTime >= inviteFeedbackUntil)
         {
             var candidate = MarketDayController.Instance?.FindBot(invitationBot);
-            Set(feedback, candidate == null ? "공용 라운지에서 닉네임 선택 → 내 리딩방 → 첫 회원 초대" : candidate.Social.Nickname + "님 초대 · 이용료와 투자 지시는 각자 판단");
+            Set(feedback, candidate == null ? "공용 라운지 채팅에서 + 를 눌러 첫 회원을 초대하세요" : candidate.Social.Nickname + "님 초대 · 이용료와 투자 지시는 각자 판단");
         }
         issue.interactable = operate && room != null && MarketDayController.CanTrade;
         cancel.interactable = room?.Command != null && !room.Command.Canceled;
-        invite.interactable = operate && (chat.SelectedBotId > 0 || invitationBot > 0) && MarketDayController.CanTrade;
+        invite.interactable = (chat.SelectedBotId > 0 || invitationBot > 0) && (!operate || MarketDayController.CanTrade);
     }
     private void NpcDetails()
     {

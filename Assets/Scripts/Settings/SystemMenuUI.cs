@@ -42,14 +42,18 @@ public sealed class SystemMenuUI : IDisposable
         close=Button(Paper,"Button :: Close","돌아가기",1000,640,200,48,owner.Back);
         var pause=NewPage("pause");
         var actions=new (string,Action)[] { ("이어서 하기",owner.Resume),("설정",()=>owner.Settings()),("세션 떠나기",owner.ConfirmDiscard),("게임 종료",owner.ConfirmQuit) };
-        for (int i=0;i<actions.Length;i++) { Button(pause,"Button :: Pause "+i,actions[i].Item1,390,120+i*66,420,52,actions[i].Item2,i==0); }
-        sleep=Button(pause,"Button :: Sleep","08:00까지 취침",390,416,420,52,owner.Sleep);
-        rest=Label(pause,"",270,500,660,42,22); rest.alignment=TextAlignmentOptions.Center;
+        // 글자를 못 읽어도 알아볼 수 있게 단추마다 왼쪽에 아이콘을 둔다.
+        var actionIcons=new[] { ChartIconGraphic.Shape.Play,ChartIconGraphic.Shape.Settings,ChartIconGraphic.Shape.Leave,ChartIconGraphic.Shape.Power };
+        for (int i=0;i<actions.Length;i++) { Icon(Button(pause,"Button :: Pause "+i,actions[i].Item1,390,120+i*66,420,52,actions[i].Item2,i==0),actionIcons[i]); }
+        LanguageButton(pause,384);
+        sleep=Button(pause,"Button :: Sleep","08:00까지 취침",390,450,420,52,owner.Sleep); Icon(sleep,ChartIconGraphic.Shape.Sleep);
+        rest=Label(pause,"",270,516,660,42,22); rest.alignment=TextAlignmentOptions.Center;
         var home=NewPage("home");
-        continueSession=Button(home,"Button :: Continue Session","마지막 마감에서 계속",390,120,420,52,owner.LoadSession,true);
-        Button(home,"Button :: New Session","새 세션",390,186,420,52,owner.NewSession);
-        Button(home,"Button :: Home Settings","설정",390,252,420,52,()=>owner.Settings());
-        Button(home,"Button :: Home Quit","게임 종료",390,318,420,52,owner.Quit);
+        continueSession=Button(home,"Button :: Continue Session","마지막 마감에서 계속",390,120,420,52,owner.LoadSession,true); Icon(continueSession,ChartIconGraphic.Shape.Play);
+        Icon(Button(home,"Button :: New Session","새 세션",390,186,420,52,owner.NewSession),ChartIconGraphic.Shape.Plus);
+        Icon(Button(home,"Button :: Home Settings","설정",390,252,420,52,()=>owner.Settings()),ChartIconGraphic.Shape.Settings);
+        Icon(Button(home,"Button :: Home Quit","게임 종료",390,318,420,52,owner.Quit),ChartIconGraphic.Shape.Power);
+        LanguageButton(home,384);
         var settings=NewPage("settings"); tabs=new Button[4];
         for (int i=0;i<categoryNames.Length;i++)
         {
@@ -106,7 +110,9 @@ public sealed class SystemMenuUI : IDisposable
         EventSystem.current?.SetSelectedGameObject(null); Refresh();
     }
     public void Pause() { Show("pause","일시정지"); }
-    public void Home() { Show("home","DONDON"); continueSession.interactable=SessionStore.Exists; }
+    /// <summary>게임 이름. 어느 언어에서나 같은 영문 표기를 쓴다.</summary>
+    public const string GameTitle = "Stock Whale Simulator";
+    public void Home() { Show("home",GameTitle); GameLocalizedText.Set(title,GameTitle,true); continueSession.interactable=SessionStore.Exists; }
     public void Settings(string selected=null)
     {
         if (selected!=null) { category=selected; }
@@ -133,7 +139,12 @@ public sealed class SystemMenuUI : IDisposable
         Slider(body,"전체 음량",55,0,1,()=>GameSettings.Current.volume,v=>GameSettings.Current.volume=v,v=>Mathf.RoundToInt(v*100)+"%");
         Choice(body,"다른 창 사용 시 음소거",128,new[]{"끔","켬"},()=>GameSettings.Current.muteUnfocused ? 1 : 0,v=>GameSettings.Current.muteUnfocused=v==1);
         body=categories["게임"]; Header(body,"언어",0);
-        Choice(body,"표시 언어",48,new[]{"한국어","English","日本語"},()=>Array.IndexOf(new[]{"ko","en","ja"},GameLocale.Code),v=>GameLocale.SetLanguage(new[]{"ko","en","ja"}[v]),false);
+        // 언어 줄은 어느 언어로 보고 있든 찾을 수 있게 지구본과 영어 표기를 함께 둔다.
+        var languageRow=Label(body,"",0,48,380,48,23); languageRow.rectTransform.anchoredPosition+=new Vector2(40,0); languageRow.rectTransform.sizeDelta-=new Vector2(40,0);
+        var globe=new GameObject("Image :: Language Icon",typeof(RectTransform),typeof(CanvasRenderer)); globe.transform.SetParent(body,false);
+        Place((RectTransform)globe.transform,0,58,28,28); var globeIcon=globe.AddComponent<ChartIconGraphic>(); globeIcon.shape=ChartIconGraphic.Shape.Globe; globeIcon.color=Ink; globeIcon.raycastTarget=false;
+        refreshers.Add(()=>GameLocalizedText.Set(languageRow,LanguageCaption(),true));
+        Choice(body,"",48,new[]{"한국어","English","日本語"},()=>Array.IndexOf(new[]{"ko","en","ja"},GameLocale.Code),v=>GameLocale.SetLanguage(new[]{"ko","en","ja"}[v]),false);
         Header(body,"마우스",130);
         Slider(body,"시점 감도",185,.25f,2.5f,()=>GameSettings.Current.sensitivity,v=>GameSettings.Current.sensitivity=v,v=>v.ToString("0.00")+"×");
         Slider(body,"휠 감도",258,1,6,()=>GameSettings.Current.wheel,v=>GameSettings.Current.wheel=v,v=>v.ToString("0.0"));
@@ -165,7 +176,7 @@ public sealed class SystemMenuUI : IDisposable
         reportSaved=saved;
         Show("report","장 마감 정산"); var reports=DailyIncomeController.Instance?.Ledger.Reports;
         if (reports==null || reports.Count==0) { return; }
-        var report=reports[reports.Count-1]; GameLocalizedText.Set(reportDate,"DAY "+report.day+"  17:00",true);
+        var report=reports[reports.Count-1]; GameLocalizedText.Set(reportDate,GameLocale.Day(report.day)+"  17:00",true);
         GameLocalizedText.Set(reportTotal,report.DayResult.ToString("+#,##0;-#,##0;0")+"원");
         reportTotal.color=MarketColors.ForChange(report.DayResult,Ink);
         decimal[] values={report.Realized,report.company,report.fees,report.Dividends,report.Relief,report.Tax,report.TaxPaid,report.UnpaidTax,report.Assets};
@@ -250,6 +261,23 @@ public sealed class SystemMenuUI : IDisposable
         var number=Label(frame,format(get()),16,0,668,48,22,FontStyles.Bold); number.alignment=TextAlignmentOptions.MidlineRight; number.color=Color.white;
         slider.onValueChanged.AddListener(value=> { set(value); GameSettings.Commit(); });
         refreshers.Add(()=> { slider.SetValueWithoutNotify(get()); GameLocalizedText.Set(number,format(get()),true); });
+    }
+    /// <summary>언어 설정으로 바로 가는 단추. 지금 언어가 무엇이든 영어 표기가 함께 보인다.</summary>
+    private void LanguageButton(Transform page,float y)
+    {
+        var button=Button(page,"Button :: Language","Language",390,y,420,52,()=> { owner.Settings(); Settings("게임"); });
+        Icon(button,ChartIconGraphic.Shape.Globe);
+        var caption=button.GetComponentInChildren<TextMeshProUGUI>();
+        refreshers.Add(()=>GameLocalizedText.Set(caption,LanguageCaption(),true));
+    }
+    private static string LanguageCaption() => GameLocale.Code=="ko" ? "언어 · Language" : GameLocale.Code=="ja" ? "言語 · Language" : "Language";
+    /// <summary>단추 왼쪽에 아이콘을 붙인다.</summary>
+    private static void Icon(Button button,ChartIconGraphic.Shape shape)
+    {
+        var item=new GameObject("Image :: Icon",typeof(RectTransform),typeof(CanvasRenderer)); item.transform.SetParent(button.transform,false);
+        var rect=(RectTransform)item.transform; rect.anchorMin=rect.anchorMax=new Vector2(0,.5f); rect.pivot=new Vector2(0,.5f);
+        rect.anchoredPosition=new Vector2(18,0); rect.sizeDelta=new Vector2(26,26);
+        var icon=item.AddComponent<ChartIconGraphic>(); icon.shape=shape; icon.color=Ink; icon.raycastTarget=false;
     }
     private Button Button(Transform parent,string name,string caption,float x,float y,float w,float h,Action action,bool primary=false)
     {

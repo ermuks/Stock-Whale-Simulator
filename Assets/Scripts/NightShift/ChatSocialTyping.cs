@@ -59,7 +59,8 @@ public sealed partial class InvestorSociety
             if (entry.ready > now) { i++; continue; }
             var room = SocialRoom(intent.roomId);
             while (room.sent.Count > 0 && now - room.sent.Peek() >= Config.Get("roomWindowSec")) { room.sent.Dequeue(); }
-            if (room.sent.Count >= Config.Int("roomMaxMsgPer10Sec")) { i++; continue; }
+            // 방이 꽉 차 있으면 차례를 기다린다. 수다쟁이는 기다리지 않는다(대신 한 번 말하면 한동안 새 말을 꺼내지 않는다).
+            if (room.sent.Count >= Config.Int("roomMaxMsgPer10Sec") && !entry.bot.Social.Psychology.Chatterbox) { i++; continue; }
             typing.RemoveAt(i); TypingVersion++;
             // Portfolio facts and target availability are checked again at actual publication.
             GenerateSocialMessage(entry.bot, intent);

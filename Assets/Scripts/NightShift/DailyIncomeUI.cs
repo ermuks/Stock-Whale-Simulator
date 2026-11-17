@@ -146,7 +146,7 @@ public sealed class DailyIncomeUI : MonoBehaviour
         DeviceTerminalUI.Set(company,income.CompanyName);
         var reports = ledger.Reports;
         var last = reports.Count == 0 ? null : reports[reports.Count-1];
-        DeviceTerminalUI.Set(day,last == null ? "정산 전" : "DAY " + last.day + " · 장 마감");
+        DeviceTerminalUI.Set(day,last == null ? "정산 전" : GameLocale.Day(last.day) + " · 장 마감");
         string[] texts = last == null ? new[] {"—","—","—","—","—","—","—","—"} : new[] {
             InvestmentDashboard.Signed(last.Realized),last.company.ToString("N0"),last.fees.ToString("N0"),last.Relief.ToString("N0"),
             last.Tax.ToString("N0"),last.PriorTax.ToString("N0"),last.TaxPaid.ToString("N0"),last.UnpaidTax.ToString("N0")};
@@ -156,7 +156,7 @@ public sealed class DailyIncomeUI : MonoBehaviour
         DeviceTerminalUI.Set(dayResult,last == null ? "—" : InvestmentDashboard.Signed(last.DayResult));
         DeviceTerminalUI.Set(dividends,last == null ? "—" : last.Dividends.ToString("N0"));
         DeviceTerminalUI.Set(closingCash,last == null || last.version < 2 ? "—" : last.Cash.ToString("N0"));
-        DeviceTerminalUI.Set(reliefState,ledger.ReliefDay == 0 ? "손실 구제 1회 남음" : "손실 구제 사용 · DAY " + ledger.ReliefDay);
+        DeviceTerminalUI.Set(reliefState,ledger.ReliefDay == 0 ? "손실 구제 1회 남음" : "손실 구제 사용 · " + GameLocale.Day(ledger.ReliefDay));
         if (last != null)
         {
             values[0].color = InvestmentDashboard.ProfitColor(last.Realized); values[3].color = last.Relief > 0m ? new Color32(77,182,190,255) : Ink;
@@ -166,7 +166,7 @@ public sealed class DailyIncomeUI : MonoBehaviour
         for (int i=0;i<history.Length;i++)
         {
             int index = reports.Count-1-i;
-            DeviceTerminalUI.Set(history[i],index < 0 ? "" : "DAY " + reports[index].day + "     정산 " + InvestmentDashboard.Signed(reports[index].Transfer) + "원     세금 " + reports[index].Tax.ToString("N0") + "원     구제 " + reports[index].Relief.ToString("N0") + "원");
+            DeviceTerminalUI.Set(history[i],index < 0 ? "" : GameLocale.Day(reports[index].day) + "     정산 " + InvestmentDashboard.Signed(reports[index].Transfer) + "원     세금 " + reports[index].Tax.ToString("N0") + "원     구제 " + reports[index].Relief.ToString("N0") + "원");
         }
     }
     private TextMeshProUGUI Number(Transform parent,string name,float x,float y,float width,float height,float size)

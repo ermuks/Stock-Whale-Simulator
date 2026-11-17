@@ -13,7 +13,7 @@ public sealed class CompanyBusiness
         public double dividendPayout = .60, investmentPayout = .15, reservePayout = .15;
         public double dividendInvestment = .10, growthInvestment = .60, productivityGain = .5, maximumProductivity = 2;
         public string entryCompany = "NM";
-        public long entryIssuedShares = 2000000;
+        public long entryIssuedShares = 10000000;
     }
     public CompanyPolicy Policy;
     public decimal ReferenceCapital, BaseRevenue, Cash, Debt, Productivity = 1;

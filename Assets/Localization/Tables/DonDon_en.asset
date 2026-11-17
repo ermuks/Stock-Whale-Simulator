@@ -13639,7 +13639,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1392088360
-    m_Localized: Trade results
+    m_Localized: Room fund
     m_Metadata:
       m_Items: []
   - m_Id: 1392088361
@@ -17284,6 +17284,3248 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 487377470066772
     m_Localized: Holder
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695579729920
+    m_Localized: '{symbol} what, {fastPct} in a few minutes??'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284352
+    m_Localized: "Did you see {symbol} just rip? \u20A9{price} in no time"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284353
+    m_Localized: '{symbol} suddenly {fastPct}. Who''s sweeping the book'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284354
+    m_Localized: "Whoa {symbol} at \u20A9{price} lol. Looked away for a sec and it's
+      {fastPct}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284355
+    m_Localized: "{symbol} is on fire. {fastPct} in minutes, \u20A9{price} now"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284356
+    m_Localized: '{symbol} asks are vanishing. {fastPct}, for real?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284357
+    m_Localized: "{symbol} moved {fastPct} in a few minutes. It's at \u20A9{price}
+      now."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284358
+    m_Localized: '{symbol} is pushing up hard all of a sudden. That was {fastPct}
+      just now.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284359
+    m_Localized: "{symbol} got to \u20A9{price} in no time. This pace makes me careful."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284360
+    m_Localized: "{symbol} at {fastPct} that fast \u2014 real size must have come
+      in."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284361
+    m_Localized: '{symbol} wtf, {fastPct} in minutes... who''s dumping'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284362
+    m_Localized: "See {symbol} just slide? Down to \u20A9{price}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284363
+    m_Localized: Ugh {symbol} {fastPct}. In that short a time?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284364
+    m_Localized: "{symbol} bids getting chewed through. Down to \u20A9{price}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284365
+    m_Localized: '{symbol} {fastPct} out of nowhere. Did something happen?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284366
+    m_Localized: "{symbol} is pouring out... \u20A9{price} now. Nobody's catching
+      it"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284367
+    m_Localized: "{symbol} dropped {fastPct} in a few minutes. It's at \u20A9{price}
+      now."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284368
+    m_Localized: Sell orders are suddenly flooding {symbol}. That was {fastPct} just
+      now.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284369
+    m_Localized: "{symbol} slid to \u20A9{price}. The bids look thin."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284370
+    m_Localized: "{symbol} at {fastPct} that fast \u2014 hard to step in casually."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284371
+    m_Localized: "{symbol} breaking today's high of \u20A9{dayHigh} lol. {dayPct}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284372
+    m_Localized: '{symbol} {dayPct}... and it won''t come off the high'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284373
+    m_Localized: "{symbol} at \u20A9{price}. Highest it's been all day"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284374
+    m_Localized: '{symbol} is {dayPct} today and still hanging at the high'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284375
+    m_Localized: "Whoa {symbol} tagged \u20A9{dayHigh}. How far is this going"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284376
+    m_Localized: '{symbol} keeps printing new highs for the day. Holders must be
+      loving it'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284377
+    m_Localized: "{symbol} is near today's high of \u20A9{dayHigh}. That's {dayPct}
+      on the day."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284378
+    m_Localized: '{symbol} is {dayPct} and still isn''t backing off the high.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284379
+    m_Localized: "{symbol} is at \u20A9{price}, the top of today's range."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284380
+    m_Localized: '{symbol} keeps lifting its high. I''d be careful chasing.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284381
+    m_Localized: "{symbol} breaking today's low of \u20A9{dayLow}... {dayPct}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284382
+    m_Localized: '{symbol} {dayPct}. Where''s the bottom, seriously'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284383
+    m_Localized: "{symbol} at \u20A9{price}. Lowest it's been all day"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284384
+    m_Localized: '{symbol} is {dayPct} today without a single bounce'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284385
+    m_Localized: "Ugh {symbol} tagged \u20A9{dayLow}. So much for support"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284386
+    m_Localized: '{symbol} keeps making new lows for the day. Holders, you okay?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284387
+    m_Localized: "{symbol} is near today's low of \u20A9{dayLow}. That's {dayPct}
+      on the day."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284388
+    m_Localized: '{symbol} is {dayPct} with no sign of a bounce.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284389
+    m_Localized: "{symbol} is at \u20A9{price}, the bottom of today's range."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284390
+    m_Localized: '{symbol} keeps making lower lows. Hard to step in here.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284391
+    m_Localized: "{symbol} hit \u20A9{dayHigh} then gave back {fromHigh}. RIP anyone
+      who bought the top"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284392
+    m_Localized: "{symbol} was \u20A9{dayHigh} earlier, now \u20A9{price} lol. Profit-taking"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284393
+    m_Localized: '{symbol} is {fromHigh} off the high. Is this the dip to buy?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284394
+    m_Localized: "{symbol} left a long upper wick. Was \u20A9{dayHigh} the top for
+      today?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284395
+    m_Localized: '{symbol} giving back what it gained. {fromHigh} from the high'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284396
+    m_Localized: "{symbol} back down to \u20A9{price}. Whoever sold the high wins"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284397
+    m_Localized: "{symbol} touched \u20A9{dayHigh} and has since pulled back {fromHigh}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284398
+    m_Localized: "Looks like profit-taking in {symbol}. It's at \u20A9{price} now."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284399
+    m_Localized: '{symbol} is {fromHigh} off its high. Watching whether it''s a dip
+      or a turn.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284400
+    m_Localized: "{symbol} has a long upper wick now. The question is whether it
+      retakes \u20A9{dayHigh}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284401
+    m_Localized: "{symbol} hit \u20A9{dayLow} then bounced {fromLow}. Jealous of
+      whoever bought the low"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284402
+    m_Localized: "{symbol} was \u20A9{dayLow} earlier, now \u20A9{price}. There's
+      the bounce"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284403
+    m_Localized: '{symbol} is {fromLow} off the low. Real bounce or dead cat?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284404
+    m_Localized: "{symbol} left a long lower wick. Was \u20A9{dayLow} the bottom
+      for today?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284405
+    m_Localized: '{symbol} clawing back what it lost. {fromLow} from the low'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284406
+    m_Localized: "{symbol} back up to \u20A9{price}. Whoever dumped earlier must
+      be hurting"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284407
+    m_Localized: "{symbol} touched \u20A9{dayLow} and has since recovered {fromLow}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284408
+    m_Localized: "Looks like dip buyers are stepping into {symbol}. It's at \u20A9{price}
+      now."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284409
+    m_Localized: '{symbol} is {fromLow} off its low. Watching whether the bounce
+      holds.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284410
+    m_Localized: "{symbol} has a long lower wick now. The question is whether \u20A9{dayLow}
+      holds."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284411
+    m_Localized: '{symbol} {dayPct} today. Quietly doing its thing'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284412
+    m_Localized: "{symbol} at \u20A9{price}, {dayPct}. Going back for the \u20A9{dayHigh}
+      high?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284413
+    m_Localized: '{symbol} at {dayPct} isn''t bad, but does it have more in it?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284414
+    m_Localized: '{symbol} crept its way up to {dayPct}. These slow ones scare me'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284415
+    m_Localized: "{symbol} is {dayPct} today but still under the \u20A9{dayHigh}
+      high"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284416
+    m_Localized: "{symbol} at \u20A9{price}. {dayPct} is a winning day"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284417
+    m_Localized: '{symbol} is {dayPct} on the day. A steady climb.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284418
+    m_Localized: "{symbol} is at \u20A9{price}; today's high is \u20A9{dayHigh}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284419
+    m_Localized: "{symbol} is {dayPct}. Watching whether it clears the \u20A9{dayHigh}
+      high."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284420
+    m_Localized: '{symbol} has drifted up to {dayPct}. I like that it isn''t rushed.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284421
+    m_Localized: '{symbol} {dayPct} today. No strength at all'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284422
+    m_Localized: "{symbol} at \u20A9{price}, {dayPct}. Heading back to the \u20A9{dayLow}
+      low?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284423
+    m_Localized: '{symbol} at {dayPct} is survivable, but any lower gets ugly'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284424
+    m_Localized: '{symbol} bled its way down to {dayPct}. This slow stuff is the
+      most draining'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284425
+    m_Localized: "{symbol} is {dayPct} today but the \u20A9{dayLow} low is still
+      holding"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284426
+    m_Localized: "{symbol} at \u20A9{price}. {dayPct}... guess it's an off day"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284427
+    m_Localized: '{symbol} is {dayPct} on the day. It looks weak.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284428
+    m_Localized: "{symbol} is at \u20A9{price}; today's low is \u20A9{dayLow}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284429
+    m_Localized: "{symbol} is {dayPct}. Watching whether the \u20A9{dayLow} low holds."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284430
+    m_Localized: '{symbol} has drifted down to {dayPct}. No sign of a bounce yet.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284431
+    m_Localized: "{symbol} has been stuck between \u20A9{dayLow} and \u20A9{dayHigh}
+      all day. So boring"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284432
+    m_Localized: '{symbol} {dayPct}... when does this chop end'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284433
+    m_Localized: "{symbol} at \u20A9{price}. Pretty sure it was this price earlier
+      too lol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284434
+    m_Localized: '{symbol} really isn''t moving today. Parked at {dayPct}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284435
+    m_Localized: '{symbol}''s chart is lying flat. Somebody wake it up'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284436
+    m_Localized: "{symbol} can't clear \u20A9{dayHigh} and won't break \u20A9{dayLow}.
+      What is it doing"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284437
+    m_Localized: "{symbol} has stayed between \u20A9{dayLow} and \u20A9{dayHigh}
+      today."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284438
+    m_Localized: "{symbol} is {dayPct} on the day \u2014 basically unchanged."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284439
+    m_Localized: "{symbol} is at \u20A9{price}. I'll wait until it picks a direction."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284440
+    m_Localized: "{symbol} is barely moving. It needs to clear \u20A9{dayHigh} to
+      draw interest."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284441
+    m_Localized: "Is the run to \u20A9{price} on {symbol} real demand? Not trying
+      to get stuck at the \u20A9{dayHigh} high"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284442
+    m_Localized: "{symbol} is at \u20A9{price} and nobody knows why it's rising.
+      Feels off"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284443
+    m_Localized: "Seen plenty of these get run up and dumped at once. {symbol} back
+      to \u20A9{dayLow} wouldn't surprise me"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284444
+    m_Localized: "Chasing {symbol} here is a bit... You can wait for it to clear
+      \u20A9{dayHigh}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284445
+    m_Localized: "It isn't clear why {symbol} rose to \u20A9{price}. I'd be careful
+      near the \u20A9{dayHigh} high."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284446
+    m_Localized: "Not sure {symbol}'s rise continues. I'd want to see it clear \u20A9{dayHigh}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284447
+    m_Localized: "Fast risers give it back fast. I'm leaving room for {symbol} to
+      revisit \u20A9{dayLow}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284448
+    m_Localized: "{symbol} looks cheap at \u20A9{price}, but if the \u20A9{dayLow}
+      low breaks there's no floor"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284449
+    m_Localized: Any reason to think this is the bottom on {symbol}? Looks like a
+      falling knife
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284450
+    m_Localized: "Even with a bounce, \u20A9{dayHigh} is a long way up for {symbol}.
+      Wouldn't average down yet"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284451
+    m_Localized: Anyone know why {symbol} is dropping? Unexplained drops scare me
+      the most
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284452
+    m_Localized: "{symbol} looks cheap at \u20A9{price}, but it could slide further
+      if \u20A9{dayLow} breaks."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284453
+    m_Localized: I haven't found a reason to call this the bottom for {symbol}.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284454
+    m_Localized: "The reason for {symbol}'s drop isn't confirmed, so I'm cautious.
+      Even a bounce leaves \u20A9{dayHigh} far away."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284455
+    m_Localized: "{symbol} being this quiet between \u20A9{dayLow} and \u20A9{dayHigh}
+      is what's suspicious"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284456
+    m_Localized: "Everyone says {symbol} is about to go, yet it won't budge from
+      \u20A9{price}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284457
+    m_Localized: Who says {symbol} breaks up out of this range? It could break down
+      just as easily
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284458
+    m_Localized: "What do you expect from {symbol} when it can't even clear \u20A9{dayHigh}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284459
+    m_Localized: "How quiet {symbol} is between \u20A9{dayLow} and \u20A9{dayHigh}
+      actually bothers me."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284460
+    m_Localized: "{symbol} isn't moving off \u20A9{price}; hard to buy on hope alone."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284461
+    m_Localized: No telling which way {symbol} breaks from here. I'm allowing for
+      a move down too.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284462
+    m_Localized: "Why is {symbol} going up? Anyone know what got it to \u20A9{price}?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284463
+    m_Localized: "{symbol} is at \u20A9{price} \u2014 okay to get in? The \u20A9{dayHigh}
+      high is right there, so I'm torn"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284464
+    m_Localized: "{symbol} holders, where are you selling? Above \u20A9{dayHigh}?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284465
+    m_Localized: "Does {symbol} keep going? Or is it heading back to \u20A9{dayLow}?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284466
+    m_Localized: "Does anyone know why {symbol} is rising? It's at \u20A9{price}
+      now."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284467
+    m_Localized: "{symbol} is at \u20A9{price} \u2014 is it okay to enter now? The
+      \u20A9{dayHigh} high is close, so I'm hesitating."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284468
+    m_Localized: '{symbol} holders, at what price do you plan to sell?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284469
+    m_Localized: Why is {symbol} dropping? Did something come out?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284470
+    m_Localized: "Is {symbol} a buy at \u20A9{price}? It's near the \u20A9{dayLow}
+      low, so I'm tempted"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284471
+    m_Localized: "{symbol} holders \u2014 holding or cutting?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284472
+    m_Localized: "How low do you think {symbol} goes? Does \u20A9{dayLow} hold?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284473
+    m_Localized: "Does anyone know why {symbol} is falling? It's at \u20A9{price}
+      now."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284474
+    m_Localized: "Would buying {symbol} at \u20A9{price} be reasonable? It's near
+      the \u20A9{dayLow} low, so I'm weighing it."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284475
+    m_Localized: '{symbol} holders, are you holding on or getting out?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284476
+    m_Localized: "Why is {symbol} so quiet today? It won't leave \u20A9{dayLow}\u2013\u20A9{dayHigh}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284477
+    m_Localized: Anyone accumulating {symbol} while it chops? Or is everyone watching
+      something else?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284478
+    m_Localized: "{symbol} at \u20A9{price} \u2014 up or down from here? What's everyone
+      thinking?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284479
+    m_Localized: "Is {symbol} worth waiting on? It's been around \u20A9{price} all
+      day"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284480
+    m_Localized: "{symbol} is unusually quiet today \u2014 does anyone know why?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284481
+    m_Localized: "Is anyone accumulating {symbol} in the \u20A9{dayLow}\u2013\u20A9{dayHigh}
+      range?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284482
+    m_Localized: "Which way do you think {symbol} moves from \u20A9{price}?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284483
+    m_Localized: "Yeah, {symbol} getting to \u20A9{price} shows real strength"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284484
+    m_Localized: "Same here. If it clears \u20A9{dayHigh} it probably runs"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284485
+    m_Localized: "Right. It didn't climb from the \u20A9{dayLow} low to here for
+      nothing"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284486
+    m_Localized: Fr, {symbol} feels different today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284487
+    m_Localized: "Agreed. {symbol} reaching \u20A9{price} shows strength."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284488
+    m_Localized: "I think so too. Clearing \u20A9{dayHigh} would likely extend it."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284489
+    m_Localized: "Fair point. The move up from the \u20A9{dayLow} low is hard to
+      ignore."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284490
+    m_Localized: "Yeah, {symbol} sliding to \u20A9{price} does look weak"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284491
+    m_Localized: "Same here. If \u20A9{dayLow} breaks it probably drops more"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284492
+    m_Localized: "Right. Coming down here from the \u20A9{dayHigh} high means the
+      mood has turned"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284493
+    m_Localized: Fr, {symbol} looks like a don't-touch today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284494
+    m_Localized: "Agreed. {symbol} sliding to \u20A9{price} does look weak."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284495
+    m_Localized: "I think so too. A break of \u20A9{dayLow} would likely push it
+      lower."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284496
+    m_Localized: "Fair point. The slide from the \u20A9{dayHigh} high isn't trivial."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284497
+    m_Localized: "Yeah, nothing to see on {symbol} today. Still sitting at \u20A9{price}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284498
+    m_Localized: "Same thought. Not worth watching until it clears \u20A9{dayHigh}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284499
+    m_Localized: "Right. Just spectating until the \u20A9{dayLow}\u2013\u20A9{dayHigh}
+      box breaks"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284500
+    m_Localized: Fr, doing nothing is how you make money in this
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284501
+    m_Localized: "Agreed. {symbol} hasn't moved off \u20A9{price} today."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284502
+    m_Localized: "I see it the same way. I'll only watch until it clears \u20A9{dayHigh}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284503
+    m_Localized: "Fair point. I'll wait until it leaves the \u20A9{dayLow}\u2013\u20A9{dayHigh}
+      range."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284504
+    m_Localized: "Sure it's up, but chasing at \u20A9{price} is a different story"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284505
+    m_Localized: "Eh. If it can't clear \u20A9{dayHigh}, this could be the top"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284506
+    m_Localized: "Aren't you being a bit rosy? It's already come a long way from
+      the \u20A9{dayLow} low"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284507
+    m_Localized: Buying moments like this is how I always get stuck. I'll wait for
+      it to cool off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284508
+    m_Localized: "It has risen, yes, but chasing at \u20A9{price} is a separate question."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284509
+    m_Localized: "I see it a little differently. If it can't clear \u20A9{dayHigh},
+      this may be the top."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284510
+    m_Localized: "It's already come far from the \u20A9{dayLow} low. This doesn't
+      look like a spot to rush."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284511
+    m_Localized: "It's down, sure, but isn't \u20A9{price} actually worth a look?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284512
+    m_Localized: "Eh. If \u20A9{dayLow} holds, it could bounce from here"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284513
+    m_Localized: "Aren't you a bit spooked? A dip like this off the \u20A9{dayHigh}
+      high is normal"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284514
+    m_Localized: They say buy when everyone's scared. I'm watching a bit more, then
+      picking some up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284515
+    m_Localized: "It has fallen, yes, but \u20A9{price} seems worth a look to me."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284516
+    m_Localized: "I see it a little differently. If \u20A9{dayLow} holds, a bounce
+      is possible."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284517
+    m_Localized: "A pullback like this from the \u20A9{dayHigh} high is common. I
+      don't think there's much to worry about."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284518
+    m_Localized: "No idea why either. But I buy if it clears \u20A9{dayHigh}, and
+      pass if it doesn't"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284519
+    m_Localized: "I'm not getting in at \u20A9{price}. I'll look if it dips back
+      toward \u20A9{dayLow}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284520
+    m_Localized: "If you buy, keep it small. If it's wrong, cut when \u20A9{dayLow}
+      breaks"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284521
+    m_Localized: Haven't seen any news. Looks like it's just more buyers than sellers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284522
+    m_Localized: "I don't know the reason either. I'm using a break of \u20A9{dayHigh}
+      as my line."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284523
+    m_Localized: "I won't enter at \u20A9{price}. I'll look again if it dips toward
+      \u20A9{dayLow}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284524
+    m_Localized: I couldn't confirm any news. It just looks like buyers have the
+      upper hand.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284525
+    m_Localized: "No idea why either. If \u20A9{dayLow} breaks I keep watching; if
+      it holds I'll pick up a little"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284526
+    m_Localized: "Not buying at \u20A9{price} yet. It's not too late to enter after
+      a bounce is confirmed"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284527
+    m_Localized: Haven't seen any news. Looks like it's just more sellers than buyers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284528
+    m_Localized: "If you're holding, use \u20A9{dayLow} as your line. Below that,
+      who knows"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284529
+    m_Localized: "I don't know the reason either. I'm watching whether \u20A9{dayLow}
+      holds."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284530
+    m_Localized: "I'm not buying at \u20A9{price} yet. Entering after a confirmed
+      bounce isn't too late."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284531
+    m_Localized: I couldn't confirm any news. It just looks like sellers have the
+      upper hand.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284532
+    m_Localized: No reason. Everyone's probably just watching other names
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284533
+    m_Localized: "I'm not touching it until it clears \u20A9{dayHigh}. Don't want
+      money stuck in chop"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284534
+    m_Localized: "Up or down, I'll follow whichever way it leaves \u20A9{dayLow}\u2013\u20A9{dayHigh}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284535
+    m_Localized: "If you're going to wait, nibbling around \u20A9{price} is one way
+      to do it"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284536
+    m_Localized: There doesn't seem to be a particular reason. Attention is probably
+      on other names.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284537
+    m_Localized: "I don't plan to touch it until it clears \u20A9{dayHigh}."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 547695613284538
+    m_Localized: "I intend to follow whichever way it leaves the \u20A9{dayLow}\u2013\u20A9{dayHigh}
+      range."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063494361088
+    m_Localized: "Alright folks, {symbol} is at \u20A9{price}. I'll be your commentator
+      lol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304128
+    m_Localized: Am I the only one watching {symbol}? Feels like I'm talking to myself
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304129
+    m_Localized: Wait, nobody's talking about {symbol}? Fine, I will
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304130
+    m_Localized: "{symbol} at \u20A9{price}. I said it earlier and I'm saying it
+      again lol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304131
+    m_Localized: Lost count of how many times I've brought up {symbol} today, and
+      I've still got more
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304132
+    m_Localized: "Everyone knows {symbol} is at \u20A9{price}, right? If not, I'll
+      keep telling you"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304133
+    m_Localized: I've had {symbol} on my screen all day. Ask me anything
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304134
+    m_Localized: "It was quiet, so here's a word. {symbol} is \u20A9{price}. That
+      is all."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304135
+    m_Localized: Where'd everybody go? It's just me yapping lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304136
+    m_Localized: A quiet room makes me nervous, so I have to say something
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304137
+    m_Localized: Oh right, I just made ramen. Nothing beats ramen while watching
+      the market
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304138
+    m_Localized: Lurkers, hands up. I can see all of you, you know
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304139
+    m_Localized: I know I talk too much, but it beats silence lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304140
+    m_Localized: "Checked in again today. First one here, last one out \u2014 that's
+      me"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304141
+    m_Localized: I'm bored. Somebody toss me a ticker so we can chat about it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304142
+    m_Localized: Can I repeat what I said earlier? I'm going to anyway
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304143
+    m_Localized: Hands up if you're watching {symbol}! It's not just me, right?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304144
+    m_Localized: 'Okay, poll time. {symbol} today: up or down?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304145
+    m_Localized: "{symbol} is at \u20A9{price} \u2014 everyone give me one line.
+      I'm just curious"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304146
+    m_Localized: Nobody wants to brag about what they bought today? I'm all ears
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304147
+    m_Localized: Any {symbol} holders, give me an update. I'm bored
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304148
+    m_Localized: How's everyone's P&L today? If you won't say, at least give me a
+      face lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304149
+    m_Localized: Am I the only one who finds {symbol} fun? Give me something here
+      lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 552063536304150
+    m_Localized: "Somebody answer me. Is \u20A9{price} cheap or expensive for {symbol}?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144340336640
+    m_Localized: "Room not opened \xB7 Opening cost "
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085376
+    m_Localized: "Room opened \xB7 Tap + on a lounge message to invite members."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085377
+    m_Localized: "First invite \xB7 Tap + on a message"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085378
+    m_Localized: Tap + on a lounge message to invite your first member
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085379
+    m_Localized: 'Opening cost '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085380
+    m_Localized: Press Open to pay the cost and open your room.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085381
+    m_Localized: Build up enough available cash and you can open right away.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085382
+    m_Localized: "Opening cost \xB7 Paid"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085383
+    m_Localized: "Opening cost \xB7 Ready"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085384
+    m_Localized: "Opening cost \xB7 Saving up"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085385
+    m_Localized: Paid once from your available cash.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085386
+    m_Localized: Your room is open. Tap + on a lounge message to invite members.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085387
+    m_Localized: View cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085388
+    m_Localized: Opening cost ready
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085389
+    m_Localized: I've opened a trading room. Come on in if you want to trade together.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085390
+    m_Localized: Looking for members for my room. I send out the calls myself.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085391
+    m_Localized: "Don't sweat it alone \u2014 join my room. There's still space."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085392
+    m_Localized: My room is up and running. Drop by and have a look if you're curious.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085393
+    m_Localized: "{symbol} broke \u20A9{level} today \u2014 \u20A9{nextLevel} tomorrow?
+      lol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085394
+    m_Localized: "{symbol} punched through \u20A9{level} and closed at \u20A9{close}.
+      More tomorrow?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085395
+    m_Localized: "Anyone see {symbol} clear \u20A9{level}? Curious where it opens
+      tomorrow"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085396
+    m_Localized: "{symbol} did {dayPct} today and finished above \u20A9{level}. Is
+      this for real?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085397
+    m_Localized: "{symbol} broke \u20A9{level} yesterday \u2014 \u20A9{nextLevel}
+      today? lol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085398
+    m_Localized: "{symbol} closed at \u20A9{close} yesterday. Will \u20A9{level}
+      hold today?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085399
+    m_Localized: "Slept on it and I still can't believe {symbol} broke \u20A9{level}
+      lol. Where does it open today?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085400
+    m_Localized: "{symbol} was {dayPct} yesterday. If that keeps up today, \u20A9{nextLevel}
+      is on the table, no?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085401
+    m_Localized: "\u20A9{nextLevel} is a stretch lol. Hold \u20A9{level} first"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085402
+    m_Localized: Gotta see the open. If it gaps up I'm too scared to get on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085403
+    m_Localized: After a run like that, profit-taking is due
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085404
+    m_Localized: "If it hits \u20A9{nextLevel}, chicken's on me lol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085405
+    m_Localized: "The \u20A9{level} break is legit. Question is whether anyone buys
+      higher"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085406
+    m_Localized: I'm just watching. It's run too far for me to touch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085407
+    m_Localized: "I'm holding that lol. Not selling before \u20A9{nextLevel}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085408
+    m_Localized: 'As a holder: please, just go'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085409
+    m_Localized: "Holder here too. I yelled when it cleared \u20A9{level} lol"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085410
+    m_Localized: lol let's talk again after the open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085411
+    m_Localized: Fair point. I'll keep my hopes at half
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085412
+    m_Localized: ok, dreaming big it is lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085413
+    m_Localized: '{symbol} closed {dayPct} today. Same mood tomorrow?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085414
+    m_Localized: "{symbol} ended at \u20A9{close}. Anyone think it goes higher tomorrow?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085415
+    m_Localized: Am I the only one who missed {symbol} today? Watched {dayPct} go
+      by
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085416
+    m_Localized: I'd buy a dip in {symbol} tomorrow. Will it give one?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085417
+    m_Localized: '{symbol} was {dayPct} yesterday. Again today?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085418
+    m_Localized: "Went to bed on {symbol} closing at \u20A9{close}. Guesses for today's
+      open?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085419
+    m_Localized: Everyone who missed {symbol} yesterday, gather round. Getting on
+      today?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085420
+    m_Localized: Hands up if you're buying a {symbol} dip today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085421
+    m_Localized: Chase a one-day pop and you get stuck. I'm watching another day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085422
+    m_Localized: I'd buy a dip too. If it runs without one, I let it go
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085423
+    m_Localized: At {dayPct}, hasn't everyone already eaten?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085424
+    m_Localized: If volume came in, I'd say one more day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085425
+    m_Localized: Missed it too lol. Watching is the least stressful
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085426
+    m_Localized: Not buying a high open. That just helps someone else
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085427
+    m_Localized: I'm holding. If it climbs more I'll sell half
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085428
+    m_Localized: Holder here and honestly I don't know how far it goes either lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085429
+    m_Localized: Holding it, so I'm relaxed. Just can't get greedy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085430
+    m_Localized: Yeah, waiting for a dip is probably right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085431
+    m_Localized: lol we're all thinking the same
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085432
+    m_Localized: ok, I'll decide at the open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085433
+    m_Localized: Any outlook on {symbol}... sigh...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085434
+    m_Localized: '{symbol} {dayPct} today. Bounce tomorrow or not?'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085435
+    m_Localized: "{symbol} closing at \u20A9{close}, seriously? How far does this
+      fall"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085436
+    m_Localized: Is it crazy to pick up {symbol} here? Someone stop me
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085437
+    m_Localized: Couldn't sleep after {symbol} took {dayPct} yesterday. Outlook for
+      today, please...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085438
+    m_Localized: "{symbol} bounces today, right? It got pushed to \u20A9{close} yesterday"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085439
+    m_Localized: Did a lot of you dump {symbol} yesterday? If it drops more today
+      I'm picking some up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085440
+    m_Localized: What if {symbol} drops again right at the open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085441
+    m_Localized: Nobody can call it off one down day. Breathe first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085442
+    m_Localized: Probably bounces. But plenty will sell into it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085443
+    m_Localized: I was taught not to catch a falling knife
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085444
+    m_Localized: '{dayPct} hurts, but it''s not over'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085445
+    m_Localized: I get in after a bottom shows. Watching for now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085446
+    m_Localized: Hang in there... eat some chicken and forget it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085447
+    m_Localized: I'm stuck in it too. Let's hold on together
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085448
+    m_Localized: Holder right here... I'd like an outlook too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085449
+    m_Localized: I'm holding it and I just deleted the app lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085450
+    m_Localized: sigh... thanks. I'll hang on for now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085451
+    m_Localized: So it's not just me. That helps lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085452
+    m_Localized: ok, no rash moves. I'll watch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085453
+    m_Localized: Did {symbol} get some good news or what?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085454
+    m_Localized: Why did {symbol} go {dayPct}? Anyone know
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085455
+    m_Localized: Anyone seen news on {symbol}? Does it just climb like this for no
+      reason
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085456
+    m_Localized: Someone tell me why {symbol} went up. Feels like only I don't know
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085457
+    m_Localized: Haven't seen anything. Looks like plain buying pressure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085458
+    m_Localized: No idea about news, but someone bought big
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085459
+    m_Localized: I looked too, nothing. The reason shows up later
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085460
+    m_Localized: If it's good news, it's priced in already
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085461
+    m_Localized: A rise with no reason is the scariest kind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085462
+    m_Localized: Check the news tab. I'm looking right now too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085463
+    m_Localized: I hold it and I don't know why either lol. Just grateful
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085464
+    m_Localized: Holder here, saw no news. Not complaining though
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085465
+    m_Localized: I'm a holder so I looked, but nothing stood out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085466
+    m_Localized: So nobody knows lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085467
+    m_Localized: ok, off to check the news tab
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085468
+    m_Localized: If it rose for no reason, I'd better be careful
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085469
+    m_Localized: Did {symbol} get hit with bad news?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085470
+    m_Localized: Why did {symbol} drop {dayPct}? Anyone know
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085471
+    m_Localized: What's going on with {symbol}? Does it just sink like this for no
+      reason
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085472
+    m_Localized: Someone tell me why {symbol} fell. I can't find any news
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085473
+    m_Localized: Haven't seen anything. Looks like someone dumped big
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085474
+    m_Localized: No idea about bad news. Looks like profit-taking
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085475
+    m_Localized: I looked too, nothing. Which makes it worse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085476
+    m_Localized: Drops with no reason sometimes come right back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085477
+    m_Localized: Check the news tab. If there's something, it's there
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085478
+    m_Localized: When you don't know, don't touch it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085479
+    m_Localized: I hold it and I don't know why either. Frustrating
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085480
+    m_Localized: Holder here, no news. We just got hit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085481
+    m_Localized: I'm a holder so I looked. Nothing at all
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085482
+    m_Localized: So nobody knows... that's scarier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085483
+    m_Localized: Can't touch it when I don't know why
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085484
+    m_Localized: "{symbol} sat near \u20A9{close} all day. Will it move tomorrow?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085485
+    m_Localized: When does {symbol} ever move? I dozed off watching
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085486
+    m_Localized: Aren't {symbol} holders bored?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085487
+    m_Localized: "{symbol} won't budge from \u20A9{close}. They say these pop big
+      when they go"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085488
+    m_Localized: "{symbol} sat near \u20A9{close} all day yesterday. Will it move
+      today?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085489
+    m_Localized: Not moving is the easiest. I like it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085490
+    m_Localized: Forget about those and one day they're up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085491
+    m_Localized: I don't watch boring ones. Waste of time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085492
+    m_Localized: Here's someone who believed 'it pops big' and waited a year
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085493
+    m_Localized: If nobody's trading it, there's a reason
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085494
+    m_Localized: "At least it isn't falling from \u20A9{close}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085495
+    m_Localized: I hold it. Boring, but no reason to sell
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085496
+    m_Localized: Holder here and honestly I forgot I owned it lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085497
+    m_Localized: As a holder, quiet is better
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085498
+    m_Localized: lol true. Quiet is better
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085499
+    m_Localized: Still, I'd like it to move once
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085500
+    m_Localized: ok, I'll forget about it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085501
+    m_Localized: How do you see tomorrow's session?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085502
+    m_Localized: Anyone decided what to buy tomorrow?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085503
+    m_Localized: Anyone have a plan for tomorrow? I've got nothing yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085504
+    m_Localized: Thinking maybe I should sit tomorrow out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085505
+    m_Localized: How do you see today's session?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085506
+    m_Localized: Anyone decided what to buy today?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085507
+    m_Localized: Anyone have a plan for today? I've got nothing yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085508
+    m_Localized: Thinking maybe I should sit today out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085509
+    m_Localized: No idea. We'll know when it opens
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085510
+    m_Localized: Nothing decided. I move after seeing the open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085511
+    m_Localized: Sitting out is a trade too. Really
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085512
+    m_Localized: I'm just going to watch what I already hold
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085513
+    m_Localized: Predictions are wrong anyway lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085514
+    m_Localized: I'm on the sidelines. Only in when it's clear
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085515
+    m_Localized: ok, see you when it opens
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085516
+    m_Localized: Nobody has a plan, I see lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085517
+    m_Localized: Right, no getting greedy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085518
+    m_Localized: Dinner ideas, anyone?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085519
+    m_Localized: Market's closed. What's for dinner
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085520
+    m_Localized: What are you all having tonight? Asking for ideas
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085521
+    m_Localized: I'm hungry and can't decide what to order
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085522
+    m_Localized: Spicy pork. Go.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085523
+    m_Localized: Chicken. Always chicken.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085524
+    m_Localized: Made money today? Meat. Lost? Instant noodles.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085525
+    m_Localized: Rice soup. Filling beats everything.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085526
+    m_Localized: Just had kimchi stew. Recommend.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085527
+    m_Localized: How about pork cutlet? Never fails.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085528
+    m_Localized: ok, going with that
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085529
+    m_Localized: Thanks lol. Ordering now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085530
+    m_Localized: Now I'm even hungrier
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085531
+    m_Localized: Off work. Good job today, everyone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085532
+    m_Localized: Finally off. Long day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085533
+    m_Localized: Heading home and the subway is packed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085534
+    m_Localized: Home. I can breathe again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085535
+    m_Localized: Good work. Rest up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085536
+    m_Localized: I'm still at the office... jealous
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085537
+    m_Localized: Getting off work is the best news of the day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085538
+    m_Localized: Did you get any work done between charts today? lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085539
+    m_Localized: "Shower, lie down \u2014 that's heaven"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085540
+    m_Localized: Just got off too. Good work to us both
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085541
+    m_Localized: lol thanks. Rest up, everyone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085542
+    m_Localized: This room is warmer than my office
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085543
+    m_Localized: ok, off to shower
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085544
+    m_Localized: Recommend me something to watch. Show or movie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085545
+    m_Localized: What do you all do for fun after the close?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085546
+    m_Localized: Bored. Anything fun going on?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085547
+    m_Localized: Done with charts for now. What should I do instead
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085548
+    m_Localized: Don't watch a stock movie. You'll only think about the market more
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085549
+    m_Localized: I game. Getting stuck there too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085550
+    m_Localized: Go for a walk. Best way to cool your head
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085551
+    m_Localized: Got a variety show on and I'm zoning out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085552
+    m_Localized: I just lie down with my phone. That's rest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085553
+    m_Localized: Work out. Your account may not trend up, but your body will
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085554
+    m_Localized: ok, noted lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085555
+    m_Localized: So nobody does anything special
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085556
+    m_Localized: I'll probably end up looking at charts again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085557
+    m_Localized: Craving a late snack. Should I resist?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085558
+    m_Localized: Is making ramen at this hour a loss?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085559
+    m_Localized: Pick my late-night snack for me
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085560
+    m_Localized: Opened and closed the delivery app ten times now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085561
+    m_Localized: Don't resist. Eat now, regret later
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085562
+    m_Localized: Ramen with an egg isn't a snack. It's a meal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085563
+    m_Localized: Tteokbokki. Go.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085564
+    m_Localized: Already eating lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085565
+    m_Localized: Resist. Watching the market with a puffy face is worse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085566
+    m_Localized: Order pork trotters. Leftovers are another meal
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085567
+    m_Localized: ok, I'm eating. Don't stop me
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085568
+    m_Localized: This room is no help, as expected lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085569
+    m_Localized: Ordered it in the end
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085570
+    m_Localized: What would you do with a hundred million?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085571
+    m_Localized: First thing you do after a big win in stocks?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085572
+    m_Localized: Anything you all want to do once you've made money?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085573
+    m_Localized: What's the first thing you do if you win the lottery lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085574
+    m_Localized: Quit my job first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085575
+    m_Localized: Buy more stocks. It's a disease
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085576
+    m_Localized: Give my mom some money first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085577
+    m_Localized: A house. But that won't even buy the bathroom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085578
+    m_Localized: I'll think about it once I've broken even
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085579
+    m_Localized: Tell no one and live quietly
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085580
+    m_Localized: lol realistic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085581
+    m_Localized: Modest dreams all around lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085582
+    m_Localized: ok, I'll think about it after I actually make some
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085583
+    m_Localized: Should be asleep but can't
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085584
+    m_Localized: What do you all do when you can't sleep?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085585
+    m_Localized: Thinking about the market and can't sleep
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085586
+    m_Localized: Lying down, wide awake
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085587
+    m_Localized: Put the phone down and sleep comes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085588
+    m_Localized: Can't sleep either. Charts keep floating in front of my eyes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085589
+    m_Localized: Sleep. No sleep, bad calls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085590
+    m_Localized: Count candles instead of sheep lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085591
+    m_Localized: Have a glass of warm milk
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085592
+    m_Localized: I close my eyes and count breaths. Kind of works
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085593
+    m_Localized: ok, phone off, lying down
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085594
+    m_Localized: lol same for everyone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085595
+    m_Localized: Good night. Sweet dreams
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085596
+    m_Localized: Hands up if you're awake at this hour
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085597
+    m_Localized: It's the middle of the night and people are here lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085598
+    m_Localized: Why's nobody asleep? I just woke up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085599
+    m_Localized: Thought I was the only one up, guess not
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085600
+    m_Localized: Here
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085601
+    m_Localized: Woke up too. No going back to sleep
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085602
+    m_Localized: Someone who woke up and checked their account, right here
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085603
+    m_Localized: No hitting buy on late-night feelings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085604
+    m_Localized: Since I'm up, went for a glass of water
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085605
+    m_Localized: Nice and quiet. Daytime is too loud
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085606
+    m_Localized: Good to have company lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085607
+    m_Localized: ok, I'll try sleeping again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085608
+    m_Localized: Night shift roll call done
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085609
+    m_Localized: Logged in on my commute. Morning, all
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085610
+    m_Localized: Busy for this early. Everyone up early?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085611
+    m_Localized: What are you all doing before the open?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085612
+    m_Localized: Am I the only one checking charts on the subway?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085613
+    m_Localized: Morning. Let's make money today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085614
+    m_Localized: Commuting too. Don't want to go in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085615
+    m_Localized: Before the open is the most exciting part
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085616
+    m_Localized: Still under the blanket lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085617
+    m_Localized: On my way to grab coffee
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085618
+    m_Localized: Was watching on the subway and missed my stop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085619
+    m_Localized: lol good luck today, everyone
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085620
+    m_Localized: Nobody wants to go to work, I see
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085621
+    m_Localized: ok, see you at the open
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085622
+    m_Localized: Sansam Electronics
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085623
+    m_Localized: Square Hitech
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085624
+    m_Localized: Tezumma
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085625
+    m_Localized: Semiconductors
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085626
+    m_Localized: Electric vehicles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085627
+    m_Localized: consumers of appliances and phones
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085628
+    m_Localized: manufacturers and engineers who rely on its parts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085629
+    m_Localized: electric vehicle drivers and reservation holders
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085630
+    m_Localized: gamers and developers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085631
+    m_Localized: linked semiconductor demand
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085632
+    m_Localized: linked supply of automotive chips
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085633
+    m_Localized: linked demand for AI computing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085634
+    m_Localized: My room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085635
+    m_Localized: There's a signal room? First I've heard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085636
+    m_Localized: Didn't know the host ran a room. What goes on in there?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085637
+    m_Localized: Oh, so that exists. I'll keep it in mind
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085638
+    m_Localized: First time seeing this ad. Anyone been in?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085639
+    m_Localized: Oh, that room. Heard decent things
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085640
+    m_Localized: Heard about it a few times. Supposedly not bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085641
+    m_Localized: I've heard of it. Thinking of dropping by
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085642
+    m_Localized: I've heard good things. I'd like to try it if there's room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085643
+    m_Localized: Heard of it, don't know much. How does it work?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085644
+    m_Localized: I know the name. I'm curious about the track record
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085645
+    m_Localized: Think I saw an ad before. Still no opinion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085646
+    m_Localized: Oh, that room. Tell me what's different once you're in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085647
+    m_Localized: I've heard about that room, and not much of it was good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085648
+    m_Localized: I've heard of it. Supposedly not great
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085649
+    m_Localized: Nice ad. The rumors say otherwise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085650
+    m_Localized: I don't trust signal rooms anyway, and I was told to be extra careful
+      with that one
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085651
+    m_Localized: That room comes up a lot lately. In a good way
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085652
+    m_Localized: The word keeps being good, so I've got my eye on it. Joining soon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085653
+    m_Localized: I've seen several people say they made money on the calls. Seems
+      reliable
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085654
+    m_Localized: At this point I'm the one losing out by not joining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085655
+    m_Localized: I've heard so much about that room I know it well. Some say good,
+      some say bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085656
+    m_Localized: Lots of talk, no idea what's true. That's why I'm still outside
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085657
+    m_Localized: It's well known. But famous and profitable are separate things
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085658
+    m_Localized: Another ad. Show the results and I'll think about it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085659
+    m_Localized: Oh I know that room. I've seen plenty of people say they got stuck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085660
+    m_Localized: Instead of advertising, show how the last calls turned out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085661
+    m_Localized: I've heard all the rumors. I'm not going
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085662
+    m_Localized: Listen to the people who left and you have your answer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085663
+    m_Localized: I'm a member. Haven't lost money since joining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085664
+    m_Localized: Vouching as a member. The calls are clean
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085665
+    m_Localized: I joined half-doubting and I'm happy with it now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085666
+    m_Localized: Watching from inside the room. If you're on the fence, just come
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085667
+    m_Localized: I'm a member... and honestly I'm not sure lately
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085668
+    m_Localized: As a member, this ad makes me laugh. Explain the last call first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085669
+    m_Localized: 'Speaking from inside: lower your expectations before you come'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085670
+    m_Localized: I'm still in that room. Only because I'm deciding whether to leave
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085671
+    m_Localized: I was in there and left, but the room itself was fine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085672
+    m_Localized: I used to be in. The calls were reliable. I left because I had no
+      time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085673
+    m_Localized: I left, but no bad memories. Might go back
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085674
+    m_Localized: Ex-member. I left in profit, so no complaints
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085675
+    m_Localized: I'm someone who left that room. Don't ask why
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085676
+    m_Localized: Ex-member. Still haven't recovered from what I got stuck in back
+      then
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085677
+    m_Localized: I've been in, so I know. The ad and the reality differ
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085678
+    m_Localized: Never again. Once was enough
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085679
+    m_Localized: I hear the host's room is decent. Anyone been in?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085680
+    m_Localized: Heard about the signal room, good reviews. How do you get in?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085681
+    m_Localized: Hearing the host's room is good has me tempted
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085682
+    m_Localized: I keep hearing good things about the host's room. True?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085683
+    m_Localized: I hear the host runs a signal room. Anyone know what it's like?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085684
+    m_Localized: Heard about the signal room. Worth joining? Honest reviews please
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085685
+    m_Localized: Hands up if you've been in the host's room. Curious how it is
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085686
+    m_Localized: Not sure that signal room is worth paying the fee for
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085687
+    m_Localized: I heard the host's room isn't great. Is that true?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085688
+    m_Localized: If anyone's about to join the signal room, think twice. What I hear
+      isn't great
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085689
+    m_Localized: Am I the only one who's heard bad rumors about the host's room?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085690
+    m_Localized: The more I hear about that room, the more I think staying out is
+      right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085691
+    m_Localized: They say the host's calls have been hitting lately. Feels like only
+      I'm outside
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085692
+    m_Localized: Anyone joining the signal room, let's go together. The word keeps
+      being good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085693
+    m_Localized: I think the host's room can be trusted now. I've seen enough
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085694
+    m_Localized: Honestly, I envy the members of the host's room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085695
+    m_Localized: So much talk about the host's room. Half say good, half say bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085696
+    m_Localized: Been debating the signal room for a month. Someone decide for me
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085697
+    m_Localized: Anyone seen actual profit proof from the host's room? Numbers, not
+      words
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085698
+    m_Localized: Is that room one you only understand from inside? Can't judge from
+      out here
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085699
+    m_Localized: Careful with the host's room. Just from what I've seen, several
+      got stuck
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085700
+    m_Localized: Go hear from the people who trusted the signal room and then left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085701
+    m_Localized: Think about who actually profits when you follow the host's calls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085702
+    m_Localized: Every time that room comes up, I just sigh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085703
+    m_Localized: Member of the host's room here. The call paid off again today
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085704
+    m_Localized: I'm inside the signal room and the mood is good. Come if you're
+      coming
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085705
+    m_Localized: Joining the host's room is the best thing I've done lately
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085706
+    m_Localized: 'Saying this as a member: the host''s calls are worth following'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085707
+    m_Localized: Member of the host's room here, and the calls have been off lately
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085708
+    m_Localized: Starting to feel the signal room fee isn't worth it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085709
+    m_Localized: Debating leaving the host's room. How are the other members doing?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085710
+    m_Localized: I'm a member, but I can't recommend it. Not right now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085711
+    m_Localized: I left the host's room but think of it sometimes. The calls were
+      good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085712
+    m_Localized: I used to be in the host's room. Thinking of rejoining
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085713
+    m_Localized: I think I made the most when I was in the host's room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085714
+    m_Localized: Even as someone who left, I can say that room was fine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085715
+    m_Localized: It's been a while since I left the host's room and it still stings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085716
+    m_Localized: I used to be in that room. Still holding what I bought on a call
+      and got stuck in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085717
+    m_Localized: If anyone's thinking of joining the host's room, ask me first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085718
+    m_Localized: My account only calmed down after I left that room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085719
+    m_Localized: There's a room like that? Guess only I didn't know
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085720
+    m_Localized: What room is this? First I've heard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085721
+    m_Localized: The host runs a room too? Where do you get in?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085722
+    m_Localized: Oh, that's a thing. Tell me more
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085723
+    m_Localized: That's what I heard too. Decent reviews
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085724
+    m_Localized: So the good word is true after all
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085725
+    m_Localized: Hearing that makes me want to go even more
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085726
+    m_Localized: Heard something similar. I should check it out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085727
+    m_Localized: Yeah? I've only heard of it, don't really know
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085728
+    m_Localized: So some do say it's good. I'd like to know why
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085729
+    m_Localized: Can't tell from one person. Need to hear more
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085730
+    m_Localized: Tell me how much you made and I'll believe it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085731
+    m_Localized: I heard the opposite. That it's not great
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085732
+    m_Localized: Good words always spread first. I don't buy it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085733
+    m_Localized: First time I've heard that room praised. What I heard was different
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085734
+    m_Localized: Hmm. Praise for a signal room deserves half belief at most
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085735
+    m_Localized: True. All I hear about that room lately is good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085736
+    m_Localized: Just from what I've seen, several people made money
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085737
+    m_Localized: Agreed. At this point not believing is the odd position
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085738
+    m_Localized: Exactly. I'm joining soon too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085739
+    m_Localized: I've heard plenty of good and plenty of bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085740
+    m_Localized: I've heard that many times. Still not convinced
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085741
+    m_Localized: Can't listen to one side only. Hear from those who left too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085742
+    m_Localized: I get the praise, but I'm curious about when it lost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085743
+    m_Localized: I worry every time I see someone praise that room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085744
+    m_Localized: It's good for now. Let's see if you say the same later
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085745
+    m_Localized: That's because only winners talk. Losers stay quiet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085746
+    m_Localized: I've seen too many people stuck from that room to believe it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085747
+    m_Localized: Confirming as a member. Not wrong
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085748
+    m_Localized: I'm inside and that's accurate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085749
+    m_Localized: I'm a member and I vouch for it lol
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085750
+    m_Localized: True. My account changed after I joined too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085751
+    m_Localized: I'm a member and it's not that good. Honestly
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085752
+    m_Localized: 'Speaking from inside: it''s not all good days'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085753
+    m_Localized: I thought so at first too. It's different now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085754
+    m_Localized: Even I, a member, have my doubts lately
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085755
+    m_Localized: I left, but I'll give you that. The room was good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085756
+    m_Localized: I've been in, so I know. Not wrong
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085757
+    m_Localized: Ex-member, and I agree. I made money there too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085758
+    m_Localized: True. I only left for my own reasons
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085759
+    m_Localized: As someone who's been in, I can't agree with that
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085760
+    m_Localized: I used to go around saying the same thing at first
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085761
+    m_Localized: Ex-member here, and my account tells a different story
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085762
+    m_Localized: You've only been there for the good times. I was there for the bad
+      too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085763
+    m_Localized: What room is it that you'd put it like that?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085764
+    m_Localized: Didn't even know the room existed and I'm already scared
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085765
+    m_Localized: The host runs a room? Why the bad reviews though
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085766
+    m_Localized: First I've heard of it, but I'll be careful
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085767
+    m_Localized: I heard it was good. Maybe it varies
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085768
+    m_Localized: Really? That's not quite what I heard
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085769
+    m_Localized: One bad time doesn't make the whole room bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085770
+    m_Localized: Still, I've heard more good than bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085771
+    m_Localized: So there's that side too. Now I'm more confused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085772
+    m_Localized: First I've heard anything bad. What happened?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085773
+    m_Localized: Some say it's good though. Who's right?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085774
+    m_Localized: So you're saying don't join? I'd like to know why
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085775
+    m_Localized: That's what I heard too. So it's true
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085776
+    m_Localized: So the rumors weren't wrong
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085777
+    m_Localized: Hearing that, I'm glad I didn't go
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085778
+    m_Localized: Another story like that. Doesn't look like coincidence
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085779
+    m_Localized: I don't think so. I saw more winners than losers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085780
+    m_Localized: No one hits every time. That room still does well
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085781
+    m_Localized: You can't blame the room for one bad trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085782
+    m_Localized: I've been watching all along, and it's not that bad a room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085783
+    m_Localized: I've heard that many times too. As often as the good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085784
+    m_Localized: The losers and the winners are probably both right
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085785
+    m_Localized: Isn't it timing in the end? Not sure it's the room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085786
+    m_Localized: This is exactly why I still haven't joined
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085787
+    m_Localized: That's what I'm saying. More than a few got stuck in that room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085788
+    m_Localized: Finally someone saying it straight
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085789
+    m_Localized: Right. I saw it that way from the start
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085790
+    m_Localized: Everyone take that to heart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085791
+    m_Localized: I'm a member and that's a misunderstanding. I'm doing well
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085792
+    m_Localized: From inside, that's unfair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085793
+    m_Localized: Did you not follow the call through? It worked for me
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085794
+    m_Localized: 'Speaking as a member: the host does their part'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085795
+    m_Localized: I'm a member and I can't argue with that
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085796
+    m_Localized: I'm inside and I've been thinking the same lately
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085797
+    m_Localized: Not wrong. I'm considering leaving too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085798
+    m_Localized: Members say that among themselves too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085799
+    m_Localized: I left, but it wasn't that bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085800
+    m_Localized: As someone who's been in, that's a bit much
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085801
+    m_Localized: Ex-member, and my experience was different. I left in profit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085802
+    m_Localized: It's probably not just the room. I was fine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085803
+    m_Localized: As an ex-member, I vouch for that
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085804
+    m_Localized: Same thing happened to me. That's why I left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085805
+    m_Localized: Everyone who's been in knows that
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085806
+    m_Localized: That's right. I'm still recovering from that loss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085807
+    m_Localized: No idea. Didn't even know there was such a room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085808
+    m_Localized: Don't ask me. First I've heard of it too
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085809
+    m_Localized: What is that? Someone who knows, explain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085810
+    m_Localized: Now I'm curious too. Somebody fill us in
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085811
+    m_Localized: Haven't been in, but I heard the reviews are good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085812
+    m_Localized: Don't know much, but I've heard good things
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085813
+    m_Localized: From what I hear it's decent. Probably quickest to go see
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085814
+    m_Localized: I was thinking of going myself. The reviews aren't bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085815
+    m_Localized: I've only heard of it. Know nothing useful
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085816
+    m_Localized: I've been wondering the same. Members, answer please
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085817
+    m_Localized: I only know the name. No idea what it's actually like
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085818
+    m_Localized: Let's ask together. I can't make up my mind either
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085819
+    m_Localized: Don't know much, but I haven't heard anything good
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085820
+    m_Localized: Going by what I heard, it's not great
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085821
+    m_Localized: I wouldn't go. What I hear isn't great
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085822
+    m_Localized: No firsthand knowledge, but I was told to be careful
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085823
+    m_Localized: Haven't been in, but I've seen many say they made money. It's a
+      decent room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085824
+    m_Localized: From what I've watched, it's trustworthy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085825
+    m_Localized: Consistently good word. I plan to join soon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085826
+    m_Localized: From the outside, it looks like a well-run room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085827
+    m_Localized: I've heard a lot, and opinions are split
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085828
+    m_Localized: I know it fairly well and still can't say whether to recommend it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085829
+    m_Localized: I've seen winners and people stuck. Judge for yourself
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085830
+    m_Localized: Seems the only way is to go in and see. Can't tell from outside
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085831
+    m_Localized: Thanks for asking. Don't go
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085832
+    m_Localized: Going by what I've seen, more people got stuck than not
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085833
+    m_Localized: Hear from people who left before you join
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085834
+    m_Localized: Honestly, I don't recommend it. I've seen too much
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085835
+    m_Localized: I'm a member. Come in. You won't regret it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085836
+    m_Localized: 'Member answering: I''m making money on the calls'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085837
+    m_Localized: I'm inside. Both the mood and the results are fine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085838
+    m_Localized: Recommending it as a member. It's worth the fee
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085839
+    m_Localized: I'm a member, and it's hard to recommend right now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085840
+    m_Localized: 'Speaking from inside: the calls haven''t been landing lately'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085841
+    m_Localized: 'Member answering: come with expectations and you''ll be let down'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085842
+    m_Localized: I'm a member and I'm debating leaving myself, so I can't really
+      say
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085843
+    m_Localized: I was in and left, and the room was fine. Worth a try
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085844
+    m_Localized: 'Ex-member answering: the calls were reliable'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085845
+    m_Localized: I left in profit. Not a bad room
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085846
+    m_Localized: I used to be in, no bad memories. I'd recommend it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085847
+    m_Localized: I was in and left, and I don't recommend it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085848
+    m_Localized: 'Ex-member answering: I lost money there and left'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085849
+    m_Localized: I've been in, and it's not what the ads say
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085850
+    m_Localized: Ask me and I'll say don't go. I've been through it
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085851
+    m_Localized: I only just joined that room. Still watching for now
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085852
+    m_Localized: I'm a member, but I haven't followed a call yet, so I can't say
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085853
+    m_Localized: I'm in the room too. No results yet, so no verdict
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085854
+    m_Localized: I'm in. Need more time to tell if it's good or bad
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085855
+    m_Localized: I was in briefly and left without ever following a call
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085856
+    m_Localized: I've been in. Left quickly though, so nothing to judge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085857
+    m_Localized: I was in for a bit a while back. Left without winning or losing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085858
+    m_Localized: I've been in, but I only watched and then left
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085859
+    m_Localized: I haven't been in the host's room long. How's it going for other
+      members?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085860
+    m_Localized: Joined the signal room but haven't followed a call yet. Reviews
+      from anyone who has?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085861
+    m_Localized: I'm in the host's room and still not sure. Watching a bit longer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085862
+    m_Localized: Newcomer in the host's room. Anyone been here long?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085863
+    m_Localized: I was in the host's room briefly. Curious how it is these days
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085864
+    m_Localized: I only looked around the signal room back then. Anyone actually
+      follow the calls?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085865
+    m_Localized: Debating rejoining the host's room. I didn't try anything last time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085866
+    m_Localized: Not sure leaving that room so quickly was the right move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085867
+    m_Localized: I'm a member too, but with no results yet I can't back that up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085868
+    m_Localized: Is that so. I only just joined, so I don't know yet
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085869
+    m_Localized: As a member, I hope that's true. I'll find out soon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085870
+    m_Localized: I'm inside too, and hearing that is reassuring
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085871
+    m_Localized: I only watched and left, so I wouldn't know. Glad it went well for
+      you
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085872
+    m_Localized: Yeah? I left too soon to see that
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085873
+    m_Localized: I've been in, but I never followed a call, so I've got nothing to
+      add
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085874
+    m_Localized: Hearing that, maybe I should have stayed longer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085875
+    m_Localized: I only just joined, and hearing that makes me nervous
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085876
+    m_Localized: I'm a member, but I haven't been through anything yet, so I can't
+      argue or agree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085877
+    m_Localized: Really? I haven't followed a call yet. I'd better be careful
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085878
+    m_Localized: I'm inside. Tell me more about that
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085879
+    m_Localized: I left too soon to go through that. Maybe I got lucky
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085880
+    m_Localized: I've been in, but I only watched, so I can't say
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085881
+    m_Localized: Hearing that, maybe leaving early was for the best
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085882
+    m_Localized: I didn't lose anything. Only because I didn't do anything
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085883
+    m_Localized: I'm a member, but I joined too recently to answer
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085884
+    m_Localized: I'm in, but I haven't followed a call yet. I'll report back once
+      I do
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085885
+    m_Localized: 'Member answering: I''ve seen the mood, don''t know about profits
+      yet'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085886
+    m_Localized: I joined to find out myself. Fifty-fifty so far
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085887
+    m_Localized: I was in and left, but I never followed a call, so I don't know
+      either
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085888
+    m_Localized: I only looked around briefly. Ask someone who's been through it
+      about profits
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085889
+    m_Localized: Technically an ex-member, but I left so fast I'm no help
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085890
+    m_Localized: I've been in. But I tried nothing, so I can't judge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085891
+    m_Localized: Big contract won; next year's earnings bar moves higher
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085892
+    m_Localized: Largest deal since founding; focus turns to when revenue lands
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085893
+    m_Localized: Contract filing draws buyers; terms still undisclosed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085894
+    m_Localized: First major client secured, laying ground for growth
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085895
+    m_Localized: Fundraising falls through; how much runway is left?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085896
+    m_Localized: Investment round fails; reliance on short-term loans may grow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085897
+    m_Localized: Is the money drying up? Failed raise puts finances in focus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085898
+    m_Localized: Capital plan hits a snag; market awaits the next funding move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085899
+    m_Localized: Industry veteran joins; will development speed up?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085900
+    m_Localized: Key developer hired from a rival to narrow the tech gap
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085901
+    m_Localized: A step ahead in the talent race, though payroll costs loom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085902
+    m_Localized: Research team reinforced; new product timeline may move up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085903
+    m_Localized: Large order delivered; client feedback is positive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085904
+    m_Localized: Deadline met as promised; hopes rise for follow-on orders
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085905
+    m_Localized: First major contract wrapped up cleanly, building trust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085906
+    m_Localized: Delivery quality praised; renewal talks likely to follow
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085907
+    m_Localized: Delivery slips; this quarter's earnings may miss the revenue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085908
+    m_Localized: Order schedule disrupted; delay penalties being discussed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085909
+    m_Localized: Fears the project delay drags on; costs could climb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085910
+    m_Localized: Schedule change requested; talks under way with the client
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085911
+    m_Localized: Defect dispute over delivered goods; client complaints continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085912
+    m_Localized: Quality concerns raised; company opens an investigation
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085913
+    m_Localized: Some shipments face return demands; compensation costs possible
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085914
+    m_Localized: Will client complaints spread? Eyes on the prevention plan
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085915
+    m_Localized: Early funding secured; the immediate fire is out
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085916
+    m_Localized: Private investor money comes in, easing working capital
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085917
+    m_Localized: Funding buys breathing room, though dilution is a factor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085918
+    m_Localized: New investor on board; will follow-on funding come?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085919
+    m_Localized: Rumor of overdue rent; company declines to confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085920
+    m_Localized: Payment delay suspected; suppliers grow uneasy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085921
+    m_Localized: Premises costs weigh; relocation or downsizing may be on the table
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085922
+    m_Localized: Overdue-bill dispute puts the cash position back under scrutiny
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085923
+    m_Localized: Office move planned in a push to cut fixed costs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085924
+    m_Localized: Reorganizing to save costs; company says no staff cuts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085925
+    m_Localized: Relocation decided; savings expected from next year
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085926
+    m_Localized: Belt-tightening begins; moving costs are a short-term burden
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085927
+    m_Localized: Building its own product to reduce reliance on contracts
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085928
+    m_Localized: Money goes into a new business; results will take time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085929
+    m_Localized: New product line under development; R&D cost is the challenge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085930
+    m_Localized: First step into diversification; market reaction is mixed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085931
+    m_Localized: Deal struck with a large corporation; delivery size in focus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085932
+    m_Localized: Big-company volume secured; capacity is now the question
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085933
+    m_Localized: Heavyweight contract signed; cooperation may widen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085934
+    m_Localized: Entry into a major supply chain improves earnings visibility
+    m_Metadata:
+      m_Items: []
+  - m_Id: 733144378085935
+    m_Localized: Base
+    m_Metadata:
+      m_Items: []
+  - m_Id: 734267210043392
+    m_Localized: 1 tick
     m_Metadata:
       m_Items: []
   references:

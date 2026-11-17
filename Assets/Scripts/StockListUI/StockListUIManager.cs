@@ -26,8 +26,26 @@ public class StockListUIManager : MonoBehaviour
         { return; }
 
         CreateSortHeader();
+        FitOperationPanel();
         // StockManager Start 이후에 리스트 구성 (한 프레임 뒤)
         StartCoroutine(BuildListNextFrame());
+    }
+
+    /// <summary>목록 아래의 "체결 흐름" 패널은 글자 네 줄뿐인데 화면의 17%를 차지했다. 11%로 줄이고 목록을 그만큼 늘린다.</summary>
+    private void FitOperationPanel()
+    {
+        const float before = .19f, after = .13f;
+        var scroll = content.GetComponentInParent<ScrollRect>();
+        if (scroll == null || !(scroll.transform is RectTransform view) || !(view.parent is RectTransform screen)) { return; }
+        var panel = screen.Find("Panel :: Operation Monitor") as RectTransform;
+        if (panel == null || Mathf.Abs(panel.anchorMax.y - before) > .005f) { return; }
+        panel.anchorMax = new Vector2(panel.anchorMax.x, after);
+        // 패널이 낮아졌으므로 제목에 충분한 높이를 준다.
+        if (panel.Find("Text :: Operation Monitor Heading") is RectTransform heading)
+        { heading.anchorMin = new Vector2(heading.anchorMin.x, .74f); heading.anchorMax = new Vector2(heading.anchorMax.x, .96f); heading.offsetMin = heading.offsetMax = Vector2.zero; }
+        if (panel.Find("Text :: Operation Monitor Status") is RectTransform status)
+        { status.anchorMin = new Vector2(status.anchorMin.x, .05f); status.anchorMax = new Vector2(status.anchorMax.x, .70f); status.offsetMin = status.offsetMax = Vector2.zero; }
+        view.offsetMin = new Vector2(view.offsetMin.x, view.offsetMin.y - (before - after) * screen.rect.height);
     }
 
     System.Collections.IEnumerator BuildListNextFrame()

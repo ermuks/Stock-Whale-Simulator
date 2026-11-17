@@ -98,6 +98,8 @@ public sealed class SocialTraits
     public int observationBotId;
     public double observationAt, observedAt;
     public string memoryKind, memAmount;
+    /// <summary>화면에서 본 시세: 상태(SPIKE·DUMP·HIGH·LOW·PULLBACK·REBOUND·UP·DOWN·FLAT), 전일 대비, 당일 고가·저가, 최근 몇 분 움직임, 고가·저가 대비.</summary>
+    public string marketState, dayPct, dayHigh, dayLow, fastPct, fromHigh, fromLow;
     public long memoryEventId;
     public double at;
 }
@@ -292,6 +294,9 @@ public sealed partial class InvestorPsychology
         public RoomCooldownSnapshot[] rejoin, mutes;
         public RoomCooldownSnapshot[] knownPlayerRooms;
         public int invitedPlayerRooms;
+        // 리딩방 인지와 소문으로 쌓인 인상. 예전 저장에는 없으므로 기본값(모름·중립)으로 읽힌다.
+        public double roomAwareness, roomHearsay = 50;
+        public int joinedPlayerRooms;
         public CompanyOpinionBook.Opinion[] companies;
         public double lastQuadrantReview = -1, lastFomoObservation = -1, lastRelationshipSpeech = -1;
         public SocialPromisedAction promisedAction;
@@ -324,6 +329,7 @@ public sealed partial class InvestorPsychology
             fomo = 0, fomoSymbol = FomoSymbol, fomoUntil = FomoUntil, fomoCooldownUntil = FomoCooldownUntil, quadrant = Quadrant, randomState = SocialRng.State,
             traits = Traits, relations = relations.ToArray(), memories = memories.ToArray(), fomoLots = lots.ToArray(), rejoin = SaveCooldowns(RejoinAt), mutes = SaveCooldowns(MutedUntil),
             knownPlayerRooms = SaveCooldowns(KnownPlayerRooms), invitedPlayerRooms = InvitedPlayerRooms, companies = Companies.Capture(),
+            roomAwareness = RoomAwareness, roomHearsay = RoomHearsay, joinedPlayerRooms = JoinedPlayerRooms,
             promisedAction = PromisedAction, promisedSymbol = PromisedSymbol, promiseMessage = PromiseMessage,
             lastQuadrantReview = LastQuadrantReview, lastFomoObservation = LastFomoObservation, lastRelationshipSpeech = LastRelationshipSpeech };
     }
@@ -349,6 +355,7 @@ public sealed partial class InvestorPsychology
         if (saved.memories != null) { foreach (var row in saved.memories) { if (row != null && (!Finite(row.at) || row.usedCount < 0)) { return false; } } }
         foreach (var group in new[] { saved.rejoin, saved.mutes }) { if (group != null) { foreach (var row in group) { if (row == null || row.room < 1 || row.room > InvestorSociety.MaximumRoomId || !Finite(row.until)) { return false; } } } }
         if (saved.invitedPlayerRooms < 0 || saved.invitedPlayerRooms >= 1 << InvestorSociety.PlayerRoomCount) { return false; }
+        if (!Finite(saved.roomAwareness) || !Finite(saved.roomHearsay) || saved.joinedPlayerRooms < 0 || saved.joinedPlayerRooms >= 1 << InvestorSociety.PlayerRoomCount) { return false; }
         if (saved.knownPlayerRooms != null) { foreach (var row in saved.knownPlayerRooms) { if (row == null || row.room < 1 || row.room > InvestorSociety.PlayerRoomCount || !Finite(row.until)) { return false; } } }
         if (!CompanyOpinionBook.Valid(saved.companies)) { return false; }
         if (!Enum.IsDefined(typeof(SocialPromisedAction), saved.promisedAction) || saved.promisedAction != SocialPromisedAction.None && string.IsNullOrEmpty(saved.promisedSymbol)) { return false; }
@@ -367,6 +374,8 @@ public sealed partial class InvestorPsychology
         FomoLots.Clear(); foreach (var row in lots) { FomoLots[row.Key] = row.Value; }
         RejoinAt.Clear(); MutedUntil.Clear();
         KnownPlayerRooms.Clear(); InvitedPlayerRooms = saved.invitedPlayerRooms;
+        RoomAwareness = Math.Max(0d, Math.Min(100d, saved.roomAwareness)); RoomHearsay = Math.Max(0d, Math.Min(100d, saved.roomHearsay));
+        JoinedPlayerRooms = saved.joinedPlayerRooms; RoomTalkSeen = 0;
         Companies.Restore(saved.companies);
         if (saved.knownPlayerRooms != null) { foreach (var row in saved.knownPlayerRooms) { KnownPlayerRooms[row.room] = row.until; } }
         if (saved.rejoin != null) { foreach (var row in saved.rejoin) { RejoinAt[row.room] = row.until; } }

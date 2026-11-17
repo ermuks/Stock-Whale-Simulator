@@ -342,6 +342,24 @@ public partial class StockManager
         bot.InitializeRiskPreference(economy.seed);
     }
 
+    /// <summary>대형주로 치는 주가. 이보다 비싸면 개미 대부분이 몇 주밖에 못 산다.</summary>
+    public const decimal LargeCapPrice = 100_000m;
+    private System.Random largeCapRandom;
+    /// <summary>
+    /// 대형주의 첫 물량이 어떻게 풀리는지: steady(조용), normal(보통), heavy(물량이 많이 풀려 첫날 크게 밀림). 대형주가 아니면 null.
+    /// 판마다 실제 난수로 정한다(게임의 고정 시드를 쓰지 않는다). 창 없이 돌리는 검증 실행은 DONDON_LARGECAP_MOOD로 고정하고, 없으면 heavy다.
+    /// </summary>
+    private string LargeCapMood(Stock stock)
+    {
+        if (stock == null || stock.currentPrice < LargeCapPrice) { return null; }
+        string forced = Environment.GetEnvironmentVariable("DONDON_LARGECAP_MOOD");
+        if (!string.IsNullOrEmpty(forced)) { return forced; }
+        if (Application.isBatchMode) { return "heavy"; }
+        largeCapRandom ??= new System.Random(Guid.NewGuid().GetHashCode());
+        double roll = largeCapRandom.NextDouble();
+        return roll < .35 ? "steady" : roll < .70 ? "normal" : "heavy";
+    }
+
     public void DistributePublicShares(Stock stock)
     {
         if (!distributedStocks.Add(stock))
@@ -364,6 +382,24 @@ public partial class StockManager
         }
 
         decimal pool = decimal.Floor(ExchangeBot.Instance.GetHolding(stock) * (decimal)Mathf.Clamp01(economy.publicDistributionRatio));
+        if (weightSum <= 0m || pool <= 0m)
+        { return; }
+
+        // 한 주가 아주 비싼 대형주는 개미가 처음 받은 물량을 감당하지 못해 첫날 크게 밀린다.
+        // 그 자체는 놔두되, 판마다 똑같이 무너지지 않도록 처음 풀리는 물량과 받는 사람을 판마다 달리한다.
+        string mood = LargeCapMood(stock);
+        if (mood == "steady")
+        {
+            // 조금만 풀리고, 현금이 많은 사람일수록 많이 받는다. 받은 물량을 버틸 수 있어 조용히 시작한다.
+            pool = decimal.Floor(pool * .2m); weightSum = 0m;
+            for (int i = 0; i < participants.Count; i++)
+            {
+                var entry = participants[i]; decimal weight = entry.weight * Math.Max(1m, entry.bot.cash) / 10_000_000m;
+                participants[i] = (entry.bot, weight); weightSum += weight;
+            }
+        }
+        else if (mood == "normal") { pool = decimal.Floor(pool * .5m); }
+        if (mood != null) { Debug.Log("[상장 물량] " + stock.stockName + "(" + stock.symbol + ") " + mood + " · 개미 배분 " + pool.ToString("N0") + "주"); }
         if (weightSum <= 0m || pool <= 0m)
         { return; }
 

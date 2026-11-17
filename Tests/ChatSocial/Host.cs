@@ -33,6 +33,7 @@ namespace UnityEngine
         public static float Pow(float a,float b)=>(float)Math.Pow(a,b);
         public static float MoveTowards(float a,float b,float d)=>a<b?Math.Min(a+d,b):Math.Max(a-d,b);
     }
+    public static class PlayerPrefs { public static string GetString(string key,string fallback)=>fallback; }
     public class TextAsset { public string text; }
     public static class Resources
     {
@@ -88,6 +89,9 @@ public sealed class TestBook
     public void GetTopAsks(List<(decimal price,decimal volume)> target,int n) { target.Clear(); target.Add((1001m,100m)); }
 }
 public interface IOrderOwner { }
+public static class GameLocale { public static bool Ready=>true; public static string Code="ko"; }
+// Same FNV-1a hash as the game's CompanyBusiness.Hash, so deterministic picks match production.
+public sealed class CompanyBusiness { public static uint Hash(string text) { uint value = 2166136261; foreach (char c in text) { value = unchecked((value ^ c) * 16777619); } return value; } }
 public sealed class Order { public Trader owner;public float createdAt;public decimal price,volume,costBasis;public bool buy; }
 public class Trader : IOrderOwner { }
 public static class PriceTickPolicy { public static decimal RoundToTick(decimal price)=>decimal.Round(price,0); }
@@ -108,6 +112,9 @@ public sealed class TradeBot : Trader
     public void SellLimit(decimal price,decimal volume,int subTickSteps,Stock stock) { stock.orderBook.Orders.Add(new Order {owner=this,price=price,volume=volume,buy=false,createdAt=UnityEngine.Time.time}); }
     public decimal GetOwnedVolume(Stock stock) => Positions.TryGetValue(stock,out var item)?item.quantity:0m;
     public decimal GetOwnedAverage(Stock stock) => Positions.TryGetValue(stock,out var item)?item.basis:0m;
+    public decimal GetOwnedCost(Stock stock) => Positions.TryGetValue(stock,out var item)?item.basis*item.quantity:0m;
+    public bool KnowsRealValue => IsExchangeParticipant;
+    public void SuspendSession() { }
 }
 public sealed class StockManager
 {
@@ -149,6 +156,7 @@ public sealed class FakeNewsManager
 public sealed partial class MarketDayController
 {
     public TradeBot FindBot(int id) => Bots.FirstOrDefault(bot=>bot.Social?.Id==id);
+    private void StopCoroutine(UnityEngine.Coroutine work) { }
     public BotChatTemplateCatalog Catalog { get; private set; }
     public readonly List<BotChatMessage> AllMessages = new();
     public void InitializeReplay(int chosenSeed)

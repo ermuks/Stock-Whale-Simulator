@@ -1,7 +1,7 @@
 param([string]$Job='UI',[string]$Method='SystemMenuValidation.Run', [int]$Seconds=360)
 $ErrorActionPreference = 'Stop'
 $taskRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '../..'))
-$taskBusy = @(Get-Process -Name Unity,DonDon -ErrorAction SilentlyContinue)
+$taskBusy = @(Get-Process -Name Unity,DonDon,'Stock Whale Simulator' -ErrorAction SilentlyContinue)
 if ($taskBusy.Count) { throw 'A Unity or game process is already running.' }
 $taskOut = Join-Path $taskRoot ('Validation/Settings/' + $Job)
 New-Item -ItemType Directory -Path $taskOut -Force | Out-Null

@@ -5601,16 +5601,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.52695c6cbd050a02",
-      "source": "거래대금 · 달성",
-      "templateOnly": false
-    },
-    {
-      "key": "text.9a7da66c40ce7ea3",
-      "source": "거래대금 · 진행 중",
-      "templateOnly": false
-    },
-    {
       "key": "text.52ccf4f83f2976e1",
       "source": "거래대금 보기",
       "templateOnly": false
@@ -6051,11 +6041,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.df07d94dc1d5eea5",
-      "source": "공용 라운지에서 닉네임 선택 → 내 리딩방 → 첫 회원 초대",
-      "templateOnly": false
-    },
-    {
       "key": "text.6c82c24828d23371",
       "source": "공포",
       "templateOnly": false
@@ -6108,11 +6093,6 @@
     {
       "key": "text.0994237ec9ef00dc",
       "source": "관심이 실제 고객 증가로 이어지는지, 초기 기대가 줄어드는지 지켜볼 사안이다.",
-      "templateOnly": false
-    },
-    {
-      "key": "text.aac2e0883e8d6c92",
-      "source": "관전 가능 · 태블릿 2의 성장·권한에서 리딩방을 개설하세요.\n",
       "templateOnly": false
     },
     {
@@ -7321,11 +7301,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.9d0e9b744c70c98e",
-      "source": "내 리딩방을 열었습니다. 공용 라운지에서 첫 회원을 직접 초대하세요.",
-      "templateOnly": false
-    },
-    {
       "key": "text.7629e1f50431aaef",
       "source": "내 미체결 주문을 회수했습니다. 시장은 계속 움직입니다.",
       "templateOnly": false
@@ -8291,11 +8266,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.c2417cd524d29889",
-      "source": "리딩방 개설 완료 · 공용 라운지에서 첫 회원을 직접 초대하세요.",
-      "templateOnly": false
-    },
-    {
       "key": "text.86ced34304d9bb8d",
       "source": "리딩방 개설 전",
       "templateOnly": false
@@ -8838,11 +8808,6 @@
     {
       "key": "text.ee70488e6ec376cd",
       "source": "매수·매도 힘겨루기",
-      "templateOnly": false
-    },
-    {
-      "key": "text.701eaaafb26df397",
-      "source": "매수·매도를 체결해 거래 실적을 쌓으세요.",
       "templateOnly": false
     },
     {
@@ -9661,11 +9626,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.b8194e62edc66d4f",
-      "source": "보유 주식을 매도해 확정한 손익으로 계산합니다.",
-      "templateOnly": false
-    },
-    {
       "key": "text.861779d89696173f",
       "source": "보유 현금",
       "templateOnly": false
@@ -10381,11 +10341,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.4b38f6f9b85a9ffd",
-      "source": "성과 보기",
-      "templateOnly": false
-    },
-    {
       "key": "text.5130fb0eba9106ad",
       "source": "성장 기록을 불러오는 중입니다.",
       "templateOnly": false
@@ -11036,11 +10991,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.90f13abe57eaab23",
-      "source": "실제 체결 거래대금 ",
-      "templateOnly": false
-    },
-    {
       "key": "text.9876125746cef07e",
       "source": "실제 체결 관측",
       "templateOnly": false
@@ -11068,21 +11018,6 @@
     {
       "key": "text.31c0b64c2967f654",
       "source": "실현손익 ",
-      "templateOnly": false
-    },
-    {
-      "key": "text.ed92b58218fc040f",
-      "source": "실현손익 · 달성",
-      "templateOnly": false
-    },
-    {
-      "key": "text.b572941b800e6bf9",
-      "source": "실현손익 · 진행 중",
-      "templateOnly": false
-    },
-    {
-      "key": "text.3777c9a464c61c8d",
-      "source": "실현수익 ",
       "templateOnly": false
     },
     {
@@ -11223,11 +11158,6 @@
     {
       "key": "text.aedb87f426219ec3",
       "source": "아니 진짜…",
-      "templateOnly": false
-    },
-    {
-      "key": "text.a84c07a1919f9796",
-      "source": "아래 개설 버튼을 누르면 운영 권한이 열립니다.",
       "templateOnly": false
     },
     {
@@ -11941,18 +11871,8 @@
       "templateOnly": true
     },
     {
-      "key": "text.a8f1a7ade8aa98f1",
-      "source": "운영 권한 필요 · 실제 거래대금 ",
-      "templateOnly": false
-    },
-    {
       "key": "text.c76d493b9f0d2263",
       "source": "운영 안정화 - 비용 구조 개선",
-      "templateOnly": false
-    },
-    {
-      "key": "text.351a2375dd182d2d",
-      "source": "운영 조건 달성",
       "templateOnly": false
     },
     {
@@ -12103,11 +12023,6 @@
     {
       "key": "text.604bf6706656509e",
       "source": "원 최근 매수 체결",
-      "templateOnly": false
-    },
-    {
-      "key": "text.a5fff710e028e703",
-      "source": "원, 실현손익 ",
       "templateOnly": false
     },
     {
@@ -16326,11 +16241,6 @@
       "templateOnly": false
     },
     {
-      "key": "text.901eca880b38b291",
-      "source": "첫 회원 초대 · 닉네임 선택 → 내 리딩방",
-      "templateOnly": false
-    },
-    {
       "key": "text.a8e1259e5336fecb",
       "source": "체결",
       "templateOnly": false
@@ -19806,11 +19716,6 @@
       "templateOnly": true
     },
     {
-      "key": "text.756a7fe312069e28",
-      "source": "평단 보면 한숨만 나옴 ㅋㅋ",
-      "templateOnly": true
-    },
-    {
       "key": "text.7c818094a36aa507",
       "source": "오늘은 다 같이 힘든 날이네",
       "templateOnly": true
@@ -20873,6 +20778,3876 @@
     {
       "key": "text.57b58346620e4e2f",
       "source": "주주",
+      "templateOnly": false
+    },
+    {
+      "key": "text.fb9e2c8dcceca747",
+      "source": "{symbol} 뭐임 몇 분 새 {fastPct} ㄷㄷ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.983e7b006f2a9a27",
+      "source": "{symbol} 방금 쏜 거 봄? {price}원까지 순식간이네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3b9c43b0165675e4",
+      "source": "{symbol} 갑자기 {fastPct}. 누가 긁는 거냐 이거",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0096831b9408b657",
+      "source": "와 {symbol} {price}원 ㅋㅋㅋ 잠깐 눈 뗀 사이에 {fastPct}",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d54db488435baa35",
+      "source": "{symbol} 불 붙었다. 몇 분 만에 {fastPct}, 지금 {price}원",
+      "templateOnly": true
+    },
+    {
+      "key": "text.92b35ba0cdd6fa09",
+      "source": "{symbol} 매도 호가 순삭되는 중. {fastPct} 실화냐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8d50a4ec4dc172e3",
+      "source": "{symbol} 몇 분 사이에 {fastPct} 움직였네요. 지금 {price}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6ab749ceba980529",
+      "source": "{symbol} 갑자기 강하게 올라오네요. 방금 {fastPct}였습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f3f60fffc64bce42",
+      "source": "{symbol} {price}원까지 순식간이네요. 이 속도면 조심스럽습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d281dea46b1ca763",
+      "source": "{symbol} 단기간에 {fastPct}라니, 물량이 꽤 들어온 것 같네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d79310bfcdfaf555",
+      "source": "{symbol} 뭐야 몇 분 새 {fastPct}... 누가 던지냐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.070c58e3a5704a04",
+      "source": "{symbol} 방금 쭉 빠진 거 봄? {price}원까지 밀림",
+      "templateOnly": true
+    },
+    {
+      "key": "text.670823ee7b65c90f",
+      "source": "아 {symbol} {fastPct}. 잠깐 사이에 이게 뭐냐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.828019cc2056ce3d",
+      "source": "{symbol} 매수 호가 뚫리는 중. {price}원까지 내려옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b3f909d122d8ac0e",
+      "source": "{symbol} 갑자기 {fastPct} ㄷㄷ 무슨 일 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f1c567f53ed77e07",
+      "source": "{symbol} 쏟아진다... 지금 {price}원. 받는 사람이 없네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cf7bffd78aba96c0",
+      "source": "{symbol} 몇 분 사이에 {fastPct} 빠졌네요. 지금 {price}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.948c3931a4a415d5",
+      "source": "{symbol} 갑자기 매물이 쏟아지네요. 방금 {fastPct}였습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8ca1717ef0856594",
+      "source": "{symbol} {price}원까지 밀렸습니다. 받아 주는 물량이 얇아 보이네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.df33efcdda09087a",
+      "source": "{symbol} 단기간에 {fastPct}라니, 섣불리 받기는 어렵겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9e6e1e9bb95c4462",
+      "source": "{symbol} 오늘 고점 {dayHigh}원 뚫는 중 ㅋㅋ {dayPct}네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.32c793ce9826987b",
+      "source": "{symbol} {dayPct}... 고점에서 안 내려오네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e097f5f06cb0172b",
+      "source": "{symbol} 지금 {price}원. 오늘 제일 높은 자리임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f030d49257e5342c",
+      "source": "{symbol} 오늘 {dayPct}인데 아직도 고점 근처에서 버팀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8f0f373f5f09bbc0",
+      "source": "와 {symbol} {dayHigh}원 찍었네. 어디까지 가는 거냐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.29e54e62ec031ff9",
+      "source": "{symbol} 오늘 고가 계속 갱신 중. 들고 있는 사람들 좋겠다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f153cc26e5fb33d2",
+      "source": "{symbol} 오늘 고가 {dayHigh}원 부근입니다. 전일 대비 {dayPct}네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e9f588fe81431f86",
+      "source": "{symbol} {dayPct}인데도 고점에서 밀리지 않네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d012618eed08ef89",
+      "source": "{symbol} 지금 {price}원, 오늘 가장 높은 가격대입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b9d67da3383bdbfd",
+      "source": "{symbol} 고가를 계속 높이고 있네요. 추격은 조심스럽습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e7866ad3c8505ee8",
+      "source": "{symbol} 오늘 저점 {dayLow}원 깨는 중... {dayPct}",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c8ee1edb2b8fd016",
+      "source": "{symbol} {dayPct}. 바닥이 어디냐 진짜",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ca6d9fed40a8b6c2",
+      "source": "{symbol} 지금 {price}원. 오늘 제일 낮은 자리네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.396bc8f87dca65bc",
+      "source": "{symbol} 오늘 {dayPct}인데 반등 한 번을 안 주네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.caad3a9ea7eea155",
+      "source": "아 {symbol} {dayLow}원까지 찍음. 지지 같은 건 없구나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8ccdf04f9ddd1601",
+      "source": "{symbol} 오늘 저가 계속 갱신 중. 들고 있는 분들 괜찮음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.511a5e70011c365a",
+      "source": "{symbol} 오늘 저가 {dayLow}원 부근입니다. 전일 대비 {dayPct}네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f10517bd04e6c3e5",
+      "source": "{symbol} {dayPct}인데 반등 시도가 보이지 않네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.63f0fd1c60cd404e",
+      "source": "{symbol} 지금 {price}원, 오늘 가장 낮은 가격대입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d7502f67544b23a3",
+      "source": "{symbol} 저가를 계속 낮추고 있네요. 섣불리 받기는 어렵습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9d840cb8f40de2ae",
+      "source": "{symbol} {dayHigh}원 찍고 {fromHigh} 밀림. 고점에 산 사람 어떡하냐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.093306b6bd7f017e",
+      "source": "{symbol} 아까 {dayHigh}원이었는데 지금 {price}원 ㅋㅋ 차익 나오네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.63f95073244e5e00",
+      "source": "{symbol} 고점 대비 {fromHigh}. 여기서 받아야 되나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.21fd3d2a2cc5fb24",
+      "source": "{symbol} 위꼬리 길게 달았네. {dayHigh}원이 오늘 끝인가",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7bc3926e4a45ffbb",
+      "source": "{symbol} 올린 만큼 도로 뱉는 중. 고점에서 {fromHigh}",
+      "templateOnly": true
+    },
+    {
+      "key": "text.87627006a66aa88c",
+      "source": "{symbol} {price}원까지 내려옴. 고점에서 판 사람이 승자네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bf07d717fc14db92",
+      "source": "{symbol} 고가 {dayHigh}원을 찍은 뒤 {fromHigh} 밀렸네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.228a229c1798dd42",
+      "source": "{symbol} 차익 매물이 나오는 것 같습니다. 지금 {price}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bbe64eed5f003e3a",
+      "source": "{symbol} 고점 대비 {fromHigh}입니다. 눌림인지 꺾인 건지 지켜보겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d28fb90197723770",
+      "source": "{symbol} 위꼬리가 길어졌네요. {dayHigh}원을 다시 넘는지가 관건이겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4b5d01bb50e4b766",
+      "source": "{symbol} {dayLow}원 찍고 {fromLow} 올라옴. 바닥에 주운 사람 부럽다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4e544e72f0cce00a",
+      "source": "{symbol} 아까 {dayLow}원이었는데 지금 {price}원. 반등 나오네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.31f0f6e8cf44451d",
+      "source": "{symbol} 저점 대비 {fromLow}. 이거 진짜 반등임? 잠깐 튀는 거임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.91d155ba61da4766",
+      "source": "{symbol} 아래꼬리 길게 달았네. {dayLow}원이 오늘 바닥인가",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7f0f63114260e561",
+      "source": "{symbol} 빠진 만큼 도로 올리는 중. 저점에서 {fromLow}",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e1adaaba897f72c8",
+      "source": "{symbol} {price}원까지 올라옴. 아까 던진 사람들 속 쓰리겠다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7a74738039a51df4",
+      "source": "{symbol} 저가 {dayLow}원을 찍은 뒤 {fromLow} 올라왔네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ff1c42ee9cde1aad",
+      "source": "{symbol} 저가 매수가 들어오는 것 같습니다. 지금 {price}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d7eb2c73b6d69f9b",
+      "source": "{symbol} 저점 대비 {fromLow}입니다. 반등이 이어질지 지켜보겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f87779dc0d0aed3b",
+      "source": "{symbol} 아래꼬리가 길어졌네요. {dayLow}원이 지켜지는지가 관건이겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.47476357b5945862",
+      "source": "{symbol} 오늘 {dayPct}. 조용히 잘 가네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ea3f301eeeacdcc1",
+      "source": "{symbol} 지금 {price}원, {dayPct}네. 고점 {dayHigh}원 다시 보러 가나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d871236064028a26",
+      "source": "{symbol} {dayPct}면 나쁘지 않은데 더 갈 힘이 있나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.46cd2ec5d5f47f03",
+      "source": "{symbol} 슬금슬금 올라서 {dayPct}. 이런 게 무섭더라",
+      "templateOnly": true
+    },
+    {
+      "key": "text.71905bfc3d448a7c",
+      "source": "{symbol} 오늘 {dayPct}인데 고점 {dayHigh}원은 아직 못 넘음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9b21ea83ca687e91",
+      "source": "{symbol} {price}원. {dayPct}면 오늘은 이긴 날이지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7282944e0fd3cd31",
+      "source": "{symbol} 전일 대비 {dayPct}입니다. 무난하게 오르고 있네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.42bb09a212610b67",
+      "source": "{symbol} 지금 {price}원이고, 오늘 고가는 {dayHigh}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.08e87bd8c198da98",
+      "source": "{symbol} {dayPct}네요. 고가 {dayHigh}원을 넘는지 보고 있습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2abc3c8ccc677f0c",
+      "source": "{symbol} 천천히 올라 {dayPct}까지 왔습니다. 급하지 않아서 오히려 좋네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f1f9034cf6f7ecab",
+      "source": "{symbol} 오늘 {dayPct}. 힘이 없네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e90eebac5f39e5cc",
+      "source": "{symbol} 지금 {price}원, {dayPct}네. 저점 {dayLow}원 다시 가나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.387405d48ae04dd7",
+      "source": "{symbol} {dayPct}면 아직 버틸 만한데 더 빠지면 골치 아픔",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3b304399a2e0e36c",
+      "source": "{symbol} 슬금슬금 빠져서 {dayPct}. 이런 게 제일 지침",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b53f4624ce8991f3",
+      "source": "{symbol} 오늘 {dayPct}인데 저점 {dayLow}원은 아직 안 깨짐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d802dd51544eee66",
+      "source": "{symbol} {price}원. {dayPct}... 오늘은 쉬는 날인가",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bd203246c500f033",
+      "source": "{symbol} 전일 대비 {dayPct}입니다. 힘이 약해 보이네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b2e89c834a158349",
+      "source": "{symbol} 지금 {price}원이고, 오늘 저가는 {dayLow}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6bc1464a12e49a4b",
+      "source": "{symbol} {dayPct}네요. 저가 {dayLow}원이 지켜지는지 보고 있습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0ddd98b57f10935a",
+      "source": "{symbol} 천천히 밀려 {dayPct}까지 왔습니다. 반등 신호는 아직 없네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e0c3931ce8e20fff",
+      "source": "{symbol} 오늘 {dayLow}~{dayHigh}원에서만 놀고 있음. 지겹다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.874391f5e114c9b9",
+      "source": "{symbol} {dayPct}... 횡보 언제 끝나냐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3a9c1fcdc117e650",
+      "source": "{symbol} 지금 {price}원. 아까도 이 가격이었던 것 같은데 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d90189564997c238",
+      "source": "{symbol} 오늘 진짜 안 움직이네. {dayPct}에서 꼼짝을 안 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d5e74ef0f097fe46",
+      "source": "{symbol} 차트 일자로 누웠다. 누가 좀 깨워 봐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.da123c460edd4fa7",
+      "source": "{symbol} {dayHigh}원도 못 넘고 {dayLow}원도 안 깨고. 뭐 하자는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4311d7903dc4167a",
+      "source": "{symbol} 오늘은 {dayLow}~{dayHigh}원 사이에서만 움직이네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.29d3c237693b6cc4",
+      "source": "{symbol} 전일 대비 {dayPct}, 사실상 제자리입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0c2d0fbbe16c86e1",
+      "source": "{symbol} 지금 {price}원입니다. 방향이 나올 때까지 기다리겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1fdc08b9c4447542",
+      "source": "{symbol} 움직임이 거의 없네요. {dayHigh}원을 넘겨야 관심이 붙겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4f76a682ff0986d3",
+      "source": "{symbol} {price}원까지 올린 거 진짜 수급임? 고점 {dayHigh}원에서 물리기 싫은데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.19377a4faf5d704d",
+      "source": "{symbol} {price}원인데 왜 오르는지 아는 사람이 없네. 좀 찜찜함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.616a365a3aa01117",
+      "source": "이렇게 올리고 한 번에 던지는 거 많이 봄. {symbol} {dayLow}원까지 되돌려도 안 이상함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.992e6eb00e2befdb",
+      "source": "{symbol} 지금 따라 사는 건 좀... {dayHigh}원 넘는 거 확인하고 봐도 안 늦음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.145b5bee6afda082",
+      "source": "{symbol} {price}원까지 오른 이유가 분명하지 않네요. 고가 {dayHigh}원 부근은 조심하고 싶습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5fd48901f30d8873",
+      "source": "{symbol} 오름세가 이어질지는 모르겠습니다. {dayHigh}원을 넘는지 확인하고 싶네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ba3b396c565ff033",
+      "source": "급하게 오른 종목은 되돌림도 빠르더군요. {symbol} 저가 {dayLow}원까지는 열어 두겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6d1b6fa9af7cc178",
+      "source": "{symbol} {price}원이면 싸 보이긴 하는데 저점 {dayLow}원 깨지면 답 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.32bc2866b28ff16b",
+      "source": "{symbol} 여기가 바닥이라는 근거가 있음? 떨어지는 칼 같은데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f1300b4048617f8f",
+      "source": "{symbol} 반등 나와도 {dayHigh}원까지는 멀다. 섣불리 물타면 안 될 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6225ad3ebc8c8122",
+      "source": "{symbol} 왜 빠지는지 아는 사람 있음? 이유 모르는 하락이 제일 무서움",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6d18abb8519fd816",
+      "source": "{symbol} {price}원이 싸 보이지만, 저가 {dayLow}원이 깨지면 더 밀릴 수 있겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e1f4499d5b64aa47",
+      "source": "{symbol} 여기가 바닥이라는 근거는 아직 못 찾았습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ac1b7fc232c41bd0",
+      "source": "{symbol} 하락 이유가 확인되지 않아 조심스럽습니다. 반등해도 {dayHigh}원까지는 멀어 보이네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f29e7bf336b12059",
+      "source": "{symbol} {dayLow}~{dayHigh}원에서 이렇게 조용한 게 더 수상함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.05719c04ae99c11c",
+      "source": "{symbol} 간다 간다 하는데 {price}원에서 꿈쩍도 안 하잖아",
+      "templateOnly": true
+    },
+    {
+      "key": "text.adb37261cc5e237f",
+      "source": "{symbol} 횡보 끝에 위로 간다는 보장 있음? 아래로 깨질 수도 있는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dc9d59cc0ef6a8db",
+      "source": "{dayHigh}원도 못 넘는 {symbol}에 뭘 기대함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.39e5834af449e102",
+      "source": "{symbol} {dayLow}~{dayHigh}원에서 너무 조용한 점이 오히려 마음에 걸립니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ee12baf33c16fa42",
+      "source": "{symbol} {price}원에서 움직이지 않는데, 기대만으로 사기는 어렵겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.123a79deb7c7e360",
+      "source": "{symbol} 횡보 뒤 방향은 알 수 없습니다. 아래로 열릴 가능성도 봅니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ce589c1872d2ec29",
+      "source": "{symbol} 왜 오르는 거임? {price}원까지 온 이유 아는 사람?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.44fa892d3e9dff33",
+      "source": "{symbol} 지금 {price}원인데 들어가도 됨? 고점 {dayHigh}원이 코앞이라 고민됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e85f01e8bb3dcc4b",
+      "source": "{symbol} 들고 있는 사람들 어디서 팔 거임? {dayHigh}원 넘으면?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ff28c6edb0077491",
+      "source": "{symbol} 이거 더 감? 아니면 {dayLow}원까지 다시 내려옴?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.290dd7fa01dceeb3",
+      "source": "{symbol} 오르는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3f38c153b120ce89",
+      "source": "{symbol} {price}원인데 지금 들어가도 괜찮을까요? 고가 {dayHigh}원이 가까워 망설여집니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4eb4fd22089700c5",
+      "source": "{symbol} 보유하신 분들은 어느 가격에서 정리하실 계획인가요?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7b3be688e04a5e87",
+      "source": "{symbol} 왜 빠지는 거임? 뭐 나온 거 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f6e0858c26314a7e",
+      "source": "{symbol} {price}원이면 주워도 됨? 저점 {dayLow}원 근처라 고민되네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.400e6495d3e01aaa",
+      "source": "{symbol} 들고 있는 사람들 버팀? 손절함?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.93e60b901c149a8e",
+      "source": "{symbol} 어디까지 빠질 것 같음? {dayLow}원은 지켜주나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.465f9ce05329b458",
+      "source": "{symbol} 빠지는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f57968dfaa1bdc3e",
+      "source": "{symbol} {price}원이면 매수해도 괜찮을까요? 저가 {dayLow}원 부근이라 고민됩니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3b57a1c96ed61a83",
+      "source": "{symbol} 보유하신 분들은 버티실 건가요, 정리하실 건가요?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.be884aa325da35bb",
+      "source": "{symbol} 오늘 왜 이렇게 조용함? {dayLow}~{dayHigh}원에서 안 벗어나네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a2ed8619c607cf96",
+      "source": "{symbol} 횡보할 때 모으는 사람 있음? 아니면 다들 딴 거 봄?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.78992de205ca6ec2",
+      "source": "{symbol} {price}원에서 위로 갈까 아래로 갈까. 다들 어떻게 봄?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d94a0e1c13a9476b",
+      "source": "{symbol} 이거 기다릴 가치 있음? 오늘 내내 {price}원 근처인데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d7bc5578e1e3ba4d",
+      "source": "{symbol} 오늘 유난히 조용한데, 이유를 아시는 분 계신가요?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b4dbd19ba122ccba",
+      "source": "{symbol} {dayLow}~{dayHigh}원 구간에서 모으시는 분 계신가요?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.45e2f2b9922a875d",
+      "source": "{symbol} {price}원에서 어느 쪽으로 움직일 것 같으신가요?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.514ecd403284967c",
+      "source": "ㅇㅇ {symbol} {price}원까지 온 거 보면 힘은 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5002489d886503c0",
+      "source": "나도 그렇게 봄. {dayHigh}원 넘기면 더 갈 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b9f8585b4c0b1235",
+      "source": "맞음. 저점 {dayLow}원에서 여기까지 올린 게 그냥은 아니지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ae932026a77fcc18",
+      "source": "ㄹㅇ {symbol} 오늘 분위기 다르긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a875c5f8abf2be94",
+      "source": "동의합니다. {symbol} {price}원까지 올라온 걸 보면 힘이 있네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ccf112bce24c7c4b",
+      "source": "저도 같은 생각입니다. {dayHigh}원을 넘기면 더 이어질 것 같습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fbefdbaccffaf2c8",
+      "source": "맞는 말씀입니다. 저가 {dayLow}원에서 여기까지 온 흐름은 무시하기 어렵네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.06ec9668b6bd377b",
+      "source": "ㅇㅇ {symbol} {price}원까지 밀린 거 보면 약하긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c74e7a010e0180ac",
+      "source": "나도 그렇게 봄. {dayLow}원 깨지면 더 빠질 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b5e973855ca3d484",
+      "source": "맞음. 고점 {dayHigh}원에서 여기까지 온 거면 분위기 꺾인 거지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fea9a9b66eca3a29",
+      "source": "ㄹㅇ {symbol} 오늘은 건드리면 안 될 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.57b73b95d5f5823b",
+      "source": "동의합니다. {symbol} {price}원까지 밀린 걸 보면 약해 보이네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.75aa690b29a20570",
+      "source": "저도 같은 생각입니다. {dayLow}원이 깨지면 더 밀릴 것 같습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.24a96ba2197c7c01",
+      "source": "맞는 말씀입니다. 고가 {dayHigh}원에서 여기까지 내려온 흐름은 가볍지 않네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.32d7127fe72deee5",
+      "source": "ㅇㅇ {symbol} 오늘은 볼 게 없음. {price}원에서 그대로임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e317fa459b6866e6",
+      "source": "나도 그 생각함. {dayHigh}원 넘기 전엔 관심 끄는 게 맞음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5be81b29bdfa5d54",
+      "source": "맞음. {dayLow}~{dayHigh}원 박스 깨질 때까지는 그냥 구경",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f20eaf33a093305d",
+      "source": "ㄹㅇ 이럴 땐 가만히 있는 게 돈 버는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4b9d5a2965783053",
+      "source": "동의합니다. {symbol} 오늘은 {price}원에서 변화가 없네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.160809e5502c6ef6",
+      "source": "저도 그렇게 봅니다. {dayHigh}원을 넘기 전에는 지켜보기만 하겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d33a7b322994e6d5",
+      "source": "맞는 말씀입니다. {dayLow}~{dayHigh}원 구간을 벗어날 때까지 기다리겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1d509a1f2bc16faa",
+      "source": "오른 건 맞는데 {price}원에서 따라 사는 건 다른 얘기임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b759f2b3d08f8359",
+      "source": "글쎄. {dayHigh}원 못 넘으면 여기가 고점일 수도 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.21bcf3128b08c40e",
+      "source": "너무 좋게만 보는 거 아님? 저점 {dayLow}원에서 이미 많이 왔는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5c23de33f4801d4b",
+      "source": "이럴 때 들어가면 꼭 물리던데. 난 좀 식는 거 보고 판단함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.94b31d31be928f97",
+      "source": "오른 것은 맞지만, {price}원에서 따라 사는 것은 다른 문제라고 봅니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.de35abab35cb65f6",
+      "source": "저는 조금 다르게 봅니다. {dayHigh}원을 넘지 못하면 여기가 고점일 수 있습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4632fa276130dab3",
+      "source": "저가 {dayLow}원에서 이미 많이 올라왔습니다. 지금은 서두를 자리가 아닌 것 같네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.800cfa64dc1e0f0e",
+      "source": "빠진 건 맞는데 {price}원이면 오히려 볼 만한 자리 아님?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.07da418b5dcdebfd",
+      "source": "글쎄. {dayLow}원 안 깨지면 여기서 반등 나올 수도 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a4b054e61f74a39d",
+      "source": "너무 겁먹은 거 아님? 고점 {dayHigh}원에서 이 정도 눌리는 건 흔함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.db192ae33fe9d920",
+      "source": "다들 무섭다 할 때가 살 때라던데. 난 좀 더 보고 주울 생각",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9be7f65ebfaf92da",
+      "source": "빠진 것은 맞지만, {price}원이면 오히려 살펴볼 만한 자리라고 봅니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.beaaef51c2c0e514",
+      "source": "저는 조금 다르게 봅니다. {dayLow}원이 지켜지면 반등이 나올 수 있습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b875947e8c89b38b",
+      "source": "고가 {dayHigh}원에서 이 정도 조정은 흔한 일입니다. 너무 걱정하실 필요는 없어 보이네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.87b003514d5db4fe",
+      "source": "이유는 나도 모름. 근데 {dayHigh}원 넘기면 사고, 못 넘기면 안 삼",
+      "templateOnly": true
+    },
+    {
+      "key": "text.faf91b452d8f5fee",
+      "source": "난 {price}원에선 안 들어감. {dayLow}원 근처까지 눌리면 그때 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3135f106f501b17c",
+      "source": "산다면 조금만. 틀리면 {dayLow}원 깨질 때 자르면 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a51cdde894edd20a",
+      "source": "뉴스는 못 봤음. 그냥 사는 사람이 많아서 오르는 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cd15a6912f7e4fe1",
+      "source": "이유는 저도 모르겠습니다. 다만 {dayHigh}원을 넘는지를 기준으로 보고 있습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dc8f558e88e8379b",
+      "source": "저는 {price}원에서는 들어가지 않습니다. {dayLow}원 부근까지 눌리면 다시 보겠습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6d27ad3ecd7b9f94",
+      "source": "관련 소식은 확인하지 못했습니다. 매수세가 우위인 것으로만 보입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.806f1e3f1a847310",
+      "source": "이유는 나도 모름. 근데 {dayLow}원 깨지면 더 보고, 지키면 조금 주울 생각",
+      "templateOnly": true
+    },
+    {
+      "key": "text.26affc5bba802fec",
+      "source": "난 {price}원에선 아직 안 삼. 반등 확인하고 들어가도 안 늦음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9e2cfa73e4d03583",
+      "source": "뉴스는 못 봤음. 그냥 파는 사람이 많아서 빠지는 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ab15e443e9b07011",
+      "source": "버틸 거면 {dayLow}원 기준으로 잡는 게 맞음. 그 밑은 나도 모름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bb3bd688bf1d1339",
+      "source": "이유는 저도 모르겠습니다. 다만 {dayLow}원이 지켜지는지를 기준으로 보고 있습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.94fcfdea5b3bc59d",
+      "source": "저는 {price}원에서는 아직 사지 않습니다. 반등을 확인한 뒤에 들어가도 늦지 않습니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.216bd4baada275fa",
+      "source": "관련 소식은 확인하지 못했습니다. 매도세가 우위인 것으로만 보입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.45665115e17e661e",
+      "source": "이유 없음. 그냥 다들 딴 종목 보는 중인 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.046e57beb47c99e6",
+      "source": "난 {dayHigh}원 넘기 전엔 안 건드림. 횡보에 돈 묶이기 싫어서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.36f26af8ba6b287c",
+      "source": "위든 아래든 {dayLow}~{dayHigh}원 벗어나는 쪽 따라갈 생각",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5d8beefae431fffe",
+      "source": "기다릴 거면 {price}원 근처에서 조금씩 모으는 것도 방법이긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.816ef367c638b07c",
+      "source": "특별한 이유는 없어 보입니다. 관심이 다른 종목에 쏠린 것 같네요.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.98b227c29920704d",
+      "source": "저는 {dayHigh}원을 넘기 전에는 손대지 않을 생각입니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3b2fc21de3e3fc3a",
+      "source": "{dayLow}~{dayHigh}원 구간을 벗어나는 방향을 따라가려 합니다.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.667e4faed7401763",
+      "source": "자 여러분 {symbol} {price}원입니다. 중계는 제가 합니다 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7ce0704a30e2d277",
+      "source": "{symbol} 보고 있는 사람 나밖에 없음? 나 혼자 떠드는 기분인데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3e578773397161a6",
+      "source": "아니 근데 {symbol} 얘기 아무도 안 함? 그럼 내가 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.262f0d8bf93973e5",
+      "source": "{symbol} {price}원. 아까도 말했지만 또 말함 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.57fb29deaeff39ce",
+      "source": "오늘 {symbol} 얘기만 몇 번째인지 모르겠는데 그래도 할 말이 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fe127485936d985e",
+      "source": "{symbol} 지금 {price}원인 거 다들 알고 있지? 모르면 내가 계속 알려줌",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9db0ab4e514213d6",
+      "source": "나 {symbol} 화면 하루 종일 켜놓고 있음. 궁금한 거 있으면 물어봐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0d01601ed5e90de4",
+      "source": "조용하길래 한마디 함. {symbol} {price}원임. 이상.",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c96f910f7a065a5a",
+      "source": "다들 어디 갔음? 나만 떠드네 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8eeef6474e646746",
+      "source": "방 조용하면 불안해서 내가 뭐라도 말해야 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5b6ed572f85076c2",
+      "source": "아 맞다 나 방금 라면 끓였음. 장 보면서 먹는 라면이 최고임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b74be2b1c57ffc53",
+      "source": "여기 눈팅만 하는 사람 손 들어 봐. 다 보이거든?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ef9edbe63fe917f3",
+      "source": "내가 말 많은 건 아는데 조용한 것보단 낫잖아 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.91322f4bc3978954",
+      "source": "오늘도 출석 완료. 제일 먼저 와서 제일 늦게 가는 사람 나임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d2efc659493892be",
+      "source": "심심한데 누가 종목 하나만 던져 줘. 같이 떠들게",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0f0a9a36f18c0553",
+      "source": "아까 한 얘기 또 해도 됨? 안 된다 해도 할 거긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.19f57377977c6f11",
+      "source": "{symbol} 보는 사람 손! 나만 보는 거 아니지?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d5aa43004d4b5416",
+      "source": "자 투표 갑니다. {symbol} 오늘 오른다 내린다?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.07688b66e2ca77f4",
+      "source": "{symbol} 지금 {price}원인데 다들 한마디씩만 해 봐. 궁금해서 그럼",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ba9b5113df5203f3",
+      "source": "오늘 뭐 샀는지 자랑할 사람 없음? 나 들을 준비 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9676946e61b39af7",
+      "source": "{symbol} 들고 있는 사람 있으면 근황 좀. 심심함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3a67045f59c77f52",
+      "source": "다들 오늘 수익 어떰? 말하기 싫으면 표정만이라도 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3f6b3b81ceb3eca7",
+      "source": "{symbol} 얘기 나만 재밌어? 반응 좀 해 줘 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c267af29b8a9a5f3",
+      "source": "아무나 대답 좀. {symbol} {price}원 싼 거임 비싼 거임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b330cd634b2e9a4e",
+      "source": "리딩방 개설 필요 · 개설 비용 ",
+      "templateOnly": false
+    },
+    {
+      "key": "text.410e1fc68ebaa77f",
+      "source": "리딩방 개설 완료 · 공용 라운지 채팅에서 + 를 눌러 회원을 초대하세요.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.7fb1bbc93a0226e4",
+      "source": "첫 회원 초대 · 채팅에서 + 를 누르세요",
+      "templateOnly": false
+    },
+    {
+      "key": "text.d0761b395d4f1e5b",
+      "source": "공용 라운지 채팅에서 + 를 눌러 첫 회원을 초대하세요",
+      "templateOnly": false
+    },
+    {
+      "key": "text.f911f83a21333a61",
+      "source": "개설 비용 ",
+      "templateOnly": false
+    },
+    {
+      "key": "text.8be7e922c5a0a164",
+      "source": "개설 버튼을 누르면 비용을 내고 방이 열립니다.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.9eaa29c34af9f2e2",
+      "source": "주문 가능 현금을 모으면 바로 개설할 수 있습니다.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.74645b0eecc78015",
+      "source": "개설 비용 · 납부 완료",
+      "templateOnly": false
+    },
+    {
+      "key": "text.75afba3f50186ee4",
+      "source": "개설 비용 · 준비 완료",
+      "templateOnly": false
+    },
+    {
+      "key": "text.81023e301bf2fedc",
+      "source": "개설 비용 · 모으는 중",
+      "templateOnly": false
+    },
+    {
+      "key": "text.af4cd01e47ddbc8d",
+      "source": "주문 가능 현금에서 한 번만 냅니다.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.fd4fe46b7ae46d57",
+      "source": "내 리딩방을 열었습니다. 공용 라운지 채팅에서 + 를 눌러 회원을 초대하세요.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.b30e4204a5d9e466",
+      "source": "비용 보기",
+      "templateOnly": false
+    },
+    {
+      "key": "text.7878d0bb93e117f8",
+      "source": "개설 비용 준비됨",
+      "templateOnly": false
+    },
+    {
+      "key": "text.473bad65ed56af35",
+      "source": "리딩방 열었습니다. 같이 하실 분 들어오세요.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.54433c2b2f02404b",
+      "source": "제 리딩방 회원 모집합니다. 매매 지시는 제가 직접 드립니다.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.f0bca968cb0f2492",
+      "source": "혼자 고민하지 말고 제 방으로 오세요. 자리 있습니다.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.03733a589bbd2806",
+      "source": "리딩방 운영 중입니다. 관심 있으면 들어와서 구경하세요.",
+      "templateOnly": false
+    },
+    {
+      "key": "text.1e231ef96c6f884c",
+      "source": "오늘 {symbol} {level}원 돌파했는데 내일 {nextLevel}원 가나? ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6c3dd7f93761174c",
+      "source": "{symbol} {level}원 뚫고 {close}원 마감. 내일도 가려나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b24e240db22857ac",
+      "source": "{symbol} {level}원 넘긴 거 본 사람? 내일 시초가 궁금함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.00e0121e3e4050e9",
+      "source": "{symbol} 오늘 {dayPct} 찍고 {level}원 위에서 끝남. 이거 진짜임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8eb71d35fe08633b",
+      "source": "어제 {symbol} {level}원 돌파했는데 오늘 {nextLevel}원 가나? ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.88c4e4393c23b2de",
+      "source": "{symbol} 어제 {close}원 마감이었지. 오늘 {level}원 지켜 주려나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5d438b5be369dbd4",
+      "source": "자고 일어나도 {symbol} {level}원 돌파가 안 믿김 ㅋㅋ 오늘 시초가 어디서 뜰까",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0c9b3545f8ae537c",
+      "source": "{symbol} 어제 {dayPct}였는데 오늘 이어 가면 {nextLevel}원도 보이는 거 아님?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.adbc6a003d9c2522",
+      "source": "{nextLevel}원은 좀 ㅋㅋ 일단 {level}원부터 지켜야지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d68c683ad02c2af1",
+      "source": "시초가 봐야 앎. 갭 뜨면 무서워서 못 탐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8bad815c60b59daf",
+      "source": "그 정도 오르면 차익 매물 나올 때 됐음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d818cb7d68456740",
+      "source": "{nextLevel}원 가면 나 치킨 쏨 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.840ced6eb4f35dc6",
+      "source": "{level}원 돌파는 인정. 근데 거기서 더 살 사람이 있을지가 문제",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8a9b888832bb8cf5",
+      "source": "난 구경만 함. 이미 너무 올라서 손이 안 나감",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f73880c329254c8f",
+      "source": "나 그거 들고 있음 ㅋㅋ {nextLevel}원까지 안 팔 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.343792a6b3a62188",
+      "source": "들고 있는 입장에선 제발 가 줬으면",
+      "templateOnly": true
+    },
+    {
+      "key": "text.81c6c4e6e7594991",
+      "source": "나도 주주임. {level}원 넘는 거 보고 소리 지름 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c47dde1f4170069d",
+      "source": "ㅋㅋ 일단 시초가 보고 다시 얘기하자",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cb83775809608b4e",
+      "source": "그 말도 맞음. 기대는 반만 해야겠다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a586de3ca93f74ce",
+      "source": "ㅇㅋ 꿈은 크게 가지는 걸로 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fafdb61636ac5ac4",
+      "source": "{symbol} 오늘 {dayPct} 마감. 내일도 이 분위기 이어짐?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cd121fbff99f40c5",
+      "source": "{symbol} {close}원에 끝났네. 내일 더 갈 거라 보는 사람?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b57da615170777c3",
+      "source": "오늘 {symbol} 못 탄 사람 나뿐임? {dayPct}를 그냥 구경함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6e8d7aef260e941c",
+      "source": "{symbol} 내일 눌림 주면 살 건데 줄까?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8e17c2fd6e8464ee",
+      "source": "{symbol} 어제 {dayPct}였는데 오늘도 감?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.204c9058faa57825",
+      "source": "어제 {symbol} {close}원 마감 보고 잠. 오늘 시초가 예상 좀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.54b80b3751b35312",
+      "source": "{symbol} 어제 놓친 사람 모여 봐. 오늘 탈 거임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.790c764802e61f3c",
+      "source": "오늘 {symbol} 눌림 오면 살 사람 손",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dba1bfdb45a885f4",
+      "source": "하루 올랐다고 따라 사면 물림. 난 하루 더 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.64a95d6f731ac560",
+      "source": "눌림 주면 나도 삼. 근데 안 주고 가면 그냥 보내 줌",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6aca6c0f0c9d6f6d",
+      "source": "{dayPct}면 이미 먹을 사람은 다 먹은 거 아님?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.80690263563002b7",
+      "source": "거래량 붙었으면 하루는 더 간다 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.00b86baa84e8abdd",
+      "source": "나도 못 탐 ㅋㅋ 구경하는 게 제일 속 편함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b5af4eb1991728ea",
+      "source": "시초가 높게 뜨면 안 삼. 그건 남 좋은 일임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.03364c54f0514850",
+      "source": "나 들고 있음. 더 오르면 반은 팔 생각",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1c9e656622146ff8",
+      "source": "주주인데 솔직히 나도 어디까지 갈지 모름 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.80ec10060a21a308",
+      "source": "들고 있으니까 마음은 편함. 욕심만 안 내면 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.40ff680b7c1048f1",
+      "source": "역시 눌림 기다리는 게 맞겠지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cad3ab9df586176d",
+      "source": "ㅋㅋ 다들 생각은 비슷하네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1daa0be769fec2c8",
+      "source": "ㅇㅋ 시초가 보고 정함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d0a2b4d82eb9d39e",
+      "source": "{symbol} 전망좀요... 하...",
+      "templateOnly": true
+    },
+    {
+      "key": "text.20835679badbc7de",
+      "source": "{symbol} 오늘 {dayPct}. 내일 반등 줌 안 줌?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5a5439c0f2af5c74",
+      "source": "{symbol} {close}원 마감 실화냐. 어디까지 빠지는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a9c9f5b8467cdf68",
+      "source": "{symbol} 지금 줍는 건 무리임? 누가 말려 줘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.79cced4db05a6e9f",
+      "source": "{symbol} 어제 {dayPct} 맞고 잠을 못 잠. 오늘 전망좀요...",
+      "templateOnly": true
+    },
+    {
+      "key": "text.43496ab1b0affbcd",
+      "source": "{symbol} 오늘은 반등 주겠지? 어제 {close}원까지 밀렸는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.66baddb53162f527",
+      "source": "어제 {symbol} 던진 사람 많음? 오늘 더 빠지면 줍게",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3cce9ef7cef11a93",
+      "source": "{symbol} 시초가부터 또 빠지면 어떡하지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0ad1b10b5bfc1c39",
+      "source": "하루 빠진 걸로 전망은 아무도 모름. 일단 숨 고르자",
+      "templateOnly": true
+    },
+    {
+      "key": "text.781cdf9582c0d447",
+      "source": "반등은 줄 듯. 근데 반등에 파는 사람도 많을 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.381e1da942fd2307",
+      "source": "떨어지는 칼은 안 잡는 거라 배웠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.82c0510e08559647",
+      "source": "{dayPct}면 아픈 건 맞는데 끝난 건 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.03648f37c4262730",
+      "source": "난 바닥 확인하고 들어감. 지금은 구경",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8318e10def6b7944",
+      "source": "힘내... 치킨 먹고 잊자",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4fcc2ac07965cfda",
+      "source": "나도 물려 있음. 같이 버티자",
+      "templateOnly": true
+    },
+    {
+      "key": "text.50590bec060ed261",
+      "source": "주주 여기 있음... 나도 전망 듣고 싶다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f80886cf5ff3189e",
+      "source": "나 들고 있는데 그냥 앱 지움 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.80bd24cff92fe5c3",
+      "source": "하... 고마움. 일단 버텨 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.591170e8f666888f",
+      "source": "다들 비슷하구나. 위로가 됨 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3a07acafe33d2024",
+      "source": "ㅇㅋ 섣불리 안 움직이고 지켜봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a7fc63d4bcdd6af8",
+      "source": "{symbol} 얘네 호재 뭐 뜬 거 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c4256165c26ade51",
+      "source": "{symbol} 왜 {dayPct}나 오른 거임? 아는 사람",
+      "templateOnly": true
+    },
+    {
+      "key": "text.27b103522294b02a",
+      "source": "{symbol} 뉴스 본 사람 있음? 이유 없이 이렇게 오르나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0b06323f767d835a",
+      "source": "{symbol} 오른 이유 좀 알려 줘. 나만 모르는 것 같음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a5dc887f581cfc17",
+      "source": "딱히 못 봄. 그냥 수급인 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7e89cdb7d50fbf6f",
+      "source": "뉴스는 모르겠고 누가 크게 산 것 같긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.06d96bc717965c8d",
+      "source": "나도 찾아봤는데 없음. 이유는 나중에 붙는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.13a675c571740180",
+      "source": "호재면 벌써 다 반영됐을걸",
+      "templateOnly": true
+    },
+    {
+      "key": "text.64b30fe3d8f561c1",
+      "source": "이유 모르고 오르는 게 제일 무서움",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6400a3641235f6f4",
+      "source": "뉴스 탭 한번 봐 봐. 나도 지금 보는 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c21b343b383b1c62",
+      "source": "들고 있는데 나도 이유를 모름 ㅋㅋ 그냥 감사할 뿐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a5a2ec6d046295a9",
+      "source": "주주인데 뉴스는 못 봤음. 오르니까 좋긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.537d126d6c0db497",
+      "source": "나도 주주라 찾아봤는데 딱 이거다 싶은 건 없었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.813502c2828de9e1",
+      "source": "역시 아무도 모르는구나 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.53c984706f6ff8bc",
+      "source": "ㅇㅋ 뉴스 탭 보고 옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.da89f868f07f7030",
+      "source": "이유 없이 오른 거면 더 조심해야겠네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b7a248c83babb448",
+      "source": "{symbol} 얘네 악재 뭐 뜬 거 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8b78e19e1bfda257",
+      "source": "{symbol} 왜 {dayPct}나 빠진 거임? 아는 사람",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4246436c36a2b1d3",
+      "source": "{symbol} 무슨 일 있음? 이유 없이 이렇게 빠지나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9ba6a6079329ed99",
+      "source": "{symbol} 빠진 이유 좀 알려 줘. 뉴스를 못 찾겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0d607614d714c4c1",
+      "source": "딱히 못 봄. 누가 크게 던진 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fcccaa856d3f4418",
+      "source": "악재는 모르겠고 그냥 차익 실현 같음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d4f3640a52764308",
+      "source": "나도 찾아봤는데 없음. 그래서 더 찜찜함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2b8bc6ea56f3f779",
+      "source": "이유 없는 하락이면 금방 돌아오기도 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e1dd8bae62b1e56b",
+      "source": "뉴스 탭 한번 봐 봐. 뭐 있으면 거기 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.06901f27aa7159f0",
+      "source": "모를 땐 안 건드리는 게 답임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bc42f616a68da809",
+      "source": "들고 있는데 나도 이유를 모름. 답답함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.60c157e6d02ce5cf",
+      "source": "주주인데 뉴스 없었음. 그냥 맞은 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2de200a239e8fe66",
+      "source": "나도 주주라 찾아봤는데 아무것도 없더라",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6e265bf1e2957336",
+      "source": "역시 아무도 모르는구나... 더 무섭네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.20c134d4b1fc1310",
+      "source": "이유를 모르니까 손을 못 대겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ea10db5870daa4f4",
+      "source": "{symbol} 오늘 하루 종일 {close}원 근처. 내일은 좀 움직이려나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.eb1208da77cae35a",
+      "source": "{symbol} 얘는 언제 움직임? 보다가 졸았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.528f4d6d2357c7bd",
+      "source": "{symbol} 들고 있는 사람 안 지루함?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a867cbc73bda7b12",
+      "source": "{symbol} {close}원에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2a456d315c682886",
+      "source": "{symbol} 어제 하루 종일 {close}원 근처였음. 오늘은 좀 움직이려나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0863d3c3898ad712",
+      "source": "안 움직이는 게 제일 편함. 난 좋음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fd7f8bdaf06e6ecc",
+      "source": "그런 건 잊고 있으면 어느 날 올라 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.81c233ab77caf259",
+      "source": "지루한 종목은 안 봄. 시간 아까움",
+      "templateOnly": true
+    },
+    {
+      "key": "text.76310eac46190d6d",
+      "source": "터지면 크다는 말 믿다가 1년 기다린 사람 여기 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4d195b9e095151bf",
+      "source": "거래가 없으면 이유가 있는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.27338e046c68e85d",
+      "source": "{close}원에서 안 빠지는 것만 해도 어디임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2538141fffa9b6bd",
+      "source": "나 들고 있음. 지루한데 팔 이유도 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f0576bc2cfe1f9dd",
+      "source": "주주인데 솔직히 있는 줄도 까먹고 있었음 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.297b68659f7fe505",
+      "source": "들고 있는 입장에선 조용한 게 낫다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.060cd903fcc1fc8a",
+      "source": "ㅋㅋ 맞음. 조용한 게 낫긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b93abbec82b69bb1",
+      "source": "그래도 한 번은 움직여 줬으면",
+      "templateOnly": true
+    },
+    {
+      "key": "text.86dc5418c5e7f4ce",
+      "source": "ㅇㅋ 잊고 살아야겠다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.11df4287226d1d0f",
+      "source": "내일 장 어떨 것 같음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3b53a41c4f2af6fe",
+      "source": "내일 뭐 살지 정한 사람?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.20a035661754581e",
+      "source": "내일 계획 있는 사람? 나는 아직 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7a04060ae56d0436",
+      "source": "내일은 좀 쉬어야 되나 싶음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7329e306ecd10c01",
+      "source": "오늘 장 어떨 것 같음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fb454d453723a308",
+      "source": "오늘 뭐 살지 정한 사람?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9ec23235142195ad",
+      "source": "오늘 계획 있는 사람? 나는 아직 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6f2c875f30f22462",
+      "source": "오늘은 좀 쉬어야 되나 싶음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4f4714b5dd518787",
+      "source": "모름. 열려 봐야 앎",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cae84e96f645b5a3",
+      "source": "난 정한 거 없음. 시초가 보고 움직임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2bdde35c059fb8ae",
+      "source": "쉬는 것도 매매임. 진짜임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a1517f513a07fd34",
+      "source": "나는 그냥 들고 있는 거 지켜볼 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.de1946353480fcc3",
+      "source": "예상은 해 봤자 틀림 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2e180cee5d26a807",
+      "source": "나는 관망. 확실할 때만 들어감",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ac41f9ba3c0b947b",
+      "source": "ㅇㅋ 열리면 보자",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b7dd9b35c75d193d",
+      "source": "다들 계획 없는 건 똑같네 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8783d884324ab5d5",
+      "source": "그래, 욕심 안 내는 걸로",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9af432d4cdcc1da6",
+      "source": "저녁 메뉴 추천좀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e9770da93453ff42",
+      "source": "장 끝났는데 저녁 뭐 먹지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.94bf6710c4393a9d",
+      "source": "오늘 저녁 뭐 먹음? 참고 좀 하게",
+      "templateOnly": true
+    },
+    {
+      "key": "text.102487d39bec687d",
+      "source": "배고픈데 뭐 시킬지 못 정하겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3e7daa246ca133f6",
+      "source": "제육 ㄱㄱ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d81a0acc64876101",
+      "source": "치킨이 진리",
+      "templateOnly": true
+    },
+    {
+      "key": "text.eaa61d1c95873a77",
+      "source": "오늘 벌었으면 고기, 잃었으면 라면",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b60c4f00563aa982",
+      "source": "국밥 ㄱ. 든든한 게 최고임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.eb7413798be8bc36",
+      "source": "나는 방금 김치찌개 먹음. 추천함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9803161ba85dda19",
+      "source": "돈까스 어떰. 실패가 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c3d15a39e42179f2",
+      "source": "ㅇㅋ 그걸로 감",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c1fd585b99dc1140",
+      "source": "추천 감사 ㅋㅋ 바로 시킴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0dd9e2704f70c44d",
+      "source": "듣고 나니까 더 배고픔",
+      "templateOnly": true
+    },
+    {
+      "key": "text.add387412c9ed04f",
+      "source": "퇴근함. 다들 수고했음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3e9606299a0b8666",
+      "source": "드디어 퇴근. 오늘 하루 길었다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.da896cff48e40da7",
+      "source": "퇴근길인데 지하철 사람 미어터짐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3b3761d04a9def57",
+      "source": "집 도착. 이제 좀 살 것 같음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4a6c5877fa0a537f",
+      "source": "수고했음. 푹 쉬어",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4714fffa990ac6eb",
+      "source": "나는 아직 회사임... 부럽다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b7e3d75189776d64",
+      "source": "퇴근이 제일 큰 호재임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1aa67ec8652df7e1",
+      "source": "오늘 장 보느라 일은 했음? ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.67572a9f48ec0db5",
+      "source": "씻고 누우면 그게 천국임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cca31cdafbfe7f43",
+      "source": "나도 방금 퇴근. 같이 수고했음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d892df73f65c3102",
+      "source": "ㅋㅋ 고마움. 다들 푹 쉬어",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e34210f367b40f3e",
+      "source": "이 방이 회사보다 따뜻함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c6a5cf279e58607f",
+      "source": "ㅇㅋ 씻고 옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b1d7e8e6fabf2a8c",
+      "source": "볼 거 추천좀. 드라마든 영화든",
+      "templateOnly": true
+    },
+    {
+      "key": "text.60195aa1eaa376fc",
+      "source": "장 끝나면 다들 뭐 하고 놂?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e73e96fe22b702d5",
+      "source": "심심한데 뭐 재밌는 거 없음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8e20f25ddfd2c3de",
+      "source": "오늘은 차트 그만 보고 딴 거 할 거임. 뭐 하지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a9a64db3330b84bd",
+      "source": "주식 영화는 보지 마. 장 생각만 더 남",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ed8c1e0ca13340a0",
+      "source": "난 게임함. 거기서도 물리는 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.78d25e65c1299079",
+      "source": "산책 ㄱㄱ. 머리 식히는 데 최고",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3ae83fdb87e59fe3",
+      "source": "예능 틀어 놓고 멍 때리는 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0ccba4a2cbebf43a",
+      "source": "난 그냥 누워서 폰 봄. 그게 휴식임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d2b65d3d969bc245",
+      "source": "운동해. 계좌는 몰라도 몸은 우상향함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0e8c1aed709d4603",
+      "source": "ㅇㅋ 참고함 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d8c8128e9616964f",
+      "source": "다들 별거 안 하는구나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5d55485fb302be58",
+      "source": "결국 또 차트 볼 것 같긴 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0219861e38de5709",
+      "source": "야식 땡기는데 참아야 됨?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4274a0c0cb9bccc0",
+      "source": "이 시간에 라면 끓이면 지는 거임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5b4e302fe25fbf81",
+      "source": "야식 뭐 먹을지 골라 줘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.681cebea488679e0",
+      "source": "배달 앱 켰다 껐다 열 번째임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b387ea5b674e10b6",
+      "source": "참지 마. 먹고 나중에 후회하면 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b530135b315ec294",
+      "source": "라면에 계란 넣으면 야식 아님. 식사임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e4f53a28d2117831",
+      "source": "떡볶이 ㄱㄱ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6c036c5f4ec67471",
+      "source": "난 이미 먹는 중 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4d786a14e456b230",
+      "source": "참아. 부은 얼굴로 장 보면 더 우울함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fbe8f944e59b4a64",
+      "source": "족발 시켜. 남으면 또 먹으면 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.68b1892ee8c4cbf6",
+      "source": "ㅇㅋ 먹는다. 말리지 마",
+      "templateOnly": true
+    },
+    {
+      "key": "text.14d3b64afd43e2fe",
+      "source": "역시 이 방은 도움이 안 됨 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0ba50b87b9b119f0",
+      "source": "결국 시켰음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e0a6fa1895eb19b1",
+      "source": "1억 생기면 뭐 할 거임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.103d888c5fab47b2",
+      "source": "주식으로 크게 벌면 제일 먼저 뭐 함?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.01dad1b5d56dae90",
+      "source": "다들 돈 벌면 하고 싶은 거 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7144812fd8677187",
+      "source": "로또 되면 뭐부터 할 거임 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4af7f3b04d046601",
+      "source": "일단 회사부터 그만둠",
+      "templateOnly": true
+    },
+    {
+      "key": "text.24e064976d170022",
+      "source": "또 주식 삼. 병임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.10b695598eee38f7",
+      "source": "엄마 용돈부터 드려야지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c6692dd4186bbb0f",
+      "source": "집 사야지. 근데 그 돈으로는 화장실도 못 삼",
+      "templateOnly": true
+    },
+    {
+      "key": "text.58e7e9f64202e1bc",
+      "source": "일단 본전부터 찾고 생각함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.72cf4b71e3047c76",
+      "source": "아무한테도 말 안 하고 조용히 삶",
+      "templateOnly": true
+    },
+    {
+      "key": "text.411e582c78611fab",
+      "source": "ㅋㅋ 현실적이네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2904183d1189fa6c",
+      "source": "다들 꿈이 소박하네 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dc3b63d9b64084c4",
+      "source": "ㅇㅋ 일단 벌고 나서 생각함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d6705675d6db3560",
+      "source": "자야 되는데 잠이 안 옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.231566eae2db8df7",
+      "source": "잠 안 올 때 다들 어떻게 함?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e9d0ba9b82285159",
+      "source": "장 생각하니까 잠이 안 온다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.272ff3dfc745bdbb",
+      "source": "누웠는데 눈이 말똥말똥함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2753e642fcfbd8c7",
+      "source": "폰 내려놔야 잠이 옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a47a2e444978cfb2",
+      "source": "나도 못 자는 중. 차트가 눈앞에 아른거림",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7a4916f4e8977d46",
+      "source": "자라. 안 자면 판단 흐려짐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b80ce1780cadc60e",
+      "source": "양 대신 캔들 세 봐 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9d3d77efeb575103",
+      "source": "따뜻한 우유 한 잔 마셔",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0713862e55061590",
+      "source": "나는 눈 감고 숨만 셈. 은근 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4d62c817ca75d78a",
+      "source": "ㅇㅋ 폰 끄고 누움",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7588248595b24d95",
+      "source": "ㅋㅋ 다들 비슷하구나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fd186eeda122c7cb",
+      "source": "잘 자. 좋은 꿈 꿔",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c2bcfe46eaf111d8",
+      "source": "이 시간에 깨어 있는 사람 손",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a3ce973e3a53123d",
+      "source": "새벽인데 방에 사람 있네 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c25702a47a7cff5b",
+      "source": "다들 왜 안 잠? 나는 그냥 깸",
+      "templateOnly": true
+    },
+    {
+      "key": "text.09726e6172a09579",
+      "source": "새벽에 혼자 깨어 있는 줄 알았는데 아니네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.27d4fa6af704520d",
+      "source": "손",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8457999d83606f3f",
+      "source": "나도 깸. 다시 자긴 글렀음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fa4985d716b9bf2b",
+      "source": "자다 깨서 계좌 본 사람 여기 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8c18e2eedac0c208",
+      "source": "새벽 감성으로 매수 버튼 누르면 안 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c5b35dae7966853a",
+      "source": "눈 떠진 김에 물 한 잔 마시고 옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.262e68d8904d124e",
+      "source": "조용해서 좋네. 낮엔 너무 시끄러움",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e01d6756a3571328",
+      "source": "동지가 있어서 든든함 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ab41aaa2cc363494",
+      "source": "ㅇㅋ 다시 자 보겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cf9553841677a351",
+      "source": "새벽반 출석 완료",
+      "templateOnly": true
+    },
+    {
+      "key": "text.968f61a965d98e82",
+      "source": "출근길에 접속함. 다들 좋은 아침",
+      "templateOnly": true
+    },
+    {
+      "key": "text.56dd57ccb1a8c34a",
+      "source": "아침부터 사람 많네. 다들 일찍 일어남?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9601e32e3475769b",
+      "source": "장 열기 전에 뭐 하고 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fc504f4a8c56569a",
+      "source": "지하철에서 차트 보는 사람 나뿐임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3c0dd5a71061c0af",
+      "source": "좋은 아침. 오늘은 벌자",
+      "templateOnly": true
+    },
+    {
+      "key": "text.847967fa45aad47a",
+      "source": "나도 출근 중. 회사 가기 싫다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bdc459693d3642da",
+      "source": "장 열기 전이 제일 설렘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a1bc50b13095a8f7",
+      "source": "아직 이불 속임 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.804602e6cd474f07",
+      "source": "커피 사러 가는 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.25f5c23f8bc89304",
+      "source": "지하철에서 보다가 한 정거장 지나침",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3a2203396579a7b7",
+      "source": "ㅋㅋ 다들 오늘도 파이팅",
+      "templateOnly": true
+    },
+    {
+      "key": "text.19bcc2721ee609ff",
+      "source": "회사 가기 싫은 건 다 똑같네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b2acf89cc09ed72d",
+      "source": "ㅇㅋ 장 열리면 다시 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9b6ac6ca48d716df",
+      "source": "산삼전자",
+      "templateOnly": false
+    },
+    {
+      "key": "text.1fff655309004f8f",
+      "source": "스퀘어하이테크",
+      "templateOnly": false
+    },
+    {
+      "key": "text.94e6c14a79f38d60",
+      "source": "테줌마",
+      "templateOnly": false
+    },
+    {
+      "key": "text.40f5c8093251f77d",
+      "source": "반도체",
+      "templateOnly": false
+    },
+    {
+      "key": "text.69c551e442664d55",
+      "source": "전기차",
+      "templateOnly": false
+    },
+    {
+      "key": "text.ed48b4401928cb68",
+      "source": "가전과 휴대폰을 쓰는 소비자",
+      "templateOnly": false
+    },
+    {
+      "key": "text.2dfceb945d830d66",
+      "source": "부품을 받아 쓰는 제조사와 기술자",
+      "templateOnly": false
+    },
+    {
+      "key": "text.4ba1cdf3f8f0a046",
+      "source": "전기차 운전자와 예약 고객",
+      "templateOnly": false
+    },
+    {
+      "key": "text.0551e0d79fce9926",
+      "source": "게이머와 개발자",
+      "templateOnly": false
+    },
+    {
+      "key": "text.7b52de3ab9b18a78",
+      "source": "반도체 수요의 연관",
+      "templateOnly": false
+    },
+    {
+      "key": "text.cd96a0970caeca35",
+      "source": "차량용 반도체 수급의 연관",
+      "templateOnly": false
+    },
+    {
+      "key": "text.42f7c8e737ee3a58",
+      "source": "인공지능 연산 수요의 연관",
+      "templateOnly": false
+    },
+    {
+      "key": "text.d0e76f2baf18f0ca",
+      "source": "내 방",
+      "templateOnly": false
+    },
+    {
+      "key": "text.6ab8a0b319837962",
+      "source": "리딩방이 있었음? 처음 듣는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c9a62dc95ff3580e",
+      "source": "방장이 직접 방을 여는 줄 몰랐네. 뭐 하는 방임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.91b0a541d966fb32",
+      "source": "어 이런 방도 있구나. 일단 기억은 해 둠",
+      "templateOnly": true
+    },
+    {
+      "key": "text.35d8713d566ae103",
+      "source": "처음 보는 홍보네. 누가 들어가 본 사람 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f2c95eaa2670ce40",
+      "source": "아 그 방. 평 괜찮다고 들었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7ae216c85efcacf1",
+      "source": "얘기는 몇 번 들었는데 나쁘지 않다던데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.41164e0feac759c7",
+      "source": "들어 본 방이네. 한번 가 볼까 생각 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0e257e6ee77f90e0",
+      "source": "좋은 얘기 들은 적 있음. 자리 있으면 가 보고 싶네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5d600147a294a987",
+      "source": "들어는 봤는데 잘은 모름. 어떤 식으로 하는 방임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4e9c55e65dc1e112",
+      "source": "이름은 들어 봤음. 실적이 어떤지가 궁금한데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f60bd92a12d1e642",
+      "source": "저번에도 홍보 본 것 같은데. 아직 판단은 안 섬",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9cad0e736de38a18",
+      "source": "아 그 방. 들어가면 뭐가 다른지 좀 알려 줘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.248a4371b29b65b4",
+      "source": "그 방 얘기 들었는데 썩 좋은 말은 아니었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.03aa994d73893250",
+      "source": "들어 본 적은 있음. 근데 별로라던데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.80b5dd1ed3caa386",
+      "source": "홍보는 잘하네. 소문은 좀 다르던데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.026e3067c1c2321e",
+      "source": "리딩방은 원래 안 믿는데 그 방은 더 조심하라던데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.221a0bad7c06e873",
+      "source": "그 방 요즘 얘기 많이 나옴. 좋은 쪽으로",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7c44e1e620ae674a",
+      "source": "평이 계속 좋길래 눈여겨보는 중. 조만간 들어감",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ddd4cc67ded066b5",
+      "source": "지시 따라서 번 사람 얘기 여러 번 봤음. 믿을 만한 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.db7e19625c6e96df",
+      "source": "이쯤 되면 안 들어간 내가 손해인 것 같음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5c75000bf146ad84",
+      "source": "그 방 얘기는 하도 들어서 잘 앎. 좋다는 말도 나쁘다는 말도 있더라",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a8f249654c871fb9",
+      "source": "말은 많은데 뭐가 맞는지 모르겠음. 그래서 아직 밖에 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d31500b83bf4c1ab",
+      "source": "유명하긴 함. 근데 유명한 거랑 버는 건 별개라",
+      "templateOnly": true
+    },
+    {
+      "key": "text.976de8eb601ae644",
+      "source": "홍보 또 올라왔네. 실적 한번 보여 주면 생각해 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.837f014ea40070e1",
+      "source": "그 방 잘 알지. 물렸다는 사람을 몇이나 봤는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.496ec17a0bf75f38",
+      "source": "홍보할 시간에 지난 지시 결과부터 까 봐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.455fcad2e811fef6",
+      "source": "소문 다 들었음. 나는 안 감",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6c51653a8e71c5ea",
+      "source": "거기 나온 사람들 말 들어 보면 답 나옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.764a711154b9afdd",
+      "source": "나 그 방 회원임. 들어와서 손해 본 적 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.96120a31b20e9caf",
+      "source": "회원으로서 보증함. 지시가 깔끔함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5154264a9db6a015",
+      "source": "나도 반신반의하다 들어갔는데 지금은 만족 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.753b88165b1b7508",
+      "source": "방 안에서 보고 있음. 망설이는 사람은 그냥 와",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ed5dde5906ad4dc9",
+      "source": "나 그 방 회원인데... 솔직히 요즘은 잘 모르겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d3e2ce550a0f3e24",
+      "source": "회원인데 홍보 보니까 웃음 나옴. 지난 지시부터 해명 좀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.36e380977ae6972e",
+      "source": "안에 있는 사람으로서 말하는데 기대는 낮추고 와",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e498c5133e4460fe",
+      "source": "나 아직 그 방에 있긴 함. 나갈지 고민 중이라 그렇지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8e68dd59c3eb396a",
+      "source": "나 거기 있다 나온 사람인데 방 자체는 괜찮았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.89d3da53245cdeaa",
+      "source": "예전에 있었음. 지시는 믿을 만했음. 내가 시간이 없어서 나온 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2f9440ef9b7298d8",
+      "source": "나왔지만 나쁜 기억은 없음. 다시 갈 수도 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.46491f809ef35fa8",
+      "source": "전 회원임. 벌고 나온 거라 할 말은 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e84c6f42e9f918ae",
+      "source": "나 거기서 나온 사람임. 왜 나왔는지는 묻지 마",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c0140c10edf54738",
+      "source": "예전 회원인데 그때 물린 거 아직 못 풀었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2ec88b981dd06dac",
+      "source": "있어 봐서 앎. 홍보랑 실제는 다름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.352fb93b29316eef",
+      "source": "다시는 안 감. 한 번이면 충분했음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4bfe1ca685d22546",
+      "source": "방장 리딩방 괜찮다던데 들어가 본 사람 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8b1d94c2205a55f3",
+      "source": "리딩방 얘기 들었는데 평이 좋더라. 어떻게 들어감?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bfa29d6e3a48b29a",
+      "source": "방장 방 좋다는 말 들으니까 좀 솔깃함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.22db411913fe06e9",
+      "source": "요즘 방장 방 좋은 얘기가 들리던데 사실임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5a3ac57c104e74b7",
+      "source": "방장이 리딩방 한다던데 어떤 방인지 아는 사람?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d3ac9847c7b04041",
+      "source": "리딩방 얘기 들었는데 들어갈 만함? 솔직한 후기 좀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1f13cad1f25ca4b5",
+      "source": "방장 방 들어가 본 사람 손. 어떤지 궁금함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.18de2da452bf09a5",
+      "source": "그 리딩방 이용료 내고 들어갈 만한지 모르겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.07febc260d5c6e07",
+      "source": "방장 리딩방 별로라는 말 들었는데 진짜임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b8a4d64fba914fc7",
+      "source": "리딩방 들어가려는 사람 있으면 한 번 더 생각해. 들리는 말이 좀 그럼",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3a9def1c6116736a",
+      "source": "방장 방 안 좋은 소문 들은 사람 나뿐임?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a2081b0d287000c6",
+      "source": "그 방 얘기 들을수록 안 가는 게 맞는 것 같음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.345ce2faee374231",
+      "source": "방장 방 지시 요즘 잘 맞는다며. 나만 밖에 있는 기분",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9a5456ec0fa0fc79",
+      "source": "리딩방 들어갈 사람 같이 가자. 평이 계속 좋음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a4bbef81abd76945",
+      "source": "방장 방은 이제 믿어도 될 것 같음. 본 게 많아서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2d37f46d12bc4acc",
+      "source": "솔직히 방장 방 회원들 부러움",
+      "templateOnly": true
+    },
+    {
+      "key": "text.524b35763ace0c2b",
+      "source": "방장 방 말이 너무 많음. 좋다는 사람 나쁘다는 사람 반반이네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f1bfaeb9776aa8e2",
+      "source": "리딩방 들어갈지 한 달째 고민 중. 누가 정해 줘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f018da8e1c48ca89",
+      "source": "방장 방 실제 수익 인증 본 사람? 말 말고 숫자로",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bcf7d4330a4efe83",
+      "source": "그 방은 들어가 봐야 아는 건가. 밖에선 판단이 안 섬",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8515add42bfaaae6",
+      "source": "방장 방 조심해. 내가 본 것만 해도 물린 사람이 여럿임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ade1769a26fbc5ce",
+      "source": "리딩방 믿고 들어갔다 나온 사람들 얘기 좀 들어 봐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d37433143de36f79",
+      "source": "방장 방 지시 따라 하면 누가 버는지 생각해 봐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d0482dff8912c561",
+      "source": "그 방 얘기 나올 때마다 한숨만 나옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c262b9d63dab72ea",
+      "source": "방장 방 회원인데 오늘도 지시 덕 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7113d6ced4b3d1ea",
+      "source": "리딩방 안에 있는데 분위기 좋음. 올 사람은 와",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b48ece3502d63dfe",
+      "source": "방장 방 들어온 게 요즘 제일 잘한 일임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8e1df0918fc7e5e6",
+      "source": "회원이라 말하는데 방장 지시는 따라 볼 만함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.10b30fb20004f9a2",
+      "source": "방장 방 회원인데 요즘 지시가 영 안 맞음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b05956c84c142389",
+      "source": "리딩방 이용료가 아까워지기 시작함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d285180c58157718",
+      "source": "방장 방 나갈까 말까 고민 중. 다른 회원들은 어떰?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4ae34e315404fbab",
+      "source": "회원이지만 추천은 못 하겠음. 지금은",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3bda14044d205fcc",
+      "source": "방장 방 나왔는데 가끔 생각남. 지시는 좋았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.48779444fd693b14",
+      "source": "예전에 방장 방 있었는데 다시 들어갈까 생각 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.49854ef0c84826d5",
+      "source": "방장 방 있을 때가 제일 벌었던 것 같음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d0eb831f02911f93",
+      "source": "나온 사람 입장에서도 그 방은 괜찮았다고 말할 수 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.46fabeb037e88eb2",
+      "source": "방장 방 나온 지 좀 됐는데 아직도 속이 쓰림",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e93a3a8f70e98a65",
+      "source": "예전에 그 방 있었음. 지시 따라 샀다가 물린 거 아직 들고 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.20abc1d9eefdf173",
+      "source": "방장 방 들어가려는 사람 있으면 나한테 먼저 물어봐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.97ccab1066a12553",
+      "source": "그 방 나오고 나서야 계좌가 조용해짐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.481f4ac6882445a7",
+      "source": "그런 방이 있었음? 나만 몰랐네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.48260c4471e9e624",
+      "source": "무슨 방 얘기임? 처음 듣는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3cf77ce6dfd28d1c",
+      "source": "방장이 방도 함? 어디서 들어가는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.40a137f1487073cc",
+      "source": "오 그런 게 있구나. 좀 더 얘기해 줘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.22d363201ffb931b",
+      "source": "나도 그렇게 들었음. 평이 괜찮더라",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e49a463112b879ce",
+      "source": "역시 좋다는 말이 맞나 보네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.22c9cc1209880593",
+      "source": "그 말 들으니까 더 가 보고 싶어짐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.000e63dc9c66a2ce",
+      "source": "나도 비슷한 얘기 들음. 한번 가 봐야겠다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f45c340613259ff1",
+      "source": "그래? 나는 들어만 봤지 잘은 몰라서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.605e35cb49505f12",
+      "source": "좋다는 사람이 있긴 하구나. 근거가 궁금함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.24b51a73f46a20b0",
+      "source": "한 사람 말로는 모르겠음. 더 들어 봐야 알 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6ec9bfb9ce216217",
+      "source": "얼마나 벌었는지 말해 주면 믿어 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dbfbcc37668116cf",
+      "source": "나는 반대로 들었는데. 별로라고",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7066d845e92db2d5",
+      "source": "좋다는 말은 원래 먼저 퍼짐. 나는 안 믿음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7d8a0f0f0502e1b6",
+      "source": "그 방 칭찬은 처음 들음. 내가 들은 건 다른 얘기였는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c60491584752cc11",
+      "source": "글쎄. 리딩방 칭찬은 반만 믿는 게 맞음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7565cc969d124139",
+      "source": "맞음. 요즘 그 방 좋은 얘기만 들림",
+      "templateOnly": true
+    },
+    {
+      "key": "text.12183ee4e110c90a",
+      "source": "내가 본 것만 해도 번 사람이 여럿임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dc9061088dbdb08b",
+      "source": "인정. 이제 안 믿는 사람이 이상한 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.192a59e4095cecd9",
+      "source": "그러니까. 나도 곧 들어갈 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.390818d1c26fd9e4",
+      "source": "좋다는 말도 많이 들었고 나쁘다는 말도 많이 들었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9af3bc99909e2ba5",
+      "source": "그 얘기는 여러 번 들었음. 근데 아직 확신은 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.48593c1a6120a06c",
+      "source": "한쪽 말만 들으면 안 됨. 나온 사람 말도 들어 봐야지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8bb3c51297b6b896",
+      "source": "칭찬은 알겠는데 손실 났을 때 얘기도 궁금함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.814d83b8f1edb6f3",
+      "source": "그 방 칭찬하는 사람 볼 때마다 걱정됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d90c625e75ca33ae",
+      "source": "지금은 좋다고 하지. 나중에 같은 말 하는지 보자",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c055c732fba4fbbe",
+      "source": "번 사람만 말해서 그럼. 잃은 사람은 조용함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c385d417e4a854f7",
+      "source": "나는 그 방 물린 사람을 너무 많이 봐서 못 믿음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a85b8538b147b863",
+      "source": "회원으로서 인정함. 틀린 말 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5de76b339f869e1f",
+      "source": "나 안에 있는데 그 말 맞음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c587d2247f2b81b7",
+      "source": "회원인 내가 보증함 ㅋㅋ",
+      "templateOnly": true
+    },
+    {
+      "key": "text.886349ff9e188b56",
+      "source": "맞음. 나도 들어와서 계좌가 달라짐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7344f08de30800b4",
+      "source": "회원인데 그 정도는 아님. 솔직히",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d56c535c434862b0",
+      "source": "안에 있는 사람으로서 말하는데 좋은 날만 있는 건 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6cc560c44b930ff7",
+      "source": "나도 처음엔 그렇게 생각했음. 지금은 좀 다름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b87c45a8d338c688",
+      "source": "회원인 나도 요즘은 고개가 갸웃해짐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.54b14ee04f81315d",
+      "source": "나왔지만 그 말은 인정함. 방은 좋았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.15e2606451b7947c",
+      "source": "있어 봐서 앎. 틀린 말 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3cc8d3628d4318d5",
+      "source": "전 회원인데 동의함. 나도 거기서 벌었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b0bd8ced1b03c8d0",
+      "source": "맞음. 나는 사정이 있어서 나왔을 뿐임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ee69afa2a418cbbe",
+      "source": "있어 본 사람으로서 그 말엔 동의 못 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1c546b7dbc7bbea2",
+      "source": "나도 처음엔 그렇게 말하고 다녔음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.45fae43c6077d99d",
+      "source": "전 회원인데 내 계좌는 다른 얘기를 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.169057557a40bba2",
+      "source": "좋을 때만 있어 본 거임. 나는 안 좋을 때도 있어 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3a8bd04165e984e3",
+      "source": "무슨 방인데 그렇게까지 말함?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3d8ad3bced5737ab",
+      "source": "그런 방이 있는 줄도 몰랐는데 벌써 무섭네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.93a5b425789c1433",
+      "source": "방장이 방을 함? 근데 평이 왜 그럼",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e2d3f82cf022a1a5",
+      "source": "처음 듣는 얘긴데 일단 조심은 해야겠다",
+      "templateOnly": true
+    },
+    {
+      "key": "text.0b4f1ef9357224a9",
+      "source": "나는 좋다고 들었는데. 사람마다 다른가",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9baa4748575ac88c",
+      "source": "그래? 내가 들은 얘기랑은 좀 다른데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.946a311f0aad8137",
+      "source": "한 번 안 좋았다고 방 전체가 나쁜 건 아니지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f36a6c3f62b24f78",
+      "source": "나는 그래도 좋은 얘기를 더 많이 들음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2cc0baaab75520c8",
+      "source": "그런 말도 있구나. 더 헷갈리네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.511125da6e5d177c",
+      "source": "안 좋다는 얘기는 처음 들음. 무슨 일 있었음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.85dbd6af730d48a6",
+      "source": "좋다는 사람도 있던데. 누구 말이 맞는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6be9843feb9f4b13",
+      "source": "그럼 들어가지 말라는 거임? 이유가 궁금함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e36da99c9c4149f3",
+      "source": "나도 그렇게 들었음. 역시 그렇구나",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cba59ded95294cbe",
+      "source": "소문이 틀린 게 아니었네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a4612e7e8436b01a",
+      "source": "그 말 들으니까 안 가길 잘한 것 같음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.014ff8c6aba09099",
+      "source": "비슷한 얘기 또 나오네. 우연은 아닌 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dfde87c1e8eec29d",
+      "source": "그건 좀 아닌 듯. 내가 본 건 번 사람이 더 많았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ad1b054cfd90e0c8",
+      "source": "매번 맞을 수는 없지. 그래도 그 방은 잘하는 편임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9f465a67c522e883",
+      "source": "한 번 물렸다고 방 탓만 할 순 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.744debbfd32ac2ef",
+      "source": "나는 계속 지켜봤는데 그 정도로 나쁜 방 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5c1520dbe8472fac",
+      "source": "그 얘기도 여러 번 들었음. 좋다는 얘기만큼",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e38ce3889341b452",
+      "source": "잃은 사람 말도 번 사람 말도 다 맞을 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.da700ae2389a70df",
+      "source": "결국 타이밍 문제 아님? 방 문제인지는 모르겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.50e37c06f8caf8a7",
+      "source": "이래서 내가 아직 못 들어가는 거임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.75e82d7dbc6f9f1d",
+      "source": "내 말이. 그 방 물린 사람이 한둘이 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.765c1305bde56eed",
+      "source": "드디어 제대로 된 말 하는 사람 나왔네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4b1265a3b24f2f89",
+      "source": "맞음. 나는 처음부터 그렇게 봤음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2ad4125cdc4a9c4c",
+      "source": "다들 이 말 좀 새겨들어",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3b732adab4420aa7",
+      "source": "회원인데 그건 오해임. 나는 잘 벌고 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7fef66a3bf874ac5",
+      "source": "안에 있는 사람 입장에선 억울한 말임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ed88a27eef09e39c",
+      "source": "지시를 끝까지 안 따른 거 아님? 나는 괜찮았는데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3961b531f13ac8cc",
+      "source": "회원으로서 말하는데 방장은 할 만큼 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bee5024aeb8040cc",
+      "source": "회원인데 반박을 못 하겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7afba6b941a6e718",
+      "source": "안에 있는 나도 요즘 같은 생각임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bf69df880f806171",
+      "source": "틀린 말은 아님. 나도 나갈까 고민 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.e64d6d30a5da1328",
+      "source": "회원들끼리도 그런 얘기 나옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.86d52390431ef847",
+      "source": "나는 나왔지만 그렇게까지 나쁘진 않았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b1a088c614bc7905",
+      "source": "있어 본 사람으로서 그건 좀 과한 말임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.5b165d9725322f32",
+      "source": "전 회원인데 내 경험은 달랐음. 나는 벌고 나옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a12dc9f7c25d2b7a",
+      "source": "방 탓만은 아닐 거임. 나는 괜찮았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.18eaea93ccd87623",
+      "source": "전 회원으로서 그 말 보증함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.146b2112ecb1c2b0",
+      "source": "나도 똑같이 당함. 그래서 나옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.edc3018910151404",
+      "source": "있어 본 사람은 다 아는 얘기임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.eed53ff15935c989",
+      "source": "그 말 맞음. 나는 아직 그때 손실 복구 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b3dce1a239dc3676",
+      "source": "나도 모름. 그런 방이 있는 줄도 몰랐음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c9d4e81054b7455c",
+      "source": "나한테 묻지 마. 나도 처음 듣는 얘기임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6c9823d8f8f46ab9",
+      "source": "그게 뭔데? 아는 사람 설명 좀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.fcde046d0951537e",
+      "source": "나도 궁금해짐. 누가 좀 알려 줘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.37abd863c8891ead",
+      "source": "나도 들어가 보진 않았는데 평은 좋다고 들었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.87815bd50a26079d",
+      "source": "잘은 모르지만 좋은 얘기를 들은 적 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6406161cdb4041e5",
+      "source": "들은 바로는 괜찮다던데. 직접 가 보는 게 빠를 듯",
+      "templateOnly": true
+    },
+    {
+      "key": "text.651b4c5e7916c493",
+      "source": "나도 가 볼까 하던 참임. 평이 나쁘지 않아서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.41610256efd39849",
+      "source": "나도 들어만 봤음. 아는 게 없어서 도움이 안 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.750c3b2a193737ff",
+      "source": "나도 그게 궁금했음. 회원 있으면 대답 좀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8b77b9ac65f95229",
+      "source": "이름만 앎. 실제로 어떤지는 나도 모름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d9fec379b9bbd355",
+      "source": "같이 물어보자. 나도 판단을 못 하고 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.3f62e4fafdd6753e",
+      "source": "잘은 모르는데 좋은 얘기는 못 들었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b7a46e0b7a1a7551",
+      "source": "들은 대로 말하면 별로라던데",
+      "templateOnly": true
+    },
+    {
+      "key": "text.20125b6e1ff060d1",
+      "source": "나라면 안 감. 들리는 말이 좀 그래서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.524215816a86ac7a",
+      "source": "직접은 모르지만 조심하라는 말은 들었음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d26e91bb7148d098",
+      "source": "들어가 보진 않았는데 번 사람 얘기를 많이 봄. 괜찮은 방임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2ca8cff83196a7c5",
+      "source": "내가 지켜본 바로는 믿을 만함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b94d0049ab5c6c4e",
+      "source": "평이 꾸준히 좋음. 나도 곧 들어갈 생각",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ba699366cfe91a87",
+      "source": "밖에서 보기엔 잘 굴러가는 방임",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7a2513f90fbaae37",
+      "source": "얘기는 많이 들었는데 좋다 나쁘다가 갈림",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bb13d00fe9634094",
+      "source": "잘 아는 편인데도 추천할지 말지 모르겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.60c5471cf2fe92a3",
+      "source": "번 사람도 물린 사람도 다 봤음. 판단은 알아서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.44d6da42957b76b3",
+      "source": "들어가서 직접 보는 수밖에 없을 듯. 밖에선 모름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cc636b92da169d4e",
+      "source": "물어봐 줘서 고마움. 가지 마",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c76715c9137cb124",
+      "source": "내가 본 대로 말하면 물린 사람이 더 많았음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.1cab17f98dbc4e6f",
+      "source": "들어가기 전에 나온 사람 얘기부터 들어",
+      "templateOnly": true
+    },
+    {
+      "key": "text.960a70dcb4adb344",
+      "source": "솔직히 말하면 추천 안 함. 본 게 많아서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.b5be3b45c2f13b40",
+      "source": "나 회원임. 들어와. 후회 안 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.42255010c568f951",
+      "source": "회원이 대답함. 지시 따라서 벌고 있음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cf111fa97348da67",
+      "source": "안에 있는 사람인데 분위기도 실적도 괜찮음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4d79b24ffb1cef2c",
+      "source": "회원으로서 추천함. 이용료 값은 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8ed02647899094cb",
+      "source": "회원인데 지금은 추천하기 어려움",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bfaa9f0d81020841",
+      "source": "안에 있는 사람으로서 말하면 요즘 지시가 잘 안 맞음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.bebea4e8cf6aa6b3",
+      "source": "회원이 대답함. 기대하고 오면 실망함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.39cbde1570065244",
+      "source": "나 회원인데 나도 나갈지 고민 중이라 뭐라 말을 못 하겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c4a7297c349320a0",
+      "source": "있다 나온 사람인데 방은 괜찮았음. 가 봐도 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a4a43a113d88f6e3",
+      "source": "전 회원이 대답함. 지시는 믿을 만했음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.656a96a200313e20",
+      "source": "나는 벌고 나왔음. 나쁜 방 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.253829358818c8d4",
+      "source": "예전에 있었는데 나쁜 기억 없음. 추천할 만함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2ba1d6bb334c4817",
+      "source": "있다 나온 사람인데 나는 추천 안 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.86068daf7b94fb68",
+      "source": "전 회원이 대답함. 나는 거기서 잃고 나옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9be9c1b3d6718525",
+      "source": "있어 봐서 아는데 홍보만큼은 아님",
+      "templateOnly": true
+    },
+    {
+      "key": "text.7e5919ffa824895a",
+      "source": "나한테 물으면 가지 말라고 함. 겪어 봐서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.a12f47673f141a9f",
+      "source": "나 그 방 들어간 지 얼마 안 됨. 아직은 지켜보는 중",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c0cb85282688e546",
+      "source": "회원이긴 한데 아직 지시를 따라 본 적이 없어서 뭐라 말을 못 하겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.26060131fbde477e",
+      "source": "나도 방에 있음. 결과는 아직 없어서 평가는 보류",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9bc2ac61bcc4c3ad",
+      "source": "들어와 있긴 함. 좋은지 나쁜지는 좀 더 있어 봐야 앎",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ac83c4d05237c49c",
+      "source": "나 잠깐 들어갔다 나왔는데 지시는 한 번도 안 따라 봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.10a33bf6cf3be670",
+      "source": "있어 보긴 했음. 근데 금방 나와서 평가할 게 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.41ef07073aa5f123",
+      "source": "예전에 잠깐 있었음. 벌지도 잃지도 않고 나옴",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ba73dffdfa00ac1e",
+      "source": "들어가 본 적 있는데 구경만 하다 나왔음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c0654cc878ef8652",
+      "source": "방장 방 들어온 지 얼마 안 됐는데 다른 회원들은 어떰?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.343fc0e1ccf111b4",
+      "source": "리딩방 회원 됐는데 아직 지시를 안 따라 봄. 따라 본 사람 후기 좀",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4c6bd3f32af5d00a",
+      "source": "방장 방 들어와 있는데 아직 잘 모르겠음. 좀 더 지켜봄",
+      "templateOnly": true
+    },
+    {
+      "key": "text.457059d3012b4826",
+      "source": "방장 방 새내기임. 여기 오래 있은 사람 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2751a26f028bf624",
+      "source": "방장 방 잠깐 있다 나왔는데 요즘은 어떤지 궁금함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c673635686d86484",
+      "source": "예전에 리딩방 구경만 하다 나왔음. 지시 따라 본 사람 있음?",
+      "templateOnly": true
+    },
+    {
+      "key": "text.d17f2fda10bcabf1",
+      "source": "방장 방 다시 들어갈까 말까 고민 중. 그때는 아무것도 안 해 봐서",
+      "templateOnly": true
+    },
+    {
+      "key": "text.50795538d10ab6c7",
+      "source": "그 방 금방 나온 게 잘한 건지 모르겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8687e4dd0d6f7032",
+      "source": "나도 회원인데 아직 결과가 없어서 맞장구를 못 치겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.4951eb3dcb6f7d40",
+      "source": "그렇구나. 나는 들어온 지 얼마 안 돼서 아직 모름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dbc4dbfec20bb7c5",
+      "source": "회원으로서 그 말이 맞길 바람. 곧 알게 되겠지",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6741d77c310f6179",
+      "source": "나도 안에 있는데 그런 얘기 들으니 좀 안심됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.6af7d0cda6809dd8",
+      "source": "나는 구경만 하다 나와서 모르겠음. 좋았다니 다행이네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.58694a117be05ad5",
+      "source": "그래? 나는 금방 나와서 그걸 못 봤네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.274ba418cfce9749",
+      "source": "있어 보긴 했는데 지시를 안 따라 봐서 할 말이 없음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.8e8824dd17b1e71e",
+      "source": "그 말 들으니까 좀 더 있어 볼 걸 그랬나 싶음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.2474ecce5228d1fa",
+      "source": "나 들어온 지 얼마 안 됐는데 그런 말 들으니 불안하네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9aace8b9812b08e0",
+      "source": "회원인데 아직 겪어 본 게 없어서 반박도 동의도 못 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.448a98a8f1932dc0",
+      "source": "그래? 나는 아직 지시를 안 따라 봤는데 조심해야겠네",
+      "templateOnly": true
+    },
+    {
+      "key": "text.dcd4ff55d29ef37f",
+      "source": "안에 있는 사람인데 그 얘기 좀 더 자세히 해 줘",
+      "templateOnly": true
+    },
+    {
+      "key": "text.43e82fbdf6f14e16",
+      "source": "나는 금방 나와서 그런 일은 못 겪음. 운이 좋았던 건가",
+      "templateOnly": true
+    },
+    {
+      "key": "text.911a0bb5c89d9747",
+      "source": "있어 보긴 했는데 구경만 해서 모르겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.35217d12b9f59363",
+      "source": "그 말 들으니까 일찍 나온 게 다행인 것 같기도 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.89e0c6af42e7c475",
+      "source": "나는 잃은 건 없음. 아무것도 안 해서 그렇지만",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f52408908a357fa1",
+      "source": "나 회원인데 들어온 지 얼마 안 돼서 아직 대답을 못 하겠음",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ca762d6ad129c81e",
+      "source": "안에 있긴 한데 지시를 아직 안 따라 봄. 따라 보고 알려 줌",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ad1c10c1d02b785c",
+      "source": "회원이 대답함. 분위기는 봤는데 수익은 아직 모름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.c630790205128438",
+      "source": "나도 들어와서 알아보는 중임. 아직은 반반",
+      "templateOnly": true
+    },
+    {
+      "key": "text.ead561abb44bc4b1",
+      "source": "있다 나왔는데 지시를 안 따라 봐서 나도 모름",
+      "templateOnly": true
+    },
+    {
+      "key": "text.eed536a7c237bde2",
+      "source": "잠깐 구경만 했음. 수익이 어떤지는 겪어 본 사람한테 물어봐",
+      "templateOnly": true
+    },
+    {
+      "key": "text.cb971899ce1bb013",
+      "source": "전 회원이긴 한데 금방 나와서 도움이 안 됨",
+      "templateOnly": true
+    },
+    {
+      "key": "text.9534a9a84feab45b",
+      "source": "들어가 본 적은 있음. 근데 아무것도 안 해 봐서 평가를 못 함",
+      "templateOnly": true
+    },
+    {
+      "key": "text.f9e53fe619336b53",
+      "source": "대형 수주 따냈다 - 내년 실적 눈높이 올라가",
+      "templateOnly": false
+    },
+    {
+      "key": "text.ce3af72f2e0c3b90",
+      "source": "창사 후 최대 규모 계약 - 매출 반영 시점에 관심",
+      "templateOnly": false
+    },
+    {
+      "key": "text.4b20828cb4ed39dd",
+      "source": "수주 공시에 매수 문의 늘어 - 계약 조건은 미공개",
+      "templateOnly": false
+    },
+    {
+      "key": "text.1ce018ab7e6c9800",
+      "source": "첫 대형 거래처 확보 - 외형 성장 발판 마련",
+      "templateOnly": false
+    },
+    {
+      "key": "text.f388c8f597f6370a",
+      "source": "자금 조달 무산 - 운영 자금 얼마나 남았나",
+      "templateOnly": false
+    },
+    {
+      "key": "text.96958622fe7c87e9",
+      "source": "투자 유치 불발 소식 - 단기 차입 의존 커질 듯",
+      "templateOnly": false
+    },
+    {
+      "key": "text.c050d6b1d70058fe",
+      "source": "돈줄 막혔나 - 조달 실패에 재무 부담 부각",
+      "templateOnly": false
+    },
+    {
+      "key": "text.b3561bdfd1782675",
+      "source": "증자 계획 차질 - 시장은 다음 자금 계획 주시",
+      "templateOnly": false
+    },
+    {
+      "key": "text.5e2c4791cca910c2",
+      "source": "업계 베테랑 합류 - 개발 속도 붙을까",
+      "templateOnly": false
+    },
+    {
+      "key": "text.ca8946826db6a777",
+      "source": "경쟁사 출신 핵심 개발자 영입 - 기술 격차 좁히기",
+      "templateOnly": false
+    },
+    {
+      "key": "text.6f9c0b990f0533de",
+      "source": "인재 확보전에서 한발 앞서 - 인건비 부담은 과제",
+      "templateOnly": false
+    },
+    {
+      "key": "text.9704c4a9b380cdc5",
+      "source": "연구 조직 보강 - 신제품 일정 당겨질 가능성",
+      "templateOnly": false
+    },
+    {
+      "key": "text.318577ebf2f94fc3",
+      "source": "대형 물량 납품 마쳐 - 거래처 평가 긍정적",
+      "templateOnly": false
+    },
+    {
+      "key": "text.fa02c2b7b49b5e9d",
+      "source": "약속한 납기 지켰다 - 추가 발주 기대감",
+      "templateOnly": false
+    },
+    {
+      "key": "text.3c32cbdc916ef4d0",
+      "source": "첫 대형 수주 무사히 마무리 - 신뢰 쌓았다",
+      "templateOnly": false
+    },
+    {
+      "key": "text.440722efb2553f04",
+      "source": "납품 품질 호평 - 재계약 논의 이어질 듯",
+      "templateOnly": false
+    },
+    {
+      "key": "text.08793d45fb009b20",
+      "source": "납기 밀린다 - 이번 분기 실적 반영 어려울 듯",
+      "templateOnly": false
+    },
+    {
+      "key": "text.6d75c01bf02dbab6",
+      "source": "수주 물량 일정 차질 - 지체 보상 가능성 거론",
+      "templateOnly": false
+    },
+    {
+      "key": "text.e2ba77904116415f",
+      "source": "프로젝트 지연 장기화 우려 - 비용 늘어날 수 있어",
+      "templateOnly": false
+    },
+    {
+      "key": "text.19cc9a69e0195d30",
+      "source": "일정 재조정 요청 - 거래처와 협의 중",
+      "templateOnly": false
+    },
+    {
+      "key": "text.8fb6472dbf299adc",
+      "source": "납품 제품 불량 논란 - 거래처 항의 이어져",
+      "templateOnly": false
+    },
+    {
+      "key": "text.830e3f742552cd06",
+      "source": "품질 문제 제기돼 - 회사는 원인 조사 착수",
+      "templateOnly": false
+    },
+    {
+      "key": "text.b459afdbe36163b9",
+      "source": "일부 물량 반품 요구 - 보상 비용 발생 가능",
+      "templateOnly": false
+    },
+    {
+      "key": "text.eb7c2d2979694474",
+      "source": "거래처 불만 확산될까 - 재발 방지책에 관심",
+      "templateOnly": false
+    },
+    {
+      "key": "text.7f6696b371853863",
+      "source": "초기 투자금 확보 - 급한 불은 껐다",
+      "templateOnly": false
+    },
+    {
+      "key": "text.89e1da9a74781e24",
+      "source": "개인 투자자 자금 유치 - 운영 자금 숨통",
+      "templateOnly": false
+    },
+    {
+      "key": "text.e608e3089b26fe63",
+      "source": "투자 유치로 한숨 돌려 - 지분 희석은 변수",
+      "templateOnly": false
+    },
+    {
+      "key": "text.7f1c5fd53091b659",
+      "source": "새 투자자 합류 - 후속 투자로 이어질지 관심",
+      "templateOnly": false
+    },
+    {
+      "key": "text.ded7b4334ec17f8e",
+      "source": "임대료 밀렸다는 소문 - 회사는 확인 안 해",
+      "templateOnly": false
+    },
+    {
+      "key": "text.a72a6f8a99e74556",
+      "source": "대금 지급 지연 의혹 - 협력사 불안 커져",
+      "templateOnly": false
+    },
+    {
+      "key": "text.6bc750ed52fa734f",
+      "source": "사업장 유지비 부담 - 이전·축소 검토 가능성",
+      "templateOnly": false
+    },
+    {
+      "key": "text.f1f007c03815ae22",
+      "source": "연체 논란에 자금 사정 다시 도마 위",
+      "templateOnly": false
+    },
+    {
+      "key": "text.a4ba5a1ce0b538e4",
+      "source": "사무실 옮긴다 - 고정비 줄이기 나서",
+      "templateOnly": false
+    },
+    {
+      "key": "text.85504d977defe367",
+      "source": "비용 절감 위해 조직 재편 - 인력 조정은 없다는 입장",
+      "templateOnly": false
+    },
+    {
+      "key": "text.4ac44952dd5124a5",
+      "source": "사업장 이전 결정 - 절감 효과는 내년부터",
+      "templateOnly": false
+    },
+    {
+      "key": "text.ba6c808221ce4b44",
+      "source": "허리띠 졸라맨다 - 이전 비용은 단기 부담",
+      "templateOnly": false
+    },
+    {
+      "key": "text.fba01761399c7619",
+      "source": "자체 제품 만든다 - 수주 의존 줄이기 시도",
+      "templateOnly": false
+    },
+    {
+      "key": "text.36744b72ed877e20",
+      "source": "신사업에 자금 투입 - 성과는 시간이 걸릴 전망",
+      "templateOnly": false
+    },
+    {
+      "key": "text.ed509fad557e7d8d",
+      "source": "새 제품 라인 개발 시작 - 개발비 부담은 숙제",
+      "templateOnly": false
+    },
+    {
+      "key": "text.d56b8c84d4e3f24e",
+      "source": "사업 다각화 첫발 - 시장 반응은 엇갈려",
+      "templateOnly": false
+    },
+    {
+      "key": "text.710fd9f61d0625c1",
+      "source": "대기업과 손잡았다 - 납품 규모에 관심",
+      "templateOnly": false
+    },
+    {
+      "key": "text.e43bef58aa173e3b",
+      "source": "대기업 물량 확보 - 생산 능력이 관건",
+      "templateOnly": false
+    },
+    {
+      "key": "text.9b8657ef5dad5b1d",
+      "source": "굵직한 계약 성사 - 협력 범위 넓어질 가능성",
+      "templateOnly": false
+    },
+    {
+      "key": "text.fd15705e5a559249",
+      "source": "대기업 공급망 진입 - 실적 가시성 높아져",
+      "templateOnly": false
+    },
+    {
+      "key": "text.3603b4581160941a",
+      "source": "기본",
+      "templateOnly": false
+    },
+    {
+      "key": "text.89c87e6f866527a2",
+      "source": "1 틱",
       "templateOnly": false
     }
   ]

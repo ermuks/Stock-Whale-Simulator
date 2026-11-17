@@ -49,6 +49,7 @@ public partial class StockManager : MonoBehaviour
         stocks.Clear();
         if (useInitialEconomy)
         {
+            economy.IncludeNewDefaults();
             BuildEconomyStocks();
             return;
         }

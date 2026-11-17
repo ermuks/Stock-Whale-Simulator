@@ -96,6 +96,10 @@ public partial class WhaleBot : TradeBot
     }
     protected override void ThinkForStock(Stock stock)
     {
+        // 작전 중인 자기 회사는 평소의 가치 투자로 사고팔지 않는다. 올리는 중에 스스로 팔아 버리면 안 된다.
+        if (Operating && stock == OwnedCompany)
+        { return; }
+
         InvestOwnerAccount(stock);
     }
 
@@ -130,6 +134,12 @@ public partial class WhaleBot : TradeBot
 
         if (StockManager.Instance == null || StockManager.Instance.stocks == null || StockManager.Instance.stocks.Count == 0)
         { return; }
+
+        // 대주주 세력의 작전(매집 → 끌어올리기 → 털기). 하루도 빠짐없이 어느 한 종목에서는 진행된다.
+        if (IsCompanyOwner)
+        {
+            TickOperation(SessionClock.Time);
+        }
 
         if (autoDiscoverFollowers)
         {

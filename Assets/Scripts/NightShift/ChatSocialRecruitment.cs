@@ -15,10 +15,12 @@ public sealed partial class InvestorSociety
         if (bot?.Social == null || room == null || !room.PlayerOwned || roomId > AvailablePlayerRoomCount)
         { return false; }
         var mind = bot.Social.Psychology;
-        if (!room.Social.firstMemberInvited)
-        { return false; }
-        return (mind.InvitedPlayerRooms & (1 << (roomId - 1))) != 0 ||
-            mind.KnownPlayerRooms.TryGetValue(roomId, out double until) && SocialTime.GameMinute < until;
+        // 방을 아는 길은 셋: 회원의 수익 후기를 봤거나(기한이 있다), 홍보와 방 얘기를 봐서 인지가 충분히 쌓였거나, 예전에 초대받아 들어온 적이 있거나.
+        if (mind.KnownPlayerRooms.TryGetValue(roomId, out double until) && SocialTime.GameMinute < until)
+        { return true; }
+        if (roomId == RoomTalkRoom && mind.RoomAwareness >= AwarenessKnows)
+        { return true; }
+        return room.Social.firstMemberInvited && (mind.InvitedPlayerRooms & (1 << (roomId - 1))) != 0;
     }
     public bool ObserveRoomReferral(TradeBot witness, TradeBot author, SocialMessage message)
     {

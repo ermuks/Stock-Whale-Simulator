@@ -154,6 +154,7 @@ public sealed class MarketDayController : MonoBehaviour
 
         Instance = this;
         if (GetComponent<PlayerRestController>() == null) { gameObject.AddComponent<PlayerRestController>(); }
+        if (GetComponent<DayIntroOverlay>() == null) { gameObject.AddComponent<DayIntroOverlay>(); }
         ChatSocialDebugUnity.ApplySeed(this);
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;
@@ -1037,6 +1038,15 @@ public sealed class MarketDayController : MonoBehaviour
         if (string.IsNullOrWhiteSpace(text))
         { return; }
         AddMessage(new BotChatMessage(++sequence, null, Day, GameMinute, text, "bulletin", ChatEvent.RiskChanged));
+    }
+    /// <summary>플레이어가 공개방에 직접 올리는 말.</summary>
+    public long PublishPlayerLine(string text, string templateId)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        { return 0; }
+        var message = new BotChatMessage(++sequence, null, Day, GameMinute, text, templateId, ChatEvent.Agreement, fromPlayer: true);
+        AddMessage(message);
+        return message.Social.id;
     }
     public void PublishRoomNotice(string text, ChatRoomNotice notice, long eventId)
     {

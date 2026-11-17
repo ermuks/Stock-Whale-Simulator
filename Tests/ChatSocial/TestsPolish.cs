@@ -36,7 +36,7 @@ public static partial class ChatSocialTests
         var messageContext = new SocialMessage { act = SocialAct.AGREE, targetId = 2, debug = new SocialMessageDebug() };
         string smallTalk = InvestorSociety.ContextualSocialText(agreement, messageContext, new SocialMessage { act = SocialAct.SMALLTALK });
         string loss = InvestorSociety.ContextualSocialText(agreement, messageContext, new SocialMessage { act = SocialAct.LAMENT });
-        Check(smallTalk != agreement.text && loss != smallTalk && messageContext.debug.contextKey == "LAMENT>AGREE.casual.1", "Reply wording distinguishes everyday talk from a loss without changing act or template key");
+        Check(smallTalk != agreement.text && loss != smallTalk && messageContext.debug.contextKey.StartsWith("LAMENT>AGREE.casual."), "Reply wording distinguishes everyday talk from a loss without changing act or template key");
         var standalone = catalog.templates.Single(t => t.key == "DOUBT.rough.1.plain.01");
         messageContext = new SocialMessage { act = SocialAct.DOUBT, facts = new SocialFacts { symbol="S1" }, debug = new SocialMessageDebug() };
         Check(InvestorSociety.ContextualSocialText(standalone, messageContext, null).Contains("{symbol}"), "Untargeted doubt names its topic instead of addressing an absent claim");

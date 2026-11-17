@@ -93,7 +93,7 @@ public sealed class CompanyDashboardUI : MonoBehaviour
         if (!stock.IsListed) { row[1]="비상장"; row[2]=data.growth==null ? "—" : Money(data.growth.Appraisal); }
         for (int i = 0; i < values.Length; i++) { DeviceTerminalUI.Set(values[i],row[i]); }
         values[6].color = InvestmentDashboard.ProfitColor(data.Profit);
-        DeviceTerminalUI.Set(day,closed ? "DAY " + data.LastDay + " · 17:00 결산" : "첫 기업 결산 전");
+        DeviceTerminalUI.Set(day,closed ? GameLocale.Day(data.LastDay) + " · 17:00 결산" : "첫 기업 결산 전");
         for (int i = 0; i < policies.Length; i++)
         { policies[i].interactable = ratio > 50 && MarketDayController.Instance.Phase != MarketPhase.Closing; TabletControlStyle.Emphasize(policies[i],(int)data.Policy == i); }
         acquire.interactable = MarketDayController.CanTrade && stock.AcceptsOrders && ratio < 100 && PlayerAccounts.Available(tablet.account) >= stock.currentPrice;

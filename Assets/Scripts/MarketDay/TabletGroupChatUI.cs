@@ -59,6 +59,56 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         public Image CardAccent;
         public TextMeshProUGUI CardTitle, CardKind, CardAmount, CardDetail;
         public bool HasCard;
+        // 초대 단추: 커서를 올린 줄에만 보인다.
+        public Button Invite;
+    }
+
+    /// <summary>채팅 줄의 + 단추를 눌렀을 때. 방 화면이 연결한다. 연결되지 않은 화면에는 단추가 나오지 않는다.</summary>
+    public System.Action<int> InviteRequested;
+    // 플레이어 자신의 말에는 닉네임 대신 이 이름을 쓴다.
+    private static string PlayerLabel => GameLocale.Code == "ja" ? "自分" : GameLocale.Code == "en" ? "me" : BotChatMessage.PlayerName;
+    // 말풍선 오른쪽에 초대 단추가 들어갈 자리.
+    private const float InviteSize = 44f, InviteGap = 8f;
+    private Canvas pointerCanvas;
+
+    private void BuildInviteButton(Row row)
+    {
+        var root = new GameObject("Button :: Invite", typeof(RectTransform), typeof(Image), typeof(Button));
+        root.layer = row.Rect.gameObject.layer;
+        root.transform.SetParent(row.Rect, false);
+        var rect = (RectTransform)root.transform;
+        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f); rect.pivot = new Vector2(0f, .5f);
+        rect.sizeDelta = Vector2.one * (InviteSize * layoutScale);
+        var back = root.GetComponent<Image>(); var bubble = row.Bubble.GetComponent<Image>();
+        back.sprite = bubble.sprite; back.type = Image.Type.Sliced; back.pixelsPerUnitMultiplier = bubble.pixelsPerUnitMultiplier;
+        back.color = new Color(.16f, .43f, .47f, 1f); back.raycastTarget = true;
+        var label = CardLabel(rect, "Text :: Invite", 0f, 0f, InviteSize, InviteSize, 30f, TextAlignmentOptions.Center, CardInk, FontStyles.Bold);
+        label.text = "+";
+        row.Invite = root.GetComponent<Button>(); row.Invite.targetGraphic = back;
+        row.Invite.onClick.AddListener(() => { if (CanInvite(row)) { InviteRequested.Invoke(row.BotId); } });
+        root.SetActive(false);
+    }
+
+    // 공용 라운지에 있고 아직 어느 방에도 들어가지 않은 사람만 초대할 수 있다.
+    private bool CanInvite(Row row)
+    {
+        if (InviteRequested == null || SelectedRoom != 0 || row.IsNotice || row.BotId <= 0 || !row.Rect.gameObject.activeSelf)
+        { return false; }
+        var bot = day.FindBot(row.BotId);
+        return bot != null && bot.Social != null && bot.isActiveAndEnabled && !bot.IsExchangeParticipant && bot.Social.Psychology.Room == 0;
+    }
+
+    private void RefreshInviteButtons()
+    {
+        if (pointerCanvas == null) { pointerCanvas = scroll.GetComponentInParent<Canvas>(); }
+        Camera eye = pointerCanvas == null || pointerCanvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : pointerCanvas.worldCamera != null ? pointerCanvas.worldCamera : Camera.main;
+        Vector2 pointer = Input.mousePosition;
+        bool inside = chatSelected && scrollInput != null && !scrollInput.Dragging && RectTransformUtility.RectangleContainsScreenPoint(scroll.viewport, pointer, eye);
+        foreach (var row in rows)
+        {
+            bool show = inside && CanInvite(row) && RectTransformUtility.RectangleContainsScreenPoint(row.Rect, pointer, eye);
+            if (row.Invite.gameObject.activeSelf != show) { row.Invite.gameObject.SetActive(show); }
+        }
     }
 
     // 글자 줄 높이(글자 크기의 약 1.5배)보다 칸이 낮으면 말줄임 처리로 글자가 통째로 사라진다. 칸 높이를 넉넉히 둔다.
@@ -185,7 +235,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         BuildTypingIndicator();
         nicknameMeasure = rowTemplate.Find("Text :: Nickname").GetComponent<TextMeshProUGUI>();
         moderationMenu = gameObject.AddComponent<ChatSocialMenuUnity>(); moderationMenu.Initialize(this, nicknameMeasure.font);
-        int visible = Mathf.Clamp(Mathf.CeilToInt(scroll.viewport.rect.height / rowHeight) + 2, 1, rowPoolLimit);
+        // 내 리딩방에서는 목록이 더 길어진다. 그만큼의 줄을 미리 만들어 둔다.
+        int visible = Mathf.Clamp(Mathf.CeilToInt(scroll.viewport.rect.height / rowHeight) + 4, 1, rowPoolLimit);
         for (int i = 0; i < visible; i++)
         {
             var rect = Instantiate(rowTemplate, scroll.content);
@@ -220,6 +271,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             row.AngerDot.gameObject.SetActive(false);
             BuildNoticeVisual(row);
             BuildCardVisual(row);
+            BuildInviteButton(row);
             row.Text.raycastTarget = true;
             var stockLinks = row.Text.gameObject.AddComponent<ChatStockLinkUI>();
             stockLinks.Bind(row.Text, SelectMentionedStock, () => row.Click.onClick.Invoke());
@@ -412,6 +464,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         row.Avatar.gameObject.SetActive(!notice); row.Gauge.gameObject.SetActive(!notice);
         row.Nickname.gameObject.SetActive(!notice); row.Time.gameObject.SetActive(!notice);
         row.AngerDot.gameObject.SetActive(false);
+        if (notice) { row.Invite.gameObject.SetActive(false); }
         row.NoticeBackground.gameObject.SetActive(notice); row.NoticeText.gameObject.SetActive(notice);
         if (notice && row.Card != null) { row.HasCard = false; row.Card.gameObject.SetActive(false); }
     }
@@ -484,7 +537,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 return;
             }
 
-            float width = Mathf.Max(1f, scroll.viewport.rect.width - 154f * layoutScale);
+            float width = Mathf.Max(1f, scroll.viewport.rect.width - (154f + InviteSize + InviteGap) * layoutScale);
             if (version != MessageVersion || !Mathf.Approximately(width, measuredWidth))
             {
                 RebuildMessageLayout(width);
@@ -517,7 +570,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                         row.BotId = message.BotId;
                         row.SocialMessage = message.Social;
                         SetNoticeMode(row, message.IsRoomNotice);
-                        GameLocalizedText.Set(row.Nickname,message.Nickname,true);
+                        GameLocalizedText.Set(row.Nickname,message.FromPlayer ? PlayerLabel : message.Nickname,true);
                         GameLocalizedText.Set(row.Time,$"{message.Day}일 {message.Minute / 60:D2}:{message.Minute % 60:D2}");
                         GameLocalizedText.Set(row.Text,DisplayMessage(message),true);
                         BindCard(row, message.IsRoomNotice || message.Social == null ? null : message.Social.profitCard);
@@ -550,6 +603,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                     row.Bubble.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, bubbleHeight);
                     row.Text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, bubbleWidth - 40f * layoutScale);
                     row.Text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, bubbleHeight - 20f * layoutScale);
+                    // 초대 단추는 말풍선 바로 오른쪽, 말풍선 높이의 가운데.
+                    ((RectTransform)row.Invite.transform).anchoredPosition = new Vector2((104f + InviteGap) * layoutScale + bubbleWidth, -38f * layoutScale - extraHeader - bubbleHeight * .5f);
                 }
 
                 dirty = false;
@@ -561,6 +616,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             }
 
             UpdateUnread();
+            RefreshInviteButtons();
             if (SessionClock.Time >= nextAngerRefresh)
             {
                 nextAngerRefresh = SessionClock.Time + .25f;
@@ -574,7 +630,12 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                         // 말하는 종목을 실제로 들고 있던 사람에게는 '주주' 표시를 붙인다.
                         var facts = row.SocialMessage == null ? null : row.SocialMessage.facts;
                         bool holder = facts != null && facts.held && !string.IsNullOrEmpty(facts.symbol);
-                        DeviceTerminalUI.Set(row.Nickname, name + (holder ? " <size=70%><color=#6FA8E6>" + GameLocale.Text("주주") + "</color></size>" : "") + (mind.HasFomo ? " <size=70%><color=#E6944E>FOMO</color></size>" : ""));
+                        // 공개방에서는 이미 어느 리딩방에 들어가 있는 사람을 표시한다. 내 방 회원과 남의 방 회원을 색으로 나눈다.
+                        var joined = SelectedRoom == 0 && mind.Room != 0 ? InvestorSociety.Instance?.GetRoom(mind.Room) : null;
+                        string roomTag = joined == null ? "" : joined.PlayerOwned
+                            ? " <size=70%><color=#48C4BC>" + GameLocale.Text("내 방") + "</color></size>"
+                            : " <size=70%><color=#B48CE6>" + GameLocale.Text("리딩방") + "</color></size>";
+                        DeviceTerminalUI.Set(row.Nickname, name + roomTag + (holder ? " <size=70%><color=#6FA8E6>" + GameLocale.Text("주주") + "</color></size>" : "") + (mind.HasFomo ? " <size=70%><color=#E6944E>FOMO</color></size>" : ""));
                     }
                     int angerStage = mind == null ? 0 : InvestorPsychology.Stage(mind.MaximumAnger(out _));
                     row.AngerDot.gameObject.SetActive(angerStage >= 2);

@@ -1275,8 +1275,6 @@ text.2c4e96fbebe75903,UI: Assets/Scripts/NightShift/InvestorSociety.cs:118,거�
 text.f677b2ed8e5b0abd,UI: Assets/Scripts/NightShift/InvestorConversation.cs:97,거래는 있는데 가격은 제자리네요.,"Volume's there, but price is going nowhere.",取引はあるのに価格は横ばいですね。
 text.460973f39784eae3,Additional UI/data,거래대금,Turnover,売買代金
 text.0bd6ab53d00469f8,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:62,거래대금 ,Turnover ,売買代金 
-text.52695c6cbd050a02,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:66,거래대금 · 달성,Turnover · Done,売買代金 · 達成
-text.9a7da66c40ce7ea3,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:66,거래대금 · 진행 중,Turnover · In progress,売買代金 · 進行中
 text.52ccf4f83f2976e1,UI: Assets/Scripts/OrderBookUI/OrderBookUIManager.cs:90,거래대금 보기,Turnover,売買代金
 text.b3fc888e22c74556,UI: Assets/Scripts/StockListUI/StockListItem.cs:157,거래대금(추정) ,Est. turnover ,売買代金（概算） 
 text.2d9aa605f7577211,Additional UI/data,거래량,Volume,出来高
@@ -1371,7 +1369,6 @@ text.89425f0409b8b7de,News,공급,Supply,供給
 text.410ad0c367f62d91,News,"공급사의 성과를 자기 회사의 성장으로 연결하는 투자자도 있지만, 거래 관계의 강도를 과장하는 해석도 나올 수 있다.",Some investors link a supplier's success to growth at their own holdings. Others may overstate the strength of those business ties.,供給元の成果を保有企業の成長と結び付ける投資家もいるが、取引関係の強さを誇張する解釈もあり得る。
 text.9ccd8ade3ad490f3,UI: Assets/Scripts/NightShift/LeadingRoomUI.cs:142,공용 라운지 · 메시지를 눌러 참여자 선택,Lounge · Select a message to view investor,ラウンジ · メッセージから参加者を選択
 text.74eb214d3f76253d,UI: Assets/Scripts/NightShift/InvestorSociety.cs:49,공용 라운지 또는 리딩방을 선택하세요.,Choose the lounge or a room.,ラウンジかルームを選んでください。
-text.df07d94dc1d5eea5,UI: Assets/Scripts/NightShift/LeadingRoomUI.cs:168,공용 라운지에서 닉네임 선택 → 내 리딩방 → 첫 회원 초대,Lounge name → My room → Invite first member,ラウンジの名前 → 自分のルーム → 最初の招待
 text.6c82c24828d23371,UI: Assets/Scripts/NightShift/InvestorProfileUI.cs:22,공포,Fear,恐怖
 text.d82951ceae4616f8,News,과거 비슷한 변화로 손실을 겪은 투자자는 이번에도 확인을 오래 기다릴 수 있다.,Investors who lost money on similar changes before may wait longer for confirmation this time.,過去の類似の変更で損失を出した投資家は、今回も長く確認を待つかもしれない。
 text.a5897c972ffdca82,UI: Assets/Scripts/NightShift/WorldDramaDirector.cs:31,과반 지분을 확보한 기업에서 경영 결정을 내릴 수 있습니다.,Management decisions require a controlling stake.,過半数の株式を持つ企業で経営判断ができます。
@@ -1383,10 +1380,6 @@ text.feb33b2e795106d1,News,관련 당사자의 반론과 확인되지 않은 주
 text.b0e93f1c20827362,UI: Assets/Scripts/NightShift/TradingOperationController.cs:50,관망,Watching,様子見
 text.12c8574eec19f188,News,관세,Tariff,関税
 text.0994237ec9ef00dc,News,"관심이 실제 고객 증가로 이어지는지, 초기 기대가 줄어드는지 지켜볼 사안이다.",Watch whether attention turns into more customers or initial expectations fade.,注目が顧客増加につながるか、初期の期待が薄れるかが注目点だ。
-text.aac2e0883e8d6c92,UI: Assets/Scripts/NightShift/LeadingRoomUI.cs:161,"관전 가능 · 태블릿 2의 성장·권한에서 리딩방을 개설하세요.
-","Watch the room. Open yours from tablet 2's Progress page.
-","観察できます。タブレット2の成長画面から開設。
-"
 text.74ce91c9756e4fb2,Additional UI/data,관찰,Observe,観察
 text.34aa0c31138347ca,UI: Assets/Scripts/NightShift/DeskOperationUI.cs:72,관찰 → 비교 → 판단,Observe → Assess → Decide,観察 → 比較 → 判断
 text.d472ed8d565f7b66,Additional UI/data,관찰. 판단. 그리고 한 번의 선택.,Observe. Decide. Make your move.,観察し、判断し、選ぶ。
@@ -1631,7 +1624,6 @@ text.028f7663ec075583,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:59,내 �
 text.399269eadb093723,UI: Assets/Scripts/NightShift/InvestorJourneyUI.cs:66,내 리딩방 준비,My room progress,ルーム開設準備
 text.5a7b14fe50439731,UI: Assets/Scripts/NightShift/ChatSocialModeration.cs:35,내 리딩방에 참여한 봇만 관리할 수 있습니다.,You can only manage members of your own room.,自分のルームの参加者のみ管理できます。
 text.de1399549e944f4b,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:65,내 리딩방으로,My room,自分のルームへ
-text.9d0e9b744c70c98e,UI: Assets/Scripts/NightShift/DeviceTerminalUI.cs:158,내 리딩방을 열었습니다. 공용 라운지에서 첫 회원을 직접 초대하세요.,Room opened. Invite your first member from the lounge.,ルーム開設。ラウンジから最初の会員を招待してください。
 text.7629e1f50431aaef,UI: Assets/Scripts/NightShift/TradingOperationController.cs:106,내 미체결 주문을 회수했습니다. 시장은 계속 움직입니다.,Pending orders canceled. The market keeps moving.,未約定注文を取り消しました。市場は動き続けています。
 text.6a514bea552e01d4,UI: Assets/Scripts/NightShift/InvestorJourneyUI.cs:74,내 방 1,My room 1,自分のルーム1
 text.4c396c14c59903b4,Additional UI/data,내 방 2,My room 2,自分の部屋2
@@ -1825,7 +1817,6 @@ text.0f7a2c943440f0c7,UI: Assets/Scripts/NightShift/DeviceTerminalUI.cs:156,라�
 text.99f980ac61286de5,Additional UI/data,리딩방,Signal room,投資ルーム
 text.6dae2e1ef019a3bc,Additional UI/data,리딩방 가입,Join a room,部屋に参加
 text.1ea1adc92d65e31b,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:62,리딩방 개설 완료,Room opened,ルーム開設済み
-text.c2417cd524d29889,UI: Assets/Scripts/NightShift/PlayerProgression.cs:87,리딩방 개설 완료 · 공용 라운지에서 첫 회원을 직접 초대하세요.,Room opened · Invite your first member from the public lounge.,ルーム開設済み · 公開ラウンジから最初のメンバーを招待してください。
 text.86ced34304d9bb8d,UI: Assets/Scripts/NightShift/DailyIncomeController.cs:50,리딩방 개설 전,Room not opened,ルーム未開設
 text.51df9f97051c0a90,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:65,리딩방 개설하기,Open room,ルーム開設
 text.729e87384d509e97,Additional UI/data,리딩방 열기,Open room,ルーム開設
@@ -1938,7 +1929,6 @@ text.5f838b9d6224802e,UI: Assets/Scripts/NightShift/ChatSocialUnity.cs:142,매�
 text.cf04591b69a0e4a1,UI: Assets/Scripts/NightShift/SpreadTradingUI.cs:70,매수 체결,Bought,買い約定
 text.b179e120cf2bd130,UI: Assets/Scripts/NightShift/MarketRhythmDirector.cs:99,매수 체결 우세,Buy-led fills,買い主導
 text.ee70488e6ec376cd,UI: Assets/Scripts/NightShift/MarketRhythmDirector.cs:99,매수·매도 힘겨루기,Buyers and sellers clash,売買の攻防
-text.701eaaafb26df397,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:64,매수·매도를 체결해 거래 실적을 쌓으세요.,Build your record through real fills.,実際の約定で売買実績を積みましょう。
 text.521a37d651d30b31,UI: Assets/Scripts/ChartUI/ChartGuideOverlay.cs:186,매수대기,Buy order,買い注文
 text.76fc73c3b58e83c6,UI: Assets/Scripts/NightShift/TerminalGlyph.cs:35,매우 낮음,Very low,ごく低い
 text.ecf51b1f43cc5e6b,News,매출,Revenue,売上
@@ -2114,7 +2104,6 @@ Build a track record to open your own room.","保有株はありません。個�
 
 ボットのリーディングルームで注文と約定を観察。
 実績を積むと自分のルームを開けます。"
-text.b8194e62edc66d4f,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:64,보유 주식을 매도해 확정한 손익으로 계산합니다.,Based on profit realized by selling your shares.,保有株の売却で確定した損益が対象です。
 text.861779d89696173f,Additional UI/data,보유 현금,Cash,保有現金
 text.aee9757e23a04919,Additional UI/data,보유금액,Position value,保有額
 text.69f050f4e4ab83fd,Additional UI/data,보유수량,Shares held,保有数量
@@ -2258,7 +2247,6 @@ text.0bd9e52ed1621150,Chat intensity,설명은 그럴듯한데 확인할 건 남
 text.2dec9a96c0484264,Chat: formal,설명은 훌륭한데 확인할 부분은 남아 있군요.,"An impressive explanation, though some facts remain unverified.",立派な説明ですが、未確認の点は残っていますね。
 text.db84ce28d8a4a3cf,Chat intensity,설명은 훌륭한데 확인할 부분은 남아 있군요. 참 대단하십니다.,"An impressive explanation, though some facts remain unverified. Quite remarkable.",立派な説明ですが、未確認の点は残っていますね。実にご立派ですね。
 text.3eda9b8dd26111f8,Company event headline,성공 사례 공유 - 미디어 노출 증가,Shared success stories attract media coverage,成功事例の発信で報道が増加
-text.4b38f6f9b85a9ffd,UI: Assets/Scripts/NightShift/InvestorJourneyUI.cs:66,성과 보기,Track record,実績を見る
 text.5130fb0eba9106ad,UI: Assets/Scripts/NightShift/DeviceTerminalUI.cs:141,성장 기록을 불러오는 중입니다.,Loading progress…,実績を読込中…
 text.a6f93627987658b9,UI: Assets/Scripts/News/NewsDeskUI.cs:87,성장·권한,Progress,成長・権限
 text.5eaa0c4876c201db,News,소비자,Consumers,消費者
@@ -2414,16 +2402,12 @@ text.13be01ffee7d0804,News,실적·자금,Earnings & Funding,業績・資金
 text.725534bce2176603,UI: Assets/Scripts/NightShift/NpcLeadingRoom.cs:174,실제 매도 주문,Actual sell order,実際の売り注文
 text.c3c185d5876a7f22,UI: Assets/Scripts/NightShift/NpcLeadingRoom.cs:174,실제 매수 주문,Actual buy order,実際の買い注文
 text.00c28c69acab3b85,UI: Assets/Scripts/NightShift/WorldDramaDirector.cs:188,실제 보유 지분 50% 초과가 필요합니다.,More than 50% ownership required.,実保有比率50%超が必要です。
-text.90f13abe57eaab23,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:75,실제 체결 거래대금 ,Filled turnover ,約定売買代金 
 text.9876125746cef07e,UI: Assets/Scripts/NightShift/DeviceMarketJournal.cs:106,실제 체결 관측,Actual fills observed,実際の約定を観測
 text.29f34432ddebe3b1,UI: Assets/Scripts/NightShift/DeviceTerminalUI.cs:378,실제 체결이 발생하면 시간·종목·수량·가격을 기록합니다.,Fill history appears here.,約定履歴がここに表示されます。
 text.82330947ad6f064c,UI: Assets/Scripts/NightShift/ChatSocialDecisions.cs:137,실현,Realized,実現
 text.d1b8333283a79162,UI: Assets/Scripts/NightShift/DailyIncomeUI.cs:77,실현 매매손익,Realized trade P/L,実現売買損益
 text.08051874efd3d0d6,UI: Assets/Scripts/NightShift/SpreadTradingUI.cs:72,실현손익,Realized P&L,実現損益
 text.31c0b64c2967f654,UI: Assets/Scripts/NightShift/InvestorJourneyUI.cs:66,실현손익 ,Realized P/L ,実現損益 
-text.ed92b58218fc040f,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:67,실현손익 · 달성,Realized P/L · Done,実現損益 · 達成
-text.b572941b800e6bf9,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:67,실현손익 · 진행 중,Realized P/L · In progress,実現損益 · 進行中
-text.3777c9a464c61c8d,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:62,실현수익 ,Realized profit ,実現利益 
 text.478e5b8a40bb1c0d,Additional UI/data,심야 거래실,Night Trading,深夜取引室
 text.0fa7d7342ad80518,community:community.TARGET.MEDIATE,싸우다가 정작 차트 놓치겠다. 잠깐 쉬어,Gonna miss the chart fighting like this. Take a minute.,喧嘩してる間にチャート見逃すぞ。少し休め。
 text.e2263650b9789564,community:community.MEDIATE.REBUT,싸우려는 건 아닌데 저 말은 못 넘기겠음,"Not trying to fight, but I can't let that slide.",喧嘩したいわけじゃないけど今のは流せない。
@@ -2452,7 +2436,6 @@ text.fb140aefa7be866f,community:community.REBUT.MOCK,아니 말을 할수록 더
 text.ad5ce944f0f99cfa,community:community.MEDIATE.REBUT,아니 방금 저 말 듣고 그냥 있으라고?,You want me to just sit here after that?,今の言われて黙ってろって？
 text.aa8a3268bf5393dc,community:community.TARGET.REBUT,아니 잠깐 ㅋㅋ 그게 왜 그렇게 이어짐,"Hold up lol, how does that follow?",いや待ってw なんでそうつながるんだよ。
 text.aedb87f426219ec3,Additional UI/data,아니 진짜…,Seriously...,いやマジで…
-text.a84c07a1919f9796,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs:64,아래 개설 버튼을 누르면 운영 권한이 열립니다.,Open your room with the button below.,下のボタンでルームを開設できます。
 text.427e3e3e63024bb8,templates:NOTICE.VOLUNTARY_EXIT.formal.1.0,아무도 말리지 않는군요. 이 싸움을 더 견디지 않겠습니다. 나갑니다.,Nobody is intervening. I will not endure this fight any longer. Leaving.,誰も止めないのですね。これ以上この争いには耐えられません。退出します。
 text.40c0ee4d79e063bb,templates:NOTICE.VOLUNTARY_EXIT.rough.1.0,아무도 안 말리네. 더는 싸우기 싫다. 나감.,Nobody's stopping this. Done fighting. I'm out.,誰も止めないのか。もう争いたくない。抜ける。
 text.2da7192ef45d7a41,templates:NOTICE.VOLUNTARY_EXIT.casual.1.0,아무도 안 말리네요. 더는 싸우기 싫어서 나갈게요.,"Nobody's stopping it. Don't want to fight anymore, so I'm leaving.",誰も止めないんですね。もう争いたくないので抜けます。
@@ -2606,9 +2589,7 @@ text.dc55e95215b44ee4,templates:legacy.SmallTalk_extra_20261012_019,요즘 잠�
 text.eadaa342e6845b2c,templates:MODERATION.CHILL.formal.1.0,요즘은 말을 꺼내기가 조심스럽습니다.,I am hesitant to speak lately.,最近は発言をためらいます。
 text.81d76deebf52fe4a,Chat: rough,우기기만 하면 대화가 되냐?,Can't talk to someone this stubborn.,意地張ってるだけじゃ話にならん。
 text.68f39ba1c13e8460,Chat intensity,우기기만 하면 대화가 되냐? 말 좀 가려.,Can't talk to someone this stubborn. Watch your mouth.,意地張ってるだけじゃ話にならん。口の利き方考えろ。
-text.a8f1a7ade8aa98f1,UI: Assets/Scripts/NightShift/PlayerProgression.cs:35,운영 권한 필요 · 실제 거래대금 ,Operator access required · Turnover ,運営権限が必要 · 売買代金 
 text.c76d493b9f0d2263,Company event headline,운영 안정화 - 비용 구조 개선,Improved cost structure stabilizes operations,費用構造を改善、運営が安定
-text.351a2375dd182d2d,UI: Assets/Scripts/NightShift/InvestorJourneyUI.cs:70,운영 조건 달성,Requirements met,運営条件達成
 text.f065e66189005a46,UI: Assets/Scripts/NightShift/NpcLeadingRoom.cs:96,운영 종료,Host session ended,運営終了
 text.5bb1dcae01414d3f,Company event headline,운영비 부담 증가 - 운영비 상승,Higher overheads put pressure on operations,運営費が増加、負担重く
 text.740a5af749449be8,Company event headline,운영비 부담 지속 - 수익성 악화,Persistent overhead burden erodes margins,運営費の負担続く、収益性悪化
@@ -2660,7 +2641,6 @@ text.2dfffc3ace9172ab,UI: Assets/Scripts/NightShift/PlayerAccounts.cs:58,원 이
 text.eed8441371cdf150,UI: Assets/Scripts/NightShift/ChatSocialNumbers.cs:38,원 정도, won or so,ウォンほど
 text.146bfd99c836e869,UI: Assets/Scripts/NightShift/NpcLeadingRoom.cs:178,원 주문을 대기 중입니다., KRW order pending.,ウォンの注文待機中です。
 text.604bf6706656509e,UI: Assets/Scripts/NightShift/ChatSocialUnity.cs:142,원 최근 매수 체결, KRW · recent buy fill,ウォンで直近の買い約定
-text.a5fff710e028e703,UI: Assets/Scripts/NightShift/PlayerProgression.cs:35,"원, 실현손익 "," KRW, realized P&L ",ウォン、実現損益 
 text.212bac0bcda252fd,UI: Assets/Scripts/NightShift/InvestorConversation.cs:95,원., KRW.,ウォン。
 text.358c701710c0cb80,UI: Assets/Scripts/NightShift/InvestorConversation.cs:84,원. , KRW. ,ウォン。
 text.1ba22483e0967318,UI: Assets/Scripts/NightShift/InvestorConversation.cs:106,원. 간격 , KRW. Spread ,ウォン。値幅 
@@ -3538,7 +3518,6 @@ text.30e99e18c9daa685,Additional UI/data,첫 신호 기다리기,Wait for a sign
 text.6d4c952ba98f2b12,templates:legacy.MarketOpen_extra_20261012_003,첫 움직임 보고 너무 급해지진 말자.,Don't rush just because of the opening move.,最初の動きで焦らないようにしよう。
 text.b58f57f08cba5289,Additional UI/data,첫 투자금,Starting cash,初期資金
 text.d89002aafc48e2d8,UI: Assets/Scripts/NightShift/LeadingRoomUI.cs:164,첫 회원 초대,Invite first member,最初の会員を招待
-text.901eca880b38b291,UI: Assets/Scripts/NightShift/LeadingRoomUI.cs:136,첫 회원 초대 · 닉네임 선택 → 내 리딩방,First invite · Select a name → My room,初回招待 · 名前を選択 → 自分のルーム
 text.a8e1259e5336fecb,UI: Assets/Scripts/NightShift/InvestorPsychology.cs:27,체결,Fills,約定
 text.76dc06cc2b97371e,UI: Assets/Scripts/NightShift/DailyIncomeController.cs:98,체결 · 이용료 포함,Includes fills and room fees,約定・利用料込み
 text.32ebf17faa465bc5,Additional UI/data,체결 강도,Trade strength,約定強度
@@ -3808,7 +3787,7 @@ text.c7134d911fc5ff5d,News,후원,Sponsorship,支援
 text.2a675ee941a2897e,UI: Assets/Scripts/DeskControlHints.cs:12,휴대폰,Phone,スマホ
 text.831d81f74483c637,community:community.TARGET.COMFORT,힘든 건 알겠음. 잠깐 창 닫아도 돼,I know it's rough. You can close the window for a bit.,つらいのはわかる。少し窓閉じてもいいぞ。
 notes.title.0,Handwritten milestone,리딩방 가입,Join a room,部屋に参加
-notes.title.1,Handwritten milestone,매매 성과,Trade results,売買実績
+notes.title.1,Handwritten milestone,개설 자금,Room fund,開設資金
 notes.title.2,Handwritten milestone,내 리딩방,My own room,自分の部屋
 notes.observing,Handwritten milestone,운영자 관찰,Watch the leader,主催者を観察
 notes.waiting,Handwritten milestone,가입 대기,Waiting to join,参加待ち
@@ -4254,7 +4233,6 @@ text.6d98efe4821d1c6a,community:community.LAMENT.AGREE,하… 나도 물려 있�
 text.c6379f8fa8d5c6f4,community:community.LAMENT.AGREE,나도 같은 처지라 할 말이 없다,Same boat. Nothing to say.,同じ立場だから何も言えない
 text.194b072777b17b0e,community:community.LAMENT.AGREE,동지여… 같이 버티자,Comrade... let's hold together.,同志よ…一緒に耐えよう
 text.dd16937e3a841af5,community:community.LAMENT.AGREE,나만 그런 게 아니었네,So it wasn't just me.,俺だけじゃなかったか
-text.756a7fe312069e28,community:community.LAMENT.AGREE,평단 보면 한숨만 나옴 ㅋㅋ,My average price just makes me sigh lol.,平均単価見るとため息しか出ないw
 text.7c818094a36aa507,community:community.LAMENT.AGREE,오늘은 다 같이 힘든 날이네,Rough day for all of us.,今日はみんなつらい日だな
 text.89961fa70df6b673,community:community.BRAG.AGREE,와 축하함 ㅋㅋ 오늘 저녁은 소고기네,"Congrats lol, steak night",おめw 今夜は焼肉やな
 text.6d25ca17bf7da918,community:community.BRAG.AGREE,ㅊㅋㅊㅋ 수익은 언제나 옳다,Grats grats. Green is always right,おめおめ。利益は正義
@@ -4468,3 +4446,777 @@ text.99abf989a3a05dc7,contexts:REACT>COMFORT,현금도 하나의 종목입니다
 text.b5714938b037ad9a,contexts:REACT>COMFORT,안 사면 0%예요. 그것도 수익이에요 ㅎㅎ,"No trade is 0%. That counts, haha",買わなければ0%。それも成績ですよw
 text.d7d5e8a47fa23732,contexts:REACT>COMFORT,조급한 돈이 먼저 나간다.,Impatient money leaves first.,焦った金から消える。
 text.57b58346620e4e2f,UI: chat holder badge,주주,Holder,ホルダー
+text.fb9e2c8dcceca747,community:community.MKT_SPIKE.REACT,{symbol} 뭐임 몇 분 새 {fastPct} ㄷㄷ,"{symbol} what, {fastPct} in a few minutes??",{symbol}なにこれ 数分で{fastPct}って
+text.983e7b006f2a9a27,community:community.MKT_SPIKE.REACT,{symbol} 방금 쏜 거 봄? {price}원까지 순식간이네,Did you see {symbol} just rip? ₩{price} in no time,{symbol}今の見た？一瞬で{price}ウォン
+text.3b9c43b0165675e4,community:community.MKT_SPIKE.REACT,{symbol} 갑자기 {fastPct}. 누가 긁는 거냐 이거,{symbol} suddenly {fastPct}. Who's sweeping the book,{symbol}いきなり{fastPct}。誰が買い上げてんの
+text.0096831b9408b657,community:community.MKT_SPIKE.REACT,와 {symbol} {price}원 ㅋㅋㅋ 잠깐 눈 뗀 사이에 {fastPct},Whoa {symbol} at ₩{price} lol. Looked away for a sec and it's {fastPct},うわ{symbol} {price}ウォンw ちょっと目離したら{fastPct}
+text.d54db488435baa35,community:community.MKT_SPIKE.REACT,"{symbol} 불 붙었다. 몇 분 만에 {fastPct}, 지금 {price}원","{symbol} is on fire. {fastPct} in minutes, ₩{price} now",{symbol}火ついた。数分で{fastPct}、今{price}ウォン
+text.92b35ba0cdd6fa09,community:community.MKT_SPIKE.REACT,{symbol} 매도 호가 순삭되는 중. {fastPct} 실화냐,"{symbol} asks are vanishing. {fastPct}, for real?",{symbol}売り板が溶けてる。{fastPct}ってマジか
+text.8d50a4ec4dc172e3,community:community.MKT_SPIKE_POLITE.REACT,{symbol} 몇 분 사이에 {fastPct} 움직였네요. 지금 {price}원입니다.,{symbol} moved {fastPct} in a few minutes. It's at ₩{price} now.,{symbol}、数分で{fastPct}動きましたね。今{price}ウォンです。
+text.6ab749ceba980529,community:community.MKT_SPIKE_POLITE.REACT,{symbol} 갑자기 강하게 올라오네요. 방금 {fastPct}였습니다.,{symbol} is pushing up hard all of a sudden. That was {fastPct} just now.,{symbol}、急に強く上げてきましたね。今ので{fastPct}です。
+text.f3f60fffc64bce42,community:community.MKT_SPIKE_POLITE.REACT,{symbol} {price}원까지 순식간이네요. 이 속도면 조심스럽습니다.,{symbol} got to ₩{price} in no time. This pace makes me careful.,{symbol}、あっという間に{price}ウォンですね。この速さは慎重になります。
+text.d281dea46b1ca763,community:community.MKT_SPIKE_POLITE.REACT,"{symbol} 단기간에 {fastPct}라니, 물량이 꽤 들어온 것 같네요.",{symbol} at {fastPct} that fast — real size must have come in.,{symbol}が短時間で{fastPct}とは、かなり買いが入ったようですね。
+text.d79310bfcdfaf555,community:community.MKT_DUMP.REACT,{symbol} 뭐야 몇 분 새 {fastPct}... 누가 던지냐,"{symbol} wtf, {fastPct} in minutes... who's dumping",{symbol}なに 数分で{fastPct}…誰が投げてんの
+text.070c58e3a5704a04,community:community.MKT_DUMP.REACT,{symbol} 방금 쭉 빠진 거 봄? {price}원까지 밀림,See {symbol} just slide? Down to ₩{price},{symbol}今スルッと落ちたの見た？{price}ウォンまで
+text.670823ee7b65c90f,community:community.MKT_DUMP.REACT,아 {symbol} {fastPct}. 잠깐 사이에 이게 뭐냐,Ugh {symbol} {fastPct}. In that short a time?,あー{symbol} {fastPct}。この短時間で何これ
+text.828019cc2056ce3d,community:community.MKT_DUMP.REACT,{symbol} 매수 호가 뚫리는 중. {price}원까지 내려옴,{symbol} bids getting chewed through. Down to ₩{price},{symbol}買い板が食われてる。{price}ウォンまで来た
+text.b3f909d122d8ac0e,community:community.MKT_DUMP.REACT,{symbol} 갑자기 {fastPct} ㄷㄷ 무슨 일 있음?,{symbol} {fastPct} out of nowhere. Did something happen?,{symbol}いきなり{fastPct} 何かあった？
+text.f1c567f53ed77e07,community:community.MKT_DUMP.REACT,{symbol} 쏟아진다... 지금 {price}원. 받는 사람이 없네,{symbol} is pouring out... ₩{price} now. Nobody's catching it,{symbol}投げが止まらん…今{price}ウォン。受ける人がいない
+text.cf7bffd78aba96c0,community:community.MKT_DUMP_POLITE.REACT,{symbol} 몇 분 사이에 {fastPct} 빠졌네요. 지금 {price}원입니다.,{symbol} dropped {fastPct} in a few minutes. It's at ₩{price} now.,{symbol}、数分で{fastPct}下げましたね。今{price}ウォンです。
+text.948c3931a4a415d5,community:community.MKT_DUMP_POLITE.REACT,{symbol} 갑자기 매물이 쏟아지네요. 방금 {fastPct}였습니다.,Sell orders are suddenly flooding {symbol}. That was {fastPct} just now.,{symbol}、急に売りが出てきましたね。今ので{fastPct}です。
+text.8ca1717ef0856594,community:community.MKT_DUMP_POLITE.REACT,{symbol} {price}원까지 밀렸습니다. 받아 주는 물량이 얇아 보이네요.,{symbol} slid to ₩{price}. The bids look thin.,{symbol}、{price}ウォンまで押されました。買い板が薄く見えますね。
+text.df33efcdda09087a,community:community.MKT_DUMP_POLITE.REACT,"{symbol} 단기간에 {fastPct}라니, 섣불리 받기는 어렵겠습니다.",{symbol} at {fastPct} that fast — hard to step in casually.,{symbol}が短時間で{fastPct}とは、安易には拾いにくいですね。
+text.9e6e1e9bb95c4462,community:community.MKT_HIGH.REACT,{symbol} 오늘 고점 {dayHigh}원 뚫는 중 ㅋㅋ {dayPct}네,{symbol} breaking today's high of ₩{dayHigh} lol. {dayPct},{symbol}今日の高値{dayHigh}ウォン抜けてるw {dayPct}
+text.32c793ce9826987b,community:community.MKT_HIGH.REACT,{symbol} {dayPct}... 고점에서 안 내려오네,{symbol} {dayPct}... and it won't come off the high,{symbol} {dayPct}…高値から降りてこない
+text.e097f5f06cb0172b,community:community.MKT_HIGH.REACT,{symbol} 지금 {price}원. 오늘 제일 높은 자리임,{symbol} at ₩{price}. Highest it's been all day,{symbol}今{price}ウォン。今日いちばん高いとこ
+text.f030d49257e5342c,community:community.MKT_HIGH.REACT,{symbol} 오늘 {dayPct}인데 아직도 고점 근처에서 버팀,{symbol} is {dayPct} today and still hanging at the high,{symbol}今日{dayPct}なのにまだ高値圏で粘ってる
+text.8f0f373f5f09bbc0,community:community.MKT_HIGH.REACT,와 {symbol} {dayHigh}원 찍었네. 어디까지 가는 거냐,Whoa {symbol} tagged ₩{dayHigh}. How far is this going,うわ{symbol} {dayHigh}ウォンつけた。どこまで行くんだ
+text.29e54e62ec031ff9,community:community.MKT_HIGH.REACT,{symbol} 오늘 고가 계속 갱신 중. 들고 있는 사람들 좋겠다,{symbol} keeps printing new highs for the day. Holders must be loving it,{symbol}今日の高値更新し続けてる。持ってる人うらやましい
+text.f153cc26e5fb33d2,community:community.MKT_HIGH_POLITE.REACT,{symbol} 오늘 고가 {dayHigh}원 부근입니다. 전일 대비 {dayPct}네요.,{symbol} is near today's high of ₩{dayHigh}. That's {dayPct} on the day.,{symbol}、本日高値{dayHigh}ウォン付近です。前日比{dayPct}ですね。
+text.e9f588fe81431f86,community:community.MKT_HIGH_POLITE.REACT,{symbol} {dayPct}인데도 고점에서 밀리지 않네요.,{symbol} is {dayPct} and still isn't backing off the high.,{symbol}、{dayPct}でも高値から押されませんね。
+text.d012618eed08ef89,community:community.MKT_HIGH_POLITE.REACT,"{symbol} 지금 {price}원, 오늘 가장 높은 가격대입니다.","{symbol} is at ₩{price}, the top of today's range.",{symbol}、今{price}ウォンで本日の最高値圏です。
+text.b9d67da3383bdbfd,community:community.MKT_HIGH_POLITE.REACT,{symbol} 고가를 계속 높이고 있네요. 추격은 조심스럽습니다.,{symbol} keeps lifting its high. I'd be careful chasing.,{symbol}、高値を切り上げ続けていますね。追いかけるのは慎重にしたいです。
+text.e7866ad3c8505ee8,community:community.MKT_LOW.REACT,{symbol} 오늘 저점 {dayLow}원 깨는 중... {dayPct},{symbol} breaking today's low of ₩{dayLow}... {dayPct},{symbol}今日の安値{dayLow}ウォン割れてる…{dayPct}
+text.c8ee1edb2b8fd016,community:community.MKT_LOW.REACT,{symbol} {dayPct}. 바닥이 어디냐 진짜,"{symbol} {dayPct}. Where's the bottom, seriously",{symbol} {dayPct}。底どこだよマジで
+text.ca6d9fed40a8b6c2,community:community.MKT_LOW.REACT,{symbol} 지금 {price}원. 오늘 제일 낮은 자리네,{symbol} at ₩{price}. Lowest it's been all day,{symbol}今{price}ウォン。今日いちばん安いとこ
+text.396bc8f87dca65bc,community:community.MKT_LOW.REACT,{symbol} 오늘 {dayPct}인데 반등 한 번을 안 주네,{symbol} is {dayPct} today without a single bounce,{symbol}今日{dayPct}なのに一回も戻さない
+text.caad3a9ea7eea155,community:community.MKT_LOW.REACT,아 {symbol} {dayLow}원까지 찍음. 지지 같은 건 없구나,Ugh {symbol} tagged ₩{dayLow}. So much for support,あー{symbol} {dayLow}ウォンつけた。サポートなんて無かった
+text.8ccdf04f9ddd1601,community:community.MKT_LOW.REACT,{symbol} 오늘 저가 계속 갱신 중. 들고 있는 분들 괜찮음?,"{symbol} keeps making new lows for the day. Holders, you okay?",{symbol}今日の安値更新し続けてる。ホルダーの人たち大丈夫？
+text.511a5e70011c365a,community:community.MKT_LOW_POLITE.REACT,{symbol} 오늘 저가 {dayLow}원 부근입니다. 전일 대비 {dayPct}네요.,{symbol} is near today's low of ₩{dayLow}. That's {dayPct} on the day.,{symbol}、本日安値{dayLow}ウォン付近です。前日比{dayPct}ですね。
+text.f10517bd04e6c3e5,community:community.MKT_LOW_POLITE.REACT,{symbol} {dayPct}인데 반등 시도가 보이지 않네요.,{symbol} is {dayPct} with no sign of a bounce.,{symbol}、{dayPct}ですが反発の動きが見えませんね。
+text.63f0fd1c60cd404e,community:community.MKT_LOW_POLITE.REACT,"{symbol} 지금 {price}원, 오늘 가장 낮은 가격대입니다.","{symbol} is at ₩{price}, the bottom of today's range.",{symbol}、今{price}ウォンで本日の最安値圏です。
+text.d7502f67544b23a3,community:community.MKT_LOW_POLITE.REACT,{symbol} 저가를 계속 낮추고 있네요. 섣불리 받기는 어렵습니다.,{symbol} keeps making lower lows. Hard to step in here.,{symbol}、安値を切り下げ続けていますね。安易には拾えません。
+text.9d840cb8f40de2ae,community:community.MKT_PULLBACK.REACT,{symbol} {dayHigh}원 찍고 {fromHigh} 밀림. 고점에 산 사람 어떡하냐,{symbol} hit ₩{dayHigh} then gave back {fromHigh}. RIP anyone who bought the top,{symbol} {dayHigh}ウォンつけてから{fromHigh}。高値掴みの人どうすんの
+text.093306b6bd7f017e,community:community.MKT_PULLBACK.REACT,{symbol} 아까 {dayHigh}원이었는데 지금 {price}원 ㅋㅋ 차익 나오네,"{symbol} was ₩{dayHigh} earlier, now ₩{price} lol. Profit-taking",{symbol}さっき{dayHigh}ウォンだったのに今{price}ウォンw 利確出てるな
+text.63f95073244e5e00,community:community.MKT_PULLBACK.REACT,{symbol} 고점 대비 {fromHigh}. 여기서 받아야 되나,{symbol} is {fromHigh} off the high. Is this the dip to buy?,{symbol}高値から{fromHigh}。ここ拾うべき？
+text.21fd3d2a2cc5fb24,community:community.MKT_PULLBACK.REACT,{symbol} 위꼬리 길게 달았네. {dayHigh}원이 오늘 끝인가,{symbol} left a long upper wick. Was ₩{dayHigh} the top for today?,{symbol}長い上ヒゲつけたな。{dayHigh}ウォンが今日の天井か
+text.7bc3926e4a45ffbb,community:community.MKT_PULLBACK.REACT,{symbol} 올린 만큼 도로 뱉는 중. 고점에서 {fromHigh},{symbol} giving back what it gained. {fromHigh} from the high,{symbol}上げた分吐き出し中。高値から{fromHigh}
+text.87627006a66aa88c,community:community.MKT_PULLBACK.REACT,{symbol} {price}원까지 내려옴. 고점에서 판 사람이 승자네,{symbol} back down to ₩{price}. Whoever sold the high wins,{symbol} {price}ウォンまで戻ってきた。高値で売った人の勝ちだな
+text.bf07d717fc14db92,community:community.MKT_PULLBACK_POLITE.REACT,{symbol} 고가 {dayHigh}원을 찍은 뒤 {fromHigh} 밀렸네요.,{symbol} touched ₩{dayHigh} and has since pulled back {fromHigh}.,{symbol}、高値{dayHigh}ウォンをつけた後{fromHigh}押されましたね。
+text.228a229c1798dd42,community:community.MKT_PULLBACK_POLITE.REACT,{symbol} 차익 매물이 나오는 것 같습니다. 지금 {price}원입니다.,Looks like profit-taking in {symbol}. It's at ₩{price} now.,{symbol}、利益確定の売りが出ているようです。今{price}ウォンです。
+text.bbe64eed5f003e3a,community:community.MKT_PULLBACK_POLITE.REACT,{symbol} 고점 대비 {fromHigh}입니다. 눌림인지 꺾인 건지 지켜보겠습니다.,{symbol} is {fromHigh} off its high. Watching whether it's a dip or a turn.,{symbol}、高値から{fromHigh}です。押し目か反転か見極めます。
+text.d28fb90197723770,community:community.MKT_PULLBACK_POLITE.REACT,{symbol} 위꼬리가 길어졌네요. {dayHigh}원을 다시 넘는지가 관건이겠습니다.,{symbol} has a long upper wick now. The question is whether it retakes ₩{dayHigh}.,{symbol}、上ヒゲが長くなりましたね。{dayHigh}ウォンを再び超えるかが鍵です。
+text.4b5d01bb50e4b766,community:community.MKT_REBOUND.REACT,{symbol} {dayLow}원 찍고 {fromLow} 올라옴. 바닥에 주운 사람 부럽다,{symbol} hit ₩{dayLow} then bounced {fromLow}. Jealous of whoever bought the low,{symbol} {dayLow}ウォンつけてから{fromLow}。底で拾った人うらやま
+text.4e544e72f0cce00a,community:community.MKT_REBOUND.REACT,{symbol} 아까 {dayLow}원이었는데 지금 {price}원. 반등 나오네,"{symbol} was ₩{dayLow} earlier, now ₩{price}. There's the bounce",{symbol}さっき{dayLow}ウォンだったのに今{price}ウォン。リバ来たな
+text.31f0f6e8cf44451d,community:community.MKT_REBOUND.REACT,{symbol} 저점 대비 {fromLow}. 이거 진짜 반등임? 잠깐 튀는 거임?,{symbol} is {fromLow} off the low. Real bounce or dead cat?,{symbol}安値から{fromLow}。本物のリバ？それとも騙し？
+text.91d155ba61da4766,community:community.MKT_REBOUND.REACT,{symbol} 아래꼬리 길게 달았네. {dayLow}원이 오늘 바닥인가,{symbol} left a long lower wick. Was ₩{dayLow} the bottom for today?,{symbol}長い下ヒゲつけたな。{dayLow}ウォンが今日の底か
+text.7f0f63114260e561,community:community.MKT_REBOUND.REACT,{symbol} 빠진 만큼 도로 올리는 중. 저점에서 {fromLow},{symbol} clawing back what it lost. {fromLow} from the low,{symbol}下げた分取り返し中。安値から{fromLow}
+text.e1adaaba897f72c8,community:community.MKT_REBOUND.REACT,{symbol} {price}원까지 올라옴. 아까 던진 사람들 속 쓰리겠다,{symbol} back up to ₩{price}. Whoever dumped earlier must be hurting,{symbol} {price}ウォンまで戻した。さっき投げた人たち悔しいだろうな
+text.7a74738039a51df4,community:community.MKT_REBOUND_POLITE.REACT,{symbol} 저가 {dayLow}원을 찍은 뒤 {fromLow} 올라왔네요.,{symbol} touched ₩{dayLow} and has since recovered {fromLow}.,{symbol}、安値{dayLow}ウォンをつけた後{fromLow}戻しましたね。
+text.ff1c42ee9cde1aad,community:community.MKT_REBOUND_POLITE.REACT,{symbol} 저가 매수가 들어오는 것 같습니다. 지금 {price}원입니다.,Looks like dip buyers are stepping into {symbol}. It's at ₩{price} now.,{symbol}、押し目買いが入っているようです。今{price}ウォンです。
+text.d7eb2c73b6d69f9b,community:community.MKT_REBOUND_POLITE.REACT,{symbol} 저점 대비 {fromLow}입니다. 반등이 이어질지 지켜보겠습니다.,{symbol} is {fromLow} off its low. Watching whether the bounce holds.,{symbol}、安値から{fromLow}です。反発が続くか見ていきます。
+text.f87779dc0d0aed3b,community:community.MKT_REBOUND_POLITE.REACT,{symbol} 아래꼬리가 길어졌네요. {dayLow}원이 지켜지는지가 관건이겠습니다.,{symbol} has a long lower wick now. The question is whether ₩{dayLow} holds.,{symbol}、下ヒゲが長くなりましたね。{dayLow}ウォンを守れるかが鍵です。
+text.47476357b5945862,community:community.MKT_UP.REACT,{symbol} 오늘 {dayPct}. 조용히 잘 가네,{symbol} {dayPct} today. Quietly doing its thing,{symbol}今日{dayPct}。静かに上げてるな
+text.ea3f301eeeacdcc1,community:community.MKT_UP.REACT,"{symbol} 지금 {price}원, {dayPct}네. 고점 {dayHigh}원 다시 보러 가나","{symbol} at ₩{price}, {dayPct}. Going back for the ₩{dayHigh} high?",{symbol}今{price}ウォン、{dayPct}。高値{dayHigh}ウォン取りに行くか
+text.d871236064028a26,community:community.MKT_UP.REACT,{symbol} {dayPct}면 나쁘지 않은데 더 갈 힘이 있나,"{symbol} at {dayPct} isn't bad, but does it have more in it?",{symbol} {dayPct}なら悪くないけど、まだ上げる力あるか
+text.46cd2ec5d5f47f03,community:community.MKT_UP.REACT,{symbol} 슬금슬금 올라서 {dayPct}. 이런 게 무섭더라,{symbol} crept its way up to {dayPct}. These slow ones scare me,{symbol}じわじわ上げて{dayPct}。こういうのが怖いんだよな
+text.71905bfc3d448a7c,community:community.MKT_UP.REACT,{symbol} 오늘 {dayPct}인데 고점 {dayHigh}원은 아직 못 넘음,{symbol} is {dayPct} today but still under the ₩{dayHigh} high,{symbol}今日{dayPct}だけど高値{dayHigh}ウォンはまだ超えてない
+text.9b21ea83ca687e91,community:community.MKT_UP.REACT,{symbol} {price}원. {dayPct}면 오늘은 이긴 날이지,{symbol} at ₩{price}. {dayPct} is a winning day,{symbol} {price}ウォン。{dayPct}なら今日は勝ちの日だろ
+text.7282944e0fd3cd31,community:community.MKT_UP_POLITE.REACT,{symbol} 전일 대비 {dayPct}입니다. 무난하게 오르고 있네요.,{symbol} is {dayPct} on the day. A steady climb.,{symbol}、前日比{dayPct}です。堅調に上げていますね。
+text.42bb09a212610b67,community:community.MKT_UP_POLITE.REACT,"{symbol} 지금 {price}원이고, 오늘 고가는 {dayHigh}원입니다.",{symbol} is at ₩{price}; today's high is ₩{dayHigh}.,{symbol}、今{price}ウォンで、本日高値は{dayHigh}ウォンです。
+text.08e87bd8c198da98,community:community.MKT_UP_POLITE.REACT,{symbol} {dayPct}네요. 고가 {dayHigh}원을 넘는지 보고 있습니다.,{symbol} is {dayPct}. Watching whether it clears the ₩{dayHigh} high.,{symbol}、{dayPct}ですね。高値{dayHigh}ウォンを超えるか見ています。
+text.2abc3c8ccc677f0c,community:community.MKT_UP_POLITE.REACT,{symbol} 천천히 올라 {dayPct}까지 왔습니다. 급하지 않아서 오히려 좋네요.,{symbol} has drifted up to {dayPct}. I like that it isn't rushed.,{symbol}、ゆっくり上げて{dayPct}まで来ました。急がないのがむしろ良いですね。
+text.f1f9034cf6f7ecab,community:community.MKT_DOWN.REACT,{symbol} 오늘 {dayPct}. 힘이 없네,{symbol} {dayPct} today. No strength at all,{symbol}今日{dayPct}。力ないな
+text.e90eebac5f39e5cc,community:community.MKT_DOWN.REACT,"{symbol} 지금 {price}원, {dayPct}네. 저점 {dayLow}원 다시 가나","{symbol} at ₩{price}, {dayPct}. Heading back to the ₩{dayLow} low?",{symbol}今{price}ウォン、{dayPct}。安値{dayLow}ウォンまた試すか
+text.387405d48ae04dd7,community:community.MKT_DOWN.REACT,{symbol} {dayPct}면 아직 버틸 만한데 더 빠지면 골치 아픔,"{symbol} at {dayPct} is survivable, but any lower gets ugly",{symbol} {dayPct}ならまだ耐えられるけど、これ以上は厳しい
+text.3b304399a2e0e36c,community:community.MKT_DOWN.REACT,{symbol} 슬금슬금 빠져서 {dayPct}. 이런 게 제일 지침,{symbol} bled its way down to {dayPct}. This slow stuff is the most draining,{symbol}じわじわ下げて{dayPct}。こういうのが一番しんどい
+text.b53f4624ce8991f3,community:community.MKT_DOWN.REACT,{symbol} 오늘 {dayPct}인데 저점 {dayLow}원은 아직 안 깨짐,{symbol} is {dayPct} today but the ₩{dayLow} low is still holding,{symbol}今日{dayPct}だけど安値{dayLow}ウォンはまだ割れてない
+text.d802dd51544eee66,community:community.MKT_DOWN.REACT,{symbol} {price}원. {dayPct}... 오늘은 쉬는 날인가,{symbol} at ₩{price}. {dayPct}... guess it's an off day,{symbol} {price}ウォン。{dayPct}…今日は休みの日か
+text.bd203246c500f033,community:community.MKT_DOWN_POLITE.REACT,{symbol} 전일 대비 {dayPct}입니다. 힘이 약해 보이네요.,{symbol} is {dayPct} on the day. It looks weak.,{symbol}、前日比{dayPct}です。弱く見えますね。
+text.b2e89c834a158349,community:community.MKT_DOWN_POLITE.REACT,"{symbol} 지금 {price}원이고, 오늘 저가는 {dayLow}원입니다.",{symbol} is at ₩{price}; today's low is ₩{dayLow}.,{symbol}、今{price}ウォンで、本日安値は{dayLow}ウォンです。
+text.6bc1464a12e49a4b,community:community.MKT_DOWN_POLITE.REACT,{symbol} {dayPct}네요. 저가 {dayLow}원이 지켜지는지 보고 있습니다.,{symbol} is {dayPct}. Watching whether the ₩{dayLow} low holds.,{symbol}、{dayPct}ですね。安値{dayLow}ウォンを守れるか見ています。
+text.0ddd98b57f10935a,community:community.MKT_DOWN_POLITE.REACT,{symbol} 천천히 밀려 {dayPct}까지 왔습니다. 반등 신호는 아직 없네요.,{symbol} has drifted down to {dayPct}. No sign of a bounce yet.,{symbol}、ゆっくり押されて{dayPct}まで来ました。反発の兆しはまだありませんね。
+text.e0c3931ce8e20fff,community:community.MKT_FLAT.REACT,{symbol} 오늘 {dayLow}~{dayHigh}원에서만 놀고 있음. 지겹다,{symbol} has been stuck between ₩{dayLow} and ₩{dayHigh} all day. So boring,{symbol}今日ずっと{dayLow}〜{dayHigh}ウォンの間。飽きた
+text.874391f5e114c9b9,community:community.MKT_FLAT.REACT,{symbol} {dayPct}... 횡보 언제 끝나냐,{symbol} {dayPct}... when does this chop end,{symbol} {dayPct}…ヨコヨコいつ終わるんだ
+text.3a9c1fcdc117e650,community:community.MKT_FLAT.REACT,{symbol} 지금 {price}원. 아까도 이 가격이었던 것 같은데 ㅋㅋ,{symbol} at ₩{price}. Pretty sure it was this price earlier too lol,{symbol}今{price}ウォン。さっきもこの値段だった気がするw
+text.d90189564997c238,community:community.MKT_FLAT.REACT,{symbol} 오늘 진짜 안 움직이네. {dayPct}에서 꼼짝을 안 함,{symbol} really isn't moving today. Parked at {dayPct},{symbol}今日ほんと動かない。{dayPct}でびくともしない
+text.d5e74ef0f097fe46,community:community.MKT_FLAT.REACT,{symbol} 차트 일자로 누웠다. 누가 좀 깨워 봐,{symbol}'s chart is lying flat. Somebody wake it up,{symbol}のチャートが真横に寝てる。誰か起こして
+text.da123c460edd4fa7,community:community.MKT_FLAT.REACT,{symbol} {dayHigh}원도 못 넘고 {dayLow}원도 안 깨고. 뭐 하자는 거임,{symbol} can't clear ₩{dayHigh} and won't break ₩{dayLow}. What is it doing,{symbol} {dayHigh}ウォンも抜けず{dayLow}ウォンも割らず。何がしたいんだ
+text.4311d7903dc4167a,community:community.MKT_FLAT_POLITE.REACT,{symbol} 오늘은 {dayLow}~{dayHigh}원 사이에서만 움직이네요.,{symbol} has stayed between ₩{dayLow} and ₩{dayHigh} today.,{symbol}、今日は{dayLow}〜{dayHigh}ウォンの間だけで動いていますね。
+text.29d3c237693b6cc4,community:community.MKT_FLAT_POLITE.REACT,"{symbol} 전일 대비 {dayPct}, 사실상 제자리입니다.",{symbol} is {dayPct} on the day — basically unchanged.,{symbol}、前日比{dayPct}でほぼ横ばいです。
+text.0c2d0fbbe16c86e1,community:community.MKT_FLAT_POLITE.REACT,{symbol} 지금 {price}원입니다. 방향이 나올 때까지 기다리겠습니다.,{symbol} is at ₩{price}. I'll wait until it picks a direction.,{symbol}、今{price}ウォンです。方向が出るまで待ちます。
+text.1fdc08b9c4447542,community:community.MKT_FLAT_POLITE.REACT,{symbol} 움직임이 거의 없네요. {dayHigh}원을 넘겨야 관심이 붙겠습니다.,{symbol} is barely moving. It needs to clear ₩{dayHigh} to draw interest.,{symbol}、ほとんど動きがありませんね。{dayHigh}ウォンを超えないと注目は集まらなそうです。
+text.4f76a682ff0986d3,community:community.MKT_RISE.DOUBT,{symbol} {price}원까지 올린 거 진짜 수급임? 고점 {dayHigh}원에서 물리기 싫은데,Is the run to ₩{price} on {symbol} real demand? Not trying to get stuck at the ₩{dayHigh} high,{symbol}の{price}ウォンまでの上げ、本物の買い？高値{dayHigh}ウォンで捕まりたくないんだが
+text.19377a4faf5d704d,community:community.MKT_RISE.DOUBT,{symbol} {price}원인데 왜 오르는지 아는 사람이 없네. 좀 찜찜함,{symbol} is at ₩{price} and nobody knows why it's rising. Feels off,{symbol} {price}ウォンだけど、なんで上がってるか誰も知らない。なんか引っかかる
+text.616a365a3aa01117,community:community.MKT_RISE.DOUBT,이렇게 올리고 한 번에 던지는 거 많이 봄. {symbol} {dayLow}원까지 되돌려도 안 이상함,Seen plenty of these get run up and dumped at once. {symbol} back to ₩{dayLow} wouldn't surprise me,こうやって上げて一気に投げるの何度も見た。{symbol}が{dayLow}ウォンまで戻っても驚かない
+text.992e6eb00e2befdb,community:community.MKT_RISE.DOUBT,{symbol} 지금 따라 사는 건 좀... {dayHigh}원 넘는 거 확인하고 봐도 안 늦음,Chasing {symbol} here is a bit... You can wait for it to clear ₩{dayHigh},{symbol}を今追いかけるのはちょっと…{dayHigh}ウォン超えを確認してからでも遅くない
+text.145b5bee6afda082,community:community.MKT_RISE_POLITE.DOUBT,{symbol} {price}원까지 오른 이유가 분명하지 않네요. 고가 {dayHigh}원 부근은 조심하고 싶습니다.,It isn't clear why {symbol} rose to ₩{price}. I'd be careful near the ₩{dayHigh} high.,{symbol}が{price}ウォンまで上げた理由がはっきりしませんね。高値{dayHigh}ウォン付近は慎重にいきたいです。
+text.5fd48901f30d8873,community:community.MKT_RISE_POLITE.DOUBT,{symbol} 오름세가 이어질지는 모르겠습니다. {dayHigh}원을 넘는지 확인하고 싶네요.,Not sure {symbol}'s rise continues. I'd want to see it clear ₩{dayHigh}.,{symbol}の上げが続くかは分かりません。{dayHigh}ウォンを超えるか確認したいですね。
+text.ba3b396c565ff033,community:community.MKT_RISE_POLITE.DOUBT,급하게 오른 종목은 되돌림도 빠르더군요. {symbol} 저가 {dayLow}원까지는 열어 두겠습니다.,Fast risers give it back fast. I'm leaving room for {symbol} to revisit ₩{dayLow}.,急に上げた銘柄は戻りも早いものです。{symbol}は安値{dayLow}ウォンまでは想定しておきます。
+text.6d1b6fa9af7cc178,community:community.MKT_FALL.DOUBT,{symbol} {price}원이면 싸 보이긴 하는데 저점 {dayLow}원 깨지면 답 없음,"{symbol} looks cheap at ₩{price}, but if the ₩{dayLow} low breaks there's no floor",{symbol} {price}ウォンは安く見えるけど、安値{dayLow}ウォン割れたら終わり
+text.32bc2866b28ff16b,community:community.MKT_FALL.DOUBT,{symbol} 여기가 바닥이라는 근거가 있음? 떨어지는 칼 같은데,Any reason to think this is the bottom on {symbol}? Looks like a falling knife,{symbol}ここが底って根拠ある？落ちるナイフに見えるけど
+text.f1300b4048617f8f,community:community.MKT_FALL.DOUBT,{symbol} 반등 나와도 {dayHigh}원까지는 멀다. 섣불리 물타면 안 될 듯,"Even with a bounce, ₩{dayHigh} is a long way up for {symbol}. Wouldn't average down yet",{symbol}リバっても{dayHigh}ウォンは遠い。安易なナンピンは危ない
+text.6225ad3ebc8c8122,community:community.MKT_FALL.DOUBT,{symbol} 왜 빠지는지 아는 사람 있음? 이유 모르는 하락이 제일 무서움,Anyone know why {symbol} is dropping? Unexplained drops scare me the most,{symbol}なんで下げてるか知ってる人いる？理由不明の下げが一番怖い
+text.6d18abb8519fd816,community:community.MKT_FALL_POLITE.DOUBT,"{symbol} {price}원이 싸 보이지만, 저가 {dayLow}원이 깨지면 더 밀릴 수 있겠습니다.","{symbol} looks cheap at ₩{price}, but it could slide further if ₩{dayLow} breaks.",{symbol}、{price}ウォンは安く見えますが、安値{dayLow}ウォンを割ればさらに下げそうです。
+text.e1f4499d5b64aa47,community:community.MKT_FALL_POLITE.DOUBT,{symbol} 여기가 바닥이라는 근거는 아직 못 찾았습니다.,I haven't found a reason to call this the bottom for {symbol}.,{symbol}、ここが底だという根拠はまだ見つかっていません。
+text.ac1b7fc232c41bd0,community:community.MKT_FALL_POLITE.DOUBT,{symbol} 하락 이유가 확인되지 않아 조심스럽습니다. 반등해도 {dayHigh}원까지는 멀어 보이네요.,"The reason for {symbol}'s drop isn't confirmed, so I'm cautious. Even a bounce leaves ₩{dayHigh} far away.",{symbol}の下げ理由が確認できず慎重です。反発しても{dayHigh}ウォンは遠そうですね。
+text.f29e7bf336b12059,community:community.MKT_FLAT.DOUBT,{symbol} {dayLow}~{dayHigh}원에서 이렇게 조용한 게 더 수상함,{symbol} being this quiet between ₩{dayLow} and ₩{dayHigh} is what's suspicious,{symbol}が{dayLow}〜{dayHigh}ウォンでこんなに静かなのが逆に怪しい
+text.05719c04ae99c11c,community:community.MKT_FLAT.DOUBT,{symbol} 간다 간다 하는데 {price}원에서 꿈쩍도 안 하잖아,"Everyone says {symbol} is about to go, yet it won't budge from ₩{price}",{symbol}行く行く言われてるけど{price}ウォンから微動だにしないじゃん
+text.adb37261cc5e237f,community:community.MKT_FLAT.DOUBT,{symbol} 횡보 끝에 위로 간다는 보장 있음? 아래로 깨질 수도 있는데,Who says {symbol} breaks up out of this range? It could break down just as easily,{symbol}ヨコヨコの後に上って保証ある？下に抜けるかもしれないのに
+text.dc9d59cc0ef6a8db,community:community.MKT_FLAT.DOUBT,{dayHigh}원도 못 넘는 {symbol}에 뭘 기대함,What do you expect from {symbol} when it can't even clear ₩{dayHigh},{dayHigh}ウォンも超えられない{symbol}に何を期待するの
+text.39e5834af449e102,community:community.MKT_FLAT_POLITE.DOUBT,{symbol} {dayLow}~{dayHigh}원에서 너무 조용한 점이 오히려 마음에 걸립니다.,How quiet {symbol} is between ₩{dayLow} and ₩{dayHigh} actually bothers me.,{symbol}が{dayLow}〜{dayHigh}ウォンで静かすぎるのが、かえって気になります。
+text.ee12baf33c16fa42,community:community.MKT_FLAT_POLITE.DOUBT,"{symbol} {price}원에서 움직이지 않는데, 기대만으로 사기는 어렵겠습니다.",{symbol} isn't moving off ₩{price}; hard to buy on hope alone.,{symbol}は{price}ウォンから動かないので、期待だけでは買いにくいです。
+text.123a79deb7c7e360,community:community.MKT_FLAT_POLITE.DOUBT,{symbol} 횡보 뒤 방향은 알 수 없습니다. 아래로 열릴 가능성도 봅니다.,No telling which way {symbol} breaks from here. I'm allowing for a move down too.,{symbol}の横ばい後の方向は分かりません。下に抜ける可能性も見ています。
+text.ce589c1872d2ec29,community:community.MKT_RISE.ASK,{symbol} 왜 오르는 거임? {price}원까지 온 이유 아는 사람?,Why is {symbol} going up? Anyone know what got it to ₩{price}?,{symbol}なんで上がってるの？{price}ウォンまで来た理由わかる人いる？
+text.44fa892d3e9dff33,community:community.MKT_RISE.ASK,{symbol} 지금 {price}원인데 들어가도 됨? 고점 {dayHigh}원이 코앞이라 고민됨,"{symbol} is at ₩{price} — okay to get in? The ₩{dayHigh} high is right there, so I'm torn",{symbol}今{price}ウォンだけど入っていい？高値{dayHigh}ウォンが目の前で迷う
+text.e85f01e8bb3dcc4b,community:community.MKT_RISE.ASK,{symbol} 들고 있는 사람들 어디서 팔 거임? {dayHigh}원 넘으면?,"{symbol} holders, where are you selling? Above ₩{dayHigh}?",{symbol}ホルダーの人、どこで売る？{dayHigh}ウォン超えたら？
+text.ff28c6edb0077491,community:community.MKT_RISE.ASK,{symbol} 이거 더 감? 아니면 {dayLow}원까지 다시 내려옴?,Does {symbol} keep going? Or is it heading back to ₩{dayLow}?,{symbol}まだ上がる？それとも{dayLow}ウォンまで戻る？
+text.290dd7fa01dceeb3,community:community.MKT_RISE_POLITE.ASK,{symbol} 오르는 이유를 아시는 분 계신가요? 지금 {price}원입니다.,Does anyone know why {symbol} is rising? It's at ₩{price} now.,{symbol}が上げている理由をご存じの方いますか？今{price}ウォンです。
+text.3f38c153b120ce89,community:community.MKT_RISE_POLITE.ASK,{symbol} {price}원인데 지금 들어가도 괜찮을까요? 고가 {dayHigh}원이 가까워 망설여집니다.,"{symbol} is at ₩{price} — is it okay to enter now? The ₩{dayHigh} high is close, so I'm hesitating.",{symbol}、{price}ウォンですが今入っても大丈夫でしょうか。高値{dayHigh}ウォンが近くて迷います。
+text.4eb4fd22089700c5,community:community.MKT_RISE_POLITE.ASK,{symbol} 보유하신 분들은 어느 가격에서 정리하실 계획인가요?,"{symbol} holders, at what price do you plan to sell?",{symbol}をお持ちの方は、どの価格で売る予定ですか？
+text.7b3be688e04a5e87,community:community.MKT_FALL.ASK,{symbol} 왜 빠지는 거임? 뭐 나온 거 있음?,Why is {symbol} dropping? Did something come out?,{symbol}なんで下げてるの？何か出た？
+text.f6e0858c26314a7e,community:community.MKT_FALL.ASK,{symbol} {price}원이면 주워도 됨? 저점 {dayLow}원 근처라 고민되네,"Is {symbol} a buy at ₩{price}? It's near the ₩{dayLow} low, so I'm tempted",{symbol} {price}ウォンなら拾っていい？安値{dayLow}ウォン付近で迷う
+text.400e6495d3e01aaa,community:community.MKT_FALL.ASK,{symbol} 들고 있는 사람들 버팀? 손절함?,{symbol} holders — holding or cutting?,{symbol}ホルダーの人、耐える？損切り？
+text.93e60b901c149a8e,community:community.MKT_FALL.ASK,{symbol} 어디까지 빠질 것 같음? {dayLow}원은 지켜주나,How low do you think {symbol} goes? Does ₩{dayLow} hold?,{symbol}どこまで下がると思う？{dayLow}ウォンは守る？
+text.465f9ce05329b458,community:community.MKT_FALL_POLITE.ASK,{symbol} 빠지는 이유를 아시는 분 계신가요? 지금 {price}원입니다.,Does anyone know why {symbol} is falling? It's at ₩{price} now.,{symbol}が下げている理由をご存じの方いますか？今{price}ウォンです。
+text.f57968dfaa1bdc3e,community:community.MKT_FALL_POLITE.ASK,{symbol} {price}원이면 매수해도 괜찮을까요? 저가 {dayLow}원 부근이라 고민됩니다.,"Would buying {symbol} at ₩{price} be reasonable? It's near the ₩{dayLow} low, so I'm weighing it.",{symbol}、{price}ウォンなら買ってもよいでしょうか。安値{dayLow}ウォン付近で悩んでいます。
+text.3b57a1c96ed61a83,community:community.MKT_FALL_POLITE.ASK,"{symbol} 보유하신 분들은 버티실 건가요, 정리하실 건가요?","{symbol} holders, are you holding on or getting out?",{symbol}をお持ちの方は、持ち続けますか、それとも手放しますか？
+text.be884aa325da35bb,community:community.MKT_FLAT.ASK,{symbol} 오늘 왜 이렇게 조용함? {dayLow}~{dayHigh}원에서 안 벗어나네,Why is {symbol} so quiet today? It won't leave ₩{dayLow}–₩{dayHigh},{symbol}今日なんでこんな静か？{dayLow}〜{dayHigh}ウォンから出ない
+text.a2ed8619c607cf96,community:community.MKT_FLAT.ASK,{symbol} 횡보할 때 모으는 사람 있음? 아니면 다들 딴 거 봄?,Anyone accumulating {symbol} while it chops? Or is everyone watching something else?,{symbol}ヨコヨコ中に集めてる人いる？それともみんな他見てる？
+text.78992de205ca6ec2,community:community.MKT_FLAT.ASK,{symbol} {price}원에서 위로 갈까 아래로 갈까. 다들 어떻게 봄?,{symbol} at ₩{price} — up or down from here? What's everyone thinking?,{symbol} {price}ウォンから上か下か。みんなどう見てる？
+text.d94a0e1c13a9476b,community:community.MKT_FLAT.ASK,{symbol} 이거 기다릴 가치 있음? 오늘 내내 {price}원 근처인데,Is {symbol} worth waiting on? It's been around ₩{price} all day,{symbol}これ待つ価値ある？今日ずっと{price}ウォン付近なんだが
+text.d7bc5578e1e3ba4d,community:community.MKT_FLAT_POLITE.ASK,"{symbol} 오늘 유난히 조용한데, 이유를 아시는 분 계신가요?",{symbol} is unusually quiet today — does anyone know why?,{symbol}は今日やけに静かですが、理由をご存じの方いますか？
+text.b4dbd19ba122ccba,community:community.MKT_FLAT_POLITE.ASK,{symbol} {dayLow}~{dayHigh}원 구간에서 모으시는 분 계신가요?,Is anyone accumulating {symbol} in the ₩{dayLow}–₩{dayHigh} range?,{symbol}を{dayLow}〜{dayHigh}ウォンの範囲で集めている方はいますか？
+text.45e2f2b9922a875d,community:community.MKT_FLAT_POLITE.ASK,{symbol} {price}원에서 어느 쪽으로 움직일 것 같으신가요?,Which way do you think {symbol} moves from ₩{price}?,{symbol}は{price}ウォンからどちらに動くと思われますか？
+text.514ecd403284967c,community:community.MKT_RISE.AGREE,ㅇㅇ {symbol} {price}원까지 온 거 보면 힘은 있음,"Yeah, {symbol} getting to ₩{price} shows real strength",うん、{symbol}が{price}ウォンまで来てるし勢いはある
+text.5002489d886503c0,community:community.MKT_RISE.AGREE,나도 그렇게 봄. {dayHigh}원 넘기면 더 갈 듯,Same here. If it clears ₩{dayHigh} it probably runs,自分もそう思う。{dayHigh}ウォン超えたらまだ行きそう
+text.b9f8585b4c0b1235,community:community.MKT_RISE.AGREE,맞음. 저점 {dayLow}원에서 여기까지 올린 게 그냥은 아니지,Right. It didn't climb from the ₩{dayLow} low to here for nothing,それな。安値{dayLow}ウォンからここまで上げたのは伊達じゃない
+text.ae932026a77fcc18,community:community.MKT_RISE.AGREE,ㄹㅇ {symbol} 오늘 분위기 다르긴 함,"Fr, {symbol} feels different today",ほんそれ、{symbol}今日は雰囲気違う
+text.a875c5f8abf2be94,community:community.MKT_RISE_POLITE.AGREE,동의합니다. {symbol} {price}원까지 올라온 걸 보면 힘이 있네요.,Agreed. {symbol} reaching ₩{price} shows strength.,同意です。{symbol}が{price}ウォンまで上げたのを見ると力がありますね。
+text.ccf112bce24c7c4b,community:community.MKT_RISE_POLITE.AGREE,저도 같은 생각입니다. {dayHigh}원을 넘기면 더 이어질 것 같습니다.,I think so too. Clearing ₩{dayHigh} would likely extend it.,私も同じ考えです。{dayHigh}ウォンを超えればさらに続きそうです。
+text.fbefdbaccffaf2c8,community:community.MKT_RISE_POLITE.AGREE,맞는 말씀입니다. 저가 {dayLow}원에서 여기까지 온 흐름은 무시하기 어렵네요.,Fair point. The move up from the ₩{dayLow} low is hard to ignore.,おっしゃる通りです。安値{dayLow}ウォンからここまでの流れは無視しにくいですね。
+text.06ec9668b6bd377b,community:community.MKT_FALL.AGREE,ㅇㅇ {symbol} {price}원까지 밀린 거 보면 약하긴 함,"Yeah, {symbol} sliding to ₩{price} does look weak",うん、{symbol}が{price}ウォンまで押されてるし弱いな
+text.c74e7a010e0180ac,community:community.MKT_FALL.AGREE,나도 그렇게 봄. {dayLow}원 깨지면 더 빠질 듯,Same here. If ₩{dayLow} breaks it probably drops more,自分もそう思う。{dayLow}ウォン割れたらもっと下げそう
+text.b5e973855ca3d484,community:community.MKT_FALL.AGREE,맞음. 고점 {dayHigh}원에서 여기까지 온 거면 분위기 꺾인 거지,Right. Coming down here from the ₩{dayHigh} high means the mood has turned,それな。高値{dayHigh}ウォンからここまで来たら流れ変わってる
+text.fea9a9b66eca3a29,community:community.MKT_FALL.AGREE,ㄹㅇ {symbol} 오늘은 건드리면 안 될 듯,"Fr, {symbol} looks like a don't-touch today",ほんそれ、{symbol}今日は触っちゃダメそう
+text.57b73b95d5f5823b,community:community.MKT_FALL_POLITE.AGREE,동의합니다. {symbol} {price}원까지 밀린 걸 보면 약해 보이네요.,Agreed. {symbol} sliding to ₩{price} does look weak.,同意です。{symbol}が{price}ウォンまで押されたのを見ると弱そうですね。
+text.75aa690b29a20570,community:community.MKT_FALL_POLITE.AGREE,저도 같은 생각입니다. {dayLow}원이 깨지면 더 밀릴 것 같습니다.,I think so too. A break of ₩{dayLow} would likely push it lower.,私も同じ考えです。{dayLow}ウォンを割ればさらに下げそうです。
+text.24a96ba2197c7c01,community:community.MKT_FALL_POLITE.AGREE,맞는 말씀입니다. 고가 {dayHigh}원에서 여기까지 내려온 흐름은 가볍지 않네요.,Fair point. The slide from the ₩{dayHigh} high isn't trivial.,おっしゃる通りです。高値{dayHigh}ウォンからここまでの下げは軽くありませんね。
+text.32d7127fe72deee5,community:community.MKT_FLAT.AGREE,ㅇㅇ {symbol} 오늘은 볼 게 없음. {price}원에서 그대로임,"Yeah, nothing to see on {symbol} today. Still sitting at ₩{price}",うん、{symbol}今日は見どころなし。{price}ウォンのまま
+text.e317fa459b6866e6,community:community.MKT_FLAT.AGREE,나도 그 생각함. {dayHigh}원 넘기 전엔 관심 끄는 게 맞음,Same thought. Not worth watching until it clears ₩{dayHigh},自分もそう思った。{dayHigh}ウォン超えるまでは放置でいい
+text.5be81b29bdfa5d54,community:community.MKT_FLAT.AGREE,맞음. {dayLow}~{dayHigh}원 박스 깨질 때까지는 그냥 구경,Right. Just spectating until the ₩{dayLow}–₩{dayHigh} box breaks,それな。{dayLow}〜{dayHigh}ウォンのボックス抜けるまでは見てるだけ
+text.f20eaf33a093305d,community:community.MKT_FLAT.AGREE,ㄹㅇ 이럴 땐 가만히 있는 게 돈 버는 거임,"Fr, doing nothing is how you make money in this",ほんそれ、こういう時は何もしないのが勝ち
+text.4b9d5a2965783053,community:community.MKT_FLAT_POLITE.AGREE,동의합니다. {symbol} 오늘은 {price}원에서 변화가 없네요.,Agreed. {symbol} hasn't moved off ₩{price} today.,同意です。{symbol}は今日{price}ウォンから変化がありませんね。
+text.160809e5502c6ef6,community:community.MKT_FLAT_POLITE.AGREE,저도 그렇게 봅니다. {dayHigh}원을 넘기 전에는 지켜보기만 하겠습니다.,I see it the same way. I'll only watch until it clears ₩{dayHigh}.,私もそう見ています。{dayHigh}ウォンを超えるまでは見守るだけにします。
+text.d33a7b322994e6d5,community:community.MKT_FLAT_POLITE.AGREE,맞는 말씀입니다. {dayLow}~{dayHigh}원 구간을 벗어날 때까지 기다리겠습니다.,Fair point. I'll wait until it leaves the ₩{dayLow}–₩{dayHigh} range.,おっしゃる通りです。{dayLow}〜{dayHigh}ウォンの範囲を抜けるまで待ちます。
+text.1d509a1f2bc16faa,community:community.MKT_RISE.REBUT,오른 건 맞는데 {price}원에서 따라 사는 건 다른 얘기임,"Sure it's up, but chasing at ₩{price} is a different story",上げてるのは確かだけど、{price}ウォンで追いかけるのは別の話
+text.b759f2b3d08f8359,community:community.MKT_RISE.REBUT,글쎄. {dayHigh}원 못 넘으면 여기가 고점일 수도 있음,"Eh. If it can't clear ₩{dayHigh}, this could be the top",どうかな。{dayHigh}ウォン超えられなきゃここが天井かも
+text.21bcf3128b08c40e,community:community.MKT_RISE.REBUT,너무 좋게만 보는 거 아님? 저점 {dayLow}원에서 이미 많이 왔는데,Aren't you being a bit rosy? It's already come a long way from the ₩{dayLow} low,ちょっと楽観しすぎじゃない？安値{dayLow}ウォンからもうかなり来てるのに
+text.5c23de33f4801d4b,community:community.MKT_RISE.REBUT,이럴 때 들어가면 꼭 물리던데. 난 좀 식는 거 보고 판단함,Buying moments like this is how I always get stuck. I'll wait for it to cool off,こういう時に入るといつも捕まるんだよな。少し冷めてから判断する
+text.94b31d31be928f97,community:community.MKT_RISE_POLITE.REBUT,"오른 것은 맞지만, {price}원에서 따라 사는 것은 다른 문제라고 봅니다.","It has risen, yes, but chasing at ₩{price} is a separate question.",上げているのは確かですが、{price}ウォンで追うのは別問題だと思います。
+text.de35abab35cb65f6,community:community.MKT_RISE_POLITE.REBUT,저는 조금 다르게 봅니다. {dayHigh}원을 넘지 못하면 여기가 고점일 수 있습니다.,"I see it a little differently. If it can't clear ₩{dayHigh}, this may be the top.",私は少し違う見方です。{dayHigh}ウォンを超えられなければ、ここが天井かもしれません。
+text.4632fa276130dab3,community:community.MKT_RISE_POLITE.REBUT,저가 {dayLow}원에서 이미 많이 올라왔습니다. 지금은 서두를 자리가 아닌 것 같네요.,It's already come far from the ₩{dayLow} low. This doesn't look like a spot to rush.,安値{dayLow}ウォンからすでにかなり上げています。今は急ぐ場面ではなさそうですね。
+text.800cfa64dc1e0f0e,community:community.MKT_FALL.REBUT,빠진 건 맞는데 {price}원이면 오히려 볼 만한 자리 아님?,"It's down, sure, but isn't ₩{price} actually worth a look?",下げてるのは確かだけど、{price}ウォンならむしろ見どころじゃない？
+text.07da418b5dcdebfd,community:community.MKT_FALL.REBUT,글쎄. {dayLow}원 안 깨지면 여기서 반등 나올 수도 있음,"Eh. If ₩{dayLow} holds, it could bounce from here",どうかな。{dayLow}ウォン割れなきゃここからリバるかも
+text.a4b054e61f74a39d,community:community.MKT_FALL.REBUT,너무 겁먹은 거 아님? 고점 {dayHigh}원에서 이 정도 눌리는 건 흔함,Aren't you a bit spooked? A dip like this off the ₩{dayHigh} high is normal,ビビりすぎじゃない？高値{dayHigh}ウォンからこのくらいの押しは普通
+text.db192ae33fe9d920,community:community.MKT_FALL.REBUT,다들 무섭다 할 때가 살 때라던데. 난 좀 더 보고 주울 생각,"They say buy when everyone's scared. I'm watching a bit more, then picking some up",みんなが怖がる時が買い時って言うし。もう少し見てから拾うつもり
+text.9be7f65ebfaf92da,community:community.MKT_FALL_POLITE.REBUT,"빠진 것은 맞지만, {price}원이면 오히려 살펴볼 만한 자리라고 봅니다.","It has fallen, yes, but ₩{price} seems worth a look to me.",下げているのは確かですが、{price}ウォンならむしろ検討に値すると思います。
+text.beaaef51c2c0e514,community:community.MKT_FALL_POLITE.REBUT,저는 조금 다르게 봅니다. {dayLow}원이 지켜지면 반등이 나올 수 있습니다.,"I see it a little differently. If ₩{dayLow} holds, a bounce is possible.",私は少し違う見方です。{dayLow}ウォンを守れば反発もあり得ます。
+text.b875947e8c89b38b,community:community.MKT_FALL_POLITE.REBUT,고가 {dayHigh}원에서 이 정도 조정은 흔한 일입니다. 너무 걱정하실 필요는 없어 보이네요.,A pullback like this from the ₩{dayHigh} high is common. I don't think there's much to worry about.,高値{dayHigh}ウォンからこの程度の調整はよくあることです。あまり心配はいらなそうですね。
+text.87b003514d5db4fe,community:community.MKT_RISE.ANSWER,"이유는 나도 모름. 근데 {dayHigh}원 넘기면 사고, 못 넘기면 안 삼","No idea why either. But I buy if it clears ₩{dayHigh}, and pass if it doesn't",理由は自分も分からん。でも{dayHigh}ウォン超えたら買う、超えなきゃ買わない
+text.faf91b452d8f5fee,community:community.MKT_RISE.ANSWER,난 {price}원에선 안 들어감. {dayLow}원 근처까지 눌리면 그때 봄,I'm not getting in at ₩{price}. I'll look if it dips back toward ₩{dayLow},{price}ウォンでは入らない。{dayLow}ウォン付近まで押したらその時考える
+text.3135f106f501b17c,community:community.MKT_RISE.ANSWER,산다면 조금만. 틀리면 {dayLow}원 깨질 때 자르면 됨,"If you buy, keep it small. If it's wrong, cut when ₩{dayLow} breaks",買うなら少しだけ。間違ってたら{dayLow}ウォン割れで切ればいい
+text.a51cdde894edd20a,community:community.MKT_RISE.ANSWER,뉴스는 못 봤음. 그냥 사는 사람이 많아서 오르는 듯,Haven't seen any news. Looks like it's just more buyers than sellers,ニュースは見てない。単に買う人が多くて上がってるっぽい
+text.cd15a6912f7e4fe1,community:community.MKT_RISE_POLITE.ANSWER,이유는 저도 모르겠습니다. 다만 {dayHigh}원을 넘는지를 기준으로 보고 있습니다.,I don't know the reason either. I'm using a break of ₩{dayHigh} as my line.,理由は私にも分かりません。ただ{dayHigh}ウォンを超えるかを基準に見ています。
+text.dc8f558e88e8379b,community:community.MKT_RISE_POLITE.ANSWER,저는 {price}원에서는 들어가지 않습니다. {dayLow}원 부근까지 눌리면 다시 보겠습니다.,I won't enter at ₩{price}. I'll look again if it dips toward ₩{dayLow}.,私は{price}ウォンでは入りません。{dayLow}ウォン付近まで押せば改めて見ます。
+text.6d27ad3ecd7b9f94,community:community.MKT_RISE_POLITE.ANSWER,관련 소식은 확인하지 못했습니다. 매수세가 우위인 것으로만 보입니다.,I couldn't confirm any news. It just looks like buyers have the upper hand.,関連する情報は確認できていません。買いが優勢なだけに見えます。
+text.806f1e3f1a847310,community:community.MKT_FALL.ANSWER,"이유는 나도 모름. 근데 {dayLow}원 깨지면 더 보고, 지키면 조금 주울 생각",No idea why either. If ₩{dayLow} breaks I keep watching; if it holds I'll pick up a little,理由は自分も分からん。{dayLow}ウォン割れたら様子見、守ったら少し拾う
+text.26affc5bba802fec,community:community.MKT_FALL.ANSWER,난 {price}원에선 아직 안 삼. 반등 확인하고 들어가도 안 늦음,Not buying at ₩{price} yet. It's not too late to enter after a bounce is confirmed,{price}ウォンではまだ買わない。リバ確認してからでも遅くない
+text.9e2cfa73e4d03583,community:community.MKT_FALL.ANSWER,뉴스는 못 봤음. 그냥 파는 사람이 많아서 빠지는 듯,Haven't seen any news. Looks like it's just more sellers than buyers,ニュースは見てない。単に売る人が多くて下がってるっぽい
+text.ab15e443e9b07011,community:community.MKT_FALL.ANSWER,버틸 거면 {dayLow}원 기준으로 잡는 게 맞음. 그 밑은 나도 모름,"If you're holding, use ₩{dayLow} as your line. Below that, who knows",耐えるなら{dayLow}ウォンを基準にすべき。その下は自分も分からん
+text.bb3bd688bf1d1339,community:community.MKT_FALL_POLITE.ANSWER,이유는 저도 모르겠습니다. 다만 {dayLow}원이 지켜지는지를 기준으로 보고 있습니다.,I don't know the reason either. I'm watching whether ₩{dayLow} holds.,理由は私にも分かりません。ただ{dayLow}ウォンを守れるかを基準に見ています。
+text.94fcfdea5b3bc59d,community:community.MKT_FALL_POLITE.ANSWER,저는 {price}원에서는 아직 사지 않습니다. 반등을 확인한 뒤에 들어가도 늦지 않습니다.,I'm not buying at ₩{price} yet. Entering after a confirmed bounce isn't too late.,私は{price}ウォンではまだ買いません。反発を確認してからでも遅くありません。
+text.216bd4baada275fa,community:community.MKT_FALL_POLITE.ANSWER,관련 소식은 확인하지 못했습니다. 매도세가 우위인 것으로만 보입니다.,I couldn't confirm any news. It just looks like sellers have the upper hand.,関連する情報は確認できていません。売りが優勢なだけに見えます。
+text.45665115e17e661e,community:community.MKT_FLAT.ANSWER,이유 없음. 그냥 다들 딴 종목 보는 중인 듯,No reason. Everyone's probably just watching other names,理由なし。みんな他の銘柄見てるだけっぽい
+text.046e57beb47c99e6,community:community.MKT_FLAT.ANSWER,난 {dayHigh}원 넘기 전엔 안 건드림. 횡보에 돈 묶이기 싫어서,I'm not touching it until it clears ₩{dayHigh}. Don't want money stuck in chop,{dayHigh}ウォン超えるまでは触らない。ヨコヨコに資金縛られたくない
+text.36f26af8ba6b287c,community:community.MKT_FLAT.ANSWER,위든 아래든 {dayLow}~{dayHigh}원 벗어나는 쪽 따라갈 생각,"Up or down, I'll follow whichever way it leaves ₩{dayLow}–₩{dayHigh}",上でも下でも、{dayLow}〜{dayHigh}ウォンを抜けた方についていく
+text.5d8beefae431fffe,community:community.MKT_FLAT.ANSWER,기다릴 거면 {price}원 근처에서 조금씩 모으는 것도 방법이긴 함,"If you're going to wait, nibbling around ₩{price} is one way to do it",待つなら{price}ウォン付近で少しずつ集めるのも手ではある
+text.816ef367c638b07c,community:community.MKT_FLAT_POLITE.ANSWER,특별한 이유는 없어 보입니다. 관심이 다른 종목에 쏠린 것 같네요.,There doesn't seem to be a particular reason. Attention is probably on other names.,特に理由はなさそうです。関心が他の銘柄に向いているようですね。
+text.98b227c29920704d,community:community.MKT_FLAT_POLITE.ANSWER,저는 {dayHigh}원을 넘기 전에는 손대지 않을 생각입니다.,I don't plan to touch it until it clears ₩{dayHigh}.,私は{dayHigh}ウォンを超えるまでは手を出さないつもりです。
+text.3b2fc21de3e3fc3a,community:community.MKT_FLAT_POLITE.ANSWER,{dayLow}~{dayHigh}원 구간을 벗어나는 방향을 따라가려 합니다.,I intend to follow whichever way it leaves the ₩{dayLow}–₩{dayHigh} range.,{dayLow}〜{dayHigh}ウォンの範囲を抜けた方向についていくつもりです。
+text.667e4faed7401763,community:community.CHATTER.REACT,자 여러분 {symbol} {price}원입니다. 중계는 제가 합니다 ㅋㅋ,"Alright folks, {symbol} is at ₩{price}. I'll be your commentator lol",はい皆さん、{symbol}は{price}ウォンです。実況は自分がやりますw
+text.7ce0704a30e2d277,community:community.CHATTER.REACT,{symbol} 보고 있는 사람 나밖에 없음? 나 혼자 떠드는 기분인데,Am I the only one watching {symbol}? Feels like I'm talking to myself,{symbol}見てるの自分だけ？一人でしゃべってる気分なんだが
+text.3e578773397161a6,community:community.CHATTER.REACT,아니 근데 {symbol} 얘기 아무도 안 함? 그럼 내가 함,"Wait, nobody's talking about {symbol}? Fine, I will",いや誰も{symbol}の話しないの？じゃあ自分がする
+text.262f0d8bf93973e5,community:community.CHATTER.REACT,{symbol} {price}원. 아까도 말했지만 또 말함 ㅋㅋ,{symbol} at ₩{price}. I said it earlier and I'm saying it again lol,{symbol} {price}ウォン。さっきも言ったけどまた言うw
+text.57fb29deaeff39ce,community:community.CHATTER.REACT,오늘 {symbol} 얘기만 몇 번째인지 모르겠는데 그래도 할 말이 있음,"Lost count of how many times I've brought up {symbol} today, and I've still got more",今日{symbol}の話何回目か分からんけど、まだ言いたいことがある
+text.fe127485936d985e,community:community.CHATTER.REACT,{symbol} 지금 {price}원인 거 다들 알고 있지? 모르면 내가 계속 알려줌,"Everyone knows {symbol} is at ₩{price}, right? If not, I'll keep telling you",{symbol}が今{price}ウォンなのみんな知ってるよね？知らなくても自分が言い続けるけど
+text.9db0ab4e514213d6,community:community.CHATTER.REACT,나 {symbol} 화면 하루 종일 켜놓고 있음. 궁금한 거 있으면 물어봐,I've had {symbol} on my screen all day. Ask me anything,{symbol}の画面一日中つけっぱなし。気になることあったら聞いて
+text.0d01601ed5e90de4,community:community.CHATTER.REACT,조용하길래 한마디 함. {symbol} {price}원임. 이상.,"It was quiet, so here's a word. {symbol} is ₩{price}. That is all.",静かだから一言。{symbol}は{price}ウォン。以上。
+text.c96f910f7a065a5a,community:community.CHATTER.SMALLTALK,다들 어디 갔음? 나만 떠드네 ㅋㅋ,Where'd everybody go? It's just me yapping lol,みんなどこ行った？自分だけしゃべってるw
+text.8eeef6474e646746,community:community.CHATTER.SMALLTALK,방 조용하면 불안해서 내가 뭐라도 말해야 됨,"A quiet room makes me nervous, so I have to say something",部屋が静かだと不安になるから何か言わないと気が済まない
+text.5b6ed572f85076c2,community:community.CHATTER.SMALLTALK,아 맞다 나 방금 라면 끓였음. 장 보면서 먹는 라면이 최고임,"Oh right, I just made ramen. Nothing beats ramen while watching the market",あ、そうだ今ラーメン作った。相場見ながら食べるラーメンが最高
+text.b74be2b1c57ffc53,community:community.CHATTER.SMALLTALK,여기 눈팅만 하는 사람 손 들어 봐. 다 보이거든?,"Lurkers, hands up. I can see all of you, you know",ROM専の人、手挙げて。全部見えてるからね？
+text.ef9edbe63fe917f3,community:community.CHATTER.SMALLTALK,내가 말 많은 건 아는데 조용한 것보단 낫잖아 ㅋㅋ,"I know I talk too much, but it beats silence lol",自分がおしゃべりなのは分かってるけど、静かなよりマシでしょw
+text.91322f4bc3978954,community:community.CHATTER.SMALLTALK,오늘도 출석 완료. 제일 먼저 와서 제일 늦게 가는 사람 나임,"Checked in again today. First one here, last one out — that's me",今日も出席完了。一番早く来て一番遅く帰るのが自分
+text.d2efc659493892be,community:community.CHATTER.SMALLTALK,심심한데 누가 종목 하나만 던져 줘. 같이 떠들게,I'm bored. Somebody toss me a ticker so we can chat about it,暇だから誰か銘柄ひとつ投げて。一緒に語ろう
+text.0f0a9a36f18c0553,community:community.CHATTER.SMALLTALK,아까 한 얘기 또 해도 됨? 안 된다 해도 할 거긴 함,Can I repeat what I said earlier? I'm going to anyway,さっきの話もう一回していい？ダメって言われてもするけど
+text.19f57377977c6f11,community:community.CHATTER.ASK,{symbol} 보는 사람 손! 나만 보는 거 아니지?,"Hands up if you're watching {symbol}! It's not just me, right?",{symbol}見てる人、手挙げて！自分だけじゃないよね？
+text.d5aa43004d4b5416,community:community.CHATTER.ASK,자 투표 갑니다. {symbol} 오늘 오른다 내린다?,"Okay, poll time. {symbol} today: up or down?",はい投票いきます。{symbol}今日は上がる？下がる？
+text.07688b66e2ca77f4,community:community.CHATTER.ASK,{symbol} 지금 {price}원인데 다들 한마디씩만 해 봐. 궁금해서 그럼,{symbol} is at ₩{price} — everyone give me one line. I'm just curious,{symbol}今{price}ウォンだけど、みんな一言ずつ言ってみて。気になるだけ
+text.ba9b5113df5203f3,community:community.CHATTER.ASK,오늘 뭐 샀는지 자랑할 사람 없음? 나 들을 준비 됨,Nobody wants to brag about what they bought today? I'm all ears,今日何買ったか自慢する人いない？聞く準備できてる
+text.9676946e61b39af7,community:community.CHATTER.ASK,{symbol} 들고 있는 사람 있으면 근황 좀. 심심함,"Any {symbol} holders, give me an update. I'm bored",{symbol}持ってる人いたら近況教えて。暇なんだ
+text.3a67045f59c77f52,community:community.CHATTER.ASK,다들 오늘 수익 어떰? 말하기 싫으면 표정만이라도 ㅋㅋ,"How's everyone's P&L today? If you won't say, at least give me a face lol",みんな今日の収支どう？言いたくなければ顔だけでもw
+text.3f6b3b81ceb3eca7,community:community.CHATTER.ASK,{symbol} 얘기 나만 재밌어? 반응 좀 해 줘 ㅋㅋ,Am I the only one who finds {symbol} fun? Give me something here lol,{symbol}の話、自分だけ楽しいの？ちょっとは反応してよw
+text.c267af29b8a9a5f3,community:community.CHATTER.ASK,아무나 대답 좀. {symbol} {price}원 싼 거임 비싼 거임?,Somebody answer me. Is ₩{price} cheap or expensive for {symbol}?,誰でもいいから答えて。{symbol}の{price}ウォンって安いの高いの？
+text.b330cd634b2e9a4e,UI: Assets/Scripts/NightShift/PlayerProgression.cs,리딩방 개설 필요 · 개설 비용 ,Room not opened · Opening cost ,ルーム未開設 · 開設費用 
+text.410e1fc68ebaa77f,UI: Assets/Scripts/NightShift/PlayerProgression.cs,리딩방 개설 완료 · 공용 라운지 채팅에서 + 를 눌러 회원을 초대하세요.,Room opened · Tap + on a lounge message to invite members.,ルーム開設済み · ラウンジのメッセージの + で会員を招待できます。
+text.7fb1bbc93a0226e4,UI: Assets/Scripts/NightShift/LeadingRoomUI.cs,첫 회원 초대 · 채팅에서 + 를 누르세요,First invite · Tap + on a message,初回招待 · メッセージの + を押す
+text.d0761b395d4f1e5b,UI: Assets/Scripts/NightShift/LeadingRoomUI.cs,공용 라운지 채팅에서 + 를 눌러 첫 회원을 초대하세요,Tap + on a lounge message to invite your first member,ラウンジのメッセージの + で最初の会員を招待しましょう
+text.f911f83a21333a61,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs,개설 비용 ,Opening cost ,開設費用 
+text.8be7e922c5a0a164,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs,개설 버튼을 누르면 비용을 내고 방이 열립니다.,Press Open to pay the cost and open your room.,開設ボタンを押すと、費用を支払ってルームが開きます。
+text.9eaa29c34af9f2e2,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs,주문 가능 현금을 모으면 바로 개설할 수 있습니다.,Build up enough available cash and you can open right away.,注文可能な現金が貯まれば、すぐに開設できます。
+text.74645b0eecc78015,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs,개설 비용 · 납부 완료,Opening cost · Paid,開設費用 · 支払済み
+text.75afba3f50186ee4,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs,개설 비용 · 준비 완료,Opening cost · Ready,開設費用 · 準備完了
+text.81023e301bf2fedc,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs,개설 비용 · 모으는 중,Opening cost · Saving up,開設費用 · 貯めている途中
+text.af4cd01e47ddbc8d,UI: Assets/Scripts/NightShift/CompactGrowthUI.cs,주문 가능 현금에서 한 번만 냅니다.,Paid once from your available cash.,注文可能な現金から一度だけ支払います。
+text.fd4fe46b7ae46d57,UI: Assets/Scripts/NightShift/DeviceTerminalUI.cs,내 리딩방을 열었습니다. 공용 라운지 채팅에서 + 를 눌러 회원을 초대하세요.,Your room is open. Tap + on a lounge message to invite members.,ルームを開きました。ラウンジのメッセージの + で会員を招待しましょう。
+text.b30e4204a5d9e466,UI: Assets/Scripts/NightShift/InvestorJourneyUI.cs,비용 보기,View cost,費用を見る
+text.7878d0bb93e117f8,UI: Assets/Scripts/NightShift/InvestorJourneyUI.cs,개설 비용 준비됨,Opening cost ready,開設費用の準備完了
+text.473bad65ed56af35,UI: Assets/Scripts/NightShift/ChatSocialUnity.cs player promotion,리딩방 열었습니다. 같이 하실 분 들어오세요.,I've opened a trading room. Come on in if you want to trade together.,リーディングルームを開きました。一緒にやりたい方はどうぞ。
+text.54433c2b2f02404b,UI: Assets/Scripts/NightShift/ChatSocialUnity.cs player promotion,제 리딩방 회원 모집합니다. 매매 지시는 제가 직접 드립니다.,Looking for members for my room. I send out the calls myself.,自分のルームでメンバーを募集しています。売買指示は自分が直接出します。
+text.f0bca968cb0f2492,UI: Assets/Scripts/NightShift/ChatSocialUnity.cs player promotion,혼자 고민하지 말고 제 방으로 오세요. 자리 있습니다.,Don't sweat it alone — join my room. There's still space.,一人で悩まずに自分のルームへどうぞ。まだ空きがあります。
+text.03733a589bbd2806,UI: Assets/Scripts/NightShift/ChatSocialUnity.cs player promotion,리딩방 운영 중입니다. 관심 있으면 들어와서 구경하세요.,My room is up and running. Drop by and have a look if you're curious.,ルームを運営中です。気になる方は覗いてみてください。
+text.1e231ef96c6f884c,afterhours:BREAK.open,오늘 {symbol} {level}원 돌파했는데 내일 {nextLevel}원 가나? ㅋㅋ,{symbol} broke ₩{level} today — ₩{nextLevel} tomorrow? lol,今日{symbol}が{level}ウォン突破したけど、明日は{nextLevel}ウォン行く？w
+text.6c3dd7f93761174c,afterhours:BREAK.open,{symbol} {level}원 뚫고 {close}원 마감. 내일도 가려나,{symbol} punched through ₩{level} and closed at ₩{close}. More tomorrow?,{symbol}、{level}ウォン抜けて{close}ウォン引け。明日も行くかな
+text.b24e240db22857ac,afterhours:BREAK.open,{symbol} {level}원 넘긴 거 본 사람? 내일 시초가 궁금함,Anyone see {symbol} clear ₩{level}? Curious where it opens tomorrow,{symbol}が{level}ウォン超えたの見た人いる？明日の寄り付きが気になる
+text.00e0121e3e4050e9,afterhours:BREAK.open,{symbol} 오늘 {dayPct} 찍고 {level}원 위에서 끝남. 이거 진짜임?,{symbol} did {dayPct} today and finished above ₩{level}. Is this for real?,{symbol}、今日{dayPct}で{level}ウォンの上で引けた。これ本物？
+text.8eb71d35fe08633b,afterhours:BREAK.openMorning,어제 {symbol} {level}원 돌파했는데 오늘 {nextLevel}원 가나? ㅋㅋ,{symbol} broke ₩{level} yesterday — ₩{nextLevel} today? lol,昨日{symbol}が{level}ウォン突破したけど、今日は{nextLevel}ウォン行く？w
+text.88c4e4393c23b2de,afterhours:BREAK.openMorning,{symbol} 어제 {close}원 마감이었지. 오늘 {level}원 지켜 주려나,{symbol} closed at ₩{close} yesterday. Will ₩{level} hold today?,{symbol}、昨日は{close}ウォン引けだったよね。今日{level}ウォン守れるかな
+text.5d438b5be369dbd4,afterhours:BREAK.openMorning,자고 일어나도 {symbol} {level}원 돌파가 안 믿김 ㅋㅋ 오늘 시초가 어디서 뜰까,Slept on it and I still can't believe {symbol} broke ₩{level} lol. Where does it open today?,一晩寝ても{symbol}の{level}ウォン突破が信じられんw 今日の寄り付きどこだろ
+text.0c9b3545f8ae537c,afterhours:BREAK.openMorning,{symbol} 어제 {dayPct}였는데 오늘 이어 가면 {nextLevel}원도 보이는 거 아님?,"{symbol} was {dayPct} yesterday. If that keeps up today, ₩{nextLevel} is on the table, no?",{symbol}、昨日{dayPct}だったし、今日も続けば{nextLevel}ウォンも見えてくるんじゃ？
+text.adbc6a003d9c2522,afterhours:BREAK.reply,{nextLevel}원은 좀 ㅋㅋ 일단 {level}원부터 지켜야지,₩{nextLevel} is a stretch lol. Hold ₩{level} first,{nextLevel}ウォンはさすがにw まず{level}ウォンを守らないと
+text.d68c683ad02c2af1,afterhours:BREAK.reply,시초가 봐야 앎. 갭 뜨면 무서워서 못 탐,Gotta see the open. If it gaps up I'm too scared to get on,寄り付き見ないと分からん。ギャップアップしたら怖くて乗れない
+text.8bad815c60b59daf,afterhours:BREAK.reply,그 정도 오르면 차익 매물 나올 때 됐음,"After a run like that, profit-taking is due",それだけ上がったら利確売りが出る頃だよ
+text.d818cb7d68456740,afterhours:BREAK.reply,{nextLevel}원 가면 나 치킨 쏨 ㅋㅋ,"If it hits ₩{nextLevel}, chicken's on me lol",{nextLevel}ウォン行ったらチキンおごるわw
+text.840ced6eb4f35dc6,afterhours:BREAK.reply,{level}원 돌파는 인정. 근데 거기서 더 살 사람이 있을지가 문제,The ₩{level} break is legit. Question is whether anyone buys higher,{level}ウォン突破は認める。でもそこから上で買う人がいるかが問題
+text.8a9b888832bb8cf5,afterhours:BREAK.reply,난 구경만 함. 이미 너무 올라서 손이 안 나감,I'm just watching. It's run too far for me to touch,自分は見てるだけ。もう上がりすぎて手が出ない
+text.f73880c329254c8f,afterhours:BREAK.replyHolder,나 그거 들고 있음 ㅋㅋ {nextLevel}원까지 안 팔 거임,I'm holding that lol. Not selling before ₩{nextLevel},それ持ってるw {nextLevel}ウォンまで売らないよ
+text.343792a6b3a62188,afterhours:BREAK.replyHolder,들고 있는 입장에선 제발 가 줬으면,"As a holder: please, just go",持ってる身としては頼むから行ってほしい
+text.81c6c4e6e7594991,afterhours:BREAK.replyHolder,나도 주주임. {level}원 넘는 거 보고 소리 지름 ㅋㅋ,Holder here too. I yelled when it cleared ₩{level} lol,自分も株主。{level}ウォン超えた瞬間叫んだw
+text.c47dde1f4170069d,afterhours:BREAK.back,ㅋㅋ 일단 시초가 보고 다시 얘기하자,lol let's talk again after the open,w とりあえず寄り付き見てからまた話そう
+text.cb83775809608b4e,afterhours:BREAK.back,그 말도 맞음. 기대는 반만 해야겠다,Fair point. I'll keep my hopes at half,それもそうか。期待は半分にしとく
+text.a586de3ca93f74ce,afterhours:BREAK.back,ㅇㅋ 꿈은 크게 가지는 걸로 ㅋㅋ,"ok, dreaming big it is lol",おけ、夢は大きくってことでw
+text.fafdb61636ac5ac4,afterhours:UP.open,{symbol} 오늘 {dayPct} 마감. 내일도 이 분위기 이어짐?,{symbol} closed {dayPct} today. Same mood tomorrow?,{symbol}、今日{dayPct}で引け。明日もこの流れ続く？
+text.cd121fbff99f40c5,afterhours:UP.open,{symbol} {close}원에 끝났네. 내일 더 갈 거라 보는 사람?,{symbol} ended at ₩{close}. Anyone think it goes higher tomorrow?,{symbol}は{close}ウォンで終わったね。明日もっと行くと思う人いる？
+text.b57da615170777c3,afterhours:UP.open,오늘 {symbol} 못 탄 사람 나뿐임? {dayPct}를 그냥 구경함,Am I the only one who missed {symbol} today? Watched {dayPct} go by,今日{symbol}に乗れなかったの自分だけ？{dayPct}をただ眺めてた
+text.6e8d7aef260e941c,afterhours:UP.open,{symbol} 내일 눌림 주면 살 건데 줄까?,I'd buy a dip in {symbol} tomorrow. Will it give one?,{symbol}、明日押し目くれたら買うけど、くれるかな？
+text.8e17c2fd6e8464ee,afterhours:UP.openMorning,{symbol} 어제 {dayPct}였는데 오늘도 감?,{symbol} was {dayPct} yesterday. Again today?,{symbol}、昨日{dayPct}だったけど今日も行く？
+text.204c9058faa57825,afterhours:UP.openMorning,어제 {symbol} {close}원 마감 보고 잠. 오늘 시초가 예상 좀,Went to bed on {symbol} closing at ₩{close}. Guesses for today's open?,昨日{symbol}の{close}ウォン引けを見て寝た。今日の寄り付き予想よろしく
+text.54b80b3751b35312,afterhours:UP.openMorning,{symbol} 어제 놓친 사람 모여 봐. 오늘 탈 거임?,"Everyone who missed {symbol} yesterday, gather round. Getting on today?",昨日{symbol}を逃した人集合。今日は乗る？
+text.790c764802e61f3c,afterhours:UP.openMorning,오늘 {symbol} 눌림 오면 살 사람 손,Hands up if you're buying a {symbol} dip today,今日{symbol}に押し目が来たら買う人、手挙げて
+text.dba1bfdb45a885f4,afterhours:UP.reply,하루 올랐다고 따라 사면 물림. 난 하루 더 봄,Chase a one-day pop and you get stuck. I'm watching another day,一日上がっただけで追うと捕まる。自分はもう一日見る
+text.64a95d6f731ac560,afterhours:UP.reply,눌림 주면 나도 삼. 근데 안 주고 가면 그냥 보내 줌,"I'd buy a dip too. If it runs without one, I let it go",押し目があれば自分も買う。なければ見送る
+text.6aca6c0f0c9d6f6d,afterhours:UP.reply,{dayPct}면 이미 먹을 사람은 다 먹은 거 아님?,"At {dayPct}, hasn't everyone already eaten?",{dayPct}ならもう取る人は取り終わったんじゃ？
+text.80690263563002b7,afterhours:UP.reply,거래량 붙었으면 하루는 더 간다 봄,"If volume came in, I'd say one more day",出来高がついてたならもう一日は行くと思う
+text.00b86baa84e8abdd,afterhours:UP.reply,나도 못 탐 ㅋㅋ 구경하는 게 제일 속 편함,Missed it too lol. Watching is the least stressful,自分も乗れなかったw 見てるのが一番気楽
+text.b5af4eb1991728ea,afterhours:UP.reply,시초가 높게 뜨면 안 삼. 그건 남 좋은 일임,Not buying a high open. That just helps someone else,寄りが高かったら買わない。それは他人を儲けさせるだけ
+text.03364c54f0514850,afterhours:UP.replyHolder,나 들고 있음. 더 오르면 반은 팔 생각,I'm holding. If it climbs more I'll sell half,持ってる。もっと上がったら半分売るつもり
+text.1c9e656622146ff8,afterhours:UP.replyHolder,주주인데 솔직히 나도 어디까지 갈지 모름 ㅋㅋ,Holder here and honestly I don't know how far it goes either lol,株主だけど、正直どこまで行くか自分も分からんw
+text.80ec10060a21a308,afterhours:UP.replyHolder,들고 있으니까 마음은 편함. 욕심만 안 내면 됨,"Holding it, so I'm relaxed. Just can't get greedy",持ってるから気は楽。欲さえ出さなければ
+text.40ff680b7c1048f1,afterhours:UP.back,역시 눌림 기다리는 게 맞겠지,"Yeah, waiting for a dip is probably right",やっぱ押し目待ちが正解か
+text.cad3ab9df586176d,afterhours:UP.back,ㅋㅋ 다들 생각은 비슷하네,lol we're all thinking the same,w みんな考えること同じだな
+text.1daa0be769fec2c8,afterhours:UP.back,ㅇㅋ 시초가 보고 정함,"ok, I'll decide at the open",おけ、寄り付き見て決める
+text.d0a2b4d82eb9d39e,afterhours:DOWN.open,{symbol} 전망좀요... 하...,Any outlook on {symbol}... sigh...,{symbol}の見通し教えてください…はぁ…
+text.20835679badbc7de,afterhours:DOWN.open,{symbol} 오늘 {dayPct}. 내일 반등 줌 안 줌?,{symbol} {dayPct} today. Bounce tomorrow or not?,{symbol}、今日{dayPct}。明日リバある？ない？
+text.5a5439c0f2af5c74,afterhours:DOWN.open,{symbol} {close}원 마감 실화냐. 어디까지 빠지는 거임,"{symbol} closing at ₩{close}, seriously? How far does this fall",{symbol}が{close}ウォン引けってマジか。どこまで下がるの
+text.a9c9f5b8467cdf68,afterhours:DOWN.open,{symbol} 지금 줍는 건 무리임? 누가 말려 줘,Is it crazy to pick up {symbol} here? Someone stop me,{symbol}を今拾うのは無謀？誰か止めて
+text.79cced4db05a6e9f,afterhours:DOWN.openMorning,{symbol} 어제 {dayPct} 맞고 잠을 못 잠. 오늘 전망좀요...,"Couldn't sleep after {symbol} took {dayPct} yesterday. Outlook for today, please...",昨日{symbol}が{dayPct}食らって眠れなかった。今日の見通しを…
+text.43496ab1b0affbcd,afterhours:DOWN.openMorning,{symbol} 오늘은 반등 주겠지? 어제 {close}원까지 밀렸는데,"{symbol} bounces today, right? It got pushed to ₩{close} yesterday",{symbol}、今日はリバるよね？昨日{close}ウォンまで押されたし
+text.66baddb53162f527,afterhours:DOWN.openMorning,어제 {symbol} 던진 사람 많음? 오늘 더 빠지면 줍게,Did a lot of you dump {symbol} yesterday? If it drops more today I'm picking some up,昨日{symbol}投げた人多い？今日もっと下がったら拾うけど
+text.3cce9ef7cef11a93,afterhours:DOWN.openMorning,{symbol} 시초가부터 또 빠지면 어떡하지,What if {symbol} drops again right at the open,{symbol}が寄りからまた下がったらどうしよう
+text.0ad1b10b5bfc1c39,afterhours:DOWN.reply,하루 빠진 걸로 전망은 아무도 모름. 일단 숨 고르자,Nobody can call it off one down day. Breathe first,一日下がっただけじゃ誰にも分からん。まず落ち着こう
+text.781cdf9582c0d447,afterhours:DOWN.reply,반등은 줄 듯. 근데 반등에 파는 사람도 많을 거임,Probably bounces. But plenty will sell into it,リバはありそう。でもリバで売る人も多いはず
+text.381e1da942fd2307,afterhours:DOWN.reply,떨어지는 칼은 안 잡는 거라 배웠음,I was taught not to catch a falling knife,落ちるナイフは掴むなって教わった
+text.82c0510e08559647,afterhours:DOWN.reply,{dayPct}면 아픈 건 맞는데 끝난 건 아님,"{dayPct} hurts, but it's not over",{dayPct}は痛いけど、終わりじゃない
+text.03648f37c4262730,afterhours:DOWN.reply,난 바닥 확인하고 들어감. 지금은 구경,I get in after a bottom shows. Watching for now,自分は底を確認してから入る。今は見てるだけ
+text.8318e10def6b7944,afterhours:DOWN.reply,힘내... 치킨 먹고 잊자,Hang in there... eat some chicken and forget it,元気出して…チキン食べて忘れよう
+text.4fcc2ac07965cfda,afterhours:DOWN.replyHolder,나도 물려 있음. 같이 버티자,I'm stuck in it too. Let's hold on together,自分も捕まってる。一緒に耐えよう
+text.50590bec060ed261,afterhours:DOWN.replyHolder,주주 여기 있음... 나도 전망 듣고 싶다,Holder right here... I'd like an outlook too,株主ここにいます…自分も見通し聞きたい
+text.f80886cf5ff3189e,afterhours:DOWN.replyHolder,나 들고 있는데 그냥 앱 지움 ㅋㅋ,I'm holding it and I just deleted the app lol,持ってるけどアプリ消したw
+text.80bd24cff92fe5c3,afterhours:DOWN.back,하... 고마움. 일단 버텨 봄,sigh... thanks. I'll hang on for now,はぁ…ありがとう。とりあえず耐えてみる
+text.591170e8f666888f,afterhours:DOWN.back,다들 비슷하구나. 위로가 됨 ㅋㅋ,So it's not just me. That helps lol,みんな同じなんだな。ちょっと救われたw
+text.3a07acafe33d2024,afterhours:DOWN.back,ㅇㅋ 섣불리 안 움직이고 지켜봄,"ok, no rash moves. I'll watch",おけ、早まらずに様子見る
+text.a7fc63d4bcdd6af8,afterhours:NEWS_UP.open,{symbol} 얘네 호재 뭐 뜬 거 있음?,Did {symbol} get some good news or what?,{symbol}って何か好材料出た？
+text.c4256165c26ade51,afterhours:NEWS_UP.open,{symbol} 왜 {dayPct}나 오른 거임? 아는 사람,Why did {symbol} go {dayPct}? Anyone know,{symbol}なんで{dayPct}も上がったの？知ってる人
+text.27b103522294b02a,afterhours:NEWS_UP.open,{symbol} 뉴스 본 사람 있음? 이유 없이 이렇게 오르나,Anyone seen news on {symbol}? Does it just climb like this for no reason,{symbol}のニュース見た人いる？理由なくこんなに上がる？
+text.0b06323f767d835a,afterhours:NEWS_UP.open,{symbol} 오른 이유 좀 알려 줘. 나만 모르는 것 같음,Someone tell me why {symbol} went up. Feels like only I don't know,{symbol}が上がった理由教えて。自分だけ知らない気がする
+text.a5dc887f581cfc17,afterhours:NEWS_UP.reply,딱히 못 봄. 그냥 수급인 듯,Haven't seen anything. Looks like plain buying pressure,特に見てない。ただの需給っぽい
+text.7e89cdb7d50fbf6f,afterhours:NEWS_UP.reply,뉴스는 모르겠고 누가 크게 산 것 같긴 함,"No idea about news, but someone bought big",ニュースは知らんけど、誰かが大きく買った感じはする
+text.06d96bc717965c8d,afterhours:NEWS_UP.reply,나도 찾아봤는데 없음. 이유는 나중에 붙는 거임,"I looked too, nothing. The reason shows up later",自分も探したけどなかった。理由は後からつくもの
+text.13a675c571740180,afterhours:NEWS_UP.reply,호재면 벌써 다 반영됐을걸,"If it's good news, it's priced in already",好材料ならもう織り込み済みでしょ
+text.64b30fe3d8f561c1,afterhours:NEWS_UP.reply,이유 모르고 오르는 게 제일 무서움,A rise with no reason is the scariest kind,理由なく上がるのが一番怖い
+text.6400a3641235f6f4,afterhours:NEWS_UP.reply,뉴스 탭 한번 봐 봐. 나도 지금 보는 중,Check the news tab. I'm looking right now too,ニュースタブ見てみて。自分も今見てる
+text.c21b343b383b1c62,afterhours:NEWS_UP.replyHolder,들고 있는데 나도 이유를 모름 ㅋㅋ 그냥 감사할 뿐,I hold it and I don't know why either lol. Just grateful,持ってるけど理由は知らんw ただ感謝してる
+text.a5a2ec6d046295a9,afterhours:NEWS_UP.replyHolder,주주인데 뉴스는 못 봤음. 오르니까 좋긴 함,"Holder here, saw no news. Not complaining though",株主だけどニュースは見てない。上がるのは嬉しいけど
+text.537d126d6c0db497,afterhours:NEWS_UP.replyHolder,나도 주주라 찾아봤는데 딱 이거다 싶은 건 없었음,"I'm a holder so I looked, but nothing stood out",株主だから調べたけど、これだってのはなかった
+text.813502c2828de9e1,afterhours:NEWS_UP.back,역시 아무도 모르는구나 ㅋㅋ,So nobody knows lol,やっぱ誰も知らないのかw
+text.53c984706f6ff8bc,afterhours:NEWS_DOWN.back,ㅇㅋ 뉴스 탭 보고 옴,"ok, off to check the news tab",おけ、ニュースタブ見てくる
+text.da89f868f07f7030,afterhours:NEWS_UP.back,이유 없이 오른 거면 더 조심해야겠네,"If it rose for no reason, I'd better be careful",理由なしで上がったなら、なおさら気をつけないと
+text.b7a248c83babb448,afterhours:NEWS_DOWN.open,{symbol} 얘네 악재 뭐 뜬 거 있음?,Did {symbol} get hit with bad news?,{symbol}って何か悪材料出た？
+text.8b78e19e1bfda257,afterhours:NEWS_DOWN.open,{symbol} 왜 {dayPct}나 빠진 거임? 아는 사람,Why did {symbol} drop {dayPct}? Anyone know,{symbol}なんで{dayPct}も下がったの？知ってる人
+text.4246436c36a2b1d3,afterhours:NEWS_DOWN.open,{symbol} 무슨 일 있음? 이유 없이 이렇게 빠지나,What's going on with {symbol}? Does it just sink like this for no reason,{symbol}何かあった？理由なくこんなに下がる？
+text.9ba6a6079329ed99,afterhours:NEWS_DOWN.open,{symbol} 빠진 이유 좀 알려 줘. 뉴스를 못 찾겠음,Someone tell me why {symbol} fell. I can't find any news,{symbol}が下がった理由教えて。ニュースが見つからない
+text.0d607614d714c4c1,afterhours:NEWS_DOWN.reply,딱히 못 봄. 누가 크게 던진 듯,Haven't seen anything. Looks like someone dumped big,特に見てない。誰かが大きく投げたっぽい
+text.fcccaa856d3f4418,afterhours:NEWS_DOWN.reply,악재는 모르겠고 그냥 차익 실현 같음,No idea about bad news. Looks like profit-taking,悪材料は知らんけど、ただの利確に見える
+text.d4f3640a52764308,afterhours:NEWS_DOWN.reply,나도 찾아봤는데 없음. 그래서 더 찜찜함,"I looked too, nothing. Which makes it worse",自分も探したけどなかった。だから余計に気持ち悪い
+text.2b8bc6ea56f3f779,afterhours:NEWS_DOWN.reply,이유 없는 하락이면 금방 돌아오기도 함,Drops with no reason sometimes come right back,理由のない下げはすぐ戻ることもある
+text.e1dd8bae62b1e56b,afterhours:NEWS_DOWN.reply,뉴스 탭 한번 봐 봐. 뭐 있으면 거기 있음,"Check the news tab. If there's something, it's there",ニュースタブ見てみて。何かあればそこにある
+text.06901f27aa7159f0,afterhours:NEWS_DOWN.reply,모를 땐 안 건드리는 게 답임,"When you don't know, don't touch it",分からない時は触らないのが正解
+text.bc42f616a68da809,afterhours:NEWS_DOWN.replyHolder,들고 있는데 나도 이유를 모름. 답답함,I hold it and I don't know why either. Frustrating,持ってるけど理由は分からん。もどかしい
+text.60c157e6d02ce5cf,afterhours:NEWS_DOWN.replyHolder,주주인데 뉴스 없었음. 그냥 맞은 거임,"Holder here, no news. We just got hit",株主だけどニュースはなかった。ただやられただけ
+text.2de200a239e8fe66,afterhours:NEWS_DOWN.replyHolder,나도 주주라 찾아봤는데 아무것도 없더라,I'm a holder so I looked. Nothing at all,株主だから調べたけど、何もなかった
+text.6e265bf1e2957336,afterhours:NEWS_DOWN.back,역시 아무도 모르는구나... 더 무섭네,So nobody knows... that's scarier,やっぱ誰も知らないのか…余計怖い
+text.20c134d4b1fc1310,afterhours:NEWS_DOWN.back,이유를 모르니까 손을 못 대겠음,Can't touch it when I don't know why,理由が分からないから手が出せない
+text.ea10db5870daa4f4,afterhours:FLAT.open,{symbol} 오늘 하루 종일 {close}원 근처. 내일은 좀 움직이려나,{symbol} sat near ₩{close} all day. Will it move tomorrow?,{symbol}、今日は一日中{close}ウォン付近。明日は動くかな
+text.eb1208da77cae35a,afterhours:FLAT.openMorning,{symbol} 얘는 언제 움직임? 보다가 졸았음,When does {symbol} ever move? I dozed off watching,{symbol}っていつ動くの？見てて寝落ちした
+text.528f4d6d2357c7bd,afterhours:FLAT.openMorning,{symbol} 들고 있는 사람 안 지루함?,Aren't {symbol} holders bored?,{symbol}持ってる人、退屈じゃない？
+text.a867cbc73bda7b12,afterhours:FLAT.openMorning,{symbol} {close}원에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데,{symbol} won't budge from ₩{close}. They say these pop big when they go,{symbol}、{close}ウォンからびくともしない。こういうのが動くとデカいらしいけど
+text.2a456d315c682886,afterhours:FLAT.openMorning,{symbol} 어제 하루 종일 {close}원 근처였음. 오늘은 좀 움직이려나,{symbol} sat near ₩{close} all day yesterday. Will it move today?,{symbol}、昨日は一日中{close}ウォン付近。今日は動くかな
+text.0863d3c3898ad712,afterhours:FLAT.reply,안 움직이는 게 제일 편함. 난 좋음,Not moving is the easiest. I like it,動かないのが一番楽。自分は好き
+text.fd7f8bdaf06e6ecc,afterhours:FLAT.reply,그런 건 잊고 있으면 어느 날 올라 있음,Forget about those and one day they're up,そういうのは忘れてるとある日上がってる
+text.81c233ab77caf259,afterhours:FLAT.reply,지루한 종목은 안 봄. 시간 아까움,I don't watch boring ones. Waste of time,退屈な銘柄は見ない。時間がもったいない
+text.76310eac46190d6d,afterhours:FLAT.reply,터지면 크다는 말 믿다가 1년 기다린 사람 여기 있음,Here's someone who believed 'it pops big' and waited a year,「動くとデカい」を信じて一年待った人がここにいます
+text.4d195b9e095151bf,afterhours:FLAT.reply,거래가 없으면 이유가 있는 거임,"If nobody's trading it, there's a reason",売買がないのには理由がある
+text.27338e046c68e85d,afterhours:FLAT.reply,{close}원에서 안 빠지는 것만 해도 어디임,At least it isn't falling from ₩{close},{close}ウォンから下がらないだけマシでしょ
+text.2538141fffa9b6bd,afterhours:FLAT.replyHolder,나 들고 있음. 지루한데 팔 이유도 없음,"I hold it. Boring, but no reason to sell",持ってる。退屈だけど売る理由もない
+text.f0576bc2cfe1f9dd,afterhours:FLAT.replyHolder,주주인데 솔직히 있는 줄도 까먹고 있었음 ㅋㅋ,Holder here and honestly I forgot I owned it lol,株主だけど、正直持ってるのを忘れてたw
+text.297b68659f7fe505,afterhours:FLAT.replyHolder,들고 있는 입장에선 조용한 게 낫다,"As a holder, quiet is better",持ってる側としては静かな方がいい
+text.060cd903fcc1fc8a,afterhours:FLAT.back,ㅋㅋ 맞음. 조용한 게 낫긴 함,lol true. Quiet is better,w 確かに。静かな方がいいか
+text.b93abbec82b69bb1,afterhours:FLAT.back,그래도 한 번은 움직여 줬으면,"Still, I'd like it to move once",それでも一回は動いてほしい
+text.86dc5418c5e7f4ce,afterhours:FLAT.back,ㅇㅋ 잊고 살아야겠다,"ok, I'll forget about it",おけ、忘れて暮らすわ
+text.11df4287226d1d0f,afterhours:TOMORROW.open,내일 장 어떨 것 같음?,How do you see tomorrow's session?,明日の相場どうなると思う？
+text.3b53a41c4f2af6fe,afterhours:TOMORROW.open,내일 뭐 살지 정한 사람?,Anyone decided what to buy tomorrow?,明日何買うか決めた人いる？
+text.20a035661754581e,afterhours:TOMORROW.open,내일 계획 있는 사람? 나는 아직 없음,Anyone have a plan for tomorrow? I've got nothing yet,明日の計画ある人いる？自分はまだない
+text.7a04060ae56d0436,afterhours:TOMORROW.open,내일은 좀 쉬어야 되나 싶음,Thinking maybe I should sit tomorrow out,明日はちょっと休むべきかなって
+text.7329e306ecd10c01,afterhours:TOMORROW.openMorning,오늘 장 어떨 것 같음?,How do you see today's session?,今日の相場どうなると思う？
+text.fb454d453723a308,afterhours:TOMORROW.openMorning,오늘 뭐 살지 정한 사람?,Anyone decided what to buy today?,今日何買うか決めた人いる？
+text.9ec23235142195ad,afterhours:TOMORROW.openMorning,오늘 계획 있는 사람? 나는 아직 없음,Anyone have a plan for today? I've got nothing yet,今日の計画ある人いる？自分はまだない
+text.6f2c875f30f22462,afterhours:TOMORROW.openMorning,오늘은 좀 쉬어야 되나 싶음,Thinking maybe I should sit today out,今日はちょっと休むべきかなって
+text.4f4714b5dd518787,afterhours:TOMORROW.reply,모름. 열려 봐야 앎,No idea. We'll know when it opens,分からん。開いてみないと
+text.cae84e96f645b5a3,afterhours:TOMORROW.reply,난 정한 거 없음. 시초가 보고 움직임,Nothing decided. I move after seeing the open,何も決めてない。寄り付き見て動く
+text.2bdde35c059fb8ae,afterhours:TOMORROW.reply,쉬는 것도 매매임. 진짜임,Sitting out is a trade too. Really,休むも相場。本当に
+text.a1517f513a07fd34,afterhours:TOMORROW.reply,나는 그냥 들고 있는 거 지켜볼 거임,I'm just going to watch what I already hold,自分は持ってるのを見守るだけ
+text.de1946353480fcc3,afterhours:TOMORROW.reply,예상은 해 봤자 틀림 ㅋㅋ,Predictions are wrong anyway lol,予想してもどうせ外れるw
+text.2e180cee5d26a807,afterhours:TOMORROW.reply,나는 관망. 확실할 때만 들어감,I'm on the sidelines. Only in when it's clear,自分は様子見。確信がある時だけ入る
+text.ac41f9ba3c0b947b,afterhours:TOMORROW.back,ㅇㅋ 열리면 보자,"ok, see you when it opens",おけ、開いたらまた
+text.b7dd9b35c75d193d,afterhours:TOMORROW.back,다들 계획 없는 건 똑같네 ㅋㅋ,"Nobody has a plan, I see lol",みんなノープランなのは同じかw
+text.8783d884324ab5d5,afterhours:TOMORROW.back,"그래, 욕심 안 내는 걸로","Right, no getting greedy",そうだな、欲張らないってことで
+text.9af432d4cdcc1da6,afterhours:DINNER.open,저녁 메뉴 추천좀,"Dinner ideas, anyone?",晩ごはん何がいいかな
+text.e9770da93453ff42,afterhours:DINNER.open,장 끝났는데 저녁 뭐 먹지,Market's closed. What's for dinner,場が終わったけど晩ごはん何にしよう
+text.94bf6710c4393a9d,afterhours:DINNER.open,오늘 저녁 뭐 먹음? 참고 좀 하게,What are you all having tonight? Asking for ideas,みんな今夜何食べる？参考にしたい
+text.102487d39bec687d,afterhours:DINNER.open,배고픈데 뭐 시킬지 못 정하겠음,I'm hungry and can't decide what to order,お腹すいたけど何を頼むか決められない
+text.3e7daa246ca133f6,afterhours:DINNER.reply,제육 ㄱㄱ,Spicy pork. Go.,豚の辛味炒め一択
+text.d81a0acc64876101,afterhours:DINNER.reply,치킨이 진리,Chicken. Always chicken.,チキンしか勝たん
+text.eaa61d1c95873a77,afterhours:DINNER.reply,"오늘 벌었으면 고기, 잃었으면 라면",Made money today? Meat. Lost? Instant noodles.,今日勝ったなら肉、負けたならラーメン
+text.b60c4f00563aa982,afterhours:DINNER.reply,국밥 ㄱ. 든든한 게 최고임,Rice soup. Filling beats everything.,クッパ行こう。腹持ちが一番
+text.eb7413798be8bc36,afterhours:DINNER.reply,나는 방금 김치찌개 먹음. 추천함,Just had kimchi stew. Recommend.,自分はさっきキムチチゲ食べた。おすすめ
+text.9803161ba85dda19,afterhours:DINNER.reply,돈까스 어떰. 실패가 없음,How about pork cutlet? Never fails.,とんかつは？ハズレがない
+text.c3d15a39e42179f2,afterhours:DINNER.back,ㅇㅋ 그걸로 감,"ok, going with that",おけ、それにする
+text.c1fd585b99dc1140,afterhours:DINNER.back,추천 감사 ㅋㅋ 바로 시킴,Thanks lol. Ordering now,おすすめ感謝w すぐ頼む
+text.0dd9e2704f70c44d,afterhours:DINNER.back,듣고 나니까 더 배고픔,Now I'm even hungrier,聞いたら余計お腹すいた
+text.add387412c9ed04f,afterhours:OFFWORK.open,퇴근함. 다들 수고했음,"Off work. Good job today, everyone",退勤した。みんなお疲れ
+text.3e9606299a0b8666,afterhours:OFFWORK.open,드디어 퇴근. 오늘 하루 길었다,Finally off. Long day,やっと退勤。今日は長かった
+text.da896cff48e40da7,afterhours:OFFWORK.open,퇴근길인데 지하철 사람 미어터짐,Heading home and the subway is packed,帰り道だけど地下鉄がぎゅうぎゅう
+text.3b3761d04a9def57,afterhours:OFFWORK.open,집 도착. 이제 좀 살 것 같음,Home. I can breathe again,家に着いた。やっと生き返った
+text.4a6c5877fa0a537f,afterhours:OFFWORK.reply,수고했음. 푹 쉬어,Good work. Rest up,お疲れ。ゆっくり休んで
+text.4714fffa990ac6eb,afterhours:OFFWORK.reply,나는 아직 회사임... 부럽다,I'm still at the office... jealous,自分はまだ会社…うらやましい
+text.b7e3d75189776d64,afterhours:OFFWORK.reply,퇴근이 제일 큰 호재임,Getting off work is the best news of the day,退勤が一番の好材料
+text.1aa67ec8652df7e1,afterhours:OFFWORK.reply,오늘 장 보느라 일은 했음? ㅋㅋ,Did you get any work done between charts today? lol,今日チャート見ながら仕事はできた？w
+text.67572a9f48ec0db5,afterhours:OFFWORK.reply,씻고 누우면 그게 천국임,"Shower, lie down — that's heaven",風呂入って横になれば、そこが天国
+text.cca31cdafbfe7f43,afterhours:OFFWORK.reply,나도 방금 퇴근. 같이 수고했음,Just got off too. Good work to us both,自分も今退勤。お互いお疲れ
+text.d892df73f65c3102,afterhours:OFFWORK.back,ㅋㅋ 고마움. 다들 푹 쉬어,"lol thanks. Rest up, everyone",w ありがとう。みんなゆっくり休んで
+text.e34210f367b40f3e,afterhours:OFFWORK.back,이 방이 회사보다 따뜻함,This room is warmer than my office,この部屋は会社より温かい
+text.c6a5cf279e58607f,afterhours:OFFWORK.back,ㅇㅋ 씻고 옴,"ok, off to shower",おけ、風呂入ってくる
+text.b1d7e8e6fabf2a8c,afterhours:SHOW.open,볼 거 추천좀. 드라마든 영화든,Recommend me something to watch. Show or movie,何か見るものおすすめして。ドラマでも映画でも
+text.60195aa1eaa376fc,afterhours:SHOW.open,장 끝나면 다들 뭐 하고 놂?,What do you all do for fun after the close?,場が終わったらみんな何して遊んでる？
+text.e73e96fe22b702d5,afterhours:SHOW.open,심심한데 뭐 재밌는 거 없음?,Bored. Anything fun going on?,暇なんだけど、何か面白いことない？
+text.8e20f25ddfd2c3de,afterhours:SHOW.open,오늘은 차트 그만 보고 딴 거 할 거임. 뭐 하지,Done with charts for now. What should I do instead,もうチャート見るのやめて別のことする。何しよう
+text.a9a64db3330b84bd,afterhours:SHOW.reply,주식 영화는 보지 마. 장 생각만 더 남,Don't watch a stock movie. You'll only think about the market more,株の映画は見るな。余計に相場のこと考える
+text.ed8c1e0ca13340a0,afterhours:SHOW.reply,난 게임함. 거기서도 물리는 중,I game. Getting stuck there too,自分はゲーム。そっちでも捕まってる
+text.78d25e65c1299079,afterhours:SHOW.reply,산책 ㄱㄱ. 머리 식히는 데 최고,Go for a walk. Best way to cool your head,散歩行け。頭を冷やすのに最高
+text.3ae83fdb87e59fe3,afterhours:SHOW.reply,예능 틀어 놓고 멍 때리는 중,Got a variety show on and I'm zoning out,バラエティ流してぼーっとしてる
+text.0ccba4a2cbebf43a,afterhours:SHOW.reply,난 그냥 누워서 폰 봄. 그게 휴식임,I just lie down with my phone. That's rest,自分はただ寝転んでスマホ。それが休息
+text.d2b65d3d969bc245,afterhours:SHOW.reply,운동해. 계좌는 몰라도 몸은 우상향함,"Work out. Your account may not trend up, but your body will",運動しな。口座はともかく体は右肩上がりになる
+text.0e8c1aed709d4603,afterhours:SHOW.back,ㅇㅋ 참고함 ㅋㅋ,"ok, noted lol",おけ、参考にするw
+text.d8c8128e9616964f,afterhours:SHOW.back,다들 별거 안 하는구나,So nobody does anything special,みんな大したことしてないんだな
+text.5d55485fb302be58,afterhours:SHOW.back,결국 또 차트 볼 것 같긴 함,I'll probably end up looking at charts again,結局またチャート見そう
+text.0219861e38de5709,afterhours:SNACK.open,야식 땡기는데 참아야 됨?,Craving a late snack. Should I resist?,夜食食べたいけど我慢すべき？
+text.4274a0c0cb9bccc0,afterhours:SNACK.open,이 시간에 라면 끓이면 지는 거임?,Is making ramen at this hour a loss?,この時間にラーメン作ったら負け？
+text.5b4e302fe25fbf81,afterhours:SNACK.open,야식 뭐 먹을지 골라 줘,Pick my late-night snack for me,夜食何にするか選んで
+text.681cebea488679e0,afterhours:SNACK.open,배달 앱 켰다 껐다 열 번째임,Opened and closed the delivery app ten times now,デリバリーアプリを開いて閉じてもう十回目
+text.b387ea5b674e10b6,afterhours:SNACK.reply,참지 마. 먹고 나중에 후회하면 됨,"Don't resist. Eat now, regret later",我慢するな。食べて後で後悔すればいい
+text.b530135b315ec294,afterhours:SNACK.reply,라면에 계란 넣으면 야식 아님. 식사임,Ramen with an egg isn't a snack. It's a meal,ラーメンに卵入れたら夜食じゃない。食事
+text.e4f53a28d2117831,afterhours:SNACK.reply,떡볶이 ㄱㄱ,Tteokbokki. Go.,トッポッキ行け
+text.6c036c5f4ec67471,afterhours:SNACK.reply,난 이미 먹는 중 ㅋㅋ,Already eating lol,自分はもう食べてるw
+text.4d786a14e456b230,afterhours:SNACK.reply,참아. 부은 얼굴로 장 보면 더 우울함,Resist. Watching the market with a puffy face is worse,我慢しろ。むくんだ顔で相場見ると余計つらい
+text.fbe8f944e59b4a64,afterhours:SNACK.reply,족발 시켜. 남으면 또 먹으면 됨,Order pork trotters. Leftovers are another meal,豚足頼め。余ったらまた食べればいい
+text.68b1892ee8c4cbf6,afterhours:SNACK.back,ㅇㅋ 먹는다. 말리지 마,"ok, I'm eating. Don't stop me",おけ、食べる。止めるな
+text.14d3b64afd43e2fe,afterhours:SNACK.back,역시 이 방은 도움이 안 됨 ㅋㅋ,"This room is no help, as expected lol",やっぱこの部屋は役に立たんw
+text.0ba50b87b9b119f0,afterhours:SNACK.back,결국 시켰음,Ordered it in the end,結局頼んだ
+text.e0a6fa1895eb19b1,afterhours:MONEY.open,1억 생기면 뭐 할 거임?,What would you do with a hundred million?,一億入ったら何する？
+text.103d888c5fab47b2,afterhours:MONEY.open,주식으로 크게 벌면 제일 먼저 뭐 함?,First thing you do after a big win in stocks?,株で大きく儲けたら最初に何する？
+text.01dad1b5d56dae90,afterhours:MONEY.open,다들 돈 벌면 하고 싶은 거 있음?,Anything you all want to do once you've made money?,みんな儲かったらやりたいことある？
+text.7144812fd8677187,afterhours:MONEY.open,로또 되면 뭐부터 할 거임 ㅋㅋ,What's the first thing you do if you win the lottery lol,宝くじ当たったらまず何するw
+text.4af7f3b04d046601,afterhours:MONEY.reply,일단 회사부터 그만둠,Quit my job first,まず会社を辞める
+text.24e064976d170022,afterhours:MONEY.reply,또 주식 삼. 병임,Buy more stocks. It's a disease,また株を買う。病気
+text.10b695598eee38f7,afterhours:MONEY.reply,엄마 용돈부터 드려야지,Give my mom some money first,まず母さんに小遣いあげないと
+text.c6692dd4186bbb0f,afterhours:MONEY.reply,집 사야지. 근데 그 돈으로는 화장실도 못 삼,A house. But that won't even buy the bathroom,家を買う。でもその金じゃトイレも買えない
+text.58e7e9f64202e1bc,afterhours:MONEY.reply,일단 본전부터 찾고 생각함,I'll think about it once I've broken even,まずトントンに戻してから考える
+text.72cf4b71e3047c76,afterhours:MONEY.reply,아무한테도 말 안 하고 조용히 삶,Tell no one and live quietly,誰にも言わずに静かに暮らす
+text.411e582c78611fab,afterhours:MONEY.back,ㅋㅋ 현실적이네,lol realistic,w 現実的だな
+text.2904183d1189fa6c,afterhours:MONEY.back,다들 꿈이 소박하네 ㅋㅋ,Modest dreams all around lol,みんな夢が控えめだなw
+text.dc3b63d9b64084c4,afterhours:MONEY.back,ㅇㅋ 일단 벌고 나서 생각함,"ok, I'll think about it after I actually make some",おけ、まず稼いでから考える
+text.d6705675d6db3560,afterhours:SLEEP.open,자야 되는데 잠이 안 옴,Should be asleep but can't,寝なきゃなのに眠れない
+text.231566eae2db8df7,afterhours:SLEEP.open,잠 안 올 때 다들 어떻게 함?,What do you all do when you can't sleep?,眠れない時みんなどうしてる？
+text.e9d0ba9b82285159,afterhours:SLEEP.open,장 생각하니까 잠이 안 온다,Thinking about the market and can't sleep,相場のこと考えると眠れない
+text.272ff3dfc745bdbb,afterhours:SLEEP.open,누웠는데 눈이 말똥말똥함,"Lying down, wide awake",横になったのに目が冴えてる
+text.2753e642fcfbd8c7,afterhours:SLEEP.reply,폰 내려놔야 잠이 옴,Put the phone down and sleep comes,スマホ置けば眠れるよ
+text.a47a2e444978cfb2,afterhours:SLEEP.reply,나도 못 자는 중. 차트가 눈앞에 아른거림,Can't sleep either. Charts keep floating in front of my eyes,自分も眠れない。チャートが目の前にちらつく
+text.7a4916f4e8977d46,afterhours:SLEEP.reply,자라. 안 자면 판단 흐려짐,"Sleep. No sleep, bad calls",寝ろ。寝ないと判断が鈍る
+text.b80ce1780cadc60e,afterhours:SLEEP.reply,양 대신 캔들 세 봐 ㅋㅋ,Count candles instead of sheep lol,羊の代わりにローソク足数えてみw
+text.9d3d77efeb575103,afterhours:SLEEP.reply,따뜻한 우유 한 잔 마셔,Have a glass of warm milk,ホットミルク一杯飲みな
+text.0713862e55061590,afterhours:SLEEP.reply,나는 눈 감고 숨만 셈. 은근 됨,I close my eyes and count breaths. Kind of works,自分は目を閉じて呼吸を数える。意外と効く
+text.4d62c817ca75d78a,afterhours:SLEEP.back,ㅇㅋ 폰 끄고 누움,"ok, phone off, lying down",おけ、スマホ切って横になる
+text.7588248595b24d95,afterhours:SLEEP.back,ㅋㅋ 다들 비슷하구나,lol same for everyone,w みんな同じか
+text.fd186eeda122c7cb,afterhours:SLEEP.back,잘 자. 좋은 꿈 꿔,Good night. Sweet dreams,おやすみ。いい夢を
+text.c2bcfe46eaf111d8,afterhours:DAWN.open,이 시간에 깨어 있는 사람 손,Hands up if you're awake at this hour,この時間に起きてる人、手挙げて
+text.a3ce973e3a53123d,afterhours:DAWN.open,새벽인데 방에 사람 있네 ㅋㅋ,It's the middle of the night and people are here lol,夜中なのに人いるなw
+text.c25702a47a7cff5b,afterhours:DAWN.open,다들 왜 안 잠? 나는 그냥 깸,Why's nobody asleep? I just woke up,みんななんで寝てないの？自分はただ目が覚めた
+text.09726e6172a09579,afterhours:DAWN.open,새벽에 혼자 깨어 있는 줄 알았는데 아니네,"Thought I was the only one up, guess not",自分だけ起きてると思ったら違った
+text.27d4fa6af704520d,afterhours:DAWN.reply,손,Here,はい
+text.8457999d83606f3f,afterhours:DAWN.reply,나도 깸. 다시 자긴 글렀음,Woke up too. No going back to sleep,自分も起きた。もう二度寝は無理
+text.fa4985d716b9bf2b,afterhours:DAWN.reply,자다 깨서 계좌 본 사람 여기 있음,"Someone who woke up and checked their account, right here",夜中に起きて口座を見た人、ここにいます
+text.8c18e2eedac0c208,afterhours:DAWN.reply,새벽 감성으로 매수 버튼 누르면 안 됨,No hitting buy on late-night feelings,深夜テンションで買いボタン押しちゃダメ
+text.c5b35dae7966853a,afterhours:DAWN.reply,눈 떠진 김에 물 한 잔 마시고 옴,"Since I'm up, went for a glass of water",目が覚めたついでに水を一杯飲んできた
+text.262e68d8904d124e,afterhours:DAWN.reply,조용해서 좋네. 낮엔 너무 시끄러움,Nice and quiet. Daytime is too loud,静かでいいね。昼はうるさすぎる
+text.e01d6756a3571328,afterhours:DAWN.back,동지가 있어서 든든함 ㅋㅋ,Good to have company lol,仲間がいて心強いw
+text.ab41aaa2cc363494,afterhours:DAWN.back,ㅇㅋ 다시 자 보겠음,"ok, I'll try sleeping again",おけ、もう一回寝てみる
+text.cf9553841677a351,afterhours:DAWN.back,새벽반 출석 완료,Night shift roll call done,深夜組、出席完了
+text.968f61a965d98e82,afterhours:COMMUTE.open,출근길에 접속함. 다들 좋은 아침,"Logged in on my commute. Morning, all",通勤中にログイン。みんなおはよう
+text.56dd57ccb1a8c34a,afterhours:COMMUTE.open,아침부터 사람 많네. 다들 일찍 일어남?,Busy for this early. Everyone up early?,朝から人多いな。みんな早起き？
+text.9601e32e3475769b,afterhours:COMMUTE.open,장 열기 전에 뭐 하고 있음?,What are you all doing before the open?,寄り付き前にみんな何してる？
+text.fc504f4a8c56569a,afterhours:COMMUTE.open,지하철에서 차트 보는 사람 나뿐임?,Am I the only one checking charts on the subway?,地下鉄でチャート見てるの自分だけ？
+text.3c0dd5a71061c0af,afterhours:COMMUTE.reply,좋은 아침. 오늘은 벌자,Morning. Let's make money today,おはよう。今日は勝とう
+text.847967fa45aad47a,afterhours:COMMUTE.reply,나도 출근 중. 회사 가기 싫다,Commuting too. Don't want to go in,自分も通勤中。会社行きたくない
+text.bdc459693d3642da,afterhours:COMMUTE.reply,장 열기 전이 제일 설렘,Before the open is the most exciting part,寄り付き前が一番ワクワクする
+text.a1bc50b13095a8f7,afterhours:COMMUTE.reply,아직 이불 속임 ㅋㅋ,Still under the blanket lol,まだ布団の中w
+text.804602e6cd474f07,afterhours:COMMUTE.reply,커피 사러 가는 중,On my way to grab coffee,コーヒー買いに行くところ
+text.25f5c23f8bc89304,afterhours:COMMUTE.reply,지하철에서 보다가 한 정거장 지나침,Was watching on the subway and missed my stop,地下鉄で見てて一駅乗り過ごした
+text.3a2203396579a7b7,afterhours:COMMUTE.back,ㅋㅋ 다들 오늘도 파이팅,"lol good luck today, everyone",w みんな今日も頑張ろう
+text.19bcc2721ee609ff,afterhours:COMMUTE.back,회사 가기 싫은 건 다 똑같네,"Nobody wants to go to work, I see",会社行きたくないのはみんな同じか
+text.b2acf89cc09ed72d,afterhours:COMMUTE.back,ㅇㅋ 장 열리면 다시 봄,"ok, see you at the open",おけ、寄り付いたらまた
+text.9b6ac6ca48d716df,UI: Assets/Scripts/EconomySettings.cs,산삼전자,Sansam Electronics,サンサム電子
+text.1fff655309004f8f,UI: Assets/Scripts/EconomySettings.cs,스퀘어하이테크,Square Hitech,スクエアハイテック
+text.94e6c14a79f38d60,UI: Assets/Scripts/EconomySettings.cs,테줌마,Tezumma,テジュンマ
+text.40f5c8093251f77d,News,반도체,Semiconductors,半導体
+text.69c551e442664d55,News,전기차,Electric vehicles,電気自動車
+text.ed48b4401928cb68,News,가전과 휴대폰을 쓰는 소비자,consumers of appliances and phones,家電と携帯電話の利用者
+text.2dfceb945d830d66,News,부품을 받아 쓰는 제조사와 기술자,manufacturers and engineers who rely on its parts,部品を使うメーカーと技術者
+text.4ba1cdf3f8f0a046,News,전기차 운전자와 예약 고객,electric vehicle drivers and reservation holders,電気自動車のドライバーと予約客
+text.0551e0d79fce9926,News,게이머와 개발자,gamers and developers,ゲーマーと開発者
+text.7b52de3ab9b18a78,News,반도체 수요의 연관,linked semiconductor demand,半導体需要の連動
+text.cd96a0970caeca35,News,차량용 반도체 수급의 연관,linked supply of automotive chips,車載半導体の需給の連動
+text.42f7c8e737ee3a58,News,인공지능 연산 수요의 연관,linked demand for AI computing,AI演算需要の連動
+text.d0e76f2baf18f0ca,UI: chat room badge,내 방,My room,自分のルーム
+text.6ab8a0b319837962,roomtalk:PROMO.A0,리딩방이 있었음? 처음 듣는데,There's a signal room? First I've heard,投資ルームなんてあったの？初耳なんだが
+text.c9a62dc95ff3580e,roomtalk:PROMO.A0,방장이 직접 방을 여는 줄 몰랐네. 뭐 하는 방임?,Didn't know the host ran a room. What goes on in there?,ルーム主が自分で部屋やってるとは知らなかった。何する部屋？
+text.91b0a541d966fb32,roomtalk:PROMO.A0,어 이런 방도 있구나. 일단 기억은 해 둠,"Oh, so that exists. I'll keep it in mind",へえ、そんな部屋もあるのか。とりあえず覚えとく
+text.35d8713d566ae103,roomtalk:PROMO.A0,처음 보는 홍보네. 누가 들어가 본 사람 있음?,First time seeing this ad. Anyone been in?,初めて見る宣伝だな。入ったことある人いる？
+text.f2c95eaa2670ce40,roomtalk:PROMO.A1+,아 그 방. 평 괜찮다고 들었음,"Oh, that room. Heard decent things",ああ、あの部屋。評判は悪くないって聞いた
+text.7ae216c85efcacf1,roomtalk:PROMO.A1+,얘기는 몇 번 들었는데 나쁘지 않다던데,Heard about it a few times. Supposedly not bad,何度か話は聞いた。悪くないらしいね
+text.41164e0feac759c7,roomtalk:PROMO.A1+,들어 본 방이네. 한번 가 볼까 생각 중,I've heard of it. Thinking of dropping by,聞いたことある部屋だ。一回行ってみようか考え中
+text.0e257e6ee77f90e0,roomtalk:PROMO.A1+,좋은 얘기 들은 적 있음. 자리 있으면 가 보고 싶네,I've heard good things. I'd like to try it if there's room,いい話を聞いたことある。空きがあれば行ってみたい
+text.5d600147a294a987,roomtalk:PROMO.A10,들어는 봤는데 잘은 모름. 어떤 식으로 하는 방임?,"Heard of it, don't know much. How does it work?",聞いたことはあるけどよく知らない。どういう感じの部屋？
+text.4e9c55e65dc1e112,roomtalk:PROMO.A10,이름은 들어 봤음. 실적이 어떤지가 궁금한데,I know the name. I'm curious about the track record,名前は聞いたことある。実績がどうなのか気になる
+text.f60bd92a12d1e642,roomtalk:PROMO.A10,저번에도 홍보 본 것 같은데. 아직 판단은 안 섬,Think I saw an ad before. Still no opinion,前にも宣伝見た気がする。まだ判断はつかない
+text.9cad0e736de38a18,roomtalk:PROMO.A10,아 그 방. 들어가면 뭐가 다른지 좀 알려 줘,"Oh, that room. Tell me what's different once you're in",ああ、あの部屋。入ると何が違うのか教えて
+text.248a4371b29b65b4,roomtalk:PROMO.A1-,그 방 얘기 들었는데 썩 좋은 말은 아니었음,"I've heard about that room, and not much of it was good",あの部屋の話は聞いたけど、あまりいい話じゃなかった
+text.03aa994d73893250,roomtalk:PROMO.A1-,들어 본 적은 있음. 근데 별로라던데,I've heard of it. Supposedly not great,聞いたことはある。でも微妙らしいね
+text.80b5dd1ed3caa386,roomtalk:PROMO.A1-,홍보는 잘하네. 소문은 좀 다르던데,Nice ad. The rumors say otherwise,宣伝はうまいな。噂はちょっと違うけど
+text.026e3067c1c2321e,roomtalk:PROMO.A1-,리딩방은 원래 안 믿는데 그 방은 더 조심하라던데,"I don't trust signal rooms anyway, and I was told to be extra careful with that one",投資ルームはもともと信じないけど、あの部屋は特に気をつけろって聞いた
+text.221a0bad7c06e873,roomtalk:PROMO.A2+,그 방 요즘 얘기 많이 나옴. 좋은 쪽으로,That room comes up a lot lately. In a good way,あの部屋、最近よく話題になる。いい意味で
+text.7c44e1e620ae674a,roomtalk:PROMO.A2+,평이 계속 좋길래 눈여겨보는 중. 조만간 들어감,"The word keeps being good, so I've got my eye on it. Joining soon",評判がずっといいから注目してる。近いうちに入る
+text.ddd4cc67ded066b5,roomtalk:PROMO.A2+,지시 따라서 번 사람 얘기 여러 번 봤음. 믿을 만한 듯,I've seen several people say they made money on the calls. Seems reliable,指示に従って儲けた人の話を何度も見た。信頼できそう
+text.db7e19625c6e96df,roomtalk:PROMO.A2+,이쯤 되면 안 들어간 내가 손해인 것 같음,At this point I'm the one losing out by not joining,ここまで来ると入ってない自分が損してる気がする
+text.5c75000bf146ad84,roomtalk:PROMO.A20,그 방 얘기는 하도 들어서 잘 앎. 좋다는 말도 나쁘다는 말도 있더라,"I've heard so much about that room I know it well. Some say good, some say bad",あの部屋の話は聞きすぎてよく知ってる。いい話も悪い話もあるね
+text.a8f249654c871fb9,roomtalk:PROMO.A20,말은 많은데 뭐가 맞는지 모르겠음. 그래서 아직 밖에 있음,"Lots of talk, no idea what's true. That's why I'm still outside",話は多いけどどれが本当か分からん。だからまだ外にいる
+text.d31500b83bf4c1ab,roomtalk:PROMO.A20,유명하긴 함. 근데 유명한 거랑 버는 건 별개라,It's well known. But famous and profitable are separate things,有名ではある。でも有名なのと儲かるのは別だから
+text.976de8eb601ae644,roomtalk:PROMO.A20,홍보 또 올라왔네. 실적 한번 보여 주면 생각해 봄,Another ad. Show the results and I'll think about it,また宣伝か。実績を見せてくれたら考える
+text.837f014ea40070e1,roomtalk:PROMO.A2-,그 방 잘 알지. 물렸다는 사람을 몇이나 봤는데,Oh I know that room. I've seen plenty of people say they got stuck,あの部屋ならよく知ってる。捕まったって人を何人も見た
+text.496ec17a0bf75f38,roomtalk:PROMO.A2-,홍보할 시간에 지난 지시 결과부터 까 봐,"Instead of advertising, show how the last calls turned out",宣伝する暇があるなら前の指示の結果を見せて
+text.455fcad2e811fef6,roomtalk:PROMO.A2-,소문 다 들었음. 나는 안 감,I've heard all the rumors. I'm not going,噂は全部聞いた。自分は行かない
+text.6c51653a8e71c5ea,roomtalk:PROMO.A2-,거기 나온 사람들 말 들어 보면 답 나옴,Listen to the people who left and you have your answer,あそこを出た人の話を聞けば答えは出る
+text.764a711154b9afdd,roomtalk:PROMO.MEM+,나 그 방 회원임. 들어와서 손해 본 적 없음,I'm a member. Haven't lost money since joining,自分はあの部屋のメンバー。入ってから損したことない
+text.96120a31b20e9caf,roomtalk:PROMO.MEM+,회원으로서 보증함. 지시가 깔끔함,Vouching as a member. The calls are clean,メンバーとして保証する。指示が的確
+text.5154264a9db6a015,roomtalk:PROMO.MEM+,나도 반신반의하다 들어갔는데 지금은 만족 중,I joined half-doubting and I'm happy with it now,自分も半信半疑で入ったけど、今は満足してる
+text.753b88165b1b7508,roomtalk:PROMO.MEM+,방 안에서 보고 있음. 망설이는 사람은 그냥 와,"Watching from inside the room. If you're on the fence, just come",部屋の中から見てる。迷ってる人は来ればいい
+text.ed5dde5906ad4dc9,roomtalk:PROMO.MEM-,나 그 방 회원인데... 솔직히 요즘은 잘 모르겠음,I'm a member... and honestly I'm not sure lately,自分はメンバーだけど…正直最近はよく分からない
+text.d3e2ce550a0f3e24,roomtalk:PROMO.MEM-,회원인데 홍보 보니까 웃음 나옴. 지난 지시부터 해명 좀,"As a member, this ad makes me laugh. Explain the last call first",メンバーだけど宣伝見て笑った。まず前の指示の説明をして
+text.36e380977ae6972e,roomtalk:PROMO.MEM-,안에 있는 사람으로서 말하는데 기대는 낮추고 와,Speaking from inside: lower your expectations before you come,中にいる人間として言うけど、期待は下げて来て
+text.e498c5133e4460fe,roomtalk:PROMO.MEM-,나 아직 그 방에 있긴 함. 나갈지 고민 중이라 그렇지,I'm still in that room. Only because I'm deciding whether to leave,自分はまだあの部屋にいる。出るか迷ってるだけだけど
+text.8e68dd59c3eb396a,roomtalk:PROMO.EX+,나 거기 있다 나온 사람인데 방 자체는 괜찮았음,"I was in there and left, but the room itself was fine",自分はあそこにいて出た人間だけど、部屋自体は悪くなかった
+text.89d3da53245cdeaa,roomtalk:PROMO.EX+,예전에 있었음. 지시는 믿을 만했음. 내가 시간이 없어서 나온 거임,I used to be in. The calls were reliable. I left because I had no time,前にいた。指示は信頼できた。自分に時間がなくて出ただけ
+text.2f9440ef9b7298d8,roomtalk:PROMO.EX+,나왔지만 나쁜 기억은 없음. 다시 갈 수도 있음,"I left, but no bad memories. Might go back",出たけど悪い思い出はない。また行くかも
+text.46491f809ef35fa8,roomtalk:PROMO.EX+,전 회원임. 벌고 나온 거라 할 말은 없음,"Ex-member. I left in profit, so no complaints",元メンバー。儲けて出たから文句はない
+text.e84c6f42e9f918ae,roomtalk:PROMO.EX-,나 거기서 나온 사람임. 왜 나왔는지는 묻지 마,I'm someone who left that room. Don't ask why,自分はあそこを出た人間。なんで出たかは聞かないで
+text.c0140c10edf54738,roomtalk:PROMO.EX-,예전 회원인데 그때 물린 거 아직 못 풀었음,Ex-member. Still haven't recovered from what I got stuck in back then,元メンバーだけど、あの時捕まったのをまだ取り返せてない
+text.2ec88b981dd06dac,roomtalk:PROMO.EX-,있어 봐서 앎. 홍보랑 실제는 다름,"I've been in, so I know. The ad and the reality differ",いたから分かる。宣伝と実際は違う
+text.352fb93b29316eef,roomtalk:PROMO.EX-,다시는 안 감. 한 번이면 충분했음,Never again. Once was enough,二度と行かない。一回で十分だった
+text.4bfe1ca685d22546,roomtalk:OPEN.A1+,방장 리딩방 괜찮다던데 들어가 본 사람 있음?,I hear the host's room is decent. Anyone been in?,ルーム主の部屋、悪くないらしいけど入った人いる？
+text.8b1d94c2205a55f3,roomtalk:OPEN.A1+,리딩방 얘기 들었는데 평이 좋더라. 어떻게 들어감?,"Heard about the signal room, good reviews. How do you get in?",投資ルームの話を聞いたけど評判いいね。どうやって入るの？
+text.bfa29d6e3a48b29a,roomtalk:OPEN.A1+,방장 방 좋다는 말 들으니까 좀 솔깃함,Hearing the host's room is good has me tempted,ルーム主の部屋がいいって聞いてちょっと気になってる
+text.22db411913fe06e9,roomtalk:OPEN.A1+,요즘 방장 방 좋은 얘기가 들리던데 사실임?,I keep hearing good things about the host's room. True?,最近ルーム主の部屋のいい話を聞くけど、本当？
+text.5a3ac57c104e74b7,roomtalk:OPEN.A10,방장이 리딩방 한다던데 어떤 방인지 아는 사람?,I hear the host runs a signal room. Anyone know what it's like?,ルーム主が投資ルームやってるらしいけど、どんな部屋か知ってる人？
+text.d3ac9847c7b04041,roomtalk:OPEN.A10,리딩방 얘기 들었는데 들어갈 만함? 솔직한 후기 좀,Heard about the signal room. Worth joining? Honest reviews please,投資ルームの話を聞いたけど入る価値ある？正直な感想を
+text.1f13cad1f25ca4b5,roomtalk:OPEN.A10,방장 방 들어가 본 사람 손. 어떤지 궁금함,Hands up if you've been in the host's room. Curious how it is,ルーム主の部屋に入ったことある人、手挙げて。どうなのか気になる
+text.18de2da452bf09a5,roomtalk:OPEN.A10,그 리딩방 이용료 내고 들어갈 만한지 모르겠음,Not sure that signal room is worth paying the fee for,あの投資ルーム、利用料払って入る価値があるのか分からない
+text.07febc260d5c6e07,roomtalk:OPEN.A1-,방장 리딩방 별로라는 말 들었는데 진짜임?,I heard the host's room isn't great. Is that true?,ルーム主の部屋は微妙って聞いたけど、本当？
+text.b8a4d64fba914fc7,roomtalk:OPEN.A1-,리딩방 들어가려는 사람 있으면 한 번 더 생각해. 들리는 말이 좀 그럼,"If anyone's about to join the signal room, think twice. What I hear isn't great",投資ルームに入ろうとしてる人、もう一回考えて。聞こえてくる話がちょっとね
+text.3a9def1c6116736a,roomtalk:OPEN.A1-,방장 방 안 좋은 소문 들은 사람 나뿐임?,Am I the only one who's heard bad rumors about the host's room?,ルーム主の部屋の悪い噂を聞いたの、自分だけ？
+text.a2081b0d287000c6,roomtalk:OPEN.A1-,그 방 얘기 들을수록 안 가는 게 맞는 것 같음,"The more I hear about that room, the more I think staying out is right",あの部屋の話を聞くほど、行かないのが正解な気がする
+text.345ce2faee374231,roomtalk:OPEN.A2+,방장 방 지시 요즘 잘 맞는다며. 나만 밖에 있는 기분,They say the host's calls have been hitting lately. Feels like only I'm outside,ルーム主の部屋の指示、最近よく当たるらしいね。自分だけ外にいる気分
+text.9a5456ec0fa0fc79,roomtalk:OPEN.A2+,리딩방 들어갈 사람 같이 가자. 평이 계속 좋음,"Anyone joining the signal room, let's go together. The word keeps being good",投資ルームに入る人、一緒に行こう。評判がずっといい
+text.a4bbef81abd76945,roomtalk:OPEN.A2+,방장 방은 이제 믿어도 될 것 같음. 본 게 많아서,I think the host's room can be trusted now. I've seen enough,ルーム主の部屋はもう信じていい気がする。いろいろ見てきたから
+text.2d37f46d12bc4acc,roomtalk:OPEN.A2+,솔직히 방장 방 회원들 부러움,"Honestly, I envy the members of the host's room",正直、ルーム主の部屋のメンバーがうらやましい
+text.524b35763ace0c2b,roomtalk:OPEN.A20,방장 방 말이 너무 많음. 좋다는 사람 나쁘다는 사람 반반이네,"So much talk about the host's room. Half say good, half say bad",ルーム主の部屋、話が多すぎる。いいって人と悪いって人が半々
+text.f1bfaeb9776aa8e2,roomtalk:OPEN.A20,리딩방 들어갈지 한 달째 고민 중. 누가 정해 줘,Been debating the signal room for a month. Someone decide for me,投資ルームに入るか一か月悩んでる。誰か決めて
+text.f018da8e1c48ca89,roomtalk:OPEN.A20,방장 방 실제 수익 인증 본 사람? 말 말고 숫자로,"Anyone seen actual profit proof from the host's room? Numbers, not words",ルーム主の部屋の実際の利益を見た人いる？言葉じゃなく数字で
+text.bcf7d4330a4efe83,roomtalk:OPEN.A20,그 방은 들어가 봐야 아는 건가. 밖에선 판단이 안 섬,Is that room one you only understand from inside? Can't judge from out here,あの部屋は入ってみないと分からないのかな。外からは判断できない
+text.8515add42bfaaae6,roomtalk:OPEN.A2-,방장 방 조심해. 내가 본 것만 해도 물린 사람이 여럿임,"Careful with the host's room. Just from what I've seen, several got stuck",ルーム主の部屋には気をつけて。自分が見ただけでも何人も捕まってる
+text.ade1769a26fbc5ce,roomtalk:OPEN.A2-,리딩방 믿고 들어갔다 나온 사람들 얘기 좀 들어 봐,Go hear from the people who trusted the signal room and then left,投資ルームを信じて入って出た人たちの話を聞いてみて
+text.d37433143de36f79,roomtalk:OPEN.A2-,방장 방 지시 따라 하면 누가 버는지 생각해 봐,Think about who actually profits when you follow the host's calls,ルーム主の指示に従うと誰が儲かるのか考えてみて
+text.d0482dff8912c561,roomtalk:OPEN.A2-,그 방 얘기 나올 때마다 한숨만 나옴,"Every time that room comes up, I just sigh",あの部屋の話が出るたびにため息が出る
+text.c262b9d63dab72ea,roomtalk:OPEN.MEM+,방장 방 회원인데 오늘도 지시 덕 봄,Member of the host's room here. The call paid off again today,ルーム主の部屋のメンバーだけど、今日も指示のおかげで助かった
+text.7113d6ced4b3d1ea,roomtalk:OPEN.MEM+,리딩방 안에 있는데 분위기 좋음. 올 사람은 와,I'm inside the signal room and the mood is good. Come if you're coming,投資ルームの中にいるけど雰囲気いいよ。来る人は来て
+text.b48ece3502d63dfe,roomtalk:OPEN.MEM+,방장 방 들어온 게 요즘 제일 잘한 일임,Joining the host's room is the best thing I've done lately,ルーム主の部屋に入ったのが最近一番の正解
+text.8e1df0918fc7e5e6,roomtalk:OPEN.MEM+,회원이라 말하는데 방장 지시는 따라 볼 만함,Saying this as a member: the host's calls are worth following,メンバーだから言うけど、ルーム主の指示は従う価値がある
+text.10b30fb20004f9a2,roomtalk:OPEN.MEM-,방장 방 회원인데 요즘 지시가 영 안 맞음,"Member of the host's room here, and the calls have been off lately",ルーム主の部屋のメンバーだけど、最近の指示が全然当たらない
+text.b05956c84c142389,roomtalk:OPEN.MEM-,리딩방 이용료가 아까워지기 시작함,Starting to feel the signal room fee isn't worth it,投資ルームの利用料がもったいなく感じてきた
+text.d285180c58157718,roomtalk:OPEN.MEM-,방장 방 나갈까 말까 고민 중. 다른 회원들은 어떰?,Debating leaving the host's room. How are the other members doing?,ルーム主の部屋を出るか迷ってる。他のメンバーはどう？
+text.4ae34e315404fbab,roomtalk:OPEN.MEM-,회원이지만 추천은 못 하겠음. 지금은,"I'm a member, but I can't recommend it. Not right now",メンバーだけどおすすめはできない。今は
+text.3bda14044d205fcc,roomtalk:OPEN.EX+,방장 방 나왔는데 가끔 생각남. 지시는 좋았음,I left the host's room but think of it sometimes. The calls were good,ルーム主の部屋を出たけど、たまに思い出す。指示はよかった
+text.48779444fd693b14,roomtalk:OPEN.EX+,예전에 방장 방 있었는데 다시 들어갈까 생각 중,I used to be in the host's room. Thinking of rejoining,前にルーム主の部屋にいたけど、また入ろうか考えてる
+text.49854ef0c84826d5,roomtalk:OPEN.EX+,방장 방 있을 때가 제일 벌었던 것 같음,I think I made the most when I was in the host's room,ルーム主の部屋にいた時が一番儲かってた気がする
+text.d0eb831f02911f93,roomtalk:OPEN.EX+,나온 사람 입장에서도 그 방은 괜찮았다고 말할 수 있음,"Even as someone who left, I can say that room was fine",出た側から見ても、あの部屋は悪くなかったと言える
+text.46fabeb037e88eb2,roomtalk:OPEN.EX-,방장 방 나온 지 좀 됐는데 아직도 속이 쓰림,It's been a while since I left the host's room and it still stings,ルーム主の部屋を出てしばらく経つけど、まだ胸が痛い
+text.e93a3a8f70e98a65,roomtalk:OPEN.EX-,예전에 그 방 있었음. 지시 따라 샀다가 물린 거 아직 들고 있음,I used to be in that room. Still holding what I bought on a call and got stuck in,前にあの部屋にいた。指示で買って捕まったのをまだ持ってる
+text.20abc1d9eefdf173,roomtalk:OPEN.EX-,방장 방 들어가려는 사람 있으면 나한테 먼저 물어봐,"If anyone's thinking of joining the host's room, ask me first",ルーム主の部屋に入ろうとしてる人は、まず自分に聞いて
+text.97ccab1066a12553,roomtalk:OPEN.EX-,그 방 나오고 나서야 계좌가 조용해짐,My account only calmed down after I left that room,あの部屋を出てからやっと口座が落ち着いた
+text.481f4ac6882445a7,roomtalk:REPLY_POS.A0,그런 방이 있었음? 나만 몰랐네,There's a room like that? Guess only I didn't know,そんな部屋があったの？自分だけ知らなかった
+text.48260c4471e9e624,roomtalk:REPLY_POS.A0,무슨 방 얘기임? 처음 듣는데,What room is this? First I've heard,何の部屋の話？初耳なんだけど
+text.3cf77ce6dfd28d1c,roomtalk:REPLY_POS.A0,방장이 방도 함? 어디서 들어가는 거임,The host runs a room too? Where do you get in?,ルーム主って部屋もやってるの？どこから入るの
+text.40a137f1487073cc,roomtalk:REPLY_POS.A0,오 그런 게 있구나. 좀 더 얘기해 줘,"Oh, that's a thing. Tell me more",へえ、そんなのがあるんだ。もっと教えて
+text.22d363201ffb931b,roomtalk:REPLY_POS.A1+,나도 그렇게 들었음. 평이 괜찮더라,That's what I heard too. Decent reviews,自分もそう聞いた。評判は悪くない
+text.e49a463112b879ce,roomtalk:REPLY_POS.A1+,역시 좋다는 말이 맞나 보네,So the good word is true after all,やっぱりいいって話は本当みたいだね
+text.22c9cc1209880593,roomtalk:REPLY_POS.A1+,그 말 들으니까 더 가 보고 싶어짐,Hearing that makes me want to go even more,それ聞いたらもっと行きたくなった
+text.000e63dc9c66a2ce,roomtalk:REPLY_POS.A1+,나도 비슷한 얘기 들음. 한번 가 봐야겠다,Heard something similar. I should check it out,自分も似た話を聞いた。一回行ってみないと
+text.f45c340613259ff1,roomtalk:REPLY_POS.A10,그래? 나는 들어만 봤지 잘은 몰라서,"Yeah? I've only heard of it, don't really know",そう？自分は聞いたことがあるだけでよく知らなくて
+text.605e35cb49505f12,roomtalk:REPLY_POS.A10,좋다는 사람이 있긴 하구나. 근거가 궁금함,So some do say it's good. I'd like to know why,いいって人もいるんだね。根拠が気になる
+text.24b51a73f46a20b0,roomtalk:REPLY_POS.A10,한 사람 말로는 모르겠음. 더 들어 봐야 알 듯,Can't tell from one person. Need to hear more,一人の話じゃ分からない。もっと聞かないと
+text.6ec9bfb9ce216217,roomtalk:REPLY_POS.A10,얼마나 벌었는지 말해 주면 믿어 봄,Tell me how much you made and I'll believe it,いくら儲かったか言ってくれたら信じる
+text.dbfbcc37668116cf,roomtalk:REPLY_POS.A1-,나는 반대로 들었는데. 별로라고,I heard the opposite. That it's not great,自分は逆を聞いたけど。微妙だって
+text.7066d845e92db2d5,roomtalk:REPLY_POS.A1-,좋다는 말은 원래 먼저 퍼짐. 나는 안 믿음,Good words always spread first. I don't buy it,いい話ってのは先に広まるもの。自分は信じない
+text.7d8a0f0f0502e1b6,roomtalk:REPLY_POS.A1-,그 방 칭찬은 처음 들음. 내가 들은 건 다른 얘기였는데,First time I've heard that room praised. What I heard was different,あの部屋を褒める話は初めて聞いた。自分が聞いたのは別の話だったけど
+text.c60491584752cc11,roomtalk:REPLY_POS.A1-,글쎄. 리딩방 칭찬은 반만 믿는 게 맞음,Hmm. Praise for a signal room deserves half belief at most,どうかな。投資ルームの褒め話は半分だけ信じるのが正解
+text.7565cc969d124139,roomtalk:REPLY_POS.A2+,맞음. 요즘 그 방 좋은 얘기만 들림,True. All I hear about that room lately is good,そう。最近あの部屋のいい話しか聞かない
+text.12183ee4e110c90a,roomtalk:REPLY_POS.A2+,내가 본 것만 해도 번 사람이 여럿임,"Just from what I've seen, several people made money",自分が見ただけでも儲けた人が何人もいる
+text.dc9061088dbdb08b,roomtalk:REPLY_POS.A2+,인정. 이제 안 믿는 사람이 이상한 거임,Agreed. At this point not believing is the odd position,同意。もう信じない方がおかしい
+text.192a59e4095cecd9,roomtalk:REPLY_POS.A2+,그러니까. 나도 곧 들어갈 거임,Exactly. I'm joining soon too,だよね。自分もそろそろ入る
+text.390818d1c26fd9e4,roomtalk:REPLY_POS.A20,좋다는 말도 많이 들었고 나쁘다는 말도 많이 들었음,I've heard plenty of good and plenty of bad,いい話も悪い話もたくさん聞いた
+text.9af3bc99909e2ba5,roomtalk:REPLY_POS.A20,그 얘기는 여러 번 들었음. 근데 아직 확신은 없음,I've heard that many times. Still not convinced,その話は何度も聞いた。でもまだ確信はない
+text.48593c1a6120a06c,roomtalk:REPLY_POS.A20,한쪽 말만 들으면 안 됨. 나온 사람 말도 들어 봐야지,Can't listen to one side only. Hear from those who left too,片方の話だけじゃダメ。出た人の話も聞かないと
+text.8bb3c51297b6b896,roomtalk:REPLY_POS.A20,칭찬은 알겠는데 손실 났을 때 얘기도 궁금함,"I get the praise, but I'm curious about when it lost",褒めるのは分かったけど、損した時の話も気になる
+text.814d83b8f1edb6f3,roomtalk:REPLY_POS.A2-,그 방 칭찬하는 사람 볼 때마다 걱정됨,I worry every time I see someone praise that room,あの部屋を褒める人を見るたびに心配になる
+text.d90c625e75ca33ae,roomtalk:REPLY_POS.A2-,지금은 좋다고 하지. 나중에 같은 말 하는지 보자,It's good for now. Let's see if you say the same later,今はいいって言うよね。後でも同じこと言うか見てみよう
+text.c055c732fba4fbbe,roomtalk:REPLY_POS.A2-,번 사람만 말해서 그럼. 잃은 사람은 조용함,That's because only winners talk. Losers stay quiet,儲けた人だけが話すからだよ。負けた人は黙ってる
+text.c385d417e4a854f7,roomtalk:REPLY_POS.A2-,나는 그 방 물린 사람을 너무 많이 봐서 못 믿음,I've seen too many people stuck from that room to believe it,あの部屋で捕まった人を見すぎて信じられない
+text.a85b8538b147b863,roomtalk:REPLY_POS.MEM+,회원으로서 인정함. 틀린 말 아님,Confirming as a member. Not wrong,メンバーとして同意する。間違ってない
+text.5de76b339f869e1f,roomtalk:REPLY_POS.MEM+,나 안에 있는데 그 말 맞음,I'm inside and that's accurate,自分は中にいるけど、その通り
+text.c587d2247f2b81b7,roomtalk:REPLY_POS.MEM+,회원인 내가 보증함 ㅋㅋ,I'm a member and I vouch for it lol,メンバーの自分が保証するw
+text.886349ff9e188b56,roomtalk:REPLY_POS.MEM+,맞음. 나도 들어와서 계좌가 달라짐,True. My account changed after I joined too,そう。自分も入ってから口座が変わった
+text.7344f08de30800b4,roomtalk:REPLY_POS.MEM-,회원인데 그 정도는 아님. 솔직히,I'm a member and it's not that good. Honestly,メンバーだけど、そこまでじゃない。正直
+text.d56c535c434862b0,roomtalk:REPLY_POS.MEM-,안에 있는 사람으로서 말하는데 좋은 날만 있는 건 아님,Speaking from inside: it's not all good days,中にいる人間として言うけど、いい日ばかりじゃない
+text.6cc560c44b930ff7,roomtalk:REPLY_POS.MEM-,나도 처음엔 그렇게 생각했음. 지금은 좀 다름,I thought so at first too. It's different now,自分も最初はそう思ってた。今はちょっと違う
+text.b87c45a8d338c688,roomtalk:REPLY_POS.MEM-,회원인 나도 요즘은 고개가 갸웃해짐,"Even I, a member, have my doubts lately",メンバーの自分でも最近は首をかしげてる
+text.54b14ee04f81315d,roomtalk:REPLY_POS.EX+,나왔지만 그 말은 인정함. 방은 좋았음,"I left, but I'll give you that. The room was good",出たけどそれは認める。部屋はよかった
+text.15e2606451b7947c,roomtalk:REPLY_POS.EX+,있어 봐서 앎. 틀린 말 아님,"I've been in, so I know. Not wrong",いたから分かる。間違ってない
+text.3cc8d3628d4318d5,roomtalk:REPLY_POS.EX+,전 회원인데 동의함. 나도 거기서 벌었음,"Ex-member, and I agree. I made money there too",元メンバーだけど同意。自分もあそこで儲けた
+text.b0bd8ced1b03c8d0,roomtalk:REPLY_POS.EX+,맞음. 나는 사정이 있어서 나왔을 뿐임,True. I only left for my own reasons,そう。自分は事情があって出ただけ
+text.ee69afa2a418cbbe,roomtalk:REPLY_POS.EX-,있어 본 사람으로서 그 말엔 동의 못 함,"As someone who's been in, I can't agree with that",いたことがある身として、それには同意できない
+text.1c546b7dbc7bbea2,roomtalk:REPLY_POS.EX-,나도 처음엔 그렇게 말하고 다녔음,I used to go around saying the same thing at first,自分も最初はそう言って回ってた
+text.45fae43c6077d99d,roomtalk:REPLY_POS.EX-,전 회원인데 내 계좌는 다른 얘기를 함,"Ex-member here, and my account tells a different story",元メンバーだけど、自分の口座は別のことを言ってる
+text.169057557a40bba2,roomtalk:REPLY_POS.EX-,좋을 때만 있어 본 거임. 나는 안 좋을 때도 있어 봄,You've only been there for the good times. I was there for the bad too,いい時しかいなかったんだね。自分は悪い時もいたよ
+text.3a8bd04165e984e3,roomtalk:REPLY_NEG.A0,무슨 방인데 그렇게까지 말함?,What room is it that you'd put it like that?,そこまで言うって、何の部屋？
+text.3d8ad3bced5737ab,roomtalk:REPLY_NEG.A0,그런 방이 있는 줄도 몰랐는데 벌써 무섭네,Didn't even know the room existed and I'm already scared,そんな部屋があることも知らなかったのに、もう怖い
+text.93a5b425789c1433,roomtalk:REPLY_NEG.A0,방장이 방을 함? 근데 평이 왜 그럼,The host runs a room? Why the bad reviews though,ルーム主が部屋やってるの？でもなんで評判がそうなの
+text.e2d3f82cf022a1a5,roomtalk:REPLY_NEG.A0,처음 듣는 얘긴데 일단 조심은 해야겠다,"First I've heard of it, but I'll be careful",初めて聞く話だけど、とりあえず気をつける
+text.0b4f1ef9357224a9,roomtalk:REPLY_NEG.A1+,나는 좋다고 들었는데. 사람마다 다른가,I heard it was good. Maybe it varies,自分はいいって聞いたけど。人によるのかな
+text.9baa4748575ac88c,roomtalk:REPLY_NEG.A1+,그래? 내가 들은 얘기랑은 좀 다른데,Really? That's not quite what I heard,そう？自分が聞いた話とはちょっと違うけど
+text.946a311f0aad8137,roomtalk:REPLY_NEG.A1+,한 번 안 좋았다고 방 전체가 나쁜 건 아니지,One bad time doesn't make the whole room bad,一回悪かったからって部屋全体が悪いわけじゃない
+text.f36a6c3f62b24f78,roomtalk:REPLY_NEG.A1+,나는 그래도 좋은 얘기를 더 많이 들음,"Still, I've heard more good than bad",それでも自分はいい話の方を多く聞いた
+text.2cc0baaab75520c8,roomtalk:REPLY_NEG.A10,그런 말도 있구나. 더 헷갈리네,So there's that side too. Now I'm more confused,そういう話もあるのか。余計に迷う
+text.511125da6e5d177c,roomtalk:REPLY_NEG.A10,안 좋다는 얘기는 처음 들음. 무슨 일 있었음?,First I've heard anything bad. What happened?,悪い話は初めて聞いた。何かあったの？
+text.85dbd6af730d48a6,roomtalk:REPLY_NEG.A10,좋다는 사람도 있던데. 누구 말이 맞는 거임,Some say it's good though. Who's right?,いいって人もいたけど。誰の言うことが正しいの
+text.6be9843feb9f4b13,roomtalk:REPLY_NEG.A10,그럼 들어가지 말라는 거임? 이유가 궁금함,So you're saying don't join? I'd like to know why,じゃあ入るなってこと？理由が気になる
+text.e36da99c9c4149f3,roomtalk:REPLY_NEG.A1-,나도 그렇게 들었음. 역시 그렇구나,That's what I heard too. So it's true,自分もそう聞いた。やっぱりそうなんだ
+text.cba59ded95294cbe,roomtalk:REPLY_NEG.A1-,소문이 틀린 게 아니었네,So the rumors weren't wrong,噂は間違ってなかったんだね
+text.a4612e7e8436b01a,roomtalk:REPLY_NEG.A1-,그 말 들으니까 안 가길 잘한 것 같음,"Hearing that, I'm glad I didn't go",それ聞いて、行かなくてよかったと思った
+text.014ff8c6aba09099,roomtalk:REPLY_NEG.A1-,비슷한 얘기 또 나오네. 우연은 아닌 듯,Another story like that. Doesn't look like coincidence,また似た話が出たね。偶然じゃなさそう
+text.dfde87c1e8eec29d,roomtalk:REPLY_NEG.A2+,그건 좀 아닌 듯. 내가 본 건 번 사람이 더 많았음,I don't think so. I saw more winners than losers,それはちょっと違うと思う。自分が見たのは儲けた人の方が多かった
+text.ad1b054cfd90e0c8,roomtalk:REPLY_NEG.A2+,매번 맞을 수는 없지. 그래도 그 방은 잘하는 편임,No one hits every time. That room still does well,毎回当たるわけない。それでもあの部屋はうまい方だよ
+text.9f465a67c522e883,roomtalk:REPLY_NEG.A2+,한 번 물렸다고 방 탓만 할 순 없음,You can't blame the room for one bad trade,一回捕まったからって部屋のせいにはできない
+text.744debbfd32ac2ef,roomtalk:REPLY_NEG.A2+,나는 계속 지켜봤는데 그 정도로 나쁜 방 아님,"I've been watching all along, and it's not that bad a room",自分はずっと見てきたけど、そこまで悪い部屋じゃない
+text.5c1520dbe8472fac,roomtalk:REPLY_NEG.A20,그 얘기도 여러 번 들었음. 좋다는 얘기만큼,I've heard that many times too. As often as the good,その話も何度も聞いた。いい話と同じくらい
+text.e38ce3889341b452,roomtalk:REPLY_NEG.A20,잃은 사람 말도 번 사람 말도 다 맞을 거임,The losers and the winners are probably both right,負けた人の話も儲けた人の話も、どっちも本当なんだろう
+text.da700ae2389a70df,roomtalk:REPLY_NEG.A20,결국 타이밍 문제 아님? 방 문제인지는 모르겠음,Isn't it timing in the end? Not sure it's the room,結局タイミングの問題じゃない？部屋の問題かは分からない
+text.50e37c06f8caf8a7,roomtalk:REPLY_NEG.A20,이래서 내가 아직 못 들어가는 거임,This is exactly why I still haven't joined,だから自分はまだ入れないんだよ
+text.75e82d7dbc6f9f1d,roomtalk:REPLY_NEG.A2-,내 말이. 그 방 물린 사람이 한둘이 아님,That's what I'm saying. More than a few got stuck in that room,それな。あの部屋で捕まった人は一人や二人じゃない
+text.765c1305bde56eed,roomtalk:REPLY_NEG.A2-,드디어 제대로 된 말 하는 사람 나왔네,Finally someone saying it straight,やっとまともなことを言う人が出てきた
+text.4b1265a3b24f2f89,roomtalk:REPLY_NEG.A2-,맞음. 나는 처음부터 그렇게 봤음,Right. I saw it that way from the start,そう。自分は最初からそう見てた
+text.2ad4125cdc4a9c4c,roomtalk:REPLY_NEG.A2-,다들 이 말 좀 새겨들어,Everyone take that to heart,みんなこの話をよく聞いて
+text.3b732adab4420aa7,roomtalk:REPLY_NEG.MEM+,회원인데 그건 오해임. 나는 잘 벌고 있음,I'm a member and that's a misunderstanding. I'm doing well,メンバーだけどそれは誤解。自分はちゃんと儲けてる
+text.7fef66a3bf874ac5,roomtalk:REPLY_NEG.MEM+,안에 있는 사람 입장에선 억울한 말임,"From inside, that's unfair",中にいる側からすると、それは心外
+text.ed88a27eef09e39c,roomtalk:REPLY_NEG.MEM+,지시를 끝까지 안 따른 거 아님? 나는 괜찮았는데,Did you not follow the call through? It worked for me,指示に最後まで従わなかったんじゃない？自分は大丈夫だったけど
+text.3961b531f13ac8cc,roomtalk:REPLY_NEG.MEM+,회원으로서 말하는데 방장은 할 만큼 함,Speaking as a member: the host does their part,メンバーとして言うけど、ルーム主はやるべきことはやってる
+text.bee5024aeb8040cc,roomtalk:REPLY_NEG.MEM-,회원인데 반박을 못 하겠음,I'm a member and I can't argue with that,メンバーだけど反論できない
+text.7afba6b941a6e718,roomtalk:REPLY_NEG.MEM-,안에 있는 나도 요즘 같은 생각임,I'm inside and I've been thinking the same lately,中にいる自分も最近同じことを考えてる
+text.bf69df880f806171,roomtalk:REPLY_NEG.MEM-,틀린 말은 아님. 나도 나갈까 고민 중,Not wrong. I'm considering leaving too,間違ってはいない。自分も出ようか迷ってる
+text.e64d6d30a5da1328,roomtalk:REPLY_NEG.MEM-,회원들끼리도 그런 얘기 나옴,Members say that among themselves too,メンバー同士でもそういう話は出る
+text.86d52390431ef847,roomtalk:REPLY_NEG.EX+,나는 나왔지만 그렇게까지 나쁘진 않았음,"I left, but it wasn't that bad",自分は出たけど、そこまで悪くはなかった
+text.b1a088c614bc7905,roomtalk:REPLY_NEG.EX+,있어 본 사람으로서 그건 좀 과한 말임,"As someone who's been in, that's a bit much",いたことがある身として、それは言いすぎ
+text.5b165d9725322f32,roomtalk:REPLY_NEG.EX+,전 회원인데 내 경험은 달랐음. 나는 벌고 나옴,"Ex-member, and my experience was different. I left in profit",元メンバーだけど自分の経験は違った。儲けて出た
+text.a12dc9f7c25d2b7a,roomtalk:REPLY_NEG.EX+,방 탓만은 아닐 거임. 나는 괜찮았음,It's probably not just the room. I was fine,部屋のせいだけじゃないと思う。自分は大丈夫だった
+text.18eaea93ccd87623,roomtalk:REPLY_NEG.EX-,전 회원으로서 그 말 보증함,"As an ex-member, I vouch for that",元メンバーとして、その話は保証する
+text.146b2112ecb1c2b0,roomtalk:REPLY_NEG.EX-,나도 똑같이 당함. 그래서 나옴,Same thing happened to me. That's why I left,自分も同じ目にあった。だから出た
+text.edc3018910151404,roomtalk:REPLY_NEG.EX-,있어 본 사람은 다 아는 얘기임,Everyone who's been in knows that,いたことがある人はみんな知ってる話
+text.eed53ff15935c989,roomtalk:REPLY_NEG.EX-,그 말 맞음. 나는 아직 그때 손실 복구 중,That's right. I'm still recovering from that loss,その通り。自分はまだあの時の損を取り返してる途中
+text.b3dce1a239dc3676,roomtalk:REPLY_ASK.A0,나도 모름. 그런 방이 있는 줄도 몰랐음,No idea. Didn't even know there was such a room,自分も知らない。そんな部屋があることも知らなかった
+text.c9d4e81054b7455c,roomtalk:REPLY_ASK.A0,나한테 묻지 마. 나도 처음 듣는 얘기임,Don't ask me. First I've heard of it too,自分に聞かないで。こっちも初耳
+text.6c9823d8f8f46ab9,roomtalk:REPLY_ASK.A0,그게 뭔데? 아는 사람 설명 좀,"What is that? Someone who knows, explain",それ何？知ってる人、説明して
+text.fcde046d0951537e,roomtalk:REPLY_ASK.A0,나도 궁금해짐. 누가 좀 알려 줘,Now I'm curious too. Somebody fill us in,自分も気になってきた。誰か教えて
+text.37abd863c8891ead,roomtalk:REPLY_ASK.A1+,나도 들어가 보진 않았는데 평은 좋다고 들었음,"Haven't been in, but I heard the reviews are good",入ったことはないけど、評判はいいって聞いた
+text.87815bd50a26079d,roomtalk:REPLY_ASK.A1+,잘은 모르지만 좋은 얘기를 들은 적 있음,"Don't know much, but I've heard good things",よくは知らないけど、いい話を聞いたことはある
+text.6406161cdb4041e5,roomtalk:REPLY_ASK.A1+,들은 바로는 괜찮다던데. 직접 가 보는 게 빠를 듯,From what I hear it's decent. Probably quickest to go see,聞いた限りでは悪くないらしい。直接行くのが早そう
+text.651b4c5e7916c493,roomtalk:REPLY_ASK.A1+,나도 가 볼까 하던 참임. 평이 나쁘지 않아서,I was thinking of going myself. The reviews aren't bad,自分も行こうかと思ってたところ。評判は悪くないから
+text.41610256efd39849,roomtalk:REPLY_ASK.A10,나도 들어만 봤음. 아는 게 없어서 도움이 안 됨,I've only heard of it. Know nothing useful,自分も聞いたことがあるだけ。役に立てない
+text.750c3b2a193737ff,roomtalk:REPLY_ASK.A10,나도 그게 궁금했음. 회원 있으면 대답 좀,"I've been wondering the same. Members, answer please",自分もそれが気になってた。メンバーがいたら答えて
+text.8b77b9ac65f95229,roomtalk:REPLY_ASK.A10,이름만 앎. 실제로 어떤지는 나도 모름,I only know the name. No idea what it's actually like,名前しか知らない。実際どうなのかは自分も分からない
+text.d9fec379b9bbd355,roomtalk:REPLY_ASK.A10,같이 물어보자. 나도 판단을 못 하고 있음,Let's ask together. I can't make up my mind either,一緒に聞こう。自分も判断できてない
+text.3f62e4fafdd6753e,roomtalk:REPLY_ASK.A1-,잘은 모르는데 좋은 얘기는 못 들었음,"Don't know much, but I haven't heard anything good",よくは知らないけど、いい話は聞いてない
+text.b7a46e0b7a1a7551,roomtalk:REPLY_ASK.A1-,들은 대로 말하면 별로라던데,"Going by what I heard, it's not great",聞いた通りに言うと、微妙らしいよ
+text.20125b6e1ff060d1,roomtalk:REPLY_ASK.A1-,나라면 안 감. 들리는 말이 좀 그래서,I wouldn't go. What I hear isn't great,自分なら行かない。聞こえてくる話がちょっとね
+text.524215816a86ac7a,roomtalk:REPLY_ASK.A1-,직접은 모르지만 조심하라는 말은 들었음,"No firsthand knowledge, but I was told to be careful",直接は知らないけど、気をつけろとは言われた
+text.d26e91bb7148d098,roomtalk:REPLY_ASK.A2+,들어가 보진 않았는데 번 사람 얘기를 많이 봄. 괜찮은 방임,"Haven't been in, but I've seen many say they made money. It's a decent room",入ったことはないけど、儲けた人の話をたくさん見た。いい部屋だよ
+text.2ca8cff83196a7c5,roomtalk:REPLY_ASK.A2+,내가 지켜본 바로는 믿을 만함,"From what I've watched, it's trustworthy",自分が見てきた限りでは信頼できる
+text.b94d0049ab5c6c4e,roomtalk:REPLY_ASK.A2+,평이 꾸준히 좋음. 나도 곧 들어갈 생각,Consistently good word. I plan to join soon,評判がずっといい。自分も近いうちに入るつもり
+text.ba699366cfe91a87,roomtalk:REPLY_ASK.A2+,밖에서 보기엔 잘 굴러가는 방임,"From the outside, it looks like a well-run room",外から見る限り、うまく回ってる部屋
+text.7a2513f90fbaae37,roomtalk:REPLY_ASK.A20,얘기는 많이 들었는데 좋다 나쁘다가 갈림,"I've heard a lot, and opinions are split",話はたくさん聞いたけど、いい悪いが分かれてる
+text.bb13d00fe9634094,roomtalk:REPLY_ASK.A20,잘 아는 편인데도 추천할지 말지 모르겠음,I know it fairly well and still can't say whether to recommend it,よく知ってる方だけど、勧めるべきか分からない
+text.60c5471cf2fe92a3,roomtalk:REPLY_ASK.A20,번 사람도 물린 사람도 다 봤음. 판단은 알아서,I've seen winners and people stuck. Judge for yourself,儲けた人も捕まった人も見た。判断は自分でして
+text.44d6da42957b76b3,roomtalk:REPLY_ASK.A20,들어가서 직접 보는 수밖에 없을 듯. 밖에선 모름,Seems the only way is to go in and see. Can't tell from outside,入って自分で見るしかなさそう。外からは分からない
+text.cc636b92da169d4e,roomtalk:REPLY_ASK.A2-,물어봐 줘서 고마움. 가지 마,Thanks for asking. Don't go,聞いてくれてありがとう。行くな
+text.c76715c9137cb124,roomtalk:REPLY_ASK.A2-,내가 본 대로 말하면 물린 사람이 더 많았음,"Going by what I've seen, more people got stuck than not",自分が見た通りに言うと、捕まった人の方が多かった
+text.1cab17f98dbc4e6f,roomtalk:REPLY_ASK.A2-,들어가기 전에 나온 사람 얘기부터 들어,Hear from people who left before you join,入る前に、出た人の話から聞いて
+text.960a70dcb4adb344,roomtalk:REPLY_ASK.A2-,솔직히 말하면 추천 안 함. 본 게 많아서,"Honestly, I don't recommend it. I've seen too much",正直に言うとおすすめしない。いろいろ見てきたから
+text.b5be3b45c2f13b40,roomtalk:REPLY_ASK.MEM+,나 회원임. 들어와. 후회 안 함,I'm a member. Come in. You won't regret it,自分はメンバー。おいで。後悔しないよ
+text.42255010c568f951,roomtalk:REPLY_ASK.MEM+,회원이 대답함. 지시 따라서 벌고 있음,Member answering: I'm making money on the calls,メンバーが答える。指示に従って儲けてる
+text.cf111fa97348da67,roomtalk:REPLY_ASK.MEM+,안에 있는 사람인데 분위기도 실적도 괜찮음,I'm inside. Both the mood and the results are fine,中にいるけど、雰囲気も実績も悪くない
+text.4d79b24ffb1cef2c,roomtalk:REPLY_ASK.MEM+,회원으로서 추천함. 이용료 값은 함,Recommending it as a member. It's worth the fee,メンバーとしておすすめする。利用料の価値はある
+text.8ed02647899094cb,roomtalk:REPLY_ASK.MEM-,회원인데 지금은 추천하기 어려움,"I'm a member, and it's hard to recommend right now",メンバーだけど、今はおすすめしにくい
+text.bfaa9f0d81020841,roomtalk:REPLY_ASK.MEM-,안에 있는 사람으로서 말하면 요즘 지시가 잘 안 맞음,Speaking from inside: the calls haven't been landing lately,中にいる人間として言うと、最近は指示があまり当たらない
+text.bebea4e8cf6aa6b3,roomtalk:REPLY_ASK.MEM-,회원이 대답함. 기대하고 오면 실망함,Member answering: come with expectations and you'll be let down,メンバーが答える。期待して来るとがっかりする
+text.39cbde1570065244,roomtalk:REPLY_ASK.MEM-,나 회원인데 나도 나갈지 고민 중이라 뭐라 말을 못 하겠음,"I'm a member and I'm debating leaving myself, so I can't really say",自分はメンバーだけど、出るか迷ってるから何とも言えない
+text.c4a7297c349320a0,roomtalk:REPLY_ASK.EX+,있다 나온 사람인데 방은 괜찮았음. 가 봐도 됨,"I was in and left, and the room was fine. Worth a try",いて出た人間だけど、部屋は悪くなかった。行ってみていい
+text.a4a43a113d88f6e3,roomtalk:REPLY_ASK.EX+,전 회원이 대답함. 지시는 믿을 만했음,Ex-member answering: the calls were reliable,元メンバーが答える。指示は信頼できた
+text.656a96a200313e20,roomtalk:REPLY_ASK.EX+,나는 벌고 나왔음. 나쁜 방 아님,I left in profit. Not a bad room,自分は儲けて出た。悪い部屋じゃない
+text.253829358818c8d4,roomtalk:REPLY_ASK.EX+,예전에 있었는데 나쁜 기억 없음. 추천할 만함,"I used to be in, no bad memories. I'd recommend it",前にいたけど悪い思い出はない。おすすめできる
+text.2ba1d6bb334c4817,roomtalk:REPLY_ASK.EX-,있다 나온 사람인데 나는 추천 안 함,"I was in and left, and I don't recommend it",いて出た人間だけど、自分はおすすめしない
+text.86068daf7b94fb68,roomtalk:REPLY_ASK.EX-,전 회원이 대답함. 나는 거기서 잃고 나옴,Ex-member answering: I lost money there and left,元メンバーが答える。自分はあそこで負けて出た
+text.9be9c1b3d6718525,roomtalk:REPLY_ASK.EX-,있어 봐서 아는데 홍보만큼은 아님,"I've been in, and it's not what the ads say",いたから分かるけど、宣伝ほどじゃない
+text.7e5919ffa824895a,roomtalk:REPLY_ASK.EX-,나한테 물으면 가지 말라고 함. 겪어 봐서,Ask me and I'll say don't go. I've been through it,自分に聞くなら行くなって言う。経験したから
+text.a12f47673f141a9f,roomtalk:PROMO.MEM0,나 그 방 들어간 지 얼마 안 됨. 아직은 지켜보는 중,I only just joined that room. Still watching for now,あの部屋に入ったばかり。今はまだ様子見
+text.c0cb85282688e546,roomtalk:PROMO.MEM0,회원이긴 한데 아직 지시를 따라 본 적이 없어서 뭐라 말을 못 하겠음,"I'm a member, but I haven't followed a call yet, so I can't say",メンバーではあるけど、まだ指示に従ったことがないから何とも言えない
+text.26060131fbde477e,roomtalk:PROMO.MEM0,나도 방에 있음. 결과는 아직 없어서 평가는 보류,"I'm in the room too. No results yet, so no verdict",自分も部屋にいる。まだ結果がないから評価は保留
+text.9bc2ac61bcc4c3ad,roomtalk:PROMO.MEM0,들어와 있긴 함. 좋은지 나쁜지는 좀 더 있어 봐야 앎,I'm in. Need more time to tell if it's good or bad,入ってはいる。いいか悪いかはもう少しいないと分からない
+text.ac83c4d05237c49c,roomtalk:PROMO.EX0,나 잠깐 들어갔다 나왔는데 지시는 한 번도 안 따라 봄,I was in briefly and left without ever following a call,少しだけ入って出たけど、指示には一度も従わなかった
+text.10a33bf6cf3be670,roomtalk:PROMO.EX0,있어 보긴 했음. 근데 금방 나와서 평가할 게 없음,"I've been in. Left quickly though, so nothing to judge",入ったことはある。でもすぐ出たから評価できるものがない
+text.41ef07073aa5f123,roomtalk:PROMO.EX0,예전에 잠깐 있었음. 벌지도 잃지도 않고 나옴,I was in for a bit a while back. Left without winning or losing,前に少しだけいた。儲けも損もせずに出た
+text.ba73dffdfa00ac1e,roomtalk:PROMO.EX0,들어가 본 적 있는데 구경만 하다 나왔음,"I've been in, but I only watched and then left",入ったことはあるけど、見てるだけで出た
+text.c0654cc878ef8652,roomtalk:OPEN.MEM0,방장 방 들어온 지 얼마 안 됐는데 다른 회원들은 어떰?,I haven't been in the host's room long. How's it going for other members?,ルーム主の部屋に入って間もないけど、他のメンバーはどう？
+text.343fc0e1ccf111b4,roomtalk:OPEN.MEM0,리딩방 회원 됐는데 아직 지시를 안 따라 봄. 따라 본 사람 후기 좀,Joined the signal room but haven't followed a call yet. Reviews from anyone who has?,投資ルームのメンバーになったけど、まだ指示に従ってない。従った人の感想を
+text.4c6bd3f32af5d00a,roomtalk:OPEN.MEM0,방장 방 들어와 있는데 아직 잘 모르겠음. 좀 더 지켜봄,I'm in the host's room and still not sure. Watching a bit longer,ルーム主の部屋に入ってるけど、まだよく分からない。もう少し見る
+text.457059d3012b4826,roomtalk:OPEN.MEM0,방장 방 새내기임. 여기 오래 있은 사람 있음?,Newcomer in the host's room. Anyone been here long?,ルーム主の部屋の新入り。ここに長くいる人いる？
+text.2751a26f028bf624,roomtalk:OPEN.EX0,방장 방 잠깐 있다 나왔는데 요즘은 어떤지 궁금함,I was in the host's room briefly. Curious how it is these days,ルーム主の部屋に少しだけいたけど、最近はどうなのか気になる
+text.c673635686d86484,roomtalk:OPEN.EX0,예전에 리딩방 구경만 하다 나왔음. 지시 따라 본 사람 있음?,I only looked around the signal room back then. Anyone actually follow the calls?,前に投資ルームを見るだけで出た。指示に従った人いる？
+text.d17f2fda10bcabf1,roomtalk:OPEN.EX0,방장 방 다시 들어갈까 말까 고민 중. 그때는 아무것도 안 해 봐서,Debating rejoining the host's room. I didn't try anything last time,ルーム主の部屋にまた入るか迷ってる。あの時は何もしなかったから
+text.50795538d10ab6c7,roomtalk:OPEN.EX0,그 방 금방 나온 게 잘한 건지 모르겠음,Not sure leaving that room so quickly was the right move,あの部屋をすぐ出たのが正解だったのか分からない
+text.8687e4dd0d6f7032,roomtalk:REPLY_POS.MEM0,나도 회원인데 아직 결과가 없어서 맞장구를 못 치겠음,"I'm a member too, but with no results yet I can't back that up",自分もメンバーだけど、まだ結果がないから同意しきれない
+text.4951eb3dcb6f7d40,roomtalk:REPLY_POS.MEM0,그렇구나. 나는 들어온 지 얼마 안 돼서 아직 모름,"Is that so. I only just joined, so I don't know yet",そうなんだ。自分は入ったばかりでまだ分からない
+text.dbc4dbfec20bb7c5,roomtalk:REPLY_POS.MEM0,회원으로서 그 말이 맞길 바람. 곧 알게 되겠지,"As a member, I hope that's true. I'll find out soon",メンバーとして、それが本当だといいな。そのうち分かる
+text.6741d77c310f6179,roomtalk:REPLY_POS.MEM0,나도 안에 있는데 그런 얘기 들으니 좀 안심됨,"I'm inside too, and hearing that is reassuring",自分も中にいるけど、その話を聞いて少し安心した
+text.6af7d0cda6809dd8,roomtalk:REPLY_POS.EX0,나는 구경만 하다 나와서 모르겠음. 좋았다니 다행이네,"I only watched and left, so I wouldn't know. Glad it went well for you",自分は見てるだけで出たから分からない。よかったなら何より
+text.58694a117be05ad5,roomtalk:REPLY_POS.EX0,그래? 나는 금방 나와서 그걸 못 봤네,Yeah? I left too soon to see that,そう？自分はすぐ出たからそれを見てない
+text.274ba418cfce9749,roomtalk:REPLY_POS.EX0,있어 보긴 했는데 지시를 안 따라 봐서 할 말이 없음,"I've been in, but I never followed a call, so I've got nothing to add",入ったことはあるけど、指示に従ってないから言えることがない
+text.8e8824dd17b1e71e,roomtalk:REPLY_POS.EX0,그 말 들으니까 좀 더 있어 볼 걸 그랬나 싶음,"Hearing that, maybe I should have stayed longer",それを聞くと、もう少しいればよかったかな
+text.2474ecce5228d1fa,roomtalk:REPLY_NEG.MEM0,나 들어온 지 얼마 안 됐는데 그런 말 들으니 불안하네,"I only just joined, and hearing that makes me nervous",入ったばかりなのに、そんな話を聞くと不安になる
+text.9aace8b9812b08e0,roomtalk:REPLY_NEG.MEM0,회원인데 아직 겪어 본 게 없어서 반박도 동의도 못 함,"I'm a member, but I haven't been through anything yet, so I can't argue or agree",メンバーだけど、まだ何も経験してないから反論も同意もできない
+text.448a98a8f1932dc0,roomtalk:REPLY_NEG.MEM0,그래? 나는 아직 지시를 안 따라 봤는데 조심해야겠네,Really? I haven't followed a call yet. I'd better be careful,そう？自分はまだ指示に従ってないけど、気をつけないと
+text.dcd4ff55d29ef37f,roomtalk:REPLY_NEG.MEM0,안에 있는 사람인데 그 얘기 좀 더 자세히 해 줘,I'm inside. Tell me more about that,自分は中にいる。その話、もう少し詳しく教えて
+text.43e82fbdf6f14e16,roomtalk:REPLY_NEG.EX0,나는 금방 나와서 그런 일은 못 겪음. 운이 좋았던 건가,I left too soon to go through that. Maybe I got lucky,自分はすぐ出たからそういう目にはあってない。運がよかったのかな
+text.911a0bb5c89d9747,roomtalk:REPLY_NEG.EX0,있어 보긴 했는데 구경만 해서 모르겠음,"I've been in, but I only watched, so I can't say",入ったことはあるけど、見てただけだから分からない
+text.35217d12b9f59363,roomtalk:REPLY_NEG.EX0,그 말 들으니까 일찍 나온 게 다행인 것 같기도 함,"Hearing that, maybe leaving early was for the best",それを聞くと、早く出てよかったのかもしれない
+text.89e0c6af42e7c475,roomtalk:REPLY_NEG.EX0,나는 잃은 건 없음. 아무것도 안 해서 그렇지만,I didn't lose anything. Only because I didn't do anything,自分は何も失ってない。何もしなかったからだけど
+text.f52408908a357fa1,roomtalk:REPLY_ASK.MEM0,나 회원인데 들어온 지 얼마 안 돼서 아직 대답을 못 하겠음,"I'm a member, but I joined too recently to answer",自分はメンバーだけど、入ったばかりでまだ答えられない
+text.ca762d6ad129c81e,roomtalk:REPLY_ASK.MEM0,안에 있긴 한데 지시를 아직 안 따라 봄. 따라 보고 알려 줌,"I'm in, but I haven't followed a call yet. I'll report back once I do",中にはいるけど、まだ指示に従ってない。従ったら教える
+text.ad1c10c1d02b785c,roomtalk:REPLY_ASK.MEM0,회원이 대답함. 분위기는 봤는데 수익은 아직 모름,"Member answering: I've seen the mood, don't know about profits yet",メンバーが答える。雰囲気は見たけど、利益はまだ分からない
+text.c630790205128438,roomtalk:REPLY_ASK.MEM0,나도 들어와서 알아보는 중임. 아직은 반반,I joined to find out myself. Fifty-fifty so far,自分も入って確かめてるところ。今のところ半々
+text.ead561abb44bc4b1,roomtalk:REPLY_ASK.EX0,있다 나왔는데 지시를 안 따라 봐서 나도 모름,"I was in and left, but I never followed a call, so I don't know either",いて出たけど、指示に従ってないから自分も分からない
+text.eed536a7c237bde2,roomtalk:REPLY_ASK.EX0,잠깐 구경만 했음. 수익이 어떤지는 겪어 본 사람한테 물어봐,I only looked around briefly. Ask someone who's been through it about profits,少し見ただけ。利益がどうかは経験した人に聞いて
+text.cb971899ce1bb013,roomtalk:REPLY_ASK.EX0,전 회원이긴 한데 금방 나와서 도움이 안 됨,"Technically an ex-member, but I left so fast I'm no help",一応元メンバーだけど、すぐ出たから役に立てない
+text.9534a9a84feab45b,roomtalk:REPLY_ASK.EX0,들어가 본 적은 있음. 근데 아무것도 안 해 봐서 평가를 못 함,"I've been in. But I tried nothing, so I can't judge",入ったことはある。でも何も試してないから評価できない
+text.f9e53fe619336b53,Company event headline,대형 수주 따냈다 - 내년 실적 눈높이 올라가,Big contract won; next year's earnings bar moves higher,大型受注を獲得、来期業績の期待値が上昇
+text.ce3af72f2e0c3b90,Company event headline,창사 후 최대 규모 계약 - 매출 반영 시점에 관심,Largest deal since founding; focus turns to when revenue lands,創業以来最大の契約、売上計上の時期に注目
+text.4b20828cb4ed39dd,Company event headline,수주 공시에 매수 문의 늘어 - 계약 조건은 미공개,Contract filing draws buyers; terms still undisclosed,受注開示で買い問い合わせ増、契約条件は非公表
+text.1ce018ab7e6c9800,Company event headline,첫 대형 거래처 확보 - 외형 성장 발판 마련,"First major client secured, laying ground for growth",初の大口顧客を確保、規模拡大の足場に
+text.f388c8f597f6370a,Company event headline,자금 조달 무산 - 운영 자금 얼마나 남았나,Fundraising falls through; how much runway is left?,資金調達が白紙、運転資金の残りに不安
+text.96958622fe7c87e9,Company event headline,투자 유치 불발 소식 - 단기 차입 의존 커질 듯,Investment round fails; reliance on short-term loans may grow,出資交渉が不調、短期借入への依存拡大か
+text.c050d6b1d70058fe,Company event headline,돈줄 막혔나 - 조달 실패에 재무 부담 부각,Is the money drying up? Failed raise puts finances in focus,資金繰りに黄信号、調達失敗で財務負担が浮上
+text.b3561bdfd1782675,Company event headline,증자 계획 차질 - 시장은 다음 자금 계획 주시,Capital plan hits a snag; market awaits the next funding move,増資計画に遅れ、市場は次の資金計画を注視
+text.5e2c4791cca910c2,Company event headline,업계 베테랑 합류 - 개발 속도 붙을까,Industry veteran joins; will development speed up?,業界のベテランが合流、開発は加速するか
+text.ca8946826db6a777,Company event headline,경쟁사 출신 핵심 개발자 영입 - 기술 격차 좁히기,Key developer hired from a rival to narrow the tech gap,競合出身の中核開発者を採用、技術差の縮小へ
+text.6f9c0b990f0533de,Company event headline,인재 확보전에서 한발 앞서 - 인건비 부담은 과제,"A step ahead in the talent race, though payroll costs loom",人材獲得競争で一歩先行、人件費負担は課題
+text.9704c4a9b380cdc5,Company event headline,연구 조직 보강 - 신제품 일정 당겨질 가능성,Research team reinforced; new product timeline may move up,研究組織を強化、新製品の日程前倒しも
+text.318577ebf2f94fc3,Company event headline,대형 물량 납품 마쳐 - 거래처 평가 긍정적,Large order delivered; client feedback is positive,大型案件の納品完了、取引先の評価は良好
+text.fa02c2b7b49b5e9d,Company event headline,약속한 납기 지켰다 - 추가 발주 기대감,Deadline met as promised; hopes rise for follow-on orders,約束の納期を順守、追加発注に期待
+text.3c32cbdc916ef4d0,Company event headline,첫 대형 수주 무사히 마무리 - 신뢰 쌓았다,"First major contract wrapped up cleanly, building trust",初の大型案件を無事完了、信頼を積み上げ
+text.440722efb2553f04,Company event headline,납품 품질 호평 - 재계약 논의 이어질 듯,Delivery quality praised; renewal talks likely to follow,納品品質に高評価、再契約の協議へ
+text.08793d45fb009b20,Company event headline,납기 밀린다 - 이번 분기 실적 반영 어려울 듯,Delivery slips; this quarter's earnings may miss the revenue,納期が後ろ倒し、今四半期の業績計上は困難か
+text.6d75c01bf02dbab6,Company event headline,수주 물량 일정 차질 - 지체 보상 가능성 거론,Order schedule disrupted; delay penalties being discussed,受注案件の日程に遅れ、遅延補償の可能性も
+text.e2ba77904116415f,Company event headline,프로젝트 지연 장기화 우려 - 비용 늘어날 수 있어,Fears the project delay drags on; costs could climb,案件遅延の長期化を懸念、費用増の恐れ
+text.19cc9a69e0195d30,Company event headline,일정 재조정 요청 - 거래처와 협의 중,Schedule change requested; talks under way with the client,日程の再調整を要請、取引先と協議中
+text.8fb6472dbf299adc,Company event headline,납품 제품 불량 논란 - 거래처 항의 이어져,Defect dispute over delivered goods; client complaints continue,納品物に不良の指摘、取引先から抗議相次ぐ
+text.830e3f742552cd06,Company event headline,품질 문제 제기돼 - 회사는 원인 조사 착수,Quality concerns raised; company opens an investigation,品質問題が浮上、会社は原因調査に着手
+text.b459afdbe36163b9,Company event headline,일부 물량 반품 요구 - 보상 비용 발생 가능,Some shipments face return demands; compensation costs possible,一部製品に返品要求、補償費用が発生も
+text.eb7c2d2979694474,Company event headline,거래처 불만 확산될까 - 재발 방지책에 관심,Will client complaints spread? Eyes on the prevention plan,顧客の不満は広がるか、再発防止策に注目
+text.7f6696b371853863,Company event headline,초기 투자금 확보 - 급한 불은 껐다,Early funding secured; the immediate fire is out,初期資金を確保、当面の危機は回避
+text.89e1da9a74781e24,Company event headline,개인 투자자 자금 유치 - 운영 자금 숨통,"Private investor money comes in, easing working capital",個人投資家から資金調達、運転資金に余裕
+text.e608e3089b26fe63,Company event headline,투자 유치로 한숨 돌려 - 지분 희석은 변수,"Funding buys breathing room, though dilution is a factor",資金調達でひと息、持分の希薄化は変数
+text.7f1c5fd53091b659,Company event headline,새 투자자 합류 - 후속 투자로 이어질지 관심,New investor on board; will follow-on funding come?,新たな出資者が参加、追加出資につながるか
+text.ded7b4334ec17f8e,Company event headline,임대료 밀렸다는 소문 - 회사는 확인 안 해,Rumor of overdue rent; company declines to confirm,賃料滞納のうわさ、会社は確認を避ける
+text.a72a6f8a99e74556,Company event headline,대금 지급 지연 의혹 - 협력사 불안 커져,Payment delay suspected; suppliers grow uneasy,支払い遅延の疑い、協力会社に不安広がる
+text.6bc750ed52fa734f,Company event headline,사업장 유지비 부담 - 이전·축소 검토 가능성,Premises costs weigh; relocation or downsizing may be on the table,拠点維持費が重荷、移転・縮小を検討か
+text.f1f007c03815ae22,Company event headline,연체 논란에 자금 사정 다시 도마 위,Overdue-bill dispute puts the cash position back under scrutiny,滞納疑惑で資金事情が再び焦点に
+text.a4ba5a1ce0b538e4,Company event headline,사무실 옮긴다 - 고정비 줄이기 나서,Office move planned in a push to cut fixed costs,オフィス移転へ、固定費の削減に着手
+text.85504d977defe367,Company event headline,비용 절감 위해 조직 재편 - 인력 조정은 없다는 입장,Reorganizing to save costs; company says no staff cuts,コスト削減へ組織再編、人員調整はないと説明
+text.4ac44952dd5124a5,Company event headline,사업장 이전 결정 - 절감 효과는 내년부터,Relocation decided; savings expected from next year,拠点移転を決定、削減効果は来期から
+text.ba6c808221ce4b44,Company event headline,허리띠 졸라맨다 - 이전 비용은 단기 부담,Belt-tightening begins; moving costs are a short-term burden,引き締め策を開始、移転費用は短期の負担
+text.fba01761399c7619,Company event headline,자체 제품 만든다 - 수주 의존 줄이기 시도,Building its own product to reduce reliance on contracts,自社製品を開発へ、受注依存からの脱却を図る
+text.36744b72ed877e20,Company event headline,신사업에 자금 투입 - 성과는 시간이 걸릴 전망,Money goes into a new business; results will take time,新規事業に資金投入、成果には時間
+text.ed509fad557e7d8d,Company event headline,새 제품 라인 개발 시작 - 개발비 부담은 숙제,New product line under development; R&D cost is the challenge,新製品ラインの開発開始、開発費の負担が課題
+text.d56b8c84d4e3f24e,Company event headline,사업 다각화 첫발 - 시장 반응은 엇갈려,First step into diversification; market reaction is mixed,事業多角化の第一歩、市場の反応は分かれる
+text.710fd9f61d0625c1,Company event headline,대기업과 손잡았다 - 납품 규모에 관심,Deal struck with a large corporation; delivery size in focus,大手企業と契約、納入規模に関心
+text.e43bef58aa173e3b,Company event headline,대기업 물량 확보 - 생산 능력이 관건,Big-company volume secured; capacity is now the question,大手企業の案件を確保、生産能力が鍵
+text.9b8657ef5dad5b1d,Company event headline,굵직한 계약 성사 - 협력 범위 넓어질 가능성,Heavyweight contract signed; cooperation may widen,大型契約が成立、協力範囲が広がる可能性
+text.fd15705e5a559249,Company event headline,대기업 공급망 진입 - 실적 가시성 높아져,Entry into a major supply chain improves earnings visibility,大手の供給網に参入、業績の見通しが改善
+text.3603b4581160941a,UI: Assets/Scripts/ChartUI/ChartManager.Navigation.cs,기본,Base,基本
+text.89c87e6f866527a2,UI: Assets/Scripts/NightShift/SpreadTradingUI.cs,1 틱,1 tick,1ティック
