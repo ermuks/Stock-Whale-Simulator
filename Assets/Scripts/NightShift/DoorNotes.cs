@@ -15,6 +15,8 @@ public sealed class DoorNotes : MonoBehaviour
     public static bool Aiming => Instance != null && Instance.aimed != null;
     public const KeyCode PickKey = KeyCode.F;
     private const int StuckLimit = 6;
+    /// <summary>노크가 울리고 이만큼 뒤에 쪽지가 들어오기 시작한다.</summary>
+    private const float KnockLeadSeconds = 1.1f;
     private const float SlideSeconds = 1.4f, FlySeconds = .55f, ReachDistance = 10f, Side = .46f;
     private static readonly Color Dim = new(.40f, .35f, .13f), Bright = new(.96f, .87f, .42f);
     private static string Word(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
@@ -29,6 +31,8 @@ public sealed class DoorNotes : MonoBehaviour
         /// <summary>0 미끄러져 들어오는 중, 1 바닥, 2 손에 듦, 3 모니터로 날아가는 중, 4 모니터에 붙음.</summary>
         public int State;
         public float Clock;
+        /// <summary>종이가 들어오는 소리를 이미 냈는가.</summary>
+        public bool Slid;
         public Vector3 From, To; public Quaternion FromTurn, ToTurn;
     }
     private readonly List<Note> notes = new();
@@ -115,6 +119,8 @@ public sealed class DoorNotes : MonoBehaviour
             if (note.State == 0 || note.State == 3)
             {
                 note.Clock += UnityEngine.Time.unscaledDeltaTime / (note.State == 0 ? SlideSeconds : FlySeconds);
+                // 노크가 먼저 울리고, 잠깐 뒤에 종이가 문틈으로 밀려 들어온다. 종이 소리는 움직이기 시작하는 순간에 난다.
+                if (note.State == 0 && !note.Slid && note.Clock >= 0f) { note.Slid = true; Sfx.Play("NoteSlide", .85f, note.From + Vector3.up * .5f); }
                 float t = Mathf.Clamp01(note.Clock), eased = note.State == 0 ? 1f - (1f - t) * (1f - t) : t * t * (3f - 2f * t);
                 Vector3 position = Vector3.Lerp(note.From, note.To, eased);
                 // 모니터로 갈 때는 살짝 떠올랐다가 내려앉는다.
@@ -175,8 +181,10 @@ public sealed class DoorNotes : MonoBehaviour
         note.From = shell.DoorGap + new Vector3(side, .02f, -.7f); note.To = shell.DoorGap + new Vector3(side * 1.15f, .02f, Random.Range(.85f, 1.5f));
         note.FromTurn = Quaternion.Euler(90f, 180f + turn * .3f, 0f); note.ToTurn = Quaternion.Euler(90f, 180f + turn, 0f);
         root.SetPositionAndRotation(note.From, note.FromTurn);
-        notes.Add(note); arrivedUntil = UnityEngine.Time.unscaledTime + 7f;
-        Sfx.Play("NoteArrive", .9f, shell.DoorGap + Vector3.up * 2f);
+        // 미끄러지기 전에 노크만큼 기다린다(Clock이 0이 될 때까지 문 밖에 머문다).
+        note.Clock = -KnockLeadSeconds / SlideSeconds;
+        notes.Add(note); arrivedUntil = UnityEngine.Time.unscaledTime + 7f + KnockLeadSeconds;
+        Sfx.Play("NoteKnock", .9f, shell.DoorCenter);
     }
     private static RectTransform Area(RectTransform parent, float x, float y, float w, float h)
     {

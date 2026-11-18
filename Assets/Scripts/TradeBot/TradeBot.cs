@@ -210,6 +210,10 @@ public abstract partial class TradeBot : Trader
         base.OnDestroy();
     }
 
+    /// <summary>판단·제한을 거치지 않고 계좌의 기본 주문을 그대로 낸다. 세력의 작전 도구(통정매매·허수벽·종가 관리)만 쓴다.</summary>
+    public void RawBuyLimit(decimal price, decimal volume, Stock stock) { if (MarketDayController.CanTrade && isActiveAndEnabled) { base.BuyLimit(price, volume, 0, stock); } }
+    public void RawSellLimit(decimal price, decimal volume, Stock stock) { if (MarketDayController.CanTrade && isActiveAndEnabled) { base.SellLimit(price, volume, 0, stock); } }
+
     public override void BuyLimit(decimal price, decimal volume, int subTickSteps = 0, Stock stock = null)
     {
         if (!MarketDayController.CanTrade || !isActiveAndEnabled)
@@ -245,7 +249,7 @@ public abstract partial class TradeBot : Trader
                 volume = System.Math.Min(volume, decimal.Floor(room / price));
                 if (volume < 1m) { return; }
                 // 한 번의 주문으로 목표 비중을 다 채우지 않는다. 충동 상태가 아니면 목표의 30%까지만 산다.
-                bool chasing = Social != null && Social.Psychology.HasFomoFor(ResolveStock(stock));
+                bool chasing = Social != null && Social.Psychology.HasFomoFor(ResolveStock(stock)) || IsChasing(ResolveStock(stock));
                 decimal target = TargetPositionValue(ResolveStock(stock));
                 if (!chasing && target != decimal.MaxValue)
                 {
@@ -377,6 +381,8 @@ public abstract partial class TradeBot : Trader
             Stock promised = PendingSocialStock();
             Stock pick = promised ?? PickStock();
             lastPickHeat = pick != null && StockInterestManager.Instance != null ? StockInterestManager.Instance.Heat(pick) : 0f;
+            // 크게 달아오른 종목을 보면, 가진 다른 종목을 급히 팔고 뛰어드는 봇이 있다.
+            if (pick != null && pick.AcceptsOrders && TryChase(pick, lastPickHeat)) { continue; }
             if (pick != null && pick.AcceptsOrders && (CanBuyStock(pick) || CanSellStock(pick)) && StockManager.Instance != null && StockManager.Instance.stocks.Contains(pick))
             {
                 ObserveMarket(pick);
@@ -544,6 +550,9 @@ public abstract partial class TradeBot : Trader
     /// <summary>이번에 거래할 종목 선택. 단일 종목 전문 트레이더는 전문 종목만 반환. 유동성 봇은 선호도·뉴스관심도 반영.</summary>
     protected virtual Stock PickStock()
     {
+        // 갈아타는 중에는 그 종목만 본다.
+        if (chaseStock != null && SessionClock.Time < chaseUntil && chaseStock.AcceptsOrders) { return chaseStock; }
+
         if (_isSingleStockTrader)
         { return _specializedStock != null && _specializedStock.AcceptsOrders ? _specializedStock : null; }
 

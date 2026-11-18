@@ -7,7 +7,32 @@ public sealed partial class CorporateEconomy
 {
     public CompanyGrowth.Rules GrowthRules=new();
     private Stock founderCompany;
-    public Stock PlayerCompany => founderCompany ?? StockManager.Instance?.playerAccount?.OwnedCompany;
+    /// <summary>장부에 있는 내 창업 기업. 아직 열지 않았어도(설립 전) 돌려준다.</summary>
+    private Stock FounderRaw
+    {
+        get
+        {
+            if (founderCompany != null) { return founderCompany; }
+            var owned = StockManager.Instance?.playerAccount?.OwnedCompany;
+            return owned?.business?.growth?.FounderBusiness == true ? owned : null;
+        }
+    }
+    /// <summary>이 종목이 아직 열지 않은(설립 전) 내 기업인가. 설립 전에는 사업을 하지 않는다: 매출도 비용도 결산도 없다.</summary>
+    public bool Unfounded(Stock stock)
+    {
+        var career = PlayerProgression.Instance;
+        return stock != null && career != null && !career.CompanyFounded && !career.Dreamt && stock == FounderRaw;
+    }
+    /// <summary>내 기업. 세우기 전(그리고 꿈에서 깬 뒤)에는 없다(null).</summary>
+    public Stock PlayerCompany
+    {
+        get
+        {
+            // 설립 비용을 내기 전에는 회사가 장부에만 있고 열려 있지 않다. 그동안은 내 기업이 없는 것으로 다룬다.
+            var career = PlayerProgression.Instance;
+            return career != null && !career.CompanyFounded ? null : FounderRaw;
+        }
+    }
     public string GrowthResult { get; private set; }="";
     public static CompanyGrowth.Rules LoadGrowthRules()
     {
@@ -29,13 +54,22 @@ public sealed partial class CorporateEconomy
     private void EnsureFounder()
     {
         var manager=StockManager.Instance; var player=manager.playerAccount;
-        // 꿈에서 깬 뒤에는 내 기업이 없다. 다시 만들어 주지 않는다.
-        if (PlayerProgression.Instance!=null && PlayerProgression.Instance.Dreamt) { return; }
-        if (founderCompany?.business?.growth?.FounderBusiness==true) { return; }
+        var career=PlayerProgression.Instance;
+        // 이미 사업을 해 온 기업이 있으면(이 기능이 생기기 전의 저장) 세운 것으로 친다. 한 번도 열지 않은 새 세계의 기업은 설립 비용을 내야 열린다.
+        bool Worked(Stock stock) { var g=stock?.business?.growth; return stock!=null && (stock.IsListed || g!=null && (g.OperatingDays>0 || g.CompletedProjects>0 || g.Contributions>0)); }
+        if (founderCompany?.business?.growth?.FounderBusiness==true) { if (Worked(founderCompany)) { career?.MarkCompanyFounded(true); } return; }
         var original=player.OwnedCompany;
-        if (original!=null && player.GetOwnedVolume(original)>original.issuedShares*.5m) { founderCompany=original; }
+        if (original!=null && player.GetOwnedVolume(original)>original.issuedShares*.5m) { founderCompany=original; if (Worked(original)) { career?.MarkCompanyFounded(true); } }
         else
         {
+            // 이미 세운 기업이 있는 저장(이 기능이 생기기 전의 저장 포함)이면 그 기업을 그대로 잇는다.
+            foreach (var existing in Companies())
+            {
+                if (existing.business?.growth?.FounderBusiness==true && !existing.IsDelisted && player.GetOwnedVolume(existing)>existing.issuedShares*.5m)
+                { founderCompany=existing; existing.Owner=player; existing.OwnerId=player.OwnerId; player.OwnedCompany=existing; career?.MarkCompanyFounded(true); return; }
+            }
+            // 기업 설립은 해금 요소다. 설립 비용을 내기 전에는(그리고 꿈에서 깬 뒤에는) 내 기업이 없다.
+            if (career!=null && !career.CompanyFounded) { return; }
             // Old retail saves had sold PLAYER to the exchange. Preserve those public shares and create the previously off-ledger private business.
             founderCompany=manager.RegisterPrivateCompany("PLAYER_BIZ",DailyIncomeController.Instance?.CompanyName ?? "내 기업",
                 GrowthRules.founderValue/(decimal)GrowthRules.founderShares,GrowthRules.founderShares);
@@ -51,7 +85,7 @@ public sealed partial class CorporateEconomy
     /// </summary>
     public void ReleaseFounderFromDream()
     {
-        var player=StockManager.Instance?.playerAccount; var stock=PlayerCompany;
+        var player=StockManager.Instance?.playerAccount; var stock=FounderRaw;
         founderCompany=null;
         if (player==null || stock==null) { return; }
         if (stock.business?.growth!=null) { stock.business.growth.FounderBusiness=false; }
@@ -63,6 +97,29 @@ public sealed partial class CorporateEconomy
         decimal owned=player.GetHolding(stock);
         if (owned>0 && stock.Owner!=null && stock.Owner!=player) { player.ForceRemoveHolding(stock,owned); stock.Owner.GrantShares(stock,owned,stock.currentPrice); }
         ObserveControl(stock);
+    }
+    /// <summary>
+    /// 내 비상장기업을 세운다. 설립 비용을 내면 기업이 생기고, 회사의 첫 값어치(founderValue)를 뺀 나머지는 그 회사의 자본금으로 들어간다.
+    /// 돈이 사라지는 것은 첫 값어치만큼이고(그만큼의 지분을 받는다), 나머지는 회사 안의 현금이 된다.
+    /// </summary>
+    public bool FoundCompany()
+    {
+        var career=PlayerProgression.Instance; var manager=StockManager.Instance; var payer=manager==null ? null : manager.playerAccount;
+        if (career==null || payer==null || !manager.SetupConfirmed || MarketDayController.Instance==null) { GrowthResult="설립 불가"; return false; }
+        if (PlayerCompany!=null) { GrowthResult="이미 기업이 있습니다"; return false; }
+        if (career.Dreamt && FounderRaw==null) { /* 꿈에서 깬 뒤에도 돈을 모으면 다시 세울 수 있다. */ }
+        if (MarketDayController.Instance.Phase==MarketPhase.Closing) { GrowthResult="마감 정산 중"; return false; }
+        decimal cost=career.FoundingCost, seed=Math.Min(cost,GrowthRules.founderValue);
+        if (PlayerAccounts.Available(payer)<cost) { GrowthResult="설립 자금 부족"; return false; }
+        career.MarkCompanyFounded(true); EnsureFounder();
+        var stock=founderCompany;
+        if (stock==null) { career.MarkCompanyFounded(false); GrowthResult="설립 불가"; return false; }
+        payer.cash-=seed;
+        decimal capital=decimal.Floor(cost-seed);
+        bool funded=capital<1 || FundCompany(stock,payer,capital);
+        ObserveControl(stock);
+        GrowthResult=funded ? "기업 설립" : "기업 설립 · 자본금 출자는 나중에";
+        return true;
     }
     private void EnsureRepresentative(Stock stock)
     {

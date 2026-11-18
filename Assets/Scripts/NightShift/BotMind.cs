@@ -3,6 +3,8 @@ using UnityEngine;
 /// <summary>성격·현재 스트레스·관계가 실제 선택 확률에 들어가는 작은 의사결정 모델.</summary>
 public static class BotMind
 {
+    /// <summary>호가창의 벽이 어느 쪽으로 기울었는가(+면 매수벽, -면 매도벽). 게임 쪽에서 연결한다. 연결하지 않으면 벽을 보지 않는다.</summary>
+    public static System.Func<Stock, float> WallLean;
     public static float BuyBias(TradeBot bot, Stock stock)
     {
         var s = bot.Social;
@@ -10,6 +12,8 @@ public static class BotMind
         { return 0f; }
         float fear = Mathf.Clamp01(s.Stress / 100f * .35f + s.Psychology.Fear / 100f * .45f + (1f - s.Confidence) * .2f);
         float result = (s.Greed - .5f) * .18f + (s.Impulsiveness - .5f) * .1f - fear * .14f - s.Suspicion * .05f + (s.Psychology.HasFomoFor(stock) ? (float)ChatSocialConfig.Current.Get("fomoBuyBias") : 0);
+        // 큰 매수벽이 보이면 사고 싶어지고, 큰 매도벽이 보이면 손이 안 나간다.
+        if (WallLean != null) { result += WallLean(stock) * .10f; }
         if (s.InfluencedStock == stock && SessionClock.Time < s.InfluenceUntil)
         { result += .06f + s.Greed * .12f - s.Suspicion * .06f; }
         return Mathf.Clamp(result, -.25f, .25f);

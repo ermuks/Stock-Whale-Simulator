@@ -16,6 +16,7 @@ public sealed partial class InvestorSociety
             ChooseSocialTopic = bot => ChooseRoomTopic(bot, bot.Social.Psychology.Room, bot.Social.Psychology.SocialRng.Next());
             ChooseWatchedStock = ChoosePersonalWatch;
             ReadMarketDay = ReadDayBoard;
+            BotMind.WallLean = stock => ManipulationTools.Walls(stock).Lean;
             ChatterboxEnabled = true;
             RoomTalkEnabled = true;
             RefreshOfferedFacts = RefreshNpcFacts;
@@ -39,6 +40,8 @@ public sealed partial class InvestorSociety
         SocialTime.Set(day.Day, day.GameMinute, SessionClock.Time);
         TickHype();
         TickChartTalk();
+        TickPlayerChat();
+        EnsureChatBar();
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
     }
@@ -141,6 +144,7 @@ public sealed partial class InvestorSociety
     {
         if (!SocialBots.TryGetValue(message.senderId, out var bot))
         { return; }
+        ApplyChatInfluence(bot, message);
         if (SplitSocialDelivery(bot, message)) { return; }
         var context = new InvestorMessageContext(message.facts?.eventId ?? 0, message.roomId,
             message.act == SocialAct.PRAISE_PLAYER ? 1 : message.act == SocialAct.WARN_PLAYER ? -1 : 0,

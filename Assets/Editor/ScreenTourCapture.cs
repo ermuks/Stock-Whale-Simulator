@@ -285,7 +285,7 @@ public static class ScreenTourCapture
             {
                 try { steps[stepIndex].prepare(); }
                 catch (Exception error) { report.AppendLine("STEP FAILED " + steps[stepIndex].name + " prepare: " + error.Message); }
-                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("heat-") && languageIndex == 0 && only.Contains("heat") ? 45 : steps[stepIndex].name.StartsWith("talk-") && steps[stepIndex].name != "talk-0" && languageIndex == 0 && only.Contains("talk") ? 45 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
+                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("tac-") && languageIndex == 0 && only.Contains("tac") ? (steps[stepIndex].name == "tac-0" ? 2 : steps[stepIndex].name == "tac-1" ? 6 : steps[stepIndex].name == "tac-2" ? 20 : steps[stepIndex].name == "tac-3" ? 8 : steps[stepIndex].name == "tac-4" || steps[stepIndex].name == "tac-5" ? 45 : 11) : steps[stepIndex].name == "found-wall" && languageIndex == 0 && only.Contains("found") ? 20 : steps[stepIndex].name.StartsWith("dawn-talk") && languageIndex == 0 && only.Contains("dawn") ? 7 : steps[stepIndex].name == "dawn-end" && languageIndex == 0 && only.Contains("dawn") ? 12 : steps[stepIndex].name.StartsWith("heat-") && languageIndex == 0 && only.Contains("heat") ? 45 : steps[stepIndex].name.StartsWith("talk-") && steps[stepIndex].name != "talk-0" && languageIndex == 0 && only.Contains("talk") ? 45 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
             }
             if (phase == 101)
             {
@@ -312,6 +312,15 @@ public static class ScreenTourCapture
         catch (Exception error) { Finish(error); }
     }
 
+    /// <summary>다음 날 치 이용료가 따로 나가는지 본다(날짜만 하루 뒤로 넣어 본다).</summary>
+    private static string PayNext(PlayerProgression career, Trader player)
+    {
+        decimal before = player.cash; bool ok = career.PayDawnFee(player, MarketDayController.Instance.Day + 1);
+        string result = ok + " " + (before - player.cash).ToString("N0");
+        // 확인이 끝났으니 날짜 기록을 오늘로 되돌린다.
+        typeof(PlayerProgression).GetProperty("DawnFeeDay").SetValue(career, MarketDayController.Instance.Day);
+        return result;
+    }
     private static void LogAccumulate(string moment)
     {
         var operation = TradingOperationController.Instance;
@@ -345,6 +354,60 @@ public static class ScreenTourCapture
         steps.Add(("chat-lounge", () => { chat.SelectRoom(0); SelectInvestor(); }, () => chatScreen));
         steps.Add(("chat-my-room", () => chat.SelectRoom(1), () => chatScreen));
         steps.Add(("chat-host-room", () => rooms.ShowNpc(), () => chatScreen));
+        // 새벽 관찰실: 잠금 화면 → 해금 → 입장(이용료) → 내 채팅과 봇의 답, 종목 분석 AI.
+        steps.Add(("dawn-locked", () => { if (only.Contains("dawn")) { chat.SelectRoom(NpcLeadingRoom.RoomId); } }, () =>
+        {
+            if (!only.Contains("dawn")) { return null; }
+            var career = PlayerProgression.Instance; var npc = NpcLeadingRoom.Instance; var player = StockManager.Instance.playerAccount;
+            if (languageIndex == 0) { report.AppendLine("DAWN locked: unlocked " + career.DawnUnlocked + " eligible " + career.DawnEligible + " turnover " + career.Turnover.ToString("N0") + " joined " + npc.PlayerJoined + " cash " + player.cash.ToString("N0") + " try unlock " + career.UnlockDawn(player) + " try join " + npc.JoinPlayer() + " (" + npc.Status + ") can write " + InvestorSociety.Instance.PlayerCanWrite(NpcLeadingRoom.RoomId)); }
+            return chatScreen;
+        }));
+        steps.Add(("dawn-unlocked", () =>
+        {
+            if (!only.Contains("dawn") || languageIndex != 0) { return; }
+            var career = PlayerProgression.Instance; var player = StockManager.Instance.playerAccount;
+            typeof(PlayerProgression).GetProperty("Turnover").SetValue(career, (decimal)career.rules.dawnRoomTurnover);
+            decimal before = player.cash; bool opened = career.UnlockDawn(player);
+            report.AppendLine("DAWN INJECTED turnover " + career.Turnover.ToString("N0") + " -> unlock " + opened + " paid " + (before - player.cash).ToString("N0") + " unlocked " + career.DawnUnlocked);
+        }, () => only.Contains("dawn") ? chatScreen : null));
+        string[] lines = { "님들 안녕하세요", "ㅋㅋㅋㅋ 오늘 장 재밌네", "!분석 노보", "!분석 없는종목", "노보손해보험 지금 살까?", "뭐 살지 추천 좀", "대만디스플레이 오늘 간다 가즈아", "수익 30% 먹었다 ㅋㅋ", "아 물렸다 ㅠㅠ", "이 바보들아", "미안", "내가 세력이다", "ㅂㅂ" };
+        steps.Add(("dawn-joined", () =>
+        {
+            if (!only.Contains("dawn") || languageIndex != 0) { return; }
+            var career = PlayerProgression.Instance; var npc = NpcLeadingRoom.Instance; var player = StockManager.Instance.playerAccount;
+            decimal before = player.cash; npc.RequestJoin(); bool joined = npc.JoinPlayer();
+            report.AppendLine("DAWN join " + joined + " (" + npc.Status + ") fee paid " + (before - player.cash).ToString("N0") + " fee day " + career.DawnFeeDay + " can write " + InvestorSociety.Instance.PlayerCanWrite(NpcLeadingRoom.RoomId));
+            before = player.cash; bool again = career.PayDawnFee(player, MarketDayController.Instance.Day);
+            report.AppendLine("DAWN same day fee again: ok " + again + " paid " + (before - player.cash).ToString("N0") + "; next day: paid " + PayNext(career, player));
+            chat.SelectRoom(NpcLeadingRoom.RoomId);
+        }, () => only.Contains("dawn") ? chatScreen : null));
+        for (int index = 0; index < lines.Length; index++)
+        {
+            int number = index;
+            steps.Add(("dawn-talk-" + number, () =>
+            {
+                if (!only.Contains("dawn") || languageIndex != 0) { return; }
+                bool sent = InvestorSociety.Instance.SubmitPlayerChat(NpcLeadingRoom.RoomId, lines[number]);
+                if (!sent) { report.AppendLine("DAWN could not send: " + lines[number]); }
+            }, () =>
+            {
+                if (!only.Contains("dawn") || languageIndex != 0) { return null; }
+                var society = InvestorSociety.Instance;
+                while (society.PlayerTalkTrace.Count > 0) { report.AppendLine("TALK " + society.PlayerTalkTrace.Dequeue()); }
+                return number == 3 || number == lines.Length - 1 ? chatScreen : null;
+            }));
+        }
+        steps.Add(("dawn-end", () => { }, () =>
+        {
+            if (only.Contains("dawn") && languageIndex == 0)
+            {
+                var society = InvestorSociety.Instance; int hostile = 0, friendly = 0; float trust = 0f; int count = 0;
+                foreach (var bot in society.SocialBots.Values) { if (bot.Social == null || bot.Social.Psychology.Room != NpcLeadingRoom.RoomId) { continue; } count++; trust += bot.Social.Psychology.Trust; if (bot.Social.Psychology.Betrayal >= 40f) { hostile++; } if (bot.Social.Psychology.Trust >= 40f) { friendly++; } }
+                report.AppendLine("DAWN end: player lines " + society.PlayerLines + " replies " + society.PlayerReplies + " analyses " + society.AnalysesPosted + " room bots " + count + " average trust " + (count == 0 ? 0f : trust / count).ToString("F1") + " friendly " + friendly + " hostile " + hostile);
+                while (society.PlayerTalkTrace.Count > 0) { report.AppendLine("TALK " + society.PlayerTalkTrace.Dequeue()); }
+            }
+            return only.Contains("dawn") ? chatScreen : null;
+        }));
         steps.Add(("monitor-chart", () => chat.SelectRoom(0), () => chartScreen));
         // 보유 현황 칸의 수익·손실 모습. 요청에 only:monitor-holding 이 있을 때만 주식을 쥐여 준다(다른 화면에 영향을 주지 않게).
         steps.Add(("monitor-holding-profit", () =>
@@ -400,6 +463,20 @@ public static class ScreenTourCapture
                 {
                     foreach (var button in device.GetComponentsInChildren<Button>(true)) { if (button.name == "Button :: Tab Accumulate") { button.onClick.Invoke(); break; } }
                 }, () => screen));
+                // 작전 탭: 잠금 표시와 여는 조건.
+                steps.Add((prefix + "tactics", () =>
+                {
+                    foreach (var button in device.GetComponentsInChildren<Button>(true)) { if (button.name == "Button :: Tab Tactics") { button.onClick.Invoke(); break; } }
+                    var career = PlayerProgression.Instance; var company = CorporateEconomy.Instance.PlayerCompany;
+                    report.AppendLine("TACTICS " + languages[languageIndex] + " unlocked close " + PlayerTactics.Unlocked(PlayerTactics.Tool.Close) + " (turnover " + career.Turnover.ToString("N0") + " / " + career.rules.tacticCloseTurnover.ToString("N0") + ") wash " + PlayerTactics.Unlocked(PlayerTactics.Tool.Wash) + " (rooms " + career.CanOperateRooms + ") wall " + PlayerTactics.Unlocked(PlayerTactics.Tool.Wall) + " (company " + (company == null ? "none" : company.symbol + " listed " + company.IsListed) + ")");
+                    bool wash = PlayerTactics.Instance.StartWash(StockManager.Instance.CurrentStock); string washNote = PlayerTactics.Instance.Notice; PlayerTactics.Instance.StopWash();
+                    bool wall = PlayerTactics.Instance.SetWall(StockManager.Instance.CurrentStock, .1f); string wallNote = PlayerTactics.Instance.Notice; PlayerTactics.Instance.PullWall();
+                    report.AppendLine("TACTICS " + languages[languageIndex] + " try wash " + wash + " (" + washNote + ") try wall " + wall + " (" + wallNote + ")");
+                }, () => screen));
+                steps.Add((prefix + "tactics-leave", () =>
+                {
+                    foreach (var button in device.GetComponentsInChildren<Button>(true)) { if (button.name == "Button :: Tab Accumulate") { button.onClick.Invoke(); break; } }
+                }, () => null));
                 // 매집을 실제로 돌려 본다: 작업 계좌에 현금을 옮기고, 현재가 −5%~현재가로 시작한다.
                 steps.Add((prefix + "accumulate-running", () =>
                 {
@@ -427,6 +504,38 @@ public static class ScreenTourCapture
                 steps.Add((prefix + "assets", () => device.ShowPage(TabletAccountUI.Page.Dashboard), () => screen));
                 steps.Add((prefix + "orders", () => device.ShowPage(TabletAccountUI.Page.Orders), () => screen));
                 steps.Add((prefix + "company", () => device.ShowPage(TabletAccountUI.Page.Management), () => screen));
+                // 인수 사다리: 처음 모습, 그리고 가장 큰 회사의 지분을 대주주에게서 넘겨받았을 때(넣은 것. 순서를 건너뛰어도 되는지 본다).
+                steps.Add((prefix + "ladder", () =>
+                {
+                    if (!only.Contains("ladder")) { return; }
+                    device.ShowPage(TabletAccountUI.Page.Management);
+                    var board = device.GetComponentInChildren<CompanyDashboardUI>(true); board.OpenLadder();
+                    if (languageIndex != 0) { return; }
+                    var economy = CorporateEconomy.Instance; var line = new StringBuilder("LADDER start synergy " + economy.LadderSynergy.ToString("F2") + " taken " + economy.LadderControlled + " |");
+                    foreach (var rung in economy.Ladder()) { line.Append(" " + (rung.Rank + 1) + " " + rung.Stock.symbol + " cap " + rung.MarketCap.ToString("N0") + " need " + rung.CostToControl.ToString("N0") + " +" + rung.Bonus.ToString("P0") + " |"); }
+                    report.AppendLine(line.ToString());
+                }, () => only.Contains("ladder") ? screen : null));
+                steps.Add((prefix + "ladder-taken", () =>
+                {
+                    if (!only.Contains("ladder") || languageIndex != 0) { return; }
+                    var economy = CorporateEconomy.Instance; var player = StockManager.Instance.playerAccount; var rungs = economy.Ladder();
+                    var top = rungs[rungs.Count - 1].Stock; var small = rungs[0].Stock;
+                    foreach (var target in new[] { top, small })
+                    {
+                        decimal need = decimal.Floor(target.issuedShares * .5m) + 1m - player.GetOwnedVolume(target); decimal moved = 0m;
+                        foreach (var holder in Trader.Registry.ToArray())
+                        {
+                            if (holder == player || need <= 0m) { continue; }
+                            target.orderBook?.CancelAllOrdersByOwner(holder, target);
+                            decimal take = Math.Min(need, holder.GetHolding(target));
+                            if (take < 1m) { continue; }
+                            holder.ForceRemoveHolding(target, take); player.GrantShares(target, take, target.currentPrice); need -= take; moved += take;
+                        }
+                        economy.ObserveControl(target);
+                        report.AppendLine("LADDER INJECTED " + target.symbol + " shares moved to player " + moved.ToString("N0") + " -> controls " + WorldDramaDirector.Instance.Controls(target) + " ledger " + StockIntegrityChecker.Instance.CheckStock(target).isValid + " synergy " + economy.LadderSynergy.ToString("F2") + " taken " + economy.LadderControlled + " feed: " + MarketEventFeed.Instance.LatestEvent);
+                    }
+                }, () => only.Contains("ladder") ? screen : null));
+                steps.Add((prefix + "ladder-close", () => { if (only.Contains("ladder")) { var view = device.GetComponentInChildren<AcquisitionLadderUI>(true); if (view != null) { view.Close(); } } }, () => null));
                 steps.Add((prefix + "records", () => device.ShowPage(TabletAccountUI.Page.Records), () => screen));
                 steps.Add((prefix + "news", () => device.ShowPage(TabletAccountUI.Page.Events), () => screen));
                 steps.Add((prefix + "unlocks", () => device.ShowPage(TabletAccountUI.Page.Unlocks), () => screen));
@@ -501,6 +610,143 @@ public static class ScreenTourCapture
                 return null;
             }));
         }
+        // 작전 도구 확인: 플레이어 도구 세 가지를 실제 계좌로 써 보고(넣은 것임을 적는다), 그 뒤 세력 봇과 개미가 스스로 쓰는지 지켜본다.
+        Stock tacticStock = null; decimal tacticCash = 0m, tacticHeld = 0m; float tacticHeat = 0f;
+        steps.Add(("tac-0", () => { }, () =>
+        {
+            if (only.Contains("tac") && languageIndex == 0)
+            {
+                var player = PlayerAccounts.Instance.primary; decimal widest = 0m;
+                foreach (var stock in StockManager.Instance.stocks)
+                {
+                    if (!stock.AcceptsOrders || stock.Owner == player || !stock.orderBook.TryBest(out decimal bid, out decimal ask)) { continue; }
+                    decimal ticks = (ask - bid) / PriceTickPolicy.GetTickSize(bid);
+                    if (ticks > widest) { widest = ticks; tacticStock = stock; }
+                }
+                tacticStock.orderBook.TryBest(out _, out decimal offer);
+                decimal quantity = decimal.Floor(player.cash * .08m / offer);
+                player.BuyLimit(PriceTickPolicy.CeilToTick(offer * 1.01m), quantity, 0, tacticStock);
+                report.AppendLine("TACTIC INJECTED setup: " + tacticStock.symbol + " spread " + widest.ToString("F0") + " ticks, bought " + player.GetHolding(tacticStock).ToString("N0") + " of " + quantity.ToString("N0") + " shares");
+            }
+            return null;
+        }));
+        steps.Add(("tac-1", () => { }, () =>
+        {
+            if (only.Contains("tac") && languageIndex == 0)
+            {
+                var player = PlayerAccounts.Instance.primary; var interest = StockInterestManager.Instance;
+                tacticCash = player.cash; tacticHeld = player.GetOwnedVolume(tacticStock); tacticHeat = interest.Heat(tacticStock);
+                bool started = PlayerTactics.Instance.StartWash(tacticStock);
+                report.AppendLine("TACTIC INJECTED wash start " + started + ": cash " + tacticCash.ToString("N0") + " shares " + tacticHeld.ToString("N0") + " heat " + tacticHeat.ToString("F1") + " usual " + interest.UsualTurnover(tacticStock).ToString("N0") + " recent " + interest.RecentTurnover(tacticStock).ToString("N0") + " notice " + PlayerTactics.Instance.Notice);
+            }
+            return null;
+        }));
+        steps.Add(("tac-2", () => { }, () =>
+        {
+            if (only.Contains("tac") && languageIndex == 0)
+            {
+                var player = PlayerAccounts.Instance.primary; var interest = StockInterestManager.Instance; var tactics = PlayerTactics.Instance;
+                report.AppendLine("TACTIC INJECTED wash after 20s: rounds " + tactics.WashRounds + " painted " + tactics.WashPainted.ToString("N0") + " cash change " + (player.cash - tacticCash).ToString("N0") + " share change " + (player.GetOwnedVolume(tacticStock) - tacticHeld).ToString("N0")
+                    + " heat " + tacticHeat.ToString("F1") + " -> " + interest.Heat(tacticStock).ToString("F1") + " recent " + interest.RecentTurnover(tacticStock).ToString("N0") + " nominee cash " + ManipulationTools.Nominee(player).cash.ToString("N0") + " nominee shares " + ManipulationTools.Nominee(player).GetHolding(tacticStock).ToString("N0")
+                    + " ledger " + StockIntegrityChecker.Instance.CheckStock(tacticStock).isValid);
+                tactics.StopWash();
+                int before = ManipulationTools.BookTilt(tacticStock);
+                bool placed = tactics.SetWall(tacticStock, .5f);
+                report.AppendLine("TACTIC INJECTED wall placed " + placed + ": price " + tactics.WallPrice.ToString("N0") + " vs last " + tacticStock.currentPrice.ToString("N0") + " shown " + tactics.WallShown.ToString("N0") + " reserved " + player.ReservedCash.ToString("N0") + " tilt before " + before + " notice " + tactics.Notice);
+            }
+            return null;
+        }));
+        steps.Add(("tac-3", () => { }, () =>
+        {
+            if (only.Contains("tac") && languageIndex == 0)
+            {
+                var player = PlayerAccounts.Instance.primary; var tactics = PlayerTactics.Instance;
+                report.AppendLine("TACTIC INJECTED wall after 8s: standing " + (tactics.WallStock != null) + " price " + tactics.WallPrice.ToString("N0") + " shown " + tactics.WallShown.ToString("N0") + " tilt now " + ManipulationTools.BookTilt(tacticStock) + " notice " + tactics.Notice);
+                tactics.PullWall();
+                report.AppendLine("TACTIC INJECTED wall pulled: reserved " + player.ReservedCash.ToString("N0") + " notice " + tactics.Notice);
+                bool armed = tactics.ArmClose(tacticStock, .1f);
+                report.AppendLine("TACTIC INJECTED close armed " + armed + " budget " + tactics.CloseBudget.ToString("N0") + " (left armed; it buys in the last 40 seconds of the session)");
+                // 세력 한 곳의 매집을 거의 끝난 상태로 당겨 놓는다(넣은 것). 그 뒤의 수법과 개미의 반응은 스스로 일어나는 것만 적는다.
+                var field = typeof(WhaleBot).GetField("operation", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                foreach (var stock in StockManager.Instance.stocks)
+                {
+                    if (stock.Owner is WhaleBot whale && whale.Operating && field.GetValue(whale) is WhaleOperationState state && state.stage == WhaleOperationState.Build)
+                    {
+                        report.AppendLine("TACTIC INJECTED shortened accumulation: " + stock.symbol + " build " + state.stageSeconds.ToString("F0") + "/" + state.buildSeconds.ToString("F0") + "s -> 20s left, budget " + state.budget.ToString("N0") + " price " + stock.currentPrice.ToString("N0"));
+                        state.buildSeconds = 400f; state.stageSeconds = 380f;
+                    }
+                }
+            }
+            return null;
+        }));
+        for (int beat = 4; beat <= 11; beat++)
+        {
+            int number = beat;
+            steps.Add(("tac-" + number, () => { }, () =>
+            {
+                if (only.Contains("tac") && languageIndex == 0)
+                {
+                    var market = MarketDayController.Instance; var tactics = PlayerTactics.Instance; var society = InvestorSociety.Instance;
+                    foreach (var stock in StockManager.Instance.stocks)
+                    {
+                        if (stock.Owner is WhaleBot whale && whale.Operating && typeof(WhaleBot).GetField("operation", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(whale) is WhaleOperationState state)
+                        { report.AppendLine("TACTIC   whale " + stock.symbol + " stage " + state.stage + " price " + stock.currentPrice.ToString("N0") + " start " + state.startPrice.ToString("N0") + " heat " + StockInterestManager.Instance.Heat(stock).ToString("F1") + " tilt " + ManipulationTools.BookTilt(stock)); }
+                    }
+                    report.AppendLine("TACTIC " + number + " day " + market.Day + " " + market.Phase + " left " + market.RemainingSeconds.ToString("F0") + "s | whales: wash rounds " + WhaleBot.WashRoundsTotal + " painted " + WhaleBot.WashPaintedTotal.ToString("N0") + " walls placed " + WhaleBot.WallsPlacedTotal + " pulled " + WhaleBot.WallsPulledTotal + " close buys " + WhaleBot.CloseBuysTotal
+                        + " | bots: chases " + TradeBot.ChasesTotal + " sold " + TradeBot.ChaseSoldTotal.ToString("N0") + " | player close spent " + tactics.CloseSpent.ToString("N0") + " of " + tactics.CloseBudget.ToString("N0") + " " + tactics.Notice);
+                    report.AppendLine("INFLUENCE messages " + society.InfluenceMessages + " turned " + society.InfluenceTurned);
+                    while (society.InfluenceTrace.Count > 0) { report.AppendLine("INFLUENCE   " + society.InfluenceTrace.Dequeue()); }
+                    int rotations = 0; while (society.ChartTrace.Count > 0) { string line = society.ChartTrace.Dequeue(); if (line.Contains("[rotate]")) { report.AppendLine("TACTIC   " + line); } else if (line.Contains(" rotate ")) { rotations++; } }
+                    if (rotations > 0) { report.AppendLine("TACTIC   rotations noted since last beat: " + rotations); }
+                    if (number == 5)
+                    {
+                        // 장 마감 38초 전으로 시계를 당긴다(넣은 것). 종가 관리가 실제로 사들이는지 보기 위해서다.
+                        var clock = typeof(MarketDayController).GetField("elapsed", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        float before = market.RemainingSeconds; clock.SetValue(market, (float)clock.GetValue(market) + Mathf.Max(0f, before - 38f));
+                        report.AppendLine("TACTIC INJECTED clock moved to 38s before the close (was " + before.ToString("F0") + "s left)");
+                    }
+                }
+                return null;
+            }));
+        }
+        // 기업 설립 해금과 호가창의 벽 인식.
+        steps.Add(("found-check", () => { }, () =>
+        {
+            if (only.Contains("found") && languageIndex == 0)
+            {
+                var economy = CorporateEconomy.Instance; var career = PlayerProgression.Instance; var player = StockManager.Instance.playerAccount;
+                report.AppendLine("FOUND start: company " + (economy.PlayerCompany == null ? "none" : economy.PlayerCompany.symbol) + " founded flag " + career.CompanyFounded + " cost " + career.FoundingCost.ToString("N0") + " cash " + player.cash.ToString("N0") + " wall tool " + PlayerTactics.Unlocked(PlayerTactics.Tool.Wall));
+                bool poor = economy.FoundCompany();
+                report.AppendLine("FOUND try without money: " + poor + " (" + economy.GrowthResult + ") company " + (economy.PlayerCompany == null ? "none" : economy.PlayerCompany.symbol));
+                decimal gift = career.FoundingCost + 50_000_000m - player.cash; player.cash += gift;
+                report.AppendLine("FOUND INJECTED cash +" + gift.ToString("N0") + " -> " + player.cash.ToString("N0"));
+                decimal before = player.cash; bool rich = economy.FoundCompany(); var company = economy.PlayerCompany;
+                report.AppendLine("FOUND try with money: " + rich + " (" + economy.GrowthResult + ") paid " + (before - player.cash).ToString("N0") + " company " + (company == null ? "none" : company.symbol + " listed " + company.IsListed + " shares " + player.GetOwnedVolume(company).ToString("N0") + "/" + company.issuedShares.ToString("N0")
+                    + " company cash " + company.business.Cash.ToString("N0") + " founder " + company.business.growth.FounderBusiness + " ledger " + StockIntegrityChecker.Instance.CheckStock(company).isValid) + " founded flag " + career.CompanyFounded);
+                report.AppendLine("FOUND again: " + economy.FoundCompany() + " (" + economy.GrowthResult + ")");
+                // 벽: 지금 호가창에서 읽히는 벽, 그리고 큰 매수 주문을 하나 넣었을 때(넣은 것).
+                foreach (var stock in StockManager.Instance.stocks)
+                {
+                    if (!stock.AcceptsOrders) { continue; }
+                    var view = ManipulationTools.Walls(stock);
+                    if (view.Bid > 0f || view.Ask > 0f) { report.AppendLine("WALL natural " + stock.symbol + " bid " + view.Bid.ToString("F2") + " @" + view.BidPrice.ToString("N0") + " ask " + view.Ask.ToString("F2") + " @" + view.AskPrice.ToString("N0")); }
+                }
+                var target = StockManager.Instance.CurrentStock; var seen = ManipulationTools.Walls(target);
+                decimal price = ManipulationTools.PlaceWall(player, target, player.cash * .6m);
+                report.AppendLine("WALL INJECTED bid on " + target.symbol + " at " + price.ToString("N0") + " worth " + (ManipulationTools.WallVolume(player, target, price) * price).ToString("N0") + " (before: bid " + seen.Bid.ToString("F2") + " ask " + seen.Ask.ToString("F2") + ")");
+            }
+            return null;
+        }));
+        steps.Add(("found-wall", () => { }, () =>
+        {
+            if (only.Contains("found") && languageIndex == 0)
+            {
+                var target = StockManager.Instance.CurrentStock; var view = ManipulationTools.Walls(target); var society = InvestorSociety.Instance;
+                report.AppendLine("WALL after 20s on " + target.symbol + ": bid " + view.Bid.ToString("F2") + " @" + view.BidPrice.ToString("N0") + " ask " + view.Ask.ToString("F2") + " lean " + view.Lean.ToString("F2") + " price " + target.currentPrice.ToString("N0"));
+                while (society.ChartTrace.Count > 0) { string line = society.ChartTrace.Dequeue(); if (line.Contains("Wall")) { report.AppendLine("WALL   " + line); } }
+            }
+            return null;
+        }));
         steps.Add(("perf-desk", () => { if (only.Contains("perf") && languageIndex == 0) { File.Delete(Path.Combine(Folder, "perf.txt")); DeskViewController.Instance.ExitView(true); PerfProbe.Begin(); } },
             () => { if (only.Contains("perf") && languageIndex == 0) { PerfProbe.End(Path.Combine(Folder, "perf.txt"), "desk view, market open " + DeviceMarketJournal.Stamp() + " bots " + MarketDayController.Instance.Bots.Count); } return null; }));
         steps.Add(("perf-chart", () => { if (only.Contains("perf") && languageIndex == 0) { DeskViewController.Instance.Focus(DeskViewTarget.Chart); PerfProbe.Begin(); } },

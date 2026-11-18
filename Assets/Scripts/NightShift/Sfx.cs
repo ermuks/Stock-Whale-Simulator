@@ -109,7 +109,7 @@ public sealed class Sfx : MonoBehaviour
     public string Describe()
     {
         var text = new System.Text.StringBuilder("buttons " + ButtonsWired + " |");
-        foreach (string name in new[] { "UiClick", "UiDeny", "OrderFill", "NoteArrive", "NotePick", "NoteStick", "DoorLocked", "DoorUnlock", "DoorOpen", "DrawerOpen", "DrawerClose", "BedDown", "BedUp", "Footstep" })
+        foreach (string name in new[] { "UiClick", "UiDeny", "OrderFill", "NoteKnock", "NoteSlide", "NotePick", "NoteStick", "DoorLocked", "DoorUnlock", "DoorOpen", "DrawerOpen", "DrawerClose", "BedDown", "BedUp", "Footstep" })
         { Played.TryGetValue(name, out int count); text.Append(" " + name + " files " + Count(name) + " played " + count + " |"); }
         return text.ToString();
     }

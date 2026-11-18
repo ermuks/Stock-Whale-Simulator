@@ -58,6 +58,11 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         public RectTransform Card;
         public Image CardAccent;
         public TextMeshProUGUI CardTitle, CardKind, CardAmount, CardDetail;
+        // 종목 분석 카드
+        public RectTransform Analysis;
+        public Image GaugeTrack, GaugeFill;
+        public TextMeshProUGUI AnalysisTitle, AnalysisScore, AnalysisVerdict;
+        public readonly TextMeshProUGUI[] AnalysisCaptions = new TextMeshProUGUI[4], AnalysisValues = new TextMeshProUGUI[4];
         public bool HasCard;
         // 초대 단추: 커서를 올린 줄에만 보인다.
         public Button Invite;
@@ -116,7 +121,78 @@ public sealed class TabletGroupChatUI : MonoBehaviour
     private static readonly Color CardBack = new(.09f, .12f, .15f, .96f), CardInk = new(.92f, .94f, .96f, 1f), CardMuted = new(.60f, .66f, .71f, 1f);
 
     private float CardHeight(BotChatMessage message)
-    { return message.IsRoomNotice || message.Social == null || message.Social.profitCard == null ? 0f : CardBlockHeight * layoutScale; }
+    {
+        if (message.IsRoomNotice || message.Social == null) { return 0f; }
+        if (message.Social.analysisCard != null) { return AnalysisBlockHeight * layoutScale; }
+        return message.Social.profitCard == null ? 0f : CardBlockHeight * layoutScale;
+    }
+
+    // ── 종목 분석 카드: 왼쪽에 아래가 열린 고리 게이지(매수 추천 점수), 오른쪽에 당일 시가·현재가·고가·저가 ──
+    public const string AnalysisTemplate = "AI.ANALYSIS";
+    private const float AnalysisBlockHeight = 170f, AnalysisHeightPixels = 162f, GaugeSweep = .75f;
+    private static Sprite analysisRing, analysisAvatar;
+    private static Sprite LoadChatSprite(string name)
+    {
+        var texture = Resources.Load<Texture2D>("UI/Chat/" + name);
+        return texture == null ? null : Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(.5f, .5f), 100f);
+    }
+    private static string AnalysisWord(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
+    /// <summary>점수(0~100)를 말로: 75 이상 강한 매수, 58 이상 매수, 42 이상 관망, 25 이상 매도, 그 아래 강한 매도.</summary>
+    public static string AnalysisVerdict(int score) => score >= 75 ? AnalysisWord("강한 매수", "Strong buy", "強い買い") : score >= 58 ? AnalysisWord("매수", "Buy", "買い")
+        : score >= 42 ? AnalysisWord("관망", "Hold", "様子見") : score >= 25 ? AnalysisWord("매도", "Sell", "売り") : AnalysisWord("강한 매도", "Strong sell", "強い売り");
+    private Image GaugeArc(RectTransform parent, string name, Color color)
+    {
+        var item = new GameObject(name, typeof(RectTransform), typeof(Image)); item.layer = parent.gameObject.layer; item.transform.SetParent(parent, false);
+        var rect = (RectTransform)item.transform; rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f); rect.pivot = new Vector2(.5f, .5f);
+        rect.anchoredPosition = new Vector2(74f, -74f) * layoutScale; rect.sizeDelta = new Vector2(118f, 118f) * layoutScale;
+        // 고리의 4분의 3만 채운다. 채움은 아래에서 시작해 시계 방향으로 도는데, 그림을 45도 돌려 두면 빈 4분의 1이 정확히 아래에 온다.
+        rect.localEulerAngles = new Vector3(0f, 0f, -45f);
+        var image = item.GetComponent<Image>(); image.sprite = analysisRing; image.color = color; image.raycastTarget = false;
+        image.type = Image.Type.Filled; image.fillMethod = Image.FillMethod.Radial360; image.fillOrigin = (int)Image.Origin360.Bottom; image.fillClockwise = true; image.fillAmount = GaugeSweep;
+        return image;
+    }
+    private void BuildAnalysisVisual(Row row)
+    {
+        if (analysisRing == null) { analysisRing = LoadChatSprite("AnalysisRing"); }
+        var root = new GameObject("Panel :: Analysis Card", typeof(RectTransform), typeof(Image));
+        root.layer = row.Rect.gameObject.layer; root.transform.SetParent(row.Rect, false);
+        row.Analysis = (RectTransform)root.transform;
+        row.Analysis.anchorMin = row.Analysis.anchorMax = row.Analysis.pivot = new Vector2(0f, 1f);
+        row.Analysis.sizeDelta = new Vector2(CardWidthPixels, AnalysisHeightPixels) * layoutScale;
+        var back = root.GetComponent<Image>(); back.color = CardBack; back.raycastTarget = false;
+        row.GaugeTrack = GaugeArc(row.Analysis, "Image :: Gauge Track", new Color(.20f, .25f, .30f, 1f));
+        row.GaugeFill = GaugeArc(row.Analysis, "Image :: Gauge Fill", CardInk);
+        row.AnalysisScore = CardLabel(row.Analysis, "Text :: Analysis Score", 14f, 44f, 120f, 60f, 34f, TextAlignmentOptions.Center, CardInk, FontStyles.Bold);
+        row.AnalysisVerdict = CardLabel(row.Analysis, "Text :: Analysis Verdict", 4f, 122f, 140f, 34f, 19f, TextAlignmentOptions.Center, CardInk, FontStyles.Bold);
+        row.AnalysisTitle = CardLabel(row.Analysis, "Text :: Analysis Stock", 158f, 8f, 258f, 34f, 21f, TextAlignmentOptions.MidlineLeft, CardInk);
+        for (int i = 0; i < 4; i++)
+        {
+            row.AnalysisCaptions[i] = CardLabel(row.Analysis, "Text :: Analysis Caption " + i, 158f, 46f + i * 27f, 90f, 26f, 17f, TextAlignmentOptions.MidlineLeft, CardMuted);
+            row.AnalysisValues[i] = CardLabel(row.Analysis, "Text :: Analysis Value " + i, 248f, 46f + i * 27f, 168f, 26f, 19f, TextAlignmentOptions.MidlineRight, CardInk);
+        }
+        root.SetActive(false);
+    }
+    private void BindAnalysis(Row row, ChatAnalysisCard card)
+    {
+        if (row.Analysis == null) { return; }
+        row.Analysis.gameObject.SetActive(card != null);
+        if (card == null) { return; }
+        int score = Mathf.Clamp(card.score, 0, 100);
+        // 사는 쪽이면 오름 색, 파는 쪽이면 내림 색, 가운데면 흐린 글자색.
+        var tone = score >= 58 ? MarketColors.ForChange(1m, CardInk) : score < 42 ? MarketColors.ForChange(-1m, CardInk) : new Color(.86f, .78f, .46f, 1f);
+        row.GaugeFill.fillAmount = GaugeSweep * score / 100f; row.GaugeFill.color = tone;
+        GameLocalizedText.Set(row.AnalysisScore, score.ToString(), true); row.AnalysisScore.color = tone;
+        GameLocalizedText.Set(row.AnalysisVerdict, AnalysisVerdict(score), true); row.AnalysisVerdict.color = tone;
+        GameLocalizedText.Set(row.AnalysisTitle, GameLocale.Text(card.stockName ?? card.symbol ?? ""), true);
+        string[] captions = { AnalysisWord("시가", "Open", "始値"), AnalysisWord("현재가", "Last", "現在値"), AnalysisWord("고가", "High", "高値"), AnalysisWord("저가", "Low", "安値") };
+        decimal[] values = { card.open, card.price, card.high, card.low };
+        for (int i = 0; i < 4; i++)
+        {
+            GameLocalizedText.Set(row.AnalysisCaptions[i], captions[i], true);
+            GameLocalizedText.Set(row.AnalysisValues[i], PriceTickPolicy.FormatMoney(values[i]), true);
+            row.AnalysisValues[i].color = i == 0 || card.open <= 0m ? CardInk : MarketColors.ForChange(values[i] - card.open, CardInk);
+        }
+    }
 
     private TextMeshProUGUI CardLabel(RectTransform parent, string name, float x, float y, float w, float h, float size, TextAlignmentOptions alignment, Color color, FontStyles style = FontStyles.Normal)
     {
@@ -271,6 +347,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             row.AngerDot.gameObject.SetActive(false);
             BuildNoticeVisual(row);
             BuildCardVisual(row);
+            BuildAnalysisVisual(row);
             BuildInviteButton(row);
             row.Text.raycastTarget = true;
             var stockLinks = row.Text.gameObject.AddComponent<ChatStockLinkUI>();
@@ -285,6 +362,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         { ShowInformation(); }
     }
 
+    /// <summary>내가 글을 올린 뒤 맨 아래(가장 새 글)로 내려간다.</summary>
+    public void ShowNewestFromOutside() { followNewest = true; dirty = true; }
     public void ShowChat()
     {
         chatSelected = true;
@@ -467,6 +546,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         if (notice) { row.Invite.gameObject.SetActive(false); }
         row.NoticeBackground.gameObject.SetActive(notice); row.NoticeText.gameObject.SetActive(notice);
         if (notice && row.Card != null) { row.HasCard = false; row.Card.gameObject.SetActive(false); }
+        if (notice && row.Analysis != null) { row.Analysis.gameObject.SetActive(false); }
     }
     private void LayoutNotice(Row row, BotChatMessage message)
     {
@@ -574,8 +654,15 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                         GameLocalizedText.Set(row.Time,$"{message.Day}일 {message.Minute / 60:D2}:{message.Minute % 60:D2}");
                         GameLocalizedText.Set(row.Text,DisplayMessage(message),true);
                         BindCard(row, message.IsRoomNotice || message.Social == null ? null : message.Social.profitCard);
+                        BindAnalysis(row, message.IsRoomNotice || message.Social == null ? null : message.Social.analysisCard);
                         int avatarIndex = (int)((uint)message.BotId % 3u);
                         row.Avatar.sprite = avatarIndex == 0 ? avatarOrange : avatarIndex == 1 ? avatarBlue : avatarPink;
+                        // 종목 분석 AI는 제 얼굴이 있다.
+                        if (message.TemplateId == AnalysisTemplate)
+                        {
+                            if (analysisAvatar == null) { analysisAvatar = LoadChatSprite("AnalysisAvatar"); }
+                            if (analysisAvatar != null) { row.Avatar.sprite = analysisAvatar; }
+                        }
                         if (row.StressRing != null) { row.StressRing.SetValue(message.Stress); }
                         else
                         {
@@ -595,8 +682,9 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                     float bubbleHeight = Mathf.Max(52f * layoutScale, rowHeights[index] - 48f * layoutScale - extraHeader - cardHeight);
                     if (cardHeight > 0f)
                     {
-                        row.Card.anchoredPosition = new Vector2(104f * layoutScale, -(38f * layoutScale + extraHeader + bubbleHeight + 6f * layoutScale));
-                        row.Card.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Min(CardWidthPixels * layoutScale, width + 40f * layoutScale));
+                        var below = message.Social != null && message.Social.analysisCard != null && row.Analysis != null ? row.Analysis : row.Card;
+                        below.anchoredPosition = new Vector2(104f * layoutScale, -(38f * layoutScale + extraHeader + bubbleHeight + 6f * layoutScale));
+                        if (below == row.Card) { row.Card.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Min(CardWidthPixels * layoutScale, width + 40f * layoutScale)); }
                     }
                     float bubbleWidth = Mathf.Clamp(row.Text.GetPreferredValues(GameLocale.Text(row.Text.text), width, Mathf.Infinity).x + 40f * layoutScale, Mathf.Min(220f * layoutScale, width + 40f * layoutScale), width + 40f * layoutScale);
                     row.Bubble.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, bubbleWidth);

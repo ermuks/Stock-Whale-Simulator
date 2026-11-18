@@ -314,6 +314,13 @@ public sealed partial class InvestorSociety
             if (spikeHigh >= root * (1m + WickSpike)) { Shape(track, stock, "wickUp", now, 2, spikeHigh, price, ChartWindowRestSec); }
             else if (dipLow <= root * (1m - WickSpike)) { Shape(track, stock, "wickDown", now, 2, price, dipLow, ChartWindowRestSec); }
         }
+        if (stock != null)
+        {
+            // 호가창에 큰 벽이 서 있으면 그 얘기를 한다.
+            var book = ManipulationTools.Walls(stock);
+            if (book.Bid >= .5f && book.Bid > book.Ask) { Shape(track, stock, "bidWall", now, 2, price, book.BidPrice, ChartWindowRestSec); }
+            else if (book.Ask >= .5f && book.Ask > book.Bid) { Shape(track, stock, "askWall", now, 2, book.AskPrice, price, ChartWindowRestSec); }
+        }
         if (ReadMarketDay != null && stock != null)
         {
             var board = ReadMarketDay(stock);
@@ -445,6 +452,25 @@ public sealed partial class InvestorSociety
         chartNextLine = Math.Max(chartNextLine, said.doneAt + ChartLineGapMin);
         // 자랑과 한탄에는 한두 명이 답을 단다.
         chartBursts.Add(new ChartBurst { stock = hand.stock, key = key + "Reply", left = HypeRandom.Next() < .5 ? 2 : 1, next = said.doneAt + 1.6 + HypeRandom.Next() * 1.8, peak = price, low = price, replyTo = said.last.id, skipBot = bot.Social.Id });
+    }
+
+    // ── 갈아타기 ──
+    private double rotationRest;
+    /// <summary>봇이 가진 종목을 던지고 달아오른 종목으로 갈아탔다(TradeBot.TryChase). 가끔 그 얘기를 채팅에 한다. 표시만 한다.</summary>
+    public void NoteRotation(TradeBot bot, Stock from, Stock into)
+    {
+        if (!HypeAllowed || day == null || !SocialReady || bot == null || bot.Social == null || !ChatHypeAssets.Ready || !ChartTalkAssets.Ready) { return; }
+        double now = SocialTime.Seconds;
+        TraceChart(day.ClockMinute / 60 + ":" + (day.ClockMinute % 60).ToString("00") + " " + into.symbol + " rotate " + bot.Social.Nickname + " sold " + from.symbol);
+        if (now < rotationRest || !bot.isActiveAndEnabled || !Present(bot, 0) || IsTyping(bot) || bot.Social.Psychology.Traits.Politeness >= Config.Int("styleFormalMin")) { return; }
+        string text = PickHypeText(ChartTalkAssets.Lines("rotate"), Array.Empty<string>());
+        if (text == null) { return; }
+        rotationRest = now + 18 + HypeRandom.Next() * 14;
+        var slots = ChartSlots(into, into.currentPrice, into.currentPrice, 0m);
+        slots["fromName"] = GameLocale.Text(from.stockName ?? from.symbol ?? "");
+        var said = PublishHype(bot, ChatHypeAssets.Fill(text, slots), "chart.rotate", into, 0, 1);
+        hypeSpokeAt[bot.Social.Id] = now; ChartLinesSaid++;
+        TraceChart("    > " + bot.Social.Nickname + ": " + said.last.text + "  [rotate]");
     }
 
     // ── 점검 ──

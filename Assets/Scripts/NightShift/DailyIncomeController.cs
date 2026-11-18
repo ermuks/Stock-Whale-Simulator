@@ -122,7 +122,9 @@ public sealed class DailyIncomeController : MonoBehaviour
             decimal equity = account.Equity() + (PlayerAccounts.Instance?.automated == null ? 0m : PlayerAccounts.Instance.automated.Equity());
             decimal available = Math.Max(0m,account.cash - account.ReservedCash);
             bool managed=CorporateEconomy.Instance?.PlayerCompany?.business?.growth?.FounderBusiness==true;
-            var report = Ledger.CloseDay(day,managed ? 0 : Rules.companyIncome,realized,equity,available,CorporateEconomy.Instance?.PlayerDividends(day) ?? 0);
+            // 기업을 세우기 전에는 회사 수입이 없다(예전에는 처음부터 '내 작은 회사'의 수입이 들어왔다).
+            bool founded=PlayerProgression.Instance==null || PlayerProgression.Instance.CompanyFounded;
+            var report = Ledger.CloseDay(day,managed || !founded ? 0 : Rules.companyIncome,realized,equity,available,CorporateEconomy.Instance?.PlayerDividends(day) ?? 0);
             if (report == null)
             { yield break; }
             // 외부 사업 수익/회원료 입금은 매매 수익률 및 리딩방 해금용 실현손익으로 계산하지 않는다.

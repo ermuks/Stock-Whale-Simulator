@@ -56,6 +56,8 @@ public sealed partial class CorporateEconomy : MonoBehaviour
             data.AcquisitionAnnounced = true; data.LastAcquisitionDay = MarketDayController.Instance.Day;
             decimal owned = PlayerAccounts.Instance.Owned(stock);
             NewsManager.Instance?.PublishAcquisition(stock, owned / stock.issuedShares * 100m);
+            // 삼킨 회사가 늘었다. 인수 사다리의 진행과 시너지를 알린다.
+            AnnounceLadder(stock);
         }
         data.PlayerControls = controls;
     }
@@ -109,7 +111,8 @@ public sealed partial class CorporateEconomy : MonoBehaviour
         foreach (var stock in Companies())
         {
             ObserveControl(stock); var data = Ensure(stock);
-            if (stock.IsDelisted || data.LastDay >= day)
+            // 아직 열지 않은(설립 전) 내 기업은 사업을 하지 않는다.
+            if (stock.IsDelisted || data.LastDay >= day || Unfounded(stock))
             { continue; }
             PrepareBusinessDay(stock,day);
             payees.Clear(); payments.Clear(); decimal shares = 0;
@@ -133,7 +136,7 @@ public sealed partial class CorporateEconomy : MonoBehaviour
                 payments.Add(payment); paid += payment;
                 if (PlayerAccounts.IsPlayer(owner)) { playerPaid += payment; }
             }
-            data.FinishClose(paid, playerPaid, Rules, data.growth.FounderBusiness ? (decimal)GrowthRules.founderProductivity : 0m, data.growth.FounderBusiness ? (decimal)GrowthRules.founderProductivityGain : 0m);
+            data.FinishClose(paid, playerPaid, Rules, data.growth.FounderBusiness ? (decimal)GrowthRules.founderProductivity : 0m, data.growth.FounderBusiness ? (decimal)GrowthRules.founderProductivityGain * (1m + (decimal)LadderSynergy) : 0m);
             float payoutFrameStart=Time.realtimeSinceStartup;
             for (int i = 0; i < payees.Count; i++)
             {

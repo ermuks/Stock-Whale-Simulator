@@ -12,7 +12,14 @@ public sealed class CompanyDashboardUI : MonoBehaviour
     private readonly TextMeshProUGUI[] values = new TextMeshProUGUI[12];
     private readonly TextMeshProUGUI[] captions = new TextMeshProUGUI[12];
     private readonly Button[] policies = new Button[3];
-    private Button acquire, trade;
+    private Button acquire, trade, mine, ladderButton;
+    private TextMeshProUGUI ladderLabel;
+    private AcquisitionLadderUI ladderView;
+    /// <summary>인수 사다리를 연다.</summary>
+    public void OpenLadder() { if (ladderView == null) { ladderView = AcquisitionLadderUI.Install(this); } ladderView.Show(); }
+    private TextMeshProUGUI mineLabel;
+    private float foundNoteUntil;
+    private static string Word(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
     private Stock selected;
     private Stock inspected;
     private bool showOwn=true;
@@ -37,9 +44,12 @@ public sealed class CompanyDashboardUI : MonoBehaviour
     }
     private void Build()
     {
-        heading = Label("Company Name", "", .04f,.025f,.64f,.07f,46);
+        heading = Label("Company Name", "", .04f,.025f,.44f,.07f,46);
+        ladderButton = Action("Acquisition Ladder", "인수 사다리", .49f,.035f,.15f,.07f,OpenLadder);
+        ladderLabel = ladderButton.GetComponentInChildren<TextMeshProUGUI>(true);
         symbol = Label("Symbol", "", .04f,.10f,.45f,.045f,25);
-        Action("My Company", "내 기업", .65f,.035f,.12f,.07f,() => { inspected=null; showOwn=true; Refresh(); });
+        mine = Action("My Company", "내 기업", .65f,.035f,.12f,.07f,MyCompany);
+        mineLabel = mine.GetComponentInChildren<TextMeshProUGUI>(true);
         Action("Previous Company", "‹", .78f,.035f,.075f,.07f,() => Select(-1));
         Action("Next Company", "›", .88f,.035f,.075f,.07f,() => Select(1));
         ownership = Label("Ownership", "", .52f,.11f,.435f,.045f,27); ownership.alignment = TextAlignmentOptions.MidlineRight;
@@ -64,13 +74,31 @@ public sealed class CompanyDashboardUI : MonoBehaviour
         trade=Action("Company Orders","거래",.745f,.87f,.21f,.075f,() => { if (FocusedStock?.IsListed==true) { StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(FocusedStock)); tablet.ShowPage(TabletAccountUI.Page.Orders); } });
         feedback = Label("Company Feedback","",.04f,.955f,.91f,.035f,23);
     }
+    /// <summary>내 기업이 있으면 그 기업을 보여 주고, 없으면 설립한다(설립 비용이 있을 때).</summary>
+    private void MyCompany()
+    {
+        var economy = CorporateEconomy.Instance; var career = PlayerProgression.Instance;
+        if (economy != null && career != null && economy.PlayerCompany == null)
+        {
+            bool founded = economy.FoundCompany();
+            string note = founded ? Word("기업을 세웠습니다", "Company founded", "会社を設立しました")
+                : Word("기업 설립에는 ", "Founding a company takes ", "会社の設立には") + career.FoundingCost.ToString("N0") + Word("원이 필요합니다", " KRW", "ウォン必要です");
+            GameLocalizedText.Set(feedback, note, true); foundNoteUntil = Time.unscaledTime + 6f;
+            if (!founded) { return; }
+        }
+        inspected=null; showOwn=true; selected=null; Refresh();
+    }
     public void Refresh()
     {
+        if (mineLabel != null && CorporateEconomy.Instance != null)
+        { GameLocalizedText.Set(mineLabel, CorporateEconomy.Instance.PlayerCompany != null ? Word("내 기업", "My company", "自社") : Word("기업 설립", "Found", "会社設立"), true); }
+        if (ladderLabel != null) { GameLocalizedText.Set(ladderLabel, Word("인수 사다리", "Ladder", "買収のはしご"), true); }
         if (growthView!=null && growthView.gameObject.activeSelf) { return; }
+        if (ladderView!=null && ladderView.gameObject.activeSelf) { return; }
         var stock = FocusedStock;
         if (stock == null || CorporateEconomy.Instance == null)
         { return; }
-        if (selected != stock) { selected = stock; DeviceTerminalUI.Set(feedback, ""); }
+        if (selected != stock) { selected = stock; if (Time.unscaledTime >= foundNoteUntil) { DeviceTerminalUI.Set(feedback, ""); } }
         DeviceTerminalUI.Set(heading,stock.stockName); DeviceTerminalUI.Set(symbol,stock.IsListed ? stock.symbol : "비상장 · "+stock.symbol);
         var data = stock.business;
         if (data == null)

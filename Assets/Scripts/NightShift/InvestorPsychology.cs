@@ -169,6 +169,12 @@ public sealed partial class InvestorPsychology
         rawGreed = Mathf.MoveTowards(rawGreed, BaselineGreed, amount * .2f);
         AuditEmotion("decay");
     }
+    /// <summary>플레이어가 채팅에서 한 말에 대한 반응. trust는 믿음, grudge는 적대심(배신감)에 더한다. 주문·믿는 값은 건드리지 않는다.</summary>
+    public void ReactToPlayerTalk(float trust, float grudge, string cause)
+    {
+        Trust += trust; Betrayal += grudge;
+        LastCause = cause; Clamp(); AuditEmotion("player-talk");
+    }
     public void RecallBetrayal()
     {
         if (BetrayalMemory <= 0f)

@@ -44,6 +44,8 @@ public class StockInterestManager : MonoBehaviour
     private const float SurgeStart = 1.6f, SurgeLimit = 7f, MoveStart = .015f, MovePerUnit = 60f, MoveLimit = 8f, HeatLimit = 12f, Cooling = .94f;
     /// <summary>이 종목의 열기. 0이면 평소이고, 1이면 관심이 평소의 두 배다.</summary>
     public float Heat(Stock stock) => stock != null && _pulse.TryGetValue(stock, out var pulse) ? pulse.Heat : 0f;
+    /// <summary>값이 최근 평균에서 얼마나 벗어나 있는가(+면 위). 달아오른 종목이 오르는 중인지 빠지는 중인지 가릴 때 쓴다.</summary>
+    public float Drift(Stock stock) => stock != null && _pulse.TryGetValue(stock, out var pulse) && pulse.Anchor > 0m ? (float)(stock.currentPrice / pulse.Anchor) - 1f : 0f;
     /// <summary>이 종목의 최근 거래대금과 평소 거래대금(한 구간에 오간 돈). 확인용.</summary>
     public double RecentTurnover(Stock stock) => stock != null && _pulse.TryGetValue(stock, out var pulse) ? pulse.Fast : 0;
     public double UsualTurnover(Stock stock) => stock != null && _pulse.TryGetValue(stock, out var pulse) ? pulse.Slow : 0;

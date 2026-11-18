@@ -1,4 +1,9 @@
 {
   "schemaVersion": 1,
-  "leadingOpeningCost": 100000000
+  "leadingOpeningCost": 100000000,
+  "tacticCloseTurnover": 500000000,
+  "companyFoundingCost": 300000000,
+  "dawnRoomCost": 3000000,
+  "dawnRoomTurnover": 30000000,
+  "dawnRoomDailyFee": 100000
 }

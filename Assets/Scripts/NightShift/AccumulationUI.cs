@@ -130,7 +130,7 @@ public sealed class AccumulationUI : MonoBehaviour
 
     private void Show(bool accumulate)
     {
-        showing = accumulate; panel.gameObject.SetActive(accumulate);
+        showing = accumulate; panel.gameObject.SetActive(accumulate); ManipulationUI.Hide();
         TabletControlStyle.Emphasize(spreadTab, !accumulate); TabletControlStyle.Emphasize(accumulateTab, accumulate);
         next = 0f;
     }

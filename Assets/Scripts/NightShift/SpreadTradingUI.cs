@@ -35,6 +35,7 @@ public sealed class SpreadTradingUI : MonoBehaviour
         view.Build();
         // 같은 자리에 매집 패널을 겹쳐 두고 위쪽 탭으로 오간다.
         AccumulationUI.Install(view, view.operation, view.scale);
+        ManipulationUI.Install(view.gameObject, view.scale);
         var label = tablet.autoButton.GetComponentInChildren<TextMeshProUGUI>(true);
         if (label != null) { GameLocalizedText.Set(label,"스프레드"); }
         return view;

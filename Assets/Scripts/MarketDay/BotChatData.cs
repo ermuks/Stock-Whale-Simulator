@@ -237,7 +237,7 @@ public readonly struct BotChatMessage
     /// <summary>플레이어가 직접 올린 말. 닉네임 대신 '나'로 보인다.</summary>
     public readonly bool FromPlayer;
     public const string PlayerName = "나";
-    public BotChatMessage(long sequence, TradeBot bot, int day, int minute, string text, string templateId, ChatEvent kind, InvestorMessageContext context = default, SocialMessage social = null, ChatRoomNotice notice = ChatRoomNotice.None, bool fromPlayer = false)
+    public BotChatMessage(long sequence, TradeBot bot, int day, int minute, string text, string templateId, ChatEvent kind, InvestorMessageContext context = default, SocialMessage social = null, ChatRoomNotice notice = ChatRoomNotice.None, bool fromPlayer = false, string speaker = null)
     {
         FromPlayer = fromPlayer && bot == null;
         Notice = notice;
@@ -249,7 +249,7 @@ public readonly struct BotChatMessage
         BotId = bot == null ? 0 : bot.Social.Id;
         Day = day + minute / 1440;
         Minute = minute % 1440;
-        Nickname = FromPlayer ? PlayerName : bot == null ? "시장 안내" : bot.Social.Nickname;
+        Nickname = FromPlayer ? PlayerName : bot == null ? speaker ?? "시장 안내" : bot.Social.Nickname;
         Profile = FromPlayer ? "" : bot == null ? "공개 종목 상태 안내" : bot.Social.Profile;
         Text = text;
         TemplateId = templateId;

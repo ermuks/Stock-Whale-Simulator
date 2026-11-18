@@ -85,8 +85,8 @@ def legacy_host():
     progress=(ROOT/'Assets/Scripts/NightShift/PlayerProgression.cs').read_text(encoding='utf-8-sig')
     progress_methods='\n'.join(extract_member(progress,n) for n in ['Capture','Restore'])
     (OUT/'ProgressionProduction.cs').write_text('using System; using System.Globalization; using UnityEngine;\npublic sealed class PlayerProgression\n{\n'
-        +'[Serializable] public sealed class Snapshot { public int version=1,invitedRoomMask,journeyMilestones; public string worldId,turnover,realizedProfit; public bool roomsOpened,dreamt; public double newsCooldownRemaining; public long newsSavedUtc; public DailyIncomeController.SaveData income; }\n'
-        +'public static PlayerProgression Instance; public string LockReason="locked"; public string WorldId="fixture-world"; public decimal Turnover,RealizedProfit; public bool CanOperateRooms,Dreamt; public int JourneyMilestones;\n'
+        +'[Serializable] public sealed class Snapshot { public int version=1,invitedRoomMask,journeyMilestones; public string worldId,turnover,realizedProfit; public bool roomsOpened,dreamt,companyFounded,dawnUnlocked; public int dawnFeeDay; public double newsCooldownRemaining; public long newsSavedUtc; public DailyIncomeController.SaveData income; }\n'
+        +'public static PlayerProgression Instance; public string LockReason="locked"; public string WorldId="fixture-world"; public decimal Turnover,RealizedProfit; public bool CanOperateRooms,Dreamt,CompanyFounded,DawnUnlocked; public int DawnFeeDay; public int JourneyMilestones;\n'
         +progress_methods+'\n}\n'
         +'public sealed partial class InvestorSociety\n{\n'
         +'\n'.join(extract_member((ROOT/'Assets/Scripts/NightShift/InvestorSociety.cs').read_text(encoding='utf-8-sig'), n) for n in ['IsRoomOpen','ChooseRoom','Join','Invite'])

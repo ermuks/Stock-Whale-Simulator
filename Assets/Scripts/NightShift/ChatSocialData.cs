@@ -117,6 +117,8 @@ public sealed class SocialTraits
 {
     /// <summary>손익을 말한 메시지에 붙는 인증 카드. 없으면 null.</summary>
     public ChatProfitCard profitCard;
+    /// <summary>종목 분석 AI의 분석 카드. 없으면 null.</summary>
+    public ChatAnalysisCard analysisCard;
     public long id, replyToId, threadId;
     public int roomId, senderId, targetId;
     public double at, realAt;

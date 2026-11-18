@@ -66,7 +66,7 @@ public partial class WhaleBot
         if (stock == null || !stock.AcceptsOrders || PreDisposal)
         {
             // 상장폐지 절차 같은 일이 생기면 작전은 그 자리에서 접는다.
-            operation.stage = WhaleOperationState.None; StopListening();
+            operation.stage = WhaleOperationState.None; StopListening(); EndTactics(stock);
             if (stock != null) { CancelOperationOrders(stock, true, true, 0f); }
             return;
         }
@@ -78,6 +78,8 @@ public partial class WhaleBot
         int stage = operation.stage;
         var order = WhaleOperationPlan.Step(operation, seconds, stock.currentPrice, GetOwnedVolume(stock) - operationBase, OperationHeat, Today(), Roll);
         if (operation.stage != stage) { ReportOperation(stock); }
+        // 작전의 큰 줄기와 따로, 단계에 맞는 눈속임(통정매매·허수 매수벽·종가 관리)을 얹는다.
+        if (operation.Active) { TickTactics(stock, now); } else { EndTactics(stock); }
         if (order.Kind == WhaleOperationKind.None) { return; }
         SubmitOperation(stock, order);
     }
@@ -97,7 +99,8 @@ public partial class WhaleBot
     /// <summary>남이 호가를 받아 가며 산 체결만 센다. 내 주문은 세지 않는다.</summary>
     private void ObserveTrade(Stock stock, decimal price, decimal volume, IOrderOwner buyer, IOrderOwner seller, Order resting)
     {
-        if (operation == null || !operation.Active || ReferenceEquals(buyer, this) || resting == null || resting.isBuy) { return; }
+        // 내 차명 계좌가 받은 것(통정매매)은 따라붙는 매수가 아니다.
+        if (operation == null || !operation.Active || ReferenceEquals(buyer, this) || ManipulationTools.IsNominee(buyer) || resting == null || resting.isBuy) { return; }
         decimal value = price * volume;
         crowdBuys.Enqueue((SessionClock.Time, value)); crowdRecent += value;
         if (operation.stage == WhaleOperationState.Build) { crowdBaseline += value; }

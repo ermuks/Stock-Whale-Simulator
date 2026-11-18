@@ -86,6 +86,9 @@ public sealed class NpcLeadingRoom : MonoBehaviour
         { Status = "거래 가능한 운영자를 기다립니다."; return; }
         if (JoinRequested && !PlayerJoined)
         { JoinPlayer(); }
+        // 들어가 있는 동안에는 날이 바뀔 때마다 이용료가 나간다. 낼 돈이 없으면 방에서 나온다.
+        if (PlayerJoined && PlayerProgression.Instance != null && !PlayerProgression.Instance.PayDawnFee(StockManager.Instance.playerAccount, MarketDayController.Instance.Day))
+        { LeavePlayer(); Status = "이용료가 모자라 퇴장했습니다."; }
         PublishObservation(now);
     }
     private void AppointLeader()
@@ -188,6 +191,13 @@ public sealed class NpcLeadingRoom : MonoBehaviour
     {
         if (!Available || !StockManager.Instance.SetupConfirmed)
         { Status = "운영자가 준비되면 참여할 수 있습니다."; return false; }
+        var career = PlayerProgression.Instance; var payer = StockManager.Instance.playerAccount; var market = MarketDayController.Instance;
+        if (career != null)
+        {
+            // 처음부터 열려 있지 않다. 해금한 뒤에만 들어갈 수 있고, 들어가는 날의 이용료를 그 자리에서 낸다.
+            if (!career.DawnUnlocked) { JoinRequested = false; Status = "해금이 필요합니다."; return false; }
+            if (!PlayerJoined && market != null && !career.PayDawnFee(payer, market.Day)) { JoinRequested = false; Status = "이용료가 모자랍니다."; return false; }
+        }
         bool wasJoined = PlayerJoined;
         JoinRequested = true; PlayerJoined = true;
         if (!wasJoined) { InvestorSociety.Instance?.PostRoomNotice(RoomId, ChatRoomNotice.Join, "플레이어 님이 입장했습니다."); }

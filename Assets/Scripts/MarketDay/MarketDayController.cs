@@ -169,6 +169,7 @@ public sealed class MarketDayController : MonoBehaviour
         if (GetComponent<DoorExit>() == null) { gameObject.AddComponent<DoorExit>(); }
         if (GetComponent<RoomAmbience>() == null) { gameObject.AddComponent<RoomAmbience>(); }
         if (GetComponent<Sfx>() == null) { gameObject.AddComponent<Sfx>(); }
+        if (GetComponent<PlayerTactics>() == null) { gameObject.AddComponent<PlayerTactics>(); }
         ChatSocialDebugUnity.ApplySeed(this);
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;
@@ -1059,6 +1060,22 @@ public sealed class MarketDayController : MonoBehaviour
         if (string.IsNullOrWhiteSpace(text))
         { return 0; }
         var message = new BotChatMessage(++sequence, null, Day, GameMinute, text, templateId, ChatEvent.Agreement, fromPlayer: true);
+        AddMessage(message);
+        return message.Social.id;
+    }
+    /// <summary>플레이어가 공개방에 쓴 말. 손익 인증 카드 같은 것을 붙이려면 social에 담아 준다.</summary>
+    public long PublishPlayerMessage(string text, string templateId, SocialMessage social)
+    {
+        if (string.IsNullOrWhiteSpace(text)) { return 0; }
+        var message = new BotChatMessage(++sequence, null, Day, GameMinute, text, templateId, ChatEvent.Agreement, social: social, fromPlayer: true);
+        AddMessage(message);
+        return message.Social.id;
+    }
+    /// <summary>봇이 아닌 발신자(종목 분석 AI 등)가 공개방에 올리는 말.</summary>
+    public long PublishSpeaker(string speaker, string text, string templateId, SocialMessage social)
+    {
+        if (string.IsNullOrWhiteSpace(text)) { return 0; }
+        var message = new BotChatMessage(++sequence, null, Day, GameMinute, text, templateId, ChatEvent.Agreement, social: social, speaker: speaker);
         AddMessage(message);
         return message.Social.id;
     }
