@@ -123,29 +123,29 @@ public sealed class DeskControlHints : MonoBehaviour
         if (phone)
         {
             Arrange(3, true);
-            Hint(0, "Tab", labels.close); Hint(1, "1 / 2", labels.tablets); Hint(2, PauseKey(), paused ? labels.resume : labels.pause);
+            Hint(0, "Tab", labels.close); Hint(1, "Q / E", labels.tablets); Hint(2, PauseKey(), paused ? labels.resume : labels.pause);
             return;
         }
         bool focused = views.IsFocused;
         if (focused)
         {
             Arrange(4, true);
-            Hint(0, "Space", labels.back); Hint(1, "A / D", views.Target >= DeskViewTarget.TabletOne ? labels.accounts : labels.screens);
-            Hint(2, "W / S", labels.stocks);
+            Hint(0, "Space", labels.back); Hint(1, views.Target >= DeskViewTarget.TabletOne ? "Q / E" : "1 / 2 / 3", views.Target >= DeskViewTarget.TabletOne ? labels.accounts : labels.screens);
+            Hint(2, "↑ / ↓", labels.stocks);
             if (PhoneCallController.Available) { Hint(3, "Tab", labels.phone); } else { cells[3].gameObject.SetActive(false); }
             return;
         }
         if (PhoneCallController.Available)
         {
             Arrange(6, false);
-            Hint(0, "Space", labels.chart); Hint(1, "Click / E", labels.interact);
-            Hint(2, "1 / 2", labels.tablets); Hint(3, "Tab", labels.phone); Hint(4, "W / S", labels.stocks);
+            Hint(0, "1 / 2 / 3", labels.screens); Hint(1, "Click", labels.interact);
+            Hint(2, "Q / E", labels.tablets); Hint(3, "Tab", labels.phone); Hint(4, "↑ / ↓", labels.stocks);
             Hint(5, PauseKey(), paused ? labels.resume : labels.pause);
             return;
         }
         Arrange(5, false);
-        Hint(0, "Space", labels.chart); Hint(1, "Click / E", labels.interact);
-        Hint(2, "1 / 2", labels.tablets); Hint(3, "W / S", labels.stocks);
+        Hint(0, "1 / 2 / 3", labels.screens); Hint(1, "Click", labels.interact);
+        Hint(2, "Q / E", labels.tablets); Hint(3, "↑ / ↓", labels.stocks);
         Hint(4, PauseKey(), paused ? labels.resume : labels.pause);
     }
 

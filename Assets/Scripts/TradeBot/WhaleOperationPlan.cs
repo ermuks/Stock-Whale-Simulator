@@ -17,6 +17,11 @@ public sealed class WhaleOperationState
     /// <summary>작전으로 산 것 말고도, 원래 갖고 있던 지분에서 이만큼까지 더 넘길 수 있다.</summary>
     public decimal extraShares;
     public decimal startPrice, targetPrice, peakPrice;
+    /// <summary>이 값 아래로는 팔지 않는다. 세력은 자기 회사의 값어치를 안다. 손해를 보면서 바닥까지 던질 이유가 없다.</summary>
+    public decimal floorPrice;
+    /// <summary>지금 팔 수 있는 가장 낮은 값. 시작가 기준 바닥선과, 지금까지의 고점에서 28% 내려온 값 가운데 높은 쪽이다.
+    /// 크게 띄운 뒤에는 고점 근처에서만 넘긴다. 다섯 배로 띄워 놓고 시작가까지 따라 내려가며 팔지 않는다.</summary>
+    public decimal SellFloor => Math.Max(floorPrice, peakPrice * WhaleOperationPlan.PeakShare);
     /// <summary>끌어올릴 목표 상승률. 끌어올리기를 시작하는 순간의 가격에 곱한다.</summary>
     public decimal gain;
     /// <summary>단계별 길이(장중 초)와 지금 단계에서 흐른 시간, 다음 주문까지 남은 시간.</summary>
@@ -67,6 +72,10 @@ public static class WhaleOperationPlan
     public const decimal SkimFrom = .35m;
     /// <summary>한 번 흔들 때 고점에서 이만큼(6~12%) 밀리면 더 팔지 않는다. 한꺼번에 무너뜨리지 않기 위해서다.</summary>
     public const decimal ShakeDepthMin = .06m, ShakeDepthMax = .12m;
+    /// <summary>작전을 시작한 값의 이만큼 아래로는 물량을 내놓지 않는다. 그 밑에서는 남은 물량을 그냥 들고 끝낸다.</summary>
+    public const decimal FloorShare = .85m;
+    /// <summary>고점의 이만큼 아래로는 팔지 않는다.</summary>
+    public const decimal PeakShare = .72m;
 
     /// <summary>
     /// 작전을 연다. 길이는 장중 초 기준이고 하루 장은 900초다. fast는 검증용으로 매집을 짧게 줄인다.
@@ -76,7 +85,7 @@ public static class WhaleOperationPlan
     {
         state.stage = WhaleOperationState.Build;
         state.budget = budget; state.spent = 0m; state.proceeds = 0m; state.lastPosition = 0m; state.boughtShares = 0m; state.extraShares = Math.Max(0m, decimal.Floor(extraShares));
-        state.startPrice = price; state.peakPrice = price; state.targetPrice = 0m;
+        state.startPrice = price; state.peakPrice = price; state.targetPrice = 0m; state.floorPrice = price * FloorShare;
         double tail = roll();
         state.gain = .40m + (decimal)(tail * tail) * 2.60m;
         state.buildSeconds = fast ? 25f + (float)roll() * 10f : 400f + (float)roll() * 1100f;
@@ -117,13 +126,14 @@ public static class WhaleOperationPlan
 
     private static WhaleOperationOrder StepBuild(WhaleOperationState state, decimal price, Func<double> roll)
     {
-        if (state.spent >= state.budget * BuildShare || state.stageSeconds >= state.buildSeconds)
+        // 끌어올리기는 정해 둔 시각에 시작한다. 매집할 돈을 일찍 다 썼으면 그때까지 기다린다(문틈 쪽지에 적힌 시각이 이 시각이다).
+        if (state.stageSeconds >= state.buildSeconds)
         {
             state.stage = WhaleOperationState.Drive; state.stageSeconds = 0f; state.wait = 0f;
             state.targetPrice = price * (1m + state.gain);
             return default;
         }
-        if (state.wait > 0f) { return default; }
+        if (state.wait > 0f || state.spent >= state.budget * BuildShare) { return default; }
         state.wait = 2.5f + (float)roll() * 3.5f;
         decimal left = state.budget * BuildShare - state.spent;
         decimal actions = (decimal)Math.Max(1f, (state.buildSeconds - state.stageSeconds) / 4.25f);
@@ -178,7 +188,7 @@ public static class WhaleOperationPlan
     private static WhaleOperationOrder StepShake(WhaleOperationState state, decimal price, decimal remaining, Func<double> roll)
     {
         // 정한 만큼 팔았거나, 정한 깊이까지 밀렸거나, 너무 오래 걸리면 멈춘다. 한 번에 무너뜨리지 않는다.
-        if (state.shakeSold >= state.shakeQuota || price <= state.shakeFloor || remaining < 1m || state.stageSeconds >= 45f)
+        if (state.shakeSold >= state.shakeQuota || price <= state.shakeFloor || price <= state.SellFloor || remaining < 1m || state.stageSeconds >= 45f)
         {
             state.shakesDone++;
             if (remaining < 1m || state.shakesDone >= state.shakes) { state.stage = WhaleOperationState.Unwind; state.stageSeconds = 0f; state.wait = 0f; return default; }
@@ -218,6 +228,7 @@ public static class WhaleOperationPlan
     private static WhaleOperationOrder StepUnwind(WhaleOperationState state, decimal price, decimal position, decimal remaining, int day, Func<double> roll)
     {
         // 마지막 정리: 작전으로 산 물량 가운데 남은 것만 판다. 원래 지분은 더 건드리지 않는다.
+        // 값이 바닥선 아래로 내려가 있으면 팔지 않고 기다린다. 끝까지 못 팔면 남은 물량은 그대로 들고 끝낸다(어차피 자기 회사 주식이다).
         if (position < 1m || state.stageSeconds >= state.unwindSeconds * 2f)
         {
             state.stage = WhaleOperationState.None; state.finished++;
@@ -226,6 +237,7 @@ public static class WhaleOperationPlan
         }
         if (state.wait > 0f) { return default; }
         state.wait = 2f + (float)roll() * 3f;
+        if (price <= state.SellFloor) { return default; }
         bool late = state.stageSeconds >= state.unwindSeconds;
         decimal average = state.boughtShares > 0m ? state.spent / state.boughtShares : price;
         bool losing = price < average * CutLoss;

@@ -129,23 +129,16 @@ public class StockListUIManager : MonoBehaviour
     {
         if (StockManager.Instance == null)
         { return; }
+        // 언어가 바뀌면 거래대금 단추의 글자도 따라 바꾼다.
+        if (volumeLabel != null && turnoverLabelLocale != GameLocale.Revision) { SetTurnoverLabel(turnoverAscending); }
 
-        IReadOnlyList<CandleData> candles = null;
+        // 행은 통계(StockStatistics)에서 값을 읽는다. 예전에는 종목마다 봉 목록을 새로 만들어 넘겼지만 쓰이지 않았고, 0.5초마다 쓰레기만 만들었다.
         for (int i = 0; i < _items.Count; i++)
         {
             var stock = _items[i].BoundStock;
             if (stock == null)
             { continue; }
-            if (CandleHistoryManager.Instance != null)
-            {
-                candles = CandleHistoryManager.Instance.GetLastCandlesIncludingForming(stock, 18);
-            }
-            else
-            {
-                candles = null;
-            }
-
-            _items[i].Set(stock, candles);
+            _items[i].Set(stock, null);
         }
     }
 
@@ -184,18 +177,28 @@ public class StockListUIManager : MonoBehaviour
     {
         RefreshAll();
         _items.Sort((a,b) => {
-            float left = metric == 1 ? a.VolumeSortValue : a.ChangeSortValue;
-            float right = metric == 1 ? b.VolumeSortValue : b.ChangeSortValue;
+            // 첫 단추는 거래대금 순이다. 주가가 제각각이라 주식 수(거래량)로는 어디에 돈이 몰리는지 알 수 없다.
+            float left = metric == 1 ? a.TurnoverSortValue : a.ChangeSortValue;
+            float right = metric == 1 ? b.TurnoverSortValue : b.ChangeSortValue;
             int comparison = ascending ? left.CompareTo(right) : right.CompareTo(left);
             return comparison != 0 ? comparison : string.CompareOrdinal(a.BoundStock.symbol,b.BoundStock.symbol);
         });
         if (scroll != null) { scroll.StopMovement(); }
         for (int i = 0; i < _items.Count; i++) { _items[i].transform.SetSiblingIndex(i); }
         // Preserve the displayed direction of both buttons after switching metrics.
-        if (metric == 1) { DeviceTerminalUI.Set(volumeLabel,"거래량 " + (ascending ? "↑" : "↓")); }
+        if (metric == 1) { SetTurnoverLabel(ascending); }
         else { DeviceTerminalUI.Set(changeLabel,"상승률 " + (ascending ? "↑" : "↓")); }
         if (volumeSort != null) { volumeSort.image.color = metric == 1 ? new Color32(27,61,67,255) : new Color32(23,31,37,255); }
         if (changeSort != null) { changeSort.image.color = metric == 2 ? new Color32(27,61,67,255) : new Color32(23,31,37,255); }
+    }
+    private bool turnoverAscending = true;
+    private int turnoverLabelLocale = -1;
+    /// <summary>거래대금 단추의 글자. 언어마다 따로 적는다.</summary>
+    private void SetTurnoverLabel(bool ascending)
+    {
+        turnoverAscending = ascending; turnoverLabelLocale = GameLocale.Revision;
+        string word = GameLocale.Code == "ja" ? "売買代金" : GameLocale.Code == "en" ? "Turnover" : "거래대금";
+        GameLocalizedText.Set(volumeLabel, word + " " + (ascending ? "↑" : "↓"), true);
     }
     private void CreateSortHeader()
     {
@@ -211,7 +214,7 @@ public class StockListUIManager : MonoBehaviour
         root.offsetMin = new Vector2(lower.x,upper.y-136); root.offsetMax = upper;
         // ScrollRect can drive its viewport back to full size. Reserve space on the scroll area itself.
         area.offsetMax = new Vector2(upper.x,upper.y-152);
-        volumeSort = SortButton(root,source,"Volume","거래량 ↑",0,.49f,out volumeLabel);
+        volumeSort = SortButton(root,source,"Turnover","",0,.49f,out volumeLabel); SetTurnoverLabel(true);
         changeSort = SortButton(root,source,"Change","상승률 ↑",.51f,.49f,out changeLabel);
         volumeSort.onClick.AddListener(SortVolume); changeSort.onClick.AddListener(SortChange);
     }

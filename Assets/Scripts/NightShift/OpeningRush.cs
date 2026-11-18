@@ -122,6 +122,8 @@ public sealed class OpeningRush : MonoBehaviour
             if (weight > best) { best = weight; chosen = whale; }
         }
         if (chosen == null) { return null; }
+        // 장 시작 몰아주기도 쪽지로 새어 나간다(개장 시각).
+        DoorNotes.Instance?.AnnounceAt(chosen.OwnedCompany, day, 540);
         var run = new Run { Leader = chosen, Stock = chosen.OwnedCompany, Reference = chosen.OwnedCompany.currentPrice, Day = day };
         // 얼마나 띄울지는 세력이 정한다. 작은 폭이 더 흔하고, 가끔 크게 지른다.
         double roll = random.NextDouble(), gain = MinimumGain + roll * roll * (MaximumGain - MinimumGain);

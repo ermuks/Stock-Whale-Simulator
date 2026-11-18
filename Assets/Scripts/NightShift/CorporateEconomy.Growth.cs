@@ -29,6 +29,8 @@ public sealed partial class CorporateEconomy
     private void EnsureFounder()
     {
         var manager=StockManager.Instance; var player=manager.playerAccount;
+        // 꿈에서 깬 뒤에는 내 기업이 없다. 다시 만들어 주지 않는다.
+        if (PlayerProgression.Instance!=null && PlayerProgression.Instance.Dreamt) { return; }
         if (founderCompany?.business?.growth?.FounderBusiness==true) { return; }
         var original=player.OwnedCompany;
         if (original!=null && player.GetOwnedVolume(original)>original.issuedShares*.5m) { founderCompany=original; }
@@ -42,6 +44,25 @@ public sealed partial class CorporateEconomy
             Ensure(founderCompany).LastDay=DailyIncomeController.Instance?.Ledger.SettledThrough ?? 0;
         }
         Ensure(founderCompany).growth.FounderBusiness=true;
+    }
+    /// <summary>
+    /// 꿈에서 깬다: 내 기업은 처음부터 남의 회사였다. 걸어 둔 주문을 거두고, 내 지분을 새 대표(세력 계좌)에게 모두 넘기고, 경영권을 뗀다.
+    /// 회사와 다른 주주들의 주식은 그대로 남는다(발행 주식 수 장부가 맞아야 한다). 넘긴 뒤 내 기업은 없다.
+    /// </summary>
+    public void ReleaseFounderFromDream()
+    {
+        var player=StockManager.Instance?.playerAccount; var stock=PlayerCompany;
+        founderCompany=null;
+        if (player==null || stock==null) { return; }
+        if (stock.business?.growth!=null) { stock.business.growth.FounderBusiness=false; }
+        if (stock.Owner==player) { stock.Owner=null; stock.OwnerId=null; }
+        if (player.OwnedCompany==stock) { player.OwnedCompany=null; }
+        if (stock.IsDelisted) { return; }
+        EnsureRepresentative(stock);
+        stock.orderBook?.CancelAllOrdersByOwner(player,stock);
+        decimal owned=player.GetHolding(stock);
+        if (owned>0 && stock.Owner!=null && stock.Owner!=player) { player.ForceRemoveHolding(stock,owned); stock.Owner.GrantShares(stock,owned,stock.currentPrice); }
+        ObserveControl(stock);
     }
     private void EnsureRepresentative(Stock stock)
     {

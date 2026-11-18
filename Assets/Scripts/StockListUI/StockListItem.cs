@@ -43,7 +43,8 @@ public class StockListItem : MonoBehaviour
     /// <summary>이 행이 표시하는 종목. Set() 시 저장, 버튼 클릭 시 이 종목으로 오더북·차트 전환.</summary>
     private Stock _stock;
     public Stock BoundStock => _stock;
-    public float VolumeSortValue { get; private set; }
+    /// <summary>정렬에 쓰는 값: 게임 시간으로 최근 24시간의 거래대금.</summary>
+    public float TurnoverSortValue { get; private set; }
     public float ChangeSortValue { get; private set; }
     private RectTransform rowRect;
     private bool badgeLayoutDirty = true;
@@ -159,7 +160,7 @@ public class StockListItem : MonoBehaviour
             DeviceTerminalUI.Set(textChangePct10,hasDailyChange ? (changePct > 0 ? $"+{changePct:F1}%" : $"{changePct:F1}%") : "—");
             textChangePct10.color = changePct > 0 ? Up : changePct < 0 ? Down : new Color32(138,150,163,255);
         }
-        VolumeSortValue = volumeSum; ChangeSortValue = changePct;
+        TurnoverSortValue = turnoverSum; ChangeSortValue = changePct;
         // 0% 기준은 등락률과 같은 전일 종가. 전일 종가가 없으면 당일 시가를 쓴다.
         float reference = hasDailyChange && changePct > -99f && summary.HasValue ? summary.Value.close / (1f + changePct / 100f) : summary.HasValue ? summary.Value.open : 0f;
         ApplyCandleAnchors(summary, reference);

@@ -163,6 +163,10 @@ public sealed class MarketDayController : MonoBehaviour
         if (GetComponent<DeskSurface>() == null) { gameObject.AddComponent<DeskSurface>(); }
         if (GetComponent<DrawerProp>() == null) { gameObject.AddComponent<DrawerProp>(); }
         if (GetComponent<DeskClutter>() == null) { gameObject.AddComponent<DeskClutter>(); }
+        if (GetComponent<RoomShell>() == null) { gameObject.AddComponent<RoomShell>(); }
+        if (GetComponent<DoorNotes>() == null) { gameObject.AddComponent<DoorNotes>(); }
+        if (GetComponent<BedSleep>() == null) { gameObject.AddComponent<BedSleep>(); }
+        if (GetComponent<DoorExit>() == null) { gameObject.AddComponent<DoorExit>(); }
         ChatSocialDebugUnity.ApplySeed(this);
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;

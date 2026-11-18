@@ -17,7 +17,8 @@ public sealed class CompanyDashboardUI : MonoBehaviour
     private Stock inspected;
     private bool showOwn=true;
     private CompanyGrowthUI growthView;
-    public Stock FocusedStock => inspected ?? (showOwn ? CorporateEconomy.Instance?.PlayerCompany : StockManager.Instance?.CurrentStock);
+    // 꿈에서 깬 뒤에는 내 기업이 없다. 그때는 지금 보고 있는 종목을 보여 준다.
+    public Stock FocusedStock => inspected ?? (showOwn ? CorporateEconomy.Instance?.PlayerCompany ?? StockManager.Instance?.CurrentStock : StockManager.Instance?.CurrentStock);
     public Trader Account => tablet.account;
     private float next;
     public static CompanyDashboardUI Install(TabletAccountUI owner)

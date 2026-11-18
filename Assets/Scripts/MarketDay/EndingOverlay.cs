@@ -2,9 +2,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// 최종 목표를 이뤘을 때의 연출.
-// 내 기업이 상장하고, 사업 확장을 정해진 횟수만큼 끝내고, 마감 시가총액이 목표를 넘으면 한 번만 나온다.
-// 화면 위에 그리기만 한다. 입력을 막지 않고 게임은 그대로 이어진다.
+// 엔딩 글자.
+// 최종 목표(내 기업 상장, 사업 확장, 마감 시가총액)를 이루면 방문의 잠금이 풀리고, 문을 열고 나가면(DoorExit) 까만 화면 위에 이 글자가 나온다.
+// 화면 위에 그리기만 한다.
 public sealed class EndingOverlay : MonoBehaviour
 {
     public static EndingOverlay Instance { get; private set; }
@@ -12,7 +12,7 @@ public sealed class EndingOverlay : MonoBehaviour
     private static readonly System.Collections.Generic.Dictionary<string, (string en, string ja)> Words = new()
     {
         ["{0} · 시가총액 {1}"] = ("{0} · Market cap {1}", "{0} · 時価総額 {1}"),
-        ["{0} 만에 목표 달성 · 게임은 계속됩니다"] = ("Goal reached on {0} · the game goes on", "{0}で目標達成 · ゲームは続きます"),
+        ["{0} 만에 목표 달성"] = ("Goal reached on {0}", "{0}で目標達成"),
     };
     private static string T(string korean) => GameLocale.Code == "ko" || !Words.TryGetValue(korean, out var other) ? korean : GameLocale.Code == "ja" ? other.ja : other.en;
     public GameObject Root { get; private set; }
@@ -21,6 +21,8 @@ public sealed class EndingOverlay : MonoBehaviour
     private TextMeshProUGUI title, company, note;
     private MenuBackdrop backdrop;
     private float started = -1f, nextCapture;
+    private bool plain;
+    private Image shade;
     public bool Playing => started >= 0f;
 
     void Awake()
@@ -32,7 +34,7 @@ public sealed class EndingOverlay : MonoBehaviour
         var scaler = Root.GetComponent<CanvasScaler>(); scaler.uiScaleMode = CanvasScaler.ScaleMode.ScaleWithScreenSize; scaler.referenceResolution = new Vector2(1600, 900); scaler.matchWidthOrHeight = 1;
         group = Root.AddComponent<CanvasGroup>(); group.blocksRaycasts = false; group.interactable = false;
         blur = Layer("Image :: Blurred Game", 0f, 0f, 1f, 1f).gameObject.AddComponent<RawImage>(); blur.raycastTarget = false; backdrop = new MenuBackdrop(blur);
-        var shade = Layer("Image :: Ending Shade", 0f, 0f, 1f, 1f).gameObject.AddComponent<Image>(); shade.color = new Color(0f, 0f, 0f, .55f); shade.raycastTarget = false;
+        shade = Layer("Image :: Ending Shade", 0f, 0f, 1f, 1f).gameObject.AddComponent<Image>(); shade.color = new Color(0f, 0f, 0f, .55f); shade.raycastTarget = false;
         title = Text("Text :: Ending Title", .30f, .30f, 150f, true); title.characterSpacing = 14f;
         var line = Layer("Image :: Ending Line", .40f, .525f, .20f, .004f).gameObject.AddComponent<Image>(); line.color = new Color32(46, 230, 208, 255); line.raycastTarget = false;
         company = Text("Text :: Ending Company", .56f, .08f, 44f, false);
@@ -55,30 +57,22 @@ public sealed class EndingOverlay : MonoBehaviour
         return text;
     }
 
-    /// <summary>지금 바로 엔딩 연출을 시작한다.</summary>
-    public void Play(string companyName, decimal marketCap, int day)
+    /// <summary>지금 바로 엔딩 글자를 띄운다. onBlack이면 게임 화면을 흐리게 깔지 않고 글자만 그린다(이미 화면이 까맣게 덮여 있을 때).</summary>
+    public void Play(string companyName, decimal marketCap, int day, bool onBlack = false)
     {
+        plain = onBlack; blur.enabled = !plain; shade.enabled = !plain;
         GameLocalizedText.Set(title, "ENDING", true);
         GameLocalizedText.Set(company, string.Format(T("{0} · 시가총액 {1}"), companyName, DeviceTerminalUI.Money(marketCap)), true);
-        GameLocalizedText.Set(note, string.Format(T("{0} 만에 목표 달성 · 게임은 계속됩니다"), GameLocale.Day(day)), true);
+        GameLocalizedText.Set(note, string.Format(T("{0} 만에 목표 달성"), GameLocale.Day(day)), true);
         Root.SetActive(true); started = Time.unscaledTime; nextCapture = 0f; group.alpha = 0f;
     }
 
     void Update()
     {
-        if (!Playing)
-        {
-            var market = MarketDayController.Instance; var stock = CorporateEconomy.Instance != null ? CorporateEconomy.Instance.PlayerCompany : null;
-            var growth = stock?.business?.growth;
-            if (growth == null || growth.EndingDay < 1 || growth.EndingShown || market == null || !market.Ready || market.Phase == MarketPhase.Closing || PauseMenuController.IsOpen) { return; }
-            if (DayIntroOverlay.Instance != null && DayIntroOverlay.Instance.Playing) { return; }
-            growth.EndingShown = true;
-            Play(stock.stockName, stock.business.MarketCap, growth.EndingDay);
-            return;
-        }
+        if (!Playing) { return; }
         float time = Time.unscaledTime - started;
         if (time >= AppearSeconds + HoldSeconds + LeaveSeconds) { started = -1f; Root.SetActive(false); return; }
-        if (Time.unscaledTime >= nextCapture) { nextCapture = Time.unscaledTime + RecaptureSeconds; Root.SetActive(false); backdrop.Capture(); Root.SetActive(true); }
+        if (!plain && Time.unscaledTime >= nextCapture) { nextCapture = Time.unscaledTime + RecaptureSeconds; Root.SetActive(false); backdrop.Capture(); Root.SetActive(true); }
         float appear = Mathf.Clamp01(time / AppearSeconds), leave = Mathf.Clamp01((time - AppearSeconds - HoldSeconds) / LeaveSeconds);
         group.alpha = Mathf.Min(appear * appear * (3f - 2f * appear), 1f - leave * leave * (3f - 2f * leave));
         float scale = Mathf.Lerp(1.5f, 1f, 1f - Mathf.Pow(1f - appear, 3f));

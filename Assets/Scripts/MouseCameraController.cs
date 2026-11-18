@@ -94,7 +94,7 @@ public class MouseCameraController : MonoBehaviour
         {
             TogglePause();
         }
-        if (!IsCursorLocked || _paused || DeskViewController.OwnsView || TabletViewController.IsTabletHeld || PhoneCallController.IsRaised || DisplayAimCursor.HasPointerCapture || ChartManager.HasPointerCapture)
+        if (!IsCursorLocked || _paused || DeskViewController.OwnsView || TabletViewController.IsTabletHeld || PhoneCallController.IsRaised || DisplayAimCursor.HasPointerCapture || ChartManager.HasPointerCapture || DoorNotes.Holding || RoomShell.Cinematic)
         { return; }
 
         ApplyMouseWheelFov();
@@ -102,9 +102,41 @@ public class MouseCameraController : MonoBehaviour
         float mouseY = Input.GetAxis("Mouse Y");
         _currentAngleY += mouseX * sensitivity * GameSettings.Current.sensitivity;
         _currentAngleX -= mouseY * sensitivity * GameSettings.Current.sensitivity;
-        _currentAngleX = Mathf.Clamp(_currentAngleX, minAngleX, maxAngleX);
-        _currentAngleY = Mathf.Clamp(_currentAngleY, minAngleY, maxAngleY);
+        // 위아래는 80도까지만 젖혀지고, 좌우는 제한 없이 몇 바퀴든 돈다.
+        _currentAngleX = Mathf.Clamp(_currentAngleX, Mathf.Max(minAngleX, -80f), Mathf.Min(maxAngleX, 80f));
+        _currentAngleY = Mathf.Repeat(_currentAngleY + 180f, 360f) - 180f;
         transform.eulerAngles = new Vector3(_currentAngleX, _currentAngleY, 0f);
+        Walk();
+    }
+
+    /// <summary>걸어 다닐 수 있는 네모(x, z의 최소·최대). RoomShell이 방 크기를 재서 정한다.</summary>
+    public static Vector2 WalkMin, WalkMax;
+    public static bool WalkEnabled;
+    /// <summary>걸어 들어갈 수 없는 자리들(x, z). 침대가 여기에 들어 있다.</summary>
+    public static readonly System.Collections.Generic.List<Rect> WalkBlocks = new();
+    private static bool Blocked(float x, float z)
+    {
+        foreach (var block in WalkBlocks) { if (x > block.xMin && x < block.xMax && z > block.yMin && z < block.yMax) { return true; } }
+        return false;
+    }
+    [Tooltip("걷는 빠르기(초당 거리). Shift를 누르면 조금 빨라진다.")]
+    public float walkSpeed = 4.2f;
+    /// <summary>WASD로 바닥을 걷는다. 눈높이는 그대로이고, 벽과 책상 앞에서 멈춘다.</summary>
+    private void Walk()
+    {
+        if (!WalkEnabled) { return; }
+        float forward = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f), side = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
+        if (forward == 0f && side == 0f) { return; }
+        float yaw = _currentAngleY * Mathf.Deg2Rad;
+        Vector3 ahead = new Vector3(Mathf.Sin(yaw), 0f, Mathf.Cos(yaw)), right = new Vector3(ahead.z, 0f, -ahead.x);
+        Vector3 step = Vector3.ClampMagnitude(ahead * forward + right * side, 1f) * walkSpeed * (Input.GetKey(KeyCode.LeftShift) ? 1.6f : 1f) * Time.unscaledDeltaTime;
+        // 가로와 세로를 따로 옮긴다. 막힌 쪽만 멈추고 벽을 따라 미끄러진다.
+        Vector3 position = transform.position;
+        float x = Mathf.Clamp(position.x + step.x, WalkMin.x, WalkMax.x);
+        if (!Blocked(x, position.z)) { position.x = x; }
+        float z = Mathf.Clamp(position.z + step.z, WalkMin.y, WalkMax.y);
+        if (!Blocked(position.x, z)) { position.z = z; }
+        transform.position = position;
     }
 
     private void ApplyMouseWheelFov()

@@ -19,7 +19,8 @@ public static class GameKeyBindings
 
     public static KeyCode Interact
     {
-        get => (KeyCode)PlayerPrefs.GetInt(PrefsPrefix + "Interact", (int)KeyCode.E);
+        // E는 채팅 화면 단축키가 됐다. 예전에 E로 저장돼 있었어도 F로 읽는다.
+        get { var saved = (KeyCode)PlayerPrefs.GetInt(PrefsPrefix + "Interact", (int)KeyCode.F); return saved == KeyCode.E ? KeyCode.F : saved; }
         set => PlayerPrefs.SetInt(PrefsPrefix + "Interact", (int)value);
     }
 

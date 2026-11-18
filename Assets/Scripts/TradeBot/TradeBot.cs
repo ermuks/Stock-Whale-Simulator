@@ -224,7 +224,7 @@ public abstract partial class TradeBot : Trader
         { volume = decimal.Floor(System.Math.Min(volume * (decimal)ChatSocialConfig.Current.Get("fomoAmountScale"), System.Math.Max(0m, cash - ReservedCash) / System.Math.Max(1m, price))); }
         // 장 시작 몰아주기 매수는 방장이 시킨 값 그대로 낸다. 가격 범위·위험 축소·비중 제한을 받지 않는다.
         bool rush = OpeningRush.Buying(this);
-        if (!rush) { MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), true, ref price, ref volume); }
+        if (!rush) { MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), true, ref price, ref volume); price = PacedPrice(ResolveStock(stock), true, price); }
         if (!rush && !IsExchangeParticipant && Social != null)
         {
             double riskScale = Social.Psychology.MarketRiskBuyScale(ResolveStock(stock)?.symbol, SessionClock.Time);
@@ -267,6 +267,7 @@ public abstract partial class TradeBot : Trader
         if (InvestorSociety.Instance?.Orders != null && !InvestorSociety.Instance.Orders.AllowsRegular(this, ResolveStock(stock)))
         { return; }
         MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), false, ref price, ref volume);
+        price = PacedPrice(ResolveStock(stock), false, price);
         if (!IsExchangeParticipant && Social != null)
         { volume = decimal.Floor(volume * (decimal)Social.Psychology.Companies.TradeScale(ResolveStock(stock)?.symbol, false, SessionClock.Time)); }
         base.SellLimit(price, volume, subTickSteps, stock);
@@ -622,7 +623,7 @@ public abstract partial class TradeBot : Trader
         { return refBasedSellPrice; }
 
         decimal real = GetReferencePrice(stock);
-        decimal current = stock.currentPrice;
+        decimal current = SeenPrice(stock);
         if (current <= 0m || current <= real)
         { return refBasedSellPrice; }
 
@@ -644,7 +645,7 @@ public abstract partial class TradeBot : Trader
         { return refBasedBuyPrice; }
 
         decimal real = GetReferencePrice(stock);
-        decimal current = stock.currentPrice;
+        decimal current = SeenPrice(stock);
         if (current <= 0m || real <= 0m || current >= real)
         { return refBasedBuyPrice; }
 

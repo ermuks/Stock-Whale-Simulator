@@ -20,7 +20,7 @@ public static class T
             bool cold = run % 10 == 8;   // 아무도 따라붙지 않는 장
             WhaleOperationPlan.Begin(s, price, budget, extra, 3, roll);
             if (s.gain < .40m || s.gain > 3.0m || s.shakes < 2 || s.shakes > 4) { fail++; Console.WriteLine("bad plan"); }
-            int steps = 0, stage = s.stage, wrong = 0; decimal peak = price, minPosition = 0m, shakeTop = 0m; var path = new List<int> { stage };
+            int steps = 0, stage = s.stage, wrong = 0; decimal peak = price, minPosition = 0m, shakeTop = 0m, lowestSale = decimal.MaxValue, low = price; var path = new List<int> { stage };
             while (s.Active && steps++ < 600000)
             {
                 double heat = cold || thin ? 0d : Math.Max(0d, Math.Min(1d, (double)((price / s.startPrice - 1.15m) / .6m)));
@@ -47,7 +47,9 @@ public static class T
                 }
                 if (sell)
                 {
-                    decimal can = position + extra;
+                    decimal can = position + extra; lowestSale = Math.Min(lowestSale, price);
+                    // 고점의 72% 아래로는 팔지 않는다(주문 하나만큼의 여유).
+                    if (price < s.peakPrice * WhaleOperationPlan.PeakShare * .985m) { fail++; Console.WriteLine("sold far below the peak in run " + run + ": " + price + " vs peak " + s.peakPrice); }
                     if (o.Quantity > can + .5m) { fail++; Console.WriteLine("sells more than allowed"); }
                     decimal fill = Math.Min(can, o.Kind == WhaleOperationKind.HitBid ? o.Quantity : decimal.Floor(o.Quantity * (decimal)(.3 + heat * .7)));
                     position -= fill; cash += fill * price;
@@ -55,9 +57,12 @@ public static class T
                 }
                 // 뜨거워진 개미가 스스로 조금씩 더 올린다.
                 if (heat > 0d && steps % 20 == 0) { price += price * (decimal)(heat * .0006); }
-                peak = Math.Max(peak, price); minPosition = Math.Min(minPosition, position);
+                peak = Math.Max(peak, price); minPosition = Math.Min(minPosition, position); low = Math.Min(low, price);
             }
             if (s.Active) { fail++; Console.WriteLine("never ends " + run); }
+            // 세력은 시작가의 85% 아래로는 팔지 않는다. 그래서 세력 혼자서는 값을 그 밑으로 끌어내리지 못한다(주문 하나만큼의 여유는 둔다).
+            if (lowestSale < s.startPrice * WhaleOperationPlan.FloorShare * .999m) { fail++; Console.WriteLine("sold below the floor in run " + run + ": " + lowestSale + " < " + s.startPrice * WhaleOperationPlan.FloorShare); }
+            if (low < s.startPrice * (WhaleOperationPlan.FloorShare - .02m)) { fail++; Console.WriteLine("price pushed far below the floor in run " + run + ": " + low); }
             if (wrong > 0) { fail++; Console.WriteLine("order on the wrong side of its stage: " + wrong + " in run " + run); }
             if (minPosition < -extra - .5m) { fail++; Console.WriteLine("sold more of the original stake than allowed " + minPosition); }
             // 쓸 수 있는 돈은 처음 예산과 그동안 판 돈까지다.

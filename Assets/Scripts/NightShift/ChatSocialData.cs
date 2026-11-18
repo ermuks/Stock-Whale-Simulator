@@ -238,11 +238,28 @@ public sealed partial class InvestorPsychology
         Traits = new SocialTraits(SocialRng, ChatSocialConfig.Current);
         InitializeAudit();
     }
+    /// <summary>한 사람이 기억해 두는 상대의 수. 넘으면 가장 흐릿한 관계(감정이 옅고 오래 마주치지 않은 사람)부터 잊는다.
+    /// 한도가 없으면 채팅에서 스친 사람마다 기록이 남아, 오래 플레이할수록 메모리와 저장 파일이 끝없이 커진다.</summary>
+    public const int RelationCapacity = 64;
     public SocialRelation Relation(int other)
     {
         if (!Relations.TryGetValue(other, out var relation))
-        { relation = new SocialRelation { to = other }; Relations.Add(other, relation); }
+        {
+            if (Relations.Count >= RelationCapacity) { ForgetFaintestRelation(); }
+            relation = new SocialRelation { to = other }; Relations.Add(other, relation);
+        }
         return relation;
+    }
+    private void ForgetFaintestRelation()
+    {
+        int faintest = 0; double lowest = double.MaxValue;
+        foreach (var row in Relations.Values)
+        {
+            // 감정이 짙을수록, 최근에 마주쳤을수록 오래 남는다. 화가 나 있는 상대는 웬만해서는 잊지 않는다.
+            double weight = Math.Abs(row.affinity) + row.anger * 3 + row.highestStage * 20 + row.lastInteractionAt * .01;
+            if (weight < lowest) { lowest = weight; faintest = row.to; }
+        }
+        Relations.Remove(faintest);
     }
     public void SeedFriends(IReadOnlyList<int> sortedIds)
     {

@@ -16,6 +16,58 @@ public abstract partial class TradeBot
     private float nextPanicAct;
     private readonly List<(decimal price, decimal volume)> impulseLevels = new(1);
 
+    private float haste = -1f;
+    /// <summary>조급함(0~1). 낮을수록 느긋하고 높을수록 급하다. 급하다·느긋하다로 나뉘는 것이 아니라 계좌마다 다른 수치이고, 한 번 정해지면 변하지 않는다.</summary>
+    public float Haste
+    {
+        get
+        {
+            if (haste < 0f) { haste = (CompanyBusiness.Hash("HASTE:" + InitialAccountId) % 1000u) / 999f; }
+            return haste;
+        }
+    }
+
+    /// <summary>
+    /// 봇이 지금 값이라고 여기는 가격. 마지막 체결가만 보지 않는다.
+    /// 마지막 체결가가 매수·매도 호가 사이에 있으면 체결가와 호가 한가운데의 중간으로 보고,
+    /// 체결가가 호가 밖으로 밀려나 있으면(이미 지나간 값) 호가 사이의 값으로 본다.
+    /// 호가가 멀리 벌어져 있을 때는 체결가에서 1.5% 넘게 벗어나 보지 않는다.
+    /// </summary>
+    protected decimal SeenPrice(Stock stock)
+    {
+        if (stock == null) { return 0m; }
+        decimal last = stock.currentPrice;
+        if (last <= 0m || stock.orderBook == null || !stock.orderBook.TryBest(out decimal bid, out decimal ask)) { return last; }
+        decimal middle = Math.Max(last * 0.985m, Math.Min(last * 1.015m, (bid + ask) * 0.5m));
+        if (last < bid || last > ask) { return middle; }
+        return (last + middle) * 0.5m;
+    }
+
+    /// <summary>
+    /// 성격에 따라 주문 값을 고친다. 급할수록 기다리는 값 대신 맞은편 호가를 바로 치고(시장가처럼),
+    /// 느긋할수록 바로 칠 수 있어도 자기 쪽 호가에 줄을 서서 기다린다.
+    /// 공포·추격 상태, 리딩방 지시, 세력·거래소·대주주의 주문은 건드리지 않는다.
+    /// </summary>
+    private decimal PacedPrice(Stock stock, bool buy, decimal price)
+    {
+        if (stock == null || price <= 0m || IsExchangeParticipant || IsCompanyOwner || this is WhaleBot || stock.orderBook == null) { return price; }
+        if (InvestorSociety.Instance?.Orders != null && InvestorSociety.Instance.Orders.IsSubmitting(this)) { return price; }
+        if (Social != null && (Social.Psychology.HasPanicFor(stock) || Social.Psychology.HasFomoFor(stock))) { return price; }
+        if (!stock.orderBook.TryBest(out decimal bid, out decimal ask)) { return price; }
+        float temper = Haste; decimal tick = PriceTickPolicy.GetTickSize(bid);
+        if (buy ? price >= ask : price <= bid)
+        {
+            // 바로 체결될 값이다. 느긋할수록 치지 않고 줄을 선다(틈이 있으면 한 틱 앞에).
+            if (UnityEngine.Random.value >= Mathf.Pow(1f - temper, 1.5f) * 0.8f) { return price; }
+            bool gap = ask - bid > tick;
+            return buy ? (gap ? bid + tick : bid) : (gap ? ask - tick : ask);
+        }
+        // 기다리는 값이다. 급할수록 맞은편 호가를 친다. 다만 내려던 값에서 너무 멀면(0.4~2%) 치지 않는다.
+        decimal reach = price * (decimal)(0.004f + temper * 0.016f);
+        if (UnityEngine.Random.value < Mathf.Pow(temper, 1.5f) * 0.8f && (buy ? ask <= price + reach : bid >= price - reach)) { return buy ? ask : bid; }
+        return price;
+    }
+
     public decimal BelievedPrice(Stock stock)
     {
         if (stock == null)
@@ -32,10 +84,10 @@ public abstract partial class TradeBot
     }
 
     protected bool FeelsCheap(Stock stock)
-    { return stock != null && stock.currentPrice > 0m && stock.currentPrice < BelievedPrice(stock) * 0.97m; }
+    { return stock != null && stock.currentPrice > 0m && SeenPrice(stock) < BelievedPrice(stock) * 0.97m; }
 
     protected bool FeelsExpensive(Stock stock)
-    { return stock != null && stock.currentPrice > BelievedPrice(stock) * 1.03m; }
+    { return stock != null && SeenPrice(stock) > BelievedPrice(stock) * 1.03m; }
 
     /// <summary>이번 턴에 고른 종목을 직접 본다. 숙련도가 낮으면 직전 변화만, 높으면 더 긴 흐름과 평균 대비 과열을 읽는다.</summary>
     private void ObserveMarket(Stock stock)
@@ -166,16 +218,17 @@ public abstract partial class TradeBot
         if (mind.HasPanicFor(stock))
         { return 0m; }
 
-        decimal gap = BelievedPrice(stock) / stock.currentPrice - 1m;
-        decimal conviction = Math.Max(0.25m, Math.Min(2.5m, 1m + gap * 4m));
+        decimal gap = BelievedPrice(stock) / SeenPrice(stock) - 1m;
+        // 믿는 값보다 쌀수록, 그리고 추격할 때 쉬고 있던 현금을 크게 꺼낸다. 개미가 부자가 된 만큼 올라탈 때 들어오는 돈도 커진다.
+        decimal conviction = Math.Max(0.25m, Math.Min(4m, 1m + gap * 5m));
         if (mind.HasFomoFor(stock))
         {
-            conviction *= 1.5m;
+            conviction *= 2.5m;
         }
 
         // 개미 전체가 처음 들고 있는 주식 비중(실측 약 58%)과 같아지도록 맞춘 값이다. 평균 0.5 × 여유 1.15 ≈ 0.58.
         // 이보다 크면 개장 직후 전 종목을 사들이는 편향이 생긴다.
-        decimal exposure = (decimal)(0.2f + Social.Risk * 0.6f);
+        decimal exposure = (decimal)((0.2f + Social.Risk * 0.6f) * StockManager.Instance.retailExposureScale);
         return Equity() * exposure * share * conviction;
     }
 

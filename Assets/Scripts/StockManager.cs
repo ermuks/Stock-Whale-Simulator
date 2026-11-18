@@ -50,6 +50,7 @@ public partial class StockManager : MonoBehaviour
         if (useInitialEconomy)
         {
             economy.IncludeNewDefaults();
+            economy.ApplyRetailWealth();
             BuildEconomyStocks();
             return;
         }
@@ -149,7 +150,8 @@ public partial class StockManager : MonoBehaviour
         if (PauseMenuController.BlocksInput) { return; }
         if (!SetupConfirmed || stocks == null || stocks.Count == 0)
         { return; }
-        int direction = Input.GetKeyDown(KeyCode.W) ? -1 : Input.GetKeyDown(KeyCode.S) ? 1 : 0;
+        // 종목 넘기기는 위·아래 화살표다. W와 S는 화면·태블릿 단축키가 됐다.
+        int direction = Input.GetKeyDown(KeyCode.UpArrow) ? -1 : Input.GetKeyDown(KeyCode.DownArrow) ? 1 : 0;
         if (direction == 0)
         { return; }
         var selected = EventSystem.current == null ? null : EventSystem.current.currentSelectedGameObject;

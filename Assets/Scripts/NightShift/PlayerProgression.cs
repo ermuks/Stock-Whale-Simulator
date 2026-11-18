@@ -11,7 +11,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
     {
         public int schemaVersion = 1;
         // 리딩방을 여는 데 한 번 내는 돈.
-        public long leadingOpeningCost = 20000000;
+        public long leadingOpeningCost = 100000000;
     }
     [Serializable]
     public sealed class Snapshot
@@ -19,6 +19,8 @@ public sealed partial class PlayerProgression : MonoBehaviour
         public int version = 1;
         public string worldId, turnover, realizedProfit;
         public bool roomsOpened;
+        /// <summary>엔딩을 보고 꿈에서 깼다. 예전 저장에는 없어서 false로 읽힌다.</summary>
+        public bool dreamt;
         public int invitedRoomMask;
         public int journeyMilestones;
         public double newsCooldownRemaining;
@@ -30,6 +32,10 @@ public sealed partial class PlayerProgression : MonoBehaviour
     public decimal Turnover { get; private set; }
     public decimal RealizedProfit { get; private set; }
     public bool CanOperateRooms { get; private set; }
+    /// <summary>엔딩 뒤 꿈에서 깼다. 리딩방도 내 기업도 처음부터 없던 것이다(내 기업을 다시 만들어 주지 않는다).</summary>
+    public bool Dreamt { get; private set; }
+    /// <summary>꿈에서 깬다: 리딩방 운영 자격이 사라진다. 다시 열려면 개설 비용을 다시 모아야 한다.</summary>
+    public void WakeFromDream() { Dreamt = true; CanOperateRooms = false; }
     public int JourneyMilestones { get; private set; }
     public decimal OpeningCost => rules.leadingOpeningCost;
     private static Trader OpeningAccount => PlayerAccounts.Instance != null ? PlayerAccounts.Instance.primary : StockManager.Instance != null ? StockManager.Instance.playerAccount : null;
@@ -96,7 +102,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
     }
     public string Capture()
     {
-        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = CanOperateRooms,
+        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = CanOperateRooms, dreamt = Dreamt,
             invitedRoomMask = InvestorSociety.Instance?.InvitedRoomMask ?? 0, journeyMilestones = JourneyMilestones, newsCooldownRemaining = FakeNewsManager.Instance?.PlayerCooldown ?? 0, newsSavedUtc = DateTime.UtcNow.Ticks,
             income = DailyIncomeController.Instance?.Capture() });
     }
@@ -115,7 +121,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
         { return false; }
         if (saved.income != null && (DailyIncomeController.Instance == null || !DailyIncomeController.Instance.CanRestore(saved.income,WorldId)))
         { return false; }
-        Turnover = turnover; RealizedProfit = profit; CanOperateRooms = saved.roomsOpened;
+        Turnover = turnover; RealizedProfit = profit; CanOperateRooms = saved.roomsOpened; Dreamt = saved.dreamt;
         JourneyMilestones = saved.journeyMilestones;
         if (saved.income != null) { DailyIncomeController.Instance.Restore(saved.income,WorldId); }
         FakeNewsManager.Instance?.RestorePlayerCooldown(saved.newsCooldownRemaining, saved.newsSavedUtc);

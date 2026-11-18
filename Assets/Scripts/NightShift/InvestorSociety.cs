@@ -294,7 +294,8 @@ public sealed partial class InvestorSociety : MonoBehaviour
     {
         if (bot?.Social == null) { return false; }
         var room = GetRoom(roomId); var mind = bot.Social.Psychology;
-        if (room != null && (room.Social.banned.Contains(bot.Social.Id) || mind.RejoinAt.TryGetValue(roomId, out double allowedAt) && SocialTime.GameMinute < allowedAt))
+        // 스스로 돌아오는 것은 나간 뒤 한동안 막혀 있지만, 플레이어가 직접 부른 초대는 기다리게 하지 않는다.
+        if (room != null && (room.Social.banned.Contains(bot.Social.Id) || !playerInvited && mind.RejoinAt.TryGetValue(roomId, out double allowedAt) && SocialTime.GameMinute < allowedAt))
         { return false; }
         if (room == null || !IsRoomOpen(roomId) || mind.Room != 0 || room.Members.Count >= settings.roomCapacity || !bot.isActiveAndEnabled || bot.IsExchangeParticipant)
         { return false; }
@@ -345,14 +346,13 @@ public sealed partial class InvestorSociety : MonoBehaviour
         { LastAction = "참여자와 리딩방을 선택하세요."; return false; }
         var mind = bot.Social.Psychology;
         bool firstMember = !GetRoom(roomId).Social.firstMemberInvited;
-        if (!firstMember && (SessionClock.Time < nextContact || SessionClock.Time - mind.LastContact < settings.repeatContactCooldown))
-        { LastAction = "아직 다시 연락할 수 없습니다."; return false; }
+        // 초대에는 대기 시간이 없다. 언제든, 같은 사람에게도 다시 권할 수 있다. 받을지는 그 사람의 마음에 달렸다.
         if (mind.Room != 0)
         { LastAction = "이미 " + GetRoom(mind.Room).DisplayName + "에 참여 중입니다."; return false; }
         if (GetRoom(roomId).Members.Count >= settings.roomCapacity)
         { LastAction = "방의 정원이 가득 찼습니다."; return false; }
-        if (!bot.isActiveAndEnabled || bot.IsExchangeParticipant || GetRoom(roomId).Social.banned.Contains(botId) ||
-            mind.RejoinAt.TryGetValue(roomId, out double returnAt) && SocialTime.GameMinute < returnAt)
+        // 남은 제한은 기다린다고 풀리지 않는 것뿐이다: 내가 내보낸 사람, 거래소 계정, 시장을 떠난 사람.
+        if (!bot.isActiveAndEnabled || bot.IsExchangeParticipant || GetRoom(roomId).Social.banned.Contains(botId))
         { LastAction = "지금은 이 참여자를 초대할 수 없습니다."; return false; }
         nextContact = SessionClock.Time + settings.contactCooldown; mind.LastContact = SessionClock.Time;
         mind.RecallBetrayal(); Trace(bot, "회유: " + mind.LastCause);
@@ -373,6 +373,24 @@ public sealed partial class InvestorSociety : MonoBehaviour
         room.Command = new LeadingRoomOrders.Command { Id = ++nextCommand, Room = roomId, Stock = stock, Buy = buy, Sell = sell, IssuedAt = SessionClock.Time, IssuedDay = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.Day };
         LastAction = $"{room.DisplayName}: {stock.stockName} 매수 ≤ {buy:N0} / 매도 ≥ {sell:N0}. 참가자가 개별 판단합니다.";
         Speak(null, roomId, LastAction, default); return true;
+    }
+    /// <summary>꿈에서 깬다: 내 리딩방의 지시를 거두고 회원을 모두 내보낸다(알림 없이). 방은 처음처럼 비어 있다.</summary>
+    public void DissolvePlayerRooms()
+    {
+        day ??= MarketDayController.Instance;
+        foreach (var room in Rooms)
+        {
+            if (!room.PlayerOwned) { continue; }
+            CancelRoom(room.Id); room.Command = null;
+            foreach (int id in new List<int>(room.Members))
+            {
+                var bot = day == null ? null : day.FindBot(id);
+                if (bot != null && bot.Social != null && bot.Social.Psychology.Room == room.Id) { Leave(bot, "꿈에서 깸", ChatRoomNotice.None); }
+            }
+            room.Members.Clear(); room.Social.firstMemberInvited = false;
+        }
+        RestoreInvitedRooms(0);
+        LastAction = "공용 라운지 또는 리딩방을 선택하세요.";
     }
     public void CancelRoom(int roomId)
     {

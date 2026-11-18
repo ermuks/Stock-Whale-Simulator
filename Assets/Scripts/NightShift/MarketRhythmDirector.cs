@@ -17,9 +17,9 @@ public sealed class MarketRhythmDirector : MonoBehaviour
     [Tooltip("대기 주문에 쓰는 자산 비율(매수는 현금, 매도는 그 종목 보유량)")]
     [Range(0f, .5f)] public float restingShare = .25f;
     [Tooltip("현재가에서 가장 가까운 대기 주문 거리")]
-    [Range(.005f, .1f)] public float restingNear = .02f;
+    [Range(.002f, .1f)] public float restingNear = .004f;
     [Tooltip("현재가에서 가장 먼 대기 주문 거리")]
-    [Range(.02f, .18f)] public float restingFar = .1f;
+    [Range(.01f, .18f)] public float restingFar = .03f;
     public int RestingOrders { get; private set; }
     [Range(0f, 1f)] public float participation = .72f;
     public int seed = 8147;
@@ -201,7 +201,9 @@ public sealed class MarketRhythmDirector : MonoBehaviour
             available = bot.GetHolding(stock);
             slice = available * (decimal)Mathf.Clamp(resourceFraction, .005f, .1f);
         }
-        decimal quantity = decimal.Floor(Math.Min(available, Math.Min(random.Next(active ? 50 : 15, active ? 250 : 90), Math.Max(1m, slice))));
+        // 한 번의 크기: 주식 수로만 묶으면 싼 종목은 주문이 몇만 원어치밖에 안 된다. 금액으로도 잰다(조용할 때 20만~100만 원, 활발할 때 50만~300만 원).
+        decimal shares = random.Next(active ? 50 : 15, active ? 250 : 90), worth = random.Next(active ? 500_000 : 200_000, active ? 3_000_000 : 1_000_000);
+        decimal quantity = decimal.Floor(Math.Min(available, Math.Min(Math.Max(shares, worth / Math.Max(1m, price)), Math.Max(1m, slice))));
         if (quantity < 1m)
         { return true; }
         Submitting = true;
@@ -217,7 +219,7 @@ public sealed class MarketRhythmDirector : MonoBehaviour
         DirectedOrders++;
         return true;
     }
-    // 당장 체결할 주문과 별도로, 현재가에서 2~10% 떨어진 가격에 작은 주문을 걸어 둔다.
+    // 당장 체결할 주문과 별도로, 현재가에서 0.4~3% 떨어진 가격에 작은 주문을 걸어 둔다(예전에는 2~10%여서 호가가 넓게 흩어졌다).
     // 평소에는 체결되지 않고, 급등·급락 때 받아 주는 물량이 된다. 멀수록 얇게 건다.
     private void TryRest(TradeBot bot, Stock stock, int buys, int sells, decimal sellShares)
     {
@@ -252,7 +254,7 @@ public sealed class MarketRhythmDirector : MonoBehaviour
             price = PriceTickPolicy.CeilToTick(stock.currentPrice * (1m + distance));
             quantity = decimal.Floor(Math.Min(holding * share - sellShares, Math.Max(1m, holding * share / 3m * thin)));
         }
-        quantity = Math.Min(quantity, 500m);
+        quantity = Math.Min(quantity, OrderCap(stock.currentPrice, 500m, 6_000_000m));
         if (quantity < 1m)
         { return; }
         SubmittingResting = true;
@@ -273,12 +275,25 @@ public sealed class MarketRhythmDirector : MonoBehaviour
         { return; }
         // 대기 주문은 일부러 멀리 거는 주문이라 가격 범위를 좁히지 않는다. 수량만 제한한다.
         if (SubmittingResting)
-        { quantity = Math.Min(quantity, 500m); return; }
+        { quantity = Math.Min(quantity, OrderCap(stock.currentPrice, 500m, 6_000_000m)); return; }
         // 충동(투매·추격) 주문은 호가를 몇 단계 치고 나갈 수 있다. 그래도 한 번에 5%를 넘지는 못한다.
         bool impulse = bot.ImpulseOrder || buy && bot.Social != null && bot.Social.Psychology.HasFomoFor(stock);
         decimal band = impulse ? (buy ? .03m : .04m) : .015m;
-        quantity = Math.Min(quantity, bot.IsCompanyOwner ? 2500m : impulse ? 500m : 250m);
+        quantity = Math.Min(quantity, bot.IsCompanyOwner ? OrderCap(stock.currentPrice, 2500m, 50_000_000m) : impulse ? OrderCap(stock.currentPrice, 500m, 6_000_000m) : OrderCap(stock.currentPrice, 250m, 3_000_000m));
         price = buy ? Math.Min(price, PriceTickPolicy.CeilToTick(stock.currentPrice * (1m + band))) : Math.Max(price, Math.Max(1m, PriceTickPolicy.FloorToTick(stock.currentPrice * (1m - band))));
+        // 기다리는 쪽 주문(싸게 사려는 매수, 비싸게 팔려는 매도)도 현재가에서 3% 넘게 떨어뜨리지 않는다. 호가가 현재가 둘레에 모인다.
+        // 리딩방 지시로 내는 주문은 방장이 정한 값이라 그대로 둔다.
+        bool commanded = InvestorSociety.Instance?.Orders != null && InvestorSociety.Instance.Orders.IsSubmitting(bot);
+        if (!commanded && !bot.IsCompanyOwner)
+        {
+            price = buy ? Math.Max(price, Math.Max(1m, PriceTickPolicy.FloorToTick(stock.currentPrice * (1m - PassiveBand)))) : Math.Min(price, PriceTickPolicy.CeilToTick(stock.currentPrice * (1m + PassiveBand)));
+        }
+    }
+    private const decimal PassiveBand = .03m;
+    /// <summary>주문 하나의 한도. 주식 수 한도와 금액 한도 가운데 큰 쪽이다. 싼 종목은 금액 한도가, 비싼 종목은 주식 수 한도가 쓰인다.</summary>
+    private static decimal OrderCap(decimal price, decimal shares, decimal worth)
+    {
+        return Math.Max(shares, decimal.Floor(worth / Math.Max(1m, price)));
     }
     void OnDestroy()
     {

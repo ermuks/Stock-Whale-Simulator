@@ -1,0 +1,74 @@
+import os, struct, sys, zlib
+
+OUT = "D:/GitHub/Stock-Whale-Simulator/Assets/Branding"
+UP, DOWN = (233, 76, 90), (67, 133, 232)   # 게임 화면의 상승(빨강)·하락(파랑) 색
+TOP, BOTTOM = (19, 30, 41), (9, 15, 21)    # 어두운 남색 바탕
+
+# 캔들 네 개: (가운데 x, 몸통 위, 몸통 아래, 심지 위, 심지 아래, 색). 좌표는 0~1이고 y는 위가 0이다.
+CANDLES = [
+    # 바닥에서 짧게 시작해 조금 오르고, 셋째 봉이 꼭대기까지 치솟은 뒤 넷째 봉이 바닥까지 쏟아진다(작전주의 한 사이클).
+    # 첫 봉은 바닥에서 30%쯤 되는 높이에서 시작한다. 마지막 봉은 그 시작점보다도 더 아래까지 내려간다.
+    (.215, .650, .700, .625, .725, UP),
+    (.405, .540, .650, .505, .675, UP),
+    # 셋째 봉은 꼭대기보다 조금 아래에서 멈춘다. 넷째 봉은 그 위로 한 번 더 찔러 올렸다가(긴 윗꼬리) 쏟아진다.
+    (.595, .275, .540, .230, .570, UP),
+    (.785, .295, .870, .080, .905, DOWN),
+]
+BODY, WICK, ROUND, CORNER = .118, .022, .016, .225
+
+
+def coverage(distance, pixel):
+    # 가장자리 한 픽셀 폭에서 부드럽게 0~1.
+    return max(0.0, min(1.0, .5 - distance / pixel))
+
+
+def rounded(px, py, cx, cy, hw, hh, r):
+    # 둥근 네모까지의 부호 있는 거리(안쪽이 음수).
+    dx, dy = abs(px - cx) - (hw - r), abs(py - cy) - (hh - r)
+    outside = (max(dx, 0.0) ** 2 + max(dy, 0.0) ** 2) ** .5
+    return outside + min(max(dx, dy), 0.0) - r
+
+
+def render(size):
+    pixel = 1.0 / size
+    rows = []
+    for y in range(size):
+        py = (y + .5) * pixel
+        row = bytearray(size * 4)
+        shade = [TOP[i] + (BOTTOM[i] - TOP[i]) * py for i in range(3)]
+        # 이 줄에 걸치는 캔들만 본다.
+        near = [c for c in CANDLES if c[3] - pixel * 2 <= py <= c[4] + pixel * 2]
+        for x in range(size):
+            px = (x + .5) * pixel
+            alpha = coverage(rounded(px, py, .5, .5, .5, .5, CORNER), pixel)
+            if alpha <= 0.0:
+                continue
+            r, g, b = shade
+            for cx, top, bottom, wick_top, wick_bottom, color in near:
+                if abs(px - cx) > BODY * .5 + pixel * 2:
+                    continue
+                wick = coverage(rounded(px, py, cx, (wick_top + wick_bottom) * .5, WICK * .5, (wick_bottom - wick_top) * .5, WICK * .5), pixel)
+                body = coverage(rounded(px, py, cx, (top + bottom) * .5, BODY * .5, (bottom - top) * .5, ROUND), pixel)
+                amount = max(wick, body)
+                if amount > 0.0:
+                    r += (color[0] - r) * amount; g += (color[1] - g) * amount; b += (color[2] - b) * amount
+            offset = x * 4
+            row[offset] = int(r + .5); row[offset + 1] = int(g + .5); row[offset + 2] = int(b + .5); row[offset + 3] = int(alpha * 255 + .5)
+        rows.append(bytes(row))
+    return rows
+
+
+def save(path, size, rows):
+    def chunk(kind, data):
+        return struct.pack(">I", len(data)) + kind + data + struct.pack(">I", zlib.crc32(kind + data) & 0xFFFFFFFF)
+    raw = b"".join(b"\x00" + row for row in rows)
+    png = b"\x89PNG\r\n\x1a\n" + chunk(b"IHDR", struct.pack(">IIBBBBB", size, size, 8, 6, 0, 0, 0)) + chunk(b"IDAT", zlib.compress(raw, 9)) + chunk(b"IEND", b"")
+    with open(path, "wb") as handle:
+        handle.write(png)
+
+
+os.makedirs(OUT, exist_ok=True)
+for size in (1024, 512):
+    path = OUT + "/Icon_%d.png" % size
+    save(path, size, render(size))
+    print(path, os.path.getsize(path))

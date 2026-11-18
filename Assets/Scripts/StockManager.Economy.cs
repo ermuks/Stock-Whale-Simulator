@@ -294,6 +294,7 @@ public partial class StockManager
                 // Founder keeps all private shares. Only liquid personal starting cash is normalized.
             }
 
+            CalibrateRetailExposure();
             EconomyInitialized = true;
             SetupInProgress = false;
             PlayerStartingEquity = playerAccount.Equity();
@@ -326,6 +327,29 @@ public partial class StockManager
 
             OnInitialEconomyReady?.Invoke();
         }
+    }
+
+    /// <summary>
+    /// 개미가 자산 중 주식에 두려는 비중에 곱하는 값. 게임을 시작할 때 개미 전체가 실제로 들고 있는 주식 비중에 맞춘다.
+    /// 현금이 많아져도 개장하자마자 전 종목을 사들이지 않게 하기 위해서다. 늘어난 돈은 평소에는 쉬고, 믿음이 기울거나 추격할 때 나온다.
+    /// 예전 저장에는 이 값이 없어 1로 읽힌다(예전과 같은 동작).
+    /// </summary>
+    public float retailExposureScale = 1f;
+    private void CalibrateRetailExposure()
+    {
+        decimal held = 0m, equity = 0m;
+        foreach (var trader in Trader.Registry)
+        {
+            if (!(trader is TradeBot bot) || bot.IsExchangeParticipant || bot.IsCompanyOwner) { continue; }
+            decimal value = 0m;
+            foreach (var stock in stocks) { value += bot.GetOwnedVolume(stock) * stock.currentPrice; }
+            held += value; equity += value + Math.Max(0m, bot.cash);
+        }
+        if (held <= 0m || equity <= 0m) { return; }
+        // 성향 평균(0.5)에 여유(1.15)를 곱한 0.575가 기준 비중이다.
+        // 주식을 하나도 안 받은 사람도 이제는 살 돈이 있어서, 딱 맞추면 개장 직후 사는 쪽으로 쏠린다. 그만큼(20%) 낮춰 잡는다.
+        retailExposureScale = Mathf.Clamp((float)(held / equity) / .575f * .8f, .01f, 1f);
+        Debug.Log($"[개미 자금] 현금 {equity - held:N0}원 · 보유 주식 {held:N0}원 · 주식 비중 {held / equity * 100m:0.0}% · 목표 비중 배율 {retailExposureScale:0.000}");
     }
 
     public void AssignInitialCash(TradeBot bot)

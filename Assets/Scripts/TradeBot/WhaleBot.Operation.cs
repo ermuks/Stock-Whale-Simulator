@@ -33,6 +33,9 @@ public partial class WhaleBot
     private static bool extraToday;
     private static readonly List<WhaleBot> candidates = new(16);
     private static readonly List<(decimal price, decimal volume)> quotes = new(1);
+    /// <summary>작전 예산과 내놓을 원래 지분의 한도: 시중에 도는 물량(내 지분을 뺀 것)에 대한 비율.
+    /// 예전에는 시가총액의 8%, 발행 주식의 3%였는데, 대주주가 98% 넘게 쥔 종목에서는 그것이 유통 물량 전체보다 컸다.</summary>
+    private const decimal BudgetFloatShare = .25m, ExtraFloatShare = .12m;
     // 체결을 듣고 있는 종목. 저장되지 않으므로 불러온 뒤에는 다시 연결된다.
     private static readonly Dictionary<WhaleBot, Stock> listening = new();
 
@@ -168,13 +171,16 @@ public partial class WhaleBot
         operationBase = GetOwnedVolume(stock); operationClock = SessionClock.Time;
         crowdBuys.Clear(); crowdRecent = crowdBaseline = 0m; crowdBaselineSeconds = 0f;
         decimal available = Math.Max(0m, cash - ReservedCash);
-        // 가진 현금의 50~85%. 시가총액의 8%를 넘기지 않는다.
-        decimal budget = Math.Min(available * (decimal)(.5f + UnityEngine.Random.value * .35f), stock.issuedShares * stock.currentPrice * .08m);
-        // 올려놓고 넘길 물량은 작전으로 산 것만이 아니다. 원래 지분에서도 일부를 내놓는다.
-        decimal extra = Math.Min(stock.issuedShares * ExtraIssuedShare, budget / stock.currentPrice * ExtraBudgetMultiple);
+        // 가진 현금의 50~85%. 시중에 도는 물량 값어치의 25%를 넘기지 않는다(시장이 받아 낼 수 있는 크기여야 한다).
+        decimal floating = Math.Max(0m, stock.issuedShares - GetOwnedVolume(stock));
+        decimal budget = Math.Min(available * (decimal)(.5f + UnityEngine.Random.value * .35f), floating * stock.currentPrice * BudgetFloatShare);
+        // 올려놓고 넘길 물량은 작전으로 산 것만이 아니다. 원래 지분에서도 일부를 내놓는다. 이것도 유통 물량의 12%까지만이다.
+        decimal extra = Math.Min(Math.Min(stock.issuedShares * ExtraIssuedShare, floating * ExtraFloatShare), budget / stock.currentPrice * ExtraBudgetMultiple);
         extra = Math.Min(extra, Math.Max(0m, GetHolding(stock)));
         bool fast = Environment.GetEnvironmentVariable("DONDON_WHALE_FAST") == "1";
         WhaleOperationPlan.Begin(operation, stock.currentPrice, budget, extra, day, Roll, fast);
+        // 누군가 이 계획을 플레이어에게 흘린다: 어느 종목을 몇 시 몇 분에 끌어올리는지.
+        DoorNotes.Instance?.AnnounceAfterTrading(stock, operation.buildSeconds);
         Debug.Log($"[세력] 작전 시작 — {stock.stockName}({stock.symbol}) 시작가 {stock.currentPrice:N0} · 예산 {budget:N0}원 · 목표 +{operation.gain * 100m:0}% · 흔들기 {operation.shakes}회 · 원래 지분에서 {operation.extraShares:N0}주까지 · 매집 {operation.buildSeconds:0}초 / 끌어올리기 {operation.driveSeconds:0}초");
     }
 
@@ -214,12 +220,16 @@ public partial class WhaleBot
                     price = Math.Max(ask, PriceTickPolicy.CeilToTick(stock.currentPrice * 1.012m));
                     break;
                 case WhaleOperationKind.JoinAsk:
-                    // 매수·매도 사이가 벌어져 있으면 한 칸 아래에 대서 먼저 팔리게 한다.
-                    price = ask <= 0m ? PriceTickPolicy.CeilToTick(stock.currentPrice + tick) : bid > 0m && ask - bid > tick ? ask - tick : ask;
+                    // 최우선 매도호가에 나란히 선다. 예전에는 한 칸 아래에 댔는데, 사는 사람이 없으면 자기 주문보다 또 한 칸 아래에 대기를 되풀이해서
+                    // 세력 혼자 매도 호가를 계단처럼 끌어내렸다. 이미 그 근처에 내 매도가 걸려 있으면 더 얹지 않고 팔리기를 기다린다.
+                    price = ask <= 0m ? PriceTickPolicy.CeilToTick(stock.currentPrice + tick) : ask;
+                    if (price < operation.SellFloor || OwnAskNear(stock, price)) { return; }
                     break;
                 default:
-                    if (bid <= 0m) { return; }
-                    price = bid;
+                    // 매수 호가를 받아 칠 때는 그 호가에 실제로 서 있는 수량만큼만 판다. 남는 수량을 더 낮은 값에 걸어 호가를 차례로 무너뜨리지 않는다.
+                    // 바닥선 아래의 매수에는 팔지 않는다.
+                    if (bid <= 0m || bid < operation.SellFloor) { return; }
+                    price = bid; left = Math.Min(left, BestVolume);
                     break;
             }
             if (price <= 0m) { return; }
@@ -232,17 +242,31 @@ public partial class WhaleBot
                 SellLimit(price, chunk, 0, stock);
             }
             left -= chunk;
-            // 줄을 서는 주문은 한 번이면 된다. 받아 가는 주문만 이어서 낸다.
-            if (order.Kind == WhaleOperationKind.JoinBid || order.Kind == WhaleOperationKind.JoinAsk) { break; }
+            // 줄을 서는 주문과 매수 호가를 받아 치는 주문은 한 번이면 된다. 위로 받아 가는 매수만 이어서 낸다.
+            if (order.Kind == WhaleOperationKind.JoinBid || order.Kind == WhaleOperationKind.JoinAsk || order.Kind == WhaleOperationKind.HitBid) { break; }
         }
     }
 
+    /// <summary>이 값이나 그 바로 위(1% 안)에 내 매도 주문이 이미 걸려 있는가.</summary>
+    private bool OwnAskNear(Stock stock, decimal price)
+    {
+        stock.orderBook.CopyOwnerOrders(this, ownOrders);
+        foreach (var order in ownOrders)
+        {
+            if (!order.isBuy && order.price <= price * 1.01m && stock.orderBook.IsActive(order)) { return true; }
+        }
+        return false;
+    }
+    /// <summary>방금 Best로 읽은 최우선 호가에 서 있는 수량.</summary>
+    private static decimal BestVolume;
     private static decimal Best(Stock stock, bool bid)
     {
+        BestVolume = 0m;
         if (stock.orderBook == null) { return 0m; }
         quotes.Clear();
         if (bid) { stock.orderBook.GetTopBids(quotes, 1); }
         else { stock.orderBook.GetTopAsks(quotes, 1); }
+        if (quotes.Count > 0) { BestVolume = quotes[0].volume; }
         return quotes.Count > 0 ? quotes[0].price : 0m;
     }
 

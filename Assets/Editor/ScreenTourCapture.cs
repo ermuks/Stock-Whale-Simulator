@@ -129,6 +129,14 @@ public static class ScreenTourCapture
             SessionState.SetBool(RefreshedKey, true); SessionState.SetFloat(RefreshedAtKey, (float)EditorApplication.timeSinceStartup);
             return;
         }
+        // 요청이 icon 한 마디면 게임 아이콘만 지정하고 끝낸다(촬영은 하지 않는다).
+        if (request.Trim() == "icon")
+        {
+            File.Delete(Request); SessionState.SetBool(RefreshedKey, false); Directory.CreateDirectory(Folder);
+            try { GameIconSetup.Apply(); File.WriteAllText(Path.Combine(Folder, "report.txt"), "ICON applied " + GameIconSetup.IconPath + Environment.NewLine); }
+            catch (Exception error) { File.WriteAllText(Path.Combine(Folder, "report.txt"), "STOPPED: icon failed: " + error + Environment.NewLine); }
+            return;
+        }
         // 요청에 textures가 있으면 방의 벽지·책상 그림을 먼저 다시 만든다(편집기 메뉴와 같은 동작).
         if (request.Contains("textures"))
         {
@@ -277,7 +285,7 @@ public static class ScreenTourCapture
             {
                 try { steps[stepIndex].prepare(); }
                 catch (Exception error) { report.AppendLine("STEP FAILED " + steps[stepIndex].name + " prepare: " + error.Message); }
-                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
+                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
             }
             if (phase == 101)
             {
@@ -431,6 +439,14 @@ public static class ScreenTourCapture
             steps.Add(("day-intro", () => DayIntroOverlay.Instance.Play(2), () => intro));
         }
         steps.Add(("large-caps", LogLargeCaps, () => null));
+        // 성능 재기. 요청에 only:perf 가 있을 때만, 첫 언어에서 40초씩 세 번 잰다: 자리에서 볼 때, 차트를 볼 때, 태블릿을 볼 때.
+        // 결과는 Validation/Screens/perf.txt 에 쌓인다.
+        steps.Add(("perf-desk", () => { if (only.Contains("perf") && languageIndex == 0) { File.Delete(Path.Combine(Folder, "perf.txt")); DeskViewController.Instance.ExitView(true); PerfProbe.Begin(); } },
+            () => { if (only.Contains("perf") && languageIndex == 0) { PerfProbe.End(Path.Combine(Folder, "perf.txt"), "desk view, market open " + DeviceMarketJournal.Stamp() + " bots " + MarketDayController.Instance.Bots.Count); } return null; }));
+        steps.Add(("perf-chart", () => { if (only.Contains("perf") && languageIndex == 0) { DeskViewController.Instance.Focus(DeskViewTarget.Chart); PerfProbe.Begin(); } },
+            () => { if (only.Contains("perf") && languageIndex == 0) { PerfProbe.End(Path.Combine(Folder, "perf.txt"), "chart focused " + DeviceMarketJournal.Stamp()); } return null; }));
+        steps.Add(("perf-second", () => { if (only.Contains("perf") && languageIndex == 0) { DeskViewController.Instance.ExitView(true); PerfProbe.Begin(); } },
+            () => { if (only.Contains("perf") && languageIndex == 0) { PerfProbe.End(Path.Combine(Folder, "perf.txt"), "desk view again (leak check) " + DeviceMarketJournal.Stamp()); } return null; }));
         // 방 전체 모습(화면 빛을 끈 것과 켠 것)과 잠자기 안내. 요청에 only:room 이 있을 때만 찍는다.
         steps.Add(("room-glow-off", () => { if (only.Contains("room")) { report.AppendLine("CLOCK " + DeviceMarketJournal.Stamp() + " phase " + MarketDayController.Instance.Phase + " day " + MarketDayController.Instance.Day); MarketDayController.Instance.GetComponent<ScreenGlow>().enabled = false; } },
             () => { if (only.Contains("room") && languageIndex == 0) { ShootView("audit/room-glow-off"); } return null; }));
@@ -448,9 +464,108 @@ public static class ScreenTourCapture
         }, () => { if (only.Contains("room")) { ShootView("audit/" + languages[languageIndex] + "-room-drawer"); } return null; }));
         steps.Add(("room-drawer-close", () => { if (only.Contains("room")) { DeskViewController.Instance.ExitView(true); } },
             () => { if (only.Contains("room")) { report.AppendLine("DRAWER closed, fortune now " + DrawerProp.Instance.FortuneIndex); } return null; }));
-        steps.Add(("room-sleep", () => { if (only.Contains("room")) { typeof(MarketDayController).GetProperty("Phase").SetValue(MarketDayController.Instance, MarketPhase.PostClose); } },
-            () => only.Contains("room") ? (RectTransform)SleepPrompt.Instance.Root.transform : null));
-        steps.Add(("room-restore", () => { if (only.Contains("room")) { typeof(MarketDayController).GetProperty("Phase").SetValue(MarketDayController.Instance, MarketPhase.Trading); } }, () => null));
+        // 소품을 가까이서 본 모습. 찍는 동안만 등을 켠다.
+        steps.Add(("room-props", () => { }, () =>
+        {
+            if (only.Contains("room") && languageIndex == 0)
+            {
+                foreach (string model in new[] { "Model :: Mug", "Model :: Lotion Bottle", "Model :: Empty Can", "Model :: Crumpled Paper", "Model :: Plastic Bag", "Model :: Pen Cup", "Model :: Small Box" })
+                { ShootProp(model); }
+            }
+            return null;
+        }));
+        // 등 뒤의 방과 문, 그리고 문틈 쪽지: 들어온 모습, 들어 올린 모습, 모니터에 붙은 모습.
+        steps.Add(("room-back", () => { }, () =>
+        {
+            if (only.Contains("room") && languageIndex == 0)
+            {
+                var shell = RoomShell.Instance;
+                report.AppendLine("ROOM built " + shell.Built + " door " + shell.DoorCenter.ToString("F2") + " walk " + MouseCameraController.WalkMin.ToString("F2") + " .. " + MouseCameraController.WalkMax.ToString("F2"));
+                ShootFrom("audit/room-back", new Vector3(0f, 5.5f, -4.2f), shell.DoorCenter + Vector3.down * 1.2f, 62f, 3.2f);
+            }
+            return null;
+        }));
+        steps.Add(("room-note-floor", () =>
+        {
+            if (!only.Contains("room")) { return; }
+            DeskViewController.Instance.ExitView(true);
+            DoorNotes.Instance.AnnounceAt(StockManager.Instance.stocks[languageIndex + 1], 2, 14 * 60 + 20); DoorNotes.Instance.DeliverNow();
+        }, () =>
+        {
+            if (only.Contains("room"))
+            {
+                var note = DoorNotes.Instance.Notes[DoorNotes.Instance.Notes.Count - 1];
+                report.AppendLine("NOTE on floor state " + note.State + " at " + note.Root.position.ToString("F2"));
+                ShootFrom("audit/" + languages[languageIndex] + "-room-note-floor", note.Root.position + new Vector3(.3f, 2.6f, 2.4f), note.Root.position, 50f, 1.4f);
+            }
+            return null;
+        }));
+        steps.Add(("room-note-held", () => { if (only.Contains("room")) { DoorNotes.Instance.PickUp(DoorNotes.Instance.Notes[DoorNotes.Instance.Notes.Count - 1]); } },
+            () => { if (only.Contains("room")) { report.AppendLine("NOTE held " + DoorNotes.Holding); ShootView("audit/" + languages[languageIndex] + "-room-note-held"); } return null; }));
+        steps.Add(("room-note-stuck", () => { if (only.Contains("room")) { DoorNotes.Instance.PutDown(); } },
+            () => { if (only.Contains("room")) { var note = DoorNotes.Instance.Notes[DoorNotes.Instance.Notes.Count - 1]; report.AppendLine("NOTE stuck state " + note.State + " slot " + note.Slot); ShootView("audit/" + languages[languageIndex] + "-room-note-stuck"); } return null; }));
+        // 침대·쓰레기통·문, 문이 열린 모습, 잠들고 일어나는 카메라.
+        steps.Add(("room-bed", () => { }, () =>
+        {
+            if (only.Contains("room") && languageIndex == 0)
+            {
+                var shell = RoomShell.Instance; Vector3 bed = shell.BedBounds.center;
+                report.AppendLine("BED bounds " + shell.BedBounds.min.ToString("F2") + " .. " + shell.BedBounds.max.ToString("F2") + " pillow eye " + shell.PillowEye.ToString("F2") + " stand " + shell.BedsideStand.ToString("F2") + " can " + shell.TrashCan.position.ToString("F2") + " blocks " + MouseCameraController.WalkBlocks.Count);
+                ShootFrom("audit/room-bed", new Vector3(1.2f, 6.2f, -9.5f), bed + Vector3.down * .4f, 60f, 3.4f);
+                ShootFrom("audit/room-bed-close", new Vector3(bed.x - 4.2f, 5.6f, bed.z + 1.2f), new Vector3(bed.x + .3f, 2.4f, bed.z + 2.2f), 55f, 3f);
+                ShootFrom("audit/room-pillow", new Vector3(bed.x - 2.2f, 4.6f, bed.z + 2.0f), shell.PillowEye + Vector3.down * 1f, 40f, 2.6f);
+                ShootFrom("audit/room-can", shell.TrashCan.position + new Vector3(-1.6f, 2.4f, -2.6f), shell.TrashCan.position + Vector3.up * .8f, 40f, 2.4f);
+                ShootFrom("audit/room-wide", new Vector3(-3.6f, 7.4f, -12.6f), new Vector3(3.2f, 2.2f, -1.5f), 78f, 3.6f);
+                ShootFrom("audit/room-door", new Vector3(shell.DoorCenter.x + 1.2f, 5.2f, shell.DoorCenter.z + 7.5f), shell.DoorCenter, 58f, 3.2f);
+                ShootFrom("audit/room-door-handle", new Vector3(shell.DoorCenter.x + .2f, 3.9f, shell.DoorCenter.z + 2.6f), shell.DoorCenter + new Vector3(1.2f, -.2f, 0f), 40f, 2.2f);
+                DoorExit.Swing(shell, 1f);
+                ShootFrom("audit/room-door-open", new Vector3(shell.DoorCenter.x + 1.2f, 5.2f, shell.DoorCenter.z + 7.5f), shell.DoorCenter, 58f, 1.2f);
+                DoorExit.Swing(shell, 0f);
+            }
+            return null;
+        }));
+        steps.Add(("room-rise", () => { }, () =>
+        {
+            if (only.Contains("room") && languageIndex == 0)
+            {
+                var shell = RoomShell.Instance; var eye = DeskViewController.Instance.transform; var keep = new Pose(eye.position, eye.rotation);
+                foreach (float second in new[] { 0f, 1.2f, 2.3f, 3.4f, 4.5f, 6f })
+                {
+                    var pose = BedSleep.RisePose(shell, second); eye.SetPositionAndRotation(pose.position, pose.rotation);
+                    report.AppendLine("RISE " + second.ToString("F1") + " position " + pose.position.ToString("F2") + " euler " + pose.rotation.eulerAngles.ToString("F0"));
+                    ShootView("audit/room-rise-" + second.ToString("0.0").Replace(".", "_"));
+                }
+                eye.SetPositionAndRotation(keep.position, keep.rotation);
+            }
+            return null;
+        }));
+        // 꿈에서 깨기: 마지막 언어에서 한 번만. 리딩방·내 기업·계좌가 비워지고도 주식 수 장부가 맞는지 적어 둔다.
+        steps.Add(("room-dream", () => { }, () =>
+        {
+            if (only.Contains("room") && languageIndex == languages.Length - 1)
+            {
+                var player = StockManager.Instance.playerAccount; var economy = CorporateEconomy.Instance; var company = economy.PlayerCompany; var society = InvestorSociety.Instance;
+                int members = 0; foreach (var room in society.Rooms) { if (room.PlayerOwned) { members += room.Members.Count; } }
+                int held = 0; foreach (var stock in StockManager.Instance.stocks) { if (player.GetHolding(stock) > 0m) { held++; } }
+                report.AppendLine("DREAM before cash " + player.cash.ToString("N0") + " equity " + player.Equity().ToString("N0") + " company " + (company == null ? "none" : company.symbol + " owned " + player.GetOwnedVolume(company).ToString("N0") + "/" + company.issuedShares.ToString("N0")) + " rooms " + PlayerProgression.Instance.CanOperateRooms + " members " + members + " held stocks " + held);
+                society.DissolvePlayerRooms(); PlayerProgression.Instance.WakeFromDream(); economy.ReleaseFounderFromDream();
+                player.WakeFromDream(Object.FindAnyObjectByType<ExchangeBot>(), DoorExit.PocketMoney);
+                members = 0; foreach (var room in society.Rooms) { if (room.PlayerOwned) { members += room.Members.Count; } }
+                int broken = 0; held = 0; decimal worst = 0m;
+                foreach (var stock in StockManager.Instance.stocks)
+                {
+                    if (!StockIntegrityChecker.Instance.CheckStock(stock).isValid) { broken++; report.AppendLine("DREAM broken ledger " + stock.symbol); }
+                    if (player.GetHolding(stock) > 0m) { held++; worst = stock.currentPrice / player.GetAvgPrice(stock) - 1m; }
+                }
+                if (company != null)
+                {
+                    report.AppendLine("DREAM company " + company.symbol + " owner " + (company.Owner == null ? "none" : company.Owner.name) + " owner shares " + (company.Owner == null ? 0m : company.Owner.GetOwnedVolume(company)).ToString("N0") + " player shares " + player.GetOwnedVolume(company).ToString("N0") + " ledger " + StockIntegrityChecker.Instance.CheckStock(company).isValid);
+                }
+                report.AppendLine("DREAM after cash " + player.cash.ToString("N0") + " equity " + player.Equity().ToString("N0") + " company " + (economy.PlayerCompany == null ? "none" : economy.PlayerCompany.symbol) + " rooms " + PlayerProgression.Instance.CanOperateRooms + " members " + members + " held stocks " + held + " return " + worst.ToString("P0") + " broken ledgers " + broken);
+            }
+            return null;
+        }));
+        steps.Add(("room-restore", () => { }, () => null));
         // 시스템 메뉴(ESC): 일시정지 화면과 언어 설정.
         var menu = PauseMenuController.Instance;
         if (menu != null)
@@ -535,6 +650,15 @@ public static class ScreenTourCapture
         var desk = GameObject.Find("desk_body"); if (desk == null) { report.AppendLine("VIEW " + name + " skipped: no desk"); return; }
         var bounds = desk.GetComponent<Renderer>().bounds; float reach = Mathf.Max(bounds.size.x, bounds.size.z);
         report.AppendLine("DESK bounds size " + bounds.size.ToString("F2") + " center " + bounds.center.ToString("F2") + " view forward " + camera.transform.forward.ToString("F2"));
+        // 방의 큰 면(벽·바닥·천장)과 조명, 카메라 자리를 적어 둔다.
+        report.AppendLine("CAMERA position " + camera.transform.position.ToString("F2") + " forward " + camera.transform.forward.ToString("F2") + " fov " + camera.fieldOfView.ToString("F1") + " near " + camera.nearClipPlane.ToString("F2") + " parent " + (camera.transform.parent == null ? "none" : camera.transform.parent.name));
+        foreach (var surface in Object.FindObjectsByType<MeshRenderer>(FindObjectsInactive.Exclude))
+        {
+            if (surface.bounds.size.magnitude < 4f) { continue; }
+            report.AppendLine("SURFACE " + surface.name + " center " + surface.bounds.center.ToString("F2") + " size " + surface.bounds.size.ToString("F2") + " material " + (surface.sharedMaterial == null ? "none" : surface.sharedMaterial.name) + " collider " + (surface.GetComponent<Collider>() != null) + " parent " + (surface.transform.parent == null ? "none" : surface.transform.parent.name));
+        }
+        foreach (var glow in Object.FindObjectsByType<Light>(FindObjectsInactive.Exclude))
+        { report.AppendLine("LIGHT " + glow.name + " " + glow.type + " position " + glow.transform.position.ToString("F2") + " range " + glow.range.ToString("F1") + " intensity " + glow.intensity.ToString("F2")); }
         var clutter = Object.FindAnyObjectByType<DeskClutter>();
         if (clutter != null) { report.AppendLine("CLUTTER moved " + clutter.Moved + " removed " + clutter.Removed + " left " + (GameObject.Find("Area :: Desk Clutter") == null ? 0 : GameObject.Find("Area :: Desk Clutter").transform.childCount)); }
         foreach (var note in Object.FindObjectsByType<StickyNotePaper>(FindObjectsInactive.Include))
@@ -569,6 +693,44 @@ public static class ScreenTourCapture
         File.WriteAllBytes(Path.Combine(Folder, name + ".png"), pixels.EncodeToPNG());
         view.targetTexture = null; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
         Object.Destroy(holder); Object.Destroy(lamp.gameObject);
+        report.AppendLine("VIEW " + name);
+    }
+    private static void ShootProp(string model)
+    {
+        var item = GameObject.Find(model); if (item == null) { report.AppendLine("PROP missing " + model); return; }
+        var renderers = item.GetComponentsInChildren<Renderer>(); if (renderers.Length == 0) { return; }
+        var bounds = renderers[0].bounds; int triangles = 0;
+        foreach (var renderer in renderers) { bounds.Encapsulate(renderer.bounds); var filter = renderer.GetComponent<MeshFilter>(); if (filter != null && filter.sharedMesh != null) { triangles += filter.sharedMesh.triangles.Length / 3; } }
+        float reach = Mathf.Max(bounds.size.x, Mathf.Max(bounds.size.y, bounds.size.z));
+        var holder = new GameObject("Camera :: Prop Check"); var view = holder.AddComponent<Camera>(); view.CopyFrom(camera); view.fieldOfView = 34f; view.nearClipPlane = .02f;
+        Vector3 back = -camera.transform.forward; back.y = 0f; back.Normalize();
+        holder.transform.position = bounds.center + back * reach * 1.7f + Vector3.up * reach * 1.15f + Vector3.Cross(Vector3.up, back) * reach * .6f; holder.transform.LookAt(bounds.center);
+        var lamp = new GameObject("Light :: Prop Check").AddComponent<Light>(); lamp.type = LightType.Point; lamp.range = reach * 12f; lamp.intensity = reach * reach * 9f;
+        lamp.transform.position = bounds.center + back * reach * 1.2f + Vector3.up * reach * 2.2f - Vector3.Cross(Vector3.up, back) * reach * 1.0f;
+        const int width = 900, height = 700;
+        var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active;
+        view.targetTexture = texture; view.Render(); RenderTexture.active = texture;
+        var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+        string file = "audit/prop-" + model.Replace("Model :: ", "").Replace(" ", "-").ToLowerInvariant();
+        File.WriteAllBytes(Path.Combine(Folder, file + ".png"), pixels.EncodeToPNG());
+        view.targetTexture = null; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
+        Object.Destroy(holder); Object.Destroy(lamp.gameObject);
+        report.AppendLine("PROP " + model + " triangles " + triangles + " -> " + file);
+    }
+    /// <summary>정해 준 자리에서 정해 준 곳을 바라보고 찍는다. 찍는 동안만 등을 켠다. 게임의 카메라는 건드리지 않는다.</summary>
+    private static void ShootFrom(string name, Vector3 eye, Vector3 target, float fieldOfView, float brightness)
+    {
+        var holder = new GameObject("Camera :: Room Check"); var view = holder.AddComponent<Camera>(); view.CopyFrom(camera); view.fieldOfView = fieldOfView;
+        holder.transform.position = eye; holder.transform.LookAt(target);
+        var glowHolder = new GameObject("Light :: Room Check"); var fill = glowHolder.AddComponent<Light>(); fill.type = LightType.Point; fill.range = 30f; fill.intensity = brightness * 8f;
+        glowHolder.transform.position = eye + Vector3.up * 1.2f;
+        const int width = 1600, height = 900;
+        var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active;
+        view.targetTexture = texture; view.Render(); RenderTexture.active = texture;
+        var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+        File.WriteAllBytes(Path.Combine(Folder, name + ".png"), pixels.EncodeToPNG());
+        view.targetTexture = null; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
+        Object.Destroy(holder); Object.Destroy(glowHolder);
         report.AppendLine("VIEW " + name);
     }
     private static void ShootOverlay(Canvas canvas, string name)

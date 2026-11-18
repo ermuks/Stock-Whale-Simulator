@@ -88,6 +88,9 @@ public sealed class DeskViewController : MonoBehaviour
         { Hovered = DeskViewTarget.None; return; }
         if (MouseCameraController.TextEntryActive)
         { Hovered = DeskViewTarget.None; return; }
+        // 쪽지를 들고 읽는 동안에는 화면 단축키가 먹지 않는다(Space는 쪽지를 내려놓는 데 쓴다).
+        if (DoorNotes.Holding || RoomShell.Cinematic)
+        { Hovered = DeskViewTarget.None; return; }
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (PhoneCallController.IsRaised)
@@ -107,9 +110,23 @@ public sealed class DeskViewController : MonoBehaviour
             { Focus(DeskViewTarget.Chart); }
             return;
         }
-        if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Alpha2))
+        // 화면 단축키: 1 종목 목록, 2 가운데 화면만, 3 채팅까지. 같은 키를 다시 누르면 자리로 돌아온다.
+        DeskViewTarget quick = Input.GetKeyDown(KeyCode.Alpha1) ? DeskViewTarget.Stocks : Input.GetKeyDown(KeyCode.Alpha2) ? DeskViewTarget.Chart : Input.GetKeyDown(KeyCode.Alpha3) ? DeskViewTarget.Chat : DeskViewTarget.None;
+        if (quick != DeskViewTarget.None)
         {
-            int index = Input.GetKeyDown(KeyCode.Alpha1) ? 0 : 1;
+            if (PhoneCallController.IsRaised)
+            { PhoneCallController.Instance.Lower(); }
+            if (Target == quick)
+            { ExitView(); }
+            else
+            { Focus(quick); }
+            return;
+        }
+        // 태블릿: Q가 1번, E가 2번.
+        bool first = Input.GetKeyDown(KeyCode.Q), second = Input.GetKeyDown(KeyCode.E);
+        if (first || second)
+        {
+            int index = first ? 0 : 1;
             if (tablets != null && index < tablets.Length && tablets[index] != null)
             { FocusTablet(tablets[index], true); }
             return;
@@ -127,9 +144,6 @@ public sealed class DeskViewController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape))
             { ExitView(); return; }
-            int direction = Input.GetKeyDown(KeyCode.A) ? -1 : Input.GetKeyDown(KeyCode.D) ? 1 : 0;
-            if (direction != 0)
-            { EventSystem.current?.SetSelectedGameObject(null); Focus(DeskViewFraming.Navigate(Target, direction)); }
             return;
         }
         if (moving)
@@ -137,7 +151,7 @@ public sealed class DeskViewController : MonoBehaviour
         Hovered = FindHovered(MouseCameraController.GetAimScreenPosition());
         if (!MouseCameraController.IsCursorLocked && EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         { Hovered = DeskViewTarget.None; return; }
-        if (Hovered != DeskViewTarget.None && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(GameKeyBindings.Interact)))
+        if (Hovered != DeskViewTarget.None && Input.GetMouseButtonDown(0))
         { Focus(Hovered); }
     }
 

@@ -183,7 +183,7 @@ public class Trader : MonoBehaviour, IOrderOwner
 
         ChangeEscrow(stock, -volume, basis);
         AddHolding(stock, volume, basis);
-        RecordOrder($"SELL_CANCEL {volume:F0} (basis {basis:F0} returned)");
+        if (KeepOrderHistory) { RecordOrder($"SELL_CANCEL {volume:F0} (basis {basis:F0} returned)"); }
     }
 
     public void OnSellOrderFilledAtCost(Stock stock, decimal volume, decimal revenue, decimal price, decimal basis)
@@ -202,6 +202,9 @@ public class Trader : MonoBehaviour, IOrderOwner
     protected Dictionary<Stock, decimal> holdings = new();
     protected Dictionary<Stock, decimal> avgPrice = new();
     public const int OrderHistoryLimit = 512;
+    /// <summary>주문마다 글로 된 기록을 남길지. 디버깅할 때만 켠다. 켜 두면 계좌마다 최대 512줄씩 쌓이고(봇 1,275명이면 수십 MB),
+    /// 주문이 날 때마다 글자를 새로 만들어 쓰레기(GC)가 생긴다. 게임에서는 이 기록을 읽는 곳이 없다.</summary>
+    public static bool KeepOrderHistory;
     private readonly Queue<string> orderHistory = new(OrderHistoryLimit);
     protected Stock CurrentStock => StockManager.Instance.CurrentStock;
 
@@ -220,7 +223,7 @@ public class Trader : MonoBehaviour, IOrderOwner
 
         ApplyTradeCash(-totalCost);
         AddHolding(stock, filledVolume, totalCost / filledVolume);
-        RecordOrder($"BUY(book) {filledVolume:F0} avg@{totalCost / filledVolume:F0} (cost {totalCost:F0})");
+        if (KeepOrderHistory) { RecordOrder($"BUY(book) {filledVolume:F0} avg@{totalCost / filledVolume:F0} (cost {totalCost:F0})"); }
     }
 
     /// <summary>매도 주문 취소 시 호출. 취소된 물량을 보유량에 다시 추가.</summary>
@@ -230,7 +233,7 @@ public class Trader : MonoBehaviour, IOrderOwner
         { return; }
 
         OnSellOrderCancelledAtCost(stock, cancelledVolume, GetOwnedAverage(stock));
-        RecordOrder($"SELL_CANCEL {cancelledVolume:F0} @ {price:F0} (returned)");
+        if (KeepOrderHistory) { RecordOrder($"SELL_CANCEL {cancelledVolume:F0} @ {price:F0} (returned)"); }
     }
 
     /// <summary>매수 주문 취소 시 호출. 예치금 해제.</summary>
@@ -251,7 +254,7 @@ public class Trader : MonoBehaviour, IOrderOwner
             reservedCash = 0m;
         }
 
-        RecordOrder($"BUY_CANCEL {cancelledVolume:F0} @ {price:F0} (reserved released)");
+        if (KeepOrderHistory) { RecordOrder($"BUY_CANCEL {cancelledVolume:F0} @ {price:F0} (reserved released)"); }
     }
 
     public virtual void BuyLimit(decimal price, decimal volume, int subTickSteps = 0, Stock stock = null)
@@ -298,7 +301,7 @@ public class Trader : MonoBehaviour, IOrderOwner
                 reservedCash += unfilled * bookPrice;
             }
 
-            RecordOrder($"BUY(LIMIT?) {volume} @ {price} (NO FILL)");
+            if (KeepOrderHistory) { RecordOrder($"BUY(LIMIT?) {volume} @ {price} (NO FILL)"); }
             return;
         }
 
@@ -310,7 +313,7 @@ public class Trader : MonoBehaviour, IOrderOwner
             reservedCash += unfilledToBook * bookPrice;
         }
 
-        RecordOrder($"BUY {result.filledVolume:F0} avg@{result.averagePrice:F0} (cost {result.totalCost:F0})");
+        if (KeepOrderHistory) { RecordOrder($"BUY {result.filledVolume:F0} avg@{result.averagePrice:F0} (cost {result.totalCost:F0})"); }
         ExchangeBot.Instance?.OnTradeSettled(stock);
     }
 
@@ -337,12 +340,12 @@ public class Trader : MonoBehaviour, IOrderOwner
         MarketDayController.Instance?.Sold(this, stock, result.filledVolume, result.averagePrice, avgCostBeforeSell);
         if (result.filledVolume > 0m)
         {
-            RecordOrder($"SELL {result.filledVolume:F0} avg@{result.averagePrice:F0} (rev {result.totalCost:F0})");
+            if (KeepOrderHistory) { RecordOrder($"SELL {result.filledVolume:F0} avg@{result.averagePrice:F0} (rev {result.totalCost:F0})"); }
             OnSellFilled(stock, result.filledVolume, result.totalCost, result.averagePrice, avgCostBeforeSell);
         }
         else
         {
-            RecordOrder($"SELL(LIMIT) {sellVol} @ {price} (PENDING)");
+            if (KeepOrderHistory) { RecordOrder($"SELL(LIMIT) {sellVol} @ {price} (PENDING)"); }
         }
 
         ExchangeBot.Instance?.OnTradeSettled(stock);
@@ -421,7 +424,31 @@ public class Trader : MonoBehaviour, IOrderOwner
         { return; }
 
         ApplyTradeCash(revenue);
-        RecordOrder($"SELL(book) {volume:F0} avg@{price:F0} (rev {revenue:F0})");
+        if (KeepOrderHistory) { RecordOrder($"SELL(book) {volume:F0} avg@{price:F0} (rev {revenue:F0})"); }
+    }
+
+    /// <summary>
+    /// 꿈에서 깬다(엔딩 뒤). 걸어 둔 주문을 모두 거두고, 가진 주식은 종목마다 몇 주만 남기고 taker(거래소 계좌)에게 넘긴다.
+    /// 남은 주식의 평균단가는 지금 값의 열두 배로 적혀 있어서 계좌는 온통 손실이다. 현금은 pocket만 남는다.
+    /// 주식 수는 넘겨줄 뿐 없애지 않는다(발행 주식 수 장부가 맞아야 한다). taker가 없으면 주식은 그대로 둔다.
+    /// </summary>
+    public void WakeFromDream(Trader taker, decimal pocket)
+    {
+        foreach (var stock in new List<Stock>(holdings.Keys))
+        {
+            if (stock == null || stock.currentPrice <= 0m) { continue; }
+            stock.orderBook?.CancelAllOrdersByOwner(this, stock);
+            decimal owned = GetHolding(stock);
+            if (owned <= 0m) { continue; }
+            decimal keep = System.Math.Min(owned, decimal.Floor(60000m / stock.currentPrice)), give = owned - keep;
+            if (taker != null && taker != this && give > 0m)
+            {
+                ForceRemoveHolding(stock, give); taker.GrantShares(stock, give, stock.currentPrice);
+            }
+            if (GetHolding(stock) > 0m) { avgPrice[stock] = stock.currentPrice * 12m; PositionChanged(stock); }
+        }
+        foreach (var stock in StockManager.Instance.stocks) { if (stock != null && !holdings.ContainsKey(stock)) { stock.orderBook?.CancelAllOrdersByOwner(this, stock); } }
+        cash = System.Math.Min(cash, pocket);
     }
 
     /// <summary>강제로 보유량 제거 (이탈 시 미체결 물량 처리용)</summary>

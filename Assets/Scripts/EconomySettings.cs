@@ -58,6 +58,17 @@ public class EconomySettings
     public Color safeColor = Color.green, warningColor = Color.yellow, dangerColor = new(1f, 0.5f, 0f), highColor = Color.red, haltedColor = Color.gray;
     public OwnerCompanyDefinition[] companies = Defaults();
     /// <summary>
+    /// 개미의 처음 현금. 이 값들은 씬에 저장돼 있어서 위의 기본값을 고쳐도 반영되지 않는다. 그래서 게임을 시작할 때 여기서 덮어쓴다.
+    /// 예전의 쉰 배다: 소액 5천만~5억(70%), 중간 5억~25억(25%), 큰손 25억~100억(5%). 개미 현금 합계가 시가총액(약 6조)의 5분의 1쯤 되게 잡았다.
+    /// 개미가 가난하면 세력도 플레이어도 벌 돈이 없다.
+    /// </summary>
+    public void ApplyRetailWealth()
+    {
+        smallCashMin = 50_000_000L; smallCashMax = 500_000_000L;
+        mediumCashMin = 500_000_000L; mediumCashMax = 2_500_000_000L;
+        largeCashMin = 2_500_000_000L; largeCashMax = 10_000_000_000L;
+    }
+    /// <summary>
     /// 종목 목록은 씬에 저장돼 있어서 코드의 기본 목록에 종목을 더해도 반영되지 않는다.
     /// 저장된 목록에 없는 기본 종목을 뒤에 붙인다. 이미 있는 종목의 값은 건드리지 않는다.
     /// </summary>

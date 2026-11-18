@@ -324,6 +324,13 @@ public class OrderBook
         return list;
     }
 
+    /// <summary>최우선 매수·매도 호가. 한쪽이라도 비어 있거나 뒤집혀 있으면 false.</summary>
+    public bool TryBest(out decimal bid, out decimal ask)
+    {
+        bid = bids.Count > 0 ? bids.Keys[0] : 0m; ask = asks.Count > 0 ? asks.Keys[0] : 0m;
+        return bid > 0m && ask > bid;
+    }
+
     /// <summary>스프레드. 첫 호가만 참조하므로 O(1).</summary>
     public decimal GetSpread()
     {

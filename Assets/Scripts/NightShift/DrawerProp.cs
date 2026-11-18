@@ -11,6 +11,7 @@ public sealed class DrawerProp : MonoBehaviour
 {
     public static DrawerProp Instance { get; private set; }
     private const float SlideSeconds = .5f, PullShare = .62f, Floor = .12f;
+    public const KeyCode ToggleKey = KeyCode.R;
     private static string Word(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
     private Transform drawer;
     private Renderer drawerRenderer;
@@ -120,18 +121,24 @@ public sealed class DrawerProp : MonoBehaviour
         }
         // 다른 화면으로 넘어가거나 자리로 돌아가면 서랍도 닫힌다.
         if (Open && !views.IsCustomView) { Open = false; }
-        bool free = !PauseMenuController.BlocksInput && !MouseCameraController.TextEntryActive && Time.timeScale > 0f;
-        bool press = free && (Input.GetKeyDown(GameKeyBindings.Interact) || Input.GetMouseButtonDown(0));
+        bool free = !PauseMenuController.BlocksInput && !MouseCameraController.TextEntryActive && Time.timeScale > 0f && !RoomShell.Cinematic;
+        // R을 누르면 어디를 보고 있든 서랍이 열리고, 다시 누르면 닫힌다. 자리에서 서랍을 보고 클릭해도 열린다.
+        bool key = free && Input.GetKeyDown(ToggleKey);
         Hovered = false;
         if (Open)
         {
-            if (free && Input.GetKeyDown(GameKeyBindings.Interact)) { views.ExitView(); Open = false; }
+            if (key) { views.ExitView(); Open = false; }
+        }
+        else if (key && slide <= 0f)
+        {
+            if (DeskViewController.OwnsView) { views.ExitView(true); }
+            Open = views.FocusCustom(ViewPose(views.ViewCamera), 52f);
         }
         else if (free && !DeskViewController.OwnsView && slide <= 0f)
         {
             Ray ray = views.ViewCamera.ScreenPointToRay(MouseCameraController.GetAimScreenPosition());
             Hovered = views.Hovered == DeskViewTarget.None && drawerRenderer.bounds.IntersectRay(ray);
-            if (Hovered && press) { Open = views.FocusCustom(ViewPose(views.ViewCamera), 52f); }
+            if (Hovered && Input.GetMouseButtonDown(0)) { Open = views.FocusCustom(ViewPose(views.ViewCamera), 52f); }
         }
         // 서랍은 부드럽게 미끄러져 나오고 들어간다.
         float target = Open ? 1f : 0f;
@@ -141,7 +148,7 @@ public sealed class DrawerProp : MonoBehaviour
         lamp.enabled = slide > 0f; lamp.intensity = eased * .9f;
         bool show = Hovered || Open;
         if (hintRoot.activeSelf != show) { hintRoot.SetActive(show); }
-        if (show) { GameLocalizedText.Set(hint, GameKeyBindings.Interact + "   " + (Open ? Word("서랍 닫기", "Close the drawer", "引き出しを閉める") : Word("서랍 열기", "Open the drawer", "引き出しを開ける")), true); }
+        if (show) { GameLocalizedText.Set(hint, ToggleKey + "   " + (Open ? Word("서랍 닫기", "Close the drawer", "引き出しを閉める") : Word("서랍 열기", "Open the drawer", "引き出しを開ける")), true); }
         // 운세는 서랍이 다 닫힌 뒤에 바뀐다. 열려 있는 동안 글자가 바뀌는 모습은 보이지 않는다.
         if (Open) { fortuneRead = true; }
         else if (fortuneRead && slide <= 0f) { fortuneRead = false; DrawFortune(); }

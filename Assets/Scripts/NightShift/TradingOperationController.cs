@@ -20,7 +20,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
     public decimal EntryPrice { get; private set; }
     public decimal Result { get; private set; }
     public float Elapsed { get; private set; }
-    public string Feedback { get; private set; } = "주문하지 않아도 시장은 움직입니다. W / S로 종목을 관찰하세요.";
+    public string Feedback { get; private set; } = "주문 없이도 시장은 계속 움직입니다.";
     public string Debrief { get; private set; } = "아직 종료한 작업이 없습니다.";
     public bool Active => Target != null && CurrentMode != Mode.Review && CurrentMode != Mode.Standby;
     public decimal MarkedResult => Target == null ? 0m : Proceeds - Spent + Inventory * Target.currentPrice - InitialInventory * EntryPrice;
