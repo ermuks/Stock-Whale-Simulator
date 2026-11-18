@@ -21,6 +21,8 @@ public sealed class WorkroomAmbience : MonoBehaviour
         if (practical != null)
         { baseIntensity = practical.intensity; }
         nextDip = Time.unscaledTime + 8f;
+        // 녹음된 방 소리(RoomAmbience)가 있으면 여기서 만들어 내던 소리는 틀지 않는다.
+        if (RoomAmbience.HasFiles) { return; }
         source = gameObject.AddComponent<AudioSource>();
         const int rate = 22050, length = rate * 4;
         var samples = new float[length];

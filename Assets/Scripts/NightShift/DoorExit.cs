@@ -95,6 +95,7 @@ public sealed class DoorExit : MonoBehaviour
         from = new Pose(views.transform.position, views.transform.rotation);
         RoomShell.Cinematic = true; Stage = 1; clock = 0f; rattle = 0f; hintRoot.SetActive(false);
         shell.Outside.SetActive(true);
+        RoomAmbience.Instance?.PlayEnding();
     }
 
     /// <summary>문이 share(0~1)만큼 열린 모습으로 만든다. 바깥 빛도 그만큼 켜진다.</summary>
@@ -152,6 +153,7 @@ public sealed class DoorExit : MonoBehaviour
             var account = StockManager.Instance != null ? StockManager.Instance.playerAccount : null;
             if (account != null) { account.WakeFromDream(FindAnyObjectByType<ExchangeBot>(), PocketMoney); }
             SleepPrompt.Instance?.Lids(1f);
+            RoomAmbience.Instance?.StopEnding();
             fade.color = Color.clear; fadeRoot.SetActive(false);
             Stage = 0;
             if (BedSleep.Instance != null) { BedSleep.Instance.WakeUp(); } else { RoomShell.Cinematic = false; }

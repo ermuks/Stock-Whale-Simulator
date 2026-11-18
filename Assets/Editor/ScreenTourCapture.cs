@@ -583,6 +583,7 @@ public static class ScreenTourCapture
         // 침대·쓰레기통·문, 문이 열린 모습, 잠들고 일어나는 카메라.
         steps.Add(("room-bed", () => { }, () =>
         {
+            if (only.Contains("room") && RoomAmbience.Instance != null) { report.AppendLine("SOUND " + languages[languageIndex] + " listener volume " + AudioListener.volume.ToString("F2") + " " + RoomAmbience.Instance.Describe()); }
             if (only.Contains("room") && languageIndex == 0)
             {
                 var shell = RoomShell.Instance; Vector3 bed = shell.BedBounds.center;
