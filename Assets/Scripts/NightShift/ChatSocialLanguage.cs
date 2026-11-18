@@ -38,7 +38,7 @@ public sealed partial class InvestorSociety
         var config = ChatSocialConfig.Current;
         if (mind.Traits.Serious && CosmeticRandom(mind, message, 0x271cfa39u).Next() >= config.Get("communitySeriousChance"))
         { return text; }
-        if (mind.Traits.Politeness >= 67 || ChatSocialAssets.Templates.suffixes == null)
+        if (mind.Traits.Politeness >= config.Get("styleFormalMin") || ChatSocialAssets.Templates.suffixes == null)
         { return text; }
         double anger = message.targetId > 0 && mind.Relations.TryGetValue(message.targetId, out var relation) ? relation.anger : 0;
         string key = Attack(message.act) && anger >= config.Get("suffixEmotionMin") ? "anger" :

@@ -15,7 +15,7 @@ public sealed class DoorNotes : MonoBehaviour
     public static bool Aiming => Instance != null && Instance.aimed != null;
     public const KeyCode PickKey = KeyCode.F;
     private const int StuckLimit = 6;
-    private const float SlideSeconds = 1.4f, FlySeconds = .55f, ReachDistance = 5.5f, Side = .46f;
+    private const float SlideSeconds = 1.4f, FlySeconds = .55f, ReachDistance = 10f, Side = .46f;
     private static readonly Color Dim = new(.40f, .35f, .13f), Bright = new(.96f, .87f, .42f);
     private static string Word(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
 
@@ -137,16 +137,7 @@ public sealed class DoorNotes : MonoBehaviour
         }
         else if (free && !DeskViewController.OwnsView)
         {
-            Ray ray = camera.ScreenPointToRay(MouseCameraController.GetAimScreenPosition()); float nearest = float.MaxValue;
-            foreach (var note in notes)
-            {
-                if (note.State != 1) { continue; }
-                // 바닥의 쪽지는 작아서 정확히 겨누기 어렵다. 조금 넉넉한 공으로 맞춘다.
-                Vector3 to = note.Root.position - ray.origin; float along = Vector3.Dot(to, ray.direction);
-                if (along <= 0f || along > ReachDistance) { continue; }
-                float miss = (to - ray.direction * along).magnitude;
-                if (miss < Side * .9f && along < nearest) { nearest = along; aimed = note; }
-            }
+            aimed = Aim(camera.ScreenPointToRay(MouseCameraController.GetAimScreenPosition()));
             if (aimed != null && Input.GetKeyDown(PickKey)) { PickUp(aimed); }
         }
         bool arrived = UnityEngine.Time.unscaledTime < arrivedUntil && held == null && aimed == null;
@@ -199,6 +190,21 @@ public sealed class DoorNotes : MonoBehaviour
         GameLocalizedText.Set(note.Line, Word("이 시각에 올린다. 먼저 타.", "They lift it then. Get in first.", "この時刻に上げる。先に乗れ。"), true);
     }
 
+    /// <summary>이 시선이 겨누고 있는 바닥의 쪽지(없으면 null). 쪽지는 작아서 조금 넉넉한 공으로 맞춘다.</summary>
+    public Note Aim(Ray ray)
+    {
+        Note found = null; float nearest = float.MaxValue;
+        foreach (var note in notes)
+        {
+            if (note.State != 1) { continue; }
+            Vector3 to = note.Root.position - ray.origin; float along = Vector3.Dot(to, ray.direction);
+            if (along <= 0f || along > ReachDistance) { continue; }
+            float miss = (to - ray.direction * along).magnitude;
+            // 눈높이가 5.5라서 바닥의 쪽지는 바로 위에서 내려다봐도 5.5만큼 떨어져 있다. 멀수록 조금 더 넉넉하게 맞춘다.
+            if (miss < Side * .9f + along * .045f && along < nearest) { nearest = along; found = note; }
+        }
+        return found;
+    }
     /// <summary>바닥의 쪽지를 눈앞으로 들어 올린다.</summary>
     public void PickUp(Note note)
     {

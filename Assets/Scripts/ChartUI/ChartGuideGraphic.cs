@@ -16,7 +16,7 @@ public sealed class ChartGuideGraphic : MaskableGraphic
     private enum Mode { Grid, Crosshair, Levels }
     private Mode mode;
     private float width, height, volumeHeight;
-    private int intervals;
+    private readonly List<float> gridLines = new(16);
     private Vector2 cursor;
     private readonly List<LevelLine> lines = new(16);
 
@@ -26,11 +26,14 @@ public sealed class ChartGuideGraphic : MaskableGraphic
     protected override void Awake()
     { base.Awake(); raycastTarget = false; maskable = false; }
 
-    public void SetGrid(float plotWidth, float plotHeight, int divisions)
+    /// <summary>가격 보조선. heights는 선을 그을 높이(아래가 0)들이다.</summary>
+    public void SetGrid(float plotWidth, float plotHeight, List<float> heights)
     {
-        if (mode == Mode.Grid && width == plotWidth && height == plotHeight && intervals == divisions)
+        bool changed = mode != Mode.Grid || width != plotWidth || height != plotHeight || gridLines.Count != heights.Count;
+        for (int i = 0; !changed && i < gridLines.Count; i++) { changed = gridLines[i] != heights[i]; }
+        if (!changed)
         { return; }
-        mode = Mode.Grid; width = plotWidth; height = plotHeight; intervals = divisions;
+        mode = Mode.Grid; width = plotWidth; height = plotHeight; gridLines.Clear(); gridLines.AddRange(heights);
         SetVerticesDirty();
     }
     public void SetCrosshair(float plotWidth, float plotHeight, float volume, Vector2 position)
@@ -85,11 +88,8 @@ public sealed class ChartGuideGraphic : MaskableGraphic
         }
         else
         {
-            for (int i = 0; i <= intervals; i++)
-            {
-                float y = height * i / Mathf.Max(1, intervals);
-                Quad(vh, 0f, Mathf.Max(0f, y - 1f), width, Mathf.Min(height, y + 1f), color);
-            }
+            foreach (float y in gridLines)
+            { Quad(vh, 0f, Mathf.Max(0f, y - 1f), width, Mathf.Min(height, y + 1f), color); }
             Quad(vh, width - 1f, 0f, width, height, color);
         }
     }

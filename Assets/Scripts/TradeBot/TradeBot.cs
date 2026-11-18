@@ -354,11 +354,14 @@ public abstract partial class TradeBot : Trader
         }
         Social.Psychology.ClearPromise("stock-unavailable"); return null;
     }
+    private float lastPickHeat;
     IEnumerator ThinkLoop()
     {
         while (true)
         {
-            yield return new WaitForSeconds(Random.Range(GetThinkDelayMin(), GetThinkDelayMax()));
+            // 방금 본 종목이 달아올라 있으면 다음 판단이 빨라진다(최대 세 배). 인기 종목에서는 거래 자체가 늘어난다.
+            yield return new WaitForSeconds(Random.Range(GetThinkDelayMin(), GetThinkDelayMax()) / Mathf.Clamp(1f + lastPickHeat * .3f, 1f, 3f));
+            lastPickHeat = 0f;
             if (!MarketDayController.CanTrade)
             { continue; }
 
@@ -373,6 +376,7 @@ public abstract partial class TradeBot : Trader
 
             Stock promised = PendingSocialStock();
             Stock pick = promised ?? PickStock();
+            lastPickHeat = pick != null && StockInterestManager.Instance != null ? StockInterestManager.Instance.Heat(pick) : 0f;
             if (pick != null && pick.AcceptsOrders && (CanBuyStock(pick) || CanSellStock(pick)) && StockManager.Instance != null && StockManager.Instance.stocks.Contains(pick))
             {
                 ObserveMarket(pick);

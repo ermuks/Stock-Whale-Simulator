@@ -285,7 +285,7 @@ public static class ScreenTourCapture
             {
                 try { steps[stepIndex].prepare(); }
                 catch (Exception error) { report.AppendLine("STEP FAILED " + steps[stepIndex].name + " prepare: " + error.Message); }
-                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
+                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("heat-") && languageIndex == 0 && only.Contains("heat") ? 45 : steps[stepIndex].name.StartsWith("talk-") && steps[stepIndex].name != "talk-0" && languageIndex == 0 && only.Contains("talk") ? 45 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
             }
             if (phase == 101)
             {
@@ -441,6 +441,66 @@ public static class ScreenTourCapture
         steps.Add(("large-caps", LogLargeCaps, () => null));
         // 성능 재기. 요청에 only:perf 가 있을 때만, 첫 언어에서 40초씩 세 번 잰다: 자리에서 볼 때, 차트를 볼 때, 태블릿을 볼 때.
         // 결과는 Validation/Screens/perf.txt 에 쌓인다.
+        // 거래 쏠림 관찰: 45초마다 종목별 최근 거래대금 비중과 열기를 적는다. 아무것도 넣지 않고 지켜보기만 한다.
+        for (int beat = 1; beat <= 12; beat++)
+        {
+            int number = beat;
+            steps.Add(("heat-" + number, () => { }, () =>
+            {
+                if (only.Contains("heat") && languageIndex == 0)
+                {
+                    var interest = StockInterestManager.Instance; var rows = new List<(string name, double recent, double usual, float heat, float weight, decimal price)>(); double sum = 0;
+                    foreach (var stock in StockManager.Instance.stocks)
+                    {
+                        if (!stock.AcceptsOrders) { continue; }
+                        rows.Add((stock.symbol, interest.RecentTurnover(stock), interest.UsualTurnover(stock), interest.Heat(stock), interest.GetWeight(stock), stock.currentPrice)); sum += interest.RecentTurnover(stock);
+                    }
+                    rows.Sort((a, b) => b.recent.CompareTo(a.recent));
+                    int hot = 0; foreach (var row in rows) { if (row.heat >= .5f) { hot++; } }
+                    var line = new StringBuilder("HEAT " + number + " day " + MarketDayController.Instance.Day + " " + MarketDayController.Instance.Phase + " stocks " + rows.Count + " hot " + hot + " |");
+                    foreach (var row in rows) { line.Append(" " + row.name + " " + (sum > 0 ? row.recent / sum : 0).ToString("P0") + " h" + row.heat.ToString("F1") + " w" + row.weight.ToString("F0") + " @" + row.price.ToString("F0") + " |"); }
+                    report.AppendLine(line.ToString());
+                }
+                return null;
+            }));
+        }
+        // 차트 수다: 먼저 지어낸 가격 흐름으로 감지기를 점검하고(말은 하지 않는다), 그 뒤 9분 동안 실제 장에서 알아챈 모양과 한 말을 적는다.
+        steps.Add(("talk-0", () => { }, () =>
+        {
+            if (only.Contains("talk") && languageIndex == 0)
+            {
+                var society = InvestorSociety.Instance;
+                report.AppendLine("CHART INJECTED pump then dump: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (60, 1150m), (16, 1090m), (20, 1030m), (20, 1012m), (30, 930m)));
+                report.AppendLine("CHART INJECTED slow fade after pump: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (60, 1150m), (200, 1030m)));
+                report.AppendLine("CHART INJECTED plunge then V: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (30, 890m), (20, 930m), (20, 950m), (40, 1015m)));
+                report.AppendLine("CHART INJECTED dead cat: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (30, 890m), (20, 940m), (20, 905m), (20, 880m)));
+                report.AppendLine("CHART INJECTED double top: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (60, 1100m), (30, 1050m), (30, 1098m), (30, 1055m)));
+                report.AppendLine("CHART INJECTED double bottom: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (60, 900m), (30, 945m), (30, 902m), (30, 945m)));
+                report.AppendLine("CHART INJECTED grind up: " + society.ChartSelfTest((0, 1000m), (160, 1085m)));
+                report.AppendLine("CHART INJECTED grind down: " + society.ChartSelfTest((0, 1000m), (160, 915m)));
+                report.AppendLine("CHART INJECTED box breakout: " + society.ChartSelfTest((0, 1000m), (50, 1008m), (50, 998m), (50, 1006m), (10, 1042m)));
+                report.AppendLine("CHART INJECTED box breakdown: " + society.ChartSelfTest((0, 1000m), (50, 1008m), (50, 998m), (50, 1006m), (10, 962m)));
+                report.AppendLine("CHART INJECTED upper wick: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (8, 1062m), (8, 1004m), (10, 1004m)));
+                report.AppendLine("CHART INJECTED lower wick: " + society.ChartSelfTest((0, 1000m), (60, 1000m), (8, 940m), (8, 997m), (10, 997m)));
+                report.AppendLine("CHART INJECTED quiet 1% drift (should be empty): " + society.ChartSelfTest((0, 1000m), (120, 1010m), (120, 1002m), (120, 1012m)));
+                report.AppendLine("CHART INJECTED 4% wiggle (should be empty): " + society.ChartSelfTest((0, 1000m), (60, 1040m), (60, 1005m), (60, 1038m)));
+            }
+            return null;
+        }));
+        for (int beat = 1; beat <= 12; beat++)
+        {
+            int number = beat;
+            steps.Add(("talk-" + number, () => { }, () =>
+            {
+                if (only.Contains("talk") && languageIndex == 0)
+                {
+                    var society = InvestorSociety.Instance;
+                    report.AppendLine("CHART " + number + " day " + MarketDayController.Instance.Day + " " + MarketDayController.Instance.Phase + " shapes " + society.ChartShapesSeen + " lines " + society.ChartLinesSaid);
+                    while (society.ChartTrace.Count > 0) { report.AppendLine("CHART   " + society.ChartTrace.Dequeue()); }
+                }
+                return null;
+            }));
+        }
         steps.Add(("perf-desk", () => { if (only.Contains("perf") && languageIndex == 0) { File.Delete(Path.Combine(Folder, "perf.txt")); DeskViewController.Instance.ExitView(true); PerfProbe.Begin(); } },
             () => { if (only.Contains("perf") && languageIndex == 0) { PerfProbe.End(Path.Combine(Folder, "perf.txt"), "desk view, market open " + DeviceMarketJournal.Stamp() + " bots " + MarketDayController.Instance.Bots.Count); } return null; }));
         steps.Add(("perf-chart", () => { if (only.Contains("perf") && languageIndex == 0) { DeskViewController.Instance.Focus(DeskViewTarget.Chart); PerfProbe.Begin(); } },
@@ -497,6 +557,22 @@ public static class ScreenTourCapture
                 var note = DoorNotes.Instance.Notes[DoorNotes.Instance.Notes.Count - 1];
                 report.AppendLine("NOTE on floor state " + note.State + " at " + note.Root.position.ToString("F2"));
                 ShootFrom("audit/" + languages[languageIndex] + "-room-note-floor", note.Root.position + new Vector3(.3f, 2.6f, 2.4f), note.Root.position, 50f, 1.4f);
+            }
+            return null;
+        }));
+        // 걸어서 설 수 있는 자리에서 실제 눈높이로 쪽지를 겨눴을 때 잡히는지 본다(가까이, 조금 멀리, 방 한가운데).
+        steps.Add(("room-note-aim", () => { }, () =>
+        {
+            if (only.Contains("room"))
+            {
+                var note = DoorNotes.Instance.Notes[DoorNotes.Instance.Notes.Count - 1]; Vector3 spot = note.Root.position; float eye = DeskViewController.Instance.transform.position.y;
+                foreach (float back in new[] { 1.2f, 3f, 5f, 8f })
+                {
+                    var stand = new Vector3(Mathf.Clamp(spot.x, MouseCameraController.WalkMin.x, MouseCameraController.WalkMax.x), eye, Mathf.Clamp(spot.z + back, MouseCameraController.WalkMin.y, MouseCameraController.WalkMax.y));
+                    Vector3 toward = (spot - stand).normalized; float pitch = Mathf.Asin(-toward.y) * Mathf.Rad2Deg;
+                    report.AppendLine("NOTE aim from " + stand.ToString("F2") + " distance " + Vector3.Distance(stand, spot).ToString("F2") + " pitch " + pitch.ToString("F0") + " hit " + (DoorNotes.Instance.Aim(new Ray(stand, toward)) == note)
+                        + " off by 4 degrees " + (DoorNotes.Instance.Aim(new Ray(stand, Quaternion.AngleAxis(4f, Vector3.up) * toward)) == note));
+                }
             }
             return null;
         }));

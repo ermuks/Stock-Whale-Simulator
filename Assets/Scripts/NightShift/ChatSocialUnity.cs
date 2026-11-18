@@ -38,6 +38,7 @@ public sealed partial class InvestorSociety
         }
         SocialTime.Set(day.Day, day.GameMinute, SessionClock.Time);
         TickHype();
+        TickChartTalk();
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
     }
@@ -157,6 +158,7 @@ public sealed partial class InvestorSociety
         if (ReferenceEquals(buyer, seller) || volume <= 0 || resting == null)
         { return; }
         ObserveHypeFill(stock, price, volume, buyer, seller);
+        ObserveChartFill(stock, price, volume, buyer, seller);
         double at = day == null ? 0 : (day.Day - 1) * 1440d + day.GameMinute;
         if (buyer is TradeBot buying && buying.Social != null)
         {

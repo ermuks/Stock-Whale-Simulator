@@ -15313,6 +15313,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 258505755}
   m_CullTransparentMesh: 1
+--- !u!1 &259448203 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7185264676667276130, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+  m_PrefabInstance: {fileID: 1806026514}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &259448205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 259448203}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &261021665
 GameObject:
   m_ObjectHideFlags: 0
@@ -32301,7 +32335,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 32
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -32358,6 +32392,7 @@ MonoBehaviour:
   pauseKey: 112
   useSavedPauseKey: 0
   pauseWhenCursorUnlocked: 0
+  walkSpeed: 4.2
 --- !u!1 &519457692
 GameObject:
   m_ObjectHideFlags: 0
@@ -110405,6 +110440,40 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1611653094}
   m_CullTransparentMesh: 1
+--- !u!1 &1612205073 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3307337099851269940, guid: 71c1b177dbadefb4e9707f49d754826e, type: 3}
+  m_PrefabInstance: {fileID: 2014659996}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1612205075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1612205073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!1 &1614073318
 GameObject:
   m_ObjectHideFlags: 0
@@ -121532,6 +121601,42 @@ MonoBehaviour:
   _specializedStock:
     symbol: 
     stockName: 
+    business:
+      Policy: 0
+      LastDay: 0
+      LastAcquisitionDay: 0
+      ControlInitialized: 0
+      PlayerControls: 0
+      AcquisitionAnnounced: 0
+      CloseFinished: 0
+      Sector: 
+      growth:
+        Version: 1
+        Capacity: 0
+        Sales: 0
+        Research: 0
+        Project: -1
+        CompleteDay: 0
+        LastProjectDay: 0
+        CompletedProjects: 0
+        Brand: 0
+        Automation: 0
+        Export: 0
+        Quality: 0
+        SecondProject: 0
+        SecondCompleteDay: 0
+        SecondStartDay: 0
+        OperatingDays: 0
+        ProfitableCloses: 0
+        RequestedDay: 0
+        ListedCloseDay: 0
+        LastDecisionDay: 0
+        Decisions: 0
+        FounderBusiness: 0
+        ListingApproved: 0
+        EndingDay: 0
+        EndingShown: 0
+        LastDecision: 
   futureDebug: []
   showFutureDebug: 0
   useMarketCapCash: 1
@@ -122104,6 +122209,94 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: -0.36720005
       objectReference: {fileID: 0}
+    - target: {fileID: 458643197428313061, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 458643197428313061, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 558951848777945421, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 825626809339957784, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 825626809339957784, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273803577463134356, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 1273803577463134356, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 1540308197206905842, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571807271316817561, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 1571807271316817561, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650984759167193820, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 1650984759167193820, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899455154949099454, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 1899455154949099454, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997975690289314805, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 1997975690289314805, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 2283687676440155978, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2665862303184825527, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 2665862303184825527, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 2759230287076322420, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2921612221044471631, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 2921612221044471631, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     - target: {fileID: 3375482334468242592, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.3260001
@@ -122115,6 +122308,18 @@ PrefabInstance:
     - target: {fileID: 3375482334468242592, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
       propertyPath: m_LocalRotation.z
       value: -0.028793951
+      objectReference: {fileID: 0}
+    - target: {fileID: 3468805440224713053, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634288033773927810, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 3634288033773927810, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 3690037866744731528, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
       propertyPath: m_Name
@@ -122139,6 +122344,18 @@ PrefabInstance:
     - target: {fileID: 3762554979454142477, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
       propertyPath: m_LocalRotation.x
       value: 0.12977038
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061709341507242682, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 4061709341507242682, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
+    - target: {fileID: 4398561544272988668, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 4916947659208728096, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
       propertyPath: m_LocalPosition.x
@@ -122216,10 +122433,21 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.01832493
       objectReference: {fileID: 0}
+    - target: {fileID: 8465884890572987758, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4280494894
+      objectReference: {fileID: 0}
+    - target: {fileID: 8465884890572987758, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      propertyPath: m_TextStyleHashCode
+      value: -1183493901
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7185264676667276130, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 259448205}
   m_SourcePrefab: {fileID: 100100000, guid: c5acc4501debde1458095ff69456d1ac, type: 3}
 --- !u!114 &1806026515 stripped
 MonoBehaviour:
@@ -124523,6 +124751,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WorkroomAmbience
   practical: {fileID: 308395370}
   ambientVolume: 0.07
+  lampDim: 0.22
+  ambientDim: 0.3
+  fogThicken: 1.9
 --- !u!114 &1848155259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124535,6 +124766,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a07f7e695ef543d58abed14cb91e03c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MarketRhythmDirector
+  restingChance: 0.3
+  restingShare: 0.25
+  restingNear: 0.02
+  restingFar: 0.1
   participation: 0.72
   seed: 8147
   maximumBookDistance: 0.025
@@ -124728,8 +124963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProgression
   rules:
     schemaVersion: 1
-    leadingTurnover: 100000
-    leadingRealizedProfit: 5000
+    leadingOpeningCost: 20000000
 --- !u!114 &1848155271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135604,7 +135838,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3307337099851269940, guid: 71c1b177dbadefb4e9707f49d754826e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1612205075}
   m_SourcePrefab: {fileID: 100100000, guid: 71c1b177dbadefb4e9707f49d754826e, type: 3}
 --- !u!1 &2015943286
 GameObject:
@@ -135651,6 +135888,7 @@ MonoBehaviour:
     marketCapExchangeCash: 1
     exchangeCashRatio: 0.2
     directExchangeCash: 59600000000
+    exchangeCashCapPerStock: 100000000000
     publicDistributionRatio: 0.5
     participationProbability: 0.4
     allocationWeightMin: 0.5
@@ -135806,6 +136044,7 @@ MonoBehaviour:
       initiallyListed: 0
   playerAccount: {fileID: 1180346261}
   initialAssets: []
+  retailExposureScale: 1
   stockDefinitions:
   - symbol: NM
     name: "\uB178\uBCF4\uC190\uD574\uBCF4\uD5D8"
@@ -135891,6 +136130,42 @@ MonoBehaviour:
   CurrentStock:
     symbol: 
     stockName: 
+    business:
+      Policy: 0
+      LastDay: 0
+      LastAcquisitionDay: 0
+      ControlInitialized: 0
+      PlayerControls: 0
+      AcquisitionAnnounced: 0
+      CloseFinished: 0
+      Sector: 
+      growth:
+        Version: 1
+        Capacity: 0
+        Sales: 0
+        Research: 0
+        Project: -1
+        CompleteDay: 0
+        LastProjectDay: 0
+        CompletedProjects: 0
+        Brand: 0
+        Automation: 0
+        Export: 0
+        Quality: 0
+        SecondProject: 0
+        SecondCompleteDay: 0
+        SecondStartDay: 0
+        OperatingDays: 0
+        ProfitableCloses: 0
+        RequestedDay: 0
+        ListedCloseDay: 0
+        LastDecisionDay: 0
+        Decisions: 0
+        FounderBusiness: 0
+        ListingApproved: 0
+        EndingDay: 0
+        EndingShown: 0
+        LastDecision: 
   fakeValueReversionPerSecond: 0.2
 --- !u!4 &2015943288
 Transform:

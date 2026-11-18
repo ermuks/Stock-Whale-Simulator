@@ -2,8 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 종목별 관심도(가중치). 거래가 발생하면 해당 종목 관심도 상승 → 봇이 그 종목으로 쏠림.
-/// 이벤트로 가중치 조절 가능. 감쇠로 서서히 기본값으로 복귀.
+/// 종목별 관심도(가중치). 봇이 이번에 어느 종목을 볼지 고를 때 쓴다.
+/// 평소에는 모든 종목이 기본값이라 거래가 고르게 퍼진다. 어떤 종목이 "제 평소보다" 달아오르면(열기) 그 종목으로 쏠리고, 열기는 서서히 식는다.
+/// 열기는 두 가지에서 온다: 그 종목의 최근 거래대금이 제 평소 거래대금의 몇 배인가, 그리고 값이 최근 평균에서 얼마나 벗어났는가.
+/// 원으로 센 거래대금 자체는 보지 않는다. 주가가 비싸거나 덩치가 큰 종목이라고 관심이 더 쌓이지 않는다.
+/// 뉴스·세력 작전 같은 사건은 따로 더해지고, 감쇠로 기본값에 돌아온다.
 /// </summary>
 public class StockInterestManager : MonoBehaviour
 {
@@ -31,6 +34,19 @@ public class StockInterestManager : MonoBehaviour
     private Dictionary<Stock, float> _interest = new Dictionary<Stock, float>();
     private Dictionary<Stock, decimal> _lastPrice = new Dictionary<Stock, decimal>();
     private readonly List<Stock> _decayStocks = new();
+    /// <summary>종목 하나의 맥박. Window는 이번 구간에 쌓인 거래대금, Fast는 최근 거래대금, Slow는 평소 거래대금, Anchor는 최근 평균 값, Heat는 열기(0이면 평소).</summary>
+    private sealed class Pulse { public double Window, Fast, Slow; public decimal Anchor; public float Heat; public int Ticks; }
+    private readonly Dictionary<Stock, Pulse> _pulse = new();
+    // 처음 한동안(12구간 = 1분)은 평소 거래대금을 재기만 한다. 그 뒤로 최근은 빠르게(0.35), 평소는 느리게(0.03, 약 3분) 따라간다.
+    private const int WarmTicks = 12;
+    private const double FastFollow = .35, SlowFollow = .03;
+    // 거래대금이 평소의 1.6배를 넘는 만큼, 값이 최근 평균에서 1.5% 넘게 벗어난 만큼 달아오른다. 식을 때는 구간마다 6%씩 빠진다(반으로 줄기까지 약 1분).
+    private const float SurgeStart = 1.6f, SurgeLimit = 7f, MoveStart = .015f, MovePerUnit = 60f, MoveLimit = 8f, HeatLimit = 12f, Cooling = .94f;
+    /// <summary>이 종목의 열기. 0이면 평소이고, 1이면 관심이 평소의 두 배다.</summary>
+    public float Heat(Stock stock) => stock != null && _pulse.TryGetValue(stock, out var pulse) ? pulse.Heat : 0f;
+    /// <summary>이 종목의 최근 거래대금과 평소 거래대금(한 구간에 오간 돈). 확인용.</summary>
+    public double RecentTurnover(Stock stock) => stock != null && _pulse.TryGetValue(stock, out var pulse) ? pulse.Fast : 0;
+    public double UsualTurnover(Stock stock) => stock != null && _pulse.TryGetValue(stock, out var pulse) ? pulse.Slow : 0;
     private float Baseline => Mathf.Max(1f, baseInterest);
     private float _nextDecayTime;
     void Awake()
@@ -60,6 +76,7 @@ public class StockInterestManager : MonoBehaviour
         stock.OnTradeExecutedWithStock -= OnStockTraded;
         _interest.Remove(stock);
         _lastPrice.Remove(stock);
+        _pulse.Remove(stock);
     }
 
     void Start()
@@ -102,15 +119,6 @@ public class StockInterestManager : MonoBehaviour
     void OnStockTraded(Stock stock, decimal price, decimal volume)
     {
         AddInterest(stock, price, volume);
-        if (_lastPrice.TryGetValue(stock, out decimal prev) && prev > 0m)
-        {
-            decimal pctChange = (price - prev) / prev;
-            if (pctChange != 0m)
-            {
-                AddInterestDelta(stock, (float)System.Math.Abs(pctChange) * interestPerPriceChangePct * 100f);
-            }
-        }
-
         _lastPrice[stock] = price;
     }
 
@@ -123,15 +131,17 @@ public class StockInterestManager : MonoBehaviour
         }
     }
 
-    /// <summary>체결 시 호출. 거래대금은 로그로 압축하고, 건별 증가량과 누적 관심도에 상한을 둔다.</summary>
+    /// <summary>
+    /// 체결 시 호출. 이번 구간의 거래대금에 더해 둘 뿐이다. 관심도는 구간이 끝날 때 "평소의 몇 배인가"로 정한다.
+    /// 예전에는 체결 한 건마다 거래대금(원)에 따라 관심도를 올렸다. 봇의 주문이 커지자 거의 모든 체결이 상한만큼 올려서
+    /// 전 종목이 최대치에 붙었고(그래서 거래가 고르게 퍼졌고), 주가가 비싼 종목일수록 더 빨리 찼다.
+    /// </summary>
     public void AddInterest(Stock stock, decimal price, decimal filledVolume)
     {
         if (stock == null || price <= 0m || filledVolume <= 0m)
         { return; }
-        // 선형 거래대금 누적은 한 종목의 체결 → 관심 → 체결을 무제한 증폭시켰다.
-        double turnover = (double)price * (double)filledVolume;
-        double boost = Mathf.Max(0f, interestPerTrade) + System.Math.Log(1d + turnover * Mathf.Max(0f, interestPerTurnover));
-        AddInterestDelta(stock, (float)System.Math.Min(Baseline * maximumTradeBoostFraction, boost));
+        if (!_pulse.TryGetValue(stock, out var pulse)) { _pulse[stock] = pulse = new Pulse { Anchor = price }; }
+        pulse.Window += (double)price * (double)filledVolume;
     }
 
     /// <summary>이벤트로 특정 종목 관심도 가중치 설정 (배수 또는 절대값)</summary>
@@ -142,7 +152,7 @@ public class StockInterestManager : MonoBehaviour
 
         if (float.IsNaN(multiplier) || float.IsInfinity(multiplier))
         { return; }
-        _interest[stock] = Bounded(GetWeight(stock) * Mathf.Clamp(multiplier, 0f, maximumInterestMultiple));
+        _interest[stock] = Bounded(EventWeight(stock) * Mathf.Clamp(multiplier, 0f, maximumInterestMultiple));
     }
 
     /// <summary>이벤트로 특정 종목 관심도에 더하기</summary>
@@ -153,7 +163,7 @@ public class StockInterestManager : MonoBehaviour
 
         if (float.IsNaN(delta) || float.IsInfinity(delta))
         { return; }
-        _interest[stock] = Bounded(GetWeight(stock) + delta);
+        _interest[stock] = Bounded(EventWeight(stock) + delta);
     }
 
     /// <summary>고래 작전 시 해당 종목 관심도를 올려 다른 봇들이 이 종목에서 거래할 확률을 높임. 보너스는 작전 종류별 200/500/800.</summary>
@@ -162,14 +172,17 @@ public class StockInterestManager : MonoBehaviour
         AddInterestDelta(stock, bonus);
     }
 
-    /// <summary>관심도는 기본값의 0.5~8배 범위. 과거의 폭증한 값도 읽을 때 제한한다.</summary>
+    /// <summary>관심도 = 사건으로 쌓인 값(기본값의 0.5~8배) + 기본값 × 열기(최대 12).</summary>
     public float GetWeight(Stock stock)
     {
         if (stock == null)
         { return 0f; }
 
-        return Bounded(_interest.TryGetValue(stock, out var w) ? w : Baseline);
+        // 열기는 사건 관심도의 상한(8배)과 따로 더한다. 가장 달아오른 종목은 평소 종목의 스무 배쯤 눈에 띈다.
+        return EventWeight(stock) + Baseline * Mathf.Clamp(Heat(stock), 0f, HeatLimit);
     }
+    /// <summary>사건(뉴스·세력 작전)으로 쌓인 값만. 열기는 빼고 센다.</summary>
+    private float EventWeight(Stock stock) => Bounded(_interest.TryGetValue(stock, out var w) ? w : Baseline);
 
     private float Bounded(float weight)
     {
@@ -205,9 +218,9 @@ public class StockInterestManager : MonoBehaviour
 
         float preference = bot == null ? 1f : 1f + Mathf.Max(0f, bot.GetPreference(stock));
         float signalCap = Mathf.Max(1f, Mathf.Min(config.maximumAttentionFactor, maximumSignalMultiplier));
-        double signal = interest / Baseline * (double)Mathf.Clamp(attention, 1f, signalCap) * Mathf.Clamp(preference, 1f, signalCap);
-        // 최근 사건은 선호하되 뉴스·수익 경험을 곱할 때 집중도가 폭발하지 않도록 압축한다.
-        double product = Baseline * System.Math.Sqrt(signal) * RiskWeight(bot, stock);
+        // 관심도(열기 포함)는 그대로 반영한다: 달아오른 종목에는 확실히 쏠린다. 뉴스·수익 경험은 곱할 때 폭발하지 않도록 눌러서 반영한다.
+        double taste = (double)Mathf.Clamp(attention, 1f, signalCap) * Mathf.Clamp(preference, 1f, signalCap);
+        double product = interest * System.Math.Sqrt(taste) * RiskWeight(bot, stock);
         return (float)System.Math.Min(System.Math.Max(0f, config.maximumSelectionWeight), product);
     }
 
@@ -310,7 +323,39 @@ public class StockInterestManager : MonoBehaviour
         foreach (var stock in _decayStocks)
         {
             float retention = Mathf.Clamp01(decayRate);
-            _interest[stock] = Bounded(GetWeight(stock) * retention + (1f - retention) * Baseline);
+            _interest[stock] = Bounded(EventWeight(stock) * retention + (1f - retention) * Baseline);
+        }
+        Beat();
+    }
+
+    /// <summary>한 구간(decayInterval초)이 끝났다. 종목마다 최근 거래대금과 평소 거래대금을 고치고 열기를 다시 정한다. 장이 닫혀 있으면 열기만 식는다.</summary>
+    private void Beat()
+    {
+        bool open = MarketDayController.CanTrade;
+        // 평소 거래대금이 거의 없는 종목은 체결 한두 건에도 몇 배로 보인다. 시장 평균의 10%를 바닥으로 둔다.
+        double total = 0; int counted = 0;
+        foreach (var pulse in _pulse.Values) { if (pulse.Ticks >= WarmTicks) { total += pulse.Slow; counted++; } }
+        double floor = counted > 0 ? total / counted * .1 : 0;
+        foreach (var pair in _pulse)
+        {
+            var stock = pair.Key; var pulse = pair.Value;
+            if (!open || stock == null || !stock.AcceptsOrders || stock.currentPrice <= 0m)
+            { pulse.Window = 0; pulse.Heat *= Cooling; continue; }
+            double window = pulse.Window; pulse.Window = 0; pulse.Ticks++;
+            if (pulse.Ticks <= WarmTicks)
+            {
+                pulse.Slow += (window - pulse.Slow) / pulse.Ticks; pulse.Fast = pulse.Slow; pulse.Anchor = stock.currentPrice; pulse.Heat = 0f;
+                continue;
+            }
+            pulse.Fast += (window - pulse.Fast) * FastFollow; pulse.Slow += (window - pulse.Slow) * SlowFollow;
+            pulse.Anchor += (stock.currentPrice - pulse.Anchor) * .02m;
+            double usual = System.Math.Max(pulse.Slow, floor);
+            float surge = usual <= 0 ? 0f : Mathf.Clamp((float)(pulse.Fast / usual) - SurgeStart, 0f, SurgeLimit);
+            float away = pulse.Anchor <= 0m ? 0f : Mathf.Abs((float)(stock.currentPrice / pulse.Anchor) - 1f);
+            float move = Mathf.Clamp((away - MoveStart) * MovePerUnit, 0f, MoveLimit);
+            float target = Mathf.Min(HeatLimit, surge + move);
+            // 달아오를 때는 빠르게, 식을 때는 천천히.
+            pulse.Heat = target > pulse.Heat ? Mathf.Lerp(pulse.Heat, target, .5f) : Mathf.Max(target, pulse.Heat * Cooling);
         }
     }
 }

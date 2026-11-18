@@ -28,8 +28,10 @@ public sealed partial class InvestorSociety
 
     // 최근 움직임은 5~15분 전에 본 가격과 비교한다. 그보다 오래된 가격은 버린다.
     private const double TrailSampleMinutes = 1, TrailNearMinutes = 5, TrailFarMinutes = 15;
-    private const decimal FastMovePercent = 2.5m, ExtremeDayPercent = 3m, ExtremeGapPercent = .4m, SwingPercent = 3m;
-    private const decimal TrendPercent = 1.5m, FlatDayPercent = .7m, FlatRangePercent = 1.5m;
+    // 이 시장은 하루에도 수십 %씩 움직인다. 1~3% 움직임을 두고 "벌써 얼마냐", "고가 찍었네"라고 놀라면 어색하다.
+    // 급변은 몇 분 사이 5%, 고가·저가 얘기는 전일 대비 7% 이상일 때, 눌림·반등은 6% 이상 되돌렸을 때, 오름·내림세는 3% 이상일 때만 말한다.
+    private const decimal FastMovePercent = 5m, ExtremeDayPercent = 7m, ExtremeGapPercent = .5m, SwingPercent = 6m;
+    private const decimal TrendPercent = 3m, FlatDayPercent = .7m, FlatRangePercent = 1.5m;
 
     private static string SignedPercent(decimal value) => value.ToString("+0.0;-0.0;0.0", SocialCulture) + "%";
 

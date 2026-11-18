@@ -14,7 +14,8 @@ public sealed class ChartGuideOverlay : MonoBehaviour
     private CandleDrawManager chart;
     private RectTransform root, hoverRoot, priceBadge, timeBadge;
     private ChartGuideGraphic grid, crosshair;
-    private readonly TextMeshProUGUI[] ticks = new TextMeshProUGUI[13];
+    private readonly TextMeshProUGUI[] ticks = new TextMeshProUGUI[14];
+    private readonly List<float> gridHeights = new(16);
     private TextMeshProUGUI priceText, timeText;
     private float unitsX, unitsY, plotWidth, plotHeight, volumeHeight, axisWidth;
     private double lastMinimum = double.NaN, lastMaximum, lastStep;
@@ -108,16 +109,23 @@ public sealed class ChartGuideOverlay : MonoBehaviour
         root.sizeDelta = new Vector2(chart.ChartWidth * unitsX, plotHeight);
         grid.rectTransform.sizeDelta = root.sizeDelta;
         hoverRoot.sizeDelta = crosshair.rectTransform.sizeDelta = root.sizeDelta;
-        grid.SetGrid(plotWidth, plotHeight, scale.Intervals);
+        // 맨 위와 맨 아래는 화면에 보이는 봉의 최고가·최저가다. 그 사이에 보조선이 정해진 단위마다 그어진다.
+        gridHeights.Clear();
+        int lines = Mathf.Min(scale.Lines, ticks.Length - 2);
+        for (int i = 0; i < lines; i++) { gridHeights.Add(plotHeight * (float)scale.Normalize(scale.Line(i))); }
+        grid.SetGrid(plotWidth, plotHeight, gridHeights);
         for (int i = 0; i < ticks.Length; i++)
         {
-            bool active = i <= scale.Intervals;
+            bool edge = i < 2; float y = i == 0 ? 0f : i == 1 ? plotHeight : i - 2 < lines ? gridHeights[i - 2] : 0f;
+            // 끝 글자(최고·최저)와 겹칠 만큼 가까운 보조선은 선만 긋고 글자는 숨긴다.
+            bool active = edge || i - 2 < lines && y > LabelHeight * 1.4f && y < plotHeight - LabelHeight * 1.4f;
             if (ticks[i].gameObject.activeSelf != active)
             { ticks[i].gameObject.SetActive(active); }
             if (!active)
             { continue; }
-            GameLocalizedText.Set(ticks[i],scale.Tick(i).ToString("N0", Numbers));
-            float y = plotHeight * i / scale.Intervals;
+            double price = i == 0 ? scale.Minimum : i == 1 ? scale.Maximum : scale.Line(i - 2);
+            GameLocalizedText.Set(ticks[i], price.ToString("N0", Numbers));
+            ticks[i].color = edge ? new Color32(230, 235, 239, 255) : Muted;
             Place(ticks[i].rectTransform, plotWidth + 8f, Mathf.Clamp(y - LabelHeight * .5f, 0f, plotHeight - LabelHeight), axisWidth - 14f, LabelHeight);
         }
         lastMinimum = scale.Minimum; lastMaximum = scale.Maximum; lastStep = scale.Step;
