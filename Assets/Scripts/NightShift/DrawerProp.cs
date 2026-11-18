@@ -25,6 +25,7 @@ public sealed class DrawerProp : MonoBehaviour
     private readonly List<(TextMeshProUGUI label, string korean, string english, string japanese)> writing = new();
     private int writtenRevision = -1;
     public bool Open { get; private set; }
+    private bool soundedOpen;
     public bool Hovered { get; private set; }
     public bool Found => drawer != null;
 
@@ -121,6 +122,7 @@ public sealed class DrawerProp : MonoBehaviour
         }
         // 다른 화면으로 넘어가거나 자리로 돌아가면 서랍도 닫힌다.
         if (Open && !views.IsCustomView) { Open = false; }
+        if (Open != soundedOpen) { soundedOpen = Open; Sfx.Play(Open ? "DrawerOpen" : "DrawerClose", .8f); }
         bool free = !PauseMenuController.BlocksInput && !MouseCameraController.TextEntryActive && Time.timeScale > 0f && !RoomShell.Cinematic;
         // R을 누르면 어디를 보고 있든 서랍이 열리고, 다시 누르면 닫힌다. 자리에서 서랍을 보고 클릭해도 열린다.
         bool key = free && Input.GetKeyDown(ToggleKey);

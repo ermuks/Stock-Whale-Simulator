@@ -113,7 +113,7 @@ public sealed class BedSleep : MonoBehaviour
             Vector3 above = shell.PillowEye + Vector3.up * .85f, position = Vector3.Lerp(from.position, above, rush);
             Quaternion toward = Quaternion.LookRotation((shell.PillowEye + Vector3.down * .9f) - position, Vector3.up);
             eye.SetPositionAndRotation(position, Quaternion.Slerp(from.rotation, toward, Ease(t * 1.7f)));
-            if (t >= 1f) { from = new Pose(eye.position, eye.rotation); Stage = 2; clock = 0f; }
+            if (t >= 1f) { from = new Pose(eye.position, eye.rotation); Stage = 2; clock = 0f; Sfx.Play("BedDown", .9f); }
         }
         else if (Stage == 2)
         {
@@ -138,7 +138,7 @@ public sealed class BedSleep : MonoBehaviour
             float t = Mathf.Clamp01(clock / OpenSeconds);
             float closed = t < .35f ? 1f - Ease(t / .35f) * .55f : t < .5f ? .45f + Ease((t - .35f) / .15f) * .35f : .8f * (1f - Ease((t - .5f) / .5f));
             eye.SetPositionAndRotation(shell.PillowEye, Lying); lids?.Lids(closed);
-            if (t >= 1f) { lids?.Lids(0f); Stage = 5; clock = 0f; }
+            if (t >= 1f) { lids?.Lids(0f); Stage = 5; clock = 0f; Sfx.Play("BedUp", .9f); }
         }
         else
         {

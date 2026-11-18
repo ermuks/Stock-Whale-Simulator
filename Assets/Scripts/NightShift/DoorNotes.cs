@@ -123,7 +123,7 @@ public sealed class DoorNotes : MonoBehaviour
                 if (t >= 1f)
                 {
                     if (note.State == 0) { note.State = 1; }
-                    else { note.State = 4; note.Root.SetParent(views.ScreenFor(DeskViewTarget.Chart), true); }
+                    else { note.State = 4; note.Root.SetParent(views.ScreenFor(DeskViewTarget.Chart), true); Sfx.Play("NoteStick", .8f, note.Root.position); }
                 }
             }
         }
@@ -176,6 +176,7 @@ public sealed class DoorNotes : MonoBehaviour
         note.FromTurn = Quaternion.Euler(90f, 180f + turn * .3f, 0f); note.ToTurn = Quaternion.Euler(90f, 180f + turn, 0f);
         root.SetPositionAndRotation(note.From, note.FromTurn);
         notes.Add(note); arrivedUntil = UnityEngine.Time.unscaledTime + 7f;
+        Sfx.Play("NoteArrive", .9f, shell.DoorGap + Vector3.up * 2f);
     }
     private static RectTransform Area(RectTransform parent, float x, float y, float w, float h)
     {
@@ -210,6 +211,7 @@ public sealed class DoorNotes : MonoBehaviour
     {
         if (note == null || note.State != 1 || held != null) { return; }
         held = note; note.State = 2; note.Paper.color = Bright; note.Root.SetParent(transform, true);
+        Sfx.Play("NotePick", .8f);
     }
     /// <summary>들고 있던 쪽지를 가운데 모니터 위쪽에 붙인다.</summary>
     public void PutDown()

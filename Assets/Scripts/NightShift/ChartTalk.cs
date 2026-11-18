@@ -365,7 +365,9 @@ public sealed partial class InvestorSociety
     // ── 타점: 말하는 봇 자신의 체결 ──
     private void ObserveChartFill(Stock stock, decimal price, decimal volume, IOrderOwner buyer, IOrderOwner seller)
     {
-        if (!HypeAllowed || stock == null || price <= 0m || volume <= 0m || day == null) { return; }
+        if (stock == null || price <= 0m || volume <= 0m || day == null) { return; }
+        if (PlayerAccounts.IsPlayer(buyer) != PlayerAccounts.IsPlayer(seller)) { Sfx.Play("OrderFill", .7f, null, .03f, .3f); }
+        if (!HypeAllowed) { return; }
         double now = SessionClock.Time;
         if (buyer is TradeBot buying && buying.Social != null)
         {

@@ -581,9 +581,24 @@ public static class ScreenTourCapture
         steps.Add(("room-note-stuck", () => { if (only.Contains("room")) { DoorNotes.Instance.PutDown(); } },
             () => { if (only.Contains("room")) { var note = DoorNotes.Instance.Notes[DoorNotes.Instance.Notes.Count - 1]; report.AppendLine("NOTE stuck state " + note.State + " slot " + note.Slot); ShootView("audit/" + languages[languageIndex] + "-room-note-stuck"); } return null; }));
         // 침대·쓰레기통·문, 문이 열린 모습, 잠들고 일어나는 카메라.
+        // 돈이 모자란 매수를 한 번 내 본다(나가지 않아야 하고 실패음이 불려야 한다). 봇의 주문은 실패음을 내지 않는다.
+        steps.Add(("room-deny", () => { }, () =>
+        {
+            if (only.Contains("room") && languageIndex == 0 && Sfx.Instance != null)
+            {
+                var player = PlayerAccounts.Instance.primary; Stock held = null, empty = null;
+                foreach (var stock in StockManager.Instance.stocks) { if (!stock.AcceptsOrders) { continue; } if (player.GetHolding(stock) <= 0m) { empty ??= stock; } held ??= stock; }
+                Sfx.Instance.Played.TryGetValue("UiDeny", out int before); decimal cash = player.cash;
+                player.BuyLimit(held.currentPrice, decimal.Floor(player.cash / held.currentPrice) * 50m + 1000m, 0, held);
+                Sfx.Instance.Played.TryGetValue("UiDeny", out int afterBuy);
+
+                report.AppendLine("DENY can trade " + MarketDayController.CanTrade + " oversized buy: cash unchanged " + (player.cash == cash) + ", UiDeny " + before + " -> " + afterBuy + (empty == null ? ", no empty stock to try a sell" : ", empty stock " + empty.symbol));
+            }
+            return null;
+        }));
         steps.Add(("room-bed", () => { }, () =>
         {
-            if (only.Contains("room") && RoomAmbience.Instance != null) { report.AppendLine("SOUND " + languages[languageIndex] + " listener volume " + AudioListener.volume.ToString("F2") + " " + RoomAmbience.Instance.Describe()); }
+            if (only.Contains("room") && RoomAmbience.Instance != null) { report.AppendLine("SOUND " + languages[languageIndex] + " listener volume " + AudioListener.volume.ToString("F2") + " " + RoomAmbience.Instance.Describe()); report.AppendLine("SFX " + languages[languageIndex] + " " + (Sfx.Instance == null ? "missing" : Sfx.Instance.Describe())); }
             if (only.Contains("room") && languageIndex == 0)
             {
                 var shell = RoomShell.Instance; Vector3 bed = shell.BedBounds.center;

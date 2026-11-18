@@ -261,7 +261,7 @@ public class Trader : MonoBehaviour, IOrderOwner
     {
         volume = decimal.Floor(volume);
         if (volume <= 0m)
-        { return; }
+        { OrderRefused?.Invoke(this, true); return; }
 
         BuyInternal(ResolveStock(stock), price, volume, subTickSteps: subTickSteps);
     }
@@ -270,7 +270,7 @@ public class Trader : MonoBehaviour, IOrderOwner
     {
         volume = decimal.Floor(volume);
         if (volume <= 0m)
-        { return; }
+        { OrderRefused?.Invoke(this, false); return; }
 
         SellInternal(ResolveStock(stock), price, volume, subTickSteps: subTickSteps);
     }
@@ -278,6 +278,9 @@ public class Trader : MonoBehaviour, IOrderOwner
     /// <summary>null이면 CurrentStock (플레이어가 보는 종목)</summary>
     protected Stock ResolveStock(Stock stock)
     { return stock != null ? stock : CurrentStock; }
+
+    /// <summary>주문이 돈이나 수량이 모자라 나가지 못했다(매수: 가용 현금 부족, 매도: 보유 수량 없음, 공통: 수량 0). 소리·안내용이고 매매에는 쓰지 않는다.</summary>
+    public static event System.Action<Trader, bool> OrderRefused;
 
     private void BuyInternal(Stock stock, decimal price, decimal volume, int subTickSteps = 0)
     {
@@ -289,7 +292,7 @@ public class Trader : MonoBehaviour, IOrderOwner
         decimal expectedCost = price * volume;
         decimal available = cash - reservedCash;
         if (available < expectedCost)
-        { return; }
+        { OrderRefused?.Invoke(this, true); return; }
 
         TradeResult result = stock.ExecuteTrade(price, volume, true, addUnfilledToBook: true, subTickSteps: subTickSteps, orderOwner: this, maxMatchAskPrice: null);
         LastRestingOrder = result.restingOrder;
@@ -325,7 +328,7 @@ public class Trader : MonoBehaviour, IOrderOwner
 
         decimal have = GetHolding(stock);
         if (have <= 0m)
-        { return; }
+        { OrderRefused?.Invoke(this, false); return; }
 
         decimal sellVol = (volume <= have) ? volume : have;
         decimal avgCostBeforeSell = GetAvgPrice(stock);

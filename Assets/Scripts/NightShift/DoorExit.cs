@@ -61,7 +61,7 @@ public sealed class DoorExit : MonoBehaviour
         var shell = RoomShell.Instance; var views = DeskViewController.Instance;
         if (Stage != 0 || shell == null || !shell.Built || shell.DoorLeaf == null || views == null || !views.Ready) { if (hintRoot.activeSelf) { hintRoot.SetActive(false); } return; }
         bool unlocked = Unlocked;
-        if (unlocked && !wasUnlocked) { noticeUntil = Time.unscaledTime + 12f; }
+        if (unlocked && !wasUnlocked) { noticeUntil = Time.unscaledTime + 12f; Sfx.Play("DoorUnlock", 1f, shell.DoorCenter); }
         wasUnlocked = unlocked;
         // 잠긴 문을 흔들면 문짝이 잠깐 덜컹거린다.
         if (rattle > 0f)
@@ -84,7 +84,7 @@ public sealed class DoorExit : MonoBehaviour
         GameLocalizedText.Set(hint, unlocked ? Key + "   " + Word("문 열고 나가기", "Open the door and leave", "ドアを開けて出る")
             : rattle > 0f ? Word("잠겨 있습니다", "It is locked", "鍵がかかっている") : Key + "   " + Word("문 열기", "Open the door", "ドアを開ける"), true);
         if (!Input.GetKeyDown(Key)) { return; }
-        if (unlocked) { Leave(); } else { rattle = .4f; }
+        if (unlocked) { Leave(); } else { rattle = .4f; Sfx.Play("DoorLocked", .9f, shell.DoorCenter); }
     }
 
     /// <summary>문을 열고 걸어 나간다(엔딩).</summary>
@@ -95,6 +95,7 @@ public sealed class DoorExit : MonoBehaviour
         from = new Pose(views.transform.position, views.transform.rotation);
         RoomShell.Cinematic = true; Stage = 1; clock = 0f; rattle = 0f; hintRoot.SetActive(false);
         shell.Outside.SetActive(true);
+        Sfx.Play("DoorOpen", 1f, shell.DoorCenter);
         RoomAmbience.Instance?.PlayEnding();
     }
 

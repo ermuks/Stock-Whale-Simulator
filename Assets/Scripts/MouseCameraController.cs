@@ -112,6 +112,7 @@ public class MouseCameraController : MonoBehaviour
     /// <summary>걸어 다닐 수 있는 네모(x, z의 최소·최대). RoomShell이 방 크기를 재서 정한다.</summary>
     public static Vector2 WalkMin, WalkMax;
     public static bool WalkEnabled;
+    private float strideLeft = 1f;
     /// <summary>걸어 들어갈 수 없는 자리들(x, z). 침대가 여기에 들어 있다.</summary>
     public static readonly System.Collections.Generic.List<Rect> WalkBlocks = new();
     private static bool Blocked(float x, float z)
@@ -136,6 +137,9 @@ public class MouseCameraController : MonoBehaviour
         if (!Blocked(x, position.z)) { position.x = x; }
         float z = Mathf.Clamp(position.z + step.z, WalkMin.y, WalkMax.y);
         if (!Blocked(position.x, z)) { position.z = z; }
+        // 실제로 움직인 거리만큼 발소리가 난다(벽에 막혀 제자리면 나지 않는다).
+        strideLeft -= Vector3.Distance(transform.position, position);
+        if (strideLeft <= 0f) { strideLeft = Input.GetKey(KeyCode.LeftShift) ? 2.6f : 2.1f; Sfx.Play("Footstep", .5f, null, .08f); }
         transform.position = position;
     }
 
