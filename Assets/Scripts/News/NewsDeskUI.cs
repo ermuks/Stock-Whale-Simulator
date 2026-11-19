@@ -314,7 +314,8 @@ public sealed class NewsDeskUI : MonoBehaviour
         var publisher = FakeNewsManager.Instance;
         if (publisher == null) { return; }
         publisher.TryPublishPlayer(previewStock,draft.category,optimistic,variant,out var article,out string reason);
-        Set(resultText,reason); resultUntil = Time.unscaledTime + 8;
+        if (publisher.ReasonWritten) { GameLocalizedText.Set(resultText,reason,true); } else { Set(resultText,reason); }
+        resultUntil = Time.unscaledTime + 8;
         if (article != null) { selected = article; version = -1; }
         next = 0;
     }

@@ -55,6 +55,13 @@ public partial class ExchangeBot
     private readonly List<CompanySchedule> scheduleOrder = new();
     private int futureCursor;
     public double NewsClock { get; private set; }
+    /// <summary>
+    /// 플레이어가 자는 밤에 흘러간 것으로 치는 기사 시계(실제 초). 자는 동안은 세계를 돌리지 않으므로, 깨어날 때 이만큼을 한꺼번에 흘려보낸다.
+    /// 그 사이에 예약돼 있던 기사는 아침에 "밤사이 나온 기사"로 발행된다.
+    /// </summary>
+    public const double OvernightNewsSeconds = 400d;
+    /// <summary>자는 밤만큼 기사 시계를 흘려보낸다. 예약 순서와 내용은 바꾸지 않는다.</summary>
+    public void PassNight() { NewsClock += OvernightNewsSeconds; }
 
     private bool newsPaused, skipResumeDelta;
     private float nextFutureDebug;
@@ -107,6 +114,20 @@ public partial class ExchangeBot
         { return null; }
 
         return schedule.NearestDelisting;
+    }
+
+    /// <summary>
+    /// 그 회사에 예약된 다음 기사를 미리 본다(플레이어가 밤에 돈을 주고 사는 정보). 지금부터 horizonSeconds 안에 나올 것만 돌려준다.
+    /// 예약을 바꾸지 않는다. 상장폐지 기사는 대주주 통보 절차가 따로 있으므로 여기서는 알려 주지 않는다.
+    /// </summary>
+    public bool TryPeekFuture(Stock stock, double horizonSeconds, out string title, out float criticalValue, out double inSeconds)
+    {
+        title = null; criticalValue = 1f; inSeconds = 0d;
+        if (stock == null || !schedules.TryGetValue(stock, out var schedule) || schedule.Items.Count == 0) { return false; }
+        var next = schedule.Items.Peek();
+        if (next.IsDelisting || next.PublishAt - NewsClock > horizonSeconds || string.IsNullOrEmpty(next.Node.description)) { return false; }
+        title = next.Node.description; criticalValue = next.CriticalValue; inSeconds = Math.Max(0d, next.PublishAt - NewsClock);
+        return true;
     }
 
     internal int PublishedCompanyNode(Stock stock) => schedules.TryGetValue(stock, out var schedule) ? schedule.PublishedNode : 0;

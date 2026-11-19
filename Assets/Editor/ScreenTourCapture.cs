@@ -31,7 +31,22 @@ public static class ScreenTourCapture
     // 전체 화면 점검: 화면마다 한·영·일로 찍고 넘치는 글자를 적는다.
     private static bool audit;
     private static readonly List<(string name, Action prepare, Func<RectTransform> target)> steps = new();
-    private static readonly string[] languages = { "ko", "en", "ja" };
+    private static string[] languages = { "ko", "en", "ja" };
+    // 스팀 상점용 촬영(요청에 steam): 처음부터 영어로만 돌고, 고른 화면과 책상 시점을 Validation/Screens/steam 에 남긴다.
+    private static bool steam;
+    private static string steamOriginal = "";
+    private static readonly HashSet<string> SteamShots = new()
+    {
+        "dawn-end", "monitor-chart", "monitor-holding-profit", "stock-list", "tablet1-assets", "tablet1-orders", "tablet1-unlocks",
+        "tablet1-small-ladder", "tablet1-small-company", "tablet1-small-growth", "tablet1-small-queued", "tablet2-tactics", "tablet2-accumulate-running", "tablet2-automation",
+    };
+    private static void SteamView(DeskViewTarget target, string name)
+    {
+        // 책상 시점으로 옮기는 단계, 기다리는 단계, 찍는 단계.
+        steps.Add(("steam-" + name + "-focus", () => { if (steam) { DeskViewController.Instance.Focus(target); } }, () => null));
+        steps.Add(("steam-" + name + "-wait", () => { }, () => null));
+        steps.Add(("steam-" + name + "-shot", () => { }, () => { if (steam) { ShootView("steam/view-" + name); DeskViewController.Instance.ExitView(true); } return null; }));
+    }
     private static int stepIndex, languageIndex;
     private static bool sawPlaying;
     private static string only = "";
@@ -120,6 +135,10 @@ public static class ScreenTourCapture
         string request = File.ReadAllText(Request);
         audit = request.Contains("audit");
         only = request.Contains("only:") ? request.Substring(request.IndexOf("only:") + 5).Trim() : "";
+        steam = request.Contains("steam");
+        languages = steam ? new[] { "en" } : new[] { "ko", "en", "ja" };
+        // 스팀 촬영은 준비가 필요한 구간(새벽 관찰실, 소기업 인수, 작전 도구, 보유 손익)을 모두 밟는다.
+        if (steam) { audit = true; only = "dawn small tac holding"; }
         // 요청에 import가 있으면 번역 표를 먼저 다시 들여온다(편집기 메뉴와 같은 동작).
         if (request.Contains("import"))
         {
@@ -178,6 +197,8 @@ public static class ScreenTourCapture
         EditorSettings.enterPlayModeOptionsEnabled = true; EditorSettings.enterPlayModeOptions = EnterPlayModeOptions.DisableDomainReload;
         Application.runInBackground = true;
         began = EditorApplication.timeSinceStartup; ready = began + 3; phase = 0; waited = 0; sawPlaying = false;
+        steamOriginal = GameLocale.Code;
+        if (steam) { Directory.CreateDirectory(Folder + "/steam"); foreach (string old in Directory.GetFiles(Folder + "/steam", "*.png")) { File.Delete(old); } }
         Application.logMessageReceived += Log; EditorApplication.update += Tick; EditorApplication.EnterPlaymode();
     }
     private static void Log(string message, string stack, LogType type)
@@ -186,7 +207,9 @@ public static class ScreenTourCapture
 
     private static void Tick()
     {
-        if (EditorApplication.timeSinceStartup - began > (audit ? 900 : 300)) { Finish(new Exception("timeout at phase " + phase + " playing=" + EditorApplication.isPlaying)); return; }
+        // 스팀 촬영은 처음부터 영어로 돈다(채팅 기록에 다른 언어가 섞이지 않게).
+        if (steam && EditorApplication.isPlaying && phase < 100 && GameLocale.Code != "en") { try { GameLocale.SetLanguage("en"); } catch (Exception) { } }
+        if (EditorApplication.timeSinceStartup - began > (steam ? 1700 : audit ? 900 : 300)) { Finish(new Exception("timeout at phase " + phase + " playing=" + EditorApplication.isPlaying)); return; }
         // 누군가 플레이를 멈추면 더 기다리지 않고 끝낸다.
         if (EditorApplication.isPlaying) { sawPlaying = true; }
         else if (sawPlaying && !EditorApplication.isPlayingOrWillChangePlaymode) { Finish(new Exception("play mode ended before the capture finished")); return; }
@@ -271,7 +294,7 @@ public static class ScreenTourCapture
                 Shoot(chartScreen, "9-monitor-chart-after-closing", 1920, 1080);
                 if (!audit) { Finish(null); return; }
                 BuildAudit(); stepIndex = 0; languageIndex = 0;
-                SessionState.SetString(LanguageKey, GameLocale.Code);
+                SessionState.SetString(LanguageKey, steam && steamOriginal.Length > 0 ? steamOriginal : GameLocale.Code);
                 Directory.CreateDirectory(Folder + "/audit");
                 foreach (string old in Directory.GetFiles(Folder + "/audit", "*.png")) { File.Delete(old); }
                 phase = 100; ready = EditorApplication.timeSinceStartup + .5; return;
@@ -286,7 +309,7 @@ public static class ScreenTourCapture
             {
                 try { steps[stepIndex].prepare(); }
                 catch (Exception error) { report.AppendLine("STEP FAILED " + steps[stepIndex].name + " prepare: " + error.Message); }
-                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("tac-") && languageIndex == 0 && only.Contains("tac") ? (steps[stepIndex].name == "tac-0" ? 2 : steps[stepIndex].name == "tac-1" ? 6 : steps[stepIndex].name == "tac-2" ? 20 : steps[stepIndex].name == "tac-3" ? 8 : steps[stepIndex].name == "tac-4" || steps[stepIndex].name == "tac-5" ? 45 : 11) : steps[stepIndex].name == "found-wall" && languageIndex == 0 && only.Contains("found") ? 20 : steps[stepIndex].name.StartsWith("dawn-talk") && languageIndex == 0 && only.Contains("dawn") ? 7 : steps[stepIndex].name == "dawn-end" && languageIndex == 0 && only.Contains("dawn") ? 12 : steps[stepIndex].name.StartsWith("heat-") && languageIndex == 0 && only.Contains("heat") ? 45 : steps[stepIndex].name.StartsWith("talk-") && steps[stepIndex].name != "talk-0" && languageIndex == 0 && only.Contains("talk") ? 45 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
+                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steam && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("tac-") && languageIndex == 0 && only.Contains("tac") ? (steps[stepIndex].name == "tac-0" ? 2 : steps[stepIndex].name == "tac-1" ? 6 : steps[stepIndex].name == "tac-2" ? 20 : steps[stepIndex].name == "tac-3" ? 8 : steps[stepIndex].name == "tac-4" || steps[stepIndex].name == "tac-5" ? 45 : 11) : steps[stepIndex].name == "found-wall" && languageIndex == 0 && only.Contains("found") ? 20 : steps[stepIndex].name.StartsWith("dawn-talk") && languageIndex == 0 && only.Contains("dawn") ? 7 : steps[stepIndex].name == "dawn-end" && languageIndex == 0 && only.Contains("dawn") ? 12 : steps[stepIndex].name.StartsWith("heat-") && languageIndex == 0 && only.Contains("heat") ? 45 : steps[stepIndex].name.StartsWith("talk-") && steps[stepIndex].name != "talk-0" && languageIndex == 0 && only.Contains("talk") ? 45 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
             }
             if (phase == 101)
             {
@@ -294,14 +317,14 @@ public static class ScreenTourCapture
                 try
                 {
                     var target = step.target();
-                    if (only.Length > 0 && !step.name.Contains(only)) { target = null; }
+                    if (steam ? !SteamShots.Contains(step.name) : only.Length > 0 && !step.name.Contains(only)) { target = null; }
                     if (target == null) { if (only.Length == 0 && step.name != "menu-closed" && step.name != "large-caps") { report.AppendLine("STEP SKIPPED " + step.name + ": screen not found"); } }
                     else if (target.GetComponent<Canvas>() is Canvas overlay && overlay.renderMode == RenderMode.ScreenSpaceOverlay)
                     { ShootOverlay(overlay, "audit/" + languages[languageIndex] + "-" + (stepIndex + 1).ToString("00") + "-" + step.name); }
                     else
                     {
                         var area = target.rect; bool wide = area.width >= area.height;
-                        Shoot(target, "audit/" + languages[languageIndex] + "-" + (stepIndex + 1).ToString("00") + "-" + step.name, wide ? 1920 : 1080, wide ? 1080 : 1920);
+                        Shoot(target, (steam ? "steam/" : "audit/" + languages[languageIndex] + "-") + (stepIndex + 1).ToString("00") + "-" + step.name, wide ? 1920 : 1080, wide ? 1080 : 1920);
                     }
                 }
                 catch (Exception error) { report.AppendLine("STEP FAILED " + step.name + " shot: " + error.Message); }
@@ -372,6 +395,7 @@ public static class ScreenTourCapture
             report.AppendLine("DAWN INJECTED turnover " + career.Turnover.ToString("N0") + " -> unlock " + opened + " paid " + (before - player.cash).ToString("N0") + " unlocked " + career.DawnUnlocked);
         }, () => only.Contains("dawn") ? chatScreen : null));
         string[] lines = { "님들 안녕하세요", "ㅋㅋㅋㅋ 오늘 장 재밌네", "!분석 노보", "!분석 없는종목", "노보손해보험 지금 살까?", "뭐 살지 추천 좀", "LC디스플레이 오늘 간다 가즈아", "수익 30% 먹었다 ㅋㅋ", "아 물렸다 ㅠㅠ", "이 바보들아", "미안", "내가 세력이다", "개븅신새끼들", "전부 다 뒤져라", "애미 뒤진놈들 ㅋㅋ", "니들은 사회적 암적인 존재야", "roqbdtls Tlqkffusemf", "should i sell this thing", "보지 마 그 종목", "거품 꺼지면 사야지", "ㅂㅂ" };
+        if (steam) { lines = new[] { "morning everyone", "anyone watching Nobo Insurance today?", "LC Display is flying, let's go", "up 30% on that one lol", "should i sell this thing", "thanks, see you at the close" }; }
         steps.Add(("dawn-joined", () =>
         {
             if (!only.Contains("dawn") || languageIndex != 0) { return; }
@@ -409,7 +433,9 @@ public static class ScreenTourCapture
             }
             return only.Contains("dawn") ? chatScreen : null;
         }));
-        steps.Add(("monitor-chart", () => chat.SelectRoom(0), () => chartScreen));
+        // 스팀: 새벽 관찰실 대화가 떠 있는 채팅 화면을 책상 시점으로.
+        SteamView(DeskViewTarget.Chat, "chat");
+        steps.Add(("monitor-chart", () => { if (!steam) { chat.SelectRoom(0); } }, () => chartScreen));
         // 보유 현황 칸의 수익·손실 모습. 요청에 only:monitor-holding 이 있을 때만 주식을 쥐여 준다(다른 화면에 영향을 주지 않게).
         steps.Add(("monitor-holding-profit", () =>
         {
@@ -1028,14 +1054,140 @@ public static class ScreenTourCapture
             return null;
         }));
         steps.Add(("room-restore", () => { }, () => null));
+        // 스팀: 장이 한참 돈 뒤(작전 도구까지 쓴 뒤)에 가장 많이 움직인 종목의 차트와 책상 시점들.
+        steps.Add(("steam-mover", () =>
+        {
+            if (!steam) { return; }
+            var manager = StockManager.Instance; int best = -1; decimal most = -1m;
+            for (int i = 0; i < manager.stocks.Count; i++)
+            {
+                if (!manager.stocks[i].IsListed || StockStatistics.Instance == null || !StockStatistics.Instance.TryGetDailyChange(manager.stocks[i], out decimal change)) { continue; }
+                if (Math.Abs(change) > most) { most = Math.Abs(change); best = i; }
+            }
+            if (best >= 0) { manager.SelectStock(best); report.AppendLine("STEAM mover " + manager.stocks[best].symbol + " " + most.ToString("F1") + "%"); }
+        }, () => null));
+        steps.Add(("steam-mover-chart", () => { }, () => { if (steam) { Shoot(chartScreen, "steam/chart-mover", 1920, 1080); } return null; }));
+        SteamView(DeskViewTarget.Chart, "chart");
+        SteamView(DeskViewTarget.Stocks, "stocks");
+        steps.Add(("steam-desk", () => { if (steam) { DeskViewController.Instance.ExitView(true); } }, () => { if (steam) { ShootView("steam/view-desk"); } return null; }));
         // 시스템 메뉴(ESC): 일시정지 화면과 언어 설정.
+        // 밤 준비: 낮의 잠긴 화면 → 밤으로 넘긴 뒤(주입) 세 가지를 실제로 해 본다 → 장을 다시 열어(주입) 심은 기사가 나가는지 본다.
+        {
+            var nightDevice = Object.FindObjectsByType<TabletAccountUI>(FindObjectsInactive.Include).FirstOrDefault(item => !item.second);
+            RectTransform nightScreen = nightDevice == null ? null : (RectTransform)nightDevice.transform;
+            Stock nightStock = null; decimal nightPrice = 0m;
+            steps.Add(("night-locked", () => { if (only.Contains("night") && nightDevice != null) { nightDevice.ShowPage(TabletAccountUI.Page.Night); } }, () => only.Contains("night") ? nightScreen : null));
+            // 낮의 뉴스 조작은 하루에 한 번.
+            steps.Add(("night-daynews", () =>
+            {
+                if (!only.Contains("night") || languageIndex != 0) { return; }
+                var publisher = FakeNewsManager.Instance; var target = StockManager.Instance.stocks[1];
+                bool first = publisher.TryPublishPlayer(target, "contracts", true, 0, out _, out string why1);
+                bool second = publisher.TryPublishPlayer(target, "contracts", false, 1, out _, out string why2);
+                report.AppendLine("DAYNEWS unlocked " + publisher.PlayerUnlocked + " first " + first + " (" + why1 + ") second " + second + " (" + why2 + ") used today " + publisher.PlayerUsedToday);
+            }, () => null));
+            steps.Add(("night-prepared", () =>
+            {
+                if (!only.Contains("night") || nightDevice == null) { return; }
+                var day = MarketDayController.Instance; var prep = NightPrep.Instance; var player = PlayerAccounts.Instance.primary; var rest = PlayerRestController.Instance;
+                if (languageIndex == 0)
+                {
+                    typeof(MarketDayController).GetProperty("Phase").SetValue(day, MarketPhase.PostClose);
+                    report.AppendLine("NIGHT INJECTED phase PostClose at " + DeviceMarketJournal.Stamp() + " night " + prep.IsNight + " cash " + player.cash.ToString("N0") + " fatigue " + rest.State.fatigue.ToString("0.0"));
+                    // 예약된 기사가 가까운 종목을 찾아 그 종목으로 사 본다(없으면 첫 종목).
+                    foreach (var stock in StockManager.Instance.stocks) { if (stock.IsListed && ExchangeBot.Instance.TryPeekFuture(stock, day.tradingSeconds * 1.125, out string peek, out float worth, out double wait)) { report.AppendLine("NIGHT schedule " + stock.symbol + " in " + wait.ToString("0") + "s value " + worth.ToString("0.000") + " title " + peek); nightStock ??= stock; } }
+                    nightStock ??= StockManager.Instance.stocks[0];
+                    // 해금 전에는 거절되어야 한다. 그다음 세 해금을 넣어 주고(주입) 실제로 해 본다.
+                    report.AppendLine("NIGHT before unlock: tip " + prep.BuyTip(nightStock) + " plant " + prep.Plant(nightStock, true) + " tease " + prep.Tease(nightStock) + " | " + prep.LastResult + " | unlock items " + PlayerProgression.Instance.UnlockItems.Count);
+                    var opened = (List<string>)typeof(PlayerProgression).GetField("unlocked", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(PlayerProgression.Instance);
+                    opened.Add(PlayerProgression.NightTipUnlock); opened.Add(PlayerProgression.NightPlantUnlock); opened.Add(PlayerProgression.NightTeaseUnlock);
+                    report.AppendLine("NIGHT INJECTED three night unlocks");
+                    decimal before = player.cash; double tired = rest.State.fatigue;
+                    bool tipped = prep.BuyTip(nightStock);
+                    report.AppendLine("NIGHT tip " + nightStock.symbol + " ok " + tipped + " paid " + (before - player.cash).ToString("N0") + " fatigue +" + (rest.State.fatigue - tired).ToString("0.0") + " found " + (prep.LastTip != null && prep.LastTip.Found) + " positive " + (prep.LastTip != null && prep.LastTip.Positive) + " title " + prep.LastTip?.Title + " | " + prep.LastResult);
+                    report.AppendLine("NIGHT tip again ok " + prep.BuyTip(nightStock) + " | " + prep.LastResult);
+                    before = player.cash; bool planted = prep.Plant(nightStock, true); nightPrice = nightStock.currentPrice;
+                    report.AppendLine("NIGHT plant " + nightStock.symbol + " ok " + planted + " paid " + (before - player.cash).ToString("N0") + " price " + nightPrice.ToString("N0") + " | " + prep.LastResult);
+                    bool teased = prep.Tease(nightStock);
+                    report.AppendLine("NIGHT tease ok " + teased + " room " + (prep.MyRoom() == null ? "none" : prep.MyRoom().Members.Count + " members") + " | " + prep.LastResult + " | ledger " + StockIntegrityChecker.Instance.CheckStock(nightStock).isValid);
+                }
+                nightDevice.ShowPage(TabletAccountUI.Page.Night); nightDevice.GetComponentInChildren<NightPrepUI>(true)?.Refresh();
+            }, () => only.Contains("night") ? nightScreen : null));
+            // 그대로 잠든다(실제 취침 경로). 자는 사이에 나온 기사가 아침 브리핑에 모인다.
+            steps.Add(("night-sleep", () =>
+            {
+                if (!only.Contains("night") || languageIndex != 0) { return; }
+                var rest = PlayerRestController.Instance; int before = NewsManager.Instance.Articles.Count; double clock = ExchangeBot.Instance.NewsClock;
+                bool slept = rest.SleepUntilMorning();
+                report.AppendLine("MORNING slept " + slept + " day " + MarketDayController.Instance.Day + " phase " + MarketDayController.Instance.Phase + " news clock +" + (ExchangeBot.Instance.NewsClock - clock).ToString("0") + "s articles before " + before + " fatigue " + rest.State.fatigue.ToString("0"));
+            }, () => null));
+            for (int index = 0; index < 7; index++)
+            {
+                int number = index;
+                steps.Add(("night-morning-" + number, () => { }, () =>
+                {
+                    if (!only.Contains("night") || languageIndex != 0) { return null; }
+                    var brief = MorningBriefing.Instance;
+                    if (number == 6)
+                    {
+                        var line = new StringBuilder("MORNING briefing shown " + brief.Shown + " entries " + brief.Entries.Count + " articles now " + NewsManager.Instance.Articles.Count);
+                        foreach (var entry in brief.Entries) { line.Append(" | " + entry.Stock.symbol + " " + entry.Expected.ToString("+0.0;-0.0") + "% " + entry.Title); }
+                        report.AppendLine(line.ToString());
+                        var panel = GameObject.Find("Area :: Morning Briefing");
+                        if (panel != null) { ShootView("audit/ko-morning-view"); return (RectTransform)panel.transform; }
+                    }
+                    return null;
+                }));
+            }
+            steps.Add(("night-open", () =>
+            {
+                if (!only.Contains("night") || languageIndex != 0) { return; }
+                typeof(MarketDayController).GetProperty("Phase").SetValue(MarketDayController.Instance, MarketPhase.Trading);
+                nightPrice = nightStock.currentPrice;
+                report.AppendLine("NIGHT INJECTED phase Trading (the market reopens) articles " + NewsManager.Instance.Articles.Count);
+            }, () => null));
+            for (int index = 0; index < 16; index++)
+            {
+                int number = index;
+                steps.Add(("night-wait-" + number, () => { }, () =>
+                {
+                    if (!only.Contains("night") || languageIndex != 0 || number % 5 != 0 && number != 15) { return null; }
+                    var prep = NightPrep.Instance; var latest = NewsManager.Instance.Articles.Count > 0 ? NewsManager.Instance.Articles[0] : null;
+                    report.AppendLine("NIGHT t" + number + " planted pending " + (prep.Planted != null) + " published " + prep.PlantsPublished + " price " + nightStock.currentPrice.ToString("N0") + " (was " + nightPrice.ToString("N0") + ") latest article " + (latest == null ? "none" : latest.symbol + " fabricated " + latest.fabricated + " " + latest.title));
+                    return null;
+                }));
+            }
+        }
+        // 피로 한계: 피로를 끝까지 채워 쓰러뜨리고(주입), 눈이 감기는 모습과 마감까지 흘러간 뒤의 상태를 남긴다.
+        steps.Add(("collapse-begin", () =>
+        {
+            if (!only.Contains("collapse") || languageIndex != 0) { return; }
+            var rest = PlayerRestController.Instance; var day = MarketDayController.Instance;
+            report.AppendLine("COLLAPSE INJECTED fatigue 100 at " + DeviceMarketJournal.Stamp() + " phase " + day.Phase + " day " + day.Day + " cash " + StockManager.Instance.playerAccount.cash.ToString("N0"));
+            rest.State.fatigue = 100d;
+        }, () => null));
+        for (int index = 0; index < 60; index++)
+        {
+            int number = index;
+            steps.Add(("collapse-wait-" + number, () => { }, () =>
+            {
+                if (!only.Contains("collapse") || languageIndex != 0) { return null; }
+                var day = MarketDayController.Instance; var rest = PlayerRestController.Instance;
+                if (number % 6 == 0 || number == 59) { report.AppendLine("COLLAPSE t" + number + " active " + CollapseSleep.Active + " scale " + Time.timeScale.ToString("0.#") + " at " + DeviceMarketJournal.Stamp() + " phase " + day.Phase + " report " + day.ReportPending + " fatigue " + rest.State.fatigue.ToString("0") + " menu " + PauseMenuController.Instance.CurrentPage); }
+                var lids = GameObject.Find("Area :: Collapse Sleep");
+                return lids != null && (number == 0 || number == 4) ? (RectTransform)lids.transform : null;
+            }));
+        }
         var menu = PauseMenuController.Instance;
         if (menu != null)
         {
             RectTransform menuScreen = (RectTransform)menu.UI.Root.transform;
             steps.Add(("menu-pause", () => menu.Open(), () => menuScreen));
             steps.Add(("menu-language", () => { menu.Settings(); menu.UI.Settings("게임"); }, () => menuScreen));
-            steps.Add(("menu-closed", () => { menu.Back(); menu.Resume(); }, () => null));
+            // 타이틀 화면과 새 게임 화면.
+            steps.Add(("menu-title", () => menu.ShowTitle(), () => menuScreen));
+            steps.Add(("menu-newgame", () => menu.UI.NewGame(GameLocale.Code == "en" ? "My Small Company" : GameLocale.Code == "ja" ? "わたしの小さな会社" : "내 작은 회사", StockManager.Instance.economy.retailStartingCash), () => menuScreen));
+            steps.Add(("menu-closed", () => { menu.UI.Pause(); menu.Back(); menu.Resume(); }, () => null));
         }
         // 요청에 only:이름 이 있으면 그 이름이 들어간 화면만 찍는다(준비 단계는 그대로 밟는다).
         report.AppendLine("audit steps=" + steps.Count + (only.Length > 0 ? " only=" + only : ""));
@@ -1099,7 +1251,7 @@ public static class ScreenTourCapture
     /// <summary>플레이어 카메라가 보는 방 그대로를 찍는다.</summary>
     private static void ShootView(string name)
     {
-        const int width = 1600, height = 900;
+        const int width = 1920, height = 1080;
         var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
         camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
         var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
@@ -1148,7 +1300,7 @@ public static class ScreenTourCapture
         holder.transform.position = top + back * reach * .75f + Vector3.up * reach * .55f; holder.transform.LookAt(top);
         var lamp = new GameObject("Light :: Desk Check").AddComponent<Light>(); lamp.type = LightType.Point; lamp.range = reach * 4f; lamp.intensity = reach * reach * .9f;
         lamp.transform.position = top + back * reach * .3f + Vector3.up * reach * .8f;
-        const int width = 1600, height = 900;
+        const int width = 1920, height = 1080;
         var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active;
         view.targetTexture = texture; view.Render(); RenderTexture.active = texture;
         var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
@@ -1186,7 +1338,7 @@ public static class ScreenTourCapture
         holder.transform.position = eye; holder.transform.LookAt(target);
         var glowHolder = new GameObject("Light :: Room Check"); var fill = glowHolder.AddComponent<Light>(); fill.type = LightType.Point; fill.range = 30f; fill.intensity = brightness * 8f;
         glowHolder.transform.position = eye + Vector3.up * 1.2f;
-        const int width = 1600, height = 900;
+        const int width = 1920, height = 1080;
         var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active;
         view.targetTexture = texture; view.Render(); RenderTexture.active = texture;
         var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
@@ -1197,7 +1349,7 @@ public static class ScreenTourCapture
     }
     private static void ShootOverlay(Canvas canvas, string name)
     {
-        const int width = 1600, height = 900;
+        const int width = 1920, height = 1080;
         var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
         camera.targetTexture = texture;
         canvas.renderMode = RenderMode.ScreenSpaceCamera; canvas.worldCamera = camera; canvas.planeDistance = camera.nearClipPlane + .2f;

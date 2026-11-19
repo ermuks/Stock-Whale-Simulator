@@ -10,6 +10,23 @@ public sealed partial class PlayerProgression
 {
     public const string CrowdValueUnlock = "chart.crowdValue", RealValueUnlock = "chart.realValue";
     public const string DawnUnlock = "room.dawn", CloseUnlock = "tactic.close", WashUnlock = "tactic.wash", FoundUnlock = "company.found", WallUnlock = "tactic.wall";
+    /// <summary>밤 준비의 세 가지. 돈과 시간을 들여 여는 보통의 해금이다(저장도 보통 해금과 같이 된다).</summary>
+    public const string NightTipUnlock = "night.tip", NightPlantUnlock = "night.plant", NightTeaseUnlock = "night.tease";
+    private static UnlockItem[] NightUnlocks() => new[]
+    {
+        new UnlockItem { authored = true, id = NightTipUnlock, cost = 10_000_000, minutes = 120, title = "밤일 · 내일 기사 미리 사기", en = "Night · Tomorrow's story", ja = "夜 · 明日の記事を先読み",
+            description = "장이 끝난 밤에, 거래소에 예약된 그 회사의 다음 기사를 돈을 주고 먼저 읽습니다. 하룻밤에 한 건입니다.",
+            enDescription = "After the close, pay to read a company's next scheduled story before it runs. One per night.",
+            jaDescription = "引け後の夜に、その会社の予約済みの次の記事をお金を払って先に読みます。一晩に一件です。" },
+        new UnlockItem { authored = true, id = NightPlantUnlock, requires = NightTipUnlock, cost = 30_000_000, minutes = 240, title = "밤일 · 기사 심기", en = "Night · Plant a story", ja = "夜 · 記事を仕込む",
+            description = "밤에 기자에게 돈을 주고, 내일 개장 직후에 나갈 호재나 악재 기사를 맡깁니다. 하룻밤에 한 건입니다. 정정 기사가 따라붙을 수 있습니다.",
+            enDescription = "At night, pay a reporter to run a good or bad story right after tomorrow's open. One per night. A correction may follow.",
+            jaDescription = "夜に記者へお金を払い、明日の寄り付き直後に出る好材料・悪材料の記事を手配します。一晩に一件です。訂正記事が続くことがあります。" },
+        new UnlockItem { authored = true, id = NightTeaseUnlock, cost = 5_000_000, minutes = 60, title = "밤일 · 리딩방 예고", en = "Night · Tease my room", ja = "夜 · 部屋に予告",
+            description = "밤에 내 리딩방 회원들에게 내일 볼 종목을 흘려 둡니다. 개장하자마자 지시가 저절로 나갑니다. 회원이 있는 내 방이 있어야 씁니다.",
+            enDescription = "At night, tell your room's members which stock you are watching tomorrow. The call goes out by itself at the open. Needs a room of your own with members.",
+            jaDescription = "夜に自分の部屋の会員へ明日見る銘柄を流しておきます。寄り付きと同時に指示が自動で出ます。会員のいる自分の部屋が必要です。" },
+    };
     private static string Local(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
 
     /// <summary>해금 탭에 함께 보여 주는, 다른 곳에서 열리는 해금들. 성장하는 순서대로 놓는다.</summary>
@@ -47,9 +64,13 @@ public sealed partial class PlayerProgression
         public int minutes;
         /// <summary>다른 곳에서 열리는 해금(새벽 관찰실, 기업 설립, 작전 도구). 상태를 그쪽에서 읽어 오고, 글은 언어마다 여기 적힌 것을 그대로 쓴다.</summary>
         [NonSerialized] public bool external;
+        /// <summary>글을 언어마다 여기 적어 둔 항목(번역 표를 거치지 않는다). 여는 방식은 보통 해금과 같다.</summary>
+        [NonSerialized] public bool authored;
+        /// <summary>제목·설명을 번역 표 대신 여기 적힌 글로 보여 주는지.</summary>
+        public bool Written => external || authored;
         [NonSerialized] public string en, ja, enDescription, jaDescription;
-        public string LocalTitle => !external ? title : GameLocale.Code == "ja" ? ja : GameLocale.Code == "en" ? en : title;
-        public string LocalDescription => !external ? description : GameLocale.Code == "ja" ? jaDescription : GameLocale.Code == "en" ? enDescription : description;
+        public string LocalTitle => !Written ? title : GameLocale.Code == "ja" ? ja : GameLocale.Code == "en" ? en : title;
+        public string LocalDescription => !Written ? description : GameLocale.Code == "ja" ? jaDescription : GameLocale.Code == "en" ? enDescription : description;
     }
 
     [Serializable]
@@ -95,7 +116,8 @@ public sealed partial class PlayerProgression
                     }
                 }
 
-                // 다른 곳에서 열리는 해금을 뒤에 잇는다.
+                // 밤 준비의 해금, 그리고 다른 곳에서 열리는 해금을 뒤에 잇는다.
+                valid.AddRange(NightUnlocks());
                 valid.AddRange(ExternalUnlocks());
                 unlockItems = valid.ToArray();
             }
@@ -265,7 +287,8 @@ public sealed partial class PlayerProgression
         {
             unlocked.Add(id);
             var item = FindUnlock(id);
-            MarketEventFeed.Instance?.Notify("해금 완료 · " + (item == null ? id : item.title));
+            if (item != null && item.authored) { MarketEventFeed.Instance?.Notify(Local("해금 완료 · ", "Unlocked · ", "解放 · ") + item.LocalTitle); }
+            else { MarketEventFeed.Instance?.Notify("해금 완료 · " + (item == null ? id : item.title)); }
         }
 
         UnlockResult = "해금 완료";

@@ -143,6 +143,9 @@ public sealed class MarketDayController : MonoBehaviour
     {
         if (Phase != MarketPhase.PostClose || phaseWork != null) { return; }
         ReportPending = false; Day++; Phase = MarketPhase.PreOpen; elapsed = 0f; RemainingSeconds = Duration;
+        // 자는 사이의 밤을 흘려보낸다: 그동안 예약돼 있던 기사가 아침에 나오고, 브리핑이 그것을 모아 보여 준다.
+        MorningBriefing.Instance?.Begin();
+        ExchangeBot.Instance?.PassNight();
     }
 
     void Awake()
@@ -171,6 +174,8 @@ public sealed class MarketDayController : MonoBehaviour
         if (GetComponent<Sfx>() == null) { gameObject.AddComponent<Sfx>(); }
         if (GetComponent<PlayerTactics>() == null) { gameObject.AddComponent<PlayerTactics>(); }
         if (GetComponent<CrashWatch>() == null) { gameObject.AddComponent<CrashWatch>(); }
+        if (GetComponent<NightPrep>() == null) { gameObject.AddComponent<NightPrep>(); }
+        if (GetComponent<MorningBriefing>() == null) { gameObject.AddComponent<MorningBriefing>(); }
         ChatSocialDebugUnity.ApplySeed(this);
         random = new System.Random(seed);
         ConversationFocus.ExplorationShare = topicExplorationShare; ConversationFocus.RefreshSeconds = topicRefreshSeconds;

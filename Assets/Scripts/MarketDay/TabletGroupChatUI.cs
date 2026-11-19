@@ -508,7 +508,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         { return; }
         var names = new List<string> { "방장", GameLocale.Text("방장") };
         if (society != null)
-        { foreach (var bot in society.SocialBots.Values) { names.Add(bot.Social.Nickname); GameLocale.ProtectLiteral(bot.Social.Nickname); } }
+        { foreach (var bot in society.SocialBots.Values) { foreach (string name in bot.Social.Names) { names.Add(name); GameLocale.ProtectLiteral(name); } } }
         var aliases = new List<KeyValuePair<string, string>>();
         if (stocks != null)
         {

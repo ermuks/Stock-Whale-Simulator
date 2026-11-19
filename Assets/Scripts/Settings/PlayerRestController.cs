@@ -12,6 +12,9 @@ public sealed class PlayerRestController : MonoBehaviour
     private RawImage overlay;
     private float nextRefresh;
     public Camera ViewCamera { get; private set; }
+    private CollapseSleep collapse;
+    /// <summary>피로가 끝까지 차서 쓰러져 자는 중인지. 그동안은 조작을 받지 않는다.</summary>
+    public static bool Collapsed => CollapseSleep.Active;
     public bool CanSleep => day != null && day.Ready && day.Phase == MarketPhase.PostClose && !State.dead;
     public double SleepHours => CanSleep ? (1920d - day.ExactGameMinute) / 60d : 0d;
     private void Awake()
@@ -25,6 +28,7 @@ public sealed class PlayerRestController : MonoBehaviour
         var shader = Resources.Load<Shader>("UI/SystemMenu/FatigueVision");
         if (shader != null) { vision = new Material(shader); overlay.material = vision; }
         overlay.enabled = false;
+        collapse = CollapseSleep.Install(this, day);
     }
     public void ObserveClock()
     {
@@ -34,9 +38,15 @@ public sealed class PlayerRestController : MonoBehaviour
     private void Update()
     {
         if (Time.timeScale > 0) { ObserveClock(); }
+        // 예전 저장에 남은 사망 상태는 쓰러짐으로 바꾼다. 이제 과로로 죽지 않는다.
+        if (State.dead) { State.dead = false; State.fatigue = 100d; }
+        // 피로가 끝까지 차면 그 자리에서 쓰러져 그날을 통째로 잔다.
+        if (State.fatigue >= 100d && !CollapseSleep.Active && Time.timeScale > 0 && !PauseMenuController.IsOpen && day != null && day.Ready && !day.ReportPending
+            && (StockManager.Instance == null || StockManager.Instance.SetupConfirmed))
+        { collapse.Begin(); }
         if (Time.unscaledTime < nextRefresh) { return; }
         nextRefresh = Time.unscaledTime + .05f;
-        bool shown = vision != null && State.fatigue > 25 && !PauseMenuController.IsOpen;
+        bool shown = vision != null && State.fatigue > 25 && !PauseMenuController.IsOpen && !CollapseSleep.Active;
         overlay.enabled = shown;
         if (!shown) { return; }
         vision.SetFloat("_Fatigue", (float)State.fatigue / 100f);
@@ -54,7 +64,6 @@ public sealed class PlayerRestController : MonoBehaviour
     public void NightPassedAwake()
     {
         ObserveClock(); State.MissNight();
-        if (State.dead) { PauseMenuController.Instance?.ShowDeath(); }
     }
     private void OnDestroy()
     { if (vision != null) { Destroy(vision); } if (Instance == this) { Instance = null; } }

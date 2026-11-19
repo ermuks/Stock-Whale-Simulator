@@ -27,6 +27,16 @@ public sealed class TabletKitLayout : MonoBehaviour
         var button=TabletKitStyle.Action("Shortcut "+icon,root,"",x,y,.062f,owner.second ? .06f : .07f,action);
         TabletKitStyle.Glyph(icon,button.transform,.22f,.22f,.56f,.56f);
     }
+    /// <summary>밤 준비 탭: 이름은 언어마다 따로 적고, 밤이 되면 아이콘이 밝아진다.</summary>
+    private void RefreshNightTab()
+    {
+        int index=pages.IndexOf(TabletAccountUI.Page.Night); if (index<0) { return; }
+        var label=buttons[index].GetComponentInChildren<TextMeshProUGUI>();
+        string text=GameLocale.Code=="ja" ? "夜の仕込み" : GameLocale.Code=="en" ? "Night" : "밤 준비";
+        if (!GameLocalizedText.Matches(label,text)) { GameLocalizedText.Set(label,text,true); }
+        bool night=NightPrep.Instance!=null && NightPrep.Instance.IsNight;
+        var icon=buttons[index].transform.Find("Image :: timer"); if (icon!=null) { icon.GetComponent<Image>().color=night ? TabletKitStyle.Accent : TabletKitStyle.Ink; }
+    }
     /// <summary>오늘 매도로 실현한 손익. 판 것이 없으면 줄을 비운다.</summary>
     private void RefreshRealized()
     {
@@ -43,7 +53,7 @@ public sealed class TabletKitLayout : MonoBehaviour
     }
     void Update()
     {
-        if (Time.unscaledTime>=nextRealized) { nextRealized=Time.unscaledTime+.5f; RefreshRealized(); }
+        if (Time.unscaledTime>=nextRealized) { nextRealized=Time.unscaledTime+.5f; RefreshRealized(); RefreshNightTab(); }
         if (firstOrder==null || emptyLabel==null) { return; }
         bool none=emptyLabel.gameObject.activeInHierarchy && owner.accounts!=null;
         if (firstOrder.gameObject.activeSelf!=none) { firstOrder.gameObject.SetActive(none); }
@@ -83,6 +93,9 @@ public sealed class TabletKitLayout : MonoBehaviour
         {
             UnlockGridUI.Install(owner);
             Add("해금","unlock",TabletAccountUI.Page.Unlocks,3);
+            // 밤 준비: 장이 끝난 뒤에만 쓸 수 있다. 밤이 되면 탭이 밝아진다.
+            NightPrepUI.Install(owner);
+            Add("밤 준비","timer",TabletAccountUI.Page.Night,4);
         }
         TabletKitStyle.Surface("Tab Divider",root,.025f,.142f,.95f,.001f,TabletKitStyle.Line);
         owner.managementButton.gameObject.SetActive(false);
@@ -114,7 +127,7 @@ public sealed class TabletKitLayout : MonoBehaviour
     private void Add(string text,string icon,TabletAccountUI.Page page,int index)
     {
         // 기본 계좌 태블릿만 다섯 번째 탭(해금)을 가진다. 네 탭일 때의 간격은 그대로다.
-        float step=.96f/(owner.second ? 3 : 4);
+        float step=.96f/(owner.second ? 3 : 5);
         var button=TabletKitStyle.Action("Tablet "+page,owner.contentRoot.transform,text,.025f+index*step,.065f,step-.01f,.072f,()=>owner.ShowPage(page));
         button.image.color=Color.clear;
         TabletKitStyle.Glyph(icon,button.transform,.045f,.20f,.16f,.60f);

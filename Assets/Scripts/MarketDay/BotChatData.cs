@@ -161,7 +161,13 @@ public sealed class BotChatTemplateCatalog
 public sealed class BotSocialState
 {
     public readonly int Id;
-    public readonly string Nickname, Profile;
+    public readonly string Profile;
+    /// <summary>태어날 때 정한 세 언어의 닉네임(한국어, 영어, 일본어).</summary>
+    public readonly string[] Names;
+    /// <summary>지금 언어 설정에 맞는 닉네임.</summary>
+    public string Nickname => Names[BotNicknames.LanguageIndex()];
+    /// <summary>어느 언어의 이름으로 불렸든 이 봇인지.</summary>
+    public bool CalledBy(string name) { return name != null && System.Array.IndexOf(Names, name) >= 0; }
     public readonly BotPersonality Personality;
     public readonly BotTone Tone = BotTone.Casual;
     public readonly float Risk, Horizon, Chase, Sensitivity, Recovery;
@@ -185,7 +191,6 @@ public sealed class BotSocialState
     {
         Id = id;
         var rng = new System.Random(unchecked(seed + id * 7919));
-        Nickname = "익명" + id.ToString("D4");
         Personality = type.Contains("Fomo") || type.Contains("Firefly") ? BotPersonality.Momentum : type.Contains("Holder") ? BotPersonality.Patient : type.Contains("Panic") ? BotPersonality.Cautious : BotPersonality.Balanced;
         Risk = (float)rng.NextDouble();
         Horizon = (float)rng.NextDouble();
@@ -205,7 +210,7 @@ public sealed class BotSocialState
         Role = type.Contains("Whale") ? "고래" : type.Contains("Smart") || type.Contains("Book") ? "기관" : "개인";
         // 예전에는 이름 10개에 번호를 붙였다. 난수열 순서는 그대로 두고 이름만 파츠 조합으로 만든다.
         rng.Next(10);
-        Nickname = BotNicknames.Make(seed, id);
+        Names = BotNicknames.MakeAll(seed, id);
         Profile = Role + " · " + (Articulation < .3f ? "짧게 말함" : Articulation > .7f ? "분석적으로 말함" : "대화형");
         for (int i = 0; i < LastEvents.Length; i++)
         {

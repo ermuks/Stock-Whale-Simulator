@@ -166,7 +166,7 @@ public static partial class SessionStore
             if (component.gameObject.activeSelf!=(bool)binding["active"]) { component.gameObject.SetActive((bool)binding["active"]); }
         }
         GameLocale.ProtectLiteral(DailyIncomeController.Instance?.CompanyName);
-        foreach (var bot in MarketDayController.Instance.Bots) { if (bot?.Social != null) { GameLocale.ProtectLiteral(bot.Social.Nickname); } }
+        foreach (var bot in MarketDayController.Instance.Bots) { if (bot?.Social != null) { foreach (string name in bot.Social.Names) { GameLocale.ProtectLiteral(name); } } }
         foreach (var list in Object.FindObjectsByType<StockListUIManager>(FindObjectsInactive.Include)) { list.ReconnectSession(); }
         var market=StockManager.Instance; int selected=market.stocks.IndexOf(market.CurrentStock);
         market.CurrentStock=null;

@@ -9,7 +9,7 @@ using UnityEngine.UI;
 [DefaultExecutionOrder(300)]
 public sealed class TabletAccountUI : MonoBehaviour
 {
-    public enum Page { Dashboard, Events, Records, Detail, Orders, Automation, Management, Special, Unlocks }
+    public enum Page { Dashboard, Events, Records, Detail, Orders, Automation, Management, Special, Unlocks, Night }
     private TabletKitLayout kit;
     /// <summary>기록 탭의 요약과 표. 있으면 예전의 글자 나열은 쓰지 않는다.</summary>
     [System.NonSerialized] public TabletRecordsView recordsView;
@@ -67,7 +67,7 @@ public sealed class TabletAccountUI : MonoBehaviour
         { return; }
         if (page == Page.Automation && !second)
         { return; }
-        if (page == Page.Unlocks && second)
+        if ((page == Page.Unlocks || page == Page.Night) && second)
         { return; }
         if (page == Page.Detail && (dashboard.Selected == null || account.GetOwnedVolume(dashboard.Selected) <= 0m))
         { page = Page.Dashboard; }
@@ -85,6 +85,7 @@ public sealed class TabletAccountUI : MonoBehaviour
         else if (page == Page.Management) { events.legacy.ShowDesk(); GetComponentInChildren<CompanyDashboardUI>(true)?.OpenGrowth(); }
         else if (page == Page.Special && second) { events.ShowLocal(); events.newsReader.OpenStudio(); }
         else if (page == Page.Unlocks) { GetComponentInChildren<UnlockGridUI>(true)?.Show(); }
+        else if (page == Page.Night) { GetComponentInChildren<NightPrepUI>(true)?.Show(); }
         for (int i = 0; i < tabs.Length; i++)
         { tabs[i].image.color = (int)page == i ? new Color32(26,43,49,255) : Color.clear; tabLines[i].enabled = (int)page == i; }
         next = 0f;

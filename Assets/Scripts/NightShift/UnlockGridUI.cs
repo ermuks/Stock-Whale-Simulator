@@ -232,7 +232,7 @@ public sealed class UnlockGridUI : MonoBehaviour
                 cell.fill.rectTransform.anchorMax = new Vector2(Progress(progression, cell.item), 1f);
                 GameLocalizedText.Set(cell.cost, LocalTime(progression.UnlockRemainingMinutes), true); cell.cost.color = TabletKitStyle.Accent;
             }
-            else if (cell.item.external)
+            else if (cell.item.Written)
             {
                 GameLocalizedText.Set(cell.title, cell.item.LocalTitle, true);
                 GameLocalizedText.Set(cell.cost, state == PlayerProgression.UnlockState.Unlocked ? "" : cell.item.cost > 0 ? DeviceTerminalUI.Money(cell.item.cost) : Condition, true);
@@ -261,10 +261,11 @@ public sealed class UnlockGridUI : MonoBehaviour
 
         var selectedState = progression.StateOf(shown);
         bool can = progression.CanStartUnlock(shown, out string reason);
-        if (shown.external)
+        if (shown.Written)
         {
             GameLocalizedText.Set(title, shown.LocalTitle, true); GameLocalizedText.Set(description, shown.LocalDescription, true);
-            GameLocalizedText.Set(cost, shown.cost > 0 ? DeviceTerminalUI.Money(shown.cost) : Condition, true); GameLocalizedText.Set(duration, "—", true);
+            GameLocalizedText.Set(cost, shown.cost > 0 ? DeviceTerminalUI.Money(shown.cost) : Condition, true);
+            if (shown.external) { GameLocalizedText.Set(duration, "—", true); } else { DeviceTerminalUI.Set(duration, GameTime(shown.minutes)); }
         }
         else
         {

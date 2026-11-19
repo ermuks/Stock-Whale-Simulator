@@ -2,6 +2,7 @@ using System.Collections.Generic;
 
 /// <summary>
 /// 봇 닉네임을 여러 파츠의 조합으로 만든다. 같은 시드·번호·언어는 언제나 같은 이름이 된다.
+/// 봇은 태어날 때 한국어·영어·일본어 이름을 모두 정해 두고, 화면에는 지금 언어의 이름이 보인다.
 /// 한 세계 안에서는 겹치지 않는다. 공백·기호·종목 이름은 쓰지 않는다(채팅의 @지목과 종목 링크가 글자로 동작한다).
 /// 언어마다 그 나라 투자 게시판에서 흔히 보이는 짜임(수식어+동물+숫자, 한 문장 닉네임, 자조 섞인 별명)을 따로 가진다.
 /// </summary>
@@ -144,30 +145,44 @@ public static class BotNicknames
         }
     };
 
-    private static readonly HashSet<string> used = new();
+    private static readonly Parts[] All = { Korean, English, Japanese };
+    private static readonly HashSet<string>[] usedBy = { new(), new(), new() };
+    // 어느 언어의 이름으로든 그 봇의 세 이름을 찾는다(예전 언어로 적힌 지목을 지금 언어로 바꿔 보여 줄 때 쓴다).
+    private static readonly Dictionary<string, string[]> registry = new();
 
     private static uint Mix(int seed, int id, string salt)
     { return CompanyBusiness.Hash("NICK:" + salt + ":" + seed + ":" + id); }
 
-    private static Parts current = Korean;
-
-    // 봇은 번역 표가 다 읽히기 전에 만들어진다. 그때는 GameLocale.Code가 아직 기본값이므로 저장된 언어 설정을 직접 읽는다.
-    private static Parts Current()
+    /// <summary>지금 언어의 자리: 0 한국어, 1 영어, 2 일본어.</summary>
+    public static int LanguageIndex()
     {
+        // 번역 표가 다 읽히기 전에는 GameLocale.Code가 아직 기본값이므로 저장된 언어 설정을 직접 읽는다.
         string code = GameLocale.Ready ? GameLocale.Code : UnityEngine.PlayerPrefs.GetString("DonDon.Language", "ko");
-        return code == "en" ? English : code == "ja" ? Japanese : Korean;
+        return code == "en" ? 1 : code == "ja" ? 2 : 0;
     }
 
-    public static string Make(int seed, int id)
+    /// <summary>한 봇의 세 언어 이름을 한꺼번에 정한다. 순서는 한국어, 영어, 일본어.</summary>
+    public static string[] MakeAll(int seed, int id)
     {
         // 새 세계의 첫 봇에서 초기화한다. 번호는 세계마다 1부터 다시 시작한다.
         if (id <= 1)
         {
-            used.Clear();
-            current = Current();
+            foreach (var set in usedBy) { set.Clear(); }
+            registry.Clear();
         }
 
-        Parts parts = current;
+        var names = new string[All.Length];
+        for (int language = 0; language < All.Length; language++) { names[language] = Make(All[language], usedBy[language], seed, id); }
+        foreach (string name in names) { registry[name] = names; }
+        return names;
+    }
+
+    /// <summary>어느 언어의 닉네임이든 지금 언어의 닉네임으로 바꾼다. 닉네임이 아니면 그대로 돌려준다.</summary>
+    public static string Localize(string name)
+    { return name != null && registry.TryGetValue(name, out var names) ? names[LanguageIndex()] : name; }
+
+    private static string Make(Parts parts, HashSet<string> used, int seed, int id)
+    {
         string head = parts.Heads[Mix(seed, id, "H") % (uint)parts.Heads.Length];
         string core = parts.Cores[Mix(seed, id, "C") % (uint)parts.Cores.Length];
         string number = Numbers[Mix(seed, id, "N") % (uint)Numbers.Length];

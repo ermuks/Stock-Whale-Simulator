@@ -12,7 +12,7 @@ public sealed class PauseMenuController : MonoBehaviour
     public enum Page { Closed, Pause, Settings, Home, Confirm, Busy, Report, Dead, Closing }
     public static PauseMenuController Instance { get; private set; }
     public static bool IsOpen => Instance != null && Instance.CurrentPage != Page.Closed;
-    public static bool BlocksInput => IsOpen || Instance != null && Instance.consumedFrame == Time.frameCount;
+    public static bool BlocksInput => IsOpen || CollapseSleep.Active || MorningBriefing.Blocking || Instance != null && Instance.consumedFrame == Time.frameCount;
     public Page CurrentPage { get; private set; }
     public SystemMenuUI UI { get; private set; }
     public event Action SessionLoaded;
@@ -40,11 +40,56 @@ public sealed class PauseMenuController : MonoBehaviour
     private IEnumerator Start()
     {
         yield return null;
-        if (SessionStore.Exists && !SessionStore.ValidationMode) { Open(); inSession = false; ShowHome(); }
+        // 게임을 켜면 언제나 타이틀 화면부터다. 저장이 없어도 바로 세계에 떨어뜨리지 않는다.
+        if (!SessionStore.ValidationMode) { Open(); inSession = false; fresh = true; HideSceneSetup(); ShowHome(); }
+    }
+    // 장면이 방금 올라와 아무 세션도 시작하지 않은 상태인지. 그때는 새 게임을 위해 장면을 다시 부를 필요가 없다.
+    private bool fresh;
+    private static PlayerCompanySetupUI SceneSetup() => FindAnyObjectByType<PlayerCompanySetupUI>();
+    /// <summary>장면에 놓인 예전 시작 창은 계산만 맡기고 보이지 않게 한다. 입력은 타이틀의 새 게임 화면이 받는다.</summary>
+    private static void HideSceneSetup()
+    {
+        var setup = SceneSetup(); if (setup == null || !RetailStart) { return; }
+        var group = setup.GetComponent<CanvasGroup>() ?? setup.gameObject.AddComponent<CanvasGroup>();
+        group.alpha = 0f; group.blocksRaycasts = false;
+    }
+    private static bool RetailStart => StockManager.Instance != null && StockManager.Instance.economy != null && StockManager.Instance.economy.retailPlayerStart;
+    /// <summary>타이틀 화면을 띄운다(점검 도구용).</summary>
+    public void ShowTitle() { if (!IsOpen) { Open(); } ShowHome(); }
+    public void BackToTitle() { if (!loading) { ShowHome(); } }
+    /// <summary>새 게임의 회사 이름 화면.</summary>
+    public void ShowNewGame()
+    {
+        var setup = SceneSetup(); var manager = StockManager.Instance;
+        // 기업을 직접 설계하는 시작 방식(소매 시작이 아닌 경우)은 장면의 창을 그대로 쓴다.
+        if (setup == null || manager == null || !RetailStart || manager.SetupConfirmed) { inSession = true; priorTimeScale = 1; priorCursor = CursorLockMode.None; priorVisible = true; Resume(); return; }
+        HideSceneSetup();
+        CurrentPage = Page.Home;
+        UI.NewGame(setup.businessName != null ? setup.businessName.text : DailyIncomeController.Instance?.CompanyName, manager.economy.retailStartingCash);
+    }
+    public void StartNewGame()
+    {
+        if (loading) { return; }
+        var setup = SceneSetup();
+        if (setup == null) { return; }
+        if (setup.businessName != null) { setup.businessName.text = UI.Title.CompanyName; }
+        setup.Refresh();
+        if (!setup.confirm.interactable) { UI.Title.ShowError(setup.error != null ? setup.error.text : ""); return; }
+        setup.Confirm();
+        StartCoroutine(Begin());
+    }
+    // 세계가 준비될 때까지 잠깐 기다렸다가 방으로 들어간다.
+    private IEnumerator Begin()
+    {
+        loading = true; CurrentPage = Page.Busy; UI.Busy("불러오는 중…");
+        float until = Time.realtimeSinceStartup + 60;
+        while ((StockManager.Instance == null || !StockManager.Instance.EconomyInitialized) && Time.realtimeSinceStartup < until) { yield return null; }
+        loading = false; inSession = true; fresh = false; priorTimeScale = 1; priorCursor = CursorLockMode.Locked; priorVisible = false;
+        Resume();
     }
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !(CollapseSleep.Active && CurrentPage == Page.Closed))
         {
             consumedFrame = Time.frameCount;
             if (CurrentPage == Page.Closed) { Open(); } else { Back(); }
@@ -59,7 +104,8 @@ public sealed class PauseMenuController : MonoBehaviour
     public void Open()
     {
         if (IsOpen) { return; }
-        priorTimeScale = Time.timeScale; priorCursor = Cursor.lockState; priorVisible = Cursor.visible;
+        // 쓰러져 자는 동안의 빨리 감기는 메뉴를 닫은 뒤로 이어지지 않는다(자는 쪽이 필요하면 다시 건다).
+        priorTimeScale = CollapseSleep.Active ? 1f : Time.timeScale; priorCursor = Cursor.lockState; priorVisible = Cursor.visible;
         priorSelection = EventSystem.current?.currentSelectedGameObject;
         suspended.Clear();
         foreach (var caster in FindObjectsByType<GraphicRaycaster>(FindObjectsInactive.Exclude))
@@ -92,6 +138,11 @@ public sealed class PauseMenuController : MonoBehaviour
         {
             CurrentPage = confirmReturn;
             if (CurrentPage == Page.Settings) { UI.Settings(); } else if (inSession) { CurrentPage = Page.Pause; UI.Pause(); } else { ShowHome(); }
+        }
+        else if (CurrentPage == Page.Home && !inSession && UI.Title.Root.gameObject.activeSelf && SceneSetup() != null)
+        {
+            // 새 게임 화면에서 ESC: 타이틀 메뉴로.
+            ShowHome();
         }
         else if (CurrentPage == Page.Pause) { Resume(); }
     }
@@ -165,8 +216,9 @@ public sealed class PauseMenuController : MonoBehaviour
         if (SessionStore.Exists)
         {
             confirmReturn = Page.Home; CurrentPage = Page.Confirm;
-            UI.Confirm("새 세션","다음 마감에 기존 세션을 덮어씁니다.",()=>StartCoroutine(Reload(false)),"시작");
+            UI.Confirm("새 세션","다음 마감에 기존 세션을 덮어씁니다.",()=> { if (fresh) { ShowNewGame(); } else { StartCoroutine(Reload(false)); } },"시작");
         }
+        else if (fresh) { ShowNewGame(); }
         else { StartCoroutine(Reload(false)); }
     }
     private IEnumerator Reload(bool load)
@@ -205,8 +257,9 @@ public sealed class PauseMenuController : MonoBehaviour
             checkpointSaved = true; CurrentPage = Page.Report;
             UI.Root.SetActive(false); UI.Backdrop.Capture(); UI.Root.SetActive(true); UI.Report(true);
         }
-        else { Resume(); }
-        if (load) { SessionLoaded?.Invoke(); }
+        else if (load) { fresh = false; Resume(); }
+        else { inSession = false; fresh = true; ShowNewGame(); }
+        if (load) { fresh = false; SessionLoaded?.Invoke(); }
     }
     public void Quit()
     {

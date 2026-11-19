@@ -33,7 +33,7 @@ public static class LocalizedChat
         if (GameLocale.Code == "en" && text.IndexOf('₩') >= 0)
         { text = System.Text.RegularExpressions.Regex.Replace(text,"₩([−+-]?~?)(?=[0-9])","$1₩"); }
         string prefix = string.IsNullOrEmpty(social.localizedTarget) ? "" : "@" +
-            (social.localizedTarget == "방장" ? GameLocale.Text("방장") : social.localizedTarget) + " ";
+            (social.localizedTarget == "방장" ? GameLocale.Text("방장") : BotNicknames.Localize(social.localizedTarget)) + " ";
         return prefix + text + GameLocale.Text(social.localizedSuffix);
     }
     private static string Percent(string raw)

@@ -12,6 +12,9 @@ public sealed class SystemMenuUI : IDisposable
     public readonly GameObject Root;
     public readonly RectTransform Paper; // Layout root only, no settings backplate.
     public readonly MenuBackdrop Backdrop;
+    /// <summary>게임을 켰을 때의 첫 화면(로고·메뉴·새 게임).</summary>
+    public readonly TitleScreen Title;
+    private readonly Image shadeImage;
     private readonly Dictionary<string,RectTransform> pages = new(), categories = new();
     private readonly List<Action> refreshers = new();
     private readonly TMP_FontAsset font;
@@ -36,7 +39,8 @@ public sealed class SystemMenuUI : IDisposable
         var scaler=Root.GetComponent<CanvasScaler>(); scaler.uiScaleMode=CanvasScaler.ScaleMode.ScaleWithScreenSize; scaler.referenceResolution=new Vector2(1600,900); scaler.matchWidthOrHeight=1;
         var background=Area(Root.transform,"Image :: Blurred Game",0,0,0,0); Stretch(background);
         var raw=background.gameObject.AddComponent<RawImage>(); raw.raycastTarget=false; Backdrop=new MenuBackdrop(raw);
-        var shade=Box(Root.transform,"Image :: Translucent Black",new Color(0,0,0,.64f)); Stretch(shade); shade.GetComponent<Image>().raycastTarget=true;
+        var shade=Box(Root.transform,"Image :: Translucent Black",new Color(0,0,0,.64f)); Stretch(shade); shade.GetComponent<Image>().raycastTarget=true; shadeImage=shade.GetComponent<Image>();
+        Title=new TitleScreen(owner,Root.transform,font);
         Paper=Area(Root.transform,"Area :: Menu Layout",0,0,1200,700); Paper.anchorMin=Paper.anchorMax=Paper.pivot=new Vector2(.5f,.5f); Paper.anchoredPosition=Vector2.zero;
         title=Label(Paper,"일시정지",0,0,1200,64,38,FontStyles.Bold);
         close=Button(Paper,"Button :: Close","돌아가기",1000,640,200,48,owner.Back);
@@ -105,6 +109,8 @@ public sealed class SystemMenuUI : IDisposable
     private void Show(string key,string heading)
     {
         foreach (var pair in pages) { pair.Value.gameObject.SetActive(pair.Key==key); }
+        // 타이틀 화면이 아닌 쪽들은 가운데의 메뉴 틀을 쓴다. 배경도 그만큼 더 어둡게 누른다.
+        Title.Hide(); Paper.gameObject.SetActive(true); shadeImage.color=new Color(0,0,0,.64f);
         title.alignment=key=="settings" || key=="report" ? TextAlignmentOptions.MidlineLeft : TextAlignmentOptions.Center;
         GameLocalizedText.Set(title,heading); close.gameObject.SetActive(key=="settings"); close.transform.SetAsLastSibling();
         EventSystem.current?.SetSelectedGameObject(null); Refresh();
@@ -112,7 +118,9 @@ public sealed class SystemMenuUI : IDisposable
     public void Pause() { Show("pause","일시정지"); }
     /// <summary>게임 이름. 어느 언어에서나 같은 영문 표기를 쓴다.</summary>
     public const string GameTitle = "Stock Whale Simulator";
-    public void Home() { Show("home",GameTitle); GameLocalizedText.Set(title,GameTitle,true); continueSession.interactable=SessionStore.Exists; }
+    public void Home() { Paper.gameObject.SetActive(false); shadeImage.color=new Color(0,0,0,.34f); Title.ShowMenu(); }
+    /// <summary>새 게임의 회사 이름 정하기.</summary>
+    public void NewGame(string suggested,decimal cash) { Paper.gameObject.SetActive(false); shadeImage.color=new Color(0,0,0,.34f); Title.ShowNewGame(suggested,cash); }
     public void Settings(string selected=null)
     {
         if (selected!=null) { category=selected; }
@@ -121,11 +129,12 @@ public sealed class SystemMenuUI : IDisposable
     }
     public void Refresh()
     {
-        Paper.localScale=Vector3.one*GameSettings.Current.menuScale;
+        Paper.localScale=Vector3.one*GameSettings.Current.menuScale; Title?.Refresh();
         foreach (var refresh in refreshers) { refresh(); }
         for (int i=0;i<tabs.Length;i++) { Tint(tabs[i],categoryNames[i]==category); }
         var player=PlayerRestController.Instance; sleep.gameObject.SetActive(player!=null && player.CanSleep);
-        if (player!=null) { GameLocalizedText.Set(rest,$"피로 {player.State.fatigue:0}% · 밤샘 {player.State.sleeplessNights}/3"); }
+        if (player!=null) { GameLocalizedText.Set(rest,$"피로 {player.State.fatigue:0}% · 밤샘 {player.State.sleeplessNights}/3");
+            rest.color=player.State.fatigue>=85 ? new Color32(242,188,100,255) : Muted; }
     }
     private void BuildSettings()
     {

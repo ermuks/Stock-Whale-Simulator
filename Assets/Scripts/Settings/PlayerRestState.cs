@@ -19,6 +19,7 @@ public sealed class PlayerRestState
         fatigue = Math.Clamp(fatigue - hours * 15d, 0d, 100d);
         sleeplessNights = 0; lastGameMinute = wakingMinute;
     }
+    /// <summary>밤을 새웠다. 나흘째에는 죽는 대신 피로가 끝까지 차서 다음 날 쓰러진다.</summary>
     public void MissNight()
-    { if (++sleeplessNights >= 4) { dead = true; } }
+    { if (++sleeplessNights >= 4) { fatigue = 100d; } }
 }
