@@ -164,6 +164,11 @@ public sealed partial class PlayerProgression : MonoBehaviour
         return true;
     }
     /// <summary>Presentation history only: a completed paper goal never returns after later losses or leaving a room.</summary>
+    /// <summary>메모(할 일)를 이룬 기록. 한번 이룬 일은 나중에 잃어도 다시 붙지 않는다.</summary>
+    public void RememberJourney(int mask) { JourneyMilestones |= mask; }
+    public decimal DawnCost => rules.dawnRoomCost;
+    public decimal DawnTurnoverNeeded => rules.dawnRoomTurnover;
+    public decimal CloseTurnoverNeeded => rules.tacticCloseTurnover;
     public void RememberJourneyMilestones(bool joinedNpcRoom)
     {
         if (joinedNpcRoom) { JourneyMilestones |= 1; }

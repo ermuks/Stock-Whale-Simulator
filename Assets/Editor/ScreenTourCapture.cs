@@ -198,6 +198,7 @@ public static class ScreenTourCapture
                 camera = Camera.main;
                 report.AppendLine("CLOCK at start " + DeviceMarketJournal.Stamp() + " phase " + MarketDayController.Instance.Phase + " day " + MarketDayController.Instance.Day + " intro playing " + DayIntroOverlay.Instance.Playing);
                 chat = Object.FindObjectsByType<TabletGroupChatUI>().Single(c => c.monitorChat); rooms = chat.GetComponent<LeadingRoomUI>();
+                chat.AlwaysShowActions = only.Contains("chat");
                 var manager = Object.FindAnyObjectByType<ChartManager>();
                 chartScreen = (RectTransform)manager.textName.transform.parent.parent;
                 Next(2); return;
@@ -370,7 +371,7 @@ public static class ScreenTourCapture
             decimal before = player.cash; bool opened = career.UnlockDawn(player);
             report.AppendLine("DAWN INJECTED turnover " + career.Turnover.ToString("N0") + " -> unlock " + opened + " paid " + (before - player.cash).ToString("N0") + " unlocked " + career.DawnUnlocked);
         }, () => only.Contains("dawn") ? chatScreen : null));
-        string[] lines = { "님들 안녕하세요", "ㅋㅋㅋㅋ 오늘 장 재밌네", "!분석 노보", "!분석 없는종목", "노보손해보험 지금 살까?", "뭐 살지 추천 좀", "대만디스플레이 오늘 간다 가즈아", "수익 30% 먹었다 ㅋㅋ", "아 물렸다 ㅠㅠ", "이 바보들아", "미안", "내가 세력이다", "ㅂㅂ" };
+        string[] lines = { "님들 안녕하세요", "ㅋㅋㅋㅋ 오늘 장 재밌네", "!분석 노보", "!분석 없는종목", "노보손해보험 지금 살까?", "뭐 살지 추천 좀", "LC디스플레이 오늘 간다 가즈아", "수익 30% 먹었다 ㅋㅋ", "아 물렸다 ㅠㅠ", "이 바보들아", "미안", "내가 세력이다", "개븅신새끼들", "전부 다 뒤져라", "애미 뒤진놈들 ㅋㅋ", "니들은 사회적 암적인 존재야", "roqbdtls Tlqkffusemf", "should i sell this thing", "보지 마 그 종목", "거품 꺼지면 사야지", "ㅂㅂ" };
         steps.Add(("dawn-joined", () =>
         {
             if (!only.Contains("dawn") || languageIndex != 0) { return; }
@@ -433,6 +434,65 @@ public static class ScreenTourCapture
             if (started) { StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(OpeningRush.Instance.NpcStock)); }
         }, () => { if (only.Contains("rush") && languageIndex == 0) { report.AppendLine("RUSH result " + OpeningRush.Instance.LastReport); } return chartScreen; }));
         steps.Add(("stock-list", () => Press("Button :: Back To Chart"), () => Named("Panel :: Stock List Screen")));
+        // 2번 시점(가운데 화면): 벽시계와 메모까지 한 화면에 들어오는지 본다.
+        steps.Add(("view2-focus", () => { if (only.Contains("view2") && languageIndex == 0) { DeskViewController.Instance.Focus(DeskViewTarget.Chart); } }, () => null));
+        steps.Add(("view2-wait", () => { }, () => null));
+        steps.Add(("view2-shot", () => { if (only.Contains("view2") && languageIndex == 0) { ShootView("view2"); report.AppendLine("VIEW2 fov " + camera.fieldOfView.ToString("F1") + " position " + camera.transform.position.ToString("F2")); DeskViewController.Instance.ExitView(true); } }, () => null));
+        // 모니터 아래의 메모: 처음 모습, 그리고 실제로 한 주를 산 뒤 첫 장이 떨어지고 다음 장이 붙는 과정.
+        for (int shot = 0; shot < 7; shot++)
+        {
+            int number = shot;
+            steps.Add(("notes-" + number, () =>
+            {
+                if (!only.Contains("notes")) { return; }
+                var notes = Object.FindAnyObjectByType<InvestorJourneyNotes>();
+                if (notes == null) { report.AppendLine("NOTES none"); return; }
+                if (number == 1 && languageIndex == 0)
+                {
+                    var player = StockManager.Instance.playerAccount; var stock = StockManager.Instance.stocks[0];
+                    bool hasAsk = stock.orderBook.TryBest(out _, out decimal ask);
+                    if (hasAsk) { player.BuyLimit(ask, 1, 0, stock); }
+                    report.AppendLine("NOTES real buy of 1 " + stock.symbol + " at " + ask.ToString("N0") + " placed " + hasAsk);
+                }
+                var line = new StringBuilder("NOTES " + number + " lang " + languageIndex + " current " + notes.CurrentStage + " turnover " + PlayerProgression.Instance.Turnover.ToString("N0") + " |");
+                foreach (var paper in Object.FindObjectsByType<StickyNotePaper>(FindObjectsInactive.Exclude))
+                {
+                    var title = paper.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true).FirstOrDefault(t => t.name == "Text :: Sticky Title"); var detail = paper.GetComponentsInChildren<TMPro.TextMeshProUGUI>(true).FirstOrDefault(t => t.name == "Text :: Sticky Detail");
+                    line.Append(" [" + paper.name + (paper.Released ? paper.Settled ? " settled" : " falling" : "") + " y " + paper.transform.position.y.ToString("F2") + " up " + Vector3.Dot(-paper.transform.forward, Vector3.up).ToString("F2") + ": " + (title == null ? "" : title.text) + " / " + (detail == null ? "" : detail.text) + "]");
+                }
+                report.AppendLine(line.ToString());
+                Vector3 normal = -chartScreen.forward; var edges = new Vector3[4]; chartScreen.GetWorldCorners(edges);
+                Vector3 bottom = (edges[0] + edges[3]) * .5f; float wide = Vector3.Distance(edges[0], edges[3]);
+                ShootFrom("notes-" + (languageIndex == 0 ? "ko" : languageIndex == 1 ? "en" : "ja") + "-" + number, bottom + normal * wide * .9f + Vector3.up * wide * .28f, bottom - Vector3.up * wide * .05f, 40f, 0f);
+            }, () => null));
+        }
+        // 비스듬히 본 종목 목록: 정렬 단추 글자가 다른 면과 겹쳐 깜빡이는지 본다. 단추와 같은 자리에 있는 그림을 모두 적는다.
+        steps.Add(("stock-list-oblique", () =>
+        {
+            if (!only.Contains("oblique") || languageIndex != 0) { return; }
+            var panel = Named("Panel :: Stock List Screen"); var tabs = panel.GetComponentsInChildren<RectTransform>(true).FirstOrDefault(r => r.name == "Area :: Stock Sort Tabs");
+            if (tabs == null) { report.AppendLine("OBLIQUE no sort tabs"); return; }
+            var corners = new Vector3[4]; tabs.GetWorldCorners(corners); Vector3 center = (corners[0] + corners[2]) * .5f, normal = -tabs.forward;
+            float half = Vector3.Distance(corners[0], corners[2]) * .5f;
+            report.AppendLine("OBLIQUE tabs center " + center.ToString("F4") + " normal " + normal.ToString("F3") + " canvas " + tabs.GetComponentInParent<Canvas>().name + " scale " + tabs.lossyScale.ToString("F5"));
+            foreach (var graphic in Object.FindObjectsByType<Graphic>(FindObjectsInactive.Exclude))
+            {
+                var rect = graphic.rectTransform; var c = new Vector3[4]; rect.GetWorldCorners(c); Vector3 middle = (c[0] + c[2]) * .5f;
+                if (Vector3.Distance(Vector3.ProjectOnPlane(middle - center, normal), Vector3.zero) > half + Vector3.Distance(c[0], c[2]) * .5f) { continue; }
+                float depth = Vector3.Dot(middle - center, normal);
+                if (Mathf.Abs(depth) > .05f) { continue; }
+                var canvas = graphic.canvas; string path = rect.name; var up = rect.parent; for (int i = 0; i < 3 && up != null; i++) { path = up.name + " > " + path; up = up.parent; }
+                report.AppendLine("OBLIQUE graphic depth " + (depth * 1000f).ToString("F3") + "mm canvas " + (canvas == null ? "none" : canvas.name + (canvas.overrideSorting ? " override " + canvas.sortingOrder : "")) + " material " + (graphic.materialForRendering == null ? "none" : graphic.materialForRendering.shader.name) + " | " + path);
+            }
+            foreach (var mesh in Object.FindObjectsByType<MeshRenderer>(FindObjectsInactive.Exclude))
+            {
+                var closest = mesh.bounds.ClosestPoint(center);
+                if (Vector3.Distance(closest, center) < .03f) { report.AppendLine("OBLIQUE mesh " + mesh.name + " parent " + (mesh.transform.parent == null ? "none" : mesh.transform.parent.name) + " bounds center depth " + (Vector3.Dot(mesh.bounds.center - center, normal) * 1000f).ToString("F2") + "mm size " + mesh.bounds.size.ToString("F3") + " shader " + mesh.sharedMaterial?.shader.name); }
+            }
+            Vector3 side = tabs.right, upward = tabs.up; float reach = half * 3.2f;
+            ShootFrom("oblique-near", center + normal * reach * .45f + side * reach * .9f + upward * reach * .2f, center, 30f, 0f);
+            ShootFrom("oblique-far", center + normal * reach * 1.2f - side * reach * 1.6f + upward * reach * .5f, center, 22f, 0f);
+        }, () => null));
         // 거래정지 종목의 모습. 요청에 only:stock-list-halted 가 있을 때만 두 번째 종목을 정지 상태로 바꿔 놓는다(촬영용 주입).
         steps.Add(("stock-list-halted", () =>
         {
@@ -536,8 +596,72 @@ public static class ScreenTourCapture
                     }
                 }, () => only.Contains("ladder") ? screen : null));
                 steps.Add((prefix + "ladder-close", () => { if (only.Contains("ladder")) { var view = device.GetComponentInChildren<AcquisitionLadderUI>(true); if (view != null) { view.Close(); } } }, () => null));
+                // 비상장 소기업: 사다리의 아래 칸, 주인에게서 실제 돈으로 인수, 내 기업으로 묶임, 성장 화면, 10억을 넘겼을 때의 상장 대기(넣은 것), 해금 진행 막대.
+                steps.Add((prefix + "small-ladder", () =>
+                {
+                    if (!only.Contains("small")) { return; }
+                    device.ShowPage(TabletAccountUI.Page.Management);
+                    device.GetComponentInChildren<CompanyDashboardUI>(true).OpenLadder();
+                    if (languageIndex != 0) { return; }
+                    var economy = CorporateEconomy.Instance; var line = new StringBuilder("SMALL start |");
+                    foreach (var stock in StockManager.Instance.UnlistedStocks)
+                    {
+                        if (!CorporateEconomy.IsSmall(stock)) { continue; }
+                        line.Append(" " + stock.symbol + " " + stock.stockName + " value " + (stock.currentPrice * stock.issuedShares).ToString("N0") + " ask " + economy.SmallAsk(stock).ToString("N0") + " owner holds " + (stock.Owner == null ? -1m : stock.Owner.GetHolding(stock)).ToString("N0") + " ledger " + StockIntegrityChecker.Instance.CheckStock(stock).isValid + " |");
+                    }
+                    report.AppendLine(line.ToString());
+                }, () => only.Contains("small") ? screen : null));
+                steps.Add((prefix + "small-company", () =>
+                {
+                    if (!only.Contains("small")) { return; }
+                    var board = device.GetComponentInChildren<CompanyDashboardUI>(true); var ladderView = device.GetComponentInChildren<AcquisitionLadderUI>(true); if (ladderView != null) { ladderView.Close(); }
+                    var openGrowth = device.GetComponentInChildren<CompanyGrowthUI>(true); if (openGrowth != null) { openGrowth.Close(); }
+                    var economy = CorporateEconomy.Instance; var player = StockManager.Instance.playerAccount; var stock = StockManager.Instance.FindStock("SMB_BNC");
+                    board.ShowCompany(stock);
+                    if (languageIndex != 0) { return; }
+                    decimal cash = player.cash, ownerCash = stock.Owner.cash; bool bought = economy.BuySmall(stock, player);
+                    report.AppendLine("SMALL buy (real cash) " + stock.symbol + " -> " + bought + " (" + economy.SmallResult + ") paid " + (cash - player.cash).ToString("N0") + " owner received " + (stock.Owner.cash - ownerCash).ToString("N0") + " player holds " + player.GetHolding(stock).ToString("N0") + " controls " + WorldDramaDirector.Instance.Controls(stock) + " ledger " + StockIntegrityChecker.Instance.CheckStock(stock).isValid + " my companies " + economy.MyCompanies().Count + " synergy " + economy.LadderSynergy.ToString("F2"));
+                    foreach (CompanyPolicy policy in Enum.GetValues(typeof(CompanyPolicy))) { var look = economy.Outlook(stock, policy); report.AppendLine("SMALL outlook " + policy + " basis profit " + economy.AdviceProfit(stock).ToString("N0") + " dividend " + look.Dividend.ToString("N0") + " mine " + look.Mine.ToString("N0") + " invest " + look.Invest.ToString("N0") + " kept " + look.Kept.ToString("N0") + " profit gain/day " + look.ProfitGain.ToString("N0")); }
+                    report.AppendLine("SMALL recommend " + economy.Recommend(stock, out string why) + " : " + why);
+                    bool started = economy.StartProject(stock, CompanyProject.Sales);
+                    report.AppendLine("SMALL project on " + stock.symbol + " -> " + started + " (" + economy.GrowthResult + ") company cash " + stock.business.Cash.ToString("N0"));
+                }, () => only.Contains("small") ? screen : null));
+                steps.Add((prefix + "small-growth", () =>
+                {
+                    if (!only.Contains("small")) { return; }
+                    var board = device.GetComponentInChildren<CompanyDashboardUI>(true); board.ShowCompany(StockManager.Instance.FindStock("SMB_BNC")); board.OpenGrowth();
+                }, () => only.Contains("small") ? screen : null));
+                steps.Add((prefix + "small-queued", () =>
+                {
+                    if (!only.Contains("small")) { return; }
+                    var growthView = device.GetComponentInChildren<CompanyGrowthUI>(true); if (growthView != null) { growthView.Close(); }
+                    if (languageIndex != 0) { return; }
+                    var economy = CorporateEconomy.Instance; var big = StockManager.Instance.FindStock("SMB_GCC");
+                    economy.ApplyCompanyEvent(big, 1.3m);
+                    typeof(CorporateEconomy).GetMethod("QueueSmallListing", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic).Invoke(economy, new object[] { big, MarketDayController.Instance.Day });
+                    report.AppendLine("SMALL INJECTED value x1.3 on " + big.symbol + " -> appraisal " + big.business.growth.Appraisal.ToString("N0") + " awaiting listing " + economy.AwaitingListing(big) + " requested day " + big.business.growth.RequestedDay + " listed " + big.IsListed + " feed: " + MarketEventFeed.Instance.LatestEvent);
+                }, () => only.Contains("small") ? Named("Panel :: Stock List Screen") : null));
+                // 다음 개장의 상장 심사를 앞당겨 부른다(넣은 것). 공모 대금이 실제로 오가고 종목이 상장 목록으로 옮겨 가는지 본다.
+                steps.Add((prefix + "small-listed", () =>
+                {
+                    if (!only.Contains("small") || languageIndex != 0) { return; }
+                    var economy = CorporateEconomy.Instance; var big = StockManager.Instance.FindStock("SMB_GCC");
+                    report.AppendLine("SMALL before listing " + big.symbol + " shares " + big.issuedShares.ToString("N0") + " company cash " + big.business.Cash.ToString("N0") + " exchange cash " + ExchangeBot.Instance.cash.ToString("N0"));
+                    economy.StartCoroutine(economy.ProcessListings(MarketDayController.Instance.Day + 1));
+                }, () => only.Contains("small") ? Named("Panel :: Stock List Screen") : null));
+                steps.Add((prefix + "small-unlocks", () =>
+                {
+                    if (!only.Contains("small")) { return; }
+                    if (languageIndex == 0)
+                    {
+                        var big = StockManager.Instance.FindStock("SMB_GCC");
+                        report.AppendLine("SMALL INJECTED early listing review -> listed " + big.IsListed + " in market list " + StockManager.Instance.stocks.Contains(big) + " accepts orders " + big.AcceptsOrders + " price " + big.currentPrice.ToString("N0") + " shares " + big.issuedShares.ToString("N0") + " company cash " + big.business.Cash.ToString("N0") + " exchange cash " + ExchangeBot.Instance.cash.ToString("N0") + " exchange holds " + ExchangeBot.Instance.GetHolding(big).ToString("N0") + " ledger " + StockIntegrityChecker.Instance.CheckStock(big).isValid);
+                    }
+                    if (languageIndex == 0) { report.AppendLine("SMALL unlock start chart.crowdValue -> " + PlayerProgression.Instance.TryStartUnlock(PlayerProgression.CrowdValueUnlock) + " remaining " + PlayerProgression.Instance.UnlockRemainingMinutes.ToString("F0") + " min"); }
+                    device.ShowPage(TabletAccountUI.Page.Unlocks);
+                }, () => only.Contains("small") ? screen : null));
                 steps.Add((prefix + "records", () => device.ShowPage(TabletAccountUI.Page.Records), () => screen));
-                steps.Add((prefix + "news", () => device.ShowPage(TabletAccountUI.Page.Events), () => screen));
+                steps.Add((prefix + "news",() => device.ShowPage(TabletAccountUI.Page.Events), () => screen));
                 steps.Add((prefix + "unlocks", () => device.ShowPage(TabletAccountUI.Page.Unlocks), () => screen));
             }
         }

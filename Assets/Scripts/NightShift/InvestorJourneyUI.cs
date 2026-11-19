@@ -38,7 +38,6 @@ public sealed class InvestorJourneyUI : MonoBehaviour
             if (ready && sourceRoom != null && progress != null)
             {
                 paperNotes.InitializeMilestones(progress.JourneyMilestones);
-                progress.RememberJourneyMilestones(sourceRoom.PlayerJoined);
                 Step = ResolveStep(sourceRoom, progress);
                 paperNotes.Refresh(sourceRoom, progress, Step);
             }

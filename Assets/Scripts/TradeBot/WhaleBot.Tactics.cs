@@ -56,7 +56,8 @@ public partial class WhaleBot
             {
                 decimal idle = cash - ReservedCash - Math.Max(0m, operation.budget - operation.spent);
                 decimal show = Math.Min(idle * WallIdleShare, operation.budget * WallBudgetShare);
-                if (show >= operation.budget * WallMinimumShare)
+                // 벽으로 보이지 않을 만큼 작은 돈이면 걸지 않는다(개미들이 벽으로 치는 최소 금액).
+                if (show >= operation.budget * WallMinimumShare && show >= ManipulationTools.WallFloor(stock))
                 {
                     wallPrice = ManipulationTools.PlaceWall(this, stock, show);
                     if (wallPrice > 0m)

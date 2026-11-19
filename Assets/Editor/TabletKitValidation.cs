@@ -117,7 +117,7 @@ public static class TabletKitValidation
     private static void Fixture()
     {
         seller=new GameObject("Test :: Seller").AddComponent<Trader>(); seller.cash=10000000;
-        stock=new Stock("KIT","대만디스플레이",2350m,10000m); StockManager.Instance.stocks.Add(stock); seller.GrantShares(stock,10000m,2000m);
+        stock=new Stock("KIT","LC디스플레이",2350m,10000m); StockManager.Instance.stocks.Add(stock); seller.GrantShares(stock,10000m,2000m);
         tablet.events.records.ReconnectSession(); second.events.records.ReconnectSession();
         StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(stock));
         tablet.account.cash=245500m; seller.SellLimit(2350m,20m,0,stock); tablet.account.BuyLimit(2350m,20m,0,stock);
@@ -126,7 +126,7 @@ public static class TabletKitValidation
         {
             for (int i=0;i<7;i++)
             {
-                var s=new Stock("KIT"+i,new[]{"국민금융","그린푸드","노보손해보험","미래바이오","덕상가주에이아이","두더리식품","대만디스플레이"}[i],1000m+i*100m,10000m);
+                var s=new Stock("KIT"+i,new[]{"굿데이금융","그린푸드","노보손해보험","미래바이오","덕상가주에이아이","두더리식품","LC디스플레이"}[i],1000m+i*100m,10000m);
                 StockManager.Instance.stocks.Add(s); seller.GrantShares(s,10000m,800m); seller.SellLimit(s.currentPrice,10m+i,0,s); tablet.account.BuyLimit(s.currentPrice,10m+i,0,s);
                 s.currentPrice+=i%2==0 ? 150m : -150m;
             }

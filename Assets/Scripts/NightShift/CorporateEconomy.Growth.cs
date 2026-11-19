@@ -49,7 +49,10 @@ public sealed partial class CorporateEconomy
     public void InitializeCompanyWorld()
     {
         EnsureFounder();
-        foreach (var stock in Companies()) { EnsureRepresentative(stock); ObserveControl(stock); }
+        foreach (var stock in new List<Stock>(Companies())) { EnsureRepresentative(stock); ObserveControl(stock); }
+        // 비상장 소기업은 다른 계좌가 모두 만들어진 뒤에, 늘 같은 순서로 놓는다.
+        EnsureSmallCompanies();
+        foreach (var stock in Companies()) { if (IsSmall(stock)) { ObserveControl(stock); } }
     }
     private void EnsureFounder()
     {
@@ -86,6 +89,7 @@ public sealed partial class CorporateEconomy
     public void ReleaseFounderFromDream()
     {
         var player=StockManager.Instance?.playerAccount; var stock=FounderRaw;
+        ReleaseSmallFromDream(player);
         founderCompany=null;
         if (player==null || stock==null) { return; }
         if (stock.business?.growth!=null) { stock.business.growth.FounderBusiness=false; }
@@ -170,7 +174,8 @@ public sealed partial class CorporateEconomy
             if (data.Cash-growth.ProjectCost(data,type,GrowthRules)<reserve) { continue; }
             if (growth.Start(data,type,day,GrowthRules)) { growth.LastDecision=ProjectName(type); break; }
         }
-        if (!stock.IsListed && growth.Eligible(data,GrowthRules)) { growth.Request(data,day,GrowthRules); }
+        // 비상장 소기업의 주인은 스스로 상장하지 않는다. 상장은 삼킨 사람이 정한다.
+        if (!stock.IsListed && !IsSmall(stock) && growth.Eligible(data,GrowthRules)) { growth.Request(data,day,GrowthRules); }
     }
     public static string ProjectName(CompanyProject type) => type switch
     {
@@ -212,6 +217,7 @@ public sealed partial class CorporateEconomy
         if (stock==PlayerCompany && data.growth.EndingDay==0 && data.growth.EndingReached(data,stock.IsListed,GrowthRules)) { data.growth.EndingDay=Math.Max(1,data.LastDay); }
         else { data.MarketCap=0; }
         ApplyValuation(stock);
+        QueueSmallListing(stock,data.LastDay);
     }
     public IEnumerator ProcessListings(int day)
     {
@@ -219,7 +225,7 @@ public sealed partial class CorporateEconomy
         foreach (var stock in pending)
         {
             var data=Ensure(stock); var growth=data.growth;
-            if (growth.RequestedDay<1 || growth.RequestedDay>=day || !growth.Eligible(data,GrowthRules) || stock.IsDelisted || stock.IsDelisting) { continue; }
+            if (growth.RequestedDay<1 || growth.RequestedDay>=day || !(growth.Eligible(data,GrowthRules) || SmallListingReady(stock)) || stock.IsDelisted || stock.IsDelisting) { continue; }
             decimal price=PriceTickPolicy.FloorToTick(Math.Max(1,growth.Appraisal/stock.issuedShares));
             decimal issue=Math.Max(1,decimal.Floor(stock.issuedShares*(decimal)GrowthRules.publicIssueRatio)), funding=issue*price;
             var underwriter=ExchangeBot.Instance;

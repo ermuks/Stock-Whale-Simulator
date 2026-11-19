@@ -1392,7 +1392,7 @@ text.ba81d078f2a4a742,Chat intensity,괜히 세게 말했네. 그만할게. 다�
 text.0fee3eb64399112a,News,구매 경험과 투자 수익 경험이 섞여 평가를 왜곡하지 않는지 살펴봐야 한다.,Check whether product experiences and investment returns are being mixed in ways that distort judgments.,購入体験と投資の利益体験が混ざり、評価をゆがめていないかを見る必要がある。
 text.0e22dab85df4fbf0,UI: Assets/Scripts/NightShift/ChatSocialSpeech.cs:66,구어체·근사 손익,Casual · approx. P/L,口語・概算損益
 text.ee98a3d7c2b4df6d,Company event headline,구조 개편 - 비용 절감 목적 사업장 이전,Business moves premises to cut costs,コスト削減へ拠点を移転
-text.0f44bb30b9feac9e,UI: Assets/Scripts/EconomySettings.cs:82,국민금융,Kookmin Finance,国民金融
+text.0f44bb30b9feac9e,UI: Assets/Scripts/EconomySettings.cs:82,굿데이금융,Goodday Finance,グッデイ金融
 text.de2ff062932747f3,Company event headline,국제 경쟁력 확보 - 글로벌 인정,International competitiveness gains recognition,国際競争力を獲得、世界で評価
 text.a70371e1e30c7c26,Company event headline,국제 인정 확보 - 글로벌 시장 진입,International recognition opens global markets,国際的な評価を得て世界市場へ
 text.bcfd5f062fa33d89,voices:voice.NONE.ASK.expressive.formal,궁금하네요. {symbol}에서 눈여겨볼 게 있을까요?,I am curious. What is worth watching in {symbol}?,気になりますね。{symbol}で注目すべき点はありますか。
@@ -1741,7 +1741,7 @@ text.2a73ed53178ab6fe,UI: Assets/Scripts/NightShift/TradingOperationController.c
 text.f9aa5b5f55437c08,UI: Assets/Scripts/News/NewsDeskUI.cs:320,대기 ,Pending ,待機 
 text.3b53bfe8a3feb4ee,UI: Assets/Scripts/NightShift/SpreadTradingUI.cs:64,대기 수량,Pending shares,未約定数
 text.09653ba2140d2f8e,Company event headline,대기업 수주 계약 체결 - 대형 수주 수주,Large corporate client awards major contract,大手企業から大型案件を受注
-text.eba03394866891e5,UI: Assets/Scripts/EconomySettings.cs:81,대만디스플레이,Daeman Display,大万ディスプレイ
+text.eba03394866891e5,UI: Assets/Scripts/EconomySettings.cs:81,LC디스플레이,LC Display,LCディスプレイ
 text.14e52182792b730d,UI: Assets/Scripts/News/NewsDeskUI.cs:284,대상 · ,Target · ,対象 · 
 text.85de6447d801f05a,UI: Assets/Scripts/News/NewsDeskUI.cs:244,대상 종목,Target stock,対象銘柄
 text.92db951ccdbe44f9,UI: Assets/Scripts/NightShift/TradingOperationController.cs:115,대상 종목 거래 종료,Stock trading ended,対象銘柄の取引終了

@@ -74,10 +74,49 @@ public class StockListItem : MonoBehaviour
 
     }
 
+    private bool arranged;
+    /// <summary>
+    /// 행의 오른쪽을 두 기둥으로 다시 놓는다(프리팹의 자리를 덮어쓴다).
+    /// 맨 오른쪽: 위에 거래량과 종목 기호(123k SSE), 아래에 거래대금(₩만 붙인다).
+    /// 그 왼쪽: 위에 최근 거래가, 아래에 조금 작게 전일 대비 등락률. 종목 기호를 따로 적던 줄은 없앤다.
+    /// </summary>
+    private void Arrange()
+    {
+        if (arranged) { return; }
+        arranged = true;
+        const float edge = 28f, side = 290f, gap = 30f, middle = 330f;
+        Column(textVolume10, true, edge, side, 38f, new Color32(190, 200, 208, 255));
+        Column(textTurnover, false, edge, side, 34f, new Color32(138, 150, 163, 255));
+        Column(textPrice, true, edge + side + gap, middle, 56f, PriceInk);
+        Column(textChangePct10, false, edge + side + gap, middle, 40f, new Color32(138, 150, 163, 255));
+        // 이름과 꼬리표는 행의 세로 가운데에 둔다.
+        if (textName != null) { Middle(textName.rectTransform); textName.alignment = TextAlignmentOptions.MidlineLeft; }
+        if (riskBadgeBackground != null) { Middle(riskBadgeBackground.rectTransform); }
+        if (textRisk != null) { Middle(textRisk.rectTransform); }
+        if (textSymbol != null) { textSymbol.gameObject.SetActive(false); }
+    }
+    private static readonly Color32 PriceInk = new(236, 240, 243, 255);
+    private static void Middle(RectTransform rect)
+    {
+        rect.anchorMin = new Vector2(rect.anchorMin.x, .5f); rect.anchorMax = new Vector2(rect.anchorMax.x, .5f); rect.pivot = new Vector2(rect.pivot.x, .5f);
+        rect.anchoredPosition = new Vector2(rect.anchoredPosition.x, 0f);
+    }
+    private static void Column(TextMeshProUGUI label, bool top, float right, float width, float size, Color color)
+    {
+        if (label == null) { return; }
+        var rect = label.rectTransform;
+        rect.anchorMin = new Vector2(1f, top ? .5f : .08f); rect.anchorMax = new Vector2(1f, top ? .92f : .5f); rect.pivot = new Vector2(1f, .5f);
+        rect.sizeDelta = new Vector2(width, 0f); rect.anchoredPosition = new Vector2(-right, 0f);
+        label.enableAutoSizing = false; label.fontSize = size; label.alignment = top ? TextAlignmentOptions.BottomRight : TextAlignmentOptions.TopRight;
+        label.textWrappingMode = TextWrappingModes.NoWrap; label.overflowMode = TextOverflowModes.Overflow; label.color = color; label.raycastTarget = false;
+    }
+
     public void Set(Stock stock, IReadOnlyList<CandleData> last10)
     {
         if (stock == null)
         { return; }
+
+        Arrange();
 
         _stock = stock;
         if (icon != null && iconSymbol != stock.symbol)
@@ -86,11 +125,6 @@ public class StockListItem : MonoBehaviour
             var sprite = Resources.Load<Sprite>(IconPath + stock.symbol);
             icon.sprite = sprite;
             icon.enabled = sprite != null;
-        }
-
-        if (textSymbol != null)
-        {
-            DeviceTerminalUI.Set(textSymbol,stock.symbol);
         }
 
         if (textName != null)
@@ -108,6 +142,7 @@ public class StockListItem : MonoBehaviour
             DeviceTerminalUI.Set(textPrice,PriceTickPolicy.FormatPrice(stock.currentPrice));
         }
 
+        if (!stock.IsListed) { ApplyWaiting(); return; }
         ApplyRiskBadge(stock);
         ApplyHalt(stock.IsTradingHalted);
         LayoutBadge();
@@ -147,12 +182,14 @@ public class StockListItem : MonoBehaviour
 
         if (textVolume10 != null)
         {
-            DeviceTerminalUI.Set(textVolume10,FormatVolume(volumeSum) + "주");
+            string volumeLine = FormatVolume(volumeSum) + " " + stock.symbol;
+            if (!GameLocalizedText.Matches(textVolume10, volumeLine)) { GameLocalizedText.Set(textVolume10, volumeLine, true); }
         }
 
         if (textTurnover != null)
         {
-            DeviceTerminalUI.Set(textTurnover,"거래대금 " + FormatTurnover(turnoverSum) + "원");
+            string turnoverLine = "₩" + FormatTurnover(turnoverSum);
+            if (!GameLocalizedText.Matches(textTurnover, turnoverLine)) { GameLocalizedText.Set(textTurnover, turnoverLine, true); }
         }
 
         if (textChangePct10 != null)
@@ -160,10 +197,35 @@ public class StockListItem : MonoBehaviour
             DeviceTerminalUI.Set(textChangePct10,hasDailyChange ? (changePct > 0 ? $"+{changePct:F1}%" : $"{changePct:F1}%") : "—");
             textChangePct10.color = changePct > 0 ? Up : changePct < 0 ? Down : new Color32(138,150,163,255);
         }
+        // 현재가도 전일 대비 방향의 색을 따른다(거래정지 중에는 정지 색 그대로).
+        if (textPrice != null && !stock.IsTradingHalted) { textPrice.color = !hasDailyChange || changePct == 0f ? (Color)PriceInk : changePct > 0 ? Up : Down; }
         TurnoverSortValue = turnoverSum; ChangeSortValue = changePct;
         // 0% 기준은 등락률과 같은 전일 종가. 전일 종가가 없으면 당일 시가를 쓴다.
         float reference = hasDailyChange && changePct > -99f && summary.HasValue ? summary.Value.close / (1f + changePct / 100f) : summary.HasValue ? summary.Value.open : 0f;
         ApplyCandleAnchors(summary, reference);
+    }
+
+    /// <summary>아직 상장하지 않은(다음 개장에 상장하는) 종목의 행: 꼬리표에 '상장 대기 중', 거래는 내일 09:00부터.</summary>
+    private void ApplyWaiting()
+    {
+        string code = GameLocale.Code;
+        string badge = code == "ja" ? "上場待ち" : code == "en" ? "Listing soon" : "상장 대기 중";
+        string note = code == "ja" ? "明日 09:00" : code == "en" ? "09:00 tomorrow" : "내일 09:00";
+        Color color = new Color32(46, 230, 208, 255);
+        if (textRisk != null)
+        {
+            if (!GameLocalizedText.Matches(textRisk, badge)) { GameLocalizedText.Set(textRisk, badge, true); badgeLayoutDirty = true; }
+            textRisk.color = color;
+        }
+        if (riskBadgeBackground != null) { color.a = .12f; riskBadgeBackground.color = color; }
+        ApplyHalt(false); LayoutBadge();
+        selected = false; selectionInitialized = true;
+        if (selectionHighlight != null) { selectionHighlight.enabled = false; }
+        if (textVolume10 != null && !GameLocalizedText.Matches(textVolume10, _stock.symbol)) { GameLocalizedText.Set(textVolume10, _stock.symbol, true); }
+        if (textTurnover != null) { GameLocalizedText.Set(textTurnover, "—", true); }
+        if (textChangePct10 != null) { if (!GameLocalizedText.Matches(textChangePct10, note)) { GameLocalizedText.Set(textChangePct10, note, true); } textChangePct10.color = new Color32(46, 230, 208, 255); }
+        TurnoverSortValue = 0f; ChangeSortValue = 0f;
+        ApplyCandleAnchors(null, 0f);
     }
 
     private int badgeLayoutLocale = -1;
@@ -176,7 +238,8 @@ public class StockListItem : MonoBehaviour
         if (!badgeLayoutDirty && Mathf.Approximately(width,badgeLayoutWidth) && badgeLayoutLocale == GameLocale.Revision)
         { return; }
         badgeLayoutDirty = false; badgeLayoutWidth = width; badgeLayoutLocale = GameLocale.Revision;
-        float badgeWidth = Mathf.Clamp(textRisk.GetPreferredValues(textRisk.text).x + 28f,160f,248f);
+        // 꼬리표는 글자 길이만큼만(짧게).
+        float badgeWidth = Mathf.Clamp(textRisk.GetPreferredValues(textRisk.text).x + 26f,64f,248f);
         float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - 16f - textName.rectTransform.anchoredPosition.x,120f,650f);
         textName.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,nameWidth);
         float x = textName.rectTransform.anchoredPosition.x + Mathf.Min(nameWidth,textName.GetPreferredValues(textName.text).x) + 16f;
@@ -291,7 +354,8 @@ public class StockListItem : MonoBehaviour
 
     // 미니 캔들 세로 눈금은 고정이다. 가운데가 0%, 맨 아래가 -10%, 맨 위가 +10%. 그보다 큰 움직임은 끝에 붙는다.
     // (±50%였을 때는 하루 1~3% 움직임이 점처럼 보였다.)
-    private const float CandleScalePercent = 10f;
+    // (요청으로 다시 ±50%: 맨 위가 +50%, 맨 아래가 -50%.)
+    private const float CandleScalePercent = 50f;
     void ApplyCandleAnchors(CandleData? summary, float reference)
     {
         if (imgLine != null)

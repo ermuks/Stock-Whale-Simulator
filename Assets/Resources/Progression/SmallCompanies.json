@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "shares": 10000,
+  "premium": 0.15,
+  "companies": [
+    { "id": "SMB_BNC", "ko": "바나나컴퍼니", "en": "Banana Company", "ja": "バナナカンパニー", "sector": "식품", "sectorEn": "Food", "sectorJa": "食品", "value": 40000000 },
+    { "id": "SMB_MFR", "ko": "머니프레시", "en": "Money Fresh", "ja": "マネーフレッシュ", "sector": "금융", "sectorEn": "Finance", "sectorJa": "金融", "value": 95000000 },
+    { "id": "SMB_GSF", "ko": "좋은바다식품", "en": "Good Sea Foods", "ja": "よい海食品", "sector": "식품", "sectorEn": "Food", "sectorJa": "食品", "value": 150000000 },
+    { "id": "SMB_BRN", "ko": "보라네트워크", "en": "Bora Network", "ja": "ボラネットワーク", "sector": "전자", "sectorEn": "Electronics / IT", "sectorJa": "電子・IT", "value": 260000000 },
+    { "id": "SMB_SNM", "ko": "사나머니", "en": "Sana Money", "ja": "サナマネー", "sector": "금융", "sectorEn": "Finance", "sectorJa": "金融", "value": 340000000 },
+    { "id": "SMB_HTK", "ko": "하이테크", "en": "Hi-Tech", "ja": "ハイテック", "sector": "전자", "sectorEn": "Electronics / IT", "sectorJa": "電子・IT", "value": 420000000 },
+    { "id": "SMB_TWC", "ko": "태우건설", "en": "Taewoo Construction", "ja": "テウ建設", "sector": "건설", "sectorEn": "Construction", "sectorJa": "建設", "value": 520000000 },
+    { "id": "SMB_BRM", "ko": "형제자동차", "en": "Brothers Motors", "ja": "兄弟自動車", "sector": "자동차", "sectorEn": "Automotive", "sectorJa": "自動車", "value": 780000000 },
+    { "id": "SMB_GCC", "ko": "고층건설", "en": "Highrise Construction", "ja": "高層建設", "sector": "건설", "sectorEn": "Construction", "sectorJa": "建設", "value": 900000000 }
+  ]
+}

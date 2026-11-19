@@ -31,7 +31,7 @@ public static class TerminalOrdersValidation
             var manager = Object.FindAnyObjectByType<StockManager>(); StockManager.Instance = manager;
             manager.useInitialEconomy = false;
             var a = new Stock("DSA","덕상가주에이아이",1000,1000000);
-            var b = new Stock("DDP","대만디스플레이",2000,1000000);
+            var b = new Stock("DDP","LC디스플레이",2000,1000000);
             manager.stocks = new List<Stock> { a,b }; manager.CurrentStock = a;
             var account = new GameObject("Validation Account").AddComponent<Trader>(); account.cash = 1000000; account.GrantShares(a,200,750);
             manager.playerAccount = account; ui.session.account = account; first.account = account;

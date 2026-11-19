@@ -24,6 +24,7 @@ public sealed class CompanyGrowthUI : MonoBehaviour
         ["동시 투자 2건"]=("2 projects at once","同時投資 2件"), ["{0}부터 동시 투자 2건"]=("2 projects at once from {0}","{0}から同時投資 2件"),
         ["상장 준비"]=("IPO readiness","上場準備"), ["최종 목표"]=("Final goal","最終目標"), ["목표 달성 · {0}"]=("Goal reached · {0}","目標達成 · {0}"),
         ["사업 확장"]=("Expansions","事業拡張"), ["마감 시가총액"]=("Closing market cap","終値の時価総額"),
+        ["{0}% · {1} 남음"]=("{0}% · {1} left","{0}% · 残り{1}"),
         ["진행 중인 투자 없음"]=("No active project","進行中の投資なし"), ["{0} · {1} 완료"]=("{0} · done {1}","{0} · {1} 完了"),
     };
     private static string T(string korean) => GameLocale.Code=="ko" || !Words.TryGetValue(korean,out var other) ? korean : GameLocale.Code=="ja" ? other.ja : other.en;
@@ -39,8 +40,17 @@ public sealed class CompanyGrowthUI : MonoBehaviour
     private const float CardWidth=.155f, CardStep=.1675f, CardHeight=.19f, GridTop=.482f, RowStep=.205f;
     private const int MaxPips=5;
     private readonly Image[,] pips=new Image[ProjectCount,MaxPips];
-    private readonly Image[] cardLines=new Image[ProjectCount];
-    private TextMeshProUGUI effect;
+    private readonly Image[] cardLines=new Image[ProjectCount], workTracks=new Image[ProjectCount], workFills=new Image[ProjectCount];
+    private readonly TextMeshProUGUI[] levels=new TextMeshProUGUI[ProjectCount];
+    /// <summary>게임 분을 짧게 적는다: 1일 4시간 / 1d 4h / 1日4時間.</summary>
+    private static string Span(double minutes)
+    {
+        long total=(long)Math.Ceiling(Math.Max(0,minutes)), days=total/1440, hours=total%1440/60, rest=total%60; string code=GameLocale.Code;
+        if (days>0) { return code=="en" ? days+"d "+hours+"h" : code=="ja" ? days+"日"+hours+"時間" : days+"일 "+hours+"시간"; }
+        if (hours>0) { return code=="en" ? hours+"h "+rest+"m" : code=="ja" ? hours+"時間"+rest+"分" : hours+"시간 "+rest+"분"; }
+        return code=="en" ? rest+"m" : code=="ja" ? rest+"分" : rest+"분";
+    }
+    private TextMeshProUGUI effect, advice;
     private Button invest;
     private int selected;
     private Button fund, listing;
@@ -78,7 +88,9 @@ public sealed class CompanyGrowthUI : MonoBehaviour
         string[] policyNames={"배당","재투자","비축"};
         for (int i=0;i<3;i++)
         { int index=i; policies[i]=Button("Policy "+i,policyNames[i],i*.225f,.33f,.21f,.065f,()=> { CorporateEconomy.Instance.SetPolicy(stock,(CompanyPolicy)index); Refresh(); }); }
-        allocation=Label("Allocation","",0,.405f,.66f,.045f,26);
+        allocation=Label("Allocation","",0,.398f,.66f,.04f,25);
+        // 지금 권하는 정책과 그 까닭.
+        advice=Label("Policy Advice","",.0f,.44f,.66f,.028f,19); advice.color=new Color32(61,220,132,255); advice.overflowMode=TextOverflowModes.Ellipsis;
         Surface("Projects Divider",0,.47f,.66f,.0015f,TabletKitStyle.Line);
         // 투자 일곱 가지를 카드 격자로 보여 준다(네 칸 두 줄). 카드에는 아이콘·이름·단계 점·비용만 둔다.
         // 고른 카드의 다음 효과와 투자 단추는 마지막 칸에 있다.
@@ -90,7 +102,12 @@ public sealed class CompanyGrowthUI : MonoBehaviour
             TabletKitStyle.Glyph(ProjectIcons[i],card.transform,.08f,.09f,.20f,.27f);
             projectTitles[i]=Child(card.transform,"Project Title",.08f,.42f,.88f,.20f,23);
             for (int step=0;step<MaxPips;step++) { pips[i,step]=TabletKitStyle.Surface("Level "+step,card.transform,.08f+step*.105f,.68f,.085f,.045f,TabletKitStyle.Line); }
-            costs[i]=Child(card.transform,"Project Cost",.08f,.79f,.88f,.15f,19); costs[i].color=Muted;
+            costs[i]=Child(card.transform,"Project Cost",.08f,.80f,.88f,.15f,19); costs[i].color=Muted;
+            // 단계 숫자(Lv 2/5)와, 진행 중일 때 얼마나 됐는지 보여 주는 막대.
+            levels[i]=Child(card.transform,"Project Level",.34f,.11f,.58f,.22f,22); levels[i].alignment=TextAlignmentOptions.MidlineRight;
+            workTracks[i]=TabletKitStyle.Surface("Work Track",card.transform,.08f,.745f,.84f,.028f,TabletKitStyle.Line);
+            workFills[i]=TabletKitStyle.Surface("Work Fill",workTracks[i].transform,0,0,1,1,TabletKitStyle.Accent);
+            workTracks[i].raycastTarget=workFills[i].raycastTarget=false;
             cardLines[i]=TabletKitStyle.Surface("Card Line",card.transform,0,.965f,1,.035f,TabletKitStyle.Accent);
         }
         var action=Surface("Project Action",3*CardStep,GridTop+RowStep,CardWidth,CardHeight,TabletKitStyle.Panel).transform;
@@ -139,13 +156,23 @@ public sealed class CompanyGrowthUI : MonoBehaviour
         double dividend=data.Policy==CompanyPolicy.Dividend ? businessRules.dividendPayout : data.Policy==CompanyPolicy.Investment ? businessRules.investmentPayout : businessRules.reservePayout;
         double reinvest=data.Policy==CompanyPolicy.Investment ? businessRules.growthInvestment : data.Policy==CompanyPolicy.Dividend ? businessRules.dividendInvestment : 0;
         Set(allocation,"배당 "+dividend.ToString("0%")+"  ·  재투자 "+reinvest.ToString("0%")+"  ·  비축 "+(1-dividend-reinvest).ToString("0%"));
+        var best=economy.Recommend(stock,out string why); string code=GameLocale.Code;
+        string[] policyWords=code=="ja" ? new[]{"配当","再投資","内部留保"} : code=="en" ? new[]{"Dividend","Reinvest","Reserves"} : new[]{"배당","재투자","비축"};
+        Lit(advice,(code=="ja" ? "おすすめ · " : code=="en" ? "Suggested · " : "추천 · ")+policyWords[(int)best]+"  —  "+why);
         for (int i=0;i<3;i++) { policies[i].interactable=manage; TabletKitStyle.Flat(policies[i].image,(int)data.Policy==i ? TabletKitStyle.Hover : TabletKitStyle.Background); policies[i].GetComponentInChildren<TMP_Text>().color=(int)data.Policy==i ? TabletKitStyle.Accent : Muted; }
-        int today=MarketDayController.Instance.Day;
+        int today=MarketDayController.Instance.Day; double nowMinute=MarketDayController.Instance.AbsoluteGameMinute;
         for (int i=0;i<ProjectCount;i++)
         {
             var type=(CompanyProject)i; int level=growth.Level(type); bool running=growth.Running(type);
             Lit(projectTitles[i],ProjectLabel(type));
-            Lit(costs[i],running ? T("진행 중") : level>=rules.maximumLevel ? T("최대 단계") : Money(growth.ProjectCost(data,type,rules)));
+            // 투자는 끝나는 날의 결산(17:00)에 마무리된다. 시작한 날 09:00부터 그때까지를 진행 구간으로 본다.
+            int finishDay=growth.Project==i ? growth.CompleteDay : growth.SecondCompleteDay;
+            double finishAt=(finishDay-1)*1440d+1020d, startAt=(finishDay-rules.projectDays-1)*1440d+540d;
+            float worked=running ? Mathf.Clamp01((float)((nowMinute-startAt)/Math.Max(1d,finishAt-startAt))) : 0f;
+            if (workTracks[i].gameObject.activeSelf!=running) { workTracks[i].gameObject.SetActive(running); }
+            if (running) { workFills[i].rectTransform.anchorMax=new Vector2(worked,1f); }
+            Lit(levels[i],"Lv "+level+" / "+rules.maximumLevel); levels[i].color=level>=rules.maximumLevel ? TabletKitStyle.Accent : level>0 ? new Color32(230,235,239,255) : Muted;
+            Lit(costs[i],running ? string.Format(T("{0}% · {1} 남음"),Mathf.FloorToInt(worked*100f),Span(finishAt-nowMinute)) : level>=rules.maximumLevel ? T("최대 단계") : Money(growth.ProjectCost(data,type,rules)));
             costs[i].color=running ? TabletKitStyle.Accent : Muted;
             // 단계 점: 채운 점이 지금 단계, 흐린 점이 진행 중인 다음 단계.
             for (int step=0;step<MaxPips;step++)

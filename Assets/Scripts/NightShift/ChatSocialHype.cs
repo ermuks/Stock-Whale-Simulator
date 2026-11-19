@@ -173,8 +173,41 @@ public static class ChatHypeAssets
     }
     public static string[] Echo(string kind) => Current.echoIndex.TryGetValue(kind, out var texts) ? texts : None;
     public static bool Fits(ChatHypeSetup setup, ChatHypeVerdict verdict) => setup.lean == "any" || verdict.lean == "any" || setup.lean == verdict.lean;
+    /// <summary>종목 기호로 줄임말 하나를 돌려준다(없으면 null). 게임 쪽에서 연결한다.</summary>
+    public static Func<string, string> ShortName;
+    private const char NameMark = '\u0001';
+    /// <summary>
+    /// 틀의 빈칸을 채운다. 종목 이름은 절반쯤은 줄임말로 부른다(이름의 글자 수를 말하는 줄은 빼고).
+    /// 한국어 이름 뒤의 조사(은/는, 이/가, 을/를, 과/와)는 실제로 들어간 이름의 받침에 맞춘다.
+    /// </summary>
     public static string Fill(string text, IReadOnlyDictionary<string, string> slots)
-        => SlotPattern.Replace(text, match => slots.TryGetValue(match.Groups[1].Value, out string value) ? value : "");
+    {
+        if (!slots.TryGetValue("stockName", out string name) || string.IsNullOrEmpty(name) || text.IndexOf("{stockName}", StringComparison.Ordinal) < 0)
+        { return SlotPattern.Replace(text, match => slots.TryGetValue(match.Groups[1].Value, out string value) ? value : ""); }
+        if (slots.TryGetValue("stockShort", out string shorter) && !string.IsNullOrEmpty(shorter) && text.IndexOf("{nameLen}", StringComparison.Ordinal) < 0
+            && CompanyBusiness.Hash(text + "|" + shorter + "|" + (slots.TryGetValue("price", out string price) ? price : "")) % 100 < 55)
+        { name = shorter; }
+        string marked = SlotPattern.Replace(text, match => match.Groups[1].Value == "stockName" ? NameMark.ToString() : slots.TryGetValue(match.Groups[1].Value, out string value) ? value : "");
+        char last = name[name.Length - 1]; bool hangul = last >= '\uAC00' && last <= '\uD7A3', closed = hangul && (last - 0xAC00) % 28 != 0;
+        var result = new System.Text.StringBuilder(marked.Length + name.Length * 2);
+        for (int i = 0; i < marked.Length; i++)
+        {
+            if (marked[i] != NameMark) { result.Append(marked[i]); continue; }
+            result.Append(name);
+            if (!hangul || i + 1 >= marked.Length) { continue; }
+            char particle = marked[i + 1]; char after = i + 2 < marked.Length ? marked[i + 2] : ' ';
+            bool ends = !(after >= '\uAC00' && after <= '\uD7A3');
+            char fixedParticle = particle;
+            if (ends && (particle == '은' || particle == '는')) { fixedParticle = closed ? '은' : '는'; }
+            else if (ends && (particle == '을' || particle == '를')) { fixedParticle = closed ? '을' : '를'; }
+            else if (ends && (particle == '과' || particle == '와')) { fixedParticle = closed ? '과' : '와'; }
+            else if (ends && (particle == '이' || particle == '가')) { fixedParticle = closed ? '이' : '가'; }
+            // "이네", "이다", "이야": 받침이 없으면 '이'가 빠진다.
+            else if (particle == '이' && !closed && (after == '네' || after == '다' || after == '야' || after == '라' || after == '지')) { i++; continue; }
+            if (fixedParticle != particle) { result.Append(fixedParticle); i++; }
+        }
+        return result.ToString();
+    }
     public static string Clock(ChatHypeLocale locale, int clockMinute)
         => locale.clockFormat.Replace("{h}", (clockMinute / 60).ToString()).Replace("{mm}", (clockMinute % 60).ToString("00")).Replace("{m}", (clockMinute % 60).ToString());
 }
@@ -507,6 +540,9 @@ public sealed partial class InvestorSociety
         // 종목 이름은 그 언어에서 보이는 이름 그대로 쓴다. 글자 수도 그 이름으로 센다.
         string name = GameLocale.Text(stock.stockName ?? stock.symbol ?? "");
         slots["stockName"] = name; slots["nameLen"] = name.Replace(" ", "").Length.ToString(SocialCulture);
+        // 줄임말(산삼전자 → 산전). 쓸지 말지는 빈칸을 채울 때 정한다.
+        string shortName = ChatHypeAssets.ShortName?.Invoke(stock.symbol);
+        if (!string.IsNullOrEmpty(shortName)) { slots["stockShort"] = shortName; }
         slots["price"] = Money(stock.currentPrice);
         long whole = (long)stock.currentPrice;
         while (whole >= 10 && whole % 10 == 0) { whole /= 10; }

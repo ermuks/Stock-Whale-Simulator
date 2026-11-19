@@ -16,12 +16,17 @@ public sealed class UnlockGridUI : MonoBehaviour
         public Button button;
         public TextMeshProUGUI title, cost;
         public Image state, selected;
+        public Image[] border;
+        public Image track, fill;
     }
+    // 해금한 칸은 초록 테두리로, 잠긴 칸은 채도를 뺀 회색으로 보여 준다.
+    private static readonly Color Done = new Color32(61, 220, 132, 255), DoneFill = new Color32(17, 40, 33, 255), DoneHover = new Color32(22, 54, 44, 255),
+        LockedFill = new Color32(27, 28, 30, 255), LockedHover = new Color32(40, 41, 44, 255), LockedInk = new Color32(108, 110, 114, 255);
 
     private readonly List<Cell> cells = new();
     private RectTransform grid;
     private TextMeshProUGUI title, description, cost, duration, remainingCaption, remaining, status;
-    private Image statusIcon;
+    private Image statusIcon, detailTrack, detailFill;
     private Button start;
     private PlayerProgression bound;
     private string selectedId;
@@ -72,6 +77,9 @@ public sealed class UnlockGridUI : MonoBehaviour
         remainingCaption.color = TabletKitStyle.Muted;
         remaining = TabletKitStyle.Label("Unlock Remaining", transform, "", DetailX + .13f, .64f, DetailWidth - .13f, .06f, 28, true);
         remaining.color = TabletKitStyle.Accent;
+        // 해금이 얼마나 진행됐는지 보여 주는 막대.
+        detailTrack = TabletKitStyle.Surface("Unlock Progress Track", transform, DetailX, .715f, DetailWidth, .014f, TabletKitStyle.Line);
+        detailFill = TabletKitStyle.Surface("Unlock Progress Fill", detailTrack.transform, 0, 0, 1, 1, TabletKitStyle.Accent);
 
         statusIcon = TabletKitStyle.Glyph("lock", transform, DetailX, .775f, .03f, .05f);
         statusIcon.name = "Image :: Unlock Status";
@@ -106,6 +114,15 @@ public sealed class UnlockGridUI : MonoBehaviour
             cell.cost.alignment = TextAlignmentOptions.MidlineRight;
             cell.cost.color = TabletKitStyle.Muted;
             cell.selected = TabletKitStyle.Surface("Unlock Selected", button.transform, 0, .97f, 1, .03f, TabletKitStyle.Accent);
+            cell.border = new[]
+            {
+                TabletKitStyle.Surface("Unlock Border Top", button.transform, 0, 0, 1, .018f, Done), TabletKitStyle.Surface("Unlock Border Bottom", button.transform, 0, .982f, 1, .018f, Done),
+                TabletKitStyle.Surface("Unlock Border Left", button.transform, 0, 0, .011f, 1, Done), TabletKitStyle.Surface("Unlock Border Right", button.transform, .989f, 0, .011f, 1, Done)
+            };
+            foreach (var edge in cell.border) { edge.raycastTarget = false; }
+            cell.track = TabletKitStyle.Surface("Unlock Cell Track", button.transform, .07f, .70f, .86f, .035f, TabletKitStyle.Line);
+            cell.fill = TabletKitStyle.Surface("Unlock Cell Fill", cell.track.transform, 0, 0, 1, 1, TabletKitStyle.Accent);
+            cell.track.raycastTarget = cell.fill.raycastTarget = false;
             cells.Add(cell);
         }
 
@@ -192,16 +209,38 @@ public sealed class UnlockGridUI : MonoBehaviour
             }
 
             var state = progression == null ? PlayerProgression.UnlockState.Locked : progression.StateOf(cell.item);
-            SetIcon(cell.state, StateIcon(state), StateColor(state));
-            TabletKitStyle.Flat(cell.button.image, active ? TabletKitStyle.Hover : TabletKitStyle.Panel);
-            cell.title.color = active ? TabletKitStyle.Accent : state == PlayerProgression.UnlockState.Locked ? TabletKitStyle.Muted : TabletKitStyle.Ink;
-            if (cell.selected.gameObject.activeSelf != active)
+            bool unlocked = state == PlayerProgression.UnlockState.Unlocked, locked = state == PlayerProgression.UnlockState.Locked;
+            SetIcon(cell.state, StateIcon(state), unlocked ? Done : locked ? LockedInk : TabletKitStyle.Accent);
+            TabletKitStyle.Flat(cell.button.image, unlocked ? (active ? DoneHover : DoneFill) : locked ? (active ? LockedHover : LockedFill) : active ? TabletKitStyle.Hover : TabletKitStyle.Panel);
+            cell.title.color = unlocked ? TabletKitStyle.Ink : locked ? LockedInk : active ? TabletKitStyle.Accent : TabletKitStyle.Ink;
+            cell.cost.color = locked ? LockedInk : TabletKitStyle.Muted;
+            foreach (var edge in cell.border) { if (edge.enabled != unlocked) { edge.enabled = unlocked; } }
+            // 고른 칸의 밑줄: 해금한 칸은 테두리가 대신한다(고르면 더 밝은 바탕).
+            bool underline = active && !unlocked;
+            if (cell.selected.gameObject.activeSelf != underline)
             {
-                cell.selected.gameObject.SetActive(active);
+                cell.selected.gameObject.SetActive(underline);
             }
+            cell.selected.color = locked ? LockedInk : TabletKitStyle.Accent;
 
-            DeviceTerminalUI.Set(cell.title, cell.item.title);
-            DeviceTerminalUI.Set(cell.cost, state == PlayerProgression.UnlockState.Unlocked ? "" : DeviceTerminalUI.Money(cell.item.cost));
+            // 해금 중인 칸: 진행 막대와 남은 시간.
+            bool running = state == PlayerProgression.UnlockState.InProgress;
+            if (cell.track.gameObject.activeSelf != running) { cell.track.gameObject.SetActive(running); }
+            if (running)
+            {
+                cell.fill.rectTransform.anchorMax = new Vector2(Progress(progression, cell.item), 1f);
+                GameLocalizedText.Set(cell.cost, LocalTime(progression.UnlockRemainingMinutes), true); cell.cost.color = TabletKitStyle.Accent;
+            }
+            else if (cell.item.external)
+            {
+                GameLocalizedText.Set(cell.title, cell.item.LocalTitle, true);
+                GameLocalizedText.Set(cell.cost, state == PlayerProgression.UnlockState.Unlocked ? "" : cell.item.cost > 0 ? DeviceTerminalUI.Money(cell.item.cost) : Condition, true);
+            }
+            else
+            {
+                DeviceTerminalUI.Set(cell.title, cell.item.title);
+                DeviceTerminalUI.Set(cell.cost, state == PlayerProgression.UnlockState.Unlocked ? "" : DeviceTerminalUI.Money(cell.item.cost));
+            }
         }
 
         if (progression == null || shown == null)
@@ -210,7 +249,7 @@ public sealed class UnlockGridUI : MonoBehaviour
             DeviceTerminalUI.Set(description, "");
             DeviceTerminalUI.Set(cost, "—");
             DeviceTerminalUI.Set(duration, "—");
-            ShowRemaining(false, 0);
+            ShowRemaining(false, 0, 0f);
             statusIcon.gameObject.SetActive(false);
             DeviceTerminalUI.Set(status, "");
             start.gameObject.SetActive(true);
@@ -221,29 +260,57 @@ public sealed class UnlockGridUI : MonoBehaviour
 
         var selectedState = progression.StateOf(shown);
         bool can = progression.CanStartUnlock(shown, out string reason);
-        DeviceTerminalUI.Set(title, shown.title);
-        DeviceTerminalUI.Set(description, shown.description);
-        DeviceTerminalUI.Set(cost, DeviceTerminalUI.Money(shown.cost));
-        DeviceTerminalUI.Set(duration, GameTime(shown.minutes));
-        ShowRemaining(selectedState == PlayerProgression.UnlockState.InProgress, progression.UnlockRemainingMinutes);
+        if (shown.external)
+        {
+            GameLocalizedText.Set(title, shown.LocalTitle, true); GameLocalizedText.Set(description, shown.LocalDescription, true);
+            GameLocalizedText.Set(cost, shown.cost > 0 ? DeviceTerminalUI.Money(shown.cost) : Condition, true); GameLocalizedText.Set(duration, "—", true);
+        }
+        else
+        {
+            DeviceTerminalUI.Set(title, shown.title);
+            DeviceTerminalUI.Set(description, shown.description);
+            DeviceTerminalUI.Set(cost, DeviceTerminalUI.Money(shown.cost));
+            DeviceTerminalUI.Set(duration, GameTime(shown.minutes));
+        }
+        bool inProgress = selectedState == PlayerProgression.UnlockState.InProgress; float done01 = inProgress ? Progress(progression, shown) : 0f;
+        ShowRemaining(inProgress, progression.UnlockRemainingMinutes, done01);
 
         bool done = selectedState == PlayerProgression.UnlockState.Unlocked;
         bool idle = selectedState == PlayerProgression.UnlockState.Available;
         statusIcon.gameObject.SetActive(!can);
-        SetIcon(statusIcon, idle ? "info" : StateIcon(selectedState), done ? TabletKitStyle.Accent : TabletKitStyle.Muted);
-        DeviceTerminalUI.Set(status, reason);
-        status.color = done ? TabletKitStyle.Accent : TabletKitStyle.Muted;
+        SetIcon(statusIcon, idle ? "info" : StateIcon(selectedState), done ? Done : TabletKitStyle.Muted);
+        if (shown.external) { GameLocalizedText.Set(status, reason, true); } else { DeviceTerminalUI.Set(status, reason); }
+        status.color = done ? Done : TabletKitStyle.Muted;
         if (start.gameObject.activeSelf == done)
         {
             start.gameObject.SetActive(!done);
         }
 
+        // 조건만으로 열리는 해금(작전 도구)은 누를 단추가 없다.
+        bool pressable = !done && !(shown.external && shown.cost <= 0);
+        if (start.gameObject.activeSelf != pressable) { start.gameObject.SetActive(pressable); }
         start.interactable = can;
         TabletControlStyle.Emphasize(start, can);
     }
+    private static string Condition => GameLocale.Code == "ja" ? "条件達成" : GameLocale.Code == "en" ? "By condition" : "조건 달성";
 
-    private void ShowRemaining(bool visible, double minutes)
+    /// <summary>남은 게임 시간을 지금 언어로 적는다.</summary>
+    private static string LocalTime(double gameMinutes)
     {
+        long total = (long)Math.Ceiling(Math.Max(0, gameMinutes)), hours = total / 60, minutes = total % 60; string code = GameLocale.Code;
+        if (code == "en") { return (hours > 0 ? hours + "h " : "") + (minutes > 0 || hours == 0 ? minutes + "m " : "") + "in-game"; }
+        if (code == "ja") { return "ゲーム内 " + (hours > 0 ? hours + "時間" : "") + (minutes > 0 || hours == 0 ? minutes + "分" : ""); }
+        return "게임 " + (hours > 0 ? hours + "시간" + (minutes > 0 ? " " : "") : "") + (minutes > 0 || hours == 0 ? minutes + "분" : "");
+    }
+
+    /// <summary>해금이 진행된 정도(0~1).</summary>
+    private static float Progress(PlayerProgression progression, PlayerProgression.UnlockItem item)
+    { return Mathf.Clamp01(1f - (float)(progression.UnlockRemainingMinutes / Math.Max(1, item.minutes))); }
+
+    private void ShowRemaining(bool visible, double minutes, float progress)
+    {
+        if (detailTrack.gameObject.activeSelf != visible) { detailTrack.gameObject.SetActive(visible); }
+        if (visible) { detailFill.rectTransform.anchorMax = new Vector2(progress, 1f); }
         if (remainingCaption.gameObject.activeSelf != visible)
         {
             remainingCaption.gameObject.SetActive(visible);
@@ -252,7 +319,7 @@ public sealed class UnlockGridUI : MonoBehaviour
 
         if (visible)
         {
-            DeviceTerminalUI.Set(remaining, GameTime(minutes));
+            GameLocalizedText.Set(remaining, LocalTime(minutes) + " · " + Mathf.FloorToInt(progress * 100f) + "%", true);
         }
     }
 

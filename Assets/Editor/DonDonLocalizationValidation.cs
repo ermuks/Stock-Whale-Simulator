@@ -183,7 +183,7 @@ public static class DonDonLocalizationValidation
     {
         decimal cash = tablet.account.cash, reserved = tablet.account.ReservedCash;
         var social = new SocialMessage { localizedPhrase = "{stock} {return}인데 아직 안 팔았음. {gain} 찍힘 ㅋㅋ", localizedSuffix = "", localizedValues = new[] {
-            new SocialSpeechValue { name = "stock", value = "대만디스플레이", raw = "대만디스플레이" },
+            new SocialSpeechValue { name = "stock", value = "LC디스플레이", raw = "LC디스플레이" },
             new SocialSpeechValue { name = "return", value = "+50퍼", raw = "50" },
             new SocialSpeechValue { name = "gain", value = "500장", raw = "5284003" } } };
         // The chosen phrase itself is looked up from the actual catalogue below; no simulated speech is injected.

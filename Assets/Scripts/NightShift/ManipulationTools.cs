@@ -144,6 +144,13 @@ public static class ManipulationTools
     public struct WallView { public float Bid, Ask; public decimal BidPrice, AskPrice; public float Lean => Bid - Ask; }
     /// <summary>벽으로 치는 기준: 한 호가의 잔량(금액)이 주변 호가의 보통 크기의 이 배수를 넘어야 하고, WallFull배면 세기 1이다. 최우선 호가에서 5% 안만 본다.</summary>
     public const float WallFrom = 3f, WallFull = 12f; public const decimal WallBand = .05m;
+    /// <summary>
+    /// 벽으로 치는 최소 금액. 주변 호가보다 몇 배 크더라도 돈으로 따져 작으면 벽이 아니다
+    /// (한 주가 120만 원인 종목에서 23주, 2천7백만 원어치를 보고 "엄청 받쳐 놨다"고 하던 것을 막는다).
+    /// 3천만 원과 시가총액의 0.05% 가운데 큰 쪽이다.
+    /// </summary>
+    public const decimal WallMinimumValue = 30_000_000m, WallMinimumCapShare = .0005m;
+    public static decimal WallFloor(Stock stock) => stock == null ? WallMinimumValue : Math.Max(WallMinimumValue, stock.currentPrice * stock.issuedShares * WallMinimumCapShare);
     private static readonly Dictionary<Stock, (float at, WallView view)> walls = new();
     private static readonly List<decimal> sizes = new(24);
     /// <summary>
@@ -178,8 +185,9 @@ public static class ManipulationTools
                 sizes.Sort(); decimal typical = sizes[sizes.Count / 2];
                 if (typical > 0m)
                 {
-                    view.Bid = Mathf.Clamp01(((float)(bidTop / typical) - WallFrom) / (WallFull - WallFrom));
-                    view.Ask = Mathf.Clamp01(((float)(askTop / typical) - WallFrom) / (WallFull - WallFrom));
+                    decimal floor = WallFloor(stock);
+                    view.Bid = bidTop < floor ? 0f : Mathf.Clamp01(((float)(bidTop / typical) - WallFrom) / (WallFull - WallFrom));
+                    view.Ask = askTop < floor ? 0f : Mathf.Clamp01(((float)(askTop / typical) - WallFrom) / (WallFull - WallFrom));
                 }
             }
         }

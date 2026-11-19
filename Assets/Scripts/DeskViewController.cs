@@ -30,8 +30,11 @@ public sealed class DeskViewController : MonoBehaviour
     /// <summary>모니터·태블릿이 아닌 곳(서랍 같은 소품)을 들여다보는 중인가.</summary>
     public bool IsCustomView => custom;
     private bool custom;
-    public static bool BlockChartPointer => Instance != null && (Instance.Target != DeskViewTarget.Chart || Instance.moving || Instance.consumedFrame == Time.frameCount);
+    /// <summary>모니터를 보는 시점(1 종목, 2 가운데, 3 채팅)인가. 이 시점들에서는 가운데 화면도 함께 보이고 조작된다.</summary>
+    private static bool MonitorView(DeskViewTarget target) => target == DeskViewTarget.Stocks || target == DeskViewTarget.Chart || target == DeskViewTarget.Chat;
+    public static bool BlockChartPointer => Instance != null && (!MonitorView(Instance.Target) || Instance.moving || Instance.consumedFrame == Time.frameCount);
     private Camera viewCamera;
+    private MarketWallClock wallClock;
     private MouseCameraController mouseLook;
     private Pose home, from, destination;
     private float homeFov, fromFov, destinationFov, transitionTime, lastAspect;
@@ -214,16 +217,25 @@ public sealed class DeskViewController : MonoBehaviour
             angles.y = target == DeskViewTarget.Stocks ? stocksViewYaw : chatViewYaw;
             pose.rotation = Quaternion.Euler(angles);
         }
-        else if (target == DeskViewTarget.Chart && journeyNotes != null && journeyNotes.framingBottom != null)
+        else if (target == DeskViewTarget.Chart)
         {
             // Fit the hanging notes as well as the screen; the actual monitor transform stays untouched.
             Vector3 up = (corners[1] - corners[0]).normalized;
             Vector3 forward = pose.rotation * Vector3.forward;
-            float extra = Mathf.Max(0f, Vector3.Dot(corners[0] - journeyNotes.framingBottom.position, up));
-            float height = Vector3.Distance(corners[0], corners[1]) + extra;
+            float extra = journeyNotes != null && journeyNotes.framingBottom != null ? Mathf.Max(0f, Vector3.Dot(corners[0] - journeyNotes.framingBottom.position, up)) : 0f;
+            // 모니터 위의 벽시계도 함께 보이게 위쪽으로도 넓힌다.
+            float above = 0f;
+            if (wallClock == null) { wallClock = FindAnyObjectByType<MarketWallClock>(); }
+            var clockParts = wallClock == null ? null : wallClock.GetComponentsInChildren<Renderer>();
+            if (clockParts != null && clockParts.Length > 0)
+            {
+                var box = clockParts[0].bounds; foreach (var part in clockParts) { box.Encapsulate(part.bounds); }
+                above = Mathf.Max(0f, Vector3.Dot(box.center - corners[1], up) + Mathf.Abs(Vector3.Dot(box.extents, new Vector3(Mathf.Abs(up.x), Mathf.Abs(up.y), Mathf.Abs(up.z)))) * 1.15f);
+            }
+            float height = Vector3.Distance(corners[0], corners[1]) + extra + above;
             float width = Vector3.Distance(corners[0], corners[3]);
             float distance = DeskViewFraming.Distance(width, height, focusFieldOfView, viewCamera.aspect, monitorFill);
-            Vector3 center = (corners[0] + corners[2]) * .5f - up * (extra * .5f);
+            Vector3 center = (corners[0] + corners[2]) * .5f - up * (extra * .5f) + up * (above * .5f);
             pose.position = center - forward * Mathf.Max(viewCamera.nearClipPlane + .1f, distance);
         }
         return true;
@@ -318,7 +330,8 @@ public sealed class DeskViewController : MonoBehaviour
             for (int j = 0; j < raycasters[i].Length; j++)
             {
                 var raycaster = raycasters[i][j];
-                bool enabled = i == (int)target && authoredRaycasts[i][j];
+                // 종목 목록·채팅 시점에서도 가운데(차트) 화면이 보이므로 그 화면의 입력도 함께 켠다.
+                bool enabled = (i == (int)target || i == (int)DeskViewTarget.Chart && MonitorView(target)) && authoredRaycasts[i][j];
                 if (raycaster != null && raycaster.enabled != enabled)
                 { raycaster.enabled = enabled; }
             }

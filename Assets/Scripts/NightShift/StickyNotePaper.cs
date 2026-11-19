@@ -70,23 +70,48 @@ public sealed class StickyNotePaper : MonoBehaviour
         for (int i = 0; i < constraints.Length; i++)
         { constraints[i].maxDistance = Mathf.Max(constraints[i].maxDistance, width * .12f); }
         paperCloth.coefficients = constraints;
+        // 종이는 책상 위에서 잘 미끄러진다. 아랫변이 앞으로 미끄러져 나와야 글자 면이 위를 보고 눕는다.
+        landingCollider.material = new PhysicsMaterial("Paper") { dynamicFriction = 0f, staticFriction = 0f, bounciness = 0f, frictionCombine = PhysicsMaterialCombine.Minimum, bounceCombine = PhysicsMaterialCombine.Minimum };
         landingCollider.enabled = true;
         body.isKinematic = false; body.useGravity = true;
         // 종이는 공기에 걸려 천천히 내려온다.
         body.linearDamping = 4.5f; body.angularDamping = 2.2f;
-        body.linearVelocity = -transform.forward * .3f + Vector3.down * .05f;
-        body.angularVelocity = transform.right * 2.6f + transform.forward * .4f;
-        float elapsed = 0f, phase = Random.value * 6.28f;
+        // 아래쪽이 앞으로 밀려 나오면서 글자 면이 위를 보게 눕는다(떨어지는 높이가 낮아서 처음부터 그쪽으로 돌려 준다).
+        Vector3 faceUp = Vector3.Cross(-transform.forward, Vector3.up).normalized;
+        body.linearVelocity = -transform.forward * .9f + Vector3.down * .05f;
+        body.angularVelocity = faceUp * 5.5f + transform.forward * .4f;
+        float elapsed = 0f, phase = Random.value * 6.28f, landedAt = -1f;
         Vector3 side = transform.right, out_ = -transform.forward;
+        var loose = paperCloth.coefficients; var tight = paperCloth.coefficients;
         while (elapsed < settleAfterSeconds)
         {
             yield return new WaitForFixedUpdate(); elapsed += Time.fixedDeltaTime;
-            if (elapsed > 1f && body.IsSleeping())
-            { break; }
+            // 글자가 적힌 면이 위를 보도록 조금씩 돌린다. 책상에 닿을 무렵에는 거의 눕는다.
+            body.AddTorque(Vector3.Cross(-transform.forward, Vector3.up) * 42f, ForceMode.Acceleration);
+            float facing = Vector3.Dot(-transform.forward, Vector3.up);
+            if (facing < .92f)
+            {
+                // 아랫변은 앞으로, 윗변은 뒤로: 모니터에 기대지 않고 앞으로 미끄러지며 눕는다.
+                float half = landingCollider.size.y * .5f * transform.lossyScale.y; Vector3 middle = landingCollider.bounds.center;
+                body.AddForceAtPosition(out_ * 26f * width, middle - transform.up * half, ForceMode.Acceleration);
+                body.AddForceAtPosition(-out_ * 9f * width, middle + transform.up * half, ForceMode.Acceleration);
+            }
+            // 내려앉았다(거의 멈췄다): 천은 책상과 부딪치지 않아서, 그대로 두면 종이가 책상 속으로 처진다.
+            // 그래서 닿은 뒤에는 천을 몸통의 면에 바짝 붙여 종이가 책상 위에 납작하게 눕게 한다.
+            // 납작하게 누웠을 때만 내려앉은 것으로 친다(모니터에 기대 선 채로 굳지 않게). 너무 오래 걸리면 그대로 둔다.
+            if (landedAt < 0f && elapsed > .5f && (body.IsSleeping() || body.linearVelocity.sqrMagnitude < .02f) && (Mathf.Abs(facing) > .9f || elapsed > settleAfterSeconds - 1f)) { landedAt = elapsed; }
+            if (landedAt >= 0f)
+            {
+                float flat = Mathf.Clamp01((elapsed - landedAt) / .5f);
+                for (int i = 0; i < tight.Length; i++) { tight[i].maxDistance = Mathf.Lerp(loose[i].maxDistance, width * .004f, flat); }
+                paperCloth.coefficients = tight;
+                if (flat >= 1f) { break; }
+                continue;
+            }
             // 낙엽처럼 좌우로 미끄러지며 흔들린다. 내려갈수록 흔들림이 잦아든다.
             float fade = Mathf.Clamp01(1.2f - elapsed * .35f);
             body.AddForce((side * Mathf.Sin(elapsed * 5.1f + phase) * 3.2f + out_ * (.9f + Mathf.Cos(elapsed * 3.3f + phase) * 1.4f)) * width * fade, ForceMode.Acceleration);
-            body.AddTorque((out_ * Mathf.Cos(elapsed * 5.1f + phase) * 5f + side * Mathf.Sin(elapsed * 2.7f) * 3f) * fade, ForceMode.Acceleration);
+            body.AddTorque((out_ * Mathf.Cos(elapsed * 5.1f + phase) * 5f + side * Mathf.Sin(elapsed * 2.7f) * 1f) * fade, ForceMode.Acceleration);
         }
         Settle();
     }

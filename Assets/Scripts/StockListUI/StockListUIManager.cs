@@ -31,21 +31,17 @@ public class StockListUIManager : MonoBehaviour
         StartCoroutine(BuildListNextFrame());
     }
 
-    /// <summary>목록 아래의 "체결 흐름" 패널은 글자 네 줄뿐인데 화면의 17%를 차지했다. 11%로 줄이고 목록을 그만큼 늘린다.</summary>
+    /// <summary>목록 아래의 "체결 흐름" 패널을 없애고 목록을 그 자리까지 늘린다.</summary>
     private void FitOperationPanel()
     {
-        const float before = .19f, after = .13f;
         var scroll = content.GetComponentInParent<ScrollRect>();
         if (scroll == null || !(scroll.transform is RectTransform view) || !(view.parent is RectTransform screen)) { return; }
         var panel = screen.Find("Panel :: Operation Monitor") as RectTransform;
-        if (panel == null || Mathf.Abs(panel.anchorMax.y - before) > .005f) { return; }
-        panel.anchorMax = new Vector2(panel.anchorMax.x, after);
-        // 패널이 낮아졌으므로 제목에 충분한 높이를 준다.
-        if (panel.Find("Text :: Operation Monitor Heading") is RectTransform heading)
-        { heading.anchorMin = new Vector2(heading.anchorMin.x, .74f); heading.anchorMax = new Vector2(heading.anchorMax.x, .96f); heading.offsetMin = heading.offsetMax = Vector2.zero; }
-        if (panel.Find("Text :: Operation Monitor Status") is RectTransform status)
-        { status.anchorMin = new Vector2(status.anchorMin.x, .05f); status.anchorMax = new Vector2(status.anchorMax.x, .70f); status.offsetMin = status.offsetMax = Vector2.zero; }
-        view.offsetMin = new Vector2(view.offsetMin.x, view.offsetMin.y - (before - after) * screen.rect.height);
+        if (panel == null || !panel.gameObject.activeSelf) { return; }
+        // 체결 흐름 패널은 쓰지 않는다. 숨기고 그 자리까지 목록을 늘린다.
+        float freed = (panel.anchorMax.y - panel.anchorMin.y) * screen.rect.height;
+        panel.gameObject.SetActive(false);
+        view.offsetMin = new Vector2(view.offsetMin.x, view.offsetMin.y - freed);
     }
 
     System.Collections.IEnumerator BuildListNextFrame()
@@ -61,6 +57,7 @@ public class StockListUIManager : MonoBehaviour
         VisibleList = this;
         StockManager.OnStockDelisted += OnStockDelisted;
         StockManager.OnStockListed += OnStockListed;
+        CorporateEconomy.ListingQueued += BuildList;
     }
 
     void OnDisable()
@@ -69,6 +66,7 @@ public class StockListUIManager : MonoBehaviour
         if (VisibleList == this) { VisibleList = null; }
         StockManager.OnStockDelisted -= OnStockDelisted;
         StockManager.OnStockListed -= OnStockListed;
+        CorporateEconomy.ListingQueued -= BuildList;
     }
 
     void OnDestroy()
@@ -80,14 +78,7 @@ public class StockListUIManager : MonoBehaviour
     {
         if (content != null && itemPrefab != null)
         {
-            if (_items.Count < StockManager.Instance.stocks.Count)
-            {
-                BuildList();
-            }
-            else
-            {
-                RefreshAll();
-            }
+            BuildList();
         }
     }
 
@@ -102,7 +93,9 @@ public class StockListUIManager : MonoBehaviour
     {
         if (StockManager.Instance == null)
         { return; }
-        var stocks = StockManager.Instance.stocks;
+        // 상장 종목에 더해, 다음 개장에 상장하기로 된 종목을 '상장 대기 중'으로 함께 보여 준다.
+        var stocks = new List<Stock>(StockManager.Instance.stocks);
+        if (CorporateEconomy.Instance != null) { foreach (var waiting in StockManager.Instance.UnlistedStocks) { if (CorporateEconomy.Instance.AwaitingListing(waiting)) { stocks.Add(waiting); } } }
         for (int i = _items.Count - 1; i >= 0; i--)
         {
             if (stocks.Contains(_items[i].BoundStock))
@@ -119,7 +112,10 @@ public class StockListUIManager : MonoBehaviour
                 row = _spares[_spares.Count - 1]; _spares.RemoveAt(_spares.Count - 1);
             }
             else { row = Instantiate(itemPrefab,content,false).GetComponent<StockListItem>(); }
-            row.gameObject.SetActive(true); row.Set(stock,null); row.transform.SetAsLastSibling(); _items.Add(row);
+            row.gameObject.SetActive(true); row.Set(stock,null);
+            // 상장 대기 중인 종목은 눈에 띄게 맨 위에 둔다.
+            if (stock.IsListed) { row.transform.SetAsLastSibling(); } else { row.transform.SetAsFirstSibling(); }
+            _items.Add(row);
         }
 
         RefreshAll();
@@ -212,10 +208,13 @@ public class StockListUIManager : MonoBehaviour
         root.gameObject.layer = scroll.gameObject.layer;
         root.anchorMin = new Vector2(area.anchorMin.x,area.anchorMax.y); root.anchorMax = area.anchorMax; root.pivot = new Vector2(.5f,1);
         root.offsetMin = new Vector2(lower.x,upper.y-136); root.offsetMax = upper;
+        // 목록은 모니터 바탕 면보다 조금 앞에 떠 있다. 정렬 단추도 같은 깊이에 둔다(바탕 면과 같은 평면에 두면 비스듬히 볼 때 글자가 깜빡이며 잘린다).
+        var place = root.anchoredPosition3D; place.z = area.anchoredPosition3D.z; root.anchoredPosition3D = place;
         // ScrollRect can drive its viewport back to full size. Reserve space on the scroll area itself.
         area.offsetMax = new Vector2(upper.x,upper.y-152);
-        volumeSort = SortButton(root,source,"Turnover","",0,.49f,out volumeLabel); SetTurnoverLabel(true);
-        changeSort = SortButton(root,source,"Change","상승률 ↑",.51f,.49f,out changeLabel);
+        // 왼쪽이 상승률, 오른쪽이 거래대금.
+        changeSort = SortButton(root,source,"Change","상승률 ↑",0,.49f,out changeLabel);
+        volumeSort = SortButton(root,source,"Turnover","",.51f,.49f,out volumeLabel); SetTurnoverLabel(true);
         volumeSort.onClick.AddListener(SortVolume); changeSort.onClick.AddListener(SortChange);
     }
     private static Button SortButton(Transform parent,TextMeshProUGUI source,string name,string caption,float x,float width,out TextMeshProUGUI label)

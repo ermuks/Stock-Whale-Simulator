@@ -64,36 +64,78 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         public TextMeshProUGUI AnalysisTitle, AnalysisScore, AnalysisVerdict;
         public readonly TextMeshProUGUI[] AnalysisCaptions = new TextMeshProUGUI[4], AnalysisValues = new TextMeshProUGUI[4];
         public bool HasCard;
-        // 초대 단추: 커서를 올린 줄에만 보인다.
+        // 상호작용 단추들: 커서를 올린 줄의 오른쪽 끝에만 보인다. 0 초대, 1 경고, 2 채팅 금지, 3 추방, 4 메시지 삭제.
         public Button Invite;
+        public readonly Button[] Actions = new Button[ActionNames.Length];
+        public float ActionY;
     }
 
     /// <summary>채팅 줄의 + 단추를 눌렀을 때. 방 화면이 연결한다. 연결되지 않은 화면에는 단추가 나오지 않는다.</summary>
     public System.Action<int> InviteRequested;
+    /// <summary>화면 점검용: 커서가 없어도 모든 줄의 단추를 보여 준다.</summary>
+    public bool AlwaysShowActions;
     // 플레이어 자신의 말에는 닉네임 대신 이 이름을 쓴다.
     private static string PlayerLabel => GameLocale.Code == "ja" ? "自分" : GameLocale.Code == "en" ? "me" : BotChatMessage.PlayerName;
     // 말풍선 오른쪽에 초대 단추가 들어갈 자리.
     private const float InviteSize = 44f, InviteGap = 8f;
     private Canvas pointerCanvas;
 
+    private static readonly string[] ActionNames = { "invite", "warn", "mute", "kick", "delete" };
+    private static readonly Color[] ActionColors = { new(.16f, .43f, .47f, 1f), new(.55f, .43f, .14f, 1f), new(.27f, .33f, .42f, 1f), new(.58f, .20f, .22f, 1f), new(.22f, .25f, .29f, 1f) };
+    /// <summary>방장이 가린 메시지들(이번 실행 동안만).</summary>
+    private static readonly HashSet<long> removedMessages = new();
+    private static string RemovedText => GameLocale.Code == "ja" ? "ホストが削除したメッセージです" : GameLocale.Code == "en" ? "Message removed by the host" : "방장이 가린 메시지입니다";
     private void BuildInviteButton(Row row)
     {
-        var root = new GameObject("Button :: Invite", typeof(RectTransform), typeof(Image), typeof(Button));
-        root.layer = row.Rect.gameObject.layer;
-        root.transform.SetParent(row.Rect, false);
-        var rect = (RectTransform)root.transform;
-        rect.anchorMin = rect.anchorMax = new Vector2(0f, 1f); rect.pivot = new Vector2(0f, .5f);
-        rect.sizeDelta = Vector2.one * (InviteSize * layoutScale);
-        var back = root.GetComponent<Image>(); var bubble = row.Bubble.GetComponent<Image>();
-        back.sprite = bubble.sprite; back.type = Image.Type.Sliced; back.pixelsPerUnitMultiplier = bubble.pixelsPerUnitMultiplier;
-        back.color = new Color(.16f, .43f, .47f, 1f); back.raycastTarget = true;
-        var label = CardLabel(rect, "Text :: Invite", 0f, 0f, InviteSize, InviteSize, 30f, TextAlignmentOptions.Center, CardInk, FontStyles.Bold);
-        label.text = "+";
-        row.Invite = root.GetComponent<Button>(); row.Invite.targetGraphic = back;
-        row.Invite.onClick.AddListener(() => { if (CanInvite(row)) { InviteRequested.Invoke(row.BotId); } });
-        root.SetActive(false);
+        for (int i = 0; i < ActionNames.Length; i++)
+        {
+            int index = i;
+            var item = new GameObject("Button :: Chat " + ActionNames[i], typeof(RectTransform), typeof(Image), typeof(Button));
+            item.layer = row.Rect.gameObject.layer; item.transform.SetParent(row.Rect, false);
+            var itemRect = (RectTransform)item.transform;
+            itemRect.anchorMin = itemRect.anchorMax = new Vector2(1f, 1f); itemRect.pivot = new Vector2(1f, .5f);
+            itemRect.sizeDelta = Vector2.one * (InviteSize * layoutScale);
+            var plate = item.GetComponent<Image>(); var shape = row.Bubble.GetComponent<Image>();
+            plate.sprite = shape.sprite; plate.type = Image.Type.Sliced; plate.pixelsPerUnitMultiplier = shape.pixelsPerUnitMultiplier;
+            plate.color = ActionColors[i]; plate.raycastTarget = true;
+            var glyph = new GameObject("Image :: Chat Action Icon", typeof(RectTransform), typeof(Image)); glyph.layer = item.layer; glyph.transform.SetParent(item.transform, false);
+            var glyphRect = (RectTransform)glyph.transform; glyphRect.anchorMin = new Vector2(.18f, .18f); glyphRect.anchorMax = new Vector2(.82f, .82f); glyphRect.offsetMin = glyphRect.offsetMax = Vector2.zero;
+            var picture = glyph.GetComponent<Image>(); picture.sprite = ChatActionIcons.Get(ActionNames[i]); picture.color = CardInk; picture.raycastTarget = false;
+            row.Actions[i] = item.GetComponent<Button>(); row.Actions[i].targetGraphic = plate;
+            row.Actions[i].onClick.AddListener(() => RunAction(row, index));
+            item.SetActive(false);
+        }
+        row.Invite = row.Actions[0];
     }
-
+    private void RunAction(Row row, int index)
+    {
+        if (!ActionAllowed(row, index)) { return; }
+        if (index == 0) { InviteRequested.Invoke(row.BotId); return; }
+        if (index == 4)
+        {
+            removedMessages.Add(row.Sequence); displayedMessages.Remove(row.Sequence);
+            row.Sequence = -1; version = -1; dirty = true;
+            return;
+        }
+        InvestorSociety.Instance?.Moderate(SelectedRoom, row.BotId, (SocialModeration)(index - 1), out _);
+    }
+    /// <summary>내가 방장인 방이고, 그 봇이 지금 그 방에 있는가.</summary>
+    private bool CanModerate(Row row, bool memberOnly)
+    {
+        var society = InvestorSociety.Instance;
+        if (society == null || row.IsNotice || row.BotId <= 0 || SelectedRoom < 1 || SelectedRoom > InvestorSociety.PlayerRoomCount || !society.IsRoomOpen(SelectedRoom)) { return false; }
+        if (society.CanModerateRoom != null && !society.CanModerateRoom(SelectedRoom)) { return false; }
+        return !memberOnly || society.SocialBots.TryGetValue(row.BotId, out var bot) && bot.Social.Psychology.Room == SelectedRoom;
+    }
+    private bool ActionAllowed(Row row, int index)
+    {
+        if (!row.Rect.gameObject.activeSelf) { return false; }
+        if (index == 0) { return CanInvite(row); }
+        if (index == 4) { return CanModerate(row, false) && row.Sequence >= 0 && !removedMessages.Contains(row.Sequence); }
+        return CanModerate(row, true);
+    }
+    /// <summary>지금 방에서 줄마다 나올 수 있는 단추의 수(말풍선이 그만큼 자리를 비운다).</summary>
+    private int ActionSlots => SelectedRoom >= 1 && SelectedRoom <= InvestorSociety.PlayerRoomCount ? 4 : 1;
     // 공용 라운지에 있고 아직 어느 방에도 들어가지 않은 사람만 초대할 수 있다.
     private bool CanInvite(Row row)
     {
@@ -111,8 +153,17 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         bool inside = chatSelected && scrollInput != null && !scrollInput.Dragging && RectTransformUtility.RectangleContainsScreenPoint(scroll.viewport, pointer, eye);
         foreach (var row in rows)
         {
-            bool show = inside && CanInvite(row) && RectTransformUtility.RectangleContainsScreenPoint(row.Rect, pointer, eye);
-            if (row.Invite.gameObject.activeSelf != show) { row.Invite.gameObject.SetActive(show); }
+            bool hovered = row.Rect.gameObject.activeSelf && (AlwaysShowActions || inside && RectTransformUtility.RectangleContainsScreenPoint(row.Rect, pointer, eye));
+            // 보이는 단추를 오른쪽 끝에서부터 채운다: 삭제가 맨 끝, 그 왼쪽으로 추방·채팅 금지·경고(또는 초대).
+            int slot = 0;
+            for (int i = row.Actions.Length - 1; i >= 0; i--)
+            {
+                bool show = hovered && ActionAllowed(row, i); var item = row.Actions[i].gameObject;
+                if (item.activeSelf != show) { item.SetActive(show); }
+                if (!show) { continue; }
+                ((RectTransform)item.transform).anchoredPosition = new Vector2(-(14f + slot * (InviteSize + InviteGap)) * layoutScale, row.ActionY);
+                slot++;
+            }
         }
     }
 
@@ -122,7 +173,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
 
     private float CardHeight(BotChatMessage message)
     {
-        if (message.IsRoomNotice || message.Social == null) { return 0f; }
+        if (message.IsRoomNotice || message.Social == null || removedMessages.Contains(message.Sequence)) { return 0f; }
         if (message.Social.analysisCard != null) { return AnalysisBlockHeight * layoutScale; }
         return message.Social.profitCard == null ? 0f : CardBlockHeight * layoutScale;
     }
@@ -298,6 +349,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
     void Start()
     {
         day = MarketDayController.Instance;
+        // 채팅 아래의 날짜·시각 줄은 쓰지 않는다(시각은 벽시계와 태블릿에 있다).
+        if (status != null) { status.gameObject.SetActive(false); }
         if (chatTab != null)
         { chatTab.onClick.AddListener(ShowChat); }
         if (informationTab != null)
@@ -334,7 +387,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             row.Nickname.raycastTarget = true;
             var nicknameButton = row.Nickname.gameObject.GetComponent<Button>() ?? row.Nickname.gameObject.AddComponent<Button>();
             nicknameButton.targetGraphic = row.Nickname;
-            nicknameButton.onClick.AddListener(() => { SelectProfile(row.BotId); moderationMenu.Open(row.BotId, row.Nickname.rectTransform); ChatSocialDebugUnity.ShowBot(row.BotId); });
+            // 참여자 관리(경고·채팅 금지·추방)는 줄 오른쪽 끝의 단추로 옮겼다.
+            nicknameButton.onClick.AddListener(() => { SelectProfile(row.BotId); ChatSocialDebugUnity.ShowBot(row.BotId); });
             row.AngerDot = Instantiate(row.Nickname, rect);
             row.AngerDot.name = "Text :: Anger Indicator"; GameLocalizedText.Set(row.AngerDot,"●");
             row.AngerDot.raycastTarget = false; row.AngerDot.enableAutoSizing = false;
@@ -464,6 +518,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 aliases.Add(new KeyValuePair<string, string>(stock.stockName, stock.symbol));
                 aliases.Add(new KeyValuePair<string, string>(GameLocale.Text(stock.stockName), stock.symbol));
                 aliases.Add(new KeyValuePair<string, string>(stock.symbol, stock.symbol));
+                // 줄임말로 불러도 종목으로 이어진다.
+                foreach (string nickname in StockNicknames.All(stock.symbol)) { aliases.Add(new KeyValuePair<string, string>(nickname, stock.symbol)); }
             }
         }
         mentions = new ChatSocialMentions(names, aliases); mentionSociety = society; mentionBotCount = count;
@@ -513,8 +569,18 @@ public sealed class TabletGroupChatUI : MonoBehaviour
     }
     private string DisplayMessage(BotChatMessage message)
     {
+        if (removedMessages.Contains(message.Sequence)) { return RemovedText; }
         if (!displayedMessages.TryGetValue(message.Sequence, out string text))
-        { string localized = LocalizedChat.Text(message); text = message.IsRoomNotice ? ChatSocialMentions.Literal(localized) : mentions.Format(localized); displayedMessages.Add(message.Sequence, text); }
+        {
+            string localized = LocalizedChat.Text(message); text = message.IsRoomNotice ? ChatSocialMentions.Literal(localized) : mentions.Format(localized);
+            // 나를 가리키는 멘션(@당신 / @You / @あなた)은 다른 멘션처럼 칠한다.
+            if (!message.IsRoomNotice)
+            {
+                foreach (string you in InvestorSociety.YouMentions)
+                { if (text.StartsWith(you + " ", System.StringComparison.Ordinal)) { text = ChatSocialMentions.MarkOpen + you + "</mark>" + text.Substring(you.Length); break; } }
+            }
+            displayedMessages.Add(message.Sequence, text);
+        }
         return text;
     }
     private void BuildNoticeVisual(Row row)
@@ -543,7 +609,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         row.Avatar.gameObject.SetActive(!notice); row.Gauge.gameObject.SetActive(!notice);
         row.Nickname.gameObject.SetActive(!notice); row.Time.gameObject.SetActive(!notice);
         row.AngerDot.gameObject.SetActive(false);
-        if (notice) { row.Invite.gameObject.SetActive(false); }
+        if (notice) { foreach (var action in row.Actions) { action.gameObject.SetActive(false); } }
         row.NoticeBackground.gameObject.SetActive(notice); row.NoticeText.gameObject.SetActive(notice);
         if (notice && row.Card != null) { row.HasCard = false; row.Card.gameObject.SetActive(false); }
         if (notice && row.Analysis != null) { row.Analysis.gameObject.SetActive(false); }
@@ -617,7 +683,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 return;
             }
 
-            float width = Mathf.Max(1f, scroll.viewport.rect.width - (154f + InviteSize + InviteGap) * layoutScale);
+            float width = Mathf.Max(1f, scroll.viewport.rect.width - (154f + ActionSlots * (InviteSize + InviteGap)) * layoutScale);
             if (version != MessageVersion || !Mathf.Approximately(width, measuredWidth))
             {
                 RebuildMessageLayout(width);
@@ -653,8 +719,9 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                         GameLocalizedText.Set(row.Nickname,message.FromPlayer ? PlayerLabel : message.Nickname,true);
                         GameLocalizedText.Set(row.Time,$"{message.Day}일 {message.Minute / 60:D2}:{message.Minute % 60:D2}");
                         GameLocalizedText.Set(row.Text,DisplayMessage(message),true);
-                        BindCard(row, message.IsRoomNotice || message.Social == null ? null : message.Social.profitCard);
-                        BindAnalysis(row, message.IsRoomNotice || message.Social == null ? null : message.Social.analysisCard);
+                        bool removed = removedMessages.Contains(message.Sequence);
+                        BindCard(row, removed || message.IsRoomNotice || message.Social == null ? null : message.Social.profitCard);
+                        BindAnalysis(row, removed || message.IsRoomNotice || message.Social == null ? null : message.Social.analysisCard);
                         int avatarIndex = (int)((uint)message.BotId % 3u);
                         row.Avatar.sprite = avatarIndex == 0 ? avatarOrange : avatarIndex == 1 ? avatarBlue : avatarPink;
                         // 종목 분석 AI는 제 얼굴이 있다.
@@ -691,8 +758,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                     row.Bubble.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, bubbleHeight);
                     row.Text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, bubbleWidth - 40f * layoutScale);
                     row.Text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, bubbleHeight - 20f * layoutScale);
-                    // 초대 단추는 말풍선 바로 오른쪽, 말풍선 높이의 가운데.
-                    ((RectTransform)row.Invite.transform).anchoredPosition = new Vector2((104f + InviteGap) * layoutScale + bubbleWidth, -38f * layoutScale - extraHeader - bubbleHeight * .5f);
+                    // 상호작용 단추는 줄의 오른쪽 끝, 말풍선 높이의 가운데.
+                    row.ActionY = -38f * layoutScale - extraHeader - bubbleHeight * .5f;
                 }
 
                 dirty = false;

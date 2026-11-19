@@ -131,6 +131,11 @@ public class ScalperBot : TradeBot
         SellAllAndMoveTo(stock);
     }
 
+    /// <summary>
+    /// 거래량이 터진 종목으로 눈을 돌린다. 예전에는 다른 종목의 보유분을 전부 현재가 아래로 던져서, 한 종목의 거래량이 터질 때마다
+    /// 단타 계좌 수백 개가 나머지 종목을 한꺼번에 내리꽂았다(전 종목 -8~-15%). 이제는 이익이 난 종목만, 한 번에 팔던 만큼만,
+    /// 매수 호가를 때리지 않는 값(현재가보다 한 틱 위 이상)에 걸어 둔다. 손해 중인 종목은 건드리지 않는다.
+    /// </summary>
     void SellAllAndMoveTo(Stock targetStock)
     {
         if (StockManager.Instance == null)
@@ -147,13 +152,14 @@ public class ScalperBot : TradeBot
 
             decimal entry = _entryPrice.TryGetValue(stock, out var ep) ? ep : 0m;
             bool isProfit = entry > 0m && stock.currentPrice > entry;
-            if (isProfit || Random.value < 0.5f)
+            if (!isProfit || HasScalpQuote(stock, false) || Random.value >= 0.5f)
+            { continue; }
+
+            decimal volume = GetScalpSellVolume(stock);
+            decimal sellPrice = GetEffectiveSellPrice(stock, PriceTickPolicy.OneTickAbove(stock.currentPrice));
+            if (volume > 0m && sellPrice > stock.currentPrice)
             {
-                decimal sellPrice = GetEffectiveSellPrice(stock, PriceTickPolicy.FloorToTick(GetReferencePrice(stock) * 0.995m));
-                if (sellPrice > 0m)
-                {
-                    SellLimit(sellPrice, holding, 0, stock);
-                }
+                SellLimit(sellPrice, volume, 0, stock);
             }
         }
 
@@ -187,7 +193,10 @@ public class ScalperBot : TradeBot
         bool isOvervalued = FeelsExpensive(stock);
         if (holding > 0m)
         {
-            float actualSellChance = marketSellChance;
+            // 시장가로 던지는 것은 이익이 났거나 비싸다고 느낄 때뿐이다. 그 밖에는 아래의 지정가 매도(목표가)로 판다.
+            // 예전에는 보유만 하면 30% 확률로 시장가 매도, 매수는 20%여서 단타 계좌 전체가 늘 파는 쪽으로 기울어 있었다.
+            decimal scalpEntry = _entryPrice.TryGetValue(stock, out var known) ? known : 0m;
+            float actualSellChance = scalpEntry > 0m && current > scalpEntry || isOvervalued ? marketSellChance : 0f;
             if (isOvervalued)
             {
                 actualSellChance *= 1.5f;

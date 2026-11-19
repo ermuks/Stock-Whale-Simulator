@@ -19,8 +19,8 @@ public sealed partial class CorporateEconomy : MonoBehaviour
     private readonly List<Trader> payees = new();
     private readonly List<decimal> payments = new();
     void Awake() { Instance = this; Rules = LoadRules(); GrowthRules=LoadGrowthRules(); }
-    void OnEnable() { NewsManager.OnArticlePublished += News; }
-    void OnDisable() { NewsManager.OnArticlePublished -= News; }
+    void OnEnable() { NewsManager.OnArticlePublished += News; GameLocale.Changed += ApplySmallNames; }
+    void OnDisable() { NewsManager.OnArticlePublished -= News; GameLocale.Changed -= ApplySmallNames; }
     void OnDestroy() { if (Instance == this) { Instance = null; } }
     public CompanyBusiness Ensure(Stock stock)
     {
@@ -83,6 +83,8 @@ public sealed partial class CorporateEconomy : MonoBehaviour
     }
     public void ReconnectSession()
     {
+        // 이름이 바뀐 회사: 예전 저장에 남은 이름을 새 이름으로 옮긴다.
+        foreach (var renamed in Companies()) { renamed.stockName = StockManager.CurrentName(renamed.stockName); }
         foreach (var stock in Companies())
         {
             if (stock.business != null)
@@ -97,7 +99,7 @@ public sealed partial class CorporateEconomy : MonoBehaviour
             data.ControlInitialized = true; data.PlayerControls = WorldDramaDirector.Instance.Controls(stock);
             data.AcquisitionAnnounced = data.PlayerControls;
         }
-        EnsureFounder();
+        EnsureFounder(); ApplySmallNames();
     }
     public decimal PlayerDividends(int day)
     {

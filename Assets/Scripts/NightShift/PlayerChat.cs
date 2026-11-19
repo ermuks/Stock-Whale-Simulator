@@ -27,6 +27,10 @@ public struct PlayerTalk
     /// <summary>글에 적힌 수익률(%). 없으면 NaN.</summary>
     public float Percent;
     public bool CallsAll, Laughs, Cries, Asks;
+    /// <summary>막말의 세기: 0 없음, 1 얕보는 말, 2 욕설, 3 선을 넘은 말(가족·죽으라는 말·성적인 욕).</summary>
+    public int Rudeness;
+    /// <summary>선을 넘은 말의 갈래: 가족을 건드렸는가, 죽으라고 했는가.</summary>
+    public bool RudeFamily, RudeDeath;
     /// <summary>"!분석" 뒤에 적은 말(종목을 못 찾았을 때 되돌려 보여 준다).</summary>
     public string Argument;
 
@@ -39,6 +43,83 @@ public struct PlayerTalk
     private static readonly string[] Thank = { "감사", "고마워", "고맙", "ㄱㅅ", "땡큐", "thanks", "thank you", "thx", "ty", "ありがと", "感謝" };
     private static readonly string[] Sorry = { "미안", "죄송", "ㅈㅅ", "sorry", "my bad", "ごめん", "すまん" };
     private static readonly string[] Rude = { "바보", "멍청", "호구", "개미들", "닥쳐", "꺼져", "ㅂㅅ", "병신", "한심", "찐따", "루저", "흑우", "idiot", "stupid", "noob", "loser", "shut up", "dumb", "バカ", "馬鹿", "アホ", "雑魚", "黙れ" };
+    // 욕설은 띄어쓰기·기호·숫자를 끼워 넣어도 알아듣도록, 글자만 남긴 글에서 찾는다.
+    private static readonly string[] Swear = { "씨발", "시발", "씨바", "씨팔", "시팔", "쓰발", "씨빨", "ㅅㅂ", "ㅆㅂ", "씹", "좆", "졷", "병신", "븅신", "빙신", "ㅄ", "새끼", "새키", "섀끼", "쉐끼", "ㅅㄲ", "개놈", "개년", "년들", "련들", "년아", "련아", "미친놈", "미친년", "미친새", "또라이", "지랄", "ㅈㄹ", "등신", "머저리", "얼간이", "쪼다", "개돼지", "거지새", "아가리", "주둥이",
+        "fuck", "fck", "shit", "bitch", "asshole", "bastard", "retard", "moron", "scum", "dumbass", "dipshit", "stfu", "クソ", "くそ", "カス", "ゴミ", "きもい", "キモい", "うざい", "ウザい", "ボケ", "クズ", "くず", "消えろ", "失せろ" };
+    private static readonly string[] Vile = { "애미", "애비", "에미", "니엄마", "너희엄마", "니네엄마", "니아빠", "느금", "엄창", "뒤져", "뒤진", "뒤질", "뒈져", "뒈진", "디져", "죽어버려", "다죽어", "죽여버", "쳐죽", "자살", "암적", "쑤셔", "강간", "패죽", "찢어죽",
+        "kys", "killyourself", "yourmom", "yourmother", "motherf", "godie", "dropdead", "hopeyoudie", "死ね", "殺す", "殺し", "くたばれ", "お前の母", "親の顔", "自殺" };
+    /// <summary>글자만 남긴다(한글·자모·영문·가나·한자). 띄어쓰기나 기호로 끊어 쓴 욕을 이어 붙여 읽기 위해서다.</summary>
+    private static string Bare(string text)
+    {
+        var result = new System.Text.StringBuilder(text.Length);
+        foreach (char raw in text)
+        {
+            char c = char.ToLowerInvariant(raw);
+            if (c >= 'a' && c <= 'z' || c >= '\uAC00' && c <= '\uD7A3' || c >= '\u3131' && c <= '\u318E' || c >= '\u3040' && c <= '\u30FF' || c >= '\u4E00' && c <= '\u9FFF') { result.Append(c); }
+        }
+        return result.ToString();
+    }
+    private static readonly string[] FamilyWords = { "애미", "애비", "에미", "엄마", "아빠", "느금", "엄창", "부모", "yourmom", "yourmother", "motherf", "お前の母", "親の顔" };
+    private static readonly string[] DeathWords = { "뒤져", "뒤질", "뒈져", "디져", "죽어버려", "다죽어", "죽여버", "쳐죽", "자살", "패죽", "찢어죽", "kys", "killyourself", "godie", "dropdead", "hopeyoudie", "死ね", "殺す", "殺し", "くたばれ", "自殺" };
+    // 한글을 영문 자판 그대로 친 글("roqbdtls" = 개병신)도 알아듣는다: 두벌식 자판에서 글쇠를 자모로 바꾸고 글자로 모은다.
+    private const string KeyConsonants = "rRseEfaqQtTdwWczxvg", Initials = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
+    private static readonly string[] KeyVowels = { "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l" };
+    private static readonly string[] KeyFinals = { "", "r", "R", "rt", "s", "sw", "sg", "e", "f", "fr", "fa", "fq", "ft", "fx", "fv", "fg", "a", "q", "qt", "t", "T", "d", "w", "c", "z", "x", "v", "g" };
+    /// <summary>영문 자판으로 친 글을 한글로 바꾼다. 한글 글쇠가 아닌 것은 그대로 둔다.</summary>
+    public static string FromKeys(string keys)
+    {
+        var result = new System.Text.StringBuilder(); int at = 0;
+        int Vowel(int from, out int used)
+        {
+            used = 0; int found = -1;
+            for (int i = 0; i < KeyVowels.Length; i++)
+            { string v = KeyVowels[i]; if (v.Length > used && string.CompareOrdinal(keys, from, v, 0, v.Length) == 0) { used = v.Length; found = i; } }
+            return found;
+        }
+        while (at < keys.Length)
+        {
+            int initial = KeyConsonants.IndexOf(keys[at]);
+            if (initial < 0) { int lone = Vowel(at, out int w); if (lone >= 0) { result.Append((char)(0x314F + lone)); at += w; } else { result.Append(keys[at]); at++; } continue; }
+            int vowel = at + 1 < keys.Length ? Vowel(at + 1, out int width) : -1;
+            if (vowel < 0) { result.Append(Initials[initial]); at++; continue; }
+            int next = at + 1 + System.Math.Max(1, KeyVowels[vowel].Length), final = 0, finalWidth = 0;
+            // 받침: 뒤에 모음이 오면 그 자음은 다음 글자의 첫소리다.
+            for (int i = 1; i < KeyFinals.Length; i++)
+            {
+                string f = KeyFinals[i];
+                if (f.Length <= finalWidth || next + f.Length > keys.Length || string.CompareOrdinal(keys, next, f, 0, f.Length) != 0) { continue; }
+                int after = next + f.Length;
+                if (after < keys.Length && Vowel(after, out _) >= 0) { continue; }
+                final = i; finalWidth = f.Length;
+            }
+            result.Append((char)(0xAC00 + (initial * 21 + vowel) * 28 + final)); at = next + finalWidth;
+        }
+        return result.ToString();
+    }
+    private static bool OnlyKeys(string text)
+    {
+        int letters = 0;
+        foreach (char c in text) { if (c > 0x7F) { return false; } if (char.IsLetter(c)) { letters++; } }
+        return letters >= 4;
+    }
+    /// <summary>막말의 세기(0~3).</summary>
+    public static int RudenessOf(string text) => RudenessOf(text, out _, out _);
+    public static int RudenessOf(string text, out bool family, out bool death)
+    {
+        family = death = false;
+        string line = text ?? "", lower = line.ToLowerInvariant(), bare = Bare(lower);
+        if (bare.Length == 0) { return 0; }
+        int level = Has(bare, Vile) ? 3 : Has(bare, Swear) ? 2 : Has(lower, Rude) ? 1 : 0;
+        // 영문 자판으로 친 한글. 영어 낱말이 우연히 걸리지 않도록 욕설 이상만 본다.
+        if (level == 0 && OnlyKeys(line))
+        {
+            string typed = Bare(FromKeys(line));
+            level = Has(typed, Vile) ? 3 : Has(typed, Swear) ? 2 : 0;
+            if (level > 0) { bare = typed; }
+        }
+        if (level >= 3) { family = Has(bare, FamilyWords); death = Has(bare, DeathWords); }
+        return level;
+    }
     private static readonly string[] BragWords = { "수익", "익절", "먹었", "먹음", "벌었", "벌음", "땄", "수익률", "플러스", "빨간불", "대박", "떡상했", "profit", "made ", "gains", "up ", "banked", "利確", "儲か", "勝った", "爆益" };
     private static readonly string[] LossWords = { "물렸", "물림", "손절", "잃었", "잃음", "마이너스", "파란불", "깡통", "손실", "털렸", "반토막", "bagholding", "lost ", "loss", "down ", "rekt", "stopped out", "損切", "含み損", "負けた", "爆損" };
     private static readonly string[] BuyAsk = { "살까", "사도", "사야", "탈까", "타도", "들어가도", "들어갈까", "진입", "매수각", "줍줍", "담을까", "should i buy", "buy now", "get in", "worth buying", "買い?", "買う?", "買っていい", "入っていい", "買い時" };
@@ -81,10 +162,23 @@ public struct PlayerTalk
                 }
                 if (length > bestLength) { bestLength = length; best = stock; }
             }
+            // 줄임말(산전, 그푸, Nobo, ノボ …)로 써도 알아듣는다.
+            foreach (string nickname in StockNicknames.All(stock.symbol))
+            {
+                string name = Squeeze(nickname);
+                if (name.Length >= 2 && Said(words, text, name) && name.Length + 50 > bestLength) { bestLength = name.Length + 50; best = stock; }
+            }
         }
         return best;
     }
 
+    /// <summary>줄임말이 글에 쓰였는가. 짧은 영문(LC, SSE)은 다른 낱말 속에 묻혀 있으면(welcome) 치지 않는다.</summary>
+    private static bool Said(string raw, string squeezed, string name)
+    {
+        bool latin = true; foreach (char c in name) { if (c > 0x7F) { latin = false; break; } }
+        if (!latin || name.Length >= 5) { return squeezed.Contains(name); }
+        return Regex.IsMatch(raw ?? "", @"(?<![A-Za-z0-9])" + Regex.Escape(name) + @"(?![A-Za-z0-9])", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+    }
     /// <summary>글 한 줄에서 뜻을 읽는다. 여러 뜻이 겹치면 더 무거운 쪽을 고른다: 명령 > 시비 > 자랑·한탄 > 묻기 > 주장 > 인사치레 > 웃음 > 부르기.</summary>
     public static PlayerTalk Read(string text)
     {
@@ -106,7 +200,8 @@ public struct PlayerTalk
         if (match.Success && float.TryParse(match.Groups[1].Value, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float percent)) { talk.Percent = percent; }
 
         bool loss = Has(lower, LossWords) || !float.IsNaN(talk.Percent) && talk.Percent < 0f, gain = Has(lower, BragWords) || !float.IsNaN(talk.Percent) && talk.Percent > 0f && !talk.Asks;
-        if (Has(lower, Rude)) { talk.Kind = PlayerTalkKind.Insult; }
+        talk.Rudeness = RudenessOf(line, out talk.RudeFamily, out talk.RudeDeath);
+        if (talk.Rudeness > 0) { talk.Kind = PlayerTalkKind.Insult; }
         else if (Has(lower, WhaleWords)) { talk.Kind = PlayerTalkKind.Whale; }
         else if (loss && !talk.Asks) { talk.Kind = PlayerTalkKind.Lament; }
         else if (gain && !talk.Asks) { talk.Kind = PlayerTalkKind.Brag; }
@@ -302,8 +397,18 @@ public sealed partial class InvestorSociety
                 analysisJobs.Add(new AnalysisJob { due = now + 1.2 + HypeRandom.Next(), room = room, stock = talk.Stock, argument = talk.Argument, replyTo = id });
                 break;
             case PlayerTalkKind.Insult:
-                Hearers(room, (bot, mind) => mind.ReactToPlayerTalk(-2f, HypeRandom.Next() < .5 ? 6f + mind.Traits.Grudge / 100f * 10f : 2f, "플레이어의 막말"));
-                Plan(room, "insult", talk.Stock, id, now + 1.0, 0, HypeRandom.Range(1, 4), 1f);
+            {
+                // 막말은 셀수록, 되풀이할수록 반응이 커진다: 얕보는 말 < 욕설 < 선을 넘은 말(가족·죽으라는 말).
+                int level = Mathf.Clamp(talk.Rudeness, 1, 3);
+                while (rudeAt.Count > 0 && now - rudeAt.Peek() > 150) { rudeAt.Dequeue(); }
+                rudeAt.Enqueue(now); bool again = rudeAt.Count >= 3;
+                Hearers(room, (bot, mind) => mind.ReactToPlayerTalk(-2f * level, (HypeRandom.Next() < .5 ? 6f + mind.Traits.Grudge / 100f * 10f : 2f) * level, "플레이어의 막말"));
+                string scold = level >= 3 ? (talk.RudeFamily ? "insult.family" : talk.RudeDeath ? "insult.death" : "insult.severe") : level == 2 ? "insult.swear" : "insult";
+                Plan(room, scold, talk.Stock, id, now + 1.0, 0, level >= 3 ? HypeRandom.Range(3, 6) : level == 2 ? HypeRandom.Range(2, 5) : HypeRandom.Range(1, 4), 1f);
+                // 계속 그러면 혀를 차거나 아예 무시하자는 말이 섞인다.
+                if (again) { Plan(room, "insult.repeat", null, id, now + 2.2, 0, 2, .8f); }
+                TraceTalk("    (막말 세기 " + level + (again ? ", 되풀이 " + rudeAt.Count + "번" : "") + ")");
+            }
                 break;
             case PlayerTalkKind.Brag:
                 if (card != null)
@@ -381,7 +486,7 @@ public sealed partial class InvestorSociety
                 break;
         }
         // 웃음·울음이 섞인 말에는 기분에 따라 한마디 더 붙기도 한다.
-        if (talk.Kind != PlayerTalkKind.Laugh && talk.Laughs) { Plan(room, "laugh", null, id, now + 2.4, 0, 1, .25f); }
+        if (talk.Kind != PlayerTalkKind.Laugh && talk.Kind != PlayerTalkKind.Insult && talk.Laughs) { Plan(room, "laugh", null, id, now + 2.4, 0, 1, .25f); }
         if (talk.Kind != PlayerTalkKind.Sad && talk.Kind != PlayerTalkKind.Lament && talk.Cries) { Plan(room, "sad", null, id, now + 2.4, 0, 1, .25f); }
         return true;
     }
@@ -397,6 +502,10 @@ public sealed partial class InvestorSociety
         }
         return best;
     }
+    /// <summary>플레이어를 가리키는 멘션. 언어마다 다르다.</summary>
+    public static string YouMention => GameLocale.Code == "ja" ? "@あなた" : GameLocale.Code == "en" ? "@You" : "@당신";
+    public static readonly string[] YouMentions = { "@당신", "@You", "@あなた" };
+    private readonly Queue<double> rudeAt = new();
     /// <summary>답글을 예약한다. count줄까지, 줄마다 chance의 확률로.</summary>
     private void Plan(int room, string key, Stock stock, long replyTo, double first, int onlyBot, int count, float chance, float percent = float.NaN)
     {
@@ -492,7 +601,8 @@ public sealed partial class InvestorSociety
             }
             if (pick == null) { key = "askPick.none"; }
         }
-        if (stance != null) { key += "." + stance; }
+        // 막말에 대한 핀잔은 나를 어떻게 보든 같다.
+        if (stance != null && !key.StartsWith("insult", StringComparison.Ordinal)) { key += "." + stance; }
         string text = PickHypeText(PlayerTalkAssets.Lines(key), Array.Empty<string>());
         if (text == null) { return false; }
         var subject = stock ?? pick;
@@ -500,6 +610,8 @@ public sealed partial class InvestorSociety
         if (pick != null) { slots["pick"] = GameLocale.Text(pick.stockName ?? pick.symbol ?? ""); }
         slots["ret"] = float.IsNaN(reply.percent) ? "" : Mathf.Abs(reply.percent).ToString("0");
         string line = ChatHypeAssets.Fill(text, slots);
+        // 내 글에 다는 답에는 나를 가리키는 멘션을 붙인다(@당신 / @You / @あなた). AI 분석을 보고 하는 말은 내게 하는 말이 아니다.
+        if (reply.replyTo > 0 && !key.StartsWith("aiReact", StringComparison.Ordinal)) { line = YouMention + " " + line; }
         PostBotLine(bot, reply.room, line, "talk." + key, subject, reply.replyTo);
         hypeSpokeAt[bot.Social.Id] = now; PlayerReplies++;
         // 말을 섞은 봇은 나와 조금 가까워진다(시비와 조롱은 빼고).

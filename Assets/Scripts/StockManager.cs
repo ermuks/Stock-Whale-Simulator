@@ -60,6 +60,7 @@ public partial class StockManager : MonoBehaviour
         {
             if (string.IsNullOrWhiteSpace(def.name))
             { continue; }
+            def.name = CurrentName(def.name);
 
             float min = Mathf.Min(def.priceMin, def.priceMax);
             float max = Mathf.Max(def.priceMin, def.priceMax);
@@ -90,8 +91,8 @@ public partial class StockManager : MonoBehaviour
             stockDefinitions.Add(new StockDefinition { symbol = "DSA", name = "덕상가주에이아이", priceMin = 1200000f, priceMax = 1200000f, issuedShares = 200_000L });
             stockDefinitions.Add(new StockDefinition { symbol = "HBF", name = "두덕리식품", priceMin = 350000f, priceMax = 350000f, issuedShares = 1_500_000L });
             stockDefinitions.Add(new StockDefinition { symbol = "MBI", name = "미래바이오", priceMin = 77000f, priceMax = 77000f, issuedShares = 2_000_000L });
-            stockDefinitions.Add(new StockDefinition { symbol = "DDP", name = "대만디스플레이", priceMin = 49250f, priceMax = 49250f, issuedShares = 18_000_000L });
-            stockDefinitions.Add(new StockDefinition { symbol = "KMF", name = "국민금융", priceMin = 48800f, priceMax = 48800f, issuedShares = 19_000_000L });
+            stockDefinitions.Add(new StockDefinition { symbol = "DDP", name = "LC디스플레이", priceMin = 49250f, priceMax = 49250f, issuedShares = 18_000_000L });
+            stockDefinitions.Add(new StockDefinition { symbol = "KMF", name = "굿데이금융", priceMin = 48800f, priceMax = 48800f, issuedShares = 19_000_000L });
             stockDefinitions.Add(new StockDefinition { symbol = "GFD", name = "그린푸드", priceMin = 33000f, priceMax = 33000f, issuedShares = 12_000_000L });
             stockDefinitions.Add(new StockDefinition { symbol = "CBT", name = "코어바이오", priceMin = 45000f, priceMax = 45000f, issuedShares = 15_000_000L });
             stockDefinitions.Add(new StockDefinition { symbol = "CED", name = "코어전자", priceMin = 52700f, priceMax = 52700f, issuedShares = 23_000_000L });

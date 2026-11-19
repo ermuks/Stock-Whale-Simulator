@@ -39596,7 +39596,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 609836929}
   m_LocalRotation: {x: 0.009391506, y: 0.7070444, z: -0.009391506, w: 0.7070444}
-  m_LocalPosition: {x: 0, y: 0, z: -0.0004}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000045}
   m_LocalScale: {x: 0.001, y: 0.001, z: 0.001}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -39607,7 +39607,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 1.522, y: 90, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.0499, y: 2.6538832}
+  m_AnchoredPosition: {x: 0, y: 2.6538832}
   m_SizeDelta: {x: 1767, y: 3200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &609836931
@@ -72648,6 +72648,7 @@ MonoBehaviour:
   avatarPink: {fileID: 21300000, guid: 38b7357232f444d5852378326d8c93a5, type: 3}
   participants: {fileID: 900000000000000031}
   visualProfile: {fileID: 0}
+  AlwaysShowActions: 0
 --- !u!114 &1054362278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124964,6 +124965,11 @@ MonoBehaviour:
   rules:
     schemaVersion: 1
     leadingOpeningCost: 20000000
+    tacticCloseTurnover: 500000000
+    companyFoundingCost: 300000000
+    dawnRoomCost: 3000000
+    dawnRoomTurnover: 30000000
+    dawnRoomDailyFee: 100000
 --- !u!114 &1848155271
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -146410,6 +146416,7 @@ MonoBehaviour:
   avatarPink: {fileID: 21300000, guid: 38b7357232f444d5852378326d8c93a5, type: 3}
   participants: {fileID: 910000000000000072}
   visualProfile: {fileID: 123282655}
+  AlwaysShowActions: 0
 --- !u!1 &910000000000000019
 GameObject:
   m_ObjectHideFlags: 0

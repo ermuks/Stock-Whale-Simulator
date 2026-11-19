@@ -32,7 +32,11 @@ public partial class StockManager
     private readonly List<(TradeBot bot, decimal weight)> participants = new(2000);
     private static readonly ProfilerMarker InitialMarker = new("DonDon.InitialEconomy");
     public static event Action OnInitialEconomyReady;
+    /// <summary>이름이 바뀐 회사의 지금 이름. 씬과 예전 저장에는 예전 이름이 남아 있어서, 종목을 만들 때와 저장을 이을 때 이 표를 거친다.</summary>
+    public static string CurrentName(string name) => name == "국민" + "금융" ? "굿데이금융" : name == "대만" + "디스플레이" ? "LC디스플레이" : name;
     public Stock FindStock(string id) => id != null && stockById.TryGetValue(id, out var stock) ? stock : null;
+    /// <summary>비상장기업을 더 등록할 자리가 있는가.</summary>
+    public bool PrivateRoom => stockById.Count<64;
     public Stock RegisterPrivateCompany(string id,string name,decimal price,decimal shares)
     {
         var existing=FindStock(id); if (existing!=null) { return existing; }
@@ -64,6 +68,7 @@ public partial class StockManager
             // New-world entry target only. Restored Stock instances retain their saved issued shares.
             if (definition.stockId == businessRules.entryCompany && businessRules.entryIssuedShares > 0)
             { definition.issuedShares = businessRules.entryIssuedShares; }
+            definition.name = CurrentName(definition.name);
             var stock = new Stock(definition.stockId, definition.name, PriceTickPolicy.RoundToTick(Math.Max(1m, definition.startPrice)), definition.issuedShares);
             stock.OwnerId = definition.ownerId;
             stock.IsListed = definition.initiallyListed;

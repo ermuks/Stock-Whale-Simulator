@@ -152,7 +152,7 @@ public static class AccountDashboardValidation
             }
             if (phase == 8)
             {
-                Check(first.ledger.text.Contains("대만디스플레이"),"transaction tab shows actual account fills");
+                Check(first.ledger.text.Contains("LC디스플레이"),"transaction tab shows actual account fills");
                 var progress = PlayerProgression.Instance; string saved = progress.Capture(); Check(progress.Restore(saved,progress.WorldId),"existing progression capture/restore remains compatible");
                 Check(!progress.Restore(saved,"different-world"),"cross-world progress restore remains rejected");
                 first.orders.thisTablet.ToggleTablet(); Next(1); return;
@@ -206,7 +206,7 @@ public static class AccountDashboardValidation
     private static void CreateFixtures()
     {
         counterparty = new GameObject("Validation Counterparty").AddComponent<Trader>(); counterparty.cash = 10000000;
-        string[] names = {"대만디스플레이","국민금융","그린푸드","노보손해보험","미래바이오"};
+        string[] names = {"LC디스플레이","굿데이금융","그린푸드","노보손해보험","미래바이오"};
         decimal[] prices={2350,1280,890,535,1420}, costs={2100,1160,940,480,1580}, amounts={120,150,200,300,100};
         for(int i=0;i<5;i++)
         {

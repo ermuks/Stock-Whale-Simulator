@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "stocks": [
+    { "symbol": "NM", "ko": ["노보", "노보손보"], "en": ["Nobo"], "ja": ["ノボ"] },
+    { "symbol": "DSA", "ko": ["덕상", "덕상AI"], "en": ["Deoksang", "DSAI"], "ja": ["徳商"] },
+    { "symbol": "HBF", "ko": ["두덕리", "두덕"], "en": ["Dudeok"], "ja": ["トゥドク"] },
+    { "symbol": "MBI", "ko": ["미바", "미래바"], "en": ["Mirae"], "ja": ["未来バ", "ミラバイ"] },
+    { "symbol": "DDP", "ko": ["엘시", "엘씨", "LC", "엘디"], "en": ["LC"], "ja": ["LC", "エルシー"] },
+    { "symbol": "KMF", "ko": ["굿데이", "굿데"], "en": ["Goodday"], "ja": ["グッデイ"] },
+    { "symbol": "GFD", "ko": ["그푸"], "en": ["GreenF"], "ja": ["グリフ"] },
+    { "symbol": "SSE", "ko": ["산전", "산삼"], "en": ["Sansam"], "ja": ["サン電", "サンサム"] },
+    { "symbol": "SQH", "ko": ["스텤", "스텍", "스테"], "en": ["SqHi"], "ja": ["スクハイ"] },
+    { "symbol": "TZM", "ko": ["줌마", "테줌"], "en": ["Tezu"], "ja": ["テジュ"] },
+    { "symbol": "AMV", "ko": ["암디", "암디비아"], "en": ["Amdi"], "ja": ["アムディ"] },
+    { "symbol": "SMB_BNC", "ko": ["바컴"], "en": ["Banana Co"], "ja": ["バナカン"] },
+    { "symbol": "SMB_GSF", "ko": ["좋바", "바다식품"], "en": ["Good Sea"], "ja": ["よい海"] },
+    { "symbol": "SMB_HTK", "ko": ["하텍"], "en": [], "ja": [] },
+    { "symbol": "SMB_BRN", "ko": ["보라넷"], "en": ["BoraNet"], "ja": ["ボラネット"] },
+    { "symbol": "SMB_SNM", "ko": ["사나"], "en": ["Sana"], "ja": ["サナ"] },
+    { "symbol": "SMB_MFR", "ko": ["머프"], "en": ["MFresh"], "ja": ["マネフレ"] },
+    { "symbol": "SMB_BRM", "ko": ["형제차"], "en": ["Bro Motors"], "ja": ["兄弟自"] },
+    { "symbol": "SMB_TWC", "ko": ["태우"], "en": ["Taewoo"], "ja": ["テウ"] },
+    { "symbol": "SMB_GCC", "ko": ["고층건"], "en": ["Highrise"], "ja": ["高層建"] }
+  ]
+}
