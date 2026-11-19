@@ -14,6 +14,8 @@ public sealed class InvestmentDashboard : MonoBehaviour
     public ScrollRect scroll;
     public TextMeshProUGUI valuation, profit, available, total, count, cost, empty, sortLabel;
     public Button sort, detail;
+    /// <summary>총자산 가운데 주식이 차지하는 몫을 보여 주는 띠(배치 쪽에서 만들어 넣는다).</summary>
+    public UnityEngine.UI.Image allocationFill;
     public float rowHeight = 90f;
     public int SortMode { get; private set; }
     public IReadOnlyList<Stock> Ordered => ordered;
@@ -92,6 +94,11 @@ public sealed class InvestmentDashboard : MonoBehaviour
         DeviceTerminalUI.Set(profit, priced ? Signed(pnl) + "원  (" + Rate(pnl,basisTotal) + ")" : "평가가격 확인 중"); profit.color = priced ? ProfitColor(pnl) : Ink;
         DeviceTerminalUI.Set(available, DeviceTerminalUI.Money(PlayerAccounts.Available(account)));
         DeviceTerminalUI.Set(total, priced ? DeviceTerminalUI.Money(account.cash + stockValue - PlayerAccounts.TaxDebt(account)) : "—");
+        if (allocationFill != null)
+        {
+            decimal whole = Math.Max(0m, account.cash) + stockValue;
+            allocationFill.rectTransform.anchorMax = new Vector2(whole > 0m ? Mathf.Clamp01((float)(stockValue / whole)) : 0f, 1f);
+        }
         DeviceTerminalUI.Set(count,"보유 종목  " + owned.Count);
         DeviceTerminalUI.Set(cost,"총 매수원금  " + DeviceTerminalUI.Money(basisTotal));
         DeviceTerminalUI.Set(sortLabel,SortMode == 0 ? "평가금 높은 순" : SortMode == 1 ? "수익률 높은 순" : "종목명 순");

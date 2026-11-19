@@ -101,7 +101,7 @@ public sealed class TabletRecordsView : MonoBehaviour
         if (!GameLocalizedText.Matches(label, text)) { GameLocalizedText.Set(label, text, true); }
         if (label.color != color) { label.color = color; }
     }
-    private static int DayOf(string time)
+    public static int DayOf(string time)
     {
         // "3일 09:02"(지금)와 "DAY 3 09:02"(예전 저장) 둘 다 읽는다: 처음 나오는 숫자가 날짜다.
         int value = 0; bool found = false;

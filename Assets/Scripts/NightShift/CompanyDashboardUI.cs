@@ -46,43 +46,94 @@ public sealed class CompanyDashboardUI : MonoBehaviour
         var view = root.AddComponent<CompanyDashboardUI>(); view.tablet = owner;
         view.font = Resources.Load<TMP_FontAsset>("UI/News/Pretendard Reading"); view.Build(); return view;
     }
+    // 화면의 뼈대: 맨 위에 "내 지분" 게이지와 요약 타일 셋, 가운데에 결산 정책 카드 셋, 맨 아래에 할 일 단추.
+    // 숫자는 타일마다 하나만 크게 두고, 딸린 숫자는 그 밑에 작게 붙인다.
+    private Image stakeFill;
+    private readonly TextMeshProUGUI[] subs = new TextMeshProUGUI[3], policyTitles = new TextMeshProUGUI[3];
+    private readonly Image[] splitParts = new Image[3];
+    private readonly Image[][] policyBorders = new Image[3][];
+    private Button growthButton;
+    private static readonly Color Warn = new Color32(242, 188, 100, 255), Soft = new Color32(153, 168, 179, 255), Grey = new Color32(110, 129, 142, 255);
+    private static readonly string[] PolicyIcons = { "dividend", "reinvest", "reserve" };
     private void Build()
     {
-        heading = Label("Company Name", "", .04f,.025f,.44f,.07f,46);
-        ladderButton = Action("Acquisition Ladder", "인수 사다리", .49f,.035f,.15f,.07f,OpenLadder);
+        heading = Label("Company Name", "", .04f,.02f,.44f,.07f,46);
+        symbol = Label("Symbol", "", .04f,.092f,.62f,.04f,23); symbol.color = Soft;
+        ladderButton = Action("Acquisition Ladder", "인수 사다리", .49f,.03f,.15f,.065f,OpenLadder);
         ladderLabel = ladderButton.GetComponentInChildren<TextMeshProUGUI>(true);
-        symbol = Label("Symbol", "", .04f,.10f,.45f,.045f,25);
-        mine = Action("My Company", "내 기업", .65f,.035f,.12f,.07f,MyCompany);
+        mine = Action("My Company", "내 기업", .65f,.03f,.12f,.065f,MyCompany);
         mineLabel = mine.GetComponentInChildren<TextMeshProUGUI>(true);
-        Action("Previous Company", "‹", .78f,.035f,.075f,.07f,() => Select(-1));
-        Action("Next Company", "›", .88f,.035f,.075f,.07f,() => Select(1));
-        ownership = Label("Ownership", "", .52f,.11f,.435f,.045f,27); ownership.alignment = TextAlignmentOptions.MidlineRight;
-        string[] captions = { "발행 주식 수", "마감 종가", "마감 시총", "내 지분", "매출", "운영비", "순이익", "내 배당금", "기업 현금", "미지급 비용", "재투자", "배당 비율" };
-        for (int i = 0; i < captions.Length; i++)
+        Action("Previous Company", "‹", .78f,.03f,.08f,.065f,() => Select(-1));
+        Action("Next Company", "›", .875f,.03f,.08f,.065f,() => Select(1));
+
+        // 바탕 칸들을 먼저 깔아 글자가 그 위에 오게 한다.
+        TabletKitStyle.Surface("Stake Card", transform, .04f,.155f,.285f,.235f, TabletKitStyle.Panel);
+        for (int i = 0; i < 3; i++) { TabletKitStyle.Surface("Summary Tile " + i, transform, .345f + i * .205f,.155f,.19f + (i == 2 ? .01f : 0f),.235f, TabletKitStyle.Panel); }
+
+        string[] names = { "발행 주식 수", "마감 종가", "마감 시총", "내 지분", "매출", "운영비", "순이익", "내 배당금", "기업 현금", "미지급 비용", "재투자", "배당 비율" };
+        for (int i = 0; i < names.Length; i++)
         {
-            float x = .04f + i % 4 * .235f, y = .21f + i / 4 * .16f;
-            var label = Label(captions[i], captions[i], x,y,.215f,.043f,25); label.color = new Color32(153,168,179,255);
-            this.captions[i]=label;
-            values[i] = Label(captions[i] + " Value", "—", x,y+.052f,.215f,.065f,34);
-            values[i].alignment = TextAlignmentOptions.MidlineRight; TradingOrderView.Numeric(values[i]);
-            var divider = new GameObject("Image :: Company Divider",typeof(RectTransform),typeof(Image)); divider.transform.SetParent(transform,false);
-            Place((RectTransform)divider.transform,x,y+.135f,.215f,.0015f); divider.GetComponent<Image>().color = new Color(1,1,1,.12f); divider.GetComponent<Image>().raycastTarget = false;
+            captions[i] = Label(names[i], names[i], 0,0,.1f,.04f,23); captions[i].color = Soft;
+            values[i] = Label(names[i] + " Value", "—", 0,0,.1f,.04f,34); TradingOrderView.Numeric(values[i]);
+            captions[i].gameObject.SetActive(false); values[i].gameObject.SetActive(false);
         }
-        day = Label("Settlement Day", "", .04f,.685f,.91f,.04f,24);
-        string[] names = { "배당", "재투자", "비축" };
+        void Show(int index, float x, float y, float w, float captionHeight, float valueY, float valueHeight, float size)
+        {
+            captions[index].gameObject.SetActive(true); values[index].gameObject.SetActive(true);
+            Place(captions[index].rectTransform, x, y, w, captionHeight); Place(values[index].rectTransform, x, valueY, w, valueHeight);
+            values[index].alignment = TextAlignmentOptions.MidlineLeft; values[index].enableAutoSizing = true; values[index].fontSizeMax = size; values[index].fontSizeMin = 20;
+        }
+        // 내 지분: 가장 큰 숫자와 게이지. 가운데 금(50%)을 넘겨야 경영권이다.
+        Show(3, .055f,.165f,.14f,.04f,.205f,.105f,66);
+        ownership = Label("Ownership", "", .185f,.165f,.127f,.04f,22); ownership.alignment = TextAlignmentOptions.MidlineRight;
+        var track = TabletKitStyle.Surface("Stake Track", transform, .055f,.332f,.255f,.024f, TabletKitStyle.Line);
+        stakeFill = TabletKitStyle.Surface("Stake Fill", track.transform, 0,0,1,1, TabletKitStyle.Accent);
+        TabletKitStyle.Surface("Stake Half Mark", transform, .055f + .255f * .5f,.322f,.0022f,.044f, TabletKitStyle.Ink);
+        int[] tiles = { 2, 8, 6 };
         for (int i = 0; i < 3; i++)
         {
-            int index = i; policies[i] = Action("Policy " + i,names[i],.04f+i*.315f,.732f,.285f,.10f,() => Policy(index));
-            Place(policies[i].GetComponentInChildren<TextMeshProUGUI>(true).rectTransform,0,.06f,1,.50f);
-            policyNotes[i] = Label("Policy Note " + i,"",0,0,1,1,21); policyNotes[i].transform.SetParent(policies[i].transform,false); Place(policyNotes[i].rectTransform,.03f,.56f,.94f,.36f); policyNotes[i].alignment = TextAlignmentOptions.Center;
-            policyTags[i] = Label("Policy Tag " + i,"",0,0,1,1,20); policyTags[i].transform.SetParent(policies[i].transform,false); Place(policyTags[i].rectTransform,.70f,.08f,.27f,.30f); policyTags[i].alignment = TextAlignmentOptions.MidlineRight;
+            float x = .36f + i * .205f, w = .16f + (i == 2 ? .01f : 0f);
+            Show(tiles[i], x,.165f,w,.04f,.21f,.075f,38);
+            subs[i] = Label("Summary Note " + i, "", x,.295f,w,.085f,21); subs[i].color = Soft; subs[i].textWrappingMode = TextWrappingModes.Normal; subs[i].alignment = TextAlignmentOptions.TopLeft;
         }
-        advice = Label("Policy Advice","",.04f,.836f,.915f,.032f,21); advice.color = Good;
-        Action("Company Growth","성장·상장",.04f,.87f,.215f,.075f,OpenGrowth);
-        acquire = Action("Acquire Shares","지분 매입",.275f,.87f,.215f,.075f,Acquire);
-        Action("Company News","관련 뉴스",.51f,.87f,.215f,.075f,() => tablet.ShowPage(TabletAccountUI.Page.Events));
-        trade=Action("Company Orders","거래",.745f,.87f,.21f,.075f,() => { if (FocusedStock?.IsListed==true) { StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(FocusedStock)); tablet.ShowPage(TabletAccountUI.Page.Orders); } });
-        feedback = Label("Company Feedback","",.04f,.955f,.91f,.035f,23);
+
+        // 결산 정책: 이익을 어떻게 나눌지. 위의 띠가 지금 정책의 나눔(배당·재투자·비축)이다.
+        day = Label("Settlement Day", "", .04f,.415f,.40f,.04f,23); day.color = Soft;
+        for (int i = 0; i < 2; i++)
+        {
+            int index = i == 0 ? 7 : 10; float x = .50f + i * .235f;
+            captions[index].gameObject.SetActive(true); values[index].gameObject.SetActive(true);
+            Place(captions[index].rectTransform, x,.415f,.09f,.04f); captions[index].alignment = TextAlignmentOptions.MidlineRight; captions[index].fontSize = 21;
+            Place(values[index].rectTransform, x + .095f,.415f,.125f,.04f); values[index].alignment = TextAlignmentOptions.MidlineRight; values[index].fontSize = 25;
+        }
+        var split = TabletKitStyle.Surface("Policy Split", transform, .04f,.467f,.915f,.016f, TabletKitStyle.Line);
+        Color[] splitColors = { TabletKitStyle.Accent, Warn, Grey };
+        for (int i = 0; i < 3; i++) { splitParts[i] = TabletKitStyle.Surface("Policy Split " + i, split.transform, 0,0,1,1, splitColors[i]); }
+        string[] policyNames = { "배당", "재투자", "비축" };
+        for (int i = 0; i < 3; i++)
+        {
+            int index = i; policies[i] = Action("Policy " + i,policyNames[i],.04f+i*.315f,.50f,.285f,.215f,() => Policy(index));
+            policyTitles[i] = policies[i].GetComponentInChildren<TextMeshProUGUI>(true);
+            Place(policyTitles[i].rectTransform,.20f,.09f,.50f,.30f); policyTitles[i].alignment = TextAlignmentOptions.MidlineLeft; policyTitles[i].fontSize = 34;
+            var icon = TabletKitStyle.Glyph(PolicyIcons[i], policies[i].transform, .055f,.11f,.11f,.26f); icon.color = splitColors[i];
+            policyNotes[i] = Label("Policy Note " + i,"",0,0,1,1,36); policyNotes[i].richText = true; TradingOrderView.Numeric(policyNotes[i]); policyNotes[i].transform.SetParent(policies[i].transform,false); Place(policyNotes[i].rectTransform,.06f,.46f,.90f,.46f);
+            policyNotes[i].alignment = TextAlignmentOptions.TopLeft; policyNotes[i].lineSpacing = 6;
+            policyTags[i] = TabletCall.Chip("Policy Tag " + i, policies[i].transform, .73f,.11f,.22f,.20f, Good, 21);
+            policyBorders[i] = TabletCall.Border(policies[i].transform, TabletKitStyle.Accent, .009f, .022f);
+        }
+        advice = Label("Policy Advice","",.04f,.722f,.915f,.036f,22); advice.color = Good;
+
+        // 할 일 단추. 지금 해야 하는 것 하나만 밝게 숨 쉰다.
+        growthButton = Action("Company Growth","성장·상장",.04f,.785f,.215f,.095f,OpenGrowth); Icon(growthButton, "growth");
+        acquire = Action("Acquire Shares","지분 매입",.275f,.785f,.215f,.095f,Acquire); Icon(acquire, "plus");
+        Icon(Action("Company News","관련 뉴스",.51f,.785f,.215f,.095f,() => tablet.ShowPage(TabletAccountUI.Page.Events)), "news");
+        trade=Action("Company Orders","거래",.745f,.785f,.21f,.095f,() => { if (FocusedStock?.IsListed==true) { StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(FocusedStock)); tablet.ShowPage(TabletAccountUI.Page.Orders); } }); Icon(trade, "buy");
+        feedback = Label("Company Feedback","",.04f,.90f,.91f,.045f,24); feedback.color = Warn;
+    }
+    private static void Icon(Button button, string name)
+    {
+        var icon = TabletKitStyle.Glyph(name, button.transform, .07f,.28f,.12f,.44f); icon.raycastTarget = false;
+        var label = button.GetComponentInChildren<TextMeshProUGUI>(true); if (label != null) { Place(label.rectTransform,.18f,0,.80f,1); }
     }
     /// <summary>내 기업이 있으면 그 기업을 보여 주고, 없으면 설립한다(설립 비용이 있을 때).</summary>
     private void MyCompany()
@@ -135,12 +186,16 @@ public sealed class CompanyDashboardUI : MonoBehaviour
         {
             foreach (var value in values) { DeviceTerminalUI.Set(value,"—"); }
             foreach (var policy in policies) { policy.interactable=false; }
-            foreach (var label in policyNotes) { GameLocalizedText.Set(label, "", true); } foreach (var label in policyTags) { GameLocalizedText.Set(label, "", true); } GameLocalizedText.Set(advice, "", true);
-            acquire.interactable=trade.interactable=false; DeviceTerminalUI.Set(ownership,"—"); DeviceTerminalUI.Set(day,"—"); return;
+            foreach (var label in policyNotes) { GameLocalizedText.Set(label, "", true); } foreach (var label in policyTags) { label.transform.parent.gameObject.SetActive(false); } GameLocalizedText.Set(advice, "", true);
+            foreach (var label in subs) { GameLocalizedText.Set(label, "", true); } foreach (var edges in policyBorders) { TabletCall.Show(edges, false, TabletKitStyle.Accent); }
+            stakeFill.rectTransform.anchorMax = new Vector2(0, 1);
+            acquire.interactable=trade.interactable=false; TabletCall.Set(acquire, false); TabletCall.Set(growthButton, false); DeviceTerminalUI.Set(ownership,"—"); DeviceTerminalUI.Set(day,"—"); return;
         }
         decimal owned = PlayerAccounts.Instance.Owned(stock);
         decimal ratio = stock.issuedShares > 0 ? owned / stock.issuedShares * 100 : 0;
         DeviceTerminalUI.Set(ownership,ratio >= 100 ? "완전 소유" : ratio > 50 ? "경영권 확보" : "경영권 50% 초과");
+        bool controls = ratio > 50; ownership.color = controls ? TabletKitStyle.Accent : Warn;
+        stakeFill.rectTransform.anchorMax = new Vector2(Mathf.Clamp01((float)ratio / 100f), 1); stakeFill.color = controls ? TabletKitStyle.Accent : Warn;
         bool closed = data.CloseFinished, quoted = data.growth?.ListedCloseDay>0;
         DeviceTerminalUI.Set(captions[1],stock.IsListed ? "마감 종가" : "상장 상태");
         DeviceTerminalUI.Set(captions[2],stock.IsListed ? "마감 시총" : "기업 평가액");
@@ -153,28 +208,53 @@ public sealed class CompanyDashboardUI : MonoBehaviour
         if (!stock.IsListed) { row[1]="비상장"; row[2]=data.growth==null ? "—" : Money(data.growth.Appraisal); }
         for (int i = 0; i < values.Length; i++) { DeviceTerminalUI.Set(values[i],row[i]); }
         values[6].color = InvestmentDashboard.ProfitColor(data.Profit);
+        // 타일 밑의 딸린 숫자.
+        string shares = stock.issuedShares.ToString("N0") + Word("주", " sh.", "株");
+        string noteA = shares + " · " + (!stock.IsListed ? Word("비상장", "Private", "非上場") : Word("종가 ", "close ", "終値 ") + (quoted ? DeviceTerminalUI.Money(data.ClosePrice) : "—"));
+        string noteB = Word("미지급 ", "Unpaid ", "未払い ") + DeviceTerminalUI.Money(data.Debt);
+        string noteC = closed ? Word("매출 ", "Revenue ", "売上 ") + DeviceTerminalUI.Money(data.Revenue) + "\n" + Word("비용 ", "Costs ", "費用 ") + DeviceTerminalUI.Money(data.Costs) : Word("첫 결산 전", "Before first results", "初回決算前");
+        string[] notes = { "", data.Debt > 0 ? noteB : "", closed ? noteC : "" };
+        // 첫 결산 전에는 지난 결산 줄(배당금·재투자)을 아예 비운다.
+        foreach (var item in new Component[] { day, captions[7], values[7], captions[10], values[10] }) { if (item.gameObject.activeSelf != closed) { item.gameObject.SetActive(closed); } }
+        for (int i = 0; i < 3; i++) { if (!GameLocalizedText.Matches(subs[i], notes[i])) { GameLocalizedText.Set(subs[i], notes[i], true); } }
+        subs[1].color = data.Debt > 0 ? Warn : Soft;
+        // 정책 띠: 이익 가운데 배당·재투자·비축으로 가는 몫.
+        double reinvestShare = data.Policy == CompanyPolicy.Investment ? rules.growthInvestment : data.Policy == CompanyPolicy.Dividend ? rules.dividendInvestment : 0;
+        float cutA = Mathf.Clamp01((float)payout), cutB = Mathf.Clamp01((float)(payout + reinvestShare));
+        splitParts[0].rectTransform.anchorMin = new Vector2(0, 0); splitParts[0].rectTransform.anchorMax = new Vector2(cutA, 1);
+        splitParts[1].rectTransform.anchorMin = new Vector2(cutA, 0); splitParts[1].rectTransform.anchorMax = new Vector2(cutB, 1);
+        splitParts[2].rectTransform.anchorMin = new Vector2(cutB, 0); splitParts[2].rectTransform.anchorMax = new Vector2(1, 1);
         DeviceTerminalUI.Set(day,closed ? GameLocale.Day(data.LastDay) + " · 17:00 결산" : "첫 기업 결산 전");
         for (int i = 0; i < policies.Length; i++)
-        { policies[i].interactable = ratio > 50 && MarketDayController.Instance.Phase != MarketPhase.Closing; TabletControlStyle.Emphasize(policies[i],(int)data.Policy == i); }
+        { policies[i].interactable = ratio > 50 && MarketDayController.Instance.Phase != MarketPhase.Closing; }
         // 정책마다 다음 결산의 예상과, 지금 권하는 정책.
         var economy = CorporateEconomy.Instance; var best = economy.Recommend(stock, out string why);
         string[] policyNames = { Word("배당", "Dividend", "配当"), Word("재투자", "Reinvest", "再投資"), Word("비축", "Reserves", "内部留保") };
         for (int i = 0; i < policies.Length; i++)
         {
             var outlook = economy.Outlook(stock, (CompanyPolicy)i); bool chosen = (int)data.Policy == i;
-            string line = Word("내 배당 +", "My dividend +", "配当 +") + DeviceTerminalUI.Money(outlook.Mine) + " · "
-                + (i == 2 ? Word("회사 현금 +", "cash +", "現金 +") + DeviceTerminalUI.Money(Math.Max(0m, outlook.Kept)) : Word("하루 이익 +", "daily profit +", "1日の利益 +") + DeviceTerminalUI.Money(outlook.ProfitGain));
+            string caption = i == 0 ? Word("내 배당", "My dividend", "配当") : i == 1 ? Word("하루 이익", "Daily profit", "1日の利益") : Word("회사 현금", "Company cash", "会社の現金");
+            decimal figure = i == 0 ? outlook.Mine : i == 1 ? outlook.ProfitGain : Math.Max(0m, outlook.Kept);
+            string line = "<size=58%><color=#99A8B3>" + caption + "</color></size>\n+" + DeviceTerminalUI.Money(figure);
             if (!GameLocalizedText.Matches(policyNotes[i], line)) { GameLocalizedText.Set(policyNotes[i], line, true); }
-            policyNotes[i].color = chosen ? TabletKitStyle.Background : new Color32(153,168,179,255);
-            string tag = (int)best == i ? Word("추천", "Best", "おすすめ") : "";
+            // 고른 정책은 밝은 테두리, 권하는 정책은 초록 테두리와 꼬리표. 바탕은 채우지 않아 숫자가 그대로 읽힌다.
+            bool suggested = (int)best == i;
+            TabletKitStyle.Flat(policies[i].image, chosen ? TabletKitStyle.Hover : TabletKitStyle.Panel);
+            policyTitles[i].color = chosen ? TabletKitStyle.Accent : policies[i].interactable ? TabletKitStyle.Ink : Soft;
+            policyNotes[i].color = chosen || suggested ? TabletKitStyle.Ink : Soft;
+            TabletCall.Show(policyBorders[i], chosen || suggested, chosen ? TabletKitStyle.Accent : Good);
+            string tag = chosen ? Word("적용 중", "Active", "適用中") : suggested ? Word("추천", "Best", "おすすめ") : "";
+            if (policyTags[i].transform.parent.gameObject.activeSelf != (tag.Length > 0)) { policyTags[i].transform.parent.gameObject.SetActive(tag.Length > 0); }
             if (!GameLocalizedText.Matches(policyTags[i], tag)) { GameLocalizedText.Set(policyTags[i], tag, true); }
-            policyTags[i].color = chosen ? TabletKitStyle.Background : Good;
+            policyTags[i].transform.parent.GetComponent<Image>().color = chosen ? TabletKitStyle.Accent : Good;
         }
-        string note = Word("추천 · ", "Suggested · ", "おすすめ · ") + policyNames[(int)best] + "  —  " + why;
-        if (!GameLocalizedText.Matches(advice, note)) { GameLocalizedText.Set(advice, note, true); }
+        if (advice.gameObject.activeSelf) { advice.gameObject.SetActive(false); }
         acquire.interactable = small ? CorporateEconomy.Instance.SmallOffer(stock, tablet.account, out _, out _) && MarketDayController.Instance.Phase != MarketPhase.Closing
             : MarketDayController.CanTrade && stock.AcceptsOrders && ratio < 100 && PlayerAccounts.Available(tablet.account) >= stock.currentPrice;
         trade.interactable=stock.AcceptsOrders && MarketDayController.CanTrade;
+        // 지금 할 일: 경영권이 없으면 지분 매입, 있으면 회사를 키우는 쪽.
+        TabletCall.Set(acquire, !controls);
+        TabletCall.Set(growthButton, controls && economy.CanManage(stock));
     }
     void OnEnable() { next = 0; }
     void Update() { if (Time.unscaledTime < next) { return; } next = Time.unscaledTime + .5f; Refresh(); }

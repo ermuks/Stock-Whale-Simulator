@@ -13,7 +13,12 @@ public sealed class TradingOrderView : MonoBehaviour
     private TextMeshProUGUI available, reserved, owned, sellable, average, profit, afterCash, afterShares;
     private TextMeshProUGUI[] confirmationValues;
     private TextMeshProUGUI reviewCaption, submitCaption;
-    private Image buyLine, sellLine;
+    private Image buyLine, sellLine, budgetFill;
+    private TextMeshProUGUI buyCaption, sellCaption;
+    private void Tile(Transform parent,float y)
+    {
+        var tile=Area("Account Tile",parent,0,y,736,88,736,704).gameObject.AddComponent<Image>(); tile.name="Image :: Account Tile"; tile.color=TabletKitStyle.Panel; tile.raycastTarget=false;
+    }
     private Button current;
     public const float ControlHeight = 56f;
     private static readonly Color Ink = new Color32(230,235,239,255), Muted = new Color32(146,161,172,255);
@@ -41,13 +46,23 @@ public sealed class TradingOrderView : MonoBehaviour
 
         var left = Area("Account And Pending",transform,832,144,736,704,1600,880);
         var right = Area("Trade Grid",transform,32,144,736,704,1600,880);
-        available = Metric(left,"주문 가능",0,"원"); reserved = Metric(left,"예약금",40,"원");
-        Rule(left,0,92,736,736,704);
-        owned = Metric(left,"보유",104,"주"); sellable = Metric(left,"매도 가능",144,"주");
-        average = Metric(left,"평균가",184,"원"); profit = Metric(left,"평가손익",224,"원");
-        Place((RectTransform)pending.transform,left,0,304,736,400,736,704);
+        // 계좌 쪽은 두 칸뿐이다: 쓸 수 있는 돈, 그리고 이 종목을 얼마나 들고 있고 얼마를 벌고 있는지.
+        // 예약금·매도 가능·평균가는 밑의 미체결 목록과 자산 탭에서 보인다.
+        var unused = Area("Unused Metrics",left,0,0,736,704,736,704); unused.gameObject.SetActive(false);
+        reserved = Metric(unused,"예약금",40,"원"); sellable = Metric(unused,"매도 가능",144,"주"); average = Metric(unused,"평균가",184,"원");
+        Tile(left,0);
+        Label("주문 가능 Label",left,"주문 가능",20,0,240,88,27,736,704).color=Muted;
+        available = Label("주문 가능 Value",left,"",264,0,416,88,38,736,704); Numeric(available); available.alignment=TextAlignmentOptions.MidlineRight;
+        Label("주문 가능 Unit",left,"원",692,0,40,88,25,736,704).color=Muted;
+        Tile(left,100);
+        Label("보유 Label",left,"보유",20,100,96,88,27,736,704).color=Muted;
+        owned = Label("보유 Value",left,"",116,100,200,88,38,736,704); Numeric(owned); owned.alignment=TextAlignmentOptions.MidlineRight;
+        Label("보유 Unit",left,"주",324,100,40,88,25,736,704).color=Muted;
+        profit = Label("평가손익 Value",left,"",380,100,300,88,32,736,704); Numeric(profit); profit.alignment=TextAlignmentOptions.MidlineRight;
+        Label("평가손익 Unit",left,"원",692,100,40,88,25,736,704).color=Muted;
+        Place((RectTransform)pending.transform,left,0,216,736,488,736,704);
         ui.cancel.transform.SetParent(pending.transform,false);
-        Place((RectTransform)ui.cancel.transform,pending.transform,592,0,144,ControlHeight,736,400);
+        Place((RectTransform)ui.cancel.transform,pending.transform,592,0,144,ControlHeight,736,488);
         Action(ui.cancel,"전체 취소");
 
         Place((RectTransform)ui.draftPanel.transform,right,0,0,736,704,736,704);
@@ -60,7 +75,8 @@ public sealed class TradingOrderView : MonoBehaviour
         Place((RectTransform)ui.sell.transform,side,368,0,368,ControlHeight,736,ControlHeight);
         Segment(ui.buy,"매수"); Segment(ui.sell,"매도");
         buyLine = Rule(ui.buy.transform,0,54,368,368,56); sellLine = Rule(ui.sell.transform,0,54,368,368,56);
-        buyLine.color = sellLine.color = Muted;
+        buyLine.color = sellLine.color = Muted; buyLine.gameObject.SetActive(false); sellLine.gameObject.SetActive(false);
+        buyCaption = ui.buy.GetComponentInChildren<TextMeshProUGUI>(true); sellCaption = ui.sell.GetComponentInChildren<TextMeshProUGUI>(true);
         var type = Area("Order Type Tabs",draft,0,72,464,ControlHeight,736,704);
         var limit = Label("Limit Order Type",type,"지정가",0,0,160,56,28,464,56);
         limit.alignment = TextAlignmentOptions.Center;
@@ -86,7 +102,11 @@ public sealed class TradingOrderView : MonoBehaviour
         Label("Order Total",draft,"예상 금액",0,452,280,56,28,736,704).color = Muted;
         Place(ui.amount.rectTransform,draft,288,452,376,56,736,704); TextStyle(ui.amount,36,true); ui.amount.alignment = TextAlignmentOptions.MidlineRight;
         Label("Order Total Unit",draft,"원",696,452,40,56,26,736,704).color = Muted;
-        afterCash = Forecast(draft,"주문 후 현금",516,"원"); afterShares = Forecast(draft,"주문 후 보유",552,"주");
+        // 주문 후 현금·보유를 글자로 적는 대신, 이 주문이 가진 돈(또는 주식)의 얼마를 쓰는지 막대 하나로 보여 준다.
+        var hidden = Area("Unused Forecast",draft,0,0,736,704,736,704); hidden.gameObject.SetActive(false);
+        afterCash = Forecast(hidden,"주문 후 현금",516,"원"); afterShares = Forecast(hidden,"주문 후 보유",552,"주");
+        var budget = Area("Order Budget",draft,0,528,736,18,736,704).gameObject.AddComponent<Image>(); budget.name="Image :: Order Budget"; budget.color=Line; budget.raycastTarget=false;
+        budgetFill = Area("Order Budget Fill",budget.transform,0,0,736,18,736,18).gameObject.AddComponent<Image>(); budgetFill.name="Image :: Order Budget Fill"; budgetFill.raycastTarget=false;
         Place(ui.validation.rectTransform,draft,0,600,736,32,736,704); TextStyle(ui.validation,25,false); ui.validation.color = Error;
         Place((RectTransform)ui.review.transform,draft,0,648,736,ControlHeight,736,704); Action(ui.review,"매수 주문",true);
 
@@ -203,15 +223,20 @@ public sealed class TradingOrderView : MonoBehaviour
     }
     public void Draft(Stock stock,bool buying,bool splitting,string error,decimal price,decimal quantity,decimal cost)
     {
-        Color buyColor=buying?Selected:Background, sellColor=buying?Background:Selected;
+        // 사는 쪽·파는 쪽은 시세 색 그대로 칠한다. 주문 단추도 같은 색이라 지금 무엇을 누르는지 색으로 안다.
+        Color sideColor=buying?MarketColors.Up:MarketColors.Down;
+        Color buyColor=buying?sideColor:(Color)TabletKitStyle.Panel, sellColor=buying?(Color)TabletKitStyle.Panel:sideColor;
         if(ui.buy.image.color!=buyColor) { ui.buy.image.color=buyColor; }
         if(ui.sell.image.color!=sellColor) { ui.sell.image.color=sellColor; }
-        if(buyLine.enabled!=buying) { buyLine.enabled=buying; }
-        if(sellLine.enabled==buying) { sellLine.enabled=!buying; }
+        buyCaption.color=buying?TabletKitStyle.Background:Muted; sellCaption.color=buying?Muted:TabletKitStyle.Background;
+        decimal whole=buying?ui.session.AvailableCash:ui.session.AvailableShares(stock), part=buying?cost:quantity;
+        float used=whole>0?(float)(part/whole):part>0?2f:0f;
+        budgetFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(used),1f); budgetFill.color=used>1f?Error:sideColor;
         DeviceTerminalUI.Set(ui.splitLabel,splitting?"분할 ON":"분할 OFF");
         DeviceTerminalUI.Set(ui.amount,cost>0?Number(cost):"—");
         DeviceTerminalUI.Set(reviewCaption,splitting?(buying?"분할 매수 확인":"분할 매도 확인"):(buying?"매수 주문":"매도 주문"));
         TabletControlStyle.Emphasize(ui.review,!splitting);
+        if(!splitting) { ui.review.image.color=sideColor; reviewCaption.color=TabletKitStyle.Background; }
         DeviceTerminalUI.Set(afterCash,string.IsNullOrEmpty(error)?Number(ui.session.AvailableCash+(buying?-cost:cost)):"—");
         DeviceTerminalUI.Set(afterShares,string.IsNullOrEmpty(error)?Number(ui.session.account.GetOwnedVolume(stock)+(buying?quantity:-quantity)):"—");
         ShowError(error);
@@ -222,6 +247,7 @@ public sealed class TradingOrderView : MonoBehaviour
         for(int i=0;i<values.Length;i++) { DeviceTerminalUI.Set(confirmationValues[i],values[i]); }
         DeviceTerminalUI.Set(ui.confirmation,"");
         DeviceTerminalUI.Set(submitCaption,buying?"매수 주문":"매도 주문");
+        ui.submit.image.color=buying?MarketColors.Up:MarketColors.Down; submitCaption.color=TabletKitStyle.Background;
     }
     public void ShowError(string error) { DeviceTerminalUI.Set(ui.validation,ShortError(error)); }
     public static string ShortError(string error)

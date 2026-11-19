@@ -213,7 +213,8 @@ public sealed class UnlockGridUI : MonoBehaviour
             SetIcon(cell.state, StateIcon(state), unlocked ? Done : locked ? LockedInk : TabletKitStyle.Accent);
             TabletKitStyle.Flat(cell.button.image, unlocked ? (active ? DoneHover : DoneFill) : locked ? (active ? LockedHover : LockedFill) : active ? TabletKitStyle.Hover : TabletKitStyle.Panel);
             cell.title.color = unlocked ? TabletKitStyle.Ink : locked ? LockedInk : active ? TabletKitStyle.Accent : TabletKitStyle.Ink;
-            cell.cost.color = locked ? LockedInk : TabletKitStyle.Muted;
+            bool buyable = state == PlayerProgression.UnlockState.Available && progression != null && progression.CanStartUnlock(cell.item, out _);
+            cell.cost.color = locked ? LockedInk : buyable ? Done : TabletKitStyle.Muted;
             foreach (var edge in cell.border) { if (edge.enabled != unlocked) { edge.enabled = unlocked; } }
             // 고른 칸의 밑줄: 해금한 칸은 테두리가 대신한다(고르면 더 밝은 바탕).
             bool underline = active && !unlocked;
@@ -254,7 +255,7 @@ public sealed class UnlockGridUI : MonoBehaviour
             DeviceTerminalUI.Set(status, "");
             start.gameObject.SetActive(true);
             start.interactable = false;
-            TabletControlStyle.Emphasize(start, false);
+            TabletCall.Set(start, false);
             return;
         }
 
@@ -290,7 +291,7 @@ public sealed class UnlockGridUI : MonoBehaviour
         bool pressable = !done && !(shown.external && shown.cost <= 0);
         if (start.gameObject.activeSelf != pressable) { start.gameObject.SetActive(pressable); }
         start.interactable = can;
-        TabletControlStyle.Emphasize(start, can);
+        TabletCall.Set(start, can);
     }
     private static string Condition => GameLocale.Code == "ja" ? "条件達成" : GameLocale.Code == "en" ? "By condition" : "조건 달성";
 

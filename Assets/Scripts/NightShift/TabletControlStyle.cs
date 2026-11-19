@@ -44,7 +44,7 @@ public static class TabletControlStyle
         button.transition = Selectable.Transition.ColorTint;
         var colors = button.colors; colors.normalColor = Color.white; colors.highlightedColor = new Color(1.18f,1.18f,1.18f,1);
         colors.pressedColor = new Color(.70f,.75f,.78f,1); colors.selectedColor = new Color(1.08f,1.08f,1.08f,1);
-        colors.disabledColor = new Color(.62f,.65f,.68f,.45f); colors.fadeDuration = .10f; colors.colorMultiplier = 1;
+        colors.disabledColor = new Color(.78f,.80f,.82f,.80f); colors.fadeDuration = .10f; colors.colorMultiplier = 1;
         button.colors = colors;
         foreach (var label in button.GetComponentsInChildren<TextMeshProUGUI>(true))
         { Font(label); label.fontStyle = FontStyles.Normal; label.raycastTarget = false; }
