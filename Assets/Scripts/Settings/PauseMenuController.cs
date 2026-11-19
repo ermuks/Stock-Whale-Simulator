@@ -200,10 +200,13 @@ public sealed class PauseMenuController : MonoBehaviour
     public void ContinueAfterReport() { SealClosingCapture(); MarketDayController.Instance?.AcknowledgeReport(); Resume(); }
     public void Sleep()
     {
-        if (PlayerRestController.Instance == null) { return; }
+        var rest = PlayerRestController.Instance;
+        if (rest == null || !rest.CanSleep) { return; }
         SealClosingCapture();
-        if (!PlayerRestController.Instance.SleepUntilMorning()) { return; }
+        // 메뉴를 닫고 방으로 돌아가서 잠든다: 눈이 감기고, 꿈이 지나가고, 아침에 눈을 뜬다.
+        MarketDayController.Instance?.AcknowledgeReport();
         Resume();
+        if (IsOpen || !rest.BeginNightSleep()) { rest.SleepUntilMorning(); }
     }
     public void ShowDeath()
     { if (!IsOpen) { Open(); } CurrentPage = Page.Dead; UI.Death(); }

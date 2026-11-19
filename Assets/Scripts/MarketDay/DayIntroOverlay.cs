@@ -20,6 +20,8 @@ public sealed class DayIntroOverlay : MonoBehaviour
     private int shownDay = -1;
     private float started = -1f, nextCapture;
     public bool Playing => started >= 0f;
+    /// <summary>"DAY N" 연출을 이미 보여 준 날.</summary>
+    public int ShownDay => shownDay;
 
     void Awake()
     {
@@ -63,7 +65,7 @@ public sealed class DayIntroOverlay : MonoBehaviour
         if (!Playing)
         {
             // 날짜가 바뀌면(첫날 포함) 시작한다. 메뉴가 떠 있는 동안은 닫힐 때까지 기다린다.
-            if (market == null || !market.Ready || (StockManager.Instance != null && !StockManager.Instance.SetupConfirmed) || PauseMenuController.IsOpen || market.ReportPending) { return; }
+            if (market == null || !market.Ready || (StockManager.Instance != null && !StockManager.Instance.SetupConfirmed) || PauseMenuController.IsOpen || market.ReportPending || CollapseSleep.Active) { return; }
             // 첫날은 08:30부터 둘러보다가 장이 열리는 09:00에 "DAY 1"이 뜬다. 둘째 날부터는 일어난 08:00에 뜬다.
             if (market.Day == 1 && market.Phase == MarketPhase.PreOpen) { return; }
             if (market.Day != shownDay) { Play(market.Day); }

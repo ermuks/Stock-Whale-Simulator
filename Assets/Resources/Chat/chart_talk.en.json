@@ -78,6 +78,9 @@
     {"key": "bidWall.notHeld", "texts": ["buying in front of the wall", "get in while it's supported", "and if it's a spoof?"]},
     {"key": "askWall.any", "texts": ["insane ask wall on {stockName}", "mountain of shares at {peak}", "can't break that, it's going down", "they're sitting on it with that wall", "look at the size offered at {peak}", "someone keeps capping it at {peak}", "if that wall breaks it flies though", "everybody's scared of that offer"]},
     {"key": "askWall.held", "texts": ["that wall makes me want to sell", "no way up with that overhead", "just waiting for it to break"]},
-    {"key": "askWall.notHeld", "texts": ["who buys under that", "i'm in if the wall breaks", "too heavy up there, pass"]}
+    {"key": "askWall.notHeld", "texts": ["who buys under that", "i'm in if the wall breaks", "too heavy up there, pass"]},
+    {"key": "knowing.any", "texts": ["lol", "heh", "it's getting slammed soon anyway", "these never last", "pumps always end the same way", "seen this chart before lol", "everybody's so happy rn", "{stockName} lol", "here we go again", "it's all fun on the way up", "one red candle and it's over", "buy here and you're the exit"]},
+    {"key": "knowing.held", "texts": ["taking my bit and leaving lol", "sold half, not getting greedy"]},
+    {"key": "knowing.notHeld", "texts": ["just watching lol", "i don't chase pumps"]}
   ]
 }

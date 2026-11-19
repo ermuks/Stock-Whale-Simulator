@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 두 번째 태블릿의 "작전" 탭. 스프레드·매집과 같은 자리에 겹쳐 두고 위쪽 탭으로 오간다.
-// 거래량 부풀리기, 허수 매수벽, 종가 관리 세 가지를 켜고 끈다. 실제 동작은 PlayerTactics가 한다.
+// 거래량 부풀리기, 허수 매수벽, 종가 관리를 켜고 끄고, 불붙이기와 내려찍기를 한 번씩 쓴다. 실제 동작은 PlayerTactics가 한다.
 public sealed class ManipulationUI : MonoBehaviour
 {
     private static ManipulationUI instance;
@@ -16,12 +16,13 @@ public sealed class ManipulationUI : MonoBehaviour
     {
         ["작전"] = ("Tactics", "仕掛け"), ["작전 도구"] = ("Tactics", "仕掛けの道具"), ["원"] = ("KRW", "ウォン"),
         ["거래량 부풀리기"] = ("Paint the tape", "出来高の水増し"), ["허수 매수벽"] = ("Fake bid wall", "見せ板の買い壁"), ["종가 관리"] = ("Mark the close", "終値の吊り上げ"),
-        ["차명 계좌와 같은 값에 주고받습니다. 돈과 주식은 그대로고 거래량만 늘어 눈길이 쏠립니다. 45초 동안 돕니다."] =
-            ("Trade back and forth with a nominee account at one price. Cash and shares stay put; only volume grows and eyes turn here. Runs 45 seconds.",
-             "名義貸しの口座と同じ値で売り買いします。資金も株もそのままで出来高だけが増え、注目が集まります。45秒間動きます。"),
-        ["현재가 2.5% 아래에 큰 매수 주문을 걸어 받치는 돈처럼 보이게 합니다. 값이 다가오면 거둡니다. 못 거두면 체결됩니다."] =
-            ("Rest a big bid 2.5% below the market so it looks like support. It is pulled when the price comes near. If it is not pulled in time, it fills.",
-             "現在値の2.5%下に大きな買い注文を置き、支えがあるように見せます。値が近づくと取り消します。間に合わなければ約定します。"),
+        ["차명 계좌와 주고받아 거래량만 늘립니다. 45초."] = ("Trade with a nominee account to inflate volume. 45 seconds.", "名義口座と売り買いして出来高だけ増やします。45秒。"),
+        ["현재가 2.5% 아래에 큰 매수 주문을 겁니다. 못 거두면 체결됩니다."] = ("Rest a big bid 2.5% below the market. If not pulled in time, it fills.", "現在値の2.5%下に大きな買い注文を置きます。取り消しが遅れると約定します。"),
+        ["불붙이기"] = ("Ignite", "点火"), ["내려찍기"] = ("Slam", "叩き落とし"), ["실행"] = ("Fire", "実行"),
+        ["매도 호가를 한 번에 5%까지 쓸어 올립니다. 남은 주문은 바로 거둡니다."] = ("Sweep the asks up to 5% in one shot. Leftover is pulled at once.", "売り板を一気に5%まで買い上げます。残りの注文はすぐ取り消します。"),
+        ["보유 주식을 매수 호가에 한 번에 던져 6%까지 내립니다. 남은 주문은 바로 거둡니다."] = ("Dump your shares into the bids in one shot, down to 6%. Leftover is pulled at once.", "保有株を買い板へ一気に投げ、6%まで下げます。残りの注文はすぐ取り消します。"),
+        ["불을 붙였습니다"] = ("Ignited", "点火しました"), ["내려찍었습니다"] = ("Slammed", "叩き落としました"),
+        ["던질 주식이 없습니다"] = ("No shares to dump", "投げる株がありません"), ["받아 줄 호가가 없습니다"] = ("No bids to hit", "当てる買い板がありません"),
         ["예약하면 장 마감 40초 전부터 사들여 종가를 높게 찍습니다."] =
             ("Once armed, it buys through the last 40 seconds to print a higher close.", "予約すると引けの40秒前から買い上げ、終値を高くします。"),
         ["시작"] = ("Start", "開始"), ["중지"] = ("Stop", "停止"), ["세우기"] = ("Place", "置く"), ["거두기"] = ("Pull", "取り消す"), ["예약"] = ("Arm", "予約"), ["취소"] = ("Cancel", "取消"),
@@ -43,10 +44,10 @@ public sealed class ManipulationUI : MonoBehaviour
     private TMP_FontAsset font;
     private float scale, next;
     private RectTransform panel;
-    private Button tab, wash, wall, close, previous, following;
+    private Button tab, wash, wall, close, ignite, slam, previous, following;
     private readonly Button[] fractions = new Button[3];
     private readonly List<(TextMeshProUGUI label, string korean)> fixedLabels = new();
-    private TextMeshProUGUI washLock, wallLock, closeLock;
+    private TextMeshProUGUI washLock, wallLock, closeLock, igniteLock, slamLock, igniteLabel, slamLabel;
     private TextMeshProUGUI stockName, price, washLabel, wallLabel, closeLabel, heat, painted, washLeft, wallCash, wallPrice, closeBudget, closeSpent, free, held, notice;
     private float fraction = .25f;
     private int locale = -1;
@@ -89,12 +90,17 @@ public sealed class ManipulationUI : MonoBehaviour
             int index = i;
             fractions[i] = Action("Cash Fraction " + i, Mathf.RoundToInt(Fractions[i] * 100f) + "%", 250 + i * 214, 222, 204, 48, () => { fraction = Fractions[index]; next = 0f; }, false, false);
         }
-        Card(0, 290, "거래량 부풀리기", "차명 계좌와 같은 값에 주고받습니다. 돈과 주식은 그대로고 거래량만 늘어 눈길이 쏠립니다. 45초 동안 돕니다.", out wash, out washLabel, ToggleWash);
-        washLock = LockLine(0, 290);
-        Card(1, 478, "허수 매수벽", "현재가 2.5% 아래에 큰 매수 주문을 걸어 받치는 돈처럼 보이게 합니다. 값이 다가오면 거둡니다. 못 거두면 체결됩니다.", out wall, out wallLabel, ToggleWall);
-        wallLock = LockLine(1, 478);
-        Card(2, 666, "종가 관리", "예약하면 장 마감 40초 전부터 사들여 종가를 높게 찍습니다.", out close, out closeLabel, ToggleClose);
-        closeLock = LockLine(2, 666);
+        // 다섯 가지를 한 화면에 둔다. 설명은 한 줄로 줄였다.
+        Card(0, 290, "불붙이기", "매도 호가를 한 번에 5%까지 쓸어 올립니다. 남은 주문은 바로 거둡니다.", out ignite, out igniteLabel, () => { PlayerTactics.Instance?.Ignite(Current, fraction); next = 0f; });
+        igniteLock = LockLine(0, 290);
+        Card(1, 402, "내려찍기", "보유 주식을 매수 호가에 한 번에 던져 6%까지 내립니다. 남은 주문은 바로 거둡니다.", out slam, out slamLabel, () => { PlayerTactics.Instance?.Slam(Current, fraction); next = 0f; });
+        slamLock = LockLine(1, 402);
+        Card(2, 514, "거래량 부풀리기", "차명 계좌와 주고받아 거래량만 늘립니다. 45초.", out wash, out washLabel, ToggleWash);
+        washLock = LockLine(2, 514);
+        Card(3, 626, "허수 매수벽", "현재가 2.5% 아래에 큰 매수 주문을 겁니다. 못 거두면 체결됩니다.", out wall, out wallLabel, ToggleWall);
+        wallLock = LockLine(3, 626);
+        Card(4, 738, "종가 관리", "예약하면 장 마감 40초 전부터 사들여 종가를 높게 찍습니다.", out close, out closeLabel, ToggleClose);
+        closeLock = LockLine(4, 738);
 
         var divider = new GameObject("Image :: Tactics Divider", typeof(RectTransform), typeof(Image)) { layer = gameObject.layer };
         divider.GetComponent<Image>().color = TabletKitStyle.Line; divider.GetComponent<Image>().raycastTarget = false;
@@ -122,7 +128,7 @@ public sealed class ManipulationUI : MonoBehaviour
     private void Card(int index, float y, string title, string description, out Button button, out TextMeshProUGUI buttonLabel, UnityEngine.Events.UnityAction action)
     {
         Label("Card Title " + index, title, 32, y, 560, 48, 31);
-        var text = Label("Card Text " + index, description, 32, y + 50, 848, 112, 22);
+        var text = Label("Card Text " + index, description, 32, y + 50, 848, 56, 22);
         text.color = Muted; text.textWrappingMode = TextWrappingModes.Normal; text.alignment = TextAlignmentOptions.TopLeft; text.overflowMode = TextOverflowModes.Truncate;
         button = Action("Card Button " + index, "", 620, y, 260, 48, action, true, false);
         buttonLabel = button.GetComponentInChildren<TextMeshProUGUI>(true);
@@ -185,6 +191,10 @@ public sealed class ManipulationUI : MonoBehaviour
         // 잠긴 도구는 단추가 눌리지 않고, 설명 자리에 여는 조건이 뜬다.
         bool canWash = PlayerTactics.Unlocked(PlayerTactics.Tool.Wash), canWall = PlayerTactics.Unlocked(PlayerTactics.Tool.Wall), canClose = PlayerTactics.Unlocked(PlayerTactics.Tool.Close);
         wash.interactable = canWash; wall.interactable = canWall; close.interactable = canClose;
+        bool canIgnite = PlayerTactics.Unlocked(PlayerTactics.Tool.Ignite), canSlam = PlayerTactics.Unlocked(PlayerTactics.Tool.Slam);
+        ignite.interactable = canIgnite; slam.interactable = canSlam;
+        Lit(igniteLabel, T(canIgnite ? "실행" : "잠김")); Lit(slamLabel, T(canSlam ? "실행" : "잠김"));
+        Lit(igniteLock, canIgnite ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Ignite))); Lit(slamLock, canSlam ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Slam)));
         Lit(washLabel, T(!canWash ? "잠김" : tactics.WashStock != null ? "중지" : "시작")); Lit(wallLabel, T(!canWall ? "잠김" : tactics.WallStock != null ? "거두기" : "세우기")); Lit(closeLabel, T(!canClose ? "잠김" : tactics.CloseStock != null ? "취소" : "예약"));
         Lit(washLock, canWash ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Wash))); Lit(wallLock, canWall ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Wall))); Lit(closeLock, canClose ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Close)));
         float warmth = StockInterestManager.Instance == null ? 0f : StockInterestManager.Instance.Heat(stock);

@@ -94,6 +94,55 @@ public class StockListItem : MonoBehaviour
         if (riskBadgeBackground != null) { Middle(riskBadgeBackground.rectTransform); }
         if (textRisk != null) { Middle(textRisk.rectTransform); }
         if (textSymbol != null) { textSymbol.gameObject.SetActive(false); }
+        // 이름과 가격 사이의 빈 자리에 오늘의 흐름 선을 둔다.
+        var holder = new GameObject("Image :: Flow Line", typeof(RectTransform), typeof(CanvasRenderer)) { layer = gameObject.layer };
+        holder.transform.SetParent(transform, false);
+        flow = holder.AddComponent<StockFlowLine>(); flow.raycastTarget = false;
+        var area = flow.rectTransform;
+        area.anchorMin = new Vector2(1f, .2f); area.anchorMax = new Vector2(1f, .8f); area.pivot = new Vector2(1f, .5f);
+        area.sizeDelta = new Vector2(FlowWidth, 0f); area.anchoredPosition = new Vector2(-(edge + side + gap + middle + FlowGap), 0f);
+    }
+
+    // ── 흐름 선 ──
+    // 오늘의 분봉 종가를 선으로 잇는다. 가운데가 전일 종가다. 가로는 오늘 지금까지 흐른 만큼을 폭에 가득 채운다(장 초반에도 모양이 보이게. 적어도 20분 폭).
+    // 세로 폭은 오늘 전일 종가에서 가장 멀리 간 만큼에 맞춘다(적어도 ±3%). 잔잔한 날이 요란해 보이지 않게.
+    private const float FlowWidth = 250f, FlowGap = 28f, FlowMinimumRange = .03f, FlowMinimumMinutes = 20f;
+    private const int FlowPoints = 64;
+    private StockFlowLine flow;
+    private readonly List<Vector2> flowPoints = new(FlowPoints + 2);
+    private float flowNext; private int flowCount = -1; private decimal flowLast; private float flowReference;
+    private void ShowFlow(Stock stock, float reference)
+    {
+        if (flow == null) { return; }
+        var history = CandleHistoryManager.Instance; var market = MarketDayController.Instance;
+        if (stock == null || history == null || market == null || reference <= 0f || !stock.IsListed) { if (flow.enabled) { flow.enabled = false; } flowCount = -1; return; }
+        if (!flow.enabled) { flow.enabled = true; flowCount = -1; }
+        var minutes = history.MinuteHistory(stock);
+        // 1초에 한 번, 그리고 값이나 분봉 수가 달라졌을 때만 다시 그린다.
+        if (Time.unscaledTime < flowNext || minutes.Count == flowCount && stock.currentPrice == flowLast && Mathf.Approximately(reference, flowReference)) { return; }
+        flowNext = Time.unscaledTime + 1f; flowCount = minutes.Count; flowLast = stock.currentPrice; flowReference = reference;
+        int today = market.Day, first = minutes.Count;
+        while (first > 0 && minutes[first - 1].marketDay == today && !minutes[first - 1].historical) { first--; }
+        int count = minutes.Count - first;
+        flowPoints.Clear();
+        float range = reference * FlowMinimumRange;
+        for (int i = first; i < minutes.Count; i++) { range = Mathf.Max(range, Mathf.Abs(minutes[i].close - reference)); }
+        range = Mathf.Max(range, Mathf.Abs((float)stock.currentPrice - reference));
+        float Height(float price) => Mathf.Clamp01(.5f + (price - reference) / range * .46f);
+        // 시작점: 전일 종가에서 출발한다.
+        flowPoints.Add(new Vector2(0f, .5f));
+        int stride = Mathf.Max(1, Mathf.CeilToInt(count / (float)FlowPoints));
+        float span = Mathf.Max(FlowMinimumMinutes, count + 1);
+        float lastX = 0f;
+        for (int i = first; i < minutes.Count; i += stride)
+        {
+            float x = Mathf.Clamp01((i - first + 1) / span);
+            if (x <= lastX) { continue; }
+            lastX = x; flowPoints.Add(new Vector2(x, Height(minutes[i].close)));
+        }
+        // 끝점: 지금 값.
+        flowPoints.Add(new Vector2(Mathf.Clamp01(lastX + 1f / span), Height((float)stock.currentPrice)));
+        flow.Show(flowPoints, 5f);
     }
     private static readonly Color32 PriceInk = new(236, 240, 243, 255);
     private static void Middle(RectTransform rect)
@@ -203,6 +252,7 @@ public class StockListItem : MonoBehaviour
         // 0% 기준은 등락률과 같은 전일 종가. 전일 종가가 없으면 당일 시가를 쓴다.
         float reference = hasDailyChange && changePct > -99f && summary.HasValue ? summary.Value.close / (1f + changePct / 100f) : summary.HasValue ? summary.Value.open : 0f;
         ApplyCandleAnchors(summary, reference);
+        ShowFlow(stock, reference);
     }
 
     /// <summary>아직 상장하지 않은(다음 개장에 상장하는) 종목의 행: 꼬리표에 '상장 대기 중', 거래는 내일 09:00부터.</summary>
@@ -225,7 +275,7 @@ public class StockListItem : MonoBehaviour
         if (textTurnover != null) { GameLocalizedText.Set(textTurnover, "—", true); }
         if (textChangePct10 != null) { if (!GameLocalizedText.Matches(textChangePct10, note)) { GameLocalizedText.Set(textChangePct10, note, true); } textChangePct10.color = new Color32(46, 230, 208, 255); }
         TurnoverSortValue = 0f; ChangeSortValue = 0f;
-        ApplyCandleAnchors(null, 0f);
+        ApplyCandleAnchors(null, 0f); ShowFlow(null, 0f);
     }
 
     private int badgeLayoutLocale = -1;
@@ -240,7 +290,8 @@ public class StockListItem : MonoBehaviour
         badgeLayoutDirty = false; badgeLayoutWidth = width; badgeLayoutLocale = GameLocale.Revision;
         // 꼬리표는 글자 길이만큼만(짧게).
         float badgeWidth = Mathf.Clamp(textRisk.GetPreferredValues(textRisk.text).x + 26f,64f,248f);
-        float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - 16f - textName.rectTransform.anchoredPosition.x,120f,650f);
+        // 흐름 선의 자리(FlowWidth + 여백)만큼 이름이 쓸 수 있는 폭을 줄인다.
+        float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - 16f - textName.rectTransform.anchoredPosition.x - FlowWidth - FlowGap * 2f,120f,650f);
         textName.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,nameWidth);
         float x = textName.rectTransform.anchoredPosition.x + Mathf.Min(nameWidth,textName.GetPreferredValues(textName.text).x) + 16f;
         var position = riskBadgeBackground.rectTransform.anchoredPosition; position.x = x;

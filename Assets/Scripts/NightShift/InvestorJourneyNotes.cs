@@ -80,6 +80,22 @@ public sealed class InvestorJourneyNotes : MonoBehaviour
             if (goal < 0 && slots[i] != null) { slots[i].paper.HideCompleted(); slots[i] = null; }
         }
     }
+    /// <summary>
+    /// 할 일 메모와 같은 종이를 한 장 더 찍어, 할 일 메모들의 왼쪽에 붙인다(아침 브리핑에서 적는 메모용).
+    /// template은 종이 색을 고르는 원본 번호(0~2), place는 왼쪽으로 몇 번째 자리인지.
+    /// </summary>
+    public Note SpawnMemo(int template, float place)
+    {
+        if (!initialized || templates[0] == null || templates[1] == null) { return null; }
+        var source = templates[Mathf.Clamp(template, 0, 2)] ?? templates[0];
+        var paper = Instantiate(source, templates[0].transform.parent);
+        // 자리 간격은 원본 두 장의 간격을 그대로 쓴다. 손으로 붙인 것처럼 조금 비뚤게.
+        Vector3 gap = templates[1].transform.localPosition - templates[0].transform.localPosition;
+        paper.transform.localPosition = templates[0].transform.localPosition - gap * (place + 1);
+        paper.transform.localRotation = templates[0].transform.localRotation * Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(-5f, 5f));
+        paper.name = "Area :: Memo Note"; paper.SetActive(true);
+        return Bind(paper);
+    }
     /// <summary>아직 못 했고 어느 자리에도 붙어 있지 않은 할 일 가운데 가장 앞의 것.</summary>
     private int NextGoal()
     {

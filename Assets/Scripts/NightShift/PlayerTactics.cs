@@ -6,6 +6,8 @@ using UnityEngine;
 //  - 거래량 부풀리기(통정매매): 차명 계좌와 같은 값에 주고받는다. 45초 동안 돈다. 그 종목 주식을 갖고 있어야 한다.
 //  - 허수 매수벽: 현재가 2.5% 아래에 큰 매수 주문을 걸어 둔다. 값이 오르면 따라 올려 걸고, 값이 다가오면 거둔다. 못 거두면 진짜로 체결된다.
 //  - 종가 관리: 예약해 두면 장 마감 40초 전부터 정한 돈만큼 사들인다.
+//  - 불붙이기: 매도 호가를 한 번에 5%까지 쓸어 올린다. 남은 주문은 바로 거둔다. 그 뒤를 남들이 올리게 만드는 수법이다.
+//  - 내려찍기: 가진 주식을 매수 호가에 한 번에 던져 6%까지 내린다. 남은 주문은 바로 거둔다(매도벽으로 남지 않는다).
 public sealed class PlayerTactics : MonoBehaviour
 {
     public static PlayerTactics Instance { get; private set; }
@@ -27,7 +29,9 @@ public sealed class PlayerTactics : MonoBehaviour
     private static Trader Account => PlayerAccounts.Instance != null ? PlayerAccounts.Instance.primary : StockManager.Instance != null ? StockManager.Instance.playerAccount : null;
     private static decimal Free(Trader account) => account == null ? 0m : Math.Max(0m, account.cash - account.ReservedCash);
 
-    public enum Tool { Close, Wash, Wall }
+    public enum Tool { Close, Wash, Wall, Ignite, Slam }
+    /// <summary>불붙이기가 쓸어 올리는 높이와 내려찍기가 받아 치는 깊이.</summary>
+    public const decimal IgniteReach = .05m, SlamDepth = .06m;
     /// <summary>
     /// 작전 도구는 차례로 열린다. 종가 관리: 누적 거래대금이 기준(5억)을 넘으면. 거래량 부풀리기: 내 리딩방을 연 뒤. 허수 매수벽: 내 기업이 상장한 뒤.
     /// 진행 정보를 읽을 수 없을 때(검증용 장면 등)는 열려 있는 것으로 본다.
@@ -38,14 +42,15 @@ public sealed class PlayerTactics : MonoBehaviour
         switch (tool)
         {
             case Tool.Close: return career == null || career.Turnover >= career.rules.tacticCloseTurnover;
-            case Tool.Wash: return career == null || career.CanOperateRooms;
+            // 불붙이기는 거래량 부풀리기와, 내려찍기는 허수 매수벽과 함께 열린다.
+            case Tool.Wash: case Tool.Ignite: return career == null || career.CanOperateRooms;
             default:
                 var company = CorporateEconomy.Instance != null ? CorporateEconomy.Instance.PlayerCompany : null;
                 return CorporateEconomy.Instance == null || company != null && company.IsListed && company.business?.growth?.FounderBusiness == true;
         }
     }
     /// <summary>잠겨 있을 때 보여 줄 조건(한국어 열쇠).</summary>
-    public static string LockReason(Tool tool) => tool == Tool.Close ? "누적 거래대금 5억 원부터" : tool == Tool.Wash ? "내 리딩방을 연 뒤부터" : "내 기업이 상장한 뒤부터";
+    public static string LockReason(Tool tool) => tool == Tool.Close ? "누적 거래대금 5억 원부터" : tool == Tool.Wash || tool == Tool.Ignite ? "내 리딩방을 연 뒤부터" : "내 기업이 상장한 뒤부터";
 
     void Awake() { Instance = this; }
     void OnDestroy() { if (Instance == this) { Instance = null; } }
@@ -77,6 +82,29 @@ public sealed class PlayerTactics : MonoBehaviour
         if (WallStock == null) { return; }
         ManipulationTools.PullWall(Account, WallStock, WallPrice); WallStock = null; WallPrice = 0m;
         if (say) { Notice = "매수벽을 거뒀습니다"; }
+    }
+
+    /// <summary>불붙이기: 쓸 현금의 fraction만큼으로 매도 호가를 한 번에 쓸어 올린다.</summary>
+    public bool Ignite(Stock stock, float fraction)
+    {
+        var account = Account;
+        if (!Unlocked(Tool.Ignite)) { Notice = LockReason(Tool.Ignite); return false; }
+        if (account == null || stock == null || !stock.AcceptsOrders || !MarketDayController.CanTrade) { Notice = "거래 불가"; return false; }
+        decimal bought = ManipulationTools.Ignite(account, stock, Free(account) * (decimal)Mathf.Clamp01(fraction), IgniteReach);
+        Notice = bought >= 1m ? "불을 붙였습니다" : "현금 부족";
+        return bought >= 1m;
+    }
+    /// <summary>내려찍기: 가진 주식의 fraction만큼을 매수 호가에 한 번에 던진다.</summary>
+    public bool Slam(Stock stock, float fraction)
+    {
+        var account = Account;
+        if (!Unlocked(Tool.Slam)) { Notice = LockReason(Tool.Slam); return false; }
+        if (account == null || stock == null || !stock.AcceptsOrders || !MarketDayController.CanTrade) { Notice = "거래 불가"; return false; }
+        decimal shares = decimal.Floor(account.GetHolding(stock) * (decimal)Mathf.Clamp01(fraction));
+        if (shares < 1m) { Notice = "던질 주식이 없습니다"; return false; }
+        decimal sold = ManipulationTools.Slam(account, stock, shares, SlamDepth, 0m);
+        Notice = sold >= 1m ? "내려찍었습니다" : "받아 줄 호가가 없습니다";
+        return sold >= 1m;
     }
 
     public bool ArmClose(Stock stock, float fraction)

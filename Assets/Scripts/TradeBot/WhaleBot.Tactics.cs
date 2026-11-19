@@ -54,7 +54,8 @@ public partial class WhaleBot
             { ManipulationTools.PullWall(this, stock, wallPrice); wallPrice = 0m; WallsPulledTotal++; }
             if (wallPrice <= 0m)
             {
-                decimal idle = cash - ReservedCash - Math.Max(0m, operation.budget - operation.spent);
+                // 불붙이는 데 쓸 돈(예산의 30%)은 남기고, 나머지 현금을 값 바로 아래에 받치는 돈으로 보여 준다. 개미는 그 벽을 보고 서둘러 산다.
+                decimal idle = cash - ReservedCash - operation.budget * .3m;
                 decimal show = Math.Min(idle * WallIdleShare, operation.budget * WallBudgetShare);
                 // 벽으로 보이지 않을 만큼 작은 돈이면 걸지 않는다(개미들이 벽으로 치는 최소 금액).
                 if (show >= operation.budget * WallMinimumShare && show >= ManipulationTools.WallFloor(stock))

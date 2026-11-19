@@ -84,6 +84,10 @@ public sealed partial class InvestorSociety
     // 급등: 저점에서 고점까지 10% 이상을 5분 안에. 급락: 고점에서 10% 이상. 깊은 급락: 18% 이상. 원위치: 오르기 전 저점의 2% 안.
     private const decimal PumpRise = .10m, DumpDrop = .10m, DeepDrop = .18m, WobbleDrop = .05m, BackToBase = .02m;
     private const double PumpMaxSec = 300, WobbleMaxSec = 45, SuddenSec = 150, PlungeSec = 120;
+    // 냉소: 급등이 한창일 때(저점에서 10%, 25%를 넘을 때) 누군가 시큰둥한 한마디를 던진다("ㅎㅎ", "어차피 곧 내려찍을거임").
+    // 급등주를 구경하는 사람이면 누구나 할 법한 말만 쓴다. 뭔가 아는 사람처럼 들리는 말(안다는 티, 세력과 엮인 티)은 쓰지 않는다.
+    private static readonly decimal[] KnowingStages = { .10m, .25m };
+    private const double KnowingChance = .65;
     // 반등: 8% 이상 빠진 뒤 저점에서 4% 이상. 찐반등: 빠진 폭의 절반 이상 회복. 가짜 반등: 회복이 60%에 못 미치고 저점을 다시 깸.
     private const decimal FallForBounce = .08m, BounceRise = .04m, RealBounceShare = .5m, DeadCatShare = .6m;
     // 쌍봉·쌍바닥: 두 고점(저점)이 1.5% 안에서 맞고, 그 봉우리가 앞선 바닥에서 6% 이상 올라온 것이어야 한다.
@@ -114,10 +118,14 @@ public sealed partial class InvestorSociety
         public readonly Dictionary<string, double> rest = new(StringComparer.Ordinal);
         public bool legUp = true; public decimal legExtreme; public double legAt;
         /// <summary>마지막 고점(저점)에 대해 이미 말한 단계.</summary>
-        public int dumpStage, bounceStage; public bool twinTop, twinBottom, deadCat, roundTrip;
+        public int dumpStage, bounceStage, knowingStage; public bool twinTop, twinBottom, deadCat, roundTrip;
         public int dayUpStage, dayDownStage, day = -1;
     }
-    private sealed class ChartBurst { public Stock stock; public string key; public int left; public double next; public decimal peak, low; public long replyTo; public int skipBot; }
+    private sealed class ChartBurst { public Stock stock; public string key; public int left, spoken; public double next; public decimal peak, low; public long replyTo; public int skipBot; public string replyName; }
+    /// <summary>차트 수다가 마지막으로 다룬 종목. 화제가 다른 종목으로 넘어가면 첫 마디에 종목 이름을 붙인다.</summary>
+    private Stock chartLastStock;
+    /// <summary>종목 이름이 없는 대사 앞에 이름을 붙인다("벽 믿고 버틴다" → "테줌마 벽 믿고 버틴다"). 여러 종목 얘기가 섞인 방에서 무엇을 두고 하는 말인지 알 수 있게.</summary>
+    private static string NamedLine(string text) => text == null || text.Contains("{stockName}") || text.Contains("{fromName}") ? text : "{stockName} " + text;
     /// <summary>한 봇이 한 종목에서 최근에 사고판 묶음. 말하는 봇 자신의 체결만 본다.</summary>
     private sealed class ChartHand
     {
@@ -169,7 +177,7 @@ public sealed partial class InvestorSociety
     private static void ResetTrack(ChartTrack track)
     {
         track.samples.Clear(); track.pivots.Clear(); track.rest.Clear(); track.legExtreme = 0m; track.legUp = true;
-        track.dumpStage = track.bounceStage = track.dayUpStage = track.dayDownStage = 0; track.twinTop = track.twinBottom = track.deadCat = track.roundTrip = false;
+        track.dumpStage = track.bounceStage = track.knowingStage = track.dayUpStage = track.dayDownStage = 0; track.twinTop = track.twinBottom = track.deadCat = track.roundTrip = false;
     }
 
     // ── 차트 읽기 ──
@@ -199,7 +207,7 @@ public sealed partial class InvestorSociety
             else if (price >= track.legExtreme * (1m + Reversal))
             {
                 AddPivot(track, new ChartPivot { price = track.legExtreme, at = track.legAt, high = false });
-                track.legUp = true; track.legExtreme = price; track.legAt = now; track.bounceStage = 0; track.twinBottom = false;
+                track.legUp = true; track.legExtreme = price; track.legAt = now; track.bounceStage = 0; track.knowingStage = 0; track.twinBottom = false;
             }
         }
     }
@@ -284,6 +292,14 @@ public sealed partial class InvestorSociety
                 if (!track.twinBottom && Math.Abs(last.price / firstLow.price - 1m) <= TwinTolerance && firstLow.price <= before * (1m - TwinProminence) && price >= last.price * (1m + BounceRise))
                 { track.twinBottom = true; Shape(track, stock, "doubleBottom", now, 2, pivots[count - 2].price, Math.Min(last.price, firstLow.price)); }
             }
+        }
+
+        // 급등이 한창이다: 누군가 뜻 모를 한마디를 던진다. 한 번 오를 때 단계마다 한 번, 그것도 매번은 아니다.
+        if (track.legUp && track.knowingStage < KnowingStages.Length && ChartRange(track, now - PumpMaxSec, now, out decimal pumpLow, out _, out _, out _) &&
+            price >= pumpLow * (1m + KnowingStages[track.knowingStage]))
+        {
+            track.knowingStage++;
+            if (stock == null || HypeRandom.Next() < KnowingChance) { Shape(track, stock, "knowing", now, track.knowingStage, price, pumpLow, 0); }
         }
 
         // 일정 시간 창으로 보는 모양들.
@@ -442,8 +458,9 @@ public sealed partial class InvestorSociety
             && bot.Social.Psychology.Traits.Politeness < Config.Int("styleFormalMin");
         TraceChart(day.ClockMinute / 60 + ":" + (day.ClockMinute % 60).ToString("00") + " " + hand.stock.symbol + " " + key + " " + bot.Social.Nickname + " mine " + Money(mine) + " now " + Money(price) + (speaks ? "" : " (silent)"));
         if (!speaks) { return; }
-        string text = PickHypeText(ChartTalkAssets.Lines(key), Array.Empty<string>());
+        string text = NamedLine(PickHypeText(ChartTalkAssets.Lines(key), Array.Empty<string>()));
         if (text == null) { return; }
+        chartLastStock = hand.stock;
         var slots = ChartSlots(hand.stock, price, price, mine);
         var said = PublishHype(bot, ChatHypeAssets.Fill(text, slots), "chart." + key, hand.stock, 0, 1);
         hypeSpokeAt[bot.Social.Id] = now; ChartLinesSaid++;
@@ -451,7 +468,7 @@ public sealed partial class InvestorSociety
         TraceChart("    > " + bot.Social.Nickname + ": " + said.last.text + "  [" + key + "]");
         chartNextLine = Math.Max(chartNextLine, said.doneAt + ChartLineGapMin);
         // 자랑과 한탄에는 한두 명이 답을 단다.
-        chartBursts.Add(new ChartBurst { stock = hand.stock, key = key + "Reply", left = HypeRandom.Next() < .5 ? 2 : 1, next = said.doneAt + 1.6 + HypeRandom.Next() * 1.8, peak = price, low = price, replyTo = said.last.id, skipBot = bot.Social.Id });
+        chartBursts.Add(new ChartBurst { stock = hand.stock, key = key + "Reply", left = HypeRandom.Next() < .5 ? 2 : 1, next = said.doneAt + 1.6 + HypeRandom.Next() * 1.8, peak = price, low = price, replyTo = said.last.id, skipBot = bot.Social.Id, replyName = bot.Social.Nickname });
     }
 
     // ── 갈아타기 ──
@@ -513,8 +530,12 @@ public sealed partial class InvestorSociety
             bool reply = burst.replyTo != 0;
             string text = reply ? PickHypeText(ChartTalkAssets.Lines(burst.key), Array.Empty<string>())
                 : PickHypeText(ChartTalkAssets.Lines(burst.key + ".any"), ChartTalkAssets.Lines(burst.key + (bot.GetOwnedVolume(burst.stock) > 0m ? ".held" : ".notHeld")));
+            // 답글은 누구에게 하는 말인지 붙인다. 새 화제의 첫 마디, 다른 종목 얘기 뒤의 첫 마디에는 종목 이름을 붙인다.
+            if (text != null && reply && !string.IsNullOrEmpty(burst.replyName)) { text = "@" + burst.replyName + " " + text; }
+            else if (text != null && !reply && (burst.spoken == 0 || chartLastStock != burst.stock)) { text = NamedLine(text); }
             if (text != null)
             {
+                burst.spoken++; if (!reply) { chartLastStock = burst.stock; }
                 var said = PublishHype(bot, ChatHypeAssets.Fill(text, ChartSlots(burst.stock, burst.peak, burst.low, 0m)), "chart." + burst.key, burst.stock, burst.replyTo, 0);
                 hypeSpokeAt[bot.Social.Id] = now; ChartLinesSaid++;
                 TraceChart("    > " + bot.Social.Nickname + ": " + said.last.text + "  [" + burst.key + (reply ? "" : bot.GetOwnedVolume(burst.stock) > 0m ? ", 보유" : ", 미보유") + "]");

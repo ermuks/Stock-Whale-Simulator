@@ -106,6 +106,71 @@ public static class ManipulationTools
         if (idle > 0m) { nominee.cash -= idle; owner.cash += idle; }
     }
 
+    /// <summary>
+    /// 불붙이기: 매도 호가를 한 번에 쓸어 올린다. 지금 최우선 매도호가에서 reach(예: 0.05 = 5%) 위까지, cash원어치까지 산다.
+    /// 다 못 산 주문은 그 자리에서 거둔다(높은 값에 매수벽으로 남지 않는다). 산 수량을 돌려준다.
+    /// 값을 끝까지 자기 돈으로 올리는 것이 아니다. 큰 양봉 하나로 눈길을 끌고, 그 뒤는 따라붙는 사람들이 올리게 둔다.
+    /// </summary>
+    public static decimal Ignite(Trader owner, Stock stock, decimal cash, decimal reach)
+    {
+        if (owner == null || stock == null || cash <= 0m || !MarketDayController.CanTrade || !stock.AcceptsOrders || stock.orderBook == null) { return 0m; }
+        if (!stock.orderBook.TryBest(out _, out decimal ask)) { return 0m; }
+        decimal limit = PriceTickPolicy.CeilToTick(ask * (1m + Math.Max(0m, reach)));
+        decimal quantity = decimal.Floor(Math.Min(cash, Math.Max(0m, owner.cash - owner.ReservedCash)) / limit);
+        if (quantity < 1m) { return 0m; }
+        decimal before = owner.GetOwnedVolume(stock);
+        Buy(owner, limit, quantity, stock);
+        stock.orderBook.CopyOwnerOrders(owner, owned);
+        foreach (var order in owned) { if (order.isBuy && order.price == limit && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); } }
+        return Math.Max(0m, owner.GetOwnedVolume(stock) - before);
+    }
+
+    /// <summary>
+    /// 내려찍기: 가진 주식을 매수 호가에 한 번에 던진다. 지금 최우선 매수호가에서 depth(예: 0.06 = 6%) 아래까지, floor보다 낮지 않은 값까지 받아 친다.
+    /// 다 못 판 주문은 그 자리에서 거둔다. 매도벽으로 남겨 두지 않는다(위를 막아 세우면 아무도 올리지 못한다). 판 수량을 돌려준다.
+    /// </summary>
+    public static decimal Slam(Trader owner, Stock stock, decimal shares, decimal depth, decimal floor)
+    {
+        if (owner == null || stock == null || shares < 1m || !MarketDayController.CanTrade || !stock.AcceptsOrders || stock.orderBook == null) { return 0m; }
+        if (!stock.orderBook.TryBest(out decimal bid, out _)) { return 0m; }
+        decimal limit = Math.Max(Math.Max(1m, PriceTickPolicy.CeilToTick(floor)), PriceTickPolicy.FloorToTick(bid * (1m - Math.Max(0m, depth))));
+        decimal quantity = decimal.Floor(Math.Min(shares, owner.GetHolding(stock)));
+        if (limit > bid || quantity < 1m) { return 0m; }
+        decimal before = owner.GetOwnedVolume(stock);
+        Sell(owner, limit, quantity, stock);
+        stock.orderBook.CopyOwnerOrders(owner, owned);
+        foreach (var order in owned) { if (!order.isBuy && order.price == limit && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); } }
+        return Math.Max(0m, before - owner.GetOwnedVolume(stock));
+    }
+
+    /// <summary>
+    /// 털기: 매수 호가 몇 칸(levels)을 한 번에 받아 친다. 수량은 호가창에서 정한다: 그 칸들에 서 있는 물량을 다 받고, 그보다 조금 더(over, 예: 0.2 = 20%) 다음 칸까지 먹는다.
+    /// 다 못 판 주문은 그 자리에서 거둔다. 매도 호가에 물량을 얹지 않으므로 매도벽이 생기지 않는다. 판 수량을 돌려준다.
+    /// 값이 오르는 동안 티 나지 않게 조금씩 이익을 챙기는 수법이다. 내려찍기(Slam)의 작은 판이다.
+    /// </summary>
+    public static decimal Nip(Trader owner, Stock stock, int levelCount, decimal over, decimal maxShares, decimal floor)
+    {
+        if (owner == null || stock == null || maxShares < 1m || levelCount < 1 || !MarketDayController.CanTrade || !stock.AcceptsOrders || stock.orderBook == null) { return 0m; }
+        stock.orderBook.GetTopBids(levels, levelCount + 1);
+        if (levels.Count == 0) { return 0m; }
+        decimal standing = 0m, limit = 0m; int taken = 0;
+        for (int i = 0; i < levels.Count && i < levelCount; i++)
+        {
+            if (levels[i].price < floor) { break; }
+            standing += levels[i].volume; limit = levels[i].price; taken++;
+        }
+        if (taken == 0) { return 0m; }
+        // 조금 더 먹을 다음 칸이 있고 바닥선 위면 거기까지 값을 내린다.
+        if (levels.Count > taken && levels[taken].price >= floor) { limit = levels[taken].price; }
+        decimal quantity = decimal.Floor(Math.Min(Math.Min(maxShares, owner.GetHolding(stock)), decimal.Ceiling(standing * (1m + Math.Max(0m, over)))));
+        if (quantity < 1m) { return 0m; }
+        decimal before = owner.GetOwnedVolume(stock);
+        Sell(owner, limit, quantity, stock);
+        stock.orderBook.CopyOwnerOrders(owner, owned);
+        foreach (var order in owned) { if (!order.isBuy && order.price == limit && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); } }
+        return Math.Max(0m, before - owner.GetOwnedVolume(stock));
+    }
+
     /// <summary>허수 매수벽을 건다. 건 값을 돌려준다(0이면 못 걸었다).</summary>
     public static decimal PlaceWall(Trader owner, Stock stock, decimal cashToShow)
     {

@@ -2845,7 +2845,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699097
-    m_Localized: Don't trust my own {symbol} take much. Other opinions?
+    m_Localized: "Not sure about {symbol} myself. What's everyone thinking?"
     m_Metadata:
       m_Items: []
   - m_Id: 1383699098
@@ -2889,7 +2889,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699108
-    m_Localized: Checking what I missed on {symbol}.
+    m_Localized: "Wondering if I'm missing something on {symbol}."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699109
@@ -3178,7 +3178,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699177
-    m_Localized: Checking the opposite case on {symbol}.
+    m_Localized: "{symbol} could just as easily go the other way."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699178
@@ -3222,11 +3222,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699188
-    m_Localized: Eyes on {symbol}.
+    m_Localized: "Still on the fence about {symbol}."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699189
-    m_Localized: Eyes on {symbol}. Still watching.
+    m_Localized: "Still on the fence about {symbol}. Still watching."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699190
@@ -3400,7 +3400,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699231
-    m_Localized: '{symbol} got my brain busy. Decision can wait.'
+    m_Localized: "Overthinking whether to buy {symbol}. No rush though."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699232
@@ -3489,7 +3489,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699253
-    m_Localized: Been staring at {symbol}. Still no easy answers.
+    m_Localized: "Stared at {symbol} for ages and still no idea."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699254
@@ -3643,7 +3643,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699290
-    m_Localized: Need more time watching {symbol}.
+    m_Localized: "{symbol} is an awkward spot to get in right now."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699291
@@ -3835,7 +3835,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699336
-    m_Localized: '{symbol} caught my eye.'
+    m_Localized: "{symbol} keeps catching my eye lately."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699337
@@ -3975,7 +3975,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699370
-    m_Localized: Checking {symbol}'s flow.
+    m_Localized: "Can't tell which way {symbol} is going today."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699371
@@ -3992,7 +3992,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699374
-    m_Localized: '{symbol}! On my screen too.'
+    m_Localized: "{symbol}! I was just looking at that too."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699375
@@ -4062,7 +4062,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699391
-    m_Localized: Still sorting out my {symbol} take.
+    m_Localized: "Haven't decided what to do with {symbol} yet."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699392
@@ -5805,11 +5805,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699814
-    m_Localized: Not calling it yet. Still watching {symbol}.
+    m_Localized: "Not sure either. Going to watch {symbol} a bit longer."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699815
-    m_Localized: Not calling it yet. Still watching {symbol}. That's my read.
+    m_Localized: "Not sure either. Going to watch {symbol} a bit longer. That's my read."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699816
@@ -5825,11 +5825,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699819
-    m_Localized: "Watching {symbol}'s tape at \u20A9{price}."
+    m_Localized: "I'm watching whether {symbol} holds \u20a9{price}."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699820
-    m_Localized: "Watching {symbol}'s tape at \u20A9{price}. That's my read."
+    m_Localized: "I'm watching whether {symbol} holds \u20a9{price}. That's my read."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699821
@@ -6150,7 +6150,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1383699899
-    m_Localized: Eyes on {symbol}. Brain still sorting things out.
+    m_Localized: "Keep watching {symbol} but still can't decide."
     m_Metadata:
       m_Items: []
   - m_Id: 1383699900
@@ -8732,7 +8732,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1392087178
-    m_Localized: Oh, {symbol}! Watching too.
+    m_Localized: "Oh, {symbol}! I've had my eye on it too."
     m_Metadata:
       m_Items: []
   - m_Id: 1392087179
@@ -11831,7 +11831,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1392087917
-    m_Localized: Seriously, Eyes on {symbol}.
+    m_Localized: "Seriously, Still on the fence about {symbol}."
     m_Metadata:
       m_Items: []
   - m_Id: 1392087918
@@ -11939,11 +11939,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1392087944
-    m_Localized: Seriously, Not calling it yet. Still watching {symbol}.
+    m_Localized: "Seriously, Not sure either. Going to watch {symbol} a bit longer."
     m_Metadata:
       m_Items: []
   - m_Id: 1392087945
-    m_Localized: "Seriously, Watching {symbol}'s tape at \u20A9{price}."
+    m_Localized: "Seriously, I'm watching whether {symbol} holds \u20a9{price}."
     m_Metadata:
       m_Items: []
   - m_Id: 1392087946

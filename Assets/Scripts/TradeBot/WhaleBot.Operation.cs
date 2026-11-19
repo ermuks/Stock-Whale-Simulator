@@ -77,7 +77,21 @@ public partial class WhaleBot
         if (operation.stage == WhaleOperationState.Build) { crowdBaselineSeconds += seconds; }
         int stage = operation.stage;
         var order = WhaleOperationPlan.Step(operation, seconds, stock.currentPrice, GetOwnedVolume(stock) - operationBase, OperationHeat, Today(), Roll);
-        if (operation.stage != stage) { ReportOperation(stock); }
+        if (operation.stage != stage)
+        {
+            ReportOperation(stock);
+            // 조정이 필요할 때(흔들기)는 가볍게, 고점에서 던질 때는 세게 나쁜 소문을 퍼뜨려 개미가 믿는 값을 끌어내린다.
+            if (operation.stage == WhaleOperationState.Shake) { SpreadDoubt(stock, .025f, 0m); }
+            if (operation.stage != WhaleOperationState.Unwind) { dumpTalked = false; }
+        }
+        // 던질 때의 소문은 떨어뜨리려는 깊이만큼만 세다(얕게 무너뜨릴 때 개미가 그 밑으로 줄줄이 던지지 않게).
+        // 순서: 고점에서 먼저 물량을 넘기고(handing), 그 뒤에 소문을 퍼뜨리며 매수 호가를 친다. 넘기려고 걸어 둔 매도는 그때 거둔다(주식이 묶여 있으면 던질 수 없다).
+        if (operation.Dumping && !operation.handing && !dumpTalked)
+        {
+            dumpTalked = true;
+            SpreadDoubt(stock, Mathf.Clamp(operation.dumpTop > 0m ? (float)(1m - operation.dumpFloor / operation.dumpTop) * .9f : .1f, .04f, .25f), operation.dumpFloor);
+            FakeNewsManager.Instance?.RecordManipulation(stock);
+        }
         // 작전의 큰 줄기와 따로, 단계에 맞는 눈속임(통정매매·허수 매수벽·종가 관리)을 얹는다.
         if (operation.Active) { TickTactics(stock, now); } else { EndTactics(stock); }
         if (order.Kind == WhaleOperationKind.None) { return; }
@@ -187,29 +201,99 @@ public partial class WhaleBot
         Debug.Log($"[세력] 작전 시작 — {stock.stockName}({stock.symbol}) 시작가 {stock.currentPrice:N0} · 예산 {budget:N0}원 · 목표 +{operation.gain * 100m:0}% · 흔들기 {operation.shakes}회 · 원래 지분에서 {operation.extraShares:N0}주까지 · 매집 {operation.buildSeconds:0}초 / 끌어올리기 {operation.driveSeconds:0}초");
     }
 
+    private bool dumpTalked;
+    /// <summary>확인용: 세력이 나쁜 소문을 퍼뜨린 횟수와, 그 말을 들은 계좌의 수.</summary>
+    public static int DoubtsSpread, DoubtListeners, IgnitesTotal, SlamsTotal, NipsTotal; public static decimal NippedValue;
+
+    /// <summary>
+    /// 나쁜 소문을 퍼뜨린다: 개미들이 이 종목에 품고 있는 "믿는 값"을 끌어내린다. 가격이나 계좌는 건드리지 않는다.
+    /// 모두가 듣지는 않는다. 남의 말에 잘 휩쓸리는 사람, 그리고 그 종목을 들고 있는 사람일수록 잘 듣고 더 크게 흔들린다.
+    /// 팔지 말지는 각자가 자기 턴에 판단한다(믿는 값보다 비싸 보이면 판다). 진짜 가치를 아는 계좌는 속지 않는다.
+    /// </summary>
+    /// <param name="floor">믿는 값을 이 값 아래로는 끌어내리지 않는다(0이면 제한 없음). 세력이 떨어뜨리려는 깊이까지만 겁을 준다.
+    /// 물결마다 소문이 쌓여서 믿는 값이 바닥 없이 내려가면, 작전이 끝날 때 아무도 받지 않아 값이 시작가 밑으로 무너진다.</param>
+    private void SpreadDoubt(Stock stock, float strength, decimal floor)
+    {
+        var market = MarketDayController.Instance;
+        if (market == null || stock == null || strength <= 0f) { return; }
+        int heard = 0; double now = SessionClock.Time;
+        foreach (var bot in market.Bots)
+        {
+            if (bot == null || bot == this || bot.Social == null || bot.KnowsRealValue || bot is WhaleBot) { continue; }
+            var mind = bot.Social.Psychology; float open = mind.Traits.Suggestibility / 100f;
+            bool holds = bot.GetOwnedVolume(stock) >= 1m;
+            if (UnityEngine.Random.value >= Mathf.Clamp01(.2f + open * .5f + (holds ? .2f : 0f))) { continue; }
+            double shift = -strength * (.5f + open) * (holds ? 1.2f : 1f);
+            if (floor > 0m && mind.Companies.TryBelief(stock.symbol, out double belief))
+            {
+                if (belief <= (double)floor) { continue; }
+                shift = Math.Max(shift, (double)floor / belief - 1d);
+            }
+            mind.Companies.ShiftBelief(stock.symbol, shift, now);
+            heard++;
+        }
+        DoubtsSpread++; DoubtListeners += heard;
+        Debug.Log($"[세력] 수법 — 나쁜 소문: {stock.stockName}({stock.symbol}) 세기 {strength * 100f:0}% · 들은 계좌 {heard}개 / {market.Bots.Count}개");
+    }
+
     private void ReportOperation(Stock stock)
     {
         string name = operation.stage switch
         {
             WhaleOperationState.Drive => "끌어올리기", WhaleOperationState.Shake => "흔들기", WhaleOperationState.Repump => "다시 올리기",
-            WhaleOperationState.Unwind => "정리", _ => "종료"
+            WhaleOperationState.Unwind => operation.dump ? "던지기" : "정리", WhaleOperationState.Scoop => "저점 줍기", _ => "종료"
         };
         decimal start = operation.startPrice > 0m ? operation.startPrice : stock.currentPrice;
-        Debug.Log($"[세력] 작전 {name} — {stock.stockName}({stock.symbol}) 현재가 {stock.currentPrice:N0} ({(stock.currentPrice / start - 1m) * 100m:+0.0;-0.0}%) · 고점 {operation.peakPrice:N0} ({(operation.peakPrice / start - 1m) * 100m:+0.0;-0.0}%) · 산 금액 {operation.spent:N0}원 · 판 금액 {operation.proceeds:N0}원 · 열기 {OperationHeat:0.00} · 흔들기 {operation.shakesDone}/{operation.shakes}");
+        Debug.Log($"[세력] 작전 {name} — {stock.stockName}({stock.symbol}) 현재가 {stock.currentPrice:N0} ({(stock.currentPrice / start - 1m) * 100m:+0.0;-0.0}%) · 고점 {operation.peakPrice:N0} ({(operation.peakPrice / start - 1m) * 100m:+0.0;-0.0}%) · 산 금액 {operation.spent:N0}원 · 판 금액 {operation.proceeds:N0}원 · 열기 {OperationHeat:0.00} · 흔들기 {operation.shakesDone}/{operation.shakes} · 물결 {operation.wave + 1}/{operation.waves}");
     }
 
     private void SubmitOperation(Stock stock, WhaleOperationOrder order)
     {
         if (order.Kind == WhaleOperationKind.Finish) { CancelOperationOrders(stock, true, true, 0f); StopListening(); return; }
+        // 불붙이기와 내려찍기는 플레이어도 쓰는 공통 도구로 한다(ManipulationTools). 한 번에 크게 치고, 남은 주문은 바로 거둔다.
+        if (order.Kind == WhaleOperationKind.Ignite)
+        {
+            decimal bought = ManipulationTools.Ignite(this, stock, order.Quantity * stock.currentPrice, operation.sparkReach);
+            IgnitesTotal++;
+            Debug.Log($"[세력] 수법 — 불붙이기 {operation.sparks}/{operation.sparkLimit}: {stock.stockName}({stock.symbol}) {bought:N0}주, 지금 {stock.currentPrice:N0}원");
+            return;
+        }
+        if (order.Kind == WhaleOperationKind.Nip)
+        {
+            // 두세 칸, 거기 서 있는 물량보다 10~30% 더. 던질 때의 바닥선이 아니라 고점 근처만 지키는 바닥선을 쓴다.
+            decimal nipped = ManipulationTools.Nip(this, stock, 2 + (int)(Roll() * 2), (decimal)(.1 + Roll() * .2), order.Quantity, operation.SellFloor);
+            if (nipped >= 1m) { NipsTotal++; NippedValue += nipped * stock.currentPrice; }
+            return;
+        }
+        if (order.Kind == WhaleOperationKind.HitBid && operation.Dumping)
+        {
+            decimal top = stock.currentPrice;
+            decimal sold = ManipulationTools.Slam(this, stock, order.Quantity, (decimal)(.05 + Roll() * .07), operation.SellFloor);
+            SlamsTotal++;
+            Debug.Log($"[세력] 수법 — 내려찍기 {operation.slamsDone}/{operation.slams}: {stock.stockName}({stock.symbol}) {sold:N0}주, {top:N0}원 → {stock.currentPrice:N0}원");
+            return;
+        }
         bool buying = order.Kind == WhaleOperationKind.JoinBid || order.Kind == WhaleOperationKind.TakeAsk || order.Kind == WhaleOperationKind.LiftAsk;
         // 오래 걸려 있는 주문은 거둔다. 한 가격에 벽이 쌓이지 않게 한다.
         CancelOperationOrders(stock, true, !buying, buying ? StaleBuySeconds : StaleSellSeconds);
-        decimal left = order.Quantity;
+        decimal left = order.Quantity, handPrice = 0m;
         // 한 주문에 낼 수 있는 수량에는 한도가 있다. 큰 수량은 몇 번에 나눠 낸다.
         for (int i = 0; i < OrdersPerStep && left >= 1m; i++)
         {
             decimal bid = Best(stock, true), ask = Best(stock, false), tick = PriceTickPolicy.GetTickSize(stock.currentPrice);
-            decimal price;
+            decimal price, level = 0m;
+            // 고점에서 넘길 때: 매도 호가 바로 안쪽(호가 사이가 벌어져 있으면 한 칸 아래)에 여러 덩어리를 같은 값으로 내놓는다.
+            if (order.Kind == WhaleOperationKind.JoinAsk && operation.Dumping)
+            {
+                // 값이 내려가 버려 위에 남은 내 매도는 거둔다(주식이 거기 묶여 있으면 더 팔 수 없다).
+                if (i == 0) { CancelOperationOrders(stock, false, true, 4f); }
+                if (i == 0) { handPrice = ask <= 0m ? PriceTickPolicy.CeilToTick(stock.currentPrice + tick) : bid > 0m && ask - bid > tick ? ask - tick : ask; }
+                if (handPrice < operation.SellFloor) { return; }
+                decimal offer = Math.Min(Math.Min(left, 2500m), GetHolding(stock));
+                if (offer < 1m) { return; }
+                SellLimit(handPrice, offer, 0, stock); left -= offer;
+                continue;
+            }
             switch (order.Kind)
             {
                 case WhaleOperationKind.JoinBid:
@@ -232,11 +316,14 @@ public partial class WhaleBot
                     // 매수 호가를 받아 칠 때는 그 호가에 실제로 서 있는 수량만큼만 판다. 남는 수량을 더 낮은 값에 걸어 호가를 차례로 무너뜨리지 않는다.
                     // 바닥선 아래의 매수에는 팔지 않는다.
                     if (bid <= 0m || bid < operation.SellFloor) { return; }
-                    price = bid; left = Math.Min(left, BestVolume);
+                    // 던질 때는 다르다: 이 호가의 물량을 다 받아 치고, 남으면 다음 호가로 내려가며 이어서 친다.
+                    price = bid;
+                    if (operation.Dumping) { level = Math.Max(1m, BestVolume); } else { left = Math.Min(left, BestVolume); }
                     break;
             }
             if (price <= 0m) { return; }
             decimal chunk = Math.Min(left, 2500m);
+            if (level > 0m) { chunk = Math.Min(chunk, level); }
             if (buying) { BuyLimit(price, chunk, 0, stock); }
             else
             {
@@ -246,7 +333,7 @@ public partial class WhaleBot
             }
             left -= chunk;
             // 줄을 서는 주문과 매수 호가를 받아 치는 주문은 한 번이면 된다. 위로 받아 가는 매수만 이어서 낸다.
-            if (order.Kind == WhaleOperationKind.JoinBid || order.Kind == WhaleOperationKind.JoinAsk || order.Kind == WhaleOperationKind.HitBid) { break; }
+            if (order.Kind == WhaleOperationKind.JoinBid || order.Kind == WhaleOperationKind.JoinAsk || order.Kind == WhaleOperationKind.HitBid && !operation.Dumping) { break; }
         }
     }
 

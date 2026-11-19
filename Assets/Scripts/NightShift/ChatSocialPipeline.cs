@@ -309,7 +309,10 @@ public sealed partial class InvestorSociety
             string target = message.targetId == -1 ? "방장" : SocialBots.TryGetValue(message.targetId, out var other) ? other.Social.Nickname : "";
             socialMessageIndex.TryGetValue(message.replyToId, out var parentMessage);
             message.text = RenderSocialText(mind, template, message, parentMessage, target, room.recent);
-            if (message.targetId != 0) { message.text = "@" + target + " " + message.text; }
+            // 누구의 말에 다는 답이 아닌 질문은 방 전체에 묻는 문장이다("혹시 OO 보는 사람 있어…?"). 그런 말 앞에 @상대를 붙이면 한 사람을 불러 놓고 모두에게 묻는 꼴이 된다.
+            // 표시만 바꾼다. 누구에게 향한 말인지(targetId)는 그대로 둔다.
+            bool toRoom = act == SocialAct.ASK && message.replyToId == 0;
+            if (message.targetId != 0 && !toRoom) { message.text = "@" + target + " " + message.text; }
             message.profitCard = CaptureProfitCard(bot, message);
             BeforeSocialPublish(bot, intent, message);
             if (message.promisedAction != SocialPromisedAction.None) { mind.PromiseTrade(message.promisedAction, facts.symbol, message.id); }

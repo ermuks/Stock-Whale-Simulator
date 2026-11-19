@@ -4381,7 +4381,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "난 {symbol} {price}원 체결 보는 중.",
+      "text": "난 {symbol} {price}원에서 버티는지 보고 있음.",
       "requires": []
     },
     {
@@ -4399,7 +4399,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "나도 확정은 아님. {symbol} 더 봐야지.",
+      "text": "나도 아직 모르겠음. {symbol} 좀 더 지켜보려고.",
       "requires": []
     },
     {
@@ -4435,7 +4435,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "난 {symbol} {price}원 체결 보는 중. 내 기준은 그럼.",
+      "text": "난 {symbol} {price}원에서 버티는지 보고 있음. 내 기준은 그럼.",
       "requires": []
     },
     {
@@ -4453,7 +4453,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "나도 확정은 아님. {symbol} 더 봐야지. 내 기준은 그럼.",
+      "text": "나도 아직 모르겠음. {symbol} 좀 더 지켜보려고. 내 기준은 그럼.",
       "requires": []
     },
     {
@@ -4489,7 +4489,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. 난 {symbol} {price}원 체결 보는 중.",
+      "text": "진짜. 난 {symbol} {price}원에서 버티는지 보고 있음.",
       "requires": []
     },
     {
@@ -4507,7 +4507,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. 나도 확정은 아님. {symbol} 더 봐야지.",
+      "text": "진짜. 나도 아직 모르겠음. {symbol} 좀 더 지켜보려고.",
       "requires": []
     },
     {
@@ -10480,7 +10480,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 보는 중.",
+      "text": "{symbol} 살까 말까 고민 중.",
       "requires": []
     },
     {
@@ -10534,7 +10534,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 보는 중. 계속 본다.",
+      "text": "{symbol} 살까 말까 고민 중. 계속 본다.",
       "requires": []
     },
     {
@@ -10588,7 +10588,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} 보는 중.",
+      "text": "진짜. {symbol} 살까 말까 고민 중.",
       "requires": []
     },
     {
@@ -29307,11 +29307,11 @@
       "style": "rough",
       "texts": [
         "{symbol} 확신할 근거가 더 필요함.",
-        "{symbol} 반대 가능성도 보는 중.",
+        "{symbol} 반대로 갈 수도 있지 않나.",
         "{symbol} 얘기는 출처부터 봐야지.",
         "{symbol} 가격만으론 판단 어렵다.",
         "{symbol} 너무 쉽게 확신하는 거 아닌가.",
-        "{symbol} 놓친 조건 없나 보는 중."
+        "{symbol} 내가 뭘 놓친 건 없나 싶다."
       ]
     },
     {
@@ -31681,7 +31681,7 @@
       "requires": [],
       "texts": [
         "{symbol} 나만 심각하게 보는 거 아님? 다들 어떻게 봐?",
-        "{symbol} 내 생각도 별로 못 믿겠네. 다른 의견 있음?",
+        "{symbol} 나는 잘 모르겠는데, 다들 어떻게 봄?",
         "{symbol} 확신은 없고 질문만 늘었음. 다들 뭘 보고 있어?",
         "{symbol} 오래 보면 알 줄 알았는데. 뭐부터 봐야 함?"
       ]
@@ -31764,10 +31764,10 @@
       "style": "casual",
       "requires": [],
       "texts": [
-        "{symbol} 보는 중.",
-        "{symbol} 쪽이 눈에 들어오네.",
-        "{symbol} 조금 더 봐야겠음.",
-        "{symbol} 흐름 확인 중."
+        "{symbol} 살까 말까 고민 중.",
+        "{symbol} 요즘 자꾸 눈이 가네.",
+        "{symbol} 지금 들어가긴 애매함.",
+        "{symbol} 오늘 방향을 모르겠네."
       ]
     },
     {
@@ -31794,7 +31794,7 @@
       "texts": [
         "{symbol}은 아직 판단보다 확인할 게 많네.",
         "{symbol} 가격이랑 체결 같이 보고 있음.",
-        "{symbol}에 대한 생각은 아직 정리 중.",
+        "{symbol} 어떻게 할지 아직 못 정함.",
         "{symbol} 지금 흐름 좀 더 확인하고 싶네."
       ]
     },
@@ -31849,9 +31849,9 @@
       "requires": [],
       "texts": [
         "{symbol} 보는 중인데 결론은 아직 출근 안 함.",
-        "{symbol} 앞에서 생각만 바쁘네. 판단은 천천히 해야지.",
-        "{symbol} 오래 봐도 답을 쉽게 안 주네.",
-        "눈은 {symbol}에 있는데 생각은 아직 정리 중."
+        "{symbol} 살지 말지 생각만 많네. 급할 건 없지.",
+        "{symbol} 한참 봤는데도 모르겠다.",
+        "{symbol} 계속 보긴 하는데 아직 결정을 못 함."
       ]
     },
     {
@@ -31904,10 +31904,10 @@
       "style": "casual",
       "requires": [],
       "texts": [
-        "아 {symbol}! 나도 보는 중.",
+        "아 {symbol}! 나도 관심 있었는데.",
         "{symbol} 쪽이 눈에 확 들어오네. 좀 더 볼게.",
         "잠깐, {symbol} 다시 확인하는 중이야.",
-        "{symbol}! 지금 내 화면에도 떠 있어."
+        "{symbol}! 나도 지금 그거 보고 있었어."
       ]
     }
   ]

@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "names": [
+    "passerby",
+    "anon",
+    "user8271",
+    "guest_0412",
+    "definitely_a_trader",
+    "couch_buffett",
+    "nobody",
+    "4am_again",
+    "pick_a_name_later",
+    "soup_enjoyer"
+  ],
+  "lines": [
+    "sex",
+    "butts",
+    "no",
+    "yes, that was me",
+    "it wasn't me",
+    "the answer is 42",
+    "option 3 please",
+    "correct! a potato",
+    "nobody asked but it's my birthday",
+    "ok but is a hot dog a sandwich",
+    "no, that goes in the fridge",
+    "yeah we do that on tuesdays",
+    "mom i got in the chatroom",
+    "is this the pizza place",
+    "oh that's my brother actually",
+    "yes i do like pineapple on pizza",
+    "nah the cat did that"
+  ],
+  "reactions": [
+    "?",
+    "??",
+    "what",
+    "lmaooo",
+    "what just walked past",
+    "who asked",
+    "literally nobody asked",
+    "out of nowhere",
+    "reported",
+    "villain arc",
+    "sir who are you"
+  ],
+  "notice": "{name} was removed from the room.",
+  "after": [
+    "lol gone already",
+    "that was fast",
+    "peace",
+    "what was that",
+    "and calm returns",
+    "wait so what was the answer"
+  ]
+}

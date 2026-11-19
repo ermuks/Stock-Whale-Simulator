@@ -829,7 +829,7 @@ text.c6a8cd1b737c3e89,voices:voice.NONE.ASK.wry.casual,{symbol} 나만 심각하
 text.6cdb521a2d522fa5,community:community.FOMO.REACT,{symbol} 나만 안 탄 느낌인데 이거 맞냐,"{symbol}, feels like everyone got in but me. Really?",{symbol}、乗ってないの俺だけな気がする。マジ？
 text.24097811108d0e3c,community:community.TARGET.WARN_PLAYER,{symbol} 내 결과는 {return}... 난 이제 한 번 더 보고 움직임,My {symbol} result is {return}... Checking twice from now on.,俺の{symbol}の結果は{return}…。これからもう一回確認して動く。
 text.51f70d254bd0873f,community:community.NONE.LAMENT,{symbol} 내 계좌 {return}. 멘탈 어디 갔냐 ㅠ,{symbol} at {return} in my account. I'm tilted af.,口座の{symbol}が{return}。メンタルやられたわ。
-text.918f691c5f6aa61c,voices:voice.NONE.ASK.wry.casual,{symbol} 내 생각도 별로 못 믿겠네. 다른 의견 있음?,Don't trust my own {symbol} take much. Other opinions?,{symbol}、自分の考えも信用できん。他の意見ある？
+text.918f691c5f6aa61c,voices:voice.NONE.ASK.wry.casual,"{symbol} 나는 잘 모르겠는데, 다들 어떻게 봄?",Not sure about {symbol} myself. What's everyone thinking?,{symbol}、自分じゃよく分からん。みんなどう見てる？
 text.f9d7880b7bda9155,community:community.NONE.LAMENT,{symbol} 내 수익률 {return}임. 계좌 잠깐 닫는다,My {symbol} return is {return}. Closing the account tab for a bit.,{symbol}の利回り{return}。口座いったん閉じる。
 text.629edacc0e38c1d1,community:community.NONE.BRAG,{symbol} 내 수익률 {return}임. 자꾸 계좌 켜보게 됨 ㅋㅋ,My {symbol} return is {return}. Keep reopening the account lol.,{symbol}の利回り{return}。口座何回も開いちゃうw
 text.14984de3ac562407,voices:voice.NONE.ASK.chatty.casual,{symbol} 내가 놓친 게 있나 싶네. 새로 들은 얘기 있어?,Did I miss something on {symbol}? Heard anything new?,{symbol}で見落としたかな。新しい話ある？
@@ -840,7 +840,7 @@ text.c2767c2f95c2546b,community:community.FOMO.REACT,{symbol} 놓치기 싫어�
 text.97da9854afba5eab,voices:voice.FOMO.REACT.hesitant.casual,{symbol} 놓치는 건 싫은데 따라갈 자신도 없고…,"Don't want to miss {symbol}, not brave enough to chase either...",{symbol}逃したくないけど追う自信もない…。
 text.491e72cb29ca8e15,Chat: rough,{symbol} 놓친 소식 있나?,Did I miss something on {symbol}?,{symbol}、なんか材料出てた？
 text.edd07e587af45dd8,Chat intensity,{symbol} 놓친 소식 있나? 의견 좀 줘.,Did I miss something on {symbol}? Thoughts?,{symbol}、なんか材料出てた？意見くれ。
-text.e154161d57fc4626,contexts:NONE>DOUBT,{symbol} 놓친 조건 없나 보는 중.,Checking what I missed on {symbol}.,{symbol}、見落としないか確認中。
+text.e154161d57fc4626,contexts:NONE>DOUBT,{symbol} 내가 뭘 놓친 건 없나 싶다.,Wondering if I'm missing something on {symbol}.,{symbol}、何か見落としてないか気になる。
 text.b6fcddfe899ce274,contexts:NONE>DOUBT,{symbol} 놓친 조건이 없나 보고 있어요.,Looking for anything I've missed on {symbol}.,{symbol}、見落としがないか見てます。
 text.320e7913047460a7,voices:voice.FOMO.REACT.wry.casual,{symbol} 놓칠까 봐 신경 쓰임. 내 인내심 오늘 휴무인가.,Worried I'll miss {symbol}. My patience taking the day off?,{symbol}逃しそうで気になる。今日の忍耐力は休みか？
 text.b0f29fb9f4f0445a,community:community.FOMO.REACT,{symbol} 놓칠까 봐 자꾸 새로 보게 됨,"Keep reopening {symbol}, scared I'll miss it.",{symbol}逃しそうで何回も開き直す。
@@ -909,7 +909,7 @@ text.36195fd9ff01b42b,Chat: rough,{symbol} 뭐가 바뀌면 생각 바꿀 건데
 text.406bbb7e3541d474,Chat intensity,{symbol} 뭐가 바뀌면 생각 바꿀 건데? 의견 좀 줘.,What changes your mind on {symbol}? Thoughts?,{symbol}、何があったら考え変える？意見くれ。
 text.ac22668c9f0801c5,community:community.NONE.DOUBT,{symbol} 믿고 싶은 거랑 근거 있는 거랑 다르잖아,Wanting {symbol} to work isn't evidence.,{symbol}、信じたいのと根拠あるのは別だろ。
 text.957492e8ceb344bc,contexts:NONE>DOUBT,{symbol} 반대 가능성도 보고 있어요.,Looking at the opposite case for {symbol} too.,{symbol}、逆の可能性も見てます。
-text.61d18c7a2d3d5626,contexts:NONE>DOUBT,{symbol} 반대 가능성도 보는 중.,Checking the opposite case on {symbol}.,{symbol}、逆の可能性も確認中。
+text.61d18c7a2d3d5626,contexts:NONE>DOUBT,{symbol} 반대로 갈 수도 있지 않나.,{symbol} could just as easily go the other way.,{symbol}、逆に行く可能性もあるだろ。
 text.100590628c96ef57,contexts:REACT>DOUBT,{symbol} 반대로 움직이면 어떻게 볼 거예요?,What if {symbol} goes the other way?,{symbol}が逆に動いたらどう見ます？
 text.06d989ec2136c198,contexts:REACT>DOUBT,{symbol} 반대로 움직이면 어떻게 볼 건데?,And if {symbol} reverses?,{symbol}逆行したらどうすんの？
 text.21a5b870b9d4d8fd,voices:voice.NONE.ASK.chatty.formal,{symbol} 보고 계신 분 있나요? 무엇을 보는지 궁금하네요.,Is anyone watching {symbol}? I am curious what you are looking at.,{symbol}を見ている方はいますか。何を見ているか気になります。
@@ -920,8 +920,8 @@ text.2fec9dd23ce4db4e,community:community.NONE.REACT,{symbol} 보고 있는데 �
 text.3195dda9d540b07a,voices:voice.NONE.REACT.hesitant.casual,{symbol} 보고는 있는데… 판단 어렵네.,"Watching {symbol}, but... tough call.",{symbol}見てはいるけど…。判断難しいな。
 text.3cf8597f4e30ac47,community:community.FOMO.REACT,{symbol} 보고만 있는데 마음은 벌써 전력질주,"Just watching {symbol}, but my brain's already sprinting.",{symbol}見てるだけなのに気持ちはもう全力疾走。
 text.587f0fac1c0ce0d2,voices:voice.NONE.ASK.expressive.casual,{symbol} 보는 사람! 뭐가 눈에 들어와?,Anyone on {symbol}! What jumps out?,{symbol}見てる人！何が目につく？
-text.b239561da62ddbcc,Chat: rough,{symbol} 보는 중.,Eyes on {symbol}.,{symbol}監視中。
-text.9af1349eb2dc91cb,Chat intensity,{symbol} 보는 중. 계속 본다.,Eyes on {symbol}. Still watching.,{symbol}監視中。引き続き監視。
+text.b239561da62ddbcc,Chat: rough,{symbol} 살까 말까 고민 중.,Still on the fence about {symbol}.,{symbol}、買うか迷ってる。
+text.9af1349eb2dc91cb,Chat intensity,{symbol} 살까 말까 고민 중. 계속 본다.,Still on the fence about {symbol}. Still watching.,{symbol}、買うか迷ってる。引き続き監視。
 text.08a6d4edd6a5cfcf,voices:voice.NONE.REACT.wry.casual,{symbol} 보는 중인데 결론은 아직 출근 안 함.,Watching {symbol}. My conclusion hasn't clocked in.,{symbol}見てるけど結論はまだ出勤してない。
 text.f001cf1da8a101ee,voices:voice.FOMO.REACT.wry.casual,{symbol} 보니까 느긋하게 보자는 내가 제일 먼저 조급해짐.,Told everyone to be patient on {symbol}. I'm the first one getting twitchy.,{symbol}ゆっくり見ようって言った俺が一番焦ってる。
 text.52552b180813e351,templates:FOMO.rough.1.3,{symbol} 보니까 마음 급해진다.,Watching {symbol} is making me itchy.,{symbol}見てると焦ってくる。
@@ -963,7 +963,7 @@ text.7fd4d3e824d1257a,templates:company-news.CAUTION.casual.1.3,{symbol} 악재�
 text.4eb2ca0cbc688b1a,voices:voice.FOMO.REACT.chatty.casual,{symbol} 안 보고 있으면 더 신경 쓰임. 괜히 나만 놓치는 것 같아서.,Think about {symbol} more when I look away. Feels like I'll miss it.,{symbol}見ない方が気になる。自分だけ逃しそうでさ。
 text.129fb1076eb79178,community:community.FOMO.REACT,{symbol} 안 보면 더 신경 쓰이는 거 나만 그럼?,Am I the only one thinking more about {symbol} when I look away?,{symbol}見ない方が気になるの俺だけ？
 text.bea6e085c6aef493,community:community.FOMO.REACT,{symbol} 안 쫓아간다 했는데 눈은 계속 따라가는 중,Said I wouldn't chase {symbol}. My eyes disagree.,{symbol}追わないって言ったのに目はずっと追ってる。
-text.6cabd070f6a97906,voices:voice.NONE.REACT.wry.casual,{symbol} 앞에서 생각만 바쁘네. 판단은 천천히 해야지.,{symbol} got my brain busy. Decision can wait.,{symbol}見て考えだけ忙しい。判断はゆっくりだな。
+text.6cabd070f6a97906,voices:voice.NONE.REACT.wry.casual,{symbol} 살지 말지 생각만 많네. 급할 건 없지.,Overthinking whether to buy {symbol}. No rush though.,{symbol}、買うかどうか考えてばっかり。まあ急ぐことないか。
 text.8591394bb652e81f,voices:voice.NONE.REACT.wry.formal,{symbol} 앞에서 생각만 바쁘네요. 판단은 천천히 하겠습니다.,{symbol} keeps my thoughts busy. I will take my time deciding.,{symbol}を前に考えばかり忙しいですね。判断はゆっくりにします。
 text.583ad421e5362fb1,voices:voice.FOMO.REACT.wry.casual,{symbol} 앞에서 침착한 척도 쉽지 않네.,Hard to fake being calm around {symbol}.,{symbol}見て平静装うのも難しいな。
 text.905e53007c521250,community:community.FOMO.REACT,{symbol} 앞에서 침착한 척하는 것도 한계가 있지,There's a limit to pretending I'm calm about {symbol}.,{symbol}見て平静装うのも限界あるわ。
@@ -985,7 +985,7 @@ text.ae94a0d9b06695e1,contexts:REACT>DOUBT,{symbol} 얼마나 더 볼 생각임?
 text.c9f8ecfb5b987aff,contexts:REACT>DOUBT,{symbol} 얼마나 더 지켜볼 생각이에요?,How long are you watching {symbol} for?,{symbol}どこまで見てるつもりです？
 text.1335f7d1d517c19b,templates:company-news.FAN.casual.1.2,{symbol} 역시 기대되는 건 있음 ㅋㅋ 가격은 좀 봐야지,Still got hopes for {symbol} lol. Need to watch the price though.,{symbol}やっぱ期待するわw 値段は見ないとね。
 text.37a2eb089e7220cb,voices:voice.NONE.ASK.wry.casual,{symbol} 오래 보면 알 줄 알았는데. 뭐부터 봐야 함?,Thought staring at {symbol} longer would help. Where do I start?,{symbol}長く見ればわかると思ったのに。何から見ればいい？
-text.1f4472a0e8700820,voices:voice.NONE.REACT.wry.casual,{symbol} 오래 봐도 답을 쉽게 안 주네.,Been staring at {symbol}. Still no easy answers.,{symbol}長く見ても答えくれないな。
+text.1f4472a0e8700820,voices:voice.NONE.REACT.wry.casual,{symbol} 한참 봤는데도 모르겠다.,Stared at {symbol} for ages and still no idea.,{symbol}、ずっと見てるのにさっぱり分からん。
 text.33aca73a6897aba2,community:community.WATCH_RISE.REACT,{symbol} 와 뭐임? 안 본 사이 {moveTalk} 올랐음 ㄷㄷ,"{symbol}, wtf? Up {moveTalk} while I wasn't looking.",{symbol}何これ？見てない間に{moveTalk}上がってる。
 text.480b224e777e3a3d,community:community.WATCH_FALL.REACT,{symbol} 와 뭐임? 안 본 사이 {moveTalk}네 ㄷㄷ,"{symbol}, wtf? {moveTalk} while I wasn't looking.",{symbol}何これ？見てない間に{moveTalk}かよ。
 text.693078e806d13b37,voices:voice.NONE.ASK.brief.formal,{symbol} 의견 듣고 싶습니다.,I would like your view on {symbol}.,{symbol}へのご意見を伺いたいです。
@@ -1022,7 +1022,7 @@ text.b9457553ee0caf1a,Chat: formal,{symbol} 제 {profitKind}손익이 {amount}�
 text.fc3bd909b843f9ba,Chat intensity,{symbol} 제 {profitKind}손익이 {amount}원까지 내려왔습니다. 씁쓸합니다.,{symbol} {profitKind} P&L has fallen to ₩{amount}. It is discouraging.,{symbol}の{profitKind}損益が{amount}ウォンまで下がりました。やりきれません。
 text.38c14fb6ff0d8ac8,Chat: casual,{symbol} 제가 놓친 소식 있나요?,Any {symbol} news I missed?,{symbol}、何かニュース出てました？
 text.b37df384dbb21fe4,Chat intensity,{symbol} 제가 놓친 소식 있나요? 의견 좀 듣고 싶어요.,Any {symbol} news I missed? What do you think?,{symbol}、何かニュース出てました？意見を聞きたいです。
-text.a4b0ca4db9443ab7,voices:voice.NONE.REACT.brief.casual,{symbol} 조금 더 봐야겠음.,Need more time watching {symbol}.,{symbol}もう少し見ないとな。
+text.a4b0ca4db9443ab7,voices:voice.NONE.REACT.brief.casual,{symbol} 지금 들어가긴 애매함.,{symbol} is an awkward spot to get in right now.,{symbol}、今入るのは微妙。
 text.55fa994e0543fcf6,voices:voice.FOMO.REACT.chatty.casual,{symbol} 좀 더 보자 했는데 마음은 벌써 급해졌음. 계속 고민 중.,"Said I'd watch {symbol} longer. Already impatient, still deciding.",{symbol}もう少し見ようって思ったのに焦ってる。まだ悩んでる。
 text.49f34365303e7dce,voices:voice.FOMO.REACT.hesitant.casual,{symbol} 좀 더 생각하려는데 벌써 늦은 건가 싶어서 불안함.,Trying to think longer about {symbol}. Worried it's already too late.,{symbol}もう少し考えたいけど、もう遅いんじゃないかって不安。
 text.b465d3910ec92238,templates:company-news.DEFEND.casual.1.3,{symbol} 좋아하는 거랑 저 얘기 믿는 거랑은 별개지,Liking {symbol} and believing that story are different things.,{symbol}が好きなのと、あの話を信じるのは別。
@@ -1068,7 +1068,7 @@ text.ffeca2b9c9df38bd,Chat: rough,{symbol} 쪽으로 눈이 가네.,Can't stop c
 text.71fc72c192ca9f24,Chat intensity,{symbol} 쪽으로 눈이 가네. 계속 본다.,Can't stop checking {symbol}. Still watching.,{symbol}ばっか見ちゃう。引き続き監視。
 text.26aa02c61a7777f5,Chat: formal,{symbol} 쪽을 확인하고 있습니다.,I am checking {symbol}.,{symbol}を確認しています。
 text.d715a19a5f5af38d,Chat intensity,{symbol} 쪽을 확인하고 있습니다. 계속 확인하겠습니다.,I am checking {symbol}. I will keep monitoring it.,{symbol}を確認しています。引き続き確認します。
-text.67f7888f67573771,voices:voice.NONE.REACT.brief.casual,{symbol} 쪽이 눈에 들어오네.,{symbol} caught my eye.,{symbol}が目に入るな。
+text.67f7888f67573771,voices:voice.NONE.REACT.brief.casual,{symbol} 요즘 자꾸 눈이 가네.,{symbol} keeps catching my eye lately.,{symbol}、最近やけに目につく。
 text.1fa406a2e847b3f3,voices:voice.NONE.REACT.brief.formal,{symbol} 쪽이 눈에 들어오네요.,{symbol} catches my eye.,{symbol}に目が向きますね。
 text.e9b13834be8e7cc8,voices:voice.NONE.REACT.expressive.casual,{symbol} 쪽이 눈에 확 들어오네. 좀 더 볼게.,{symbol} jumped out at me. Watching longer.,{symbol}が目に入った。もう少し見る。
 text.88ae989d39f7b2ae,voices:voice.NONE.REACT.expressive.formal,{symbol} 쪽이 눈에 확 들어오네요. 좀 더 보겠습니다.,{symbol} really catches my eye. I will watch longer.,{symbol}がはっきり目に入りますね。もう少し見ます。
@@ -1102,11 +1102,11 @@ text.f78f57f4caf7eed0,contexts:NONE>DOUBT,{symbol} 확신할 근거가 더 필�
 text.1d14a043346d09ac,contexts:NONE>DOUBT,{symbol} 확신할 근거가 더 필요함.,Need better evidence on {symbol}.,{symbol}、もっと根拠がいるな。
 text.a363bec2066df01c,voices:voice.NONE.ASK.measured.casual,{symbol} 확인된 내용 있는지 궁금하네.,Anything confirmed on {symbol}?,{symbol}で確かな情報あるのかな。
 text.8369719b82eb4ec1,voices:voice.FOMO.REACT.measured.casual,{symbol} 확인할 게 남았는데 마음은 이미 급해짐.,Still things to check on {symbol}. Already feeling rushed.,{symbol}まだ確認が残ってるのに気持ちはもう焦ってる。
-text.9c6ccaeebbe6d035,voices:voice.NONE.REACT.brief.casual,{symbol} 흐름 확인 중.,Checking {symbol}'s flow.,{symbol}の流れ確認中。
+text.9c6ccaeebbe6d035,voices:voice.NONE.REACT.brief.casual,{symbol} 오늘 방향을 모르겠네.,Can't tell which way {symbol} is going today.,{symbol}、今日は方向が読めない。
 text.c0ca3eef80b08071,voices:voice.NONE.REACT.brief.formal,{symbol} 흐름을 확인 중입니다.,Checking {symbol}'s trend.,{symbol}の流れを確認中です。
 text.d4625cae055815c7,voices:voice.FOMO.REACT.expressive.casual,{symbol}! 그냥 보기만 하려니까 진짜 쉽지 않네.,{symbol}! Just watching is harder than it sounds.,{symbol}！見てるだけって本当難しいな。
 text.932ede7a94ad5a2c,voices:voice.FOMO.REACT.expressive.formal,{symbol}! 이 기회를 놓칠까 봐 집중이 안 되네요.,{symbol}! Worrying about missing this opportunity makes it hard to focus.,{symbol}！この機会を逃しそうで集中できません。
-text.af2680c442b26310,voices:voice.NONE.REACT.expressive.casual,{symbol}! 지금 내 화면에도 떠 있어.,{symbol}! On my screen too.,{symbol}！俺の画面にも出てる。
+text.af2680c442b26310,voices:voice.NONE.REACT.expressive.casual,{symbol}! 나도 지금 그거 보고 있었어.,{symbol}! I was just looking at that too.,{symbol}！俺もちょうどそれ見てた。
 text.3d319ec36e32d6bb,voices:voice.NONE.REACT.expressive.formal,{symbol}! 지금 제 화면에도 떠 있습니다.,{symbol}! It is on my screen too.,{symbol}！今私の画面にも出ています。
 text.6a8cb2e0ad159ad4,voices:voice.NONE.BRAG.brief.formal,"{symbol}, {pct}%. 만족합니다.","{symbol}, {pct}%. Satisfied.",{symbol}、{pct}%。満足です。
 text.0bc8e5cb4ead7560,voices:voice.FOMO.REACT.brief.formal,"{symbol}, 놓치긴 아깝네요.",{symbol}. A shame to miss it.,{symbol}、逃すのは惜しいですね。
@@ -1123,7 +1123,7 @@ text.37a98c06ad75fbad,templates:REACT.formal.1.signal,"{symbol}: {bidStatus}, {a
 text.457c35d1defa4157,Chat: formal,{symbol}에 관한 소문과 실제 체결은 나눠 보고 있습니다.,I separate {symbol} rumors from actual fills.,{symbol}の噂と実際の約定は分けて見ています。
 text.f04e8e3813caa5d4,Chat intensity,{symbol}에 관한 소문과 실제 체결은 나눠 보고 있습니다. 제 기준은 그렇습니다.,I separate {symbol} rumors from actual fills. That is my approach.,{symbol}の噂と実際の約定は分けて見ています。それが私の基準です。
 text.ebe0e37b2396d4f2,templates:company-news.DOUBT.formal.1.3,{symbol}에 대한 기대와 검증된 사실을 구분할 필요가 있습니다.,Expectations for {symbol} should be separated from verified facts.,{symbol}への期待と確認済みの事実は分けるべきです。
-text.ce240677174f7f23,voices:voice.NONE.REACT.measured.casual,{symbol}에 대한 생각은 아직 정리 중.,Still sorting out my {symbol} take.,{symbol}への考えはまだ整理中。
+text.ce240677174f7f23,voices:voice.NONE.REACT.measured.casual,{symbol} 어떻게 할지 아직 못 정함.,Haven't decided what to do with {symbol} yet.,{symbol}、どうするかまだ決めてない。
 text.accded28b8bece48,voices:voice.NONE.REACT.measured.formal,{symbol}에 대한 제 생각은 아직 정리 중입니다.,I am still organizing my thoughts on {symbol}.,{symbol}への考えはまだ整理中です。
 text.1490d1c22d738405,voices:voice.NONE.ASK.wry.formal,{symbol}에 대한 확신은 없고 질문만 늘었네요. 다른 의견 있으신가요?,More questions than confidence about {symbol}. Any other views?,{symbol}への確信はなく、質問ばかり増えます。他のご意見はありますか。
 text.fe243b78b89c8949,voices:voice.NONE.ASK.chatty.formal,{symbol}에 대해 놓친 내용이 있을까 해서요. 새로 들으신 얘기 있나요?,Perhaps I missed something about {symbol}. Heard anything new?,{symbol}で見落としがあるかもしれません。新しく聞いた話はありますか。
@@ -1578,13 +1578,13 @@ text.aad858530b4a8329,contexts:ASK>AGREE,나도 그게 궁금함.,Wondering the 
 text.4ffa3d4619a26ae8,templates:legacy.Agreement_extra_20261012_003,나도 급하게 결론 내리진 않으려고.,Trying not to jump to conclusions either.,自分も急いで決めつけないようにしてる。
 text.2de3b5a83708ffdf,contexts:ASK>AGREE,나도 아직 답 못 정함.,No answer from me yet either.,俺もまだ答えない。
 text.44b2c87b265a0d5c,community:community.SMALLTALK.AGREE,나도 좀 움직여야겠다. 계속 앉아 있었네,I should move too. Been sitting forever.,俺もちょっと動こう。ずっと座ってた。
-text.6d7a918b6010618d,Chat: rough,나도 확정은 아님. {symbol} 더 봐야지.,Not calling it yet. Still watching {symbol}.,まだ決めてない。{symbol}見てるとこ。
-text.0169838879906dc9,Chat intensity,나도 확정은 아님. {symbol} 더 봐야지. 내 기준은 그럼.,Not calling it yet. Still watching {symbol}. That's my read.,まだ決めてない。{symbol}見てるとこ。俺はそう見てる。
+text.6d7a918b6010618d,Chat: rough,나도 아직 모르겠음. {symbol} 좀 더 지켜보려고.,Not sure either. Going to watch {symbol} a bit longer.,俺もまだ分からん。{symbol}はもう少し様子見る。
+text.0169838879906dc9,Chat intensity,나도 아직 모르겠음. {symbol} 좀 더 지켜보려고. 내 기준은 그럼.,Not sure either. Going to watch {symbol} a bit longer. That's my read.,俺もまだ分からん。{symbol}はもう少し様子見る。俺はそう見てる。
 text.a8fcd3d705d5fce2,templates:MODERATION.UNMUTED.rough.1.1,나만 막으면 끝임?,So muting me fixes everything?,俺だけ止めりゃ終わりなの？
 text.9bddf49eaf4b17e0,community:community.MEDIATE.REBUT,나한테만 진정하라 그러지 말고 저쪽 말도 좀 봐,Don't just tell me to calm down. Look at what they said.,俺だけに落ち着けって言わないで向こうの発言も見ろよ。
 text.f35104c017e2a637,UI: Assets/Scripts/NightShift/InvestorConversation.cs:29,난 ,Mine was ,自分は 
-text.4feb2ff0361c4c72,Chat: rough,난 {symbol} {price}원 체결 보는 중.,Watching {symbol}'s tape at ₩{price}.,{symbol}、{price}ウォンあたりの歩み値見てる。
-text.0e18288836c82198,Chat intensity,난 {symbol} {price}원 체결 보는 중. 내 기준은 그럼.,Watching {symbol}'s tape at ₩{price}. That's my read.,{symbol}、{price}ウォンあたりの歩み値見てる。俺はそう見てる。
+text.4feb2ff0361c4c72,Chat: rough,난 {symbol} {price}원에서 버티는지 보고 있음.,I'm watching whether {symbol} holds ₩{price}.,俺は{symbol}が{price}ウォンで持ちこたえるか見てる。
+text.0e18288836c82198,Chat intensity,난 {symbol} {price}원에서 버티는지 보고 있음. 내 기준은 그럼.,I'm watching whether {symbol} holds ₩{price}. That's my read.,俺は{symbol}が{price}ウォンで持ちこたえるか見てる。俺はそう見てる。
 text.925a5cf08a71f8c8,Chat: rough,난 {symbol} 리딩 {pct}% 손실임. 남들은 어떨지 몰라도.,{symbol} call left me at {pct}%. Not everyone's winning.,{symbol}の指示で{pct}%。全員勝ってるわけじゃねえぞ。
 text.a88ada151d97e02b,Chat intensity,난 {symbol} 리딩 {pct}% 손실임. 남들은 어떨지 몰라도. 신중히 좀 봐.,{symbol} call left me at {pct}%. Not everyone's winning. Think it through.,{symbol}の指示で{pct}%。全員勝ってるわけじゃねえぞ。慎重に見ろよ。
 text.57dec88d5143dda5,Chat: rough,난 {symbol} 리딩으로 {pct}% 수익 봄.,"{symbol} call, {pct}% for me.",{symbol}の指示、俺は{pct}%取れた。
@@ -1664,7 +1664,7 @@ text.4e7e3b537cdf9e9f,Chat intensity,누가 이기나 하지 말고 확인한 �
 text.e2cb8f23a74ecda6,Chat: formal,누구나 확인할 수 있는 내용인지 묻고 싶습니다.,Can that information be independently verified?,誰でも確認できる情報でしょうか。
 text.c03e6e277a74a936,Chat intensity,누구나 확인할 수 있는 내용인지 묻고 싶습니다. 확인이 필요합니다.,Can that information be independently verified? It needs verification.,誰でも確認できる情報でしょうか。確認が必要です。
 text.0f7ea34fc8ebd83d,templates:legacy.SmallTalk_extra_20261012_023,눈 깜빡이는 것도 잊고 있었네.,Forgot to blink for a while there.,まばたきするのも忘れてた。
-text.57154a6141a742d8,voices:voice.NONE.REACT.wry.casual,눈은 {symbol}에 있는데 생각은 아직 정리 중.,Eyes on {symbol}. Brain still sorting things out.,目は{symbol}、考えはまだ整理中。
+text.57154a6141a742d8,voices:voice.NONE.REACT.wry.casual,{symbol} 계속 보긴 하는데 아직 결정을 못 함.,Keep watching {symbol} but still can't decide.,{symbol}ずっと見てるけど、まだ決められない。
 text.5ac661dbed5720ae,UI: Assets/Scripts/NightShift/SpreadTradingUI.cs:50,뉴스,News,ニュース
 text.4707e2f639c96b93,UI: Assets/Scripts/News/FakeNewsManager.cs:62,뉴스 연결을 준비하고 있습니다.,News is loading.,ニュースを準備中です。
 text.dca3bbc45bd991cb,UI: Assets/Scripts/NightShift/ChatSocialVoices.cs:8,능청형,Wry,とぼけた口調
@@ -2421,7 +2421,7 @@ text.b04917915c7b69e7,templates:MODERATION.CHILL.rough.1.5,쓰려다 지웠다.,
 text.499e68be8c2f4c39,voices:voice.NONE.LAMENT.expressive.casual,아 {symbol} {profitKind}손익 {amount}원… 속상하네.,"Ah, {symbol} {profitKind} P&L ₩{amount}... Hurts.",あー{symbol}の{profitKind}損益{amount}ウォン…。つらいな。
 text.1f5ae8890ba3ef21,community:community.NONE.LAMENT,아 {symbol} 수익률 {return}네. 오늘 내 판단 레전드다 ㅋㅋ,"Oh, {symbol} return {return}. Legendary decision-making from me lol.",あー{symbol}の利回り{return}。今日の判断、逆の意味で神w
 text.caf8467ffb948a22,voices:voice.NONE.ASK.expressive.casual,아 {symbol} 얘기 듣고 싶었어. 다른 의견 있어?,"Oh, wanted to hear about {symbol}. Different takes?",あ、{symbol}の話聞きたかった。他の見方ある？
-text.dbe95950851f8cbf,voices:voice.NONE.REACT.expressive.casual,아 {symbol}! 나도 보는 중.,"Oh, {symbol}! Watching too.",あ、{symbol}！俺も見てる。
+text.dbe95950851f8cbf,voices:voice.NONE.REACT.expressive.casual,아 {symbol}! 나도 관심 있었는데.,"Oh, {symbol}! I've had my eye on it too.",あ、{symbol}！俺も気になってた。
 text.edc7f013ce096541,voices:voice.NONE.BRAG.expressive.casual,아 {symbol}! 내 {profitKind}손익이 {amount}원임.,"Oh, {symbol}! My {profitKind} P&L ₩{amount}.",ああ{symbol}！俺の{profitKind}損益{amount}ウォン。
 text.f2aafe5c03fb46c4,voices:voice.FOMO.REACT.expressive.casual,아 {symbol}! 보고 있으니까 마음 급해진다.,"Oh, {symbol}! Watching this got me impatient.",ああ{symbol}！見てると焦ってくる。
 text.7522277aec6bb082,community:community.TARGET.APOLOGIZE,아 그건 내가 잘못 읽었네 ㅈㅅ,"Oh, read that wrong. My bad.",あ、それ読み違えた。すまん。
@@ -3278,7 +3278,7 @@ text.4695e8cbbd265e60,Chat intensity,진짜. {symbol} 따라갔다가 {pct}%. �
 text.eef31ac53a4768a6,Chat intensity,진짜. {symbol} 리딩 실현손익 {amount}원. 나는 괜찮았음.,"Seriously, {symbol} call, ₩{amount} realized. Solid.",マジで。{symbol}の指示で{amount}ウォン確定。いいね。
 text.dddb5be577101214,Chat intensity,진짜. {symbol} 리딩 실현손익 {amount}원. 난 안 좋았음.,"Seriously, {symbol} call: ₩{amount} realized. Didn't work for me.",マジで。{symbol}の指示で{amount}ウォン確定。俺にはよくなかった。
 text.3be3757a693619de,Chat intensity,진짜. {symbol} 뭐가 바뀌면 생각 바꿀 건데?,"Seriously, What changes your mind on {symbol}?",マジで。{symbol}、何があったら考え変える？
-text.4fe08b0f21b5988a,Chat intensity,진짜. {symbol} 보는 중.,"Seriously, Eyes on {symbol}.",マジで。{symbol}監視中。
+text.4fe08b0f21b5988a,Chat intensity,진짜. {symbol} 살까 말까 고민 중.,"Seriously, Still on the fence about {symbol}.",マジで。{symbol}、買うか迷ってる。
 text.fd4b22b5b4f0b8b9,Chat intensity,진짜. {symbol} 소문하고 실제 체결은 구분해서 봄.,"Seriously, {symbol} rumors are one thing, fills are another.",マジで。{symbol}の噂と約定は別の話。
 text.bdfedb57a39051a3,Chat intensity,진짜. {symbol} 지금 {price}원. 다음 거 보자.,"Seriously, {symbol} ₩{price}. Let's see what happens.",マジで。{symbol}、{price}ウォン。次どうなるか。
 text.7026e451bb7231b4,Chat intensity,진짜. {symbol} 지금 뭐부터 봐야 됨?,"Seriously, {symbol}, what are we looking at here?",マジで。{symbol}、今どこ見てんの？
@@ -3305,8 +3305,8 @@ text.d9bd103052eb0dca,Chat intensity,진짜. 그럴 가능성도 있겠네.,"Ser
 text.e6f446c8d74fa413,Chat intensity,진짜. 그렇게 보는 건 이해함.,"Seriously, Yeah, I get the reasoning.",マジで。まあ、そう考えるのはわかる。
 text.0e723e6191fdd4ac,Chat intensity,진짜. 급하게 만회하려고는 하지 마.,"Seriously, Don't revenge trade this.",マジで。焦って取り返そうとすんなよ。
 text.b62873f65a2fc885,Chat intensity,진짜. 나는 여기까지만 할게.,"Seriously, I'm done here.",マジで。もう終わりでいい。
-text.19803c4eec2d9f7d,Chat intensity,진짜. 나도 확정은 아님. {symbol} 더 봐야지.,"Seriously, Not calling it yet. Still watching {symbol}.",マジで。まだ決めてない。{symbol}見てるとこ。
-text.78f5a0f9820a2130,Chat intensity,진짜. 난 {symbol} {price}원 체결 보는 중.,"Seriously, Watching {symbol}'s tape at ₩{price}.",マジで。{symbol}、{price}ウォンあたりの歩み値見てる。
+text.19803c4eec2d9f7d,Chat intensity,진짜. 나도 아직 모르겠음. {symbol} 좀 더 지켜보려고.,"Seriously, Not sure either. Going to watch {symbol} a bit longer.",マジで。俺もまだ分からん。{symbol}はもう少し様子見る。
+text.78f5a0f9820a2130,Chat intensity,진짜. 난 {symbol} {price}원에서 버티는지 보고 있음.,"Seriously, I'm watching whether {symbol} holds ₩{price}.",マジで。俺は{symbol}が{price}ウォンで持ちこたえるか見てる。
 text.0727442e53f7e45a,Chat intensity,진짜. 난 {symbol} 리딩 {pct}% 손실임. 남들은 어떨지 몰라도.,"Seriously, {symbol} call left me at {pct}%. Not everyone's winning.",マジで。{symbol}の指示で{pct}%。全員勝ってるわけじゃねえぞ。
 text.83bee63ca36306b2,Chat intensity,진짜. 난 {symbol} 리딩으로 {pct}% 수익 봄.,"Seriously, {symbol} call, {pct}% for me.",マジで。{symbol}の指示、俺は{pct}%取れた。
 text.ee370a785be92eab,Chat intensity,진짜. 난 다른 데서 시장 본다. 이만 나감.,"Seriously, Watching elsewhere. Later.",マジで。他で相場見るわ。じゃあな。

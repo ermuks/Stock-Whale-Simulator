@@ -36,7 +36,9 @@ public sealed class MorningBriefing : MonoBehaviour
     // 화면 가득 한 장: 가운데 기준선에서 종목마다 막대가 위(호재)나 아래(악재)로 뻗는다. 막대 길이가 예상 등락이다.
     // 막대 밑에는 그 회사의 이름과, 그 등락을 만든 기사 제목 한 줄이 붙는다.
     private const float ColumnWidth = 184f, BarReach = 140f, Baseline = 390f, NameTop = 620f;
-    private TextMeshProUGUI ups, downs, more, key, heading, caption;
+    private TextMeshProUGUI ups, downs, more, key, heading, caption, memoKey;
+    private Image memoCap;
+    private bool memoSaved;
     private readonly TextMeshProUGUI[] names = new TextMeshProUGUI[Rows], moves = new TextMeshProUGUI[Rows], titles = new TextMeshProUGUI[Rows];
     private readonly RectTransform[] bars = new RectTransform[Rows], columns = new RectTransform[Rows];
     private readonly Image[] fills = new Image[Rows], hollows = new Image[Rows];
@@ -111,6 +113,12 @@ public sealed class MorningBriefing : MonoBehaviour
         var cap = Box(sheet, "Image :: Briefing Key", new Color(1, 1, 1, .12f)); Pin(cap, 1380, 800, 140, 44);
         key = Text(cap, "Briefing Key", 20, FontStyles.Bold); key.alignment = TextAlignmentOptions.Center; key.rectTransform.anchorMin = Vector2.zero; key.rectTransform.anchorMax = Vector2.one; key.rectTransform.offsetMin = key.rectTransform.offsetMax = Vector2.zero;
         GameLocalizedText.Set(key, "SPACE", true);
+        // 메모 키: 포스트잇 두 장(초록·주황) 그림과 E.
+        memoCap = Box(sheet, "Image :: Briefing Memo Key", new Color(1, 1, 1, .12f)).GetComponent<Image>(); Pin(memoCap.rectTransform, 1180, 800, 180, 44);
+        var green = Box(memoCap.transform, "Image :: Memo Up", new Color32(168, 214, 130, 255)); Pin(green, 14, 9, 26, 26);
+        var orange = Box(memoCap.transform, "Image :: Memo Down", new Color32(240, 170, 110, 255)); Pin(orange, 46, 9, 26, 26);
+        memoKey = Text(memoCap.transform, "Briefing Memo Key", 20, FontStyles.Bold); Pin(memoKey.rectTransform, 84, 0, 90, 44); memoKey.alignment = TextAlignmentOptions.Center;
+        GameLocalizedText.Set(memoKey, "E", true);
         root.SetActive(false);
     }
 
@@ -149,18 +157,28 @@ public sealed class MorningBriefing : MonoBehaviour
         bool extra = entries.Count > shown; more.gameObject.SetActive(extra);
         if (extra) { GameLocalizedText.Set(more, "+" + (entries.Count - shown), true); }
         root.SetActive(true); group.alpha = 0f; hideAt = -1f;
+        memoSaved = false; memoCap.color = new Color(1, 1, 1, .12f); GameLocalizedText.Set(memoKey, "E", true); memoKey.color = new Color(.94f, .96f, .97f);
         var report = new System.Text.StringBuilder("[아침 브리핑] 밤사이 기사 " + entries.Count + "건 (호재 " + up + " · 악재 " + down + ")");
         foreach (var entry in entries) { report.Append(" | ").Append(entry.Stock.symbol).Append(' ').Append(entry.Expected.ToString("+0.0;-0.0")).Append("% ").Append(entry.Fabricated ? "(소문) " : "").Append(entry.Title); }
         Debug.Log(report.ToString());
     }
 
+    // 눈을 뜨고 "DAY N"이 지나간 뒤에 브리핑이 뜬다.
+    private static bool IntroDone()
+    {
+        var intro = DayIntroOverlay.Instance; var day = MarketDayController.Instance;
+        return intro == null || day == null || intro.ShownDay == day.Day && !intro.Playing;
+    }
     void Update()
     {
-        if (showAt >= 0f && Time.unscaledTime >= showAt && !PauseMenuController.IsOpen && !CollapseSleep.Active && (DayIntroOverlay.Instance == null || !DayIntroOverlay.Instance.Playing)) { showAt = -1f; Present(); }
+        if (showAt >= 0f && Time.unscaledTime >= showAt && !PauseMenuController.IsOpen && !CollapseSleep.Active && IntroDone()) { showAt = -1f; Present(); }
         if (root == null || !root.activeSelf) { return; }
         var day = MarketDayController.Instance;
         // 스페이스·엔터·마우스 클릭으로 닫는다. 장이 열리면 저절로 닫힌다(거래를 가리지 않게).
         bool pressed = group.alpha > .6f && !PauseMenuController.IsOpen && (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) || Input.GetMouseButtonDown(0));
+        // E: 오를 것·내릴 것을 포스트잇 두 장에 적어 모니터 아래에 붙인다. 한 번만.
+        if (!memoSaved && hideAt < 0f && group.alpha > .6f && !PauseMenuController.IsOpen && Input.GetKeyDown(KeyCode.E) && MemoNotes.Instance != null && MemoNotes.Instance.Save(entries))
+        { memoSaved = true; memoCap.color = TabletKitStyle.Accent; GameLocalizedText.Set(memoKey, "OK", true); memoKey.color = TabletKitStyle.Background; }
         if (hideAt < 0f && (pressed || day != null && day.Phase == MarketPhase.Trading)) { hideAt = Time.unscaledTime; }
         bool leaving = hideAt >= 0f && Time.unscaledTime >= hideAt;
         group.alpha = Mathf.MoveTowards(group.alpha, leaving || PauseMenuController.IsOpen ? 0f : 1f, Time.unscaledDeltaTime * 2.6f);

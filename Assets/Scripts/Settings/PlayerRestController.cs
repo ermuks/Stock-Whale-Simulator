@@ -53,9 +53,13 @@ public sealed class PlayerRestController : MonoBehaviour
         // Slow eyelid motion, never rapid flashing or a change to the user's camera pose.
         vision.SetFloat("_Breath", .5f + .5f * Mathf.Sin(SessionClock.Time * .5f));
     }
+    /// <summary>눈이 감기는 연출과 함께 잠든다(정산 화면의 취침 단추). 연출을 시작하지 못하면 false.</summary>
+    public bool BeginNightSleep() { return collapse != null && collapse.BeginNightSleep(); }
     public bool SleepUntilMorning()
     {
         if (!CanSleep) { return false; }
+        // 붙여 둔 메모는 잠들면 떨어진다.
+        MemoNotes.Instance?.DropAll();
         ObserveClock(); double hours = SleepHours;
         if (hours <= 0) { return false; }
         State.Sleep(hours, (day.Day - 1) * 1440d + 1920d);

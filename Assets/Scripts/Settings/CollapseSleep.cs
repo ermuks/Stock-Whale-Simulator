@@ -32,6 +32,23 @@ public sealed class CollapseSleep : MonoBehaviour
         "誰に揺すられても起きない眠りです", "夢の中を板が流れていきます", "ため込んだ眠気が一度に押し寄せました", "市場はあなた抜きでも回っています", "まだ、目を開けられません"
     };
 
+    // 평소의 밤잠에 뜨는 꿈. 쓰러졌을 때와 달리 가볍고 엉뚱하다.
+    private static readonly string[] DreamKorean =
+    {
+        "꿈에서 상한가를 쳤습니다", "꿈속에서도 호가창을 보고 있습니다", "양 대신 캔들을 세고 있습니다", "꿈에서 전 재산을 풀매수했습니다", "알람을 끄는 꿈을 꾸고 있습니다",
+        "꿈에서는 항상 저점에 삽니다", "누군가 평단을 묻습니다. 꿈입니다", "코를 골고 있습니다. 아마도", "꿈속 계좌는 온통 빨갛습니다. 좋은 쪽으로", "5분만 더"
+    };
+    private static readonly string[] DreamEnglish =
+    {
+        "In the dream, it hit limit up", "Still watching the order book, even asleep", "Counting candles instead of sheep", "You went all in. It was a dream", "Dreaming of turning off the alarm",
+        "In dreams you always buy the bottom", "Someone asks your average price. It is a dream", "You are snoring. Probably", "The dream account is all green", "Five more minutes"
+    };
+    private static readonly string[] DreamJapanese =
+    {
+        "夢の中でストップ高になりました", "夢の中でも板を見ています", "羊のかわりにローソク足を数えています", "夢で全財産を買いに入れました", "アラームを止める夢を見ています",
+        "夢の中ではいつも底で買えます", "誰かに平均単価を聞かれました。夢です", "いびきをかいています。たぶん", "夢の口座は全部プラスです", "あと5分だけ"
+    };
+
     private PlayerRestController rest;
     private MarketDayController day;
     private RectTransform upper, lower;
@@ -86,6 +103,42 @@ public sealed class CollapseSleep : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// 평소의 밤잠(정산 화면의 취침 단추): 눈이 감기고, 꿈 한두 줄이 지나가고, 아침에 눈을 뜬다.
+    /// 붙여 둔 메모는 잠들 때 떨어진다. 눈을 뜬 뒤에 "DAY N"과 아침 브리핑이 이어진다.
+    /// </summary>
+    public bool BeginNightSleep()
+    {
+        if (Active || running != null || rest == null || !rest.CanSleep) { return false; }
+        Active = true; root.SetActive(true); Close(0f);
+        running = StartCoroutine(RunNight());
+        return true;
+    }
+
+    private IEnumerator RunNight()
+    {
+        MemoNotes.Instance?.DropAll();
+        yield return Blink(0f, .6f, 1.0f);
+        yield return Blink(.6f, .38f, .55f);
+        yield return Blink(.38f, 1f, 1.3f);
+        int shown = Random.Range(0, DreamKorean.Length);
+        for (int i = 0; i < 2; i++)
+        {
+            shown = (shown + 1 + Random.Range(0, DreamKorean.Length - 1)) % DreamKorean.Length;
+            StartCoroutine(Whisper(GameLocale.Code == "ja" ? DreamJapanese[shown] : GameLocale.Code == "en" ? DreamEnglish[shown] : DreamKorean[shown]));
+            yield return new WaitForSecondsRealtime(3.6f);
+        }
+        rest.SleepUntilMorning();
+        Debug.Log("[휴식] 밤잠: 아침 " + DeviceMarketJournal.Stamp() + " · 피로 " + rest.State.fatigue.ToString("0"));
+        var faded = line.color;
+        for (float t = 0f; t < .7f; t += Time.unscaledDeltaTime) { faded.a = Mathf.Lerp(faded.a, 0f, t / .7f); line.color = faded; yield return null; }
+        faded.a = 0f; line.color = faded;
+        yield return Blink(1f, .45f, 1.1f);
+        yield return Blink(.45f, .7f, .45f);
+        yield return Blink(.7f, 0f, 1.3f);
+        root.SetActive(false); Active = false; running = null;
+    }
+
     private IEnumerator Run()
     {
         Debug.Log("[휴식] 피로 한계 — 쓰러져 잠듦: " + DeviceMarketJournal.Stamp() + " 단계 " + day.Phase);
@@ -104,7 +157,7 @@ public sealed class CollapseSleep : MonoBehaviour
             if (Time.unscaledTime >= nextLine)
             {
                 nextLine = Time.unscaledTime + 5.2f; shown = (shown + 1 + Random.Range(0, Korean.Length - 1)) % Korean.Length;
-                StartCoroutine(Whisper(shown));
+                StartCoroutine(Whisper(GameLocale.Code == "ja" ? Japanese[shown] : GameLocale.Code == "en" ? English[shown] : Korean[shown]));
             }
             yield return null;
         }
@@ -138,12 +191,11 @@ public sealed class CollapseSleep : MonoBehaviour
         Close(to);
     }
 
-    private IEnumerator Whisper(int index)
+    private IEnumerator Whisper(string text)
     {
-        string[] lines = GameLocale.Code == "ja" ? Japanese : GameLocale.Code == "en" ? English : Korean;
         var color = line.color;
         for (float t = 0f; t < .8f; t += Time.unscaledDeltaTime) { color.a = Mathf.Lerp(color.a, 0f, t / .8f); line.color = color; yield return null; }
-        GameLocalizedText.Set(line, lines[index % lines.Length], true);
+        GameLocalizedText.Set(line, text, true);
         for (float t = 0f; t < 1.4f; t += Time.unscaledDeltaTime) { color.a = Mathf.SmoothStep(0f, .82f, t / 1.4f); line.color = color; yield return null; }
     }
 

@@ -25,6 +25,8 @@ public sealed class StickyNotePaper : MonoBehaviour
     {
         if (paperCloth == null || paperRenderer == null || paperRenderer.sharedMesh == null) { return; }
         Loosen();
+        // 글자를 종이 그림에 구워 넣는다: 종이가 휘는 대로 글자도 같이 휜다.
+        StickyNoteInk.Attach(this);
     }
 
     /// <summary>

@@ -3372,7 +3372,7 @@
     },
     {
       "key": "text.918f691c5f6aa61c",
-      "source": "{symbol} 내 생각도 별로 못 믿겠네. 다른 의견 있음?",
+      "source": "{symbol} 나는 잘 모르겠는데, 다들 어떻게 봄?",
       "templateOnly": true
     },
     {
@@ -3427,7 +3427,7 @@
     },
     {
       "key": "text.e154161d57fc4626",
-      "source": "{symbol} 놓친 조건 없나 보는 중.",
+      "source": "{symbol} 내가 뭘 놓친 건 없나 싶다.",
       "templateOnly": true
     },
     {
@@ -3772,7 +3772,7 @@
     },
     {
       "key": "text.61d18c7a2d3d5626",
-      "source": "{symbol} 반대 가능성도 보는 중.",
+      "source": "{symbol} 반대로 갈 수도 있지 않나.",
       "templateOnly": true
     },
     {
@@ -3827,12 +3827,12 @@
     },
     {
       "key": "text.b239561da62ddbcc",
-      "source": "{symbol} 보는 중.",
+      "source": "{symbol} 살까 말까 고민 중.",
       "templateOnly": true
     },
     {
       "key": "text.9af1349eb2dc91cb",
-      "source": "{symbol} 보는 중. 계속 본다.",
+      "source": "{symbol} 살까 말까 고민 중. 계속 본다.",
       "templateOnly": true
     },
     {
@@ -4042,7 +4042,7 @@
     },
     {
       "key": "text.6cabd070f6a97906",
-      "source": "{symbol} 앞에서 생각만 바쁘네. 판단은 천천히 해야지.",
+      "source": "{symbol} 살지 말지 생각만 많네. 급할 건 없지.",
       "templateOnly": true
     },
     {
@@ -4152,7 +4152,7 @@
     },
     {
       "key": "text.1f4472a0e8700820",
-      "source": "{symbol} 오래 봐도 답을 쉽게 안 주네.",
+      "source": "{symbol} 한참 봤는데도 모르겠다.",
       "templateOnly": true
     },
     {
@@ -4337,7 +4337,7 @@
     },
     {
       "key": "text.a4b0ca4db9443ab7",
-      "source": "{symbol} 조금 더 봐야겠음.",
+      "source": "{symbol} 지금 들어가긴 애매함.",
       "templateOnly": true
     },
     {
@@ -4567,7 +4567,7 @@
     },
     {
       "key": "text.67f7888f67573771",
-      "source": "{symbol} 쪽이 눈에 들어오네.",
+      "source": "{symbol} 요즘 자꾸 눈이 가네.",
       "templateOnly": true
     },
     {
@@ -4737,7 +4737,7 @@
     },
     {
       "key": "text.9c6ccaeebbe6d035",
-      "source": "{symbol} 흐름 확인 중.",
+      "source": "{symbol} 오늘 방향을 모르겠네.",
       "templateOnly": true
     },
     {
@@ -4757,7 +4757,7 @@
     },
     {
       "key": "text.af2680c442b26310",
-      "source": "{symbol}! 지금 내 화면에도 떠 있어.",
+      "source": "{symbol}! 나도 지금 그거 보고 있었어.",
       "templateOnly": true
     },
     {
@@ -4842,7 +4842,7 @@
     },
     {
       "key": "text.ce240677174f7f23",
-      "source": "{symbol}에 대한 생각은 아직 정리 중.",
+      "source": "{symbol} 어떻게 할지 아직 못 정함.",
       "templateOnly": true
     },
     {
@@ -7072,12 +7072,12 @@
     },
     {
       "key": "text.6d7a918b6010618d",
-      "source": "나도 확정은 아님. {symbol} 더 봐야지.",
+      "source": "나도 아직 모르겠음. {symbol} 좀 더 지켜보려고.",
       "templateOnly": true
     },
     {
       "key": "text.0169838879906dc9",
-      "source": "나도 확정은 아님. {symbol} 더 봐야지. 내 기준은 그럼.",
+      "source": "나도 아직 모르겠음. {symbol} 좀 더 지켜보려고. 내 기준은 그럼.",
       "templateOnly": true
     },
     {
@@ -7097,12 +7097,12 @@
     },
     {
       "key": "text.4feb2ff0361c4c72",
-      "source": "난 {symbol} {price}원 체결 보는 중.",
+      "source": "난 {symbol} {price}원에서 버티는지 보고 있음.",
       "templateOnly": true
     },
     {
       "key": "text.0e18288836c82198",
-      "source": "난 {symbol} {price}원 체결 보는 중. 내 기준은 그럼.",
+      "source": "난 {symbol} {price}원에서 버티는지 보고 있음. 내 기준은 그럼.",
       "templateOnly": true
     },
     {
@@ -7502,7 +7502,7 @@
     },
     {
       "key": "text.57154a6141a742d8",
-      "source": "눈은 {symbol}에 있는데 생각은 아직 정리 중.",
+      "source": "{symbol} 계속 보긴 하는데 아직 결정을 못 함.",
       "templateOnly": true
     },
     {
@@ -11087,7 +11087,7 @@
     },
     {
       "key": "text.dbe95950851f8cbf",
-      "source": "아 {symbol}! 나도 보는 중.",
+      "source": "아 {symbol}! 나도 관심 있었는데.",
       "templateOnly": true
     },
     {
@@ -15042,7 +15042,7 @@
     },
     {
       "key": "text.4fe08b0f21b5988a",
-      "source": "진짜. {symbol} 보는 중.",
+      "source": "진짜. {symbol} 살까 말까 고민 중.",
       "templateOnly": true
     },
     {
@@ -15177,12 +15177,12 @@
     },
     {
       "key": "text.19803c4eec2d9f7d",
-      "source": "진짜. 나도 확정은 아님. {symbol} 더 봐야지.",
+      "source": "진짜. 나도 아직 모르겠음. {symbol} 좀 더 지켜보려고.",
       "templateOnly": true
     },
     {
       "key": "text.78f5a0f9820a2130",
-      "source": "진짜. 난 {symbol} {price}원 체결 보는 중.",
+      "source": "진짜. 난 {symbol} {price}원에서 버티는지 보고 있음.",
       "templateOnly": true
     },
     {

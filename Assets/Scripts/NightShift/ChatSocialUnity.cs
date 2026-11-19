@@ -40,6 +40,7 @@ public sealed partial class InvestorSociety
         SocialTime.Set(day.Day, day.GameMinute, SessionClock.Time);
         TickHype();
         TickChartTalk();
+        TickVillain();
         TickPlayerChat();
         EnsureChatBar();
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)

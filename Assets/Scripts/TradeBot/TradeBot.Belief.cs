@@ -13,7 +13,65 @@ public abstract partial class TradeBot
     /// <summary>충동 주문 제출 중. 가격 제한을 넓혀 실제로 호가를 치고 나가게 한다.</summary>
     public bool ImpulseOrder { get; private set; }
 
-    private float nextPanicAct;
+    private float nextPanicAct, nextProfitAct;
+    // 방금 본 종목의 흐름(오르는 중인지 멈칫했는지). 차익 실현을 판단할 때 쓴다.
+    private Stock trendStock; private double lastTrend;
+    /// <summary>꺾인 종목에서 차익을 챙기는 중. 이 주문은 매수 호가를 여러 칸 뚫고 나간다.</summary>
+    private bool fleeing;
+    /// <summary>확인용: 지금까지 개미가 차익을 실현한 횟수와 금액.</summary>
+    public static int ProfitSellsTotal; public static decimal ProfitSoldTotal;
+    /// <summary>
+    /// 차익 실현: 크게 번 종목이 더 오르지 못하고 멈칫하거나 꺾이면 일부를 판다.
+    /// 자기 계좌의 수익률과 자기가 본 가격 흐름만으로 판단한다(진짜 가치는 모른다). 욕심이 많을수록 더 오래 쥔다.
+    /// 급등한 종목이 고점에 그대로 머물지 않는 까닭이 이것이다. 올려 주던 손이 멈추면 먼저 산 사람들이 팔기 시작한다.
+    /// </summary>
+    // ── 급등주의 열병 ──
+    // 오늘 크게 오른 종목일수록 사람이 몰린다. 전일 대비 +20%부터 달아올라 +100%에서 가장 뜨겁다(0~1).
+    // 누구나 보는 등락률만 본다. 진짜 가치도, 누가 올리는지도 모른다.
+    // 열병이 셀수록 더 많은 계좌가 더 자주 뛰어들고(TryChase), 오르는 동안에는 수익이 나도 덜 판다(TryProfitSell).
+    // 값이 꺾이면 익절은 예전처럼 나온다. 그래서 고점에서 받은 사람이 물린다.
+    public const float FeverFrom = .20f, FeverFull = 1f;
+    /// <summary>확인용: 열병으로(다른 종목을 팔지 않고 현금으로) 뛰어든 횟수.</summary>
+    public static int FeverChasesTotal;
+    /// <summary>오늘 전일 대비 얼마나 올랐는가(0.5 = +50%).</summary>
+    private static float FeverGain(Stock stock)
+        => stock != null && StockStatistics.Instance != null && StockStatistics.Instance.TryGetDailyChange(stock, out decimal change) ? (float)change / 100f : 0f;
+    private static float RallyFever(Stock stock)
+    {
+        if (stock == null || StockStatistics.Instance == null || !StockStatistics.Instance.TryGetDailyChange(stock, out decimal change)) { return 0f; }
+        return Mathf.Clamp01(((float)change / 100f - FeverFrom) / (FeverFull - FeverFrom));
+    }
+
+    private bool TryProfitSell(Stock stock)
+    {
+        if (Social == null || KnowsRealValue || IsExchangeParticipant || IsCompanyOwner || this is WhaleBot || stock == null || stock.orderBook == null || trendStock != stock) { return false; }
+        float now = SessionClock.Time;
+        if (now < nextProfitAct) { return false; }
+        var orders = InvestorSociety.Instance?.Orders;
+        if (orders != null && !orders.AllowsRegular(this, stock)) { return false; }
+        decimal holding = GetHolding(stock), basis = GetOwnedAverage(stock), seen = SeenPrice(stock);
+        if (holding < 1m || basis <= 0m || seen <= 0m) { return false; }
+        var mind = Social.Psychology;
+        // 급등주를 쥔 사람은 더 큰 수익을 바란다. 다만 값이 꺾였으면(내리는 중이면) 그런 욕심은 사라진다.
+        double fever = lastTrend >= 0 ? RallyFever(stock) : 0d;
+        double gain = (double)(seen / basis) - 1d, want = .12 + mind.Greed / 100d * .28 + fever * (.25 + mind.Greed / 100d * .5);
+        // 아직 힘차게 오르는 중이거나, 그 종목에 마음이 쏠려 있으면(FOMO) 팔지 않는다.
+        if (gain < want || lastTrend > .015 || mind.HasFomoFor(stock)) { return false; }
+        // 값이 꺾였으면(내리는 중이면) 서두른다: 더 자주, 더 많이, 매도 호가에 줄을 서지 않고 매수 호가를 뚫고 판다.
+        // 꺾인 급등주에서 모두가 한 틱씩 낮춰 매도 호가에 줄을 서면, 값이 캔들마다 한 칸씩 흘러내리는 밋밋한 계단이 된다.
+        bool falling = lastTrend < 0;
+        nextProfitAct = now + (falling ? UnityEngine.Random.Range(2f, 6f) : UnityEngine.Random.Range(6f, 16f));
+        double chance = Math.Min(.6, .12 + (gain - want) * .8 + (lastTrend < 0 ? -lastTrend * 4d : 0d)) * (1d - fever * .5);
+        if (UnityEngine.Random.value >= chance) { return false; }
+        decimal volume = decimal.Floor(holding * (decimal)(falling ? .5f + Social.Impulsiveness * .5f : .25f + Social.Impulsiveness * .35f));
+        if (volume < 1m) { volume = 1m; }
+        decimal price = GetAggressiveLimitPrice(stock, false);
+        fleeing = falling;
+        try { SellLimit(price, Math.Min(holding, volume), 0, stock); }
+        finally { fleeing = false; }
+        ProfitSellsTotal++; ProfitSoldTotal += Math.Min(holding, volume) * price;
+        return true;
+    }
     private readonly List<(decimal price, decimal volume)> impulseLevels = new(1);
 
     private float haste = -1f;
@@ -112,8 +170,10 @@ public abstract partial class TradeBot
         if (mind.HasPanic) { return false; }
         // 아무나 저지르지 않는다. 그런 기질이 있는 계좌(급할수록 많다: 열에 한둘에서 셋)와, 이미 그 종목에 마음이 쏠린(FOMO) 계좌만 한다.
         bool fomo = mind.HasFomoFor(hot);
-        if (!fomo && CompanyBusiness.Hash("CHASE:" + InitialAccountId) % 100u >= (uint)(12f + Haste * 18f)) { return false; }
-        float urge = Mathf.Clamp01((heat - 4f) / 8f) * (.04f + Haste * .22f + mind.Greed / 100f * .15f + mind.Traits.Suggestibility / 100f * .15f) * (fomo ? 2f : 1f);
+        // 급등주의 열병: 크게 오른 종목에는 평소라면 안 뛰어들 계좌까지(최대 2.5배) 더 자주(최대 3배) 뛰어든다.
+        float fever = RallyFever(hot);
+        if (!fomo && CompanyBusiness.Hash("CHASE:" + InitialAccountId) % 100u >= (uint)((12f + Haste * 18f) * (1f + fever * 1.5f))) { return false; }
+        float urge = Mathf.Clamp01((heat - 4f) / 8f) * (.04f + Haste * .22f + mind.Greed / 100f * .15f + mind.Traits.Suggestibility / 100f * .15f) * (fomo ? 2f : 1f) * (1f + fever * 2f);
         if (UnityEngine.Random.value >= urge) { return false; }
         // 현금이 넉넉해도 판다. 따져 보고 하는 일이 아니다. "저걸 들고 있을 때가 아니다"라는 조급함이다.
         decimal equity = Equity();
@@ -121,7 +181,14 @@ public abstract partial class TradeBot
         chaseHeld.Clear();
         foreach (var pair in holdings)
         { if (pair.Value >= 1m && pair.Key != hot && pair.Key != null && pair.Key.AcceptsOrders && pair.Key != OwnedCompany) { chaseHeld.Add(pair.Key); } }
-        if (chaseHeld.Count == 0) { return false; }
+        if (chaseHeld.Count == 0)
+        {
+            // 팔 것이 없어도 열병이 돌면 가진 현금으로 뛰어든다.
+            if (fever <= 0f || GetBuyVolume(.6m, hot) < 1m) { return false; }
+            chaseStock = hot; chaseUntil = now + ChaseSeconds; chaseRest = now + ChaseRestSeconds;
+            ChasesTotal++; FeverChasesTotal++;
+            return true;
+        }
         chaseHeld.Sort((a, b) => (GetHolding(b) * b.currentPrice).CompareTo(GetHolding(a) * a.currentPrice));
         // 팔 것이 자산의 0.5%도 안 되면 갈아탄다고 할 것도 없다.
         if (GetHolding(chaseHeld[0]) * chaseHeld[0].currentPrice < equity * .005m) { return false; }
@@ -199,6 +266,7 @@ public abstract partial class TradeBot
             }
         }
 
+        trendStock = stock; lastTrend = trend;
         float fear = mind.Fear / 100f;
         double projection = trend >= 0
             ? trend * (0.1 + Social.Chase * 0.45 + Social.Greed * 0.2) * (1 - skill * 0.6)
@@ -217,6 +285,19 @@ public abstract partial class TradeBot
 
         // 한 번 본 것으로 생각을 다 바꾸지 않는다. 느리게 따라가는 믿음이 급락 때는 저가 매수, 급등 때는 차익 매물이 된다.
         double pull = 0.06 + mind.Traits.Suggestibility / 100.0 * 0.22;
+        // 급등주의 열병: 오늘 크게 올랐고 지금도 오르는 종목은 "더 간다"고 믿는다. 믿는 값이 시세를 바짝 따라 올라가고(차익 매물이 줄고) 그보다 조금 더 높게 본다(따라 산다).
+        // 남의 말에 잘 휩쓸리고 추격을 좋아할수록 심하다. 차트를 읽을 줄 알수록 덜하다. 이미 아주 많이 오른 종목일수록(두 배, 세 배) 덧붙는 기대는 줄어든다.
+        // 값이 꺾이면(trend < 0) 이 효과는 사라지고, 위의 하락 쪽 계산대로 믿는 값이 내려간다. 그래서 꼭대기에서 받은 사람이 물린다.
+        if (trend >= 0)
+        {
+            float fever = RallyFever(stock);
+            if (fever > 0f)
+            {
+                double sway = fever * (1 - skill * 0.5) * (0.4 + Social.Chase * 0.4 + mind.Traits.Suggestibility / 100.0 * 0.2);
+                pull = Math.Max(pull, pull + (0.75 - pull) * sway);
+                projection += sway * (0.03 + Social.Chase * 0.05) / (1 + Math.Max(0, (double)FeverGain(stock) - 1));
+            }
+        }
         mind.Companies.ObservePrice(stock.symbol, price, projection, pull, SessionClock.Time);
         if (mind.HasPanicFor(stock) && trend > 0.02)
         {
@@ -250,8 +331,8 @@ public abstract partial class TradeBot
         if (SessionClock.Time < nextPanicAct)
         { return true; }
 
-        nextPanicAct = SessionClock.Time + UnityEngine.Random.Range(5f, 12f);
-        stock.orderBook.CancelAllOrdersByOwner(this, stock);
+        nextPanicAct = SessionClock.Time + UnityEngine.Random.Range(2f, 6f);
+        CancelLater(stock, 1f);
         decimal holding = GetHolding(stock);
         if (holding < 1m)
         {
@@ -265,7 +346,8 @@ public abstract partial class TradeBot
         decimal price = bidNearby
             ? Math.Max(1m, PriceTickPolicy.FloorToTick(impulseLevels[0].price * (1m - (decimal)UnityEngine.Random.Range(0f, 0.02f))))
             : Math.Max(1m, PriceTickPolicy.OneTickBelow(stock.currentPrice));
-        decimal volume = decimal.Floor(Math.Max(1m, holding * (decimal)(0.2f + Social.Impulsiveness * 0.35f)));
+        // 충동적일수록 한 번에 많이 던진다: 보유분의 40%에서 전부까지.
+        decimal volume = decimal.Floor(Math.Max(1m, holding * (decimal)(0.4f + Social.Impulsiveness * 0.6f)));
         ImpulseOrder = bidNearby;
         try
         {

@@ -34,6 +34,9 @@ public static class ScreenTourCapture
     private static string[] languages = { "ko", "en", "ja" };
     // 스팀 상점용 촬영(요청에 steam): 처음부터 영어로만 돌고, 고른 화면과 책상 시점을 Validation/Screens/steam 에 남긴다.
     private static bool steam;
+    /// <summary>세력 작전 관찰이 끝났는지. 끝나면 남은 대기 단계를 빨리 넘긴다.</summary>
+    private static bool whaleOver;
+    private static readonly Dictionary<string, decimal> whaleFrom = new(), whaleTo = new(), crowdBuy = new(), crowdSell = new();
     private static string steamOriginal = "";
     private static readonly HashSet<string> SteamShots = new()
     {
@@ -136,7 +139,9 @@ public static class ScreenTourCapture
         audit = request.Contains("audit");
         only = request.Contains("only:") ? request.Substring(request.IndexOf("only:") + 5).Trim() : "";
         steam = request.Contains("steam");
-        languages = steam ? new[] { "en" } : new[] { "ko", "en", "ja" };
+        Environment.SetEnvironmentVariable("DONDON_CAPTURE_GRAND", request.Contains("grand") ? "1" : null);
+        // 세력 작전 관찰(only:whale)은 오래 걸리므로 한국어로 한 번만 돈다.
+        languages = steam ? new[] { "en" } : only.Contains("whale") ? new[] { "ko" } : new[] { "ko", "en", "ja" };
         // 스팀 촬영은 준비가 필요한 구간(새벽 관찰실, 소기업 인수, 작전 도구, 보유 손익)을 모두 밟는다.
         if (steam) { audit = true; only = "dawn small tac holding"; }
         // 요청에 import가 있으면 번역 표를 먼저 다시 들여온다(편집기 메뉴와 같은 동작).
@@ -209,7 +214,7 @@ public static class ScreenTourCapture
     {
         // 스팀 촬영은 처음부터 영어로 돈다(채팅 기록에 다른 언어가 섞이지 않게).
         if (steam && EditorApplication.isPlaying && phase < 100 && GameLocale.Code != "en") { try { GameLocale.SetLanguage("en"); } catch (Exception) { } }
-        if (EditorApplication.timeSinceStartup - began > (steam ? 1700 : audit ? 900 : 300)) { Finish(new Exception("timeout at phase " + phase + " playing=" + EditorApplication.isPlaying)); return; }
+        if (EditorApplication.timeSinceStartup - began > (steam || only.Contains("whale") ? 1700 : audit ? 900 : 300)) { Finish(new Exception("timeout at phase " + phase + " playing=" + EditorApplication.isPlaying)); return; }
         // 누군가 플레이를 멈추면 더 기다리지 않고 끝낸다.
         if (EditorApplication.isPlaying) { sawPlaying = true; }
         else if (sawPlaying && !EditorApplication.isPlayingOrWillChangePlaymode) { Finish(new Exception("play mode ended before the capture finished")); return; }
@@ -309,7 +314,7 @@ public static class ScreenTourCapture
             {
                 try { steps[stepIndex].prepare(); }
                 catch (Exception error) { report.AppendLine("STEP FAILED " + steps[stepIndex].name + " prepare: " + error.Message); }
-                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steam && !steps[stepIndex].name.Contains(only) ? .05 : steps[stepIndex].name.StartsWith("tac-") && languageIndex == 0 && only.Contains("tac") ? (steps[stepIndex].name == "tac-0" ? 2 : steps[stepIndex].name == "tac-1" ? 6 : steps[stepIndex].name == "tac-2" ? 20 : steps[stepIndex].name == "tac-3" ? 8 : steps[stepIndex].name == "tac-4" || steps[stepIndex].name == "tac-5" ? 45 : 11) : steps[stepIndex].name == "found-wall" && languageIndex == 0 && only.Contains("found") ? 20 : steps[stepIndex].name.StartsWith("dawn-talk") && languageIndex == 0 && only.Contains("dawn") ? 7 : steps[stepIndex].name == "dawn-end" && languageIndex == 0 && only.Contains("dawn") ? 12 : steps[stepIndex].name.StartsWith("heat-") && languageIndex == 0 && only.Contains("heat") ? 45 : steps[stepIndex].name.StartsWith("talk-") && steps[stepIndex].name != "talk-0" && languageIndex == 0 && only.Contains("talk") ? 45 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
+                phase = 101; ready = EditorApplication.timeSinceStartup + (only.Length > 0 && !steam && !steps[stepIndex].name.Contains(only) || only == "whale" && whaleOver ? .05 : steps[stepIndex].name.StartsWith("tac-") && languageIndex == 0 && only.Contains("tac") ? (steps[stepIndex].name == "tac-0" ? 2 : steps[stepIndex].name == "tac-1" ? 6 : steps[stepIndex].name == "tac-2" ? 20 : steps[stepIndex].name == "tac-3" ? 8 : steps[stepIndex].name == "tac-4" || steps[stepIndex].name == "tac-5" ? 45 : 11) : steps[stepIndex].name == "found-wall" && languageIndex == 0 && only.Contains("found") ? 20 : steps[stepIndex].name.StartsWith("dawn-talk") && languageIndex == 0 && only.Contains("dawn") ? 7 : steps[stepIndex].name == "dawn-end" && languageIndex == 0 && only.Contains("dawn") ? 12 : steps[stepIndex].name.StartsWith("heat-") && languageIndex == 0 && only.Contains("heat") ? 45 : steps[stepIndex].name.StartsWith("talk-") && steps[stepIndex].name != "talk-0" && languageIndex == 0 && only.Contains("talk") ? 45 : steps[stepIndex].name.StartsWith("room-note") && only.Contains("room") ? 3 : steps[stepIndex].name.StartsWith("perf-") && languageIndex == 0 && only.Contains("perf") ? 40 : steps[stepIndex].name == "rush-npc" && languageIndex == 0 ? 66 : steps[stepIndex].name.EndsWith("accumulate-running") ? 25 : steps[stepIndex].name.EndsWith("accumulate-crash") ? 12 : 1.8); return;
             }
             if (phase == 101)
             {
@@ -1071,6 +1076,89 @@ public static class ScreenTourCapture
         SteamView(DeskViewTarget.Stocks, "stocks");
         steps.Add(("steam-desk", () => { if (steam) { DeskViewController.Instance.ExitView(true); } }, () => { if (steam) { ShootView("steam/view-desk"); } return null; }));
         // 시스템 메뉴(ESC): 일시정지 화면과 언어 설정.
+        // 세력 작전 관찰: 세력 하나에게 작전을 시작시키고(주입: 시작 시점과 단계 길이만 줄인다) 단계가 바뀔 때마다 차트를 남긴다.
+        // 던질지 천천히 넘길지, 얼마나 떨어지는지는 건드리지 않는다.
+        {
+            WhaleBot actor = null; Stock target = null; int seen = -1, shots = 0; decimal began = 0m; bool over = false;
+            steps.Add(("whale-begin", () =>
+            {
+                if (!only.Contains("whale")) { return; }
+                foreach (var whale in Object.FindObjectsByType<WhaleBot>(FindObjectsInactive.Exclude))
+                {
+                    if (!whale.IsCompanyOwner || whale.Operating || whale.OwnedCompany == null || !whale.OwnedCompany.IsListed || !whale.OwnedCompany.AcceptsOrders) { continue; }
+                    if (actor == null || whale.cash > actor.cash) { actor = whale; }
+                }
+                whaleOver = false;
+                if (actor == null) { report.AppendLine("WHALE no whale can operate"); whaleOver = true; return; }
+                target = actor.OwnedCompany; began = target.currentPrice;
+                // 누가 세력에게 팔고 누가 세력에게서 사는지 센다(읽기만 한다). 올려 주는 값에 누가 물량을 내놓는지 알아야 한다.
+                whaleFrom.Clear(); whaleTo.Clear(); crowdBuy.Clear(); crowdSell.Clear();
+                target.OnMatchedTrade += (stock, price, volume, buyer, seller, resting) =>
+                {
+                    string Who(IOrderOwner owner) => owner is TradeBot bot ? (bot is WhaleBot ? "other whale" : bot.IsExchangeParticipant ? "exchange " + bot.GetType().Name : bot.Social == null ? bot.GetType().Name + " (no mind)" : bot.GetType().Name) : owner == null ? "none" : owner.GetType().Name;
+                    void Add(Dictionary<string, decimal> book, string key) { book.TryGetValue(key, out decimal sum); book[key] = sum + price * volume; }
+                    if (ReferenceEquals(buyer, actor)) { Add(whaleFrom, Who(seller)); }
+                    else if (ReferenceEquals(seller, actor)) { Add(whaleTo, Who(buyer)); }
+                    else { Add(crowdBuy, Who(buyer)); Add(crowdSell, Who(seller)); }
+                };
+                Environment.SetEnvironmentVariable("DONDON_WHALE_FAST", "1");
+                typeof(WhaleBot).GetMethod("BeginOperation", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).Invoke(actor, new object[] { MarketDayController.Instance.Day });
+                Environment.SetEnvironmentVariable("DONDON_WHALE_FAST", null);
+                var plan = actor.OperationState;
+                float drive = plan.driveSeconds; plan.buildSeconds = Mathf.Min(plan.buildSeconds, 45f); plan.driveSeconds = Mathf.Min(plan.driveSeconds, 145f);
+                // 큰 작전 관찰(only:whalegrand): 물결 수를 12로 정해 준다(주입). 하루 안에 보려고 물결마다 올리는 시간과 줍는 시간도 줄인다(주입). 값·예산·던질지는 건드리지 않는다.
+                if (Environment.GetEnvironmentVariable("DONDON_CAPTURE_GRAND") == "1") { plan.waves = 12; plan.driveSeconds = Mathf.Min(plan.driveSeconds, 110f); report.AppendLine("WHALE INJECTED grand operation: waves 12, every drive <= 110s, every scoop <= 30s"); }
+                StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(target));
+                report.AppendLine("WHALE chart set to 5m candles: " + Press("Button :: Chart 5m")); chat.SelectRoom(0);
+                report.AppendLine("WHALE INJECTED operation on " + target.symbol + " " + target.stockName + " at " + DeviceMarketJournal.Stamp() + " price " + began.ToString("N0") + " real value " + target.realValue.ToString("N0") + " budget " + plan.budget.ToString("N0") + " target +" + (plan.gain * 100m).ToString("0") + "% | shortened (build <= 45s): build " + plan.buildSeconds.ToString("0") + "s, drive " + drive.ToString("0") + "s -> " + plan.driveSeconds.ToString("0") + "s | waves planned " + plan.waves);
+            }, () => null));
+            for (int index = 0; index < 520; index++)
+            {
+                int number = index;
+                steps.Add(("whale-wait-" + number, () => { }, () =>
+                {
+                    if (!only.Contains("whale") || actor == null || over) { return null; }
+                    var plan = actor.OperationState; int stage = plan.stage; bool changed = stage != seen;
+                    bool grand = Environment.GetEnvironmentVariable("DONDON_CAPTURE_GRAND") == "1";
+                    if (grand) { if (stage == 2) { plan.driveSeconds = Mathf.Min(plan.driveSeconds, 110f); } if (stage == 6) { plan.scoopSeconds = Mathf.Min(plan.scoopSeconds, 30f); } }
+                    string name = stage == 1 ? "build" : stage == 2 ? "drive" : stage == 3 ? "shake" : stage == 4 ? "repump" : stage == 5 ? (plan.dump ? "DUMP" : "unwind") : stage == 6 ? "scoop" : "finished";
+                    if (changed || number % 25 == 0)
+                    {
+                        report.AppendLine("WHALE t" + (number * 1.8f).ToString("0") + "s " + DeviceMarketJournal.Stamp() + " wave " + (plan.wave + 1) + "/" + plan.waves + " " + name + " price " + target.currentPrice.ToString("N0") + " (" + ((target.currentPrice / began - 1m) * 100m).ToString("+0.0;-0.0") + "%) peak " + plan.peakPrice.ToString("N0") + " heat " + actor.OperationHeat.ToString("0.00") + " bought " + plan.spent.ToString("N0") + " sold " + plan.proceeds.ToString("N0") + " scooped " + plan.scoopSpent.ToString("N0") + " | rumors " + WhaleBot.DoubtsSpread + " listeners " + WhaleBot.DoubtListeners + " profit sells " + TradeBot.ProfitSellsTotal + " " + TradeBot.ProfitSoldTotal.ToString("N0") + " | whale profit at start price " + plan.Profit.ToString("N0") + " (cash " + plan.Realized.ToString("N0") + ", shares " + plan.lastPosition.ToString("N0") + ") at market " + plan.Paper(target.currentPrice).ToString("N0") + " average cost " + plan.AverageCost.ToString("N0") + " | ignites " + WhaleBot.IgnitesTotal + " slams " + WhaleBot.SlamsTotal + " nips " + WhaleBot.NipsTotal + " (" + WhaleBot.NippedValue.ToString("N0") + ")" + " walls " + WhaleBot.WallsPlacedTotal + " | chases " + TradeBot.ChasesTotal + " by fever " + TradeBot.FeverChasesTotal + " | delayed orders " + TradeBot.HandOrdersQueued + " released " + TradeBot.HandOrdersReleased + " delayed cancels " + TradeBot.HandCancelsQueued);
+                    }
+                    bool dumping = stage == 5 && plan.dump;
+                    // 단계가 바뀐 직후, 던지는 동안에는 자주, 그 밖에는 가끔 차트를 남긴다.
+                    bool shoot = changed && seen >= 0 || dumping && number % 4 == 0 || stage == 6 && number % 12 == 6 || number % 70 == 69;
+                    // 큰 작전은 길다: 물결마다 꼭대기(던지기 시작)와 가끔만 남긴다.
+                    if (grand) { shoot = changed && seen >= 0 && stage == 5 || number % 70 == 69; }
+                    seen = stage;
+                    if (stage == 0)
+                    {
+                        string List(Dictionary<string, decimal> book) => string.Join(", ", book.OrderByDescending(pair => pair.Value).Take(7).Select(pair => pair.Key + " " + pair.Value.ToString("N0")));
+                        report.AppendLine("WHALE bought from: " + List(whaleFrom)); report.AppendLine("WHALE sold to: " + List(whaleTo));
+                        report.AppendLine("WHALE others bought: " + List(crowdBuy)); report.AppendLine("WHALE others sold: " + List(crowdSell));
+                    }
+                    if (stage == 0) { over = true; whaleOver = true; shoot = true; report.AppendLine("WHALE finished: end price " + target.currentPrice.ToString("N0") + " (" + ((target.currentPrice / began - 1m) * 100m).ToString("+0.0;-0.0") + "% from start, " + ((target.currentPrice / Math.Max(1m, plan.peakPrice) - 1m) * 100m).ToString("+0.0;-0.0") + "% from peak) dump " + plan.dump); }
+                    if (!shoot || shots >= 30) { return null; }
+                    shots++;
+                    if (grand)
+                    {
+                        Shoot(chartScreen, "whale/" + shots.ToString("00") + "-w" + (plan.wave + 1) + "-" + name + "-" + (number * 1.8f).ToString("0") + "s", 1920, 1080);
+                        // 던질 때와 끝났을 때는 그 순간의 라운지 채팅도 남긴다.
+                        if (stage == 5 || stage == 0) { Shoot(chatScreen, "whale/" + shots.ToString("00") + "-w" + (plan.wave + 1) + "-" + name + "-" + (number * 1.8f).ToString("0") + "s-chat", 1080, 1920); }
+                        return null;
+                    }
+                    Shoot(chartScreen, "whale/" + shots.ToString("00") + "-w" + (plan.wave + 1) + "-" + name + "-" + (number * 1.8f).ToString("0") + "s", 1920, 1080);
+                    // 같은 순간의 공용 라운지 채팅.
+                    Shoot(chatScreen, "whale/" + shots.ToString("00") + "-w" + (plan.wave + 1) + "-" + name + "-" + (number * 1.8f).ToString("0") + "s-chat", 1080, 1920);
+                    return null;
+                }));
+            }
+        }
+        // 지나가던 빌런: 지금 한 명을 지나가게 하고(주입) 라운지 채팅을 남긴다.
+        steps.Add(("villain-0", () => { if (only.Contains("villain")) { chat.SelectRoom(0); report.AppendLine("VILLAIN INJECTED forced: " + InvestorSociety.Instance.ForceVillain()); } }, () => null));
+        for (int index = 1; index <= 4; index++) { steps.Add(("villain-" + index, () => { }, () => null)); }
+        steps.Add(("villain-5", () => { }, () => { if (only.Contains("villain")) { report.AppendLine("VILLAIN seen " + InvestorSociety.Instance.VillainsSeen); Shoot(chatScreen, "villain-" + GameLocale.Code, 1080, 1920); } return null; }));
         // 밤 준비: 낮의 잠긴 화면 → 밤으로 넘긴 뒤(주입) 세 가지를 실제로 해 본다 → 장을 다시 열어(주입) 심은 기사가 나가는지 본다.
         {
             var nightDevice = Object.FindObjectsByType<TabletAccountUI>(FindObjectsInactive.Include).FirstOrDefault(item => !item.second);
@@ -1118,17 +1206,23 @@ public static class ScreenTourCapture
             {
                 if (!only.Contains("night") || languageIndex != 0) { return; }
                 var rest = PlayerRestController.Instance; int before = NewsManager.Instance.Articles.Count; double clock = ExchangeBot.Instance.NewsClock;
-                bool slept = rest.SleepUntilMorning();
+                bool slept = rest.BeginNightSleep();
                 report.AppendLine("MORNING slept " + slept + " day " + MarketDayController.Instance.Day + " phase " + MarketDayController.Instance.Phase + " news clock +" + (ExchangeBot.Instance.NewsClock - clock).ToString("0") + "s articles before " + before + " fatigue " + rest.State.fatigue.ToString("0"));
             }, () => null));
-            for (int index = 0; index < 7; index++)
+            for (int index = 0; index < 22; index++)
             {
                 int number = index;
                 steps.Add(("night-morning-" + number, () => { }, () =>
                 {
                     if (!only.Contains("night") || languageIndex != 0) { return null; }
                     var brief = MorningBriefing.Instance;
-                    if (number == 6)
+                    // 눈을 감고 꿈 문구가 뜬 모습.
+                    if (number == 3) { var lids = GameObject.Find("Area :: Collapse Sleep"); report.AppendLine("SLEEP t3 active " + CollapseSleep.Active + " day " + MarketDayController.Instance.Day + " memo stuck " + MemoNotes.Instance.Stuck); return lids == null ? null : (RectTransform)lids.transform; }
+                    // 브리핑에서 E를 누른 것과 같은 저장, 붙은 모습, 그리고 떨어진 모습.
+                    if (number == 15) { report.AppendLine("MEMO save " + MemoNotes.Instance.Save(brief.Entries) + " stuck " + MemoNotes.Instance.Stuck); }
+                    if (number == 17) { ShootView("audit/ko-memo-stuck"); foreach (var close in Object.FindObjectsByType<StickyNotePaper>(FindObjectsInactive.Exclude)) { if (close.name == "Area :: Memo Note") { ShootFrom("audit/ko-memo-close", close.transform.position - close.transform.forward * 2.2f + close.transform.right * .9f + Vector3.down * .1f, close.transform.position + close.transform.right * .9f + Vector3.down * .35f, 34f, .5f); break; } } foreach (var paper in Object.FindObjectsByType<StickyNotePaper>(FindObjectsInactive.Exclude)) { if (paper.name == "Area :: Memo Note") { report.AppendLine("MEMO note at " + paper.transform.position.ToString("F2") + " local " + paper.transform.localPosition.ToString("F3")); } else { report.AppendLine("GUIDE note " + paper.name + " at " + paper.transform.position.ToString("F2")); } } MemoNotes.Instance.DropAll(); }
+                    if (number == 21) { ShootView("audit/ko-memo-fallen"); report.AppendLine("MEMO dropped " + MemoNotes.Instance.Dropped + " stuck " + MemoNotes.Instance.Stuck); }
+                    if (number == 13)
                     {
                         var line = new StringBuilder("MORNING briefing shown " + brief.Shown + " entries " + brief.Entries.Count + " articles now " + NewsManager.Instance.Articles.Count);
                         foreach (var entry in brief.Entries) { line.Append(" | " + entry.Stock.symbol + " " + entry.Expected.ToString("+0.0;-0.0") + "% " + entry.Title); }

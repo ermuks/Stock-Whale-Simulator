@@ -187,6 +187,7 @@ public abstract partial class TradeBot : Trader
 
     protected virtual void OnDisable()
     {
+        handPending.Clear();
         PsychologicalLevelManager.OnWallForming -= OnWallForming;
         PsychologicalLevelManager.OnBreakthroughImminent -= OnBreakthroughImminent;
         StopAllCoroutines();
@@ -229,6 +230,12 @@ public abstract partial class TradeBot : Trader
         // 장 시작 몰아주기 매수는 방장이 시킨 값 그대로 낸다. 가격 범위·위험 축소·비중 제한을 받지 않는다.
         bool rush = OpeningRush.Buying(this);
         if (!rush) { MarketRhythmDirector.Instance?.BoundOrder(this, ResolveStock(stock), true, ref price, ref volume); price = PacedPrice(ResolveStock(stock), true, price); }
+        // 급등주에 올라타는 사람은 호가를 기다리지 않는다. 매도 호가를 여러 칸 뚫고 산다(급할수록 깊이: 2~6%).
+        if (!rush && !IsExchangeParticipant && Social != null && (Social.Psychology.HasFomoFor(ResolveStock(stock)) || IsChasing(ResolveStock(stock))))
+        {
+            decimal lift = MarketReachPrice(ResolveStock(stock), true, .02f + Haste * .04f);
+            if (lift > 0m) { price = System.Math.Max(price, lift); }
+        }
         if (!rush && !IsExchangeParticipant && Social != null)
         {
             double riskScale = Social.Psychology.MarketRiskBuyScale(ResolveStock(stock)?.symbol, SessionClock.Time);
@@ -257,7 +264,99 @@ public abstract partial class TradeBot : Trader
                 }
             }
         }
-        base.BuyLimit(price, volume, subTickSteps, stock);
+        Place(true, price, volume, subTickSteps, stock);
+    }
+
+    // ── 사람의 손: 판단과 주문 사이의 지연 ──
+    // 개미는 값과 수량을 정한 그 순간에 주문이 나가지 않는다. 1~3초 뒤에, 그때 정한 값 그대로 나간다.
+    // 그 사이에 시세가 움직였으면 그 주문은 호가를 여러 칸 뚫는 뒤늦은 시장가가 되거나, 한참 먼 곳에 걸려 쌓인다. 취소도 마찬가지로 늦게 닿는다.
+    // 세력·거래소·대주주, 호가를 대는 초단타, 리딩방 지시와 장 시작 몰아주기 주문은 지연하지 않는다(그쪽은 자기 박자가 따로 있다).
+    public const float HandDelayMin = 1f, HandDelayMax = 3f;
+    private readonly HashSet<(Stock stock, bool buy)> handPending = new();
+    private readonly List<Order> handScratch = new(8);
+    /// <summary>확인용: 지연에 들어간 주문, 실제로 나간 주문, 지연에 들어간 취소의 수.</summary>
+    public static int HandOrdersQueued, HandOrdersReleased, HandCancelsQueued;
+
+    private bool SlowHands()
+    {
+        if (Social == null || IsExchangeParticipant || IsCompanyOwner || KnowsRealValue || this is WhaleBot || this is ScalperBot || this is SpreadFillerBot) { return false; }
+        if (OpeningRush.Buying(this)) { return false; }
+        return InvestorSociety.Instance?.Orders == null || !InvestorSociety.Instance.Orders.IsSubmitting(this);
+    }
+
+    private void Place(bool buy, decimal price, decimal volume, int subTickSteps, Stock stock)
+    {
+        Stock target = ResolveStock(stock);
+        if (target == null || !SlowHands())
+        {
+            if (buy) { base.BuyLimit(price, volume, subTickSteps, stock); } else { base.SellLimit(price, volume, subTickSteps, stock); }
+            return;
+        }
+        // 같은 종목에 같은 방향으로 이미 손이 가고 있으면 또 내지 않는다.
+        if (volume < 1m || price <= 0m || !handPending.Add((target, buy))) { return; }
+        HandOrdersQueued++;
+        StartCoroutine(PlaceLater(buy, price, volume, subTickSteps, target));
+    }
+
+    private IEnumerator PlaceLater(bool buy, decimal price, decimal volume, int subTickSteps, Stock stock)
+    {
+        int session = MarketDayController.Session;
+        yield return new WaitForSeconds(Random.Range(HandDelayMin, HandDelayMax));
+        handPending.Remove((stock, buy));
+        if (!MarketDayController.CanTrade || !isActiveAndEnabled || session != MarketDayController.Session || stock == null || !stock.AcceptsOrders) { yield break; }
+        // 그사이 돈이나 주식이 줄었으면 지금 낼 수 있는 만큼만 낸다. 값은 고치지 않는다.
+        if (buy)
+        {
+            volume = System.Math.Min(volume, decimal.Floor(System.Math.Max(0m, cash - ReservedCash) / price));
+            if (volume < 1m) { yield break; }
+            base.BuyLimit(price, volume, subTickSteps, stock);
+        }
+        else
+        {
+            volume = System.Math.Min(volume, decimal.Floor(GetHolding(stock)));
+            if (volume < 1m) { yield break; }
+            base.SellLimit(price, volume, subTickSteps, stock);
+        }
+        HandOrdersReleased++;
+    }
+
+    /// <summary>내 주문을 거둔다(chance가 1이면 전부, 아니면 주문마다 그 확률로). 개미는 무엇을 거둘지 지금 정하고, 실제 취소는 1~3초 뒤에 닿는다.</summary>
+    protected void CancelLater(Stock stock, float chance)
+    {
+        if (stock == null || stock.orderBook == null) { return; }
+        if (!SlowHands())
+        {
+            if (chance >= 1f) { stock.orderBook.CancelAllOrdersByOwner(this, stock); } else { stock.CancelRandomOrdersByOwner(this, chance); }
+            return;
+        }
+        stock.orderBook.CopyOwnerOrders(this, handScratch);
+        List<Order> chosen = null;
+        foreach (var order in handScratch)
+        {
+            if (chance < 1f && (order.purpose != OrderPurpose.Ordinary || Random.value >= chance)) { continue; }
+            (chosen ??= new List<Order>()).Add(order);
+        }
+        if (chosen == null) { return; }
+        HandCancelsQueued += chosen.Count;
+        StartCoroutine(CancelAfter(stock, chosen));
+    }
+
+    private IEnumerator CancelAfter(Stock stock, List<Order> orders)
+    {
+        yield return new WaitForSeconds(Random.Range(HandDelayMin, HandDelayMax));
+        if (stock == null || stock.orderBook == null) { yield break; }
+        // 그사이 체결돼 사라진 주문은 거둘 것이 없다.
+        foreach (var order in orders) { stock.orderBook.CancelOrder(order, stock); }
+    }
+
+    /// <summary>
+    /// 시장가처럼 치는 값: 맞은편 최우선 호가에서 reach만큼 더 나아간 값. 그 사이의 호가를 여러 칸 받아 간다.
+    /// 급등주에 올라탈 때와 겁에 질려 던질 때 쓴다. 얼마나 깊이 치는지는 계좌의 성격마다 다르다.
+    /// </summary>
+    private decimal MarketReachPrice(Stock stock, bool buy, float reach)
+    {
+        if (stock == null || stock.orderBook == null || !stock.orderBook.TryBest(out decimal bid, out decimal ask)) { return 0m; }
+        return buy ? PriceTickPolicy.CeilToTick(ask * (1m + (decimal)reach)) : System.Math.Max(1m, PriceTickPolicy.FloorToTick(bid * (1m - (decimal)reach)));
     }
 
     public override void SellLimit(decimal price, decimal volume, int subTickSteps = 0, Stock stock = null)
@@ -274,7 +373,14 @@ public abstract partial class TradeBot : Trader
         price = PacedPrice(ResolveStock(stock), false, price);
         if (!IsExchangeParticipant && Social != null)
         { volume = decimal.Floor(volume * (decimal)Social.Psychology.Companies.TradeScale(ResolveStock(stock)?.symbol, false, SessionClock.Time)); }
-        base.SellLimit(price, volume, subTickSteps, stock);
+        // 겁에 질린 사람은 값을 따지지 않는다. 매수 호가를 여러 칸 뚫고 던진다(급할수록 깊이: 3~8%).
+        // 꺾인 급등주에서 차익을 챙기는 사람도 마찬가지다(조금 얕게: 2~6%).
+        if (Social != null && !IsExchangeParticipant && (fleeing || Social.Psychology.HasPanicFor(ResolveStock(stock))))
+        {
+            decimal hit = MarketReachPrice(ResolveStock(stock), false, fleeing ? .02f + Social.Impulsiveness * .04f : .03f + Social.Impulsiveness * .05f);
+            if (hit > 0m) { price = System.Math.Min(price, hit); }
+        }
+        Place(false, price, volume, subTickSteps, stock);
     }
 
     /// <summary>상장폐지 시 해당 종목 키/참조 정리. 파생 봇에서 오버라이드해 자체 Dictionary 정리.</summary>
@@ -374,7 +480,7 @@ public abstract partial class TradeBot : Trader
             {
                 foreach (var stock in StockManager.Instance.stocks)
                 {
-                    stock.CancelRandomOrdersByOwner(this, randomOrderCancelChancePerOrder);
+                    CancelLater(stock, randomOrderCancelChancePerOrder);
                 }
             }
 
@@ -387,6 +493,9 @@ public abstract partial class TradeBot : Trader
             {
                 ObserveMarket(pick);
                 if (TryPanicSell(pick))
+                { continue; }
+                // 크게 번 종목이 멈칫하면 일부를 팔아 차익을 챙긴다.
+                if (TryProfitSell(pick))
                 { continue; }
 
                 RefreshLiquidityOrders(pick);
