@@ -1055,6 +1055,17 @@ public sealed class MarketDayController : MonoBehaviour
     {
         AddMessage(new BotChatMessage(++sequence, bot, Day, GameMinute, message.text, message.templateKey, ChatEvent.Agreement, context, message));
     }
+    /// <summary>공개 라운지에 쌓여 있는 말의 수.</summary>
+    public int LoungeMessageCount => messageCount;
+    /// <summary>장이 열리기 전에 이미 오가던 말을 깔아 둔다. 시각(그날의 분)을 지난 시각으로 적는다. 표시만 한다.</summary>
+    public void PublishBacklog(TradeBot bot, string text, int minute)
+    {
+        if (bot == null || string.IsNullOrWhiteSpace(text)) { return; }
+        float spoke = lastBotMessageTime;
+        AddMessage(new BotChatMessage(++sequence, bot, Day, minute, text, "backlog", ChatEvent.Agreement));
+        // 지난 말이다. "방금 누가 말했다"는 기록은 건드리지 않는다.
+        lastBotMessageTime = spoke;
+    }
     public void PublishBulletin(string text)
     {
         if (string.IsNullOrWhiteSpace(text))

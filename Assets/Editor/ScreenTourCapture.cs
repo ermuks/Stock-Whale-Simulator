@@ -36,6 +36,29 @@ public static class ScreenTourCapture
     private static bool steam;
     /// <summary>세력 작전 관찰이 끝났는지. 끝나면 남은 대기 단계를 빨리 넘긴다.</summary>
     private static bool whaleOver;
+    // ── 불나방 측정(only:moth) ──
+    // 불나방 풀(MothPool)에 "이 종목에 몰려라"만 시키고(주입), 가격·거래대금·프레임 시간을 잰다. 들어가고 나가는 것은 풀이 평소대로 한다.
+    private static Stock mothStock;
+    private static decimal mothTurnover, mothBegan, mothPeak;
+    private static int mothTrades, mothFrames;
+    private static float mothFrameSum, mothFrameMax;
+    private static readonly List<float> mothFrameTimes = new(4096);
+    private static void MothTrade(Stock stock, decimal price, decimal volume, IOrderOwner buyer, IOrderOwner seller, Order resting) { mothTurnover += price * volume; mothTrades++; if (price > mothPeak) { mothPeak = price; } }
+    private static void MothFrame()
+    {
+        if (!EditorApplication.isPlaying) { return; }
+        float dt = Time.unscaledDeltaTime; mothFrames++; mothFrameSum += dt; if (dt > mothFrameMax) { mothFrameMax = dt; }
+        mothFrameTimes.Add(dt);
+    }
+    private static string MothStats()
+    {
+        mothFrameTimes.Sort();
+        float median = mothFrameTimes.Count == 0 ? 0f : mothFrameTimes[mothFrameTimes.Count / 2], p95 = mothFrameTimes.Count == 0 ? 0f : mothFrameTimes[(int)(mothFrameTimes.Count * .95f)];
+        string text = "frames " + mothFrames + " avg " + (mothFrames == 0 ? 0f : mothFrameSum / mothFrames * 1000f).ToString("0.0") + "ms median " + (median * 1000f).ToString("0.0") + "ms p95 " + (p95 * 1000f).ToString("0.0") + "ms max " + (mothFrameMax * 1000f).ToString("0.0") + "ms";
+        mothFrames = 0; mothFrameSum = 0f; mothFrameMax = 0f; mothFrameTimes.Clear();
+        return text;
+    }
+
     private static readonly Dictionary<string, decimal> whaleFrom = new(), whaleTo = new(), crowdBuy = new(), crowdSell = new();
     private static string steamOriginal = "";
     private static readonly HashSet<string> SteamShots = new()
@@ -1153,6 +1176,59 @@ public static class ScreenTourCapture
                     Shoot(chatScreen, "whale/" + shots.ToString("00") + "-w" + (plan.wave + 1) + "-" + name + "-" + (number * 1.8f).ToString("0") + "s-chat", 1080, 1920);
                     return null;
                 }));
+            }
+        }
+        // 불나방 측정: 종목 둘에 차례로. 첫 판은 150명, 둘째 판은 풀 전체(500명)를 부른다. 판마다 앞 27초는 아무것도 하지 않고 평소 수준을 잰다.
+        {
+            string[] symbols = { "GFD", "KMF" }; int[] call = { 150, MothPool.Size };
+            decimal lastTurnover = 0m, broughtAt = 0m, takenAt = 0m; int lastTrades = 0; float lastAt = 0f;
+            for (int round = 0; round < 2; round++)
+            {
+                int which = round;
+                for (int index = 0; index < 110; index++)
+                {
+                    int number = index;
+                    steps.Add(("moth-" + which + "-" + number, () =>
+                    {
+                        if (!only.Contains("moth") || languageIndex != 0) { return; }
+                        if (number == 0)
+                        {
+                            // 판 시작: 종목을 고르고 평소 수준을 재기 시작한다. 프레임 제한(검증 모드 20fps)을 풀어 실제 프레임 시간을 본다.
+                            mothStock = StockManager.Instance.stocks.FirstOrDefault(stock => stock.symbol == symbols[which]) ?? StockManager.Instance.stocks[which];
+                            StockManager.Instance.SelectStock(StockManager.Instance.stocks.IndexOf(mothStock)); Press("Button :: Chart 5m");
+                            mothStock.OnMatchedTrade += MothTrade; EditorApplication.update -= MothFrame; EditorApplication.update += MothFrame;
+                            Application.targetFrameRate = -1; QualitySettings.vSyncCount = 0;
+                            mothTurnover = 0m; mothTrades = 0; mothBegan = mothStock.currentPrice; mothPeak = mothBegan; MothStats();
+                            lastTurnover = 0m; lastTrades = 0; lastAt = SessionClock.Time; broughtAt = MothPool.BroughtTotal; takenAt = MothPool.TakenTotal;
+                            report.AppendLine("MOTH round " + (which + 1) + " stock " + mothStock.symbol + " " + mothStock.stockName + " price " + mothStock.currentPrice.ToString("N0") + " float value " + StockManager.Instance.FloatValue(mothStock).ToString("N0") + " | accounts " + Trader.Registry.Count + " (pool " + MothPool.Size + ", idle " + (MothPool.Instance == null ? -1 : MothPool.Instance.IdleCount) + ") | natural rallies so far " + MothPool.RalliesTotal);
+                        }
+                        if (number == 15)
+                        {
+                            mothBegan = mothStock.currentPrice; mothPeak = mothBegan;
+                            report.AppendLine("MOTH round " + (which + 1) + " INJECTED call " + call[which] + " moths to " + mothStock.symbol + " at " + DeviceMarketJournal.Stamp() + ": " + (MothPool.Instance != null && MothPool.Instance.Force(mothStock, call[which])));
+                        }
+                    }, () =>
+                    {
+                        if (!only.Contains("moth") || languageIndex != 0 || mothStock == null) { return null; }
+                        var pool = MothPool.Instance;
+                        if (number % 3 == 2 || number == 109)
+                        {
+                            float now = SessionClock.Time, span = Mathf.Max(.01f, now - lastAt);
+                            report.AppendLine("MOTH " + (which + 1) + " t" + (number * 1.8f).ToString("0") + "s " + DeviceMarketJournal.Stamp() + (number < 15 ? " baseline" : " called") + " price " + mothStock.currentPrice.ToString("N0") + " (" + ((mothStock.currentPrice / mothBegan - 1m) * 100m).ToString("+0.0;-0.0") + "%) peak " + ((mothPeak / mothBegan - 1m) * 100m).ToString("+0.0;-0.0") + "% | turnover/s " + ((mothTurnover - lastTurnover) / (decimal)span).ToString("N0") + " trades/s " + ((mothTrades - lastTrades) / span).ToString("0.0") + " | moths here " + (pool == null ? 0 : pool.CountOn(mothStock)) + " holding " + (pool == null ? 0 : pool.HoldingOn(mothStock)) + " busy anywhere " + (pool == null ? 0 : pool.BusyCount) + " brought " + (MothPool.BroughtTotal - broughtAt).ToString("N0") + " taken " + (MothPool.TakenTotal - takenAt).ToString("N0") + " | " + MothStats());
+                            lastTurnover = mothTurnover; lastTrades = mothTrades; lastAt = now;
+                        }
+                        if (number == 109)
+                        {
+                            Directory.CreateDirectory(Folder + "/moth");
+                            Shoot(chartScreen, "moth/round" + (which + 1) + "-" + mothStock.symbol, 1920, 1080);
+                            int stuck = 0; foreach (var account in Object.FindObjectsByType<MothAccount>(FindObjectsInactive.Include)) { if (account.HoldsAnything) { stuck++; } }
+                            report.AppendLine("MOTH round " + (which + 1) + " RESULT peak " + ((mothPeak / mothBegan - 1m) * 100m).ToString("+0.0;-0.0") + "% end " + ((mothStock.currentPrice / mothBegan - 1m) * 100m).ToString("+0.0;-0.0") + "% | brought " + (MothPool.BroughtTotal - broughtAt).ToString("N0") + " taken " + (MothPool.TakenTotal - takenAt).ToString("N0") + " left in the market " + (MothPool.BroughtTotal - broughtAt - (MothPool.TakenTotal - takenAt)).ToString("N0") + " | still here " + (pool == null ? 0 : pool.CountOn(mothStock)) + " | accounts still holding any stock " + stuck + " | idle " + (pool == null ? 0 : pool.IdleCount) + " | natural rallies " + MothPool.RalliesTotal + " | share check " + StockIntegrityChecker.Instance.CheckStock(mothStock).isValid);
+                            mothStock.OnMatchedTrade -= MothTrade;
+                            if (which == 1) { EditorApplication.update -= MothFrame; Application.targetFrameRate = 20; }
+                        }
+                        return null;
+                    }));
+                }
             }
         }
         // 지나가던 빌런: 지금 한 명을 지나가게 하고(주입) 라운지 채팅을 남긴다.

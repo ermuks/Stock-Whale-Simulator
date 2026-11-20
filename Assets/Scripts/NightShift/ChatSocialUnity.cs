@@ -39,6 +39,7 @@ public sealed partial class InvestorSociety
         }
         SocialTime.Set(day.Day, day.GameMinute, SessionClock.Time);
         TickHype();
+        TickBacklog();
         TickChartTalk();
         TickVillain();
         TickPlayerChat();

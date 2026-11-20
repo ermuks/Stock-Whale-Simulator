@@ -31,6 +31,9 @@ public abstract partial class TradeBot
     // 열병이 셀수록 더 많은 계좌가 더 자주 뛰어들고(TryChase), 오르는 동안에는 수익이 나도 덜 판다(TryProfitSell).
     // 값이 꺾이면 익절은 예전처럼 나온다. 그래서 고점에서 받은 사람이 물린다.
     public const float FeverFrom = .20f, FeverFull = 1f;
+    // 꺼 둔다. 급등에 몰려드는 역할은 이제 불나방 풀(MothPool)이 맡는다. 둘을 같이 켜 두면 기존 개미까지 스스로 값을 밀어 올려서,
+    // 작전도 불나방도 없는 종목이 혼자 몇 배로 부풀었다가 꺼지는 일이 생겼다(빌드 측정에서 산삼전자 +270%, +1012%).
+    public const bool FeverEnabled = false;
     /// <summary>확인용: 열병으로(다른 종목을 팔지 않고 현금으로) 뛰어든 횟수.</summary>
     public static int FeverChasesTotal;
     /// <summary>오늘 전일 대비 얼마나 올랐는가(0.5 = +50%).</summary>
@@ -38,7 +41,7 @@ public abstract partial class TradeBot
         => stock != null && StockStatistics.Instance != null && StockStatistics.Instance.TryGetDailyChange(stock, out decimal change) ? (float)change / 100f : 0f;
     private static float RallyFever(Stock stock)
     {
-        if (stock == null || StockStatistics.Instance == null || !StockStatistics.Instance.TryGetDailyChange(stock, out decimal change)) { return 0f; }
+        if (!FeverEnabled || stock == null || StockStatistics.Instance == null || !StockStatistics.Instance.TryGetDailyChange(stock, out decimal change)) { return 0f; }
         return Mathf.Clamp01(((float)change / 100f - FeverFrom) / (FeverFull - FeverFrom));
     }
 

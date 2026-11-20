@@ -42,7 +42,8 @@ public static partial class SessionStore
         MarketDayController.Instance.CheckpointReady && !MarketDayController.Instance.IntegrityFailed &&
         !StockManager.Instance.stocks.Any(stock=>stock.IsDelisting);
     // 차명 계좌(통정매매 때 잠깐 쓰는 빈 계좌)는 저장하지 않는다. 장면에 없는 계좌라 이어하기 때 되살릴 수 없어서, 저장에 섞이면 그 저장 전체가 거부됐다.
-    private static bool Root(Component value) => value is Trader trader ? !ManipulationTools.IsNominee(trader) : RootNames.Contains(value.GetType().Name);
+    // 불나방 계좌는 주식이나 돈을 들고 있을 때만 저장한다. 풀에서 쉬는 빈 계좌는 저장하지 않는다(장면이 올라올 때 풀이 다시 만든다).
+    private static bool Root(Component value) => value is Trader trader ? !ManipulationTools.IsNominee(trader) && !(trader is MothAccount moth && !moth.Keep) : RootNames.Contains(value.GetType().Name);
     /// <summary>게임 이름을 바꾸기 전의 제품 이름. 저장 폴더가 이 이름으로 만들어져 있었다.</summary>
     private const string FormerProductName = "DonDon";
     /// <summary>
@@ -122,6 +123,13 @@ public static partial class SessionStore
                 if (!key.StartsWith("trader:",StringComparison.Ordinal) || existing.Contains(key)) { continue; }
                 var node=nodes[(int)binding["value"]["r"]]; Type type=Type.GetType((string)types[(int)node["t"]],false);
                 // 예전 저장에는 차명 계좌(봇이 아닌 맨 Trader)가 섞여 있을 수 있다. 빈 계좌로 되살려 저장을 살린다. 계좌 명단에는 올리지 않는다.
+                // 주식을 못 팔고 남아 있던 불나방 계좌: 풀의 같은 번호 칸이 없으면 새로 만든다. 만들어지면서 풀에 올라간다.
+                if (type==typeof(MothAccount))
+                {
+                    var moth=new GameObject("Area :: Moth Account").AddComponent<MothAccount>();
+                    moth.Number(ParseTraderId(key)); existing.Add(key); created=true;
+                    continue;
+                }
                 if (type==typeof(Trader))
                 {
                     var shell=new GameObject("Area :: Nominee Account").AddComponent<Trader>();
@@ -148,12 +156,13 @@ public static partial class SessionStore
         MarketDayController.Instance.PrepareSessionRestore();
         var graph=new Graph();
         graph.Restore(data);
-        typeof(Trader).GetField("nextInitialAccountId",BindingFlags.Static|BindingFlags.NonPublic).SetValue(null,Trader.Registry.Max(t=>t.InitialAccountId));
+        typeof(Trader).GetField("nextInitialAccountId",BindingFlags.Static|BindingFlags.NonPublic).SetValue(null,Trader.Registry.Where(t=>!(t is MothAccount)).Max(t=>t.InitialAccountId));
         SessionClock.Restore((float)data["clock"]);
         UnityEngine.Random.state=JsonUtility.FromJson<UnityEngine.Random.State>((string)data["random"]);
         FakeNewsManager.Instance?.RestorePlayerCooldown((double)data["newsCooldown"],(long)data["savedUtc"]);
         typeof(ChatSocialIds).GetField("last",BindingFlags.Static|BindingFlags.NonPublic).SetValue(null,long.Parse((string)data["socialId"],Culture));
         InvestorSociety.Instance?.ReconnectSession();
+        MothPool.Instance?.Reconnect();
         var day=MarketDayController.Instance;
         CorporateEconomy.Instance?.ReconnectSession();
         StockManager.Instance.ReconnectListedCompanies();
@@ -308,7 +317,8 @@ public static partial class SessionStore
             var roots=(JArray)data["roots"];
             // Preflight every root and field before mutating the initialized world.
             foreach(var binding in roots)
-            { if (!unity.TryGetValue((string)binding["key"],out var value) || value is not Component c || !Root(c)) { throw new InvalidDataException("Session participant missing: "+binding["key"]); } }
+            // (불러올 때는 계좌이기만 하면 받는다. 저장에 있던 불나방 계좌는 지금 장면에서는 빈 계좌로 쉬고 있다.)
+            { if (!unity.TryGetValue((string)binding["key"],out var value) || value is not Component c || !(c is Trader) && !Root(c)) { throw new InvalidDataException("Session participant missing: "+binding["key"]); } }
             for(int i=0;i<saved.Count;i++)
             {
                 var node=(JObject)saved[i]; Type type=Resolve((string)Types[(int)node["t"]]);
