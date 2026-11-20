@@ -1157,8 +1157,8 @@ public static class ScreenTourCapture
         }
         // 지나가던 빌런: 지금 한 명을 지나가게 하고(주입) 라운지 채팅을 남긴다.
         steps.Add(("villain-0", () => { if (only.Contains("villain")) { chat.SelectRoom(0); report.AppendLine("VILLAIN INJECTED forced: " + InvestorSociety.Instance.ForceVillain()); } }, () => null));
-        for (int index = 1; index <= 4; index++) { steps.Add(("villain-" + index, () => { }, () => null)); }
-        steps.Add(("villain-5", () => { }, () => { if (only.Contains("villain")) { report.AppendLine("VILLAIN seen " + InvestorSociety.Instance.VillainsSeen); Shoot(chatScreen, "villain-" + GameLocale.Code, 1080, 1920); } return null; }));
+        for (int index = 1; index <= 2; index++) { steps.Add(("villain-" + index, () => { }, () => null)); }
+        steps.Add(("villain-3", () => { }, () => { if (only.Contains("villain")) { report.AppendLine("VILLAIN seen " + InvestorSociety.Instance.VillainsSeen); Shoot(chatScreen, "villain-" + GameLocale.Code, 1080, 1920); } return null; }));
         // 밤 준비: 낮의 잠긴 화면 → 밤으로 넘긴 뒤(주입) 세 가지를 실제로 해 본다 → 장을 다시 열어(주입) 심은 기사가 나가는지 본다.
         {
             var nightDevice = Object.FindObjectsByType<TabletAccountUI>(FindObjectsInactive.Include).FirstOrDefault(item => !item.second);

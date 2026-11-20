@@ -375,6 +375,8 @@ public sealed partial class InvestorSociety
         track.rest[key] = now + restSec;
         // 종목 없이 부르면 점검용이다(ChartSelfTest). 알아챈 이름만 적고 아무 말도 하지 않는다.
         if (stock == null) { chartDryShapes.Add(key); return; }
+        // 극한의 상황(고점에서 18% 넘게 붕괴, 하루 22% 넘는 급락)에서만, 낮은 확률로 지나가던 빌런이 들어온다.
+        if (key == "dump2" || key == "dayLow" && track.dayDownStage >= 2) { OfferVillain(); }
         ChartShapesSeen++;
         TraceChart(day.ClockMinute / 60 + ":" + (day.ClockMinute % 60).ToString("00") + " " + stock.symbol + " " + key + " price " + Money(stock.currentPrice) + " peak " + Money(peak) + " low " + Money(low));
         ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = "CHART_SHAPE", reason = stock.symbol + " " + key, value = (double)stock.currentPrice });

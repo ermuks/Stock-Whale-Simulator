@@ -2,8 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 지나가던 빌런. 아주 드물게, 방에 없던 누군가가 공개 라운지에 들어와 아무도 묻지 않은 것에 대답하듯 한마디를 던지고 곧바로 내보내진다.
-// "섹스" 한마디 쓰고 추방당하는 그 사람이다. 자주 나오면 안 된다: 하루에 한 번도 안 나오는 날이 대부분이다(열흘에 한 번꼴).
+// 지나가던 빌런. 아주 드물게, 방에 없던 누군가가 공개 라운지에 들어와 다들 당혹스러울 한마디를 던지고 곧바로 내보내진다.
+// 내보내질 만한 말이어야 한다: 저속한 한마디("섹스")나 방 사람들을 향한 악담("오늘도 다들 손실 나길 바랍니다 ^^"). 생일 얘기처럼 무해한 말로 쫓겨나면 이상하다.
+// "섹스" 한마디 쓰고 추방당하는 그 사람이다. 자주 나오면 안 된다.
+// 아무 때나 나오지 않는다. 극한의 상황에서만, 그것도 낮은 확률로 나온다:
+//  - 어떤 종목이 고점에서 18% 넘게 무너졌을 때(차트 수다의 dump2), 또는 하루에 22% 넘게 빠지며 신저가를 찍을 때(dayLow 2단계).
+//  - 그런 일이 벌어질 때마다 VillainChance(6%)로 나오고, 하루에 한 번을 넘지 않는다. 그런 일이 없는 날에는 절대 나오지 않는다.
+//
+// 넣지 않는 말: 혐오·갈등 발언(장애·성별·인종·지역·세대 같은 집단을 비하하는 말), 자해를 부추기는 말, 성폭력을 떠올리게 하는 말.
+// 저속한 말과 욕설, 방 사람들을 향한 악담까지만 쓴다.
 //
 // 표시 전용이다. 진짜 봇이 아니라 한 번 쓰고 버리는 이름이라, 어떤 봇의 계좌·감정·기억·관계·매매에도 닿지 않는다.
 // 방의 봇 한두 명이 어리둥절해하는 말도 차트 수다와 같은 표시 전용 통로(PublishHype)로 나간다.
@@ -17,9 +24,10 @@ using UnityEngine;
 
 public sealed partial class InvestorSociety
 {
-    /// <summary>하루에 빌런이 나올 확률, 그리고 그날 장이 열린 뒤 언제 나올지의 범위(장중 초).</summary>
-    public const double VillainDayChance = .1;
-    private const double VillainFromSec = 120, VillainToSec = 780;
+    /// <summary>극한의 상황 한 번에 빌런이 나올 확률, 그리고 그 일이 벌어진 뒤 몇 초 만에 들어오는지(방이 술렁이는 한가운데).</summary>
+    public const double VillainChance = .06;
+    private const double VillainDelayMin = 4, VillainDelayMax = 10;
+    private int villainUsedDay = -1;
     private static readonly Dictionary<string, ChatVillainLocale> villainLocales = new(StringComparer.Ordinal);
     private int villainDay = -1, villainStep;
     private double villainAt = -1, villainNext;
@@ -44,12 +52,7 @@ public sealed partial class InvestorSociety
     {
         if (!HypeAllowed || day == null || !SocialReady || !ChatHypeAssets.Ready) { return; }
         double now = SocialTime.Seconds;
-        if (villainDay != day.Day)
-        {
-            // 그날 나올지, 나온다면 언제인지를 장이 바뀔 때 한 번 정한다.
-            villainDay = day.Day; villainStep = 0;
-            villainAt = HypeRandom.Next() < VillainDayChance ? SessionClock.Time + VillainFromSec + HypeRandom.Next() * (VillainToSec - VillainFromSec) : -1;
-        }
+        if (villainDay != day.Day) { villainDay = day.Day; villainStep = 0; villainAt = -1; }
         if (villainStep == 0)
         {
             if (villainAt < 0 || day.Phase != MarketPhase.Trading || SessionClock.Time < villainAt) { return; }
@@ -64,7 +67,8 @@ public sealed partial class InvestorSociety
             // 방의 한두 명이 어리둥절해한다.
             VillainReact(locale.reactions, now);
             bool more = villainStep == 1 && HypeRandom.Next() < .6;
-            villainStep = more ? 2 : 3; villainNext = now + (more ? .9 + HypeRandom.Next() * 1.2 : 1.2 + HypeRandom.Next() * 1.6);
+            // 한마디가 화면 위로 밀려 올라가기 전에 끝난다: 첫 반응까지 1초 남짓, 내보내기까지 모두 합쳐 3~4초.
+            villainStep = more ? 2 : 3; villainNext = now + (more ? .5 + HypeRandom.Next() * .7 : .9 + HypeRandom.Next() * .9);
             return;
         }
         if (villainStep == 3)
@@ -78,6 +82,14 @@ public sealed partial class InvestorSociety
         villainStep = 0;
     }
 
+    /// <summary>극한의 상황이 벌어졌다(ChartTalk가 부른다). 낮은 확률로, 하루에 한 번까지만 빌런을 부른다.</summary>
+    private void OfferVillain()
+    {
+        if (day == null || villainStep != 0 || villainAt >= 0 || villainUsedDay == day.Day || HypeRandom.Next() >= VillainChance) { return; }
+        villainUsedDay = day.Day; villainDay = day.Day;
+        villainAt = SessionClock.Time + VillainDelayMin + HypeRandom.Next() * (VillainDelayMax - VillainDelayMin);
+    }
+
     private void BeginVillain(double now)
     {
         var locale = VillainLines();
@@ -89,7 +101,7 @@ public sealed partial class InvestorSociety
         VillainsSeen++;
         ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = "VILLAIN", reason = villainName + ": " + line });
         hypeQuietUntil = Math.Max(hypeQuietUntil, now + 1.2);
-        villainStep = 1; villainNext = now + 1.3 + HypeRandom.Next() * 1.5;
+        villainStep = 1; villainNext = now + .8 + HypeRandom.Next() * .8;
     }
 
     private void VillainReact(string[] lines, double now)

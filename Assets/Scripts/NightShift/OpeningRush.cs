@@ -16,7 +16,9 @@ public sealed class OpeningRush : MonoBehaviour
     /// <summary>방장은 목표 폭의 이만큼 이상 올라온 매수에 물량을 넘긴다. 플레이어 지시의 약속 목표가는 받아 주는 값의 이 배수다.</summary>
     public const decimal DumpShare = .6m, PromiseRatio = 1.15m;
     /// <summary>세력이 하루에 이 확률로 한 번 벌인다.</summary>
-    public const float DailyChance = .4f;
+    // 0으로 둔다: 세력이 스스로 장 시작 몰아주기를 벌이지 않는다. 작전과 무관한 종목이 장 초반에 혼자 +50%씩 튀는 일을 일부러 만들지 않기로 했다.
+    // (전에는 0.4였다: 열흘에 나흘꼴로 +10~80%를 노린 몰아주기가 나왔다.) 플레이어가 자기 리딩방에서 하는 몰아주기와 검증용 ForceNpc는 그대로 쓸 수 있다.
+    public const float DailyChance = 0f;
     private const float FollowerSpread = 15f, FollowerHold = 45f, RunSeconds = 60f;
     private const int MaxFollowers = 80;
 
