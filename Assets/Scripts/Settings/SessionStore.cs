@@ -41,7 +41,8 @@ public static partial class SessionStore
     public static bool CanSave => StockManager.Instance != null && StockManager.Instance.SetupConfirmed && MarketDayController.Instance != null &&
         MarketDayController.Instance.CheckpointReady && !MarketDayController.Instance.IntegrityFailed &&
         !StockManager.Instance.stocks.Any(stock=>stock.IsDelisting);
-    private static bool Root(Component value) => value is Trader || RootNames.Contains(value.GetType().Name);
+    // 차명 계좌(통정매매 때 잠깐 쓰는 빈 계좌)는 저장하지 않는다. 장면에 없는 계좌라 이어하기 때 되살릴 수 없어서, 저장에 섞이면 그 저장 전체가 거부됐다.
+    private static bool Root(Component value) => value is Trader trader ? !ManipulationTools.IsNominee(trader) : RootNames.Contains(value.GetType().Name);
     /// <summary>게임 이름을 바꾸기 전의 제품 이름. 저장 폴더가 이 이름으로 만들어져 있었다.</summary>
     private const string FormerProductName = "DonDon";
     /// <summary>
@@ -120,6 +121,13 @@ public static partial class SessionStore
                 string key=(string)binding["key"];
                 if (!key.StartsWith("trader:",StringComparison.Ordinal) || existing.Contains(key)) { continue; }
                 var node=nodes[(int)binding["value"]["r"]]; Type type=Type.GetType((string)types[(int)node["t"]],false);
+                // 예전 저장에는 차명 계좌(봇이 아닌 맨 Trader)가 섞여 있을 수 있다. 빈 계좌로 되살려 저장을 살린다. 계좌 명단에는 올리지 않는다.
+                if (type==typeof(Trader))
+                {
+                    var shell=new GameObject("Area :: Nominee Account").AddComponent<Trader>();
+                    idField.SetValue(shell,ParseTraderId(key)); Trader.Registry.Remove(shell); existing.Add(key); created=true;
+                    continue;
+                }
                 if (type==null || !typeof(TradeBot).IsAssignableFrom(type) || type.IsAbstract || type==typeof(ExchangeBot))
                 { throw new InvalidDataException("Cannot recreate checkpoint participant: "+key); }
                 var go=new GameObject(type.Name+"_Restored"); var trader=(Trader)go.AddComponent(type);

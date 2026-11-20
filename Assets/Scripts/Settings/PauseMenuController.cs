@@ -50,7 +50,9 @@ public sealed class PauseMenuController : MonoBehaviour
     private static void HideSceneSetup()
     {
         var setup = SceneSetup(); if (setup == null || !RetailStart) { return; }
-        var group = setup.GetComponent<CanvasGroup>() ?? setup.gameObject.AddComponent<CanvasGroup>();
+        // (?? 로 쓰면 안 된다. 에디터에서는 없는 컴포넌트가 진짜 null이 아닌 빈 껍데기로 돌아와서, 붙이지 않고 그대로 쓰다가 예외가 난다.)
+        var group = setup.GetComponent<CanvasGroup>();
+        if (group == null) { group = setup.gameObject.AddComponent<CanvasGroup>(); }
         group.alpha = 0f; group.blocksRaycasts = false;
     }
     private static bool RetailStart => StockManager.Instance != null && StockManager.Instance.economy != null && StockManager.Instance.economy.retailPlayerStart;
