@@ -146,6 +146,7 @@ public sealed partial class InvestorSociety
     {
         if (!SocialBots.TryGetValue(message.senderId, out var bot))
         { return; }
+        NoteBotQuestion(bot, message);
         ApplyChatInfluence(bot, message);
         if (SplitSocialDelivery(bot, message)) { return; }
         var context = new InvestorMessageContext(message.facts?.eventId ?? 0, message.roomId,

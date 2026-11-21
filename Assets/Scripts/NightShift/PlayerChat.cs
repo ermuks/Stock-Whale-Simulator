@@ -15,10 +15,14 @@ using UnityEngine;
 //  - 믿음이 쌓인 봇일수록 내가 말한 종목으로 눈을 돌린다(ChatInfluence와 같은 장치).
 // 주문을 대신 내거나 봇의 믿는 값을 바꾸지는 않는다. 실제 시청자 채팅은 이 길을 지나지 않는다.
 //
+// 무슨 말을 해도 누군가는 받는다. 소식·시장·세력·수익을 물으면 봇은 자기가 보고 아는 것(공개된 기사, 시세, 자기 계좌)으로 답하고,
+// 밥·잠·날씨 같은 시답잖은 얘기에는 그 갈래에 맞는 잡담으로 받는다. 봇이 던진 물음에 내가 답하면 물은 봇이 그 답을 받는다(PlayerChatTalk.cs).
+//
 // 종목 분석 AI: 새벽 관찰실에만 있다. "!분석 종목"이라고 쓰면(봇도 가끔 쓴다) 당일 시가·현재가·고가·저가와 매수 추천 점수를 카드로 올린다.
 // 점수는 누구나 보는 시세·호가·거래량만으로 낸다. 진짜 가치는 읽지 않는다. 참고용이고 틀릴 수 있다. 봇은 AI 말대로 움직이지 않는다.
 
-public enum PlayerTalkKind { Other, Analyze, Insult, Brag, Lament, AskBuy, AskSell, AskOpinion, AskPick, ClaimUp, ClaimDown, Whale, Thanks, Apology, Greeting, Bye, Laugh, Sad, CallAll }
+public enum PlayerTalkKind { Other, Analyze, Insult, Brag, Lament, AskBuy, AskSell, AskOpinion, AskPick, ClaimUp, ClaimDown, Whale, Thanks, Apology, Greeting, Bye, Laugh, Sad, CallAll,
+    AskNews, AskMarket, AskHot, AskWhale, AskHoldings, AskProfit, AskWhy, AskHow, Mention, Agree, Disagree, Dunno, Surprise, Topic, Question, Statement }
 
 public struct PlayerTalk
 {
@@ -27,6 +31,14 @@ public struct PlayerTalk
     /// <summary>글에 적힌 수익률(%). 없으면 NaN.</summary>
     public float Percent;
     public bool CallsAll, Laughs, Cries, Asks;
+    /// <summary>물음표나 묻는 말꼬리는 없어도 묻는 낱말(뭐·왜·누가·what·何)이 들어 있다.</summary>
+    public bool Wonders;
+    /// <summary>밤사이·어제 일을 묻는다.</summary>
+    public bool Night;
+    /// <summary>"왜?"·"진짜?"처럼 바로 앞의 말을 되묻는 짧은 말.</summary>
+    public bool AsksBack;
+    /// <summary>잡담의 갈래(food, sleep, weather …). 잡담이 아니면 null.</summary>
+    public string Topic;
     /// <summary>막말의 세기: 0 없음, 1 얕보는 말, 2 욕설, 3 선을 넘은 말(가족·죽으라는 말·성적인 욕).</summary>
     public int Rudeness;
     /// <summary>선을 넘은 말의 갈래: 가족을 건드렸는가, 죽으라고 했는가.</summary>
@@ -46,7 +58,7 @@ public struct PlayerTalk
     // 욕설은 띄어쓰기·기호·숫자를 끼워 넣어도 알아듣도록, 글자만 남긴 글에서 찾는다.
     private static readonly string[] Swear = { "씨발", "시발", "씨바", "씨팔", "시팔", "쓰발", "씨빨", "ㅅㅂ", "ㅆㅂ", "씹", "좆", "졷", "병신", "븅신", "빙신", "ㅄ", "새끼", "새키", "섀끼", "쉐끼", "ㅅㄲ", "개놈", "개년", "년들", "련들", "년아", "련아", "미친놈", "미친년", "미친새", "또라이", "지랄", "ㅈㄹ", "등신", "머저리", "얼간이", "쪼다", "개돼지", "거지새", "아가리", "주둥이",
         "fuck", "fck", "shit", "bitch", "asshole", "bastard", "retard", "moron", "scum", "dumbass", "dipshit", "stfu", "クソ", "くそ", "カス", "ゴミ", "きもい", "キモい", "うざい", "ウザい", "ボケ", "クズ", "くず", "消えろ", "失せろ" };
-    private static readonly string[] Vile = { "애미", "애비", "에미", "니엄마", "너희엄마", "니네엄마", "니아빠", "느금", "엄창", "뒤져", "뒤진", "뒤질", "뒈져", "뒈진", "디져", "죽어버려", "다죽어", "죽여버", "쳐죽", "자살", "암적", "쑤셔", "강간", "패죽", "찢어죽",
+    private static readonly string[] Vile = { "애미", "애비", "에미", "니엄마", "너희엄마", "니네엄마", "니아빠", "느금", "엄창", "뒤져", "뒤진", "뒤질", "뒈져", "뒈진", "디져", "죽어버려", "다죽어", "죽여버", "쳐죽", "암적", "쑤셔", "강간", "패죽", "찢어죽",
         "kys", "killyourself", "yourmom", "yourmother", "motherf", "godie", "dropdead", "hopeyoudie", "死ね", "殺す", "殺し", "くたばれ", "お前の母", "親の顔", "自殺" };
     /// <summary>글자만 남긴다(한글·자모·영문·가나·한자). 띄어쓰기나 기호로 끊어 쓴 욕을 이어 붙여 읽기 위해서다.</summary>
     private static string Bare(string text)
@@ -60,7 +72,7 @@ public struct PlayerTalk
         return result.ToString();
     }
     private static readonly string[] FamilyWords = { "애미", "애비", "에미", "엄마", "아빠", "느금", "엄창", "부모", "yourmom", "yourmother", "motherf", "お前の母", "親の顔" };
-    private static readonly string[] DeathWords = { "뒤져", "뒤질", "뒈져", "디져", "죽어버려", "다죽어", "죽여버", "쳐죽", "자살", "패죽", "찢어죽", "kys", "killyourself", "godie", "dropdead", "hopeyoudie", "死ね", "殺す", "殺し", "くたばれ", "自殺" };
+    private static readonly string[] DeathWords = { "뒤져", "뒤질", "뒈져", "디져", "죽어버려", "다죽어", "죽여버", "쳐죽", "패죽", "찢어죽", "kys", "killyourself", "godie", "dropdead", "hopeyoudie", "死ね", "殺す", "殺し", "くたばれ", "自殺" };
     // 한글을 영문 자판 그대로 친 글("roqbdtls" = 개병신)도 알아듣는다: 두벌식 자판에서 글쇠를 자모로 바꾸고 글자로 모은다.
     private const string KeyConsonants = "rRseEfaqQtTdwWczxvg", Initials = "ㄱㄲㄴㄷㄸㄹㅁㅂㅃㅅㅆㅇㅈㅉㅊㅋㅌㅍㅎ";
     private static readonly string[] KeyVowels = { "k", "o", "i", "O", "j", "p", "u", "P", "h", "hk", "ho", "hl", "y", "n", "nj", "np", "nl", "b", "m", "ml", "l" };
@@ -110,6 +122,9 @@ public struct PlayerTalk
         string line = text ?? "", lower = line.ToLowerInvariant(), bare = Bare(lower);
         if (bare.Length == 0) { return 0; }
         int level = Has(bare, Vile) ? 3 : Has(bare, Swear) ? 2 : Has(lower, Rude) ? 1 : 0;
+        // "자살"은 띄어 쓴 글에서만 찾는다. 글자만 이어 붙이면 "산삼전자 살까"가 걸린다.
+        bool suicide = lower.Contains("자살") && !lower.Contains("전자살");
+        if (suicide) { level = 3; }
         // 영문 자판으로 친 한글. 영어 낱말이 우연히 걸리지 않도록 욕설 이상만 본다.
         if (level == 0 && OnlyKeys(line))
         {
@@ -117,18 +132,84 @@ public struct PlayerTalk
             level = Has(typed, Vile) ? 3 : Has(typed, Swear) ? 2 : 0;
             if (level > 0) { bare = typed; }
         }
-        if (level >= 3) { family = Has(bare, FamilyWords); death = Has(bare, DeathWords); }
+        if (level >= 3) { family = Has(bare, FamilyWords); death = suicide || Has(bare, DeathWords); }
         return level;
     }
-    private static readonly string[] BragWords = { "수익", "익절", "먹었", "먹음", "벌었", "벌음", "땄", "수익률", "플러스", "빨간불", "대박", "떡상했", "profit", "made ", "gains", "up ", "banked", "利確", "儲か", "勝った", "爆益" };
+    private static readonly string[] BragWords = { "수익", "익절", "먹었", "먹음", "벌었", "벌음", "땄", "수익률", "플러스", "빨간불", "대박 났", "대박났", "대박 쳤", "떡상했", "profit", "made ", "gains", "up ", "banked", "利確", "儲か", "勝った", "爆益" };
     private static readonly string[] LossWords = { "물렸", "물림", "손절", "잃었", "잃음", "마이너스", "파란불", "깡통", "손실", "털렸", "반토막", "bagholding", "lost ", "loss", "down ", "rekt", "stopped out", "損切", "含み損", "負けた", "爆損" };
     private static readonly string[] BuyAsk = { "살까", "사도", "사야", "탈까", "타도", "들어가도", "들어갈까", "진입", "매수각", "줍줍", "담을까", "should i buy", "buy now", "get in", "worth buying", "買い?", "買う?", "買っていい", "入っていい", "買い時" };
     private static readonly string[] SellAsk = { "팔까", "팔아야", "던질까", "던져야", "손절할까", "익절할까", "정리할까", "매도각", "should i sell", "sell now", "take profit", "get out", "売り?", "売る?", "売っていい", "利確していい", "売り時" };
     private static readonly string[] OpinionAsk = { "어때", "어떰", "어떻게 봐", "어떻게 보", "어케 봄", "어떨까", "괜찮", "갈까", "오를까", "떨어질까", "전망", "의견", "what do you think", "thoughts", "how about", "any good", "どう思う", "どう?", "どうかな", "どうよ", "見通し" };
     private static readonly string[] PickAsk = { "뭐 살", "뭐 사", "뭘 사", "뭐 타", "추천", "종목 좀", "뭐가 좋", "어디 들어", "what to buy", "any picks", "recommend", "what should i buy", "何買", "おすすめ", "何がいい" };
-    private static readonly string[] UpWords = { "오른다", "올라간다", "간다", "쏜다", "쏠", "떡상", "상한가", "가즈아", "풀매수", "날아간다", "터진다", "급등", "올린다", "to the moon", "going up", "mooning", "pump", "rip", "sends", "上がる", "爆上げ", "ストップ高", "飛ぶ", "買い増し" };
-    private static readonly string[] DownWords = { "떨어진다", "내려간다", "빠진다", "떡락", "하한가", "망했", "끝났", "폭락", "급락", "무너진다", "던져라", "going down", "dump", "crash", "tank", "it's over", "dead", "下がる", "暴落", "ストップ安", "終わった", "逃げろ" };
+    private static readonly string[] UpWords = { "오른다", "오를", "올라간다", "올라갈", "간다", "갈듯", "갈 듯", "갈거", "갈 거", "갈것", "갈 것", "쏜다", "쏠", "떡상", "상한가", "가즈아", "풀매수", "날아간다", "터진다", "급등", "올린다", "to the moon", "going up", "mooning", "pump", "rip", "sends", "上がる", "爆上げ", "ストップ高", "飛ぶ", "買い増し" };
+    private static readonly string[] DownWords = { "떨어진다", "떨어질", "내려간다", "내려갈", "내릴", "빠진다", "빠질", "떡락", "하한가", "망했", "끝났", "폭락", "급락", "무너진다", "던져라", "going down", "dump", "crash", "tank", "it's over", "dead", "下がる", "暴落", "ストップ安", "終わった", "逃げろ" };
     private static readonly string[] WhaleWords = { "내가 세력", "나 세력", "제가 세력", "세력이다", "내가 올린", "내가 올릴", "작전 들어", "내가 쏜다", "i'm the whale", "i am the whale", "i'll pump", "i move this", "俺が仕手", "仕手だ", "俺が上げる" };
+
+    // ── 금융 얘기를 묻는 말 ──
+    private static readonly string[] NewsAsk = { "소식", "뉴스", "정보", "찌라시", "공시", "호재", "악재", "무슨 일", "무슨일", "뭔 일", "뭔일", "별일", "루머", "기사", "떴냐", "떴음", "news", "rumor", "rumour", "headline", "any info", "what happened", "anything happen", "what's going on", "whats going on", "what did i miss", "ニュース", "情報", "材料", "噂", "何かあった", "なんかあった", "何があった" };
+    private static readonly string[] NightWords = { "밤에", "밤새", "밤사이", "밤 사이", "간밤", "어제", "새벽에", "자는 동안", "overnight", "last night", "yesterday", "while i slept", "昨夜", "夜の間", "昨日", "寝てる間", "夜中" };
+    private static readonly string[] WhaleAsk = { "세력", "작전", "큰손", "고래", "기관", "주포", "누가 올", "누가 던", "누가 사", "누가 파", "매집", "whale", "whales", "big money", "big player", "manipulation", "manipulating", "who's buying", "who is buying", "who's selling", "who is selling", "仕手", "大口", "クジラ", "機関", "誰が買", "誰が売" };
+    private static readonly string[] MarketAsk = { "장 어때", "오늘 장", "장 분위기", "분위기", "시장", "지수", "장 왜", "오늘 어때", "장 좋", "장 안 좋", "장이 좋", "장이 안", "market", "how's today", "hows today", "how is today", "相場", "地合い", "今日どう", "市場" };
+    private static readonly string[] HotAsk = { "뭐 보고", "뭐 봄", "뭐 보는", "뭘 보", "뭐보", "뭐가 오", "뭐 오르", "뭐가 가", "뭐 감", "핫한", "뜨는", "급등주", "대장", "주도주", "뭐가 세", "뭐 빠", "뭐가 빠", "뭐 떨어", "뭐가 떨어", "what are you watching", "what are you looking at", "what's moving", "whats moving", "what's hot", "whats hot", "movers", "what's pumping", "what's running", "何見てる", "なに見てる", "何が上が", "何が動", "注目", "何が熱" };
+    private static readonly string[] HoldAsk = { "뭐 들고", "뭘 들고", "뭐 갖고", "뭐 가지고", "뭐 샀", "뭘 샀", "뭐 탔", "뭐 담았", "보유 종목", "보유종목", "포트", "뭐 물렸", "what are you holding", "what do you hold", "what did you buy", "your bags", "portfolio", "positions", "何持って", "なに持って", "何買った", "ポートフォリオ", "ポジ" };
+    private static readonly string[] ProfitAsk = { "수익 어때", "수익률 어때", "다들 수익", "다들 벌", "벌었냐", "벌었음?", "벌었어?", "벌고 있", "계좌 어때", "계좌 상태", "얼마 벌", "얼마 잃", "다들 손실", "다들 물렸", "잃었냐", "수익 났냐", "수익 났음?", "how's your pnl", "hows your pnl", "anyone green", "anyone up", "anyone red", "you guys up", "making money", "how much did you make", "how are you doing today", "みんな儲", "儲かってる", "勝ってる?", "負けてる?", "収支" };
+    private static readonly string[] WhyWords = { "왜", "이유", "근거", "why", "how come", "reason", "なぜ", "なんで", "どうして", "理由", "根拠" };
+    private static readonly string[] BackWords = { "왜", "이유", "근거", "진짜", "ㄹㅇ", "정말", "레알", "그래서", "어째서", "why", "really", "for real", "seriously", "how so", "and then", "so what", "なぜ", "なんで", "マジ", "本当", "ほんと", "それで", "根拠" };
+    private static readonly string[] HowAsk = { "어떻게 해", "어떻게 하", "어케 해", "어케 함", "방법", "하는 법", "하는법", "뭔 뜻", "무슨 뜻", "뜻이 뭐", "알려줘", "알려 줘", "알려주", "가르쳐", "how do i", "how to", "what does", "explain", "teach me", "どうやって", "やり方", "って何", "教えて" };
+    // ── 맞장구와 짧은 대꾸 ──
+    private static readonly string[] AgreeWords = { "ㅇㅇ", "ㅇㅈ", "ㄹㅇ", "인정", "맞아", "맞네", "맞지", "맞음", "그치", "그니까", "그러게", "그렇지", "ㅇㅋ", "오키", "오케이", "굿", "좋아", "좋지", "콜", "당연", "yeah", "yep", "yes", "true", "agreed", "right", "ok", "okay", "sure", "fr", "exactly", "うん", "そう", "それな", "たしかに", "確かに", "おけ", "了解", "はい" };
+    private static readonly string[] DisagreeWords = { "ㄴㄴ", "아닌데", "아니야", "아님", "아니", "노노", "별로", "싫어", "싫음", "안 해", "안해", "nope", "nah", "no", "no way", "disagree", "not really", "いや", "違う", "ちがう", "ないわ", "いいえ" };
+    private static readonly string[] DunnoWords = { "몰라", "모름", "모르겠", "글쎄", "몰겠", "모르지", "몰루", "idk", "dunno", "no idea", "not sure", "who knows", "わからん", "分からん", "知らん", "さあ", "わかんない" };
+    private static readonly string[] SurpriseWords = { "헐", "대박", "미쳤", "우와", "오오", "실화", "ㄷㄷ", "ㅁㅊ", "세상에", "와씨", "와 ", "wow", "omg", "holy", "wtf", "insane", "damn", "マジか", "やば", "うお", "えぐ", "すげ" };
+    // ── 묻는 낱말 ──
+    private static readonly string[] QuestionWords = { "뭐", "뭘", "왜", "어디", "언제", "누가", "누구", "어떻게", "어케", "몇", "얼마", "무슨", "뭔", "있냐", "없냐", "있나", "없나", "인가", "런가", "던가", "는가", "할까", "될까", "을까", "what", "why", "who", "how", "when", "where", "which", "anyone", "anybody", "any", "is it", "are you", "do you", "can i", "should i", "何", "なに", "なぜ", "なんで", "どう", "誰", "いつ", "どこ", "かな", "ですか", "ますか" };
+    // ── 시답잖은 얘기의 갈래 ──
+    private static readonly (string key, string[] words)[] Topics =
+    {
+        ("who", new[] { "봇이", "봇임", "봇이냐", "봇이지", "봇 아니", "사람이냐", "사람임", "사람 맞", "ai냐", "ai임", "몇 살", "몇살", "어디 살", "어디 사", "직업", "뭐 하는 사람", "누구세요", "누구임", "누구냐", "are you a bot", "are you bots", "are you real", "are you human", "how old", "where are you from", "what do you do", "ボット", "人間?", "何歳", "どこ住み", "何者" }),
+        ("doing", new[] { "뭐해", "뭐함", "뭐 해", "뭐 함", "뭐하냐", "뭐 하냐", "뭐 하는 중", "뭐하는 중", "뭐하고", "what are you doing", "what are you up to", "wyd", "what's up", "whats up", "sup", "何してる", "なにしてる", "何してん" }),
+        ("time", new[] { "몇 시", "몇시", "언제 열", "언제 닫", "장 언제", "언제 끝", "마감 언제", "개장 언제", "what time", "when does", "when is the", "market open", "market close", "何時", "いつ開", "いつ終", "引けは" }),
+        ("food", new[] { "밥", "점심", "저녁", "아침 먹", "야식", "치킨", "라면", "배고", "뭐 먹", "뭐먹", "먹을까", "커피", "피자", "국밥", "삼겹", "떡볶이", "짜장", "햄버거", "간식", "lunch", "dinner", "breakfast", "hungry", "eat", "eating", "food", "coffee", "pizza", "burger", "snack", "ご飯", "昼飯", "夕飯", "腹減", "ラーメン", "コーヒー", "飯食", "何食" }),
+        ("drink", new[] { "술", "맥주", "소주", "한잔", "한 잔", "막걸리", "beer", "drink", "drinks", "drunk", "whiskey", "酒", "ビール", "飲み", "ハイボール" }),
+        ("sleep", new[] { "졸려", "졸리", "졸림", "피곤", "잠 와", "잠온", "잠와", "자고 싶", "못 잤", "못잤", "밤샘", "밤샜", "눈 감", "sleepy", "tired", "exhausted", "no sleep", "all nighter", "眠い", "眠たい", "疲れ", "徹夜", "寝不足" }),
+        ("weather", new[] { "날씨", "비 오", "비온", "비 온", "눈 오", "눈온", "덥다", "더워", "춥다", "추워", "미세먼지", "장마", "weather", "raining", "rainy", "snowing", "cold out", "hot out", "freezing", "天気", "雨", "暑い", "寒い", "雪" }),
+        ("bored", new[] { "심심", "노잼", "조용하", "조용~", "조용 ", "한산", "지루", "할 거 없", "할거 없", "잠잠", "bored", "boring", "quiet", "dead chat", "so slow", "暇", "退屈", "静か", "過疎" }),
+        ("work", new[] { "회사", "출근", "퇴사", "월급", "사장", "부장", "팀장", "야근", "직장", "알바", "백수", "회의", "상사", "work", "job", "boss", "salary", "paycheck", "office", "meeting", "overtime", "会社", "出勤", "給料", "上司", "残業", "仕事", "無職", "会議" }),
+        ("rich", new[] { "부자", "은퇴", "람보", "건물주", "집 사", "차 사", "경제적 자유", "졸업", "파이어", "일확천금", "rich", "retire", "lambo", "millionaire", "financial freedom", "金持ち", "引退", "億り人", "一攫千金" }),
+        ("love", new[] { "여친", "남친", "결혼", "연애", "와이프", "마누라", "남편", "소개팅", "솔로", "썸", "girlfriend", "boyfriend", "wife", "husband", "married", "single", "dating", "彼女", "彼氏", "結婚", "嫁", "独身", "恋愛" }),
+        ("fun", new[] { "게임", "영화", "넷플", "유튜브", "드라마", "축구", "야구", "노래", "웹툰", "만화", "game", "gaming", "movie", "netflix", "youtube", "football", "soccer", "baseball", "music", "ゲーム", "映画", "アニメ", "野球", "サッカー", "漫画" }),
+        ("newbie", new[] { "뉴비", "초보", "주린이", "입문", "시작했", "처음 해", "처음이", "처음 왔", "오늘 처음", "newbie", "noobie", "new here", "beginner", "first time", "just started", "初心者", "初めて", "始めたばかり", "新参" }),
+        ("praise", new[] { "고수", "잘한다", "잘하네", "대단", "멋지", "멋있", "존경", "천재", "똑똑", "형님", "genius", "pro", "respect", "nice one", "legend", "smart", "well played", "すごい", "天才", "さすが", "神", "尊敬" }),
+        ("luck", new[] { "로또", "운이", "운빨", "기도", "제발", "물 떠놓고", "행운", "lottery", "luck", "lucky", "pray", "praying", "please god", "fingers crossed", "宝くじ", "運", "祈", "頼む", "神頼み" }),
+        ("health", new[] { "아프", "아파", "감기", "병원", "두통", "허리", "몸살", "sick", "headache", "hospital", "my back", "a cold", "風邪", "病院", "頭痛", "腰が", "体調" }),
+        ("home", new[] { "엄마", "아빠", "부모님", "집에", "애기", "애가", "강아지", "고양이", "댕댕", "냥이", "mom", "dad", "my kid", "kids", "dog", "cat", "at home", "親", "子供", "犬", "猫", "実家" }),
+        ("angry", new[] { "짜증", "빡치", "빡침", "열받", "화나", "화남", "멘붕", "현타", "어이없", "annoyed", "annoying", "pissed", "tilted", "mad", "furious", "ムカつく", "イライラ", "萎え", "腹立つ" }),
+        ("happy", new[] { "기분 좋", "기분좋", "행복", "신난", "신나", "개꿀", "꿀잼", "좋은 날", "feeling good", "happy", "lets go", "let's go", "great day", "嬉しい", "最高", "気分いい", "楽しい" }),
+    };
+
+    private static bool IsLatin(char c) => c >= 'a' && c <= 'z' || c >= '0' && c <= '9';
+    /// <summary>낱말이 들어 있는가. 영문 낱말은 다른 낱말 속에 묻혀 있으면(show 속의 how) 치지 않는다. 글은 소문자여야 한다.</summary>
+    private static bool HasWord(string lower, string[] words)
+    {
+        foreach (string word in words)
+        {
+            int at = lower.IndexOf(word, StringComparison.Ordinal);
+            while (at >= 0)
+            {
+                int end = at + word.Length;
+                bool left = !IsLatin(word[0]) || at == 0 || !IsLatin(lower[at - 1]);
+                bool right = !IsLatin(word[word.Length - 1]) || end >= lower.Length || !IsLatin(lower[end]);
+                if (left && right) { return true; }
+                at = end < lower.Length ? lower.IndexOf(word, at + 1, StringComparison.Ordinal) : -1;
+            }
+        }
+        return false;
+    }
+    private static string TopicOf(string lower)
+    {
+        foreach (var topic in Topics) { if (HasWord(lower, topic.words)) { return topic.key; } }
+        return null;
+    }
 
     private static bool Has(string text, string[] words)
     {
@@ -179,7 +260,7 @@ public struct PlayerTalk
         if (!latin || name.Length >= 5) { return squeezed.Contains(name); }
         return Regex.IsMatch(raw ?? "", @"(?<![A-Za-z0-9])" + Regex.Escape(name) + @"(?![A-Za-z0-9])", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
     }
-    /// <summary>글 한 줄에서 뜻을 읽는다. 여러 뜻이 겹치면 더 무거운 쪽을 고른다: 명령 > 시비 > 자랑·한탄 > 묻기 > 주장 > 인사치레 > 웃음 > 부르기.</summary>
+    /// <summary>글 한 줄에서 뜻을 읽는다. 여러 뜻이 겹치면 더 무거운 쪽을 고른다: 명령 > 시비 > 자랑·한탄 > 종목 묻기 > 소식·세력·시장 묻기 > 주장 > 인사치레 > 종목 얘기 > 잡담 > 맞장구 > 웃음 > 그 밖의 물음 > 그 밖의 말.</summary>
     public static PlayerTalk Read(string text)
     {
         var talk = new PlayerTalk { Percent = float.NaN, Kind = PlayerTalkKind.Other };
@@ -201,24 +282,44 @@ public struct PlayerTalk
 
         bool loss = Has(lower, LossWords) || !float.IsNaN(talk.Percent) && talk.Percent < 0f, gain = Has(lower, BragWords) || !float.IsNaN(talk.Percent) && talk.Percent > 0f && !talk.Asks;
         talk.Rudeness = RudenessOf(line, out talk.RudeFamily, out talk.RudeDeath);
+        talk.Wonders = talk.Asks || HasWord(lower, QuestionWords);
+        talk.Night = HasWord(lower, NightWords);
+        bool brief = line.Length <= 14;
+        talk.AsksBack = brief && talk.Stock == null && (HasWord(lower, WhyWords) || talk.Asks && HasWord(lower, BackWords));
         if (talk.Rudeness > 0) { talk.Kind = PlayerTalkKind.Insult; }
         else if (Has(lower, WhaleWords)) { talk.Kind = PlayerTalkKind.Whale; }
+        else if (HasWord(lower, ProfitAsk)) { talk.Kind = PlayerTalkKind.AskProfit; }
         else if (loss && !talk.Asks) { talk.Kind = PlayerTalkKind.Lament; }
         else if (gain && !talk.Asks) { talk.Kind = PlayerTalkKind.Brag; }
         else if (Has(lower, PickAsk) && talk.Stock == null) { talk.Kind = PlayerTalkKind.AskPick; }
         else if (talk.Stock != null && Has(lower, SellAsk)) { talk.Kind = PlayerTalkKind.AskSell; }
         else if (talk.Stock != null && Has(lower, BuyAsk)) { talk.Kind = PlayerTalkKind.AskBuy; }
+        else if (HasWord(lower, NewsAsk) && !Has(lower, Thank)) { talk.Kind = PlayerTalkKind.AskNews; }
+        else if (HasWord(lower, WhaleAsk)) { talk.Kind = PlayerTalkKind.AskWhale; }
+        else if (talk.Stock != null && HasWord(lower, WhyWords)) { talk.Kind = PlayerTalkKind.AskWhy; }
         else if (talk.Stock != null && (Has(lower, OpinionAsk) || talk.Asks)) { talk.Kind = PlayerTalkKind.AskOpinion; }
         else if (talk.Stock != null && Has(lower, DownWords)) { talk.Kind = PlayerTalkKind.ClaimDown; }
         else if (talk.Stock != null && Has(lower, UpWords)) { talk.Kind = PlayerTalkKind.ClaimUp; }
+        else if (HasWord(lower, HoldAsk)) { talk.Kind = PlayerTalkKind.AskHoldings; }
+        else if (HasWord(lower, HotAsk)) { talk.Kind = PlayerTalkKind.AskHot; }
+        else if (HasWord(lower, MarketAsk)) { talk.Kind = PlayerTalkKind.AskMarket; }
         else if (Has(lower, Thank)) { talk.Kind = PlayerTalkKind.Thanks; }
         else if (Has(lower, Sorry)) { talk.Kind = PlayerTalkKind.Apology; }
         else if (Has(lower + " ", Greet)) { talk.Kind = PlayerTalkKind.Greeting; }
         else if (Has(lower, Farewell)) { talk.Kind = PlayerTalkKind.Bye; }
-        else if (talk.Stock != null) { talk.Kind = PlayerTalkKind.AskOpinion; }
+        // 종목 이름만 꺼낸 말("산삼전자 보는 중")은 묻는 말이 아니라 그 종목 얘기다.
+        else if (talk.Stock != null) { talk.Kind = PlayerTalkKind.Mention; }
+        else if (HasWord(lower, HowAsk)) { talk.Kind = PlayerTalkKind.AskHow; }
+        else if ((talk.Topic = TopicOf(lower)) != null) { talk.Kind = PlayerTalkKind.Topic; }
+        else if (brief && HasWord(lower, DunnoWords)) { talk.Kind = PlayerTalkKind.Dunno; }
+        else if (brief && !talk.Asks && HasWord(lower, AgreeWords)) { talk.Kind = PlayerTalkKind.Agree; }
+        else if (brief && !talk.Asks && HasWord(lower, DisagreeWords)) { talk.Kind = PlayerTalkKind.Disagree; }
+        else if (brief && HasWord(lower + " ", SurpriseWords)) { talk.Kind = PlayerTalkKind.Surprise; }
         else if (talk.Cries) { talk.Kind = PlayerTalkKind.Sad; }
         else if (talk.Laughs) { talk.Kind = PlayerTalkKind.Laugh; }
+        else if (talk.Wonders) { talk.Kind = PlayerTalkKind.Question; }
         else if (talk.CallsAll) { talk.Kind = PlayerTalkKind.CallAll; }
+        else { talk.Kind = PlayerTalkKind.Statement; }
         return talk;
     }
     private static int Overlap(string words, Stock stock)
@@ -286,7 +387,7 @@ public sealed partial class InvestorSociety
     private const string PlayerTemplate = "PLAYER.CHAT";
     /// <summary>플레이어의 "오른다·내린다"를 이만큼(초) 뒤에 따진다. 그 사이 2% 넘게 그 방향으로 갔으면 맞은 것, 반대로 2% 넘게 갔으면 틀린 것.</summary>
     private const float CallMinSec = 90f, CallMaxSec = 150f; private const decimal CallMove = .02m;
-    private sealed class TalkReply { public double due; public int room; public string key; public Stock stock; public long replyTo; public int onlyBot; public float percent; }
+    private sealed class TalkReply { public double due; public int room; public string key; public Stock stock; public long replyTo; public int onlyBot, notBot; public float percent; public double wait; public string said; }
     private sealed class PlayerCall { public Stock stock; public decimal price; public bool up; public double due; public int room; public long messageId; }
     private sealed class AnalysisJob { public double due; public int room; public Stock stock; public string argument; public long replyTo; }
     private readonly List<TalkReply> talkReplies = new();
@@ -390,10 +491,22 @@ public sealed partial class InvestorSociety
             + (talk.CallsAll ? " 부름" : "") + (talk.Laughs ? " 웃음" : "") + (spam ? " 도배" : ""));
         if (spam) { Plan(room, "spam", null, id, now + 1.2, 0, 1, .7f); return true; }
 
+        // 짧은 말은 봇이 되받아 읊기도 한다("치킨? ㅋㅋ").
+        talkSaid = text.Length <= 12 && text.IndexOf('{') < 0 && text.IndexOf('@') < 0 ? text : null;
+        // 방금 나와 말을 섞은 봇이 있으면 그 봇이 먼저 받는다. 봇이 던진 물음에 내가 답했으면 물은 봇이 받는다.
+        var partner = TalkPartnerIn(room, now); int near = partner == null ? 0 : partner.bot;
+        if (HearPlayerAnswer(room, talk, id, now, ref near)) { return true; }
+        if (partner != null && talk.AsksBack && talk.Kind != PlayerTalkKind.Insult && talk.Kind != PlayerTalkKind.Analyze)
+        {
+            // "왜?" "진짜?": 방금 말한 봇이 자기 말을 풀어 준다.
+            Plan(room, "follow", partner.stock, id, now + 1.1, near, 1, 1f, sure: true);
+            return true;
+        }
+
         switch (talk.Kind)
         {
             case PlayerTalkKind.Analyze:
-                if (room != NpcLeadingRoom.RoomId) { Plan(room, "aiOnly", null, id, now + 1.4, 0, 1, .9f); break; }
+                if (room != NpcLeadingRoom.RoomId) { Plan(room, "aiOnly", null, id, now + 1.4, 0, 1, .9f, sure: true); break; }
                 analysisJobs.Add(new AnalysisJob { due = now + 1.2 + HypeRandom.Next(), room = room, stock = talk.Stock, argument = talk.Argument, replyTo = id });
                 break;
             case PlayerTalkKind.Insult:
@@ -420,7 +533,7 @@ public sealed partial class InvestorSociety
                         bool sore = bot.GetOwnedVolume(talk.Stock) > 0m && bot.GetAvgPrice(talk.Stock) > talk.Stock.currentPrice || mind.Traits.Grudge >= 70;
                         mind.ReactToPlayerTalk(Mathf.Clamp(gain * 1f, 2f, 25f) * (sore ? .3f : 1f), sore ? Mathf.Clamp(gain * .5f, 2f, 16f) : 0f, "플레이어의 수익 인증 " + gain.ToString("+0.0") + "%");
                     });
-                    Plan(room, "brag.proof.praise", talk.Stock, id, now + 1.2, 0, HypeRandom.Range(1, 3), 1f, gain);
+                    Plan(room, "brag.proof.praise", talk.Stock, id, now + 1.2, near, HypeRandom.Range(1, 3), 1f, gain);
                     Plan(room, "brag.proof.envy", talk.Stock, id, now + 2.6, 0, gain >= 10f ? HypeRandom.Range(1, 3) : HypeRandom.Range(0, 2), .8f, gain);
                     Sway(room, talk.Stock, 1.2f);
                 }
@@ -428,61 +541,111 @@ public sealed partial class InvestorSociety
                 {
                     // 들고는 있는데 손실 중이다. 자랑이 거짓이다.
                     Hearers(room, (bot, mind) => mind.ReactToPlayerTalk(-5f, 1f, "플레이어의 거짓 자랑"));
-                    Plan(room, "brag.loss", talk.Stock, id, now + 1.4, 0, HypeRandom.Range(1, 3), 1f, (float)actual);
+                    Plan(room, "brag.loss", talk.Stock, id, now + 1.4, near, HypeRandom.Range(1, 3), 1f, (float)actual);
                 }
                 else
                 {
                     Hearers(room, (bot, mind) => mind.ReactToPlayerTalk(-3f, 0f, "플레이어의 인증 없는 자랑"));
-                    Plan(room, "brag.noproof", talk.Stock, id, now + 1.3, 0, HypeRandom.Range(1, 3), 1f);
+                    Plan(room, "brag.noproof", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), 1f);
                 }
                 break;
             case PlayerTalkKind.Lament:
                 Hearers(room, (bot, mind) => mind.ReactToPlayerTalk(card != null ? 2f : .5f, 0f, "플레이어의 손실 한탄"));
-                Plan(room, "lament.comfort", talk.Stock, id, now + 1.3, 0, HypeRandom.Range(1, 3), .9f, (float)actual);
+                Plan(room, "lament.comfort", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), .9f, (float)actual, sure: true);
                 Plan(room, "lament.mock", talk.Stock, id, now + 2.8, 0, HypeRandom.Range(0, 2), .7f, (float)actual);
                 break;
             case PlayerTalkKind.AskBuy: case PlayerTalkKind.AskSell: case PlayerTalkKind.AskOpinion:
-                Plan(room, talk.Kind == PlayerTalkKind.AskBuy ? "askBuy" : talk.Kind == PlayerTalkKind.AskSell ? "askSell" : "ask", talk.Stock, id, now + 1.3, 0, HypeRandom.Range(1, 4), .9f);
+                Plan(room, talk.Kind == PlayerTalkKind.AskBuy ? "askBuy" : talk.Kind == PlayerTalkKind.AskSell ? "askSell" : "ask", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 4), .9f, sure: true);
                 Sway(room, talk.Stock, .4f);
                 break;
             case PlayerTalkKind.AskPick:
-                Plan(room, "askPick", null, id, now + 1.4, 0, HypeRandom.Range(1, 4), .9f);
+                Plan(room, "askPick", null, id, now + 1.4, near, HypeRandom.Range(1, 4), .9f, sure: true);
                 break;
             case PlayerTalkKind.ClaimUp: case PlayerTalkKind.ClaimDown:
                 bool up = talk.Kind == PlayerTalkKind.ClaimUp;
-                Plan(room, up ? "claimUp" : "claimDown", talk.Stock, id, now + 1.2, 0, HypeRandom.Range(1, 4), .9f);
-                if (playerCalls.Count < 3) { playerCalls.Add(new PlayerCall { stock = talk.Stock, price = talk.Stock.currentPrice, up = up, due = now + CallMinSec + HypeRandom.Next() * (CallMaxSec - CallMinSec), room = room, messageId = id }); }
+                Plan(room, up ? "claimUp" : "claimDown", talk.Stock, id, now + 1.2, near, HypeRandom.Range(1, 4), .9f, sure: true);
+                NotePlayerCall(room, talk.Stock, up, id, now);
                 if (up) { Sway(room, talk.Stock, 1f); }
                 break;
             case PlayerTalkKind.Whale:
-                Plan(room, "whale", talk.Stock, id, now + 1.2, 0, HypeRandom.Range(1, 4), .95f);
+                Plan(room, "whale", talk.Stock, id, now + 1.2, near, HypeRandom.Range(1, 4), .95f, sure: true);
                 if (talk.Stock != null) { Sway(room, talk.Stock, .8f); }
                 break;
+            // ── 소식·시장·세력·수익을 묻는 말: 봇은 자기가 보고 아는 것(공개된 기사, 시세, 자기 계좌)으로 답한다 ──
+            case PlayerTalkKind.AskNews:
+                Plan(room, talk.Night ? "newsNight" : "news", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), .85f, sure: true);
+                if (talk.Stock != null) { Sway(room, talk.Stock, .3f); }
+                break;
+            case PlayerTalkKind.AskMarket:
+                Plan(room, "market", null, id, now + 1.3, near, HypeRandom.Range(1, 3), .85f, sure: true);
+                break;
+            case PlayerTalkKind.AskHot:
+                Plan(room, "hot", null, id, now + 1.3, near, HypeRandom.Range(1, 4), .85f, sure: true);
+                break;
+            case PlayerTalkKind.AskWhale:
+                Plan(room, "whaleTalk", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), .85f, sure: true);
+                break;
+            case PlayerTalkKind.AskHoldings:
+                Plan(room, "holdings", null, id, now + 1.3, near, HypeRandom.Range(1, 4), .85f, sure: true);
+                break;
+            case PlayerTalkKind.AskProfit:
+                Plan(room, "profit", null, id, now + 1.3, near, HypeRandom.Range(1, 4), .85f, sure: true);
+                break;
+            case PlayerTalkKind.AskWhy:
+                Plan(room, "why", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), .85f, sure: true);
+                Sway(room, talk.Stock, .3f);
+                break;
+            case PlayerTalkKind.AskHow:
+                Plan(room, "how", null, id, now + 1.4, near, HypeRandom.Range(1, 3), .8f, sure: true);
+                break;
+            case PlayerTalkKind.Mention:
+                Plan(room, "mention", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), .8f, sure: true);
+                Sway(room, talk.Stock, .5f);
+                break;
+            // ── 인사치레와 시답잖은 얘기 ──
             case PlayerTalkKind.Thanks:
-                Plan(room, "thanks", null, id, now + 1.2, 0, 1, .55f);
+                Plan(room, "thanks", null, id, now + 1.2, near, 1, 1f, sure: HypeRandom.Next() < .9);
                 break;
             case PlayerTalkKind.Apology:
                 Hearers(room, (bot, mind) => mind.ReactToPlayerTalk(0f, -4f, "플레이어의 사과"));
-                Plan(room, "apology", null, id, now + 1.2, 0, 1, .7f);
+                Plan(room, "apology", null, id, now + 1.2, near, 1, 1f, sure: HypeRandom.Next() < .9);
                 break;
             case PlayerTalkKind.Greeting:
-                Plan(room, "greet", null, id, now + 1.0, 0, HypeRandom.Range(1, 3), .75f);
+                Plan(room, "greet", null, id, now + 1.0, near, HypeRandom.Range(1, 3), .75f, sure: true);
                 break;
             case PlayerTalkKind.Bye:
-                Plan(room, "bye", null, id, now + 1.0, 0, HypeRandom.Range(1, 3), .6f);
+                Plan(room, "bye", null, id, now + 1.0, near, HypeRandom.Range(1, 3), .6f, sure: true);
                 break;
             case PlayerTalkKind.Sad:
-                Plan(room, "sad", null, id, now + 1.3, 0, HypeRandom.Range(1, 3), .6f);
+                Plan(room, "sad", null, id, now + 1.3, near, HypeRandom.Range(1, 3), .6f, sure: true);
                 break;
             case PlayerTalkKind.Laugh:
-                Plan(room, "laugh", null, id, now + 1.0, 0, HypeRandom.Range(1, 3), .5f);
+                Plan(room, "laugh", null, id, now + 1.0, near, HypeRandom.Range(1, 3), .5f, sure: HypeRandom.Next() < .8);
                 break;
             case PlayerTalkKind.CallAll:
-                // 아무나 부르는 말에는 대답이 드물다.
-                Plan(room, "all", null, id, now + 1.4, 0, HypeRandom.Next() < .25 ? 2 : 1, .4f);
+                Plan(room, "all", null, id, now + 1.2, near, HypeRandom.Next() < .3 ? 2 : 1, .6f, sure: true);
+                break;
+            case PlayerTalkKind.Agree:
+                Plan(room, "agree", null, id, now + 1.1, near, 1, 1f, sure: HypeRandom.Next() < .85);
+                break;
+            case PlayerTalkKind.Disagree:
+                Plan(room, "disagree", null, id, now + 1.1, near, 1, 1f, sure: HypeRandom.Next() < .85);
+                break;
+            case PlayerTalkKind.Dunno:
+                Plan(room, "dunno", null, id, now + 1.1, near, 1, 1f, sure: HypeRandom.Next() < .85);
+                break;
+            case PlayerTalkKind.Surprise:
+                Plan(room, "surprise", null, id, now + 1.1, near, HypeRandom.Range(1, 3), .6f, sure: true);
+                break;
+            case PlayerTalkKind.Topic:
+                Plan(room, "topic." + talk.Topic, null, id, now + 1.2, near, HypeRandom.Range(1, 3), .7f, sure: true);
+                break;
+            case PlayerTalkKind.Question:
+                // 무슨 물음인지 몰라도 물었으면 누군가는 받는다.
+                Plan(room, "question", null, id, now + 1.3, near, HypeRandom.Range(1, 3), .6f, sure: true);
                 break;
             default:
-                Plan(room, "other", null, id, now + 1.6, 0, 1, .18f);
+                Plan(room, "statement", null, id, now + 1.4, near, HypeRandom.Range(1, 3), .45f, sure: HypeRandom.Next() < .85);
                 break;
         }
         // 웃음·울음이 섞인 말에는 기분에 따라 한마디 더 붙기도 한다.
@@ -507,12 +670,14 @@ public sealed partial class InvestorSociety
     public static readonly string[] YouMentions = { "@당신", "@You", "@あなた" };
     private readonly Queue<double> rudeAt = new();
     /// <summary>답글을 예약한다. count줄까지, 줄마다 chance의 확률로.</summary>
-    private void Plan(int room, string key, Stock stock, long replyTo, double first, int onlyBot, int count, float chance, float percent = float.NaN)
+    private void Plan(int room, string key, Stock stock, long replyTo, double first, int onlyBot, int count, float chance, float percent = float.NaN, bool sure = false, int notBot = 0)
     {
+        // onlyBot은 첫 줄을 맡을 봇이다(없으면 아무나). 둘째 줄부터는 다른 봇이 한다. sure면 첫 줄은 꼭 나온다.
         for (int i = 0; i < count; i++)
         {
-            if (HypeRandom.Next() >= chance) { continue; }
-            talkReplies.Add(new TalkReply { due = first + i * (1.1 + HypeRandom.Next() * 1.6), room = room, key = key, stock = stock, replyTo = replyTo, onlyBot = onlyBot, percent = percent });
+            if (!(sure && i == 0) && HypeRandom.Next() >= chance) { continue; }
+            talkReplies.Add(new TalkReply { due = first + i * (1.1 + HypeRandom.Next() * 1.6), room = room, key = key, stock = stock, replyTo = replyTo, onlyBot = i == 0 ? onlyBot : 0,
+                notBot = i == 0 ? notBot : onlyBot != 0 ? onlyBot : notBot, percent = percent, said = talkSaid });
         }
         while (talkReplies.Count > 12) { talkReplies.RemoveAt(0); }
     }
@@ -554,34 +719,37 @@ public sealed partial class InvestorSociety
         {
             for (int i = 0; i < talkReplies.Count; i++)
             {
-                if (talkReplies[i].due > now) { continue; }
-                var reply = talkReplies[i]; talkReplies.RemoveAt(i);
-                if (now - reply.due < 20 && SpeakReply(reply, now)) { talkNextReply = now + .9 + HypeRandom.Next() * .8; }
+                var reply = talkReplies[i];
+                if (reply.due > now || reply.wait > now) { continue; }
+                // 말할 봇이 잠깐 없으면 버리지 않고 조금 뒤에 다시 본다. 20초가 지나면 때를 놓친 것이다.
+                int spoke = now - reply.due < 20 ? SpeakReply(reply, now) : -1;
+                if (spoke == 0) { reply.wait = now + 1.5; continue; }
+                talkReplies.RemoveAt(i);
+                if (spoke > 0) { talkNextReply = now + .9 + HypeRandom.Next() * .8; }
                 break;
             }
         }
         ResolvePlayerCalls(now);
         TickAnalysisRequests(now);
     }
-    private bool SpeakReply(TalkReply reply, double now)
+    /// <summary>1 말했다, 0 지금은 말할 봇이 없다(조금 뒤 다시 본다), -1 할 말이 없다(버린다).</summary>
+    private int SpeakReply(TalkReply reply, double now)
     {
-        if (!PlayerTalkAssets.Ready) { return false; }
-        // 그 방에서 지금 말할 수 있는 봇 가운데 하나. 존댓말 봇은 이런 수다에 끼지 않는다.
-        hypeSpeakers.Clear(); float clock = SessionClock.Time;
-        foreach (var candidate in socialBots)
-        {
-            if (candidate.Social == null || !candidate.isActiveAndEnabled || !Present(candidate, reply.room) || !candidate.Social.Psychology.ActiveAt(clock) || IsTyping(candidate) || candidate == ResolveOddball() ||
-                candidate.Social.Psychology.Traits.Politeness >= Config.Int("styleFormalMin") || hypeSpokeAt.TryGetValue(candidate.Social.Id, out double spoke) && now - spoke < 6)
-            { continue; }
-            hypeSpeakers.Add(candidate);
-        }
-        if (hypeSpeakers.Count == 0) { return false; }
-        var bot = hypeSpeakers[HypeRandom.Range(0, hypeSpeakers.Count)]; var mind = bot.Social.Psychology;
+        if (!PlayerTalkAssets.Ready) { return -1; }
+        var bot = PickTalkSpeaker(reply, now);
+        if (bot == null) { return 0; }
+        var mind = bot.Social.Psychology;
         // 이 봇의 마음: 나를 어떻게 보는가, 그 종목을 어떻게 보는가, 지금 기분이 어떤가.
         string stance = mind.Quadrant == InvestorQuadrant.Hostile || mind.Betrayal >= 40f ? "hostile" : mind.Trust >= 40f ? "friendly" : null;
         string mood = mind.Fear >= 55f ? "scared" : mind.Greed >= 60f ? "happy" : "dry";
-        string key = reply.key; Stock stock = reply.stock; Stock pick = null;
-        if (stock != null && (key == "ask" || key == "askBuy" || key == "askSell" || key == "claimUp" || key == "claimDown"))
+        string key = reply.key, news = null; Stock stock = reply.stock; Stock pick = null; decimal mine = 0m;
+        bool scold = key.StartsWith("insult", StringComparison.Ordinal);
+        if (!scold && mind.Traits.Politeness >= Config.Int("styleFormalMin"))
+        {
+            // 존댓말을 쓰는 봇은 자기 말투로 짧게 받는다.
+            key = stock != null ? "formal.stock" : AsksKey(key) ? "formal.ask" : "formal"; stance = null;
+        }
+        else if (stock != null && (key == "ask" || key == "askBuy" || key == "askSell" || key == "claimUp" || key == "claimDown" || key == "mention" || key == "answered.stock"))
         {
             decimal believed = bot.BelievedPrice(stock), price = stock.currentPrice;
             bool bull = believed > price * 1.03m, bear = believed < price * .97m;
@@ -601,23 +769,33 @@ public sealed partial class InvestorSociety
             }
             if (pick == null) { key = "askPick.none"; }
         }
+        else { ResolveTalkFacts(bot, ref key, ref stock, ref news, ref mine); }
+        // 나를 싫어하는 봇은 잡담에 시큰둥하다. 자기가 물어 놓고 그러지는 않는다.
+        if (stance == "hostile" && reply.onlyBot == 0 && SoftKey(key) && HypeRandom.Next() < .6) { key = "cold"; stance = null; }
         // 막말에 대한 핀잔은 나를 어떻게 보든 같다.
-        if (stance != null && !key.StartsWith("insult", StringComparison.Ordinal)) { key += "." + stance; }
-        string text = PickHypeText(PlayerTalkAssets.Lines(key), Array.Empty<string>());
-        if (text == null) { return false; }
+        if (stance != null && !scold) { key += "." + stance; }
         var subject = stock ?? pick;
-        var slots = subject != null ? ChartSlots(subject, subject.currentPrice, subject.currentPrice, 0m) : HypeSlots(null, 0, 0m);
+        string text = PickHypeText(UsableLines(PlayerTalkAssets.Lines(key), subject != null, news != null, mine > 0m, !string.IsNullOrEmpty(reply.said)), Array.Empty<string>());
+        if (text == null) { return -1; }
+        var slots = subject != null ? ChartSlots(subject, subject.currentPrice, subject.currentPrice, mine) : HypeSlots(null, 0, 0m);
         if (pick != null) { slots["pick"] = GameLocale.Text(pick.stockName ?? pick.symbol ?? ""); }
         slots["ret"] = float.IsNaN(reply.percent) ? "" : Mathf.Abs(reply.percent).ToString("0");
+        slots["news"] = news ?? ""; slots["said"] = reply.said ?? "";
         string line = ChatHypeAssets.Fill(text, slots);
         // 내 글에 다는 답에는 나를 가리키는 멘션을 붙인다(@당신 / @You / @あなた). AI 분석을 보고 하는 말은 내게 하는 말이 아니다.
         if (reply.replyTo > 0 && !key.StartsWith("aiReact", StringComparison.Ordinal)) { line = YouMention + " " + line; }
         PostBotLine(bot, reply.room, line, "talk." + key, subject, reply.replyTo);
         hypeSpokeAt[bot.Social.Id] = now; PlayerReplies++;
+        if (reply.replyTo > 0 && !key.StartsWith("aiReact", StringComparison.Ordinal)) { NoteTalkPartner(reply.room, bot, subject, now); }
         // 말을 섞은 봇은 나와 조금 가까워진다(시비와 조롱은 빼고).
-        if (!key.StartsWith("insult", StringComparison.Ordinal) && !key.Contains("mock") && !key.Contains("hostile")) { mind.ReactToPlayerTalk(1.5f, 0f, "플레이어와 대화"); }
+        if (!scold && !key.Contains("mock") && !key.Contains("hostile") && key != "cold") { mind.ReactToPlayerTalk(1.5f, 0f, "플레이어와 대화"); }
         TraceTalk("    > " + bot.Social.Nickname + ": " + line + "  [" + key + "]");
-        return true;
+        return 1;
+    }
+    private void NotePlayerCall(int room, Stock stock, bool up, long id, double now)
+    {
+        if (stock == null || playerCalls.Count >= 3) { return; }
+        playerCalls.Add(new PlayerCall { stock = stock, price = stock.currentPrice, up = up, due = now + CallMinSec + HypeRandom.Next() * (CallMaxSec - CallMinSec), room = room, messageId = id });
     }
     private void ResolvePlayerCalls(double now)
     {
