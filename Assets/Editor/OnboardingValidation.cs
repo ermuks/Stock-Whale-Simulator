@@ -22,7 +22,6 @@ public static class OnboardingValidation
     private static double began, ready, naturalStart;
     private static bool oldOptions;
     private static EnterPlayModeOptions oldFlags;
-    private static PlayerCompanySetupUI setup;
     private static DeviceTerminalUI orders, journal;
     private static LeadingRoomUI rooms;
     private static InvestorJourneyUI journey;
@@ -90,23 +89,18 @@ public static class OnboardingValidation
             {
                 Application.targetFrameRate = 20; QualitySettings.vSyncCount = 0;
                 camera = Camera.main; deskRotation = camera.transform.rotation; camera.fieldOfView = 45f;
-                setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>();
                 rooms = Object.FindAnyObjectByType<LeadingRoomUI>(); npc = NpcLeadingRoom.Instance;
                 journey = Object.FindAnyObjectByType<InvestorJourneyUI>();
                 var terminals = Object.FindObjectsByType<DeviceTerminalUI>(FindObjectsInactive.Include);
                 orders = terminals.Single(s => !s.journal); journal = terminals.Single(s => s.journal);
-                Check(setup != null && setup.retailIntroduction.activeSelf && !setup.companySetup.activeSelf,"retail opening uses existing setup Canvas; legacy company form retained");
-                Check(setup.startBalance.text == manager.economy.retailStartingCash.ToString("N0") + "원","opening balance comes from economy data");
                 Check(!manager.SetupConfirmed && !career.CanOperateRooms,"market and owner rights not granted before start");
-                Inspect(setup.gameObject,"opening"); Capture("opening-game-camera.png",true);
-                Click(setup.controlsToggle); Next(); return;
+                Next(); return;
             }
             if (phase == 1)
             {
-                Check(setup.controlsPanel.activeSelf,"controls button reveals input guide");
-                Inspect(setup.controlsPanel,"controls"); Capture("opening-controls.png",true);
-                Click(setup.controlsToggle); Check(!setup.controlsPanel.activeSelf,"controls panel closes without starting market");
-                Click(setup.confirm); Check((manager.SetupInProgress || manager.SetupConfirmed) && npc.JoinRequested,"start button begins real economy initialization and requests NPC room membership");
+                // 예전 시작 창(DON DON)은 없어졌다. 새 게임은 타이틀의 새 게임 화면이 NewGame.Begin으로 시작한다.
+                if (!NewGame.CanBegin) { return; }
+                NewGame.Begin(); Check((manager.SetupInProgress || manager.SetupConfirmed) && npc.JoinRequested,"start button begins real economy initialization and requests NPC room membership");
                 Next(2); return;
             }
             if (!MarketDayController.CanTrade || MarketDayController.Instance == null || !MarketDayController.Instance.Ready)
@@ -116,7 +110,7 @@ public static class OnboardingValidation
                 foreach (var mouse in Object.FindObjectsByType<MouseCameraController>())
                 { mouse.enabled = false; }
                 Time.timeScale = 1f; Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
-                Check(manager.SetupConfirmed && !setup.gameObject.activeSelf,"original startup overlay closes after confirmed economy initialization");
+                Check(manager.SetupConfirmed,"economy initialization confirmed");
                 naturalStart = Time.time; Next(1); return;
             }
             if (phase == 3)

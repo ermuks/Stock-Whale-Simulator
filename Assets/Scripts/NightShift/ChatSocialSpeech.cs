@@ -23,9 +23,17 @@ public sealed partial class InvestorSociety
         bool communityRoll = random.Next() < communityChance;
         bool marketLine = PrefersMarketLine(message) && CommunityAllowed(template, message) && MarketGroup(template, message, parent) != null;
         var chatterGroup = ChatterGroup(mind, template, message, parent);
-        if (communityRoll || marketLine || chatterGroup != null)
+        // 남의 말에 다는 답이고, 그 말의 갈래에 맞춰 쓴 답글 묶음이 있으면(자랑에 묻는 말, 한탄에 맞장구 …) 그것을 쓴다.
+        // 예전에는 열에 몇 번만 썼고, 나머지는 방 전체에 하는 말투의 기본 문장이 나가서 "@아무개 혹시 OO 보는 사람 있어…?"가 됐다.
+        SocialCommunityPhrases replyGroup = null;
+        if (parent != null && CommunityAllowed(template, message))
         {
-            var group = chatterGroup ?? (marketLine ? MarketGroup(template, message, parent) : CommunityGroup(template, message, parent));
+            replyGroup = ChatSocialAssets.Community(message.act, parent.act.ToString());
+            if (replyGroup != null && !SpeechRequirementsMatch(replyGroup.requires, message.facts)) { replyGroup = null; }
+        }
+        if (communityRoll || marketLine || chatterGroup != null || replyGroup != null)
+        {
+            var group = replyGroup ?? chatterGroup ?? (marketLine ? MarketGroup(template, message, parent) : CommunityGroup(template, message, parent));
             if (group != null)
             {
                 var candidates = new List<int>();

@@ -817,6 +817,37 @@ public sealed class MarketDayController : MonoBehaviour
         }
         return events.Count-1;
     }
+    private readonly List<double> eventWeights = new();
+    private readonly List<int> eventPicks = new();
+    /// <summary>쌓인 사건 가운데 이번 프레임에 다룰 것을 무게대로 count개 뽑아 eventPicks에 담는다(같은 것을 두 번 뽑지 않는다).</summary>
+    private void PickConversationEvents(float now, int count)
+    {
+        eventPicks.Clear(); eventWeights.Clear();
+        if (count <= 0 || events.Count == 0) { return; }
+        conversationEventCounts.Clear(); generalConversationEvents = 0;
+        foreach (var ev in events)
+        {
+            if (ev.Stock == null) { generalConversationEvents++; }
+            else { conversationEventCounts.TryGetValue(ev.Stock,out int seen); conversationEventCounts[ev.Stock] = seen+1; }
+        }
+        double total = 0d;
+        foreach (var ev in events) { double weight = Math.Max(0d, EventAttention(ev,now)); eventWeights.Add(weight); total += weight; }
+        for (int pick = 0; pick < count; pick++)
+        {
+            double roll = random.NextDouble()*total; int chosen = -1;
+            for (int i = 0; i < eventWeights.Count; i++)
+            {
+                double weight = eventWeights[i];
+                if (weight < 0d) { continue; }
+                roll -= weight;
+                if (roll <= 0d) { chosen = i; break; }
+            }
+            // 무게가 모두 0이거나 셈이 조금 어긋났으면 아직 안 뽑힌 맨 뒤의 것을 고른다.
+            if (chosen < 0) { for (int i = eventWeights.Count - 1; i >= 0; i--) { if (eventWeights[i] >= 0d) { chosen = i; break; } } }
+            if (chosen < 0) { break; }
+            total = Math.Max(0d, total - eventWeights[chosen]); eventWeights[chosen] = -1d; eventPicks.Add(chosen);
+        }
+    }
     private double EventAttention(MarketEvent ev,float now)
     {
         double recency = .3d+.7d*Math.Max(0d,1d-(now-ev.Time)/Math.Max(1f,eventLifetime));
@@ -878,17 +909,22 @@ public sealed class MarketDayController : MonoBehaviour
         if (InvestorSociety.Instance != null && InvestorSociety.Instance.SocialReady)
         {
             int budget = Math.Min(candidatesPerFrame, events.Count);
-            for (int i = 0; i < budget; i++)
+            // 예전에는 하나 고를 때마다 쌓인 사건 전부의 무게를 세 번씩 다시 셌다(프레임마다 여덟 번). 장이 달아올라 사건이 수천 개 쌓이면
+            // 이것만으로 프레임이 수십 ms씩 멎었다. 이제 무게는 프레임에 한 번만 세고, 그 표에서 여러 개를 뽑는다.
+            PickConversationEvents(SessionClock.Time, budget);
+            for (int i = 0; i < eventPicks.Count; i++)
             {
-                int index = PickConversationEvent(SessionClock.Time); var pending = events[index];
+                var pending = events[eventPicks[i]];
                 bool current = SessionClock.Time - pending.Time <= eventLifetime;
                 current &= pending.Kind != ChatEvent.MarketOpen || Phase == MarketPhase.Trading;
                 current &= pending.Kind != ChatEvent.MarketClose || Phase == MarketPhase.PostClose;
                 current &= pending.Kind != ChatEvent.PriceRise || pending.Stock != null && pending.ReferencePrice > 0m && pending.Stock.currentPrice >= pending.ReferencePrice * (1m + (decimal)surgeRatio);
                 current &= pending.Kind != ChatEvent.PriceFall || pending.Stock != null && pending.ReferencePrice > 0m && pending.Stock.currentPrice <= pending.ReferencePrice * (1m - (decimal)surgeRatio);
                 if (current) { InvestorSociety.Instance.OfferMarketEvent(pending.Kind, pending.Stock, pending.Bot); }
-                RemoveEvent(index);
             }
+            // 뒤에서부터 지운다(지울 때 맨 끝의 것이 그 자리로 옮겨 오므로, 앞쪽 번호는 그대로 남는다).
+            eventPicks.Sort();
+            for (int i = eventPicks.Count - 1; i >= 0; i--) { if (eventPicks[i] < events.Count) { RemoveEvent(eventPicks[i]); } }
             return;
         }
         float now = SessionClock.Time;

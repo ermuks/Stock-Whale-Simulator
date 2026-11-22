@@ -198,7 +198,7 @@ public partial class WhaleBot
         WhaleOperationPlan.Begin(operation, stock.currentPrice, budget, extra, day, Roll, fast);
         // 누군가 이 계획을 플레이어에게 흘린다: 어느 종목을 몇 시 몇 분에 끌어올리는지.
         DoorNotes.Instance?.AnnounceAfterTrading(stock, operation.buildSeconds);
-        Debug.Log($"[세력] 작전 시작 — {stock.stockName}({stock.symbol}) 시작가 {stock.currentPrice:N0} · 예산 {budget:N0}원 · 목표 +{operation.gain * 100m:0}% · 흔들기 {operation.shakes}회 · 원래 지분에서 {operation.extraShares:N0}주까지 · 매집 {operation.buildSeconds:0}초 / 끌어올리기 {operation.driveSeconds:0}초");
+        Debug.Log($"[세력] 작전 시작 — {stock.stockName}({stock.symbol}) 시작가 {stock.currentPrice:N0} · 예산 {budget:N0}돈 · 목표 +{operation.gain * 100m:0}% · 흔들기 {operation.shakes}회 · 원래 지분에서 {operation.extraShares:N0}주까지 · 매집 {operation.buildSeconds:0}초 / 끌어올리기 {operation.driveSeconds:0}초");
     }
 
     private bool dumpTalked;
@@ -244,7 +244,7 @@ public partial class WhaleBot
             WhaleOperationState.Unwind => operation.dump ? "던지기" : "정리", WhaleOperationState.Scoop => "저점 줍기", _ => "종료"
         };
         decimal start = operation.startPrice > 0m ? operation.startPrice : stock.currentPrice;
-        Debug.Log($"[세력] 작전 {name} — {stock.stockName}({stock.symbol}) 현재가 {stock.currentPrice:N0} ({(stock.currentPrice / start - 1m) * 100m:+0.0;-0.0}%) · 고점 {operation.peakPrice:N0} ({(operation.peakPrice / start - 1m) * 100m:+0.0;-0.0}%) · 산 금액 {operation.spent:N0}원 · 판 금액 {operation.proceeds:N0}원 · 열기 {OperationHeat:0.00} · 흔들기 {operation.shakesDone}/{operation.shakes} · 물결 {operation.wave + 1}/{operation.waves}");
+        Debug.Log($"[세력] 작전 {name} — {stock.stockName}({stock.symbol}) 현재가 {stock.currentPrice:N0} ({(stock.currentPrice / start - 1m) * 100m:+0.0;-0.0}%) · 고점 {operation.peakPrice:N0} ({(operation.peakPrice / start - 1m) * 100m:+0.0;-0.0}%) · 산 금액 {operation.spent:N0}돈 · 판 금액 {operation.proceeds:N0}돈 · 열기 {OperationHeat:0.00} · 흔들기 {operation.shakesDone}/{operation.shakes} · 물결 {operation.wave + 1}/{operation.waves}");
     }
 
     private void SubmitOperation(Stock stock, WhaleOperationOrder order)
@@ -255,7 +255,7 @@ public partial class WhaleBot
         {
             decimal bought = ManipulationTools.Ignite(this, stock, order.Quantity * stock.currentPrice, operation.sparkReach);
             IgnitesTotal++;
-            Debug.Log($"[세력] 수법 — 불붙이기 {operation.sparks}/{operation.sparkLimit}: {stock.stockName}({stock.symbol}) {bought:N0}주, 지금 {stock.currentPrice:N0}원");
+            Debug.Log($"[세력] 수법 — 불붙이기 {operation.sparks}/{operation.sparkLimit}: {stock.stockName}({stock.symbol}) {bought:N0}주, 지금 {stock.currentPrice:N0}돈");
             return;
         }
         if (order.Kind == WhaleOperationKind.Nip)
@@ -270,7 +270,7 @@ public partial class WhaleBot
             decimal top = stock.currentPrice;
             decimal sold = ManipulationTools.Slam(this, stock, order.Quantity, (decimal)(.05 + Roll() * .07), operation.SellFloor);
             SlamsTotal++;
-            Debug.Log($"[세력] 수법 — 내려찍기 {operation.slamsDone}/{operation.slams}: {stock.stockName}({stock.symbol}) {sold:N0}주, {top:N0}원 → {stock.currentPrice:N0}원");
+            Debug.Log($"[세력] 수법 — 내려찍기 {operation.slamsDone}/{operation.slams}: {stock.stockName}({stock.symbol}) {sold:N0}주, {top:N0}돈 → {stock.currentPrice:N0}돈");
             return;
         }
         bool buying = order.Kind == WhaleOperationKind.JoinBid || order.Kind == WhaleOperationKind.TakeAsk || order.Kind == WhaleOperationKind.LiftAsk;

@@ -115,7 +115,7 @@ public class HoldUIManager : MonoBehaviour
     void SetSummaryTexts(decimal cash, decimal holdingsValue)
     {
         decimal total = cash + holdingsValue;
-        string unit = currencySuffix ? "원" : "";
+        string unit = currencySuffix ? "돈" : "";
         DeviceTerminalUI.Set(textCash,cash.ToString("N0") + unit);
         DeviceTerminalUI.Set(textHoldingsValue,holdingsValue.ToString("N0") + unit);
         DeviceTerminalUI.Set(textTotal,total.ToString("N0") + unit);

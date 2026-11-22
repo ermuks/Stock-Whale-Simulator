@@ -37,13 +37,13 @@ public class HoldListItem : MonoBehaviour
         _nfi.NumberDecimalSeparator = ".";
     }
 
-    /// <summary>수익률(%): (현재가-평단)/평단*100. 평가손익: (현재가-평단)*수량. 평균매가는 원 단위로 표시. 보유수량 정수.</summary>
+    /// <summary>수익률(%): (현재가-평단)/평단*100. 평가손익: (현재가-평단)*수량. 평균매가는 돈 단위로 표시. 보유수량 정수.</summary>
     public void Set(string symbol, string name, decimal profitPct, decimal evaluationProfitLoss, decimal avgPrice, decimal quantity)
     {
         shownProfit=evaluationProfitLoss;
         DeviceTerminalUI.Set(textSymbol,symbol ?? ""); DeviceTerminalUI.Set(textName,name ?? "");
         DeviceTerminalUI.Set(textProfitPct,profitPct.ToString("+#,##0.0;-#,##0.0;0.0",_nfi) + "%");
-        string unit = currencySuffix ? "원" : "";
+        string unit = currencySuffix ? "돈" : "";
         DeviceTerminalUI.Set(textEvaluationProfit,(evaluationProfitLoss > 0m ? "+" : "") + PriceTickPolicy.FormatMoney(evaluationProfitLoss) + unit);
         DeviceTerminalUI.Set(textAvgPrice,FormatAvgPrice(avgPrice) + unit);
         DeviceTerminalUI.Set(textQuantity,decimal.Truncate(quantity).ToString("N0",_nfi) + (currencySuffix ? "주" : ""));
@@ -71,7 +71,7 @@ public class HoldListItem : MonoBehaviour
         { DeviceTerminalUI.Set(textProfitPct,"—"); }
     }
 
-    /// <summary>평균단가는 계산 정밀도를 유지하고 표시만 1원 단위로 반올림.</summary>
+    /// <summary>평균단가는 계산 정밀도를 유지하고 표시만 1돈 단위로 반올림.</summary>
     static string FormatAvgPrice(decimal price)
     {
         return PriceTickPolicy.FormatMoney(price);

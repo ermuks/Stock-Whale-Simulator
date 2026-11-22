@@ -14,13 +14,13 @@ public class LiquidityBotManager : MonoBehaviour
     public int randomCount = 60;
     public int internalValueCount = 60;
     public int fakeValueCount = 60;
-    [Header("초기 현금 (원)")]
+    [Header("초기 현금 (돈)")]
     public decimal fireflyCash = 12_000_000m;
     public decimal randomCash = 10_000_000m;
     public decimal internalValueCash = 12_000_000m;
     public decimal fakeValueCash = 12_000_000m;
     [Header("초기 주식 보유 (시장에 매도도 생기게)")]
-    [Tooltip("봇 1명당 초기 주식 보유가치(원). 현재가로 나눠 주식 수로 환산해 창고에서 이전")]
+    [Tooltip("봇 1명당 초기 주식 보유가치(돈). 현재가로 나눠 주식 수로 환산해 창고에서 이전")]
     public decimal initialStockValuePerBot = 8_000_000m;
     [Tooltip("초기 보유를 줄 종목 선택 방식: true면 랜덤, false면 CurrentStock")]
     public bool randomizeInitialStock = true;

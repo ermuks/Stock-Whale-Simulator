@@ -151,7 +151,7 @@ public sealed class CompanyDashboardUI : MonoBehaviour
         {
             bool founded = economy.FoundCompany();
             string note = founded ? Word("기업을 세웠습니다", "Company founded", "会社を設立しました")
-                : Word("기업 설립에는 ", "Founding a company takes ", "会社の設立には") + career.FoundingCost.ToString("N0") + Word("원이 필요합니다", " KRW", "ウォン必要です");
+                : Word("기업 설립에는 ", "Founding a company takes ", "会社の設立には") + career.FoundingCost.ToString("N0") + Word("돈이 필요합니다", " DON", "ドン必要です");
             GameLocalizedText.Set(feedback, note, true); foundNoteUntil = Time.unscaledTime + 6f;
             if (!founded) { return; }
         }
@@ -177,7 +177,7 @@ public sealed class CompanyDashboardUI : MonoBehaviour
             // 비상장 소기업: 이름은 언어마다 따로 적혀 있고, 주인이 부르는 값을 함께 보여 준다.
             GameLocalizedText.Set(heading, stock.stockName, true);
             GameLocalizedText.Set(symbol, Word("비상장 소기업 · ", "Unlisted small company · ", "非上場の小企業 · ") + CorporateEconomy.Instance.SmallSector(stock) + Word(" · 인수가 주당 ", " · asking ", " · 買収価格 1株 ")
-                + CorporateEconomy.Instance.SmallAsk(stock).ToString("N0") + Word("원", " KRW a share", "ウォン")
+                + CorporateEconomy.Instance.SmallAsk(stock).ToString("N0") + Word("돈", " DON a share", "ドン")
                 + (CorporateEconomy.Instance.AwaitingListing(stock) ? Word(" · 상장 대기 중", " · listing soon", " · 上場待ち") : ""), true);
         }
         else { DeviceTerminalUI.Set(heading,stock.stockName); DeviceTerminalUI.Set(symbol,stock.IsListed ? stock.symbol : "비상장 · "+stock.symbol); }
@@ -199,7 +199,7 @@ public sealed class CompanyDashboardUI : MonoBehaviour
         bool closed = data.CloseFinished, quoted = data.growth?.ListedCloseDay>0;
         DeviceTerminalUI.Set(captions[1],stock.IsListed ? "마감 종가" : "상장 상태");
         DeviceTerminalUI.Set(captions[2],stock.IsListed ? "마감 시총" : "기업 평가액");
-        string Money(decimal n) => n.ToString("N0") + "원";
+        string Money(decimal n) => n.ToString("N0") + "돈";
         var rules = CorporateEconomy.Instance.Rules;
         double payout = data.Policy == CompanyPolicy.Dividend ? rules.dividendPayout : data.Policy == CompanyPolicy.Investment ? rules.investmentPayout : rules.reservePayout;
         string[] row = { stock.issuedShares.ToString("N0")+"주", quoted ? Money(data.ClosePrice) : "—", quoted ? Money(data.MarketCap) : "—", ratio.ToString("0.00####")+"%",

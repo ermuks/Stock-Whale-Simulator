@@ -72,7 +72,7 @@ public sealed class DeskOperationUI : MonoBehaviour
         Text(stateText, Time.timeScale <= 0f ? "일시정지" : journal ? "관찰 → 비교 → 판단" : operation.ModeName);
         var shownAccount = journal && displayAccount != null ? displayAccount : operation.account;
         if (shownAccount != null)
-        { Text(accountText, $"가용 현금 {System.Math.Max(0m, shownAccount.cash - shownAccount.ReservedCash):N0}원    ·    예치 {shownAccount.ReservedCash:N0}원"); }
+        { Text(accountText, $"가용 현금 {System.Math.Max(0m, shownAccount.cash - shownAccount.ReservedCash):N0}돈    ·    예치 {shownAccount.ReservedCash:N0}돈"); }
         if (journal)
         {
             Text(details, observation + "\n\n최근 주문 기록\n" + operation.Debrief);
@@ -83,7 +83,7 @@ public sealed class DeskOperationUI : MonoBehaviour
         {
             decimal shownBudget = operation.Active ? operation.Budget : operation.account == null ? 0m : decimal.Floor(System.Math.Max(0m, operation.account.cash - operation.account.ReservedCash) * (decimal)operation.BudgetFraction);
             Text(budgetText, $"예산 {operation.BudgetFraction * 100f:0}%");
-            Text(details, $"주문 예산 {shownBudget:N0}원\n매수 {operation.Spent:N0}원 / 매도 {operation.Proceeds:N0}원\n물량 {operation.Inventory:N0}주 · 미체결 {operation.OutstandingCount}건\n평가 포함 손익 {operation.MarkedResult:+#,##0;-#,##0;0}원");
+            Text(details, $"주문 예산 {shownBudget:N0}돈\n매수 {operation.Spent:N0}돈 / 매도 {operation.Proceeds:N0}돈\n물량 {operation.Inventory:N0}주 · 미체결 {operation.OutstandingCount}건\n평가 포함 손익 {operation.MarkedResult:+#,##0;-#,##0;0}돈");
             Text(history, "종목과 예산을 준비한 뒤\n필요한 주문 방식만 선택하세요.\n\n관망은 이 계획의 미체결만 취소합니다.\n이미 체결된 주식은 계좌에 남습니다.");
             Text(feedback, operation.Feedback);
             prepare.interactable = !operation.Active && MarketDayController.CanTrade;

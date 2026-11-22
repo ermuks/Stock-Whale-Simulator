@@ -54,57 +54,39 @@ public sealed partial class InvestorSociety
         return SocialRoom(room) != null && !SocialRoom(room).banned.Contains(bot.Social.Id) &&
             (!mind.MutedUntil.TryGetValue(room, out double until) || SocialTime.GameMinute >= until);
     }
+    private static readonly Unity.Profiling.ProfilerMarker BeforeMarker = new("DonDon.Society.Before"), TypingMarker = new("DonDon.Society.FlushTyping"),
+        RoomTalkMarker = new("DonDon.Society.RoomTalk"), ScanMarker = new("DonDon.Society.Scan"), WriteMarker = new("DonDon.Society.Write");
     public void SocialAdvance(int dayNumber, double gameMinute, double scaledSeconds, int budget)
     {
         SocialTime.Set(dayNumber, gameMinute, scaledSeconds); ChatSocialAudit.GameMinute = SocialTime.GameMinute;
         if (!SocialReady)
         { return; }
-        BeforeSocialTick();
-        RefreshChatterboxes(SocialTime.Seconds);
-        FlushTyping();
-        TickRoomTalk();
+        using (BeforeMarker.Auto()) { BeforeSocialTick(); RefreshChatterboxes(SocialTime.Seconds); }
+        using (TypingMarker.Auto()) { FlushTyping(); }
+        using (RoomTalkMarker.Auto()) { TickRoomTalk(); }
         readySocialIntents.Clear();
+        ScanMarker.Begin();
         int count = Math.Min(Math.Max(1, budget), socialBots.Count);
+        scannedSocial.Clear();
         for (int i = 0; i < count; i++)
         {
             if (socialCursor >= socialBots.Count) { socialCursor = 0; }
-            var bot = socialBots[socialCursor++]; var mind = bot.Social.Psychology;
-            BeforeSocialBot(bot);
-            if (!bot.isActiveAndEnabled)
-            { continue; }
-            WitnessRoomTalk(bot);
-            double now = SocialTime.Seconds;
-            for (int j = mind.Intentions.Count - 1; j >= 0; j--)
-            {
-                if (mind.Intentions[j].expires < now || !Present(bot, mind.Intentions[j].roomId))
-                { ExpireSocialIntent(bot, mind.Intentions[j]); mind.Intentions.RemoveAt(j); }
-            }
-            if (IsTyping(bot)) { continue; }
-            if (!nextIdle.TryGetValue(mind.SocialId, out double idleAt) || now >= idleAt)
-            {
-                nextIdle[mind.SocialId] = now + Config.Get("idleInterval");
-                double chill = SocialRoom(mind.Room).chill;
-                double probability = Config.Get("idleChance") * mind.Traits.Sociability / 50d * Math.Max(Config.Get("chillSpeechFloor"), 1 - chill / Config.Get("chillSpeechDivisor"));
-                // 수다쟁이는 쉬는 시간대 없이 훨씬 자주 말을 꺼낸다. 방 분위기가 얼어붙으면 같이 줄어든다.
-                if (mind.Chatterbox) { probability = now - mind.SocialLastSpeech < ChatterGapSeconds ? 0 : ChatterIdleChance * Math.Max(Config.Get("chillSpeechFloor"), 1 - chill / Config.Get("chillSpeechDivisor")); }
-                if (Present(bot, mind.Room) && mind.Intentions.Count == 0 && (mind.Chatterbox || mind.ActiveAt((float)now)) && mind.SocialRng.Next() < probability)
-                { Offer(bot, mind.Room, SocialMotive.IDLE); }
-            }
-            int selected = -1;
-            for (int j = 0; j < mind.Intentions.Count; j++)
-            {
-                var intent = mind.Intentions[j];
-                double cooldown = Config.Get("speakCooldownSec") * (intent.motive == SocialMotive.REPLY_OBLIGATION ? Config.Get("replyCooldownScale") : 1);
-                if (intent.due > now || now - mind.SocialLastSpeech < cooldown)
-                { continue; }
-                if (selected < 0 || intent.motive < mind.Intentions[selected].motive)
-                { selected = j; }
-            }
-            if (selected < 0)
-            { continue; }
-            var chosen = mind.Intentions[selected]; mind.Intentions.RemoveAt(selected);
-            readySocialIntents.Add((bot, chosen));
+            var bot = socialBots[socialCursor++];
+            scannedSocial.Add(bot.Social.Id);
+            ScanSocialBot(bot);
         }
+        // 답할 차례인 봇은 순번을 기다리지 않고 바로 본다. 봇이 천 명을 넘으면 한 바퀴 도는 데 13초쯤 걸려서,
+        // 예전에는 답글이 그만큼 늦게 달렸다(그 사이 방의 얘기는 이미 딴 데로 가 있었다).
+        for (int i = expectedSocial.Count - 1; i >= 0; i--)
+        {
+            int id = expectedSocial[i];
+            if (!SocialBots.TryGetValue(id, out var waiting)) { expectedSocial.RemoveAt(i); continue; }
+            if (!scannedSocial.Contains(id)) { ScanSocialBot(waiting); }
+            bool still = false;
+            foreach (var intent in waiting.Social.Psychology.Intentions) { if (intent.replyToId > 0 || intent.threadId > 0) { still = true; break; } }
+            if (!still) { expectedSocial.RemoveAt(i); }
+        }
+        ScanMarker.End();
         // A busy early bot must not consume the room quota before another bot's due reply.
         readySocialIntents.Sort((a, b) =>
         {
@@ -127,8 +109,52 @@ public sealed partial class InvestorSociety
                 continue;
             }
             if (HesitateOnNewTopic(bot, chosen) || BeginTyping(bot, chosen)) { continue; }
-            GenerateSocialMessage(bot, chosen);
+            using (WriteMarker.Auto()) { GenerateSocialMessage(bot, chosen); }
         }
+    }
+    /// <summary>곧 답할 말이 있는 봇들(번호). 한 바퀴 도는 순번과 따로, 매번 살핀다.</summary>
+    private readonly List<int> expectedSocial = new();
+    private readonly List<int> scannedSocial = new();
+    private void ExpectSoon(int id) { if (!expectedSocial.Contains(id)) { expectedSocial.Add(id); } }
+    /// <summary>봇 하나를 살핀다: 낡은 의도를 버리고, 한가하면 말을 꺼낼지 정하고, 때가 된 의도 하나를 readySocialIntents에 올린다.</summary>
+    private void ScanSocialBot(TradeBot bot)
+    {
+        var mind = bot.Social.Psychology;
+        BeforeSocialBot(bot);
+        if (!bot.isActiveAndEnabled)
+        { return; }
+        WitnessRoomTalk(bot);
+        double now = SocialTime.Seconds;
+        for (int j = mind.Intentions.Count - 1; j >= 0; j--)
+        {
+            if (mind.Intentions[j].expires < now || !Present(bot, mind.Intentions[j].roomId))
+            { ExpireSocialIntent(bot, mind.Intentions[j]); mind.Intentions.RemoveAt(j); }
+        }
+        if (IsTyping(bot)) { return; }
+        if (!nextIdle.TryGetValue(mind.SocialId, out double idleAt) || now >= idleAt)
+        {
+            nextIdle[mind.SocialId] = now + Config.Get("idleInterval");
+            double chill = SocialRoom(mind.Room).chill;
+            double probability = Config.Get("idleChance") * mind.Traits.Sociability / 50d * Math.Max(Config.Get("chillSpeechFloor"), 1 - chill / Config.Get("chillSpeechDivisor"));
+            // 수다쟁이는 쉬는 시간대 없이 훨씬 자주 말을 꺼낸다. 방 분위기가 얼어붙으면 같이 줄어든다.
+            if (mind.Chatterbox) { probability = now - mind.SocialLastSpeech < ChatterGapSeconds ? 0 : ChatterIdleChance * Math.Max(Config.Get("chillSpeechFloor"), 1 - chill / Config.Get("chillSpeechDivisor")); }
+            if (Present(bot, mind.Room) && mind.Intentions.Count == 0 && (mind.Chatterbox || mind.ActiveAt((float)now)) && mind.SocialRng.Next() < probability)
+            { Offer(bot, mind.Room, SocialMotive.IDLE); }
+        }
+        int selected = -1;
+        for (int j = 0; j < mind.Intentions.Count; j++)
+        {
+            var intent = mind.Intentions[j];
+            double cooldown = Config.Get("speakCooldownSec") * (intent.motive == SocialMotive.REPLY_OBLIGATION ? Config.Get("replyCooldownScale") : 1);
+            if (intent.due > now || now - mind.SocialLastSpeech < cooldown)
+            { continue; }
+            if (selected < 0 || intent.motive < mind.Intentions[selected].motive)
+            { selected = j; }
+        }
+        if (selected < 0)
+        { return; }
+        var chosen = mind.Intentions[selected]; mind.Intentions.RemoveAt(selected);
+        readySocialIntents.Add((bot, chosen));
     }
     public void Offer(TradeBot bot, int room, SocialMotive motive, SocialFacts facts = null, SocialAct? forced = null, int target = 0, long cause = 0)
     {
@@ -149,6 +175,16 @@ public sealed partial class InvestorSociety
         {
             var chooser = socialBots[socialCursor % socialBots.Count].Social.Psychology.SocialRng;
             bot = socialBots[chooser.Range(0, socialBots.Count)];
+            // 주인 없는 시세 사건(급등, 급락 …)은 그 종목을 들고 있는 사람이 먼저 입을 뗀다. 몇 명을 더 뽑아 보고 보유자가 있으면 그 봇이 말한다.
+            // (예전에는 아무나 골라서, 그 종목과 상관없는 봇이 남 얘기하듯 한마디 하는 일이 많았다.)
+            if (stock != null)
+            {
+                for (int tries = 0; tries < 12 && bot.GetOwnedVolume(stock) <= 0m; tries++)
+                {
+                    var other = socialBots[chooser.Range(0, socialBots.Count)];
+                    if (other.GetOwnedVolume(stock) > 0m && Present(other, 0)) { bot = other; }
+                }
+            }
         }
         if (!SocialBots.ContainsKey(bot.Social.Id))
         { return; }
@@ -221,6 +257,38 @@ public sealed partial class InvestorSociety
         facts.stressRelief = bot.Social.LastDropStock == stock && SocialTime.Seconds - bot.Social.LastDropTime <= Config.Get("legacyEventSeconds") && bot.Social.LastDropAmount >= Config.Get("legacyStressDrop");
         return facts;
     }
+    /// <summary>
+    /// 남의 자랑·한탄을 본 봇이 그 종목을 들고 있는지, 수익률이 얼마인지, 물려 있는지만 알아낸다.
+    /// CaptureFacts와 같은 값을 내지만 글자로 바꾸거나 장면·자산 총액을 계산하지 않는다. 자랑 한 줄을 수백 명이 보는데,
+    /// 그때마다 CaptureFacts를 통째로 돌리면 급등·급락 때(모두가 자랑하고 한탄할 때) 한 줄에 0.2초씩 프레임이 멎는다.
+    /// </summary>
+    private void WitnessPosition(TradeBot bot, Stock stock, out bool held, out decimal percent, out bool losing)
+    {
+        if (stock == null)
+        {
+            // 종목을 모르는 드문 경우는 예전 그대로 계산한다.
+            var facts = CaptureFacts(bot, null);
+            held = facts.held; losing = facts.losing;
+            decimal.TryParse(facts.pct, NumberStyles.Number, SocialCulture, out percent);
+            return;
+        }
+        held = false; losing = false; percent = 0m;
+        decimal qty = bot.GetOwnedVolume(stock), basis = bot.GetOwnedAverage(stock);
+        held = qty > 0;
+        if (qty > 0 && basis > 0)
+        {
+            losing = (stock.currentPrice - basis) * qty < 0;
+            percent = Math.Round((stock.currentPrice / basis - 1m) * 100m, 1, MidpointRounding.AwayFromZero);
+        }
+        if (qty != 0) { return; }
+        double window = Config.Get("tradeFactMinutes");
+        foreach (var fill in bot.Social.Psychology.SocialFills)
+        {
+            if (fill.symbol != stock.symbol || SocialTime.GameMinute - fill.at > window || fill.bought || fill.cost <= 0) { continue; }
+            losing = (fill.price - fill.cost) * fill.quantity < 0;
+            percent = Math.Round((fill.price / fill.cost - 1m) * 100m, 1, MidpointRounding.AwayFromZero);
+        }
+    }
     public static string Money(decimal value) => value.ToString("#,##0", SocialCulture);
     public static string Percent(decimal value) => value.ToString("+0.0;-0.0;0.0", SocialCulture);
     /// <summary>
@@ -246,6 +314,7 @@ public sealed partial class InvestorSociety
         facts.saleNotable = cost > 0m && Notable(bot, sale.SellProfit, sale.SellProfit / cost * 100m, .5m);
         return facts.saleNotable;
     }
+    private static readonly Unity.Profiling.ProfilerMarker FactsMarker = new("DonDon.Write.Facts"), WeighMarker = new("DonDon.Write.Weigh"), PickMarker = new("DonDon.Write.Templates"), RenderMarker = new("DonDon.Write.Render"), PublishMarker = new("DonDon.Write.Publish"), AfterMarker = new("DonDon.Write.Deliver"), HooksMarker = new("DonDon.Write.Hooks");
     private void GenerateSocialMessage(TradeBot bot, SocialIntent intent)
     {
         var mind = bot.Social.Psychology; var room = SocialRoom(intent.roomId);
@@ -255,7 +324,9 @@ public sealed partial class InvestorSociety
         Stock topic = FindSocialStock(intent.facts?.symbol);
         if (topic == null && LiveConversationEnabled)
         { topic = ChooseRoomTopic(bot, intent.roomId, mind.SocialRng.Next()); }
+        FactsMarker.Begin();
         var facts = CaptureFacts(bot, topic);
+        FactsMarker.End();
         facts.sourceEvent = intent.facts?.sourceEvent;
         bool saleEvent = facts.sourceEvent == "ProfitRealized" || facts.sourceEvent == "LossRealized";
         if (saleEvent) { SaleNotable(bot, topic, facts); }
@@ -272,7 +343,9 @@ public sealed partial class InvestorSociety
         PrepareSocialFacts(bot, intent, ref facts);
         if (intent.replyToId != 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var answered) && answered.facts != null)
         { facts.parentNews = answered.facts.companyNewsId > 0 || !string.IsNullOrEmpty(answered.facts.newsHeadline); }
+        WeighMarker.Begin();
         var candidates = BuildSocialWeights(bot, intent, facts);
+        WeighMarker.End();
         SocialAttempts++;
         var debugWeights = candidates.ToArray();
         while (candidates.Count > 0)
@@ -289,7 +362,9 @@ public sealed partial class InvestorSociety
             // 상대의 말과 이어지지 않는 혼잣말(자랑·한탄·반응·잡담)에는 @상대를 붙이지 않는다.
             else if (intent.threadId == 0 && intent.replyToId == 0 && (act == SocialAct.LAMENT || act == SocialAct.REACT || act == SocialAct.BRAG || act == SocialAct.SMALLTALK)) { intent.targetId = 0; }
             else if (intent.targetId == -1 && mind.Quadrant == InvestorQuadrant.Indifferent && intent.replyToId == 0) { intent.targetId = 0; }
+            PickMarker.Begin();
             var templates = EligibleTemplates(bot, intent, facts, act);
+            PickMarker.End();
             if (saleEvent && (act == SocialAct.BRAG || act == SocialAct.LAMENT))
             {
                 // 매도를 계기로 한 말이면 매도를 말하는 문장을 고른다. 그런 문장이 없고 평가 손익도 말할 만하지 않으면 이 말은 하지 않는다.
@@ -308,13 +383,13 @@ public sealed partial class InvestorSociety
                 debug = new SocialMessageDebug { trigger = intent.motive.ToString(), causeId = intent.causeId, weights = debugWeights, slots = facts } };
             string target = message.targetId == -1 ? "방장" : SocialBots.TryGetValue(message.targetId, out var other) ? other.Social.Nickname : "";
             socialMessageIndex.TryGetValue(message.replyToId, out var parentMessage);
-            message.text = RenderSocialText(mind, template, message, parentMessage, target, room.recent);
+            using (RenderMarker.Auto()) { message.text = RenderSocialText(mind, template, message, parentMessage, target, room.recent); }
             // 누구의 말에 다는 답이 아닌 질문은 방 전체에 묻는 문장이다("혹시 OO 보는 사람 있어…?"). 그런 말 앞에 @상대를 붙이면 한 사람을 불러 놓고 모두에게 묻는 꼴이 된다.
             // 표시만 바꾼다. 누구에게 향한 말인지(targetId)는 그대로 둔다.
             bool toRoom = act == SocialAct.ASK && message.replyToId == 0;
             if (message.targetId != 0 && !toRoom) { message.text = "@" + target + " " + message.text; }
             message.profitCard = CaptureProfitCard(bot, message);
-            BeforeSocialPublish(bot, intent, message);
+            using (PublishMarker.Auto()) { BeforeSocialPublish(bot, intent, message); }
             if (message.promisedAction != SocialPromisedAction.None) { mind.PromiseTrade(message.promisedAction, facts.symbol, message.id); }
             mind.SocialLastSpeech = SocialTime.Seconds; bot.Social.LastSpeech = (float)SocialTime.Seconds;
             mind.RecentTemplateKeys.Enqueue(template.key);
@@ -328,7 +403,9 @@ public sealed partial class InvestorSociety
             socialMessageIndex[message.id] = message; socialMessageOrder.Enqueue(message.id);
             while (socialMessageOrder.Count > Config.Int("logCapacity")) { socialMessageIndex.Remove(socialMessageOrder.Dequeue()); }
             ObserveConversationTopic(message);
-            SocialPublished++; SocialMessagePublished?.Invoke(message); AfterSocialPublish(bot, intent, message);
+            SocialPublished++;
+            using (AfterMarker.Auto()) { SocialMessagePublished?.Invoke(message); }
+            using (HooksMarker.Auto()) { AfterSocialPublish(bot, intent, message); }
             return;
         }
         TemplateBlocked++;
@@ -346,7 +423,7 @@ public sealed partial class InvestorSociety
         {
             if (!Enum.TryParse<SocialAct>(entry.key, out var act)) { result.Add(new SocialWeight { key = entry.key, value = entry.value }); continue; }
             double weight = entry.value;
-            // 자랑·한탄은 말할 만한 손익일 때만. 1,800원 벌었다고 자랑하지 않는다.
+            // 자랑·한탄은 말할 만한 손익일 때만. 1,800돈 벌었다고 자랑하지 않는다.
             bool worthBrag = facts.profitable && (facts.notable || facts.directLead) || facts.sourceEvent == "ProfitRealized" && facts.recentSellProfit && facts.saleNotable;
             bool worthLament = facts.losing && (facts.notable || facts.directLead) || facts.sourceEvent == "LossRealized" && facts.recentSellLoss && facts.saleNotable;
             if (act == SocialAct.BRAG && !worthBrag || act == SocialAct.LAMENT && !worthLament ||

@@ -11,7 +11,7 @@ public sealed class DrawerProp : MonoBehaviour
 {
     public static DrawerProp Instance { get; private set; }
     private const float SlideSeconds = .5f, PullShare = .62f, Floor = .12f;
-    public const KeyCode ToggleKey = KeyCode.R;
+    public const KeyCode ToggleKey = KeyCode.F;
     private static string Word(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
     private Transform drawer;
     private Renderer drawerRenderer;
@@ -124,23 +124,18 @@ public sealed class DrawerProp : MonoBehaviour
         if (Open && !views.IsCustomView) { Open = false; }
         if (Open != soundedOpen) { soundedOpen = Open; Sfx.Play(Open ? "DrawerOpen" : "DrawerClose", .8f); }
         bool free = !PauseMenuController.BlocksInput && !MouseCameraController.TextEntryActive && Time.timeScale > 0f && !RoomShell.Cinematic;
-        // R을 누르면 어디를 보고 있든 서랍이 열리고, 다시 누르면 닫힌다. 자리에서 서랍을 보고 클릭해도 열린다.
+        // 자리에서 서랍을 바라본 채 F를 누르면 열리고, 열어 둔 채 F를 누르면 닫힌다(침대·문과 같은 방식). 바라보지 않으면 열리지 않는다.
         bool key = free && Input.GetKeyDown(ToggleKey);
         Hovered = false;
         if (Open)
         {
             if (key) { views.ExitView(); Open = false; }
         }
-        else if (key && slide <= 0f)
-        {
-            if (DeskViewController.OwnsView) { views.ExitView(true); }
-            Open = views.FocusCustom(ViewPose(views.ViewCamera), 52f);
-        }
         else if (free && !DeskViewController.OwnsView && slide <= 0f)
         {
             Ray ray = views.ViewCamera.ScreenPointToRay(MouseCameraController.GetAimScreenPosition());
             Hovered = views.Hovered == DeskViewTarget.None && drawerRenderer.bounds.IntersectRay(ray);
-            if (Hovered && Input.GetMouseButtonDown(0)) { Open = views.FocusCustom(ViewPose(views.ViewCamera), 52f); }
+            if (Hovered && key) { Open = views.FocusCustom(ViewPose(views.ViewCamera), 52f); }
         }
         // 서랍은 부드럽게 미끄러져 나오고 들어간다.
         float target = Open ? 1f : 0f;

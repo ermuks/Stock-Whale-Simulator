@@ -6,11 +6,11 @@
       "weights": [
         {
           "key": "SMALLTALK",
-          "value": 8
+          "value": 12
         },
         {
           "key": "ASK",
-          "value": 15
+          "value": 10
         },
         {
           "key": "REACT",
@@ -26,7 +26,7 @@
         },
         {
           "key": "DOUBT",
-          "value": 13.0
+          "value": 9
         },
         {
           "key": "AGREE",
@@ -386,7 +386,7 @@
       "weights": [
         {
           "key": "AGREE",
-          "value": 45
+          "value": 22
         },
         {
           "key": "ASK",

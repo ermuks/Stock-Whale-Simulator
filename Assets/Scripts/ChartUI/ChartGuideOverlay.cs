@@ -92,7 +92,7 @@ public sealed class ChartGuideOverlay : MonoBehaviour
         {
             // 큰 금액도 자동 축소하지 않고, 축의 폭을 필요한 만큼만 확보한다.
             string largest = scale.Maximum.ToString("N0", Numbers);
-            float required = Mathf.Max(124f, ticks[0].GetPreferredValues(largest + "원").x + 22f);
+            float required = Mathf.Max(124f, ticks[0].GetPreferredValues(largest + "돈").x + 22f);
             required = Mathf.Min(chart.ChartWidth * unitsX * .28f, required);
             if (Mathf.Abs(required - axisWidth) > .5f)
             {
@@ -253,7 +253,7 @@ public sealed class ChartGuideOverlay : MonoBehaviour
         crosshair.SetCrosshair(plotWidth, plotHeight, volumeHeight, point);
         double price = Math.Max(1d, Math.Round(chart.PriceScale.PriceAt(localPoint.y / chart.chartHeight), MidpointRounding.AwayFromZero));
         if (price != lastCursorPrice)
-        { lastCursorPrice = price; SetText(priceText, price.ToString("N0", Numbers) + "원"); }
+        { lastCursorPrice = price; SetText(priceText, price.ToString("N0", Numbers) + "돈"); }
         if (candle.marketDay != lastDay || candle.marketMinute != lastMinute || candle.historical != lastHistorical || forming != lastForming)
         {
             lastDay = candle.marketDay; lastMinute = candle.marketMinute; lastHistorical = candle.historical; lastForming = forming;

@@ -15,8 +15,8 @@ public partial class ChartManager
     private TextMeshProUGUI holdingEmpty;
 
     private static string HoldingWord(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
-    /// <summary>"1,234 원"처럼 숫자와 단위를 띄어 쓴다.</summary>
-    private static string HoldingMoney(decimal value) => PriceTickPolicy.FormatMoney(value) + " " + (GameLocale.Code == "ko" ? "원" : GameLocale.Text("원"));
+    /// <summary>"1,234 돈"처럼 숫자와 단위를 띄어 쓴다.</summary>
+    private static string HoldingMoney(decimal value) => PriceTickPolicy.FormatMoney(value) + " " + (GameLocale.Code == "ko" ? "돈" : GameLocale.Text("돈"));
 
     private void ConfigureHoldingPanel(RectTransform header)
     {

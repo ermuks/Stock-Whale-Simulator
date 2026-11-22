@@ -83,7 +83,7 @@ public sealed class NightPrep : MonoBehaviour
         Payer.cash -= PlantCost; Tire();
         Planted = stock; PlantedPositive = positive; plantAt = -1f;
         LastResult = Word("기사를 맡겼습니다. 내일 개장 직후에 나갑니다", "Story placed. It runs right after tomorrow's open", "記事を手配しました。明日の寄り付き直後に出ます");
-        Debug.Log($"[밤 준비] 기사 심기: {stock.stockName}({stock.symbol}) {(positive ? "호재" : "악재")} · {PlantCost:N0}원 · 피로 {PlayerRestController.Instance?.State.fatigue:0}");
+        Debug.Log($"[밤 준비] 기사 심기: {stock.stockName}({stock.symbol}) {(positive ? "호재" : "악재")} · {PlantCost:N0}돈 · 피로 {PlayerRestController.Instance?.State.fatigue:0}");
         return true;
     }
 
@@ -111,7 +111,7 @@ public sealed class NightPrep : MonoBehaviour
         { tip.Found = true; tip.Title = title; tip.Positive = value >= 1f; }
         LastTip = tip;
         LastResult = tip.Found ? Word("내일 나올 기사를 받았습니다", "You have tomorrow's story", "明日の記事を手に入れました") : Word("내일은 이 회사에 나올 기사가 없습니다", "Nothing is scheduled for this company tomorrow", "明日この会社の記事はありません");
-        Debug.Log($"[밤 준비] 내일 기사 미리 사기: {stock.stockName}({stock.symbol}) → {(tip.Found ? (tip.Positive ? "호재 · " : "악재 · ") + tip.Title : "예약 없음")} · {TipCost:N0}원");
+        Debug.Log($"[밤 준비] 내일 기사 미리 사기: {stock.stockName}({stock.symbol}) → {(tip.Found ? (tip.Positive ? "호재 · " : "악재 · ") + tip.Title : "예약 없음")} · {TipCost:N0}돈");
         return true;
     }
 

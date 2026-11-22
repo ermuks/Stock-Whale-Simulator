@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 심리적 저항선 관리자: 라운드 넘버(10, 100, 1000, 10000원 등)에서 
+/// 심리적 저항선 관리자: 라운드 넘버(10, 100, 1000, 10000돈 등)에서 
 /// 매도벽이 형성되고, 돌파 직전에 주문이 철회되는 현상을 시뮬레이션.
 /// </summary>
 public class PsychologicalLevelManager : MonoBehaviour

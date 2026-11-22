@@ -141,8 +141,8 @@ public static class InvestorSocietyScenePatch
         Layout((RectTransform)chat.newestButton.transform, .79f, .69f, .18f, .028f);
         ui.invite = Button("Invite Selected Investor", canvas.transform, "회유·초대", .77f, .732f, .2f, .032f, 32f);
         ui.commandStatus = Text("Room Command State", canvas.transform, "", .035f, .778f, .93f, .065f, 33f, true);
-        Text("Buy Trigger Label", canvas.transform, "매수 이하 (원)", .035f, .853f, .28f, .02f, 28f, true);
-        Text("Sell Trigger Label", canvas.transform, "매도 이상 (원)", .36f, .853f, .28f, .02f, 28f, true);
+        Text("Buy Trigger Label", canvas.transform, "매수 이하 (돈)", .035f, .853f, .28f, .02f, 28f, true);
+        Text("Sell Trigger Label", canvas.transform, "매도 이상 (돈)", .36f, .853f, .28f, .02f, 28f, true);
         ui.buyPrice = Input("Buy Trigger", canvas.transform, .035f, .877f, .29f, .034f);
         ui.sellPrice = Input("Sell Trigger", canvas.transform, .36f, .877f, .29f, .034f);
         ui.issue = Button("Issue Room Command", canvas.transform, "지시", .69f, .877f, .13f, .034f, 34f);
@@ -269,15 +269,5 @@ public static class InvestorSocietyScenePatch
     private static void Setup()
     {
         var manager = Object.FindAnyObjectByType<StockManager>(); manager.economy.retailPlayerStart = true;
-        var setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>(FindObjectsInactive.Include);
-        setup.companyName.gameObject.SetActive(false); setup.issuedShares.gameObject.SetActive(false); setup.publicPercentage.gameObject.SetActive(false);
-        foreach (var text in setup.GetComponentsInChildren<TextMeshProUGUI>(true))
-        {
-            if (text.name.EndsWith("Label") && text.transform.parent == setup.transform) { text.gameObject.SetActive(false); }
-            if (text.name == "Text :: Title") { text.text = "심야 거래실"; }
-            if (text.name == "Text :: Explanation") { text.text = "시장과 사람을 관찰하고, 필요한 순간에 결정하세요."; }
-        }
-        Layout(setup.preview.rectTransform, .05f, .27f, .9f, .42f); setup.preview.fontSize = 34f;
-        setup.confirm.GetComponentInChildren<TextMeshProUGUI>().text = "투자 시작";
     }
 }

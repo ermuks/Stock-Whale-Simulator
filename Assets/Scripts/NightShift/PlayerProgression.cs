@@ -42,6 +42,8 @@ public sealed partial class PlayerProgression : MonoBehaviour
     public Rules rules = new();
     public decimal Turnover { get; private set; }
     public decimal RealizedProfit { get; private set; }
+    /// <summary>가장 최근에 판 것(종목, 평단, 판 값, 수량, 시각). 이번 실행 동안만 기억한다.</summary>
+    public (string symbol, decimal basis, decimal price, decimal volume, float at) LastSale { get; private set; }
     public bool CanOperateRooms { get; private set; }
     /// <summary>엔딩 뒤 꿈에서 깼다. 리딩방도 내 기업도 처음부터 없던 것이다(내 기업을 다시 만들어 주지 않는다).</summary>
     public bool Dreamt { get; private set; }
@@ -78,7 +80,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
     public decimal OpeningCash => PlayerAccounts.Available(OpeningAccount);
     public bool Eligible => OpeningCash >= OpeningCost;
     public string WorldId { get; private set; }
-    public string LockReason => "리딩방 개설 필요 · 개설 비용 " + OpeningCost.ToString("N0") + "원";
+    public string LockReason => "리딩방 개설 필요 · 개설 비용 " + OpeningCost.ToString("N0") + "돈";
     private readonly HashSet<Stock> watched = new();
     void Awake()
     {
@@ -121,6 +123,10 @@ public sealed partial class PlayerProgression : MonoBehaviour
         {
             decimal basis = ReferenceEquals(resting.owner, player) ? resting.costBasis : player.SubmittedSellCost;
             RealizedProfit += (price - basis) * volume;
+            // 가장 최근에 판 것. 채팅에서 실현 손익을 인증할 때 쓴다. 같은 종목을 잇달아 판 것은 하나로 합친다.
+            if (LastSale.symbol == stock.symbol && SessionClock.Time - LastSale.at < 30f)
+            { LastSale = (stock.symbol, (LastSale.basis * LastSale.volume + basis * volume) / (LastSale.volume + volume), (LastSale.price * LastSale.volume + price * volume) / (LastSale.volume + volume), LastSale.volume + volume, SessionClock.Time); }
+            else { LastSale = (stock.symbol, basis, price, volume, SessionClock.Time); }
         }
     }
     public bool OpenLeadingRooms()

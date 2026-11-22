@@ -32,7 +32,6 @@ public static class OnboardingScenePatch
         orders.pairedTablet = journal.thisTablet; journal.pairedTablet = orders.thisTablet;
         npc.chat = roomUI.chat; roomUI.orderScreen = orders;
         RoomControls(roomUI);
-        StartScreen(Object.FindAnyObjectByType<PlayerCompanySetupUI>(FindObjectsInactive.Include));
         var hud = Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include).Single(c => c.name == "Panel :: Interaction HUD");
         Journey(hud.transform,roomUI,orders,journal);
         foreach (var pair in poses)
@@ -93,54 +92,6 @@ public static class OnboardingScenePatch
         var caption = Text(name + " Label",rect,label,.03f,.06f,.94f,.88f,size); caption.alignment = TextAlignmentOptions.Center;
         var colors = ColorBlock.defaultColorBlock; colors.highlightedColor = new Color(.72f,.9f,.94f); colors.selectedColor = colors.highlightedColor; colors.disabledColor = new Color(.4f,.4f,.4f,1f); button.colors = colors;
         return button;
-    }
-    private static void StartScreen(PlayerCompanySetupUI setup)
-    {
-        var root = setup.transform;
-        var oldBackdrop = root.Find("Image :: Backdrop");
-        if (oldBackdrop != null)
-        { Backdrop((RectTransform)oldBackdrop,new Color(.018f,.028f,.034f,.94f),true); }
-        var menu = Rect("Panel :: Start Menu",root,.08f,.075f,.84f,.85f);
-        // Preserve old references; move the original form fields into the optional company-start panel.
-        foreach (Transform child in root)
-        {
-            if (child != menu && child != oldBackdrop)
-            { child.gameObject.SetActive(false); }
-        }
-        var intro = Rect("Area :: Retail Introduction",menu,0,0,1,1); setup.retailIntroduction = intro.gameObject;
-        Text("Game Title",intro,"DON DON",0,0,.65f,.14f,92f);
-        Text("Opening Line",intro,"시장은 움직이고, 사람들은 서로를 믿습니다.",.005f,.145f,.92f,.06f,28f,true);
-        var line = Rect("Image :: Opening Divider",intro,0,.23f,1,.002f); Backdrop(line,new Color32(49,66,73,255));
-        Text("Starting Cash Caption",intro,"첫 투자금",0,.29f,.49f,.05f,26f,true);
-        var market = Object.FindAnyObjectByType<StockManager>();
-        long startingCash = market != null ? market.economy.retailStartingCash : new EconomySettings().retailStartingCash;
-        setup.startBalance = Text("Starting Cash",intro,startingCash.ToString("N0") + "원",0,.35f,.51f,.10f,66f);
-        setup.retailPreview = Text("Retail Start Details",intro,"",0,.50f,.51f,.25f,27f,true);
-        var path = Rect("Panel :: First Journey",intro,.56f,.29f,.44f,.47f); Backdrop(path,Dark);
-        Text("First Room",path,"첫 가입 · 새벽 관찰실",.055f,.05f,.89f,.14f,34f);
-        Text("First Journey Steps",path,"01  관찰\n운영자의 실제 주문과 체결 확인\n02  내 판단으로 거래\n가격·수량 확인 후 직접 제출\n03  내 리딩방 개설\n실현한 매매 성과로 운영 권한 획득",.055f,.22f,.89f,.74f,26f,true);
-        var controls = Rect("Panel :: Opening Controls",intro,.56f,.29f,.44f,.47f); Backdrop(controls,Dark); setup.controlsPanel = controls.gameObject;
-        Text("Controls Heading",controls,"제자리에서 시장을 읽기",.055f,.05f,.89f,.14f,32f);
-        Text("Opening Controls",controls,"마우스  둘러보기  ·  휠  시야각\n클릭 / E  기기 열기\nSpace  차트 확대 / 돌아가기\nA / D  확대 화면 좌우 이동\nW / S  이전·다음 종목\n1 / 2  계좌 태블릿  ·  Tab  휴대폰\nEsc  내려놓기  ·  P  일시정지",.055f,.23f,.89f,.72f,26f,true);
-        controls.gameObject.SetActive(false);
-        var company = Rect("Panel :: Company Start Form",menu,0,0,1,.80f); setup.companySetup = company.gameObject;
-        Text("Company Start Heading",company,"내 기업 설정",0,0,1,.12f,52f);
-        TMP_InputField[] fields = {setup.companyName,setup.issuedShares,setup.publicPercentage};
-        string[] labels = {"종목 이름","총 발행량","시장 공개 비율 (%)"};
-        for (int i = 0; i < fields.Length; i++)
-        {
-            fields[i].transform.SetParent(company,false); fields[i].gameObject.SetActive(true);
-            Layout((RectTransform)fields[i].transform,.32f,.19f+i*.13f,.68f,.095f);
-            Text("Company Setting " + i,company,labels[i],0,.19f+i*.13f,.30f,.09f,27f,true);
-        }
-        setup.preview.transform.SetParent(company,false); setup.preview.gameObject.SetActive(true);
-        Layout(setup.preview.rectTransform,0,.60f,1,.39f); Style(setup.preview,26f,true);
-        company.gameObject.SetActive(false);
-        setup.confirm.transform.SetParent(menu,false); setup.confirm.gameObject.SetActive(true);
-        Layout((RectTransform)setup.confirm.transform,0,.84f,.51f,.095f); setup.confirm.image.color = Accent;
-        var confirmText = setup.confirm.GetComponentInChildren<TextMeshProUGUI>(); Layout(confirmText.rectTransform,.03f,.06f,.94f,.88f); Style(confirmText,30f); confirmText.alignment = TextAlignmentOptions.Center; confirmText.text = "리딩방에 가입하고 시작";
-        setup.controlsToggle = Button("Opening Controls",menu,"조작 방법",.56f,.84f,.44f,.095f,27f);
-        setup.error.transform.SetParent(menu,false); setup.error.gameObject.SetActive(true); Layout(setup.error.rectTransform,0,.95f,1,.05f); Style(setup.error,22f,true);
     }
     private static void RoomControls(LeadingRoomUI ui)
     {

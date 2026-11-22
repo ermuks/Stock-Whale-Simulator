@@ -16,7 +16,7 @@ public sealed class AccumulationUI : MonoBehaviour
     private static readonly Dictionary<string, (string en, string ja)> Words = new()
     {
         ["스프레드"] = ("Spread", "スプレッド"), ["매집"] = ("Accumulate", "買い集め"), ["자동 매집"] = ("Auto accumulate", "自動買い集め"),
-        ["매집 가격대"] = ("Price band", "買い集め価格帯"), ["원"] = ("KRW", "ウォン"), ["주"] = ("sh", "株"),
+        ["매집 가격대"] = ("Price band", "買い集め価格帯"), ["돈"] = ("DON", "ドン"), ["주"] = ("sh", "株"),
         ["현재가 −3% ~ +1%"] = ("−3% to +1%", "現在値−3%〜+1%"), ["현재가 −5% ~ +1%"] = ("−5% to +1%", "現在値−5%〜+1%"), ["현재가 −10% ~ −2%"] = ("−10% to −2%", "現在値−10%〜−2%"),
         ["사용할 현금"] = ("Cash to use", "使う現金"), ["매집 예산"] = ("Budget", "買い集め予算"),
         ["30초 안에 4% 넘게 떨어지면 매수 대기를 바로 거두고, 평균 단가보다 쌀 때만 조금씩 삽니다."] =
@@ -81,12 +81,12 @@ public sealed class AccumulationUI : MonoBehaviour
         previous = Action("Previous Stock", "‹", 32, 88, 48, 56, () => Select(-1), false, false);
         stockName = Text("Stock", 88, 88, 720, 64, 38);
         following = Action("Next Stock", "›", 832, 88, 48, 56, () => Select(1), false, false);
-        price = Number("Current Price", 32, 168, 800, 56, 32); Label("Current Price Unit", "원", 848, 168, 60, 56, 25).color = Muted;
+        price = Number("Current Price", 32, 168, 800, 56, 32); Label("Current Price Unit", "돈", 848, 168, 60, 56, 25).color = Muted;
 
         Label("Band Label", "매집 가격대", 32, 244, 480, 44, 29);
-        lowInput = Input("Band Low", 32, 296, 360, 56); Label("Low Unit", "원", 400, 296, 60, 56, 25).color = Muted;
+        lowInput = Input("Band Low", 32, 296, 360, 56); Label("Low Unit", "돈", 400, 296, 60, 56, 25).color = Muted;
         Text("Band Dash", 440, 296, 40, 56, 30).text = "~";
-        highInput = Input("Band High", 480, 296, 360, 56); Label("High Unit", "원", 848, 296, 60, 56, 25).color = Muted;
+        highInput = Input("Band High", 480, 296, 360, 56); Label("High Unit", "돈", 848, 296, 60, 56, 25).color = Muted;
         for (int i = 0; i < presets.Length; i++)
         {
             int index = i;
@@ -98,7 +98,7 @@ public sealed class AccumulationUI : MonoBehaviour
             int index = i;
             fractions[i] = Action("Cash Fraction " + i, Mathf.RoundToInt(FractionValues[i] * 100f) + "%", 32 + i * 214, 492, 204, 52, () => { fraction = FractionValues[index]; next = 0f; }, false, false);
         }
-        budget = Metric("매집 예산", 32, 564, 848, "원");
+        budget = Metric("매집 예산", 32, 564, 848, "돈");
         hint = Label("Crash Hint", "30초 안에 4% 넘게 떨어지면 매수 대기를 바로 거두고, 평균 단가보다 쌀 때만 조금씩 삽니다.", 32, 624, 848, 96, 23);
         hint.color = Muted; hint.textWrappingMode = TextWrappingModes.Normal; hint.alignment = TextAlignmentOptions.TopLeft;
         start = Action("Start Accumulation", "매집 시작", 32, 792, 408, 56, StartAccumulation, true, true);
@@ -108,11 +108,11 @@ public sealed class AccumulationUI : MonoBehaviour
         TradingOrderView.Place(divider.rectTransform, panel, 920, 88, 1, 752, W, H);
         statusHeading = Label("Status Title", "매집 현황", 960, 88, 608, 56, 34);
         shares = Metric("매집 수량", 960, 160, 608, "주");
-        average = Metric("평균 단가", 960, 212, 608, "원");
-        spent = Metric("매집 금액", 960, 264, 608, "원");
-        value = Metric("평가 금액", 960, 316, 608, "원");
-        profit = Metric("평가 손익", 960, 368, 608, "원");
-        left = Metric("남은 예산", 960, 420, 608, "원");
+        average = Metric("평균 단가", 960, 212, 608, "돈");
+        spent = Metric("매집 금액", 960, 264, 608, "돈");
+        value = Metric("평가 금액", 960, 316, 608, "돈");
+        profit = Metric("평가 손익", 960, 368, 608, "돈");
+        left = Metric("남은 예산", 960, 420, 608, "돈");
         resting = Metric("매수 대기", 960, 472, 608, "");
         used = Text("Budget Used", 960, 532, 608, 36, 24); used.color = Muted;
         var track = Graphic("Budget Track", panel, Line); TradingOrderView.Place(track.rectTransform, panel, 960, 574, 608, 10, W, H);

@@ -16,14 +16,18 @@ Shader "Hidden/DonDon/FatigueBlur"
         {
             UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(input);
             float2 uv = input.texcoord;
-            // Bilinear pairs implement the 5x5 Gaussian [1 4 6 4 1] with nine reads.
-            // At radius 2, samples at +/-1.2 combine the adjacent +/-1 and +/-2 texels.
-            // Merely spacing the old 3x3 taps two pixels apart would leave visible gaps.
-            float2 x = float2(_FatigueOptics.x * .6, 0), y = float2(0, _FatigueOptics.y * .6);
-            half4 value = ReadScene(uv) * .140625;
-            value += (ReadScene(uv-x) + ReadScene(uv+x) + ReadScene(uv-y) + ReadScene(uv+y)) * .1171875;
-            value += (ReadScene(uv-x-y) + ReadScene(uv+x-y) + ReadScene(uv-x+y) + ReadScene(uv+x+y)) * .09765625;
-            return value;
+            // 둥글게 번지는 블러. 예전에는 가로·세로·대각선의 아홉 점만 읽어서, 반경이 커지면 밝은 곳이 십자(＋) 모양으로 번졌다.
+            // 이제는 원 안에 황금각 나선으로 고르게 흩은 열여섯 점을 읽는다. 어느 축에도 줄이 서지 않아 번짐이 둥글다.
+            // 가운데일수록 무겁게(가우시안) 더한다.
+            half4 value = ReadScene(uv); float total = 1.0;
+            for (int i = 0; i < 16; i++)
+            {
+                float ring = sqrt((i + .5) / 16.0), angle = i * 2.3999632;
+                float weight = exp(-2.0 * ring * ring);
+                value += ReadScene(uv + float2(cos(angle), sin(angle)) * ring * _FatigueOptics.xy * 1.25) * weight;
+                total += weight;
+            }
+            return value / total;
         }
         half4 CameraMotion(Varyings input) : SV_Target
         {

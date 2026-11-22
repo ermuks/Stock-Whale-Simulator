@@ -47,7 +47,7 @@ public sealed class TabletKitLayout : MonoBehaviour
             if (fill.Buy || TabletRecordsView.DayOf(fill.Time)!=today) { continue; }
             sells++; realized+=fill.Realized;
         }
-        string text=sells==0 ? "" : (GameLocale.Code=="ja" ? "本日の実現 " : GameLocale.Code=="en" ? "Realized today " : "오늘 실현 ")+InvestmentDashboard.Signed(realized)+(GameLocale.Code=="ko" ? "원" : " "+GameLocale.Text("원"));
+        string text=sells==0 ? "" : (GameLocale.Code=="ja" ? "本日の実現 " : GameLocale.Code=="en" ? "Realized today " : "오늘 실현 ")+InvestmentDashboard.Signed(realized)+(GameLocale.Code=="ko" ? "돈" : " "+GameLocale.Text("돈"));
         if (!GameLocalizedText.Matches(todayRealized,text)) { GameLocalizedText.Set(todayRealized,text,true); }
         todayRealized.color=realized>0m ? TabletKitStyle.Up : realized<0m ? TabletKitStyle.Down : TabletKitStyle.Muted;
     }

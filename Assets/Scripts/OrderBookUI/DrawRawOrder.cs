@@ -78,7 +78,7 @@ public class DrawRawOrder : MonoBehaviour
         highlight.SetActive(isLastPrice);
     }
 
-    /// <summary>거래대금은 원 단위로 표시.</summary>
+    /// <summary>거래대금은 돈 단위로 표시.</summary>
     static string FormatTurnover(decimal turnover, decimal price)
     {
         return PriceTickPolicy.FormatMoney(turnover);

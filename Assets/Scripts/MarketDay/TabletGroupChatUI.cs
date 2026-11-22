@@ -54,6 +54,12 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         public Image NoticeBackground;
         public TextMeshProUGUI NoticeText;
         public bool IsNotice;
+        /// <summary>바로 윗줄과 같은 사람이 이어서 쓴 줄인가. 그러면 얼굴과 이름 없이 말만 보인다.</summary>
+        public bool Continued;
+        /// <summary>내 글에 단 답인가. 그러면 줄 전체에 강조 띠를 깔고, 위에 내가 쓴 글을 한 줄로 인용한다.</summary>
+        public bool ToMe;
+        public Image ReplyBand; public TextMeshProUGUI ReplyQuote;
+        public RectTransform[] Header; public float[] HeaderY;
         // 손익 인증 카드
         public RectTransform Card;
         public Image CardAccent;
@@ -329,6 +335,79 @@ public sealed class TabletGroupChatUI : MonoBehaviour
     private int MessageCount => SelectedRoom == 0 ? day.MessageCount : Room == null || !CanReadRoom ? 0 : Room.Count;
     private long MessageVersion => SelectedRoom == 0 ? day.MessageVersion : Room == null || !CanReadRoom ? 0 : Room.Version;
     private BotChatMessage Message(int index) => SelectedRoom == 0 ? day.GetMessage(index) : Room.Get(index);
+    /// <summary>이 시간(게임 분) 안에 같은 사람이 이어 쓴 글은 한 묶음으로 본다. 실제 시간으로 1분쯤이다.</summary>
+    private const int GroupMinutes = 30;
+    /// <summary>이어 쓴 줄의 말풍선 위·아래 여백.</summary>
+    private const float ContinuedTop = 2f, ContinuedBottom = 4f;
+    private readonly Dictionary<long, bool> measuredContinued = new();
+    /// <summary>내 글에 단 답 위에 붙는 인용 줄의 높이.</summary>
+    private const float QuoteHeight = 30f;
+    private static readonly Color ReplyBandColor = new(1f, .74f, .22f, .11f), ReplyBarColor = new(1f, .72f, .20f, 1f), ReplyQuoteColor = new(.80f, .78f, .70f, 1f);
+    /// <summary>내 글에 단 답인가. 봇이 내게 하는 말은 언제나 나를 부르는 멘션(@당신)으로 시작한다. 봇끼리 주고받는 답은 강조하지 않는다.</summary>
+    private bool RepliesToMe(BotChatMessage message)
+    {
+        if (message.FromPlayer || message.IsRoomNotice || removedMessages.Contains(message.Sequence)) { return false; }
+        string text = DisplayMessage(message);
+        foreach (string you in InvestorSociety.YouMentions) { if (text.StartsWith(ChatSocialMentions.MarkOpen + you, System.StringComparison.Ordinal)) { return true; } }
+        return false;
+    }
+    /// <summary>
+    /// 내 글을 인용해 보여 줄 답인가. 내 글에 단 답(답글 번호가 있는 것)만 인용한다.
+    /// 봇이 먼저 거는 말, 되묻는 말, 토론에서 나를 끌어들이는 말은 나를 부르기만 할 뿐 내 글에 대한 답이 아니다.
+    /// 예전에는 이런 말에도 바로 앞의 내 글을 인용해서, 상관없는 글에 엉뚱한 답이 달린 것처럼 보였다.
+    /// </summary>
+    private bool QuotesMe(BotChatMessage message) => RepliesToMe(message) && message.Social != null && message.Social.replyToId != 0;
+    /// <summary>그 답이 가리키는 내 글. 번호로 찾고, 못 찾으면 바로 앞의 내 글을 쓴다.</summary>
+    private string QuoteFor(int index)
+    {
+        var message = Message(index); long wanted = message.Social == null ? 0 : message.Social.replyToId; string nearest = null;
+        for (int i = index - 1; i >= 0 && i >= index - 150; i--)
+        {
+            var earlier = Message(i);
+            if (!earlier.FromPlayer) { continue; }
+            if (wanted != 0 && earlier.Social != null && earlier.Social.id == wanted) { nearest = LocalizedChat.Text(earlier); break; }
+            if (nearest == null) { nearest = LocalizedChat.Text(earlier); if (wanted == 0) { break; } }
+        }
+        if (string.IsNullOrEmpty(nearest)) { return ""; }
+        if (nearest.Length > 34) { nearest = nearest.Substring(0, 33) + "…"; }
+        return "@" + PlayerLabel + "  " + ChatSocialMentions.Literal(nearest);
+    }
+    private void BuildReplyVisual(Row row)
+    {
+        var band = new GameObject("Image :: Reply Highlight", typeof(RectTransform), typeof(Image)) { layer = row.Rect.gameObject.layer };
+        var bandRect = (RectTransform)band.transform; bandRect.SetParent(row.Rect, false); bandRect.SetAsFirstSibling();
+        bandRect.anchorMin = Vector2.zero; bandRect.anchorMax = Vector2.one; bandRect.offsetMin = new Vector2(0f, 2f * layoutScale); bandRect.offsetMax = Vector2.zero;
+        row.ReplyBand = band.GetComponent<Image>(); row.ReplyBand.color = ReplyBandColor; row.ReplyBand.raycastTarget = false;
+        var bar = new GameObject("Image :: Reply Accent", typeof(RectTransform), typeof(Image)) { layer = band.layer };
+        var barRect = (RectTransform)bar.transform; barRect.SetParent(bandRect, false);
+        barRect.anchorMin = Vector2.zero; barRect.anchorMax = new Vector2(0f, 1f); barRect.pivot = new Vector2(0f, .5f); barRect.sizeDelta = new Vector2(5f * layoutScale, 0f); barRect.anchoredPosition = Vector2.zero;
+        bar.GetComponent<Image>().color = ReplyBarColor; bar.GetComponent<Image>().raycastTarget = false;
+        row.ReplyQuote = Instantiate(row.Time, row.Rect); row.ReplyQuote.name = "Text :: Reply Quote";
+        row.ReplyQuote.raycastTarget = false; row.ReplyQuote.enableAutoSizing = false; row.ReplyQuote.fontSize = row.Nickname.fontSize * .82f; row.ReplyQuote.color = ReplyQuoteColor;
+        row.ReplyQuote.alignment = TextAlignmentOptions.MidlineLeft; row.ReplyQuote.textWrappingMode = TextWrappingModes.NoWrap; row.ReplyQuote.overflowMode = TextOverflowModes.Ellipsis; row.ReplyQuote.richText = true;
+        var quote = row.ReplyQuote.rectTransform; quote.anchorMin = quote.anchorMax = quote.pivot = new Vector2(0f, 1f);
+        quote.anchoredPosition = new Vector2(104f * layoutScale, -4f * layoutScale); quote.sizeDelta = new Vector2(520f * layoutScale, (QuoteHeight - 6f) * layoutScale);
+        // 인용 줄이 붙으면 얼굴·이름·시각이 그만큼 내려간다. 원래 자리를 적어 둔다.
+        row.Header = new[] { row.Avatar.rectTransform, row.Gauge.rectTransform, row.Nickname.rectTransform, row.Time.rectTransform, row.AngerDot.rectTransform };
+        row.HeaderY = new float[row.Header.Length];
+        for (int i = 0; i < row.Header.Length; i++) { row.HeaderY[i] = row.Header[i].anchoredPosition.y; }
+        band.SetActive(false); row.ReplyQuote.gameObject.SetActive(false);
+    }
+    /// <summary>
+    /// 바로 윗줄과 같은 사람이 이어서 쓴 줄인가. 그러면 얼굴·이름·시각을 다시 띄우지 않고 말풍선만 아래에 붙인다(메신저의 묶음 표시).
+    /// 안내 줄, 날이 바뀐 줄, 한참 뒤에 쓴 줄은 묶지 않는다.
+    /// </summary>
+    private bool Continues(int index)
+    {
+        if (index <= 0 || index >= MessageCount) { return false; }
+        var message = Message(index); var above = Message(index - 1);
+        // 내 글에 단 답은 묶지 않는다. 누가 답했는지 이름이 보여야 한다.
+        if (RepliesToMe(message)) { return false; }
+        if (message.IsRoomNotice || above.IsRoomNotice || message.FromPlayer != above.FromPlayer || message.BotId != above.BotId || message.Day != above.Day) { return false; }
+        if (message.Minute < above.Minute || message.Minute - above.Minute > GroupMinutes) { return false; }
+        // 봇 번호가 없는 말(내 글, 분석 AI, 지나가는 사람)은 이름까지 같아야 같은 사람이다.
+        return message.BotId != 0 || message.TemplateId == above.TemplateId && message.Nickname == above.Nickname;
+    }
     public void SelectRoom(int room)
     {
         moderationMenu?.Close();
@@ -403,6 +482,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             BuildCardVisual(row);
             BuildAnalysisVisual(row);
             BuildInviteButton(row);
+            BuildReplyVisual(row);
             row.Text.raycastTarget = true;
             var stockLinks = row.Text.gameObject.AddComponent<ChatStockLinkUI>();
             stockLinks.Bind(row.Text, SelectMentionedStock, () => row.Click.onClick.Invoke());
@@ -738,19 +818,50 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                         }
                     }
                     if (row.IsNotice)
-                    { LayoutNotice(row, message); continue; }
+                    {
+                        row.Continued = false; row.ToMe = false;
+                        if (row.ReplyBand.gameObject.activeSelf) { row.ReplyBand.gameObject.SetActive(false); row.ReplyQuote.gameObject.SetActive(false); }
+                        LayoutNotice(row, message); continue;
+                    }
+                    // 내 글에 단 답: 강조 띠를 깔고, 위에 내가 쓴 글을 한 줄 인용한다. 얼굴과 이름은 그만큼 내려간다.
+                    bool toMe = RepliesToMe(message), quotes = toMe && QuotesMe(message); float lift = quotes ? QuoteHeight * layoutScale : 0f;
+                    row.ToMe = toMe;
+                    if (row.ReplyBand.gameObject.activeSelf != toMe) { row.ReplyBand.gameObject.SetActive(toMe); }
+                    if (row.ReplyQuote.gameObject.activeSelf != quotes) { row.ReplyQuote.gameObject.SetActive(quotes); }
+                    if (quotes)
+                    {
+                        string quoted = QuoteFor(index);
+                        if (row.ReplyQuote.text != quoted) { row.ReplyQuote.text = quoted; }
+                        row.ReplyQuote.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Max(60f, width));
+                    }
+                    for (int part = 0; part < row.Header.Length; part++)
+                    {
+                        var place = row.Header[part].anchoredPosition; float wantedY = row.HeaderY[part] - lift;
+                        if (!Mathf.Approximately(place.y, wantedY)) { row.Header[part].anchoredPosition = new Vector2(place.x, wantedY); }
+                    }
+                    // 같은 사람이 이어 쓴 줄은 얼굴·이름·시각을 숨기고 말풍선만 위로 붙인다.
+                    bool continued = Continues(index);
+                    row.Continued = continued;
+                    if (row.Avatar.gameObject.activeSelf == continued)
+                    {
+                        row.Avatar.gameObject.SetActive(!continued); row.Gauge.gameObject.SetActive(!continued);
+                        row.Nickname.gameObject.SetActive(!continued); row.Time.gameObject.SetActive(!continued);
+                        if (continued) { row.AngerDot.gameObject.SetActive(false); }
+                    }
                     float nicknameHeight = Mathf.Max(30f * layoutScale, row.Nickname.GetPreferredValues(GameLocale.Text(row.Nickname.text), nicknameMeasure.rectTransform.rect.width, Mathf.Infinity).y);
-                    float extraHeader = nicknameHeight - 30f * layoutScale;
+                    float extraHeader = continued ? 0f : nicknameHeight - 30f * layoutScale;
+                    // top: 줄의 위 끝에서 말풍선까지. 이름이 있는 줄은 이름 자리만큼, 이어 쓴 줄은 바로 붙는다.
+                    float top = continued ? ContinuedTop * layoutScale : 38f * layoutScale + extraHeader + lift, bottom = continued ? ContinuedBottom * layoutScale : 10f * layoutScale;
                     row.Nickname.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, nicknameHeight);
-                    row.Bubble.anchoredPosition = new Vector2(104f * layoutScale, -38f * layoutScale - extraHeader);
-                    row.Text.rectTransform.anchoredPosition = new Vector2(124f * layoutScale, -48f * layoutScale - extraHeader);
+                    row.Bubble.anchoredPosition = new Vector2(104f * layoutScale, -top);
+                    row.Text.rectTransform.anchoredPosition = new Vector2(124f * layoutScale, -top - 10f * layoutScale);
                     // 카드가 있으면 말풍선은 그만큼 짧아지고 카드는 말풍선 바로 아래에 놓인다.
                     float cardHeight = CardHeight(message);
-                    float bubbleHeight = Mathf.Max(52f * layoutScale, rowHeights[index] - 48f * layoutScale - extraHeader - cardHeight);
+                    float bubbleHeight = Mathf.Max((continued ? 44f : 52f) * layoutScale, rowHeights[index] - top - bottom - cardHeight);
                     if (cardHeight > 0f)
                     {
                         var below = message.Social != null && message.Social.analysisCard != null && row.Analysis != null ? row.Analysis : row.Card;
-                        below.anchoredPosition = new Vector2(104f * layoutScale, -(38f * layoutScale + extraHeader + bubbleHeight + 6f * layoutScale));
+                        below.anchoredPosition = new Vector2(104f * layoutScale, -(top + bubbleHeight + 6f * layoutScale));
                         if (below == row.Card) { row.Card.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, Mathf.Min(CardWidthPixels * layoutScale, width + 40f * layoutScale)); }
                     }
                     float bubbleWidth = Mathf.Clamp(row.Text.GetPreferredValues(GameLocale.Text(row.Text.text), width, Mathf.Infinity).x + 40f * layoutScale, Mathf.Min(220f * layoutScale, width + 40f * layoutScale), width + 40f * layoutScale);
@@ -759,7 +870,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                     row.Text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, bubbleWidth - 40f * layoutScale);
                     row.Text.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, bubbleHeight - 20f * layoutScale);
                     // 상호작용 단추는 줄의 오른쪽 끝, 말풍선 높이의 가운데.
-                    row.ActionY = -38f * layoutScale - extraHeader - bubbleHeight * .5f;
+                    row.ActionY = -top - bubbleHeight * .5f;
                 }
 
                 dirty = false;
@@ -777,7 +888,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 nextAngerRefresh = SessionClock.Time + .25f;
                 foreach (var row in rows)
                 {
-                    if (!row.Rect.gameObject.activeSelf || row.IsNotice) { continue; }
+                    if (!row.Rect.gameObject.activeSelf || row.IsNotice || row.Continued) { continue; }
                     var mind = day.FindBot(row.BotId)?.Social.Psychology;
                     var name = day.FindBot(row.BotId)?.Social.Nickname;
                     if (name != null)
@@ -847,11 +958,19 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         {
             var message = Message(i);
             retainedSequences.Add(message.Sequence);
-            if (!measuredHeights.TryGetValue(message.Sequence, out float height))
+            // 윗줄이 지워져 묶음의 첫 줄이 되면 이름이 다시 붙어야 하므로, 묶였는지가 바뀐 줄은 다시 잰다.
+            bool continued = Continues(i);
+            if (!measuredHeights.TryGetValue(message.Sequence, out float height) || !measuredContinued.TryGetValue(message.Sequence, out bool was) || was != continued)
             {
-                float extraHeader = Mathf.Max(0f, nicknameMeasure.GetPreferredValues(GameLocale.Text(message.Nickname), nicknameMeasure.rectTransform.rect.width, Mathf.Infinity).y - 30f * layoutScale);
-                height = message.IsRoomNotice ? Mathf.Max(rowHeight, 52f * layoutScale) : Mathf.Max(rowHeight, messageMeasure.GetPreferredValues(DisplayMessage(message), width, Mathf.Infinity).y + 68f * layoutScale) + extraHeader + CardHeight(message);
-                measuredHeights.Add(message.Sequence, height);
+                float words = message.IsRoomNotice ? 0f : messageMeasure.GetPreferredValues(DisplayMessage(message), width, Mathf.Infinity).y;
+                if (message.IsRoomNotice) { height = Mathf.Max(rowHeight, 52f * layoutScale); }
+                else if (continued) { height = Mathf.Max(44f * layoutScale, words + 20f * layoutScale) + (ContinuedTop + ContinuedBottom) * layoutScale + CardHeight(message); }
+                else
+                {
+                    float extraHeader = Mathf.Max(0f, nicknameMeasure.GetPreferredValues(GameLocale.Text(message.Nickname), nicknameMeasure.rectTransform.rect.width, Mathf.Infinity).y - 30f * layoutScale);
+                    height = Mathf.Max(rowHeight, words + 68f * layoutScale) + extraHeader + CardHeight(message) + (QuotesMe(message) ? QuoteHeight * layoutScale : 0f);
+                }
+                measuredHeights[message.Sequence] = height; measuredContinued[message.Sequence] = continued;
             }
 
             rowOffsets.Add(total);
@@ -870,7 +989,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
 
         foreach (var sequence in expiredSequences)
         {
-            measuredHeights.Remove(sequence);
+            measuredHeights.Remove(sequence); measuredContinued.Remove(sequence);
             displayedMessages.Remove(sequence);
         }
 
@@ -925,8 +1044,12 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         }
     }
 
+    /// <summary>지금 켜져 있는 채팅 화면들. 씬 전체를 뒤지지 않고 채팅 화면을 찾을 때 쓴다.</summary>
+    public static readonly System.Collections.Generic.List<TabletGroupChatUI> Live = new();
+
     void OnEnable()
     {
+        if (!Live.Contains(this)) { Live.Add(this); }
         dirty = true;
         lastSecond = -1;
         mentionRosterDirty = true;
@@ -942,6 +1065,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
 
     void OnDestroy()
     {
+        Live.Remove(this);
         if (chatTab != null)
         {
             chatTab.onClick.RemoveListener(ShowChat);

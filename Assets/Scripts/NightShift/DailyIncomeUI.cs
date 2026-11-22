@@ -18,21 +18,6 @@ public sealed class DailyIncomeUI : MonoBehaviour
     private int originalSibling;
     private static readonly Color Ink = new Color32(230,235,239,255), Muted = new Color32(146,161,172,255), Dark = new Color32(13,23,29,255);
 
-    public static TMP_InputField CompanyField(PlayerCompanySetupUI setup)
-    {
-        if (setup.retailIntroduction == null)
-        { return null; }
-        var root = setup.retailIntroduction.transform;
-        var caption = Instantiate(setup.retailPreview,root); caption.name = "Text :: Private Company Name"; GameLocalizedText.Set(caption,"회사 이름");
-        Place(caption.rectTransform,root,0,.62f,.51f,.045f); caption.raycastTarget = false;
-        var field = Instantiate(setup.companyName,root); field.name = "Input :: Private Company Name";
-        Place((RectTransform)field.transform,root,0,.675f,.51f,.075f); field.gameObject.SetActive(true); field.interactable = true;
-        field.onValueChanged.RemoveAllListeners(); field.characterLimit = 20; field.contentType = TMP_InputField.ContentType.Standard; field.richText = false;
-        field.SetTextWithoutNotify(DailyIncomeController.Instance?.CompanyName ?? "내 작은 회사");
-        TabletControlStyle.Input(field); field.textComponent.alignment = TextAlignmentOptions.MidlineLeft; field.textComponent.fontSize = 30f;
-        field.onValueChanged.AddListener(_ => setup.Refresh());
-        return field;
-    }
     public static void InstallRoom(LeadingRoomUI rooms)
     {
         if (rooms.playerControls == null)
@@ -166,13 +151,13 @@ public sealed class DailyIncomeUI : MonoBehaviour
         for (int i=0;i<history.Length;i++)
         {
             int index = reports.Count-1-i;
-            DeviceTerminalUI.Set(history[i],index < 0 ? "" : GameLocale.Day(reports[index].day) + "     정산 " + InvestmentDashboard.Signed(reports[index].Transfer) + "원     세금 " + reports[index].Tax.ToString("N0") + "원     구제 " + reports[index].Relief.ToString("N0") + "원");
+            DeviceTerminalUI.Set(history[i],index < 0 ? "" : GameLocale.Day(reports[index].day) + "     정산 " + InvestmentDashboard.Signed(reports[index].Transfer) + "돈     세금 " + reports[index].Tax.ToString("N0") + "돈     구제 " + reports[index].Relief.ToString("N0") + "돈");
         }
     }
     private TextMeshProUGUI Number(Transform parent,string name,float x,float y,float width,float height,float size)
     {
         var value = Label(parent,name,"",x,y,width-.029f,height,size); TradingOrderView.Numeric(value); value.alignment = TextAlignmentOptions.MidlineRight;
-        var unit = Label(parent,name+" Unit","원",x+width-.023f,y,.023f,height,24); unit.alignment = TextAlignmentOptions.MidlineRight; unit.color = Muted;
+        var unit = Label(parent,name+" Unit","돈",x+width-.023f,y,.023f,height,24); unit.alignment = TextAlignmentOptions.MidlineRight; unit.color = Muted;
         return value;
     }
     private void Rule(Transform parent,float y)
@@ -200,7 +185,7 @@ public sealed class DailyIncomeUI : MonoBehaviour
         label.raycastTarget = false; label.enableAutoSizing = false; label.color = Ink; label.alignment = TextAlignmentOptions.MidlineLeft;
         label.textWrappingMode = TextWrappingModes.NoWrap; label.overflowMode = TextOverflowModes.Ellipsis; GameLocalizedText.Set(label,text); return label;
     }
-    private TextMeshProUGUI Metric(Transform parent,string caption,float y,float size=34,string unit="원")
+    private TextMeshProUGUI Metric(Transform parent,string caption,float y,float size=34,string unit="돈")
     {
         Label(parent,caption+" Label",caption,.045f,y,.38f,.065f,size).color = Muted;
         var value = Label(parent,caption+" Value","",.43f,y,.47f,.065f,size+2); TradingOrderView.Numeric(value); value.alignment = TextAlignmentOptions.MidlineRight;

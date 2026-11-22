@@ -36,6 +36,7 @@ public static partial class AutonomousChatObservation
     private static bool oldOptions, confirmed, finishing, recordedBots;
     private static EnterPlayModeOptions oldFlags;
     private static int frames;
+    private static double clockOffSince = -1;
     private static InvestorSociety society;
     private static SocialJournal journal;
     private static readonly Status status = new();
@@ -98,12 +99,13 @@ public static partial class AutonomousChatObservation
             { if (stocks.Add(stock)) { stock.OnMatchedTrade += OnTrade; } }
             if (!confirmed && frames > 3)
             {
-                var setup = UnityEngine.Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (!manager.SetupConfirmed && setup != null && setup.confirm != null && setup.confirm.interactable)
-                { setup.confirm.onClick.Invoke(); }
+                if (NewGame.CanBegin) { NewGame.Begin(); }
                 confirmed = manager.SetupConfirmed;
                 if (confirmed)
                 {
+                    // 창에 초점이 없으면 마우스 조작기가 게임을 멈춘다(배치 실행에는 창이 없다). 조작기를 끄고 시계를 푼다.
+                    foreach (var mouse in UnityEngine.Object.FindObjectsByType<MouseCameraController>()) { mouse.enabled = false; }
+                    Time.timeScale = 1f;
                     if (conversationSmokeSeconds == 0)
                     {
                         foreach (var canvas in UnityEngine.Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include)) { canvas.enabled = false; }
@@ -113,7 +115,20 @@ public static partial class AutonomousChatObservation
             }
             if (status.errors > 0) { Finish("runtime error", "See errors.txt"); return; }
             if (day.IntegrityFailed) { Finish("market integrity failure", "Production integrity check failed."); return; }
-            if (Time.timeScale != 1 || Time.captureDeltaTime != 0)
+            // 새 게임 화면에서는 시계가 멈춰 있다. 시작을 누르고 장이 준비된 뒤부터 본다.
+            // 시작을 누른 직후에도 몇 프레임은 멈춰 있으므로, 10초 넘게 어긋나 있을 때만 실패로 본다.
+            bool clockOff = Time.timeScale != 1 || Time.captureDeltaTime != 0;
+            if (!clockOff || !confirmed) { clockOffSince = -1; }
+            else if (clockOffSince < 0) { clockOffSince = EditorApplication.timeSinceStartup; }
+            if (clockOff && !confirmed && frames < 600) { return; }
+            if (clockOff && confirmed && EditorApplication.timeSinceStartup - clockOffSince < 10)
+            {
+                // 시작 절차가 끝나며 조작기가 다시 멈추기도 한다. 유예 동안은 조작기를 끄고 시계를 다시 푼다.
+                foreach (var mouse in UnityEngine.Object.FindObjectsByType<MouseCameraController>()) { mouse.enabled = false; }
+                if (!PauseMenuController.IsOpen && Time.captureDeltaTime == 0) { Time.timeScale = 1f; }
+                return;
+            }
+            if (clockOff)
             { Finish("clock changed", "Observation requires normal timeScale=1 and captureDeltaTime=0."); return; }
             if (day.Ready && readyAt < 0) { readyAt = Time.time; }
             if (day.Ready && !recordedBots)

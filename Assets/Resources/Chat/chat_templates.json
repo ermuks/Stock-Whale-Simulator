@@ -2416,7 +2416,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "제 {symbol} {profitKind}손익이 {amount}원입니다. 오늘은 웃을 수 있겠습니다.",
+      "text": "제 {symbol} {profitKind}손익이 {amount}돈입니다. 오늘은 웃을 수 있겠습니다.",
       "requires": [
         "profit"
       ]
@@ -2427,7 +2427,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 제 {profitKind}손익은 {amount}원입니다. 이 정도면 자랑해도 되겠습니까?",
+      "text": "{symbol} 제 {profitKind}손익은 {amount}돈입니다. 이 정도면 자랑해도 되겠습니까?",
       "requires": [
         "profit"
       ]
@@ -2438,7 +2438,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원을 보고 있으니 기분이 좋습니다.",
+      "text": "{symbol} {profitKind}손익 {amount}돈을 보고 있으니 기분이 좋습니다.",
       "requires": [
         "profit"
       ]
@@ -2482,7 +2482,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "제 {symbol} {profitKind}손익이 {amount}원입니다. 오늘은 웃을 수 있겠습니다. 기쁜 마음입니다.",
+      "text": "제 {symbol} {profitKind}손익이 {amount}돈입니다. 오늘은 웃을 수 있겠습니다. 기쁜 마음입니다.",
       "requires": [
         "profit"
       ]
@@ -2493,7 +2493,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 제 {profitKind}손익은 {amount}원입니다. 이 정도면 자랑해도 되겠습니까? 기쁜 마음입니다.",
+      "text": "{symbol} 제 {profitKind}손익은 {amount}돈입니다. 이 정도면 자랑해도 되겠습니까? 기쁜 마음입니다.",
       "requires": [
         "profit"
       ]
@@ -2504,7 +2504,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원을 보고 있으니 기분이 좋습니다. 기쁜 마음입니다.",
+      "text": "{symbol} {profitKind}손익 {amount}돈을 보고 있으니 기분이 좋습니다. 기쁜 마음입니다.",
       "requires": [
         "profit"
       ]
@@ -2548,7 +2548,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익이 {amount}원입니다. 오늘은 웃을 수 있겠습니다.",
+      "text": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익이 {amount}돈입니다. 오늘은 웃을 수 있겠습니다.",
       "requires": [
         "profit"
       ]
@@ -2559,7 +2559,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익은 {amount}원입니다. 이 정도면 자랑해도 되겠습니까?",
+      "text": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익은 {amount}돈입니다. 이 정도면 자랑해도 되겠습니까?",
       "requires": [
         "profit"
       ]
@@ -2570,7 +2570,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}원을 보고 있으니 기분이 좋습니다.",
+      "text": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}돈을 보고 있으니 기분이 좋습니다.",
       "requires": [
         "profit"
       ]
@@ -2614,7 +2614,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 제 {profitKind}손익 {amount}원이에요. 웃음 나네요.",
+      "text": "{symbol} 제 {profitKind}손익 {amount}돈이에요. 웃음 나네요.",
       "requires": [
         "profit"
       ]
@@ -2625,7 +2625,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 이 정도면 자랑 좀 해도 되죠?",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 이 정도면 자랑 좀 해도 되죠?",
       "requires": [
         "profit"
       ]
@@ -2636,7 +2636,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원 보니까 기분 좋아요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈 보니까 기분 좋아요.",
       "requires": [
         "profit"
       ]
@@ -2680,7 +2680,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 제 {profitKind}손익 {amount}원이에요. 웃음 나네요. 기분 좋네요.",
+      "text": "{symbol} 제 {profitKind}손익 {amount}돈이에요. 웃음 나네요. 기분 좋네요.",
       "requires": [
         "profit"
       ]
@@ -2691,7 +2691,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 이 정도면 자랑 좀 해도 되죠? 기분 좋네요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 이 정도면 자랑 좀 해도 되죠? 기분 좋네요.",
       "requires": [
         "profit"
       ]
@@ -2702,7 +2702,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원 보니까 기분 좋아요. 기분 좋네요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈 보니까 기분 좋아요. 기분 좋네요.",
       "requires": [
         "profit"
       ]
@@ -2746,7 +2746,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} 제 {profitKind}손익 {amount}원이에요. 웃음 나네요.",
+      "text": "진짜로요. {symbol} 제 {profitKind}손익 {amount}돈이에요. 웃음 나네요.",
       "requires": [
         "profit"
       ]
@@ -2757,7 +2757,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {profitKind}손익 {amount}원. 이 정도면 자랑 좀 해도 되죠?",
+      "text": "진짜로요. {symbol} {profitKind}손익 {amount}돈. 이 정도면 자랑 좀 해도 되죠?",
       "requires": [
         "profit"
       ]
@@ -2768,7 +2768,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {profitKind}손익 {amount}원 보니까 기분 좋아요.",
+      "text": "진짜로요. {symbol} {profitKind}손익 {amount}돈 보니까 기분 좋아요.",
       "requires": [
         "profit"
       ]
@@ -2812,7 +2812,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 웃음 나온다.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 웃음 나온다.",
       "requires": [
         "profit"
       ]
@@ -2823,7 +2823,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 이건 자랑 좀 하자.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 이건 자랑 좀 하자.",
       "requires": [
         "profit"
       ]
@@ -2834,7 +2834,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 기분은 좋다.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 기분은 좋다.",
       "requires": [
         "profit"
       ]
@@ -2878,7 +2878,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 웃음 나온다. 기분 좋네.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 웃음 나온다. 기분 좋네.",
       "requires": [
         "profit"
       ]
@@ -2889,7 +2889,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 이건 자랑 좀 하자. 기분 좋네.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 이건 자랑 좀 하자. 기분 좋네.",
       "requires": [
         "profit"
       ]
@@ -2900,7 +2900,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 기분은 좋다. 기분 좋네.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 기분은 좋다. 기분 좋네.",
       "requires": [
         "profit"
       ]
@@ -2944,7 +2944,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {profitKind}손익 {amount}원. 웃음 나온다.",
+      "text": "진짜. {symbol} {profitKind}손익 {amount}돈. 웃음 나온다.",
       "requires": [
         "profit"
       ]
@@ -2955,7 +2955,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {profitKind}손익 {amount}원. 이건 자랑 좀 하자.",
+      "text": "진짜. {symbol} {profitKind}손익 {amount}돈. 이건 자랑 좀 하자.",
       "requires": [
         "profit"
       ]
@@ -2966,7 +2966,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {profitKind}손익 {amount}원. 기분은 좋다.",
+      "text": "진짜. {symbol} {profitKind}손익 {amount}돈. 기분은 좋다.",
       "requires": [
         "profit"
       ]
@@ -3010,7 +3010,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "제 {symbol} {profitKind}손익은 {amount}원입니다. 잠시 숨을 고르겠습니다.",
+      "text": "제 {symbol} {profitKind}손익은 {amount}돈입니다. 잠시 숨을 고르겠습니다.",
       "requires": [
         "loss"
       ]
@@ -3021,7 +3021,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 제 {profitKind}손익이 {amount}원까지 내려왔습니다.",
+      "text": "{symbol} 제 {profitKind}손익이 {amount}돈까지 내려왔습니다.",
       "requires": [
         "loss"
       ]
@@ -3032,7 +3032,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원입니다. 다른 분들은 어떠신지요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈입니다. 다른 분들은 어떠신지요.",
       "requires": [
         "loss"
       ]
@@ -3076,7 +3076,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "제 {symbol} {profitKind}손익은 {amount}원입니다. 잠시 숨을 고르겠습니다. 씁쓸합니다.",
+      "text": "제 {symbol} {profitKind}손익은 {amount}돈입니다. 잠시 숨을 고르겠습니다. 씁쓸합니다.",
       "requires": [
         "loss"
       ]
@@ -3087,7 +3087,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 제 {profitKind}손익이 {amount}원까지 내려왔습니다. 씁쓸합니다.",
+      "text": "{symbol} 제 {profitKind}손익이 {amount}돈까지 내려왔습니다. 씁쓸합니다.",
       "requires": [
         "loss"
       ]
@@ -3098,7 +3098,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원입니다. 다른 분들은 어떠신지요. 씁쓸합니다.",
+      "text": "{symbol} {profitKind}손익 {amount}돈입니다. 다른 분들은 어떠신지요. 씁쓸합니다.",
       "requires": [
         "loss"
       ]
@@ -3142,7 +3142,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익은 {amount}원입니다. 잠시 숨을 고르겠습니다.",
+      "text": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익은 {amount}돈입니다. 잠시 숨을 고르겠습니다.",
       "requires": [
         "loss"
       ]
@@ -3153,7 +3153,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익이 {amount}원까지 내려왔습니다.",
+      "text": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익이 {amount}돈까지 내려왔습니다.",
       "requires": [
         "loss"
       ]
@@ -3164,7 +3164,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}원입니다. 다른 분들은 어떠신지요.",
+      "text": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}돈입니다. 다른 분들은 어떠신지요.",
       "requires": [
         "loss"
       ]
@@ -3208,7 +3208,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원… 잠깐 숨 좀 돌릴게요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈… 잠깐 숨 좀 돌릴게요.",
       "requires": [
         "loss"
       ]
@@ -3219,7 +3219,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원이네요. 마음처럼 안 되네요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈이네요. 마음처럼 안 되네요.",
       "requires": [
         "loss"
       ]
@@ -3230,7 +3230,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원… 저만 이런가요?",
+      "text": "{symbol} {profitKind}손익 {amount}돈… 저만 이런가요?",
       "requires": [
         "loss"
       ]
@@ -3274,7 +3274,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원… 잠깐 숨 좀 돌릴게요. 참 씁쓸하네요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈… 잠깐 숨 좀 돌릴게요. 참 씁쓸하네요.",
       "requires": [
         "loss"
       ]
@@ -3285,7 +3285,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원이네요. 마음처럼 안 되네요. 참 씁쓸하네요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈이네요. 마음처럼 안 되네요. 참 씁쓸하네요.",
       "requires": [
         "loss"
       ]
@@ -3296,7 +3296,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원… 저만 이런가요? 참 씁쓸하네요.",
+      "text": "{symbol} {profitKind}손익 {amount}돈… 저만 이런가요? 참 씁쓸하네요.",
       "requires": [
         "loss"
       ]
@@ -3340,7 +3340,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {profitKind}손익 {amount}원… 잠깐 숨 좀 돌릴게요.",
+      "text": "진짜로요. {symbol} {profitKind}손익 {amount}돈… 잠깐 숨 좀 돌릴게요.",
       "requires": [
         "loss"
       ]
@@ -3351,7 +3351,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {profitKind}손익 {amount}원이네요. 마음처럼 안 되네요.",
+      "text": "진짜로요. {symbol} {profitKind}손익 {amount}돈이네요. 마음처럼 안 되네요.",
       "requires": [
         "loss"
       ]
@@ -3362,7 +3362,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {profitKind}손익 {amount}원… 저만 이런가요?",
+      "text": "진짜로요. {symbol} {profitKind}손익 {amount}돈… 저만 이런가요?",
       "requires": [
         "loss"
       ]
@@ -3406,7 +3406,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 머리 좀 식히자.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 머리 좀 식히자.",
       "requires": [
         "loss"
       ]
@@ -3417,7 +3417,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 마음대로 되는 게 없네.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 마음대로 되는 게 없네.",
       "requires": [
         "loss"
       ]
@@ -3428,7 +3428,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 나만 이러냐.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 나만 이러냐.",
       "requires": [
         "loss"
       ]
@@ -3472,7 +3472,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 머리 좀 식히자. 참 씁쓸하네.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 머리 좀 식히자. 참 씁쓸하네.",
       "requires": [
         "loss"
       ]
@@ -3483,7 +3483,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 마음대로 되는 게 없네. 참 씁쓸하네.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 마음대로 되는 게 없네. 참 씁쓸하네.",
       "requires": [
         "loss"
       ]
@@ -3494,7 +3494,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {profitKind}손익 {amount}원. 나만 이러냐. 참 씁쓸하네.",
+      "text": "{symbol} {profitKind}손익 {amount}돈. 나만 이러냐. 참 씁쓸하네.",
       "requires": [
         "loss"
       ]
@@ -3538,7 +3538,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {profitKind}손익 {amount}원. 머리 좀 식히자.",
+      "text": "진짜. {symbol} {profitKind}손익 {amount}돈. 머리 좀 식히자.",
       "requires": [
         "loss"
       ]
@@ -3549,7 +3549,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {profitKind}손익 {amount}원. 마음대로 되는 게 없네.",
+      "text": "진짜. {symbol} {profitKind}손익 {amount}돈. 마음대로 되는 게 없네.",
       "requires": [
         "loss"
       ]
@@ -3560,7 +3560,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {profitKind}손익 {amount}원. 나만 이러냐.",
+      "text": "진짜. {symbol} {profitKind}손익 {amount}돈. 나만 이러냐.",
       "requires": [
         "loss"
       ]
@@ -3571,7 +3571,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원, 어떻게 보고 계십니까?",
+      "text": "{symbol} {price}돈, 어떻게 보고 계십니까?",
       "requires": []
     },
     {
@@ -3625,7 +3625,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원, 어떻게 보고 계십니까? 의견을 듣고 싶습니다.",
+      "text": "{symbol} {price}돈, 어떻게 보고 계십니까? 의견을 듣고 싶습니다.",
       "requires": []
     },
     {
@@ -3679,7 +3679,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} {price}원, 어떻게 보고 계십니까?",
+      "text": "정말로 말씀드립니다. {symbol} {price}돈, 어떻게 보고 계십니까?",
       "requires": []
     },
     {
@@ -3733,7 +3733,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원인데 어떻게 보세요?",
+      "text": "{symbol} {price}돈인데 어떻게 보세요?",
       "requires": []
     },
     {
@@ -3787,7 +3787,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원인데 어떻게 보세요? 의견 좀 듣고 싶어요.",
+      "text": "{symbol} {price}돈인데 어떻게 보세요? 의견 좀 듣고 싶어요.",
       "requires": []
     },
     {
@@ -3841,7 +3841,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {price}원인데 어떻게 보세요?",
+      "text": "진짜로요. {symbol} {price}돈인데 어떻게 보세요?",
       "requires": []
     },
     {
@@ -3895,7 +3895,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원인데 다들 어떻게 봄?",
+      "text": "{symbol} {price}돈인데 다들 어떻게 봄?",
       "requires": []
     },
     {
@@ -3949,7 +3949,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원인데 다들 어떻게 봄? 의견 좀 줘.",
+      "text": "{symbol} {price}돈인데 다들 어떻게 봄? 의견 좀 줘.",
       "requires": []
     },
     {
@@ -4003,7 +4003,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {price}원인데 다들 어떻게 봄?",
+      "text": "진짜. {symbol} {price}돈인데 다들 어떻게 봄?",
       "requires": []
     },
     {
@@ -4057,7 +4057,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "저는 {symbol} {price}원 부근의 체결을 보고 있습니다.",
+      "text": "저는 {symbol} {price}돈 부근의 체결을 보고 있습니다.",
       "requires": []
     },
     {
@@ -4111,7 +4111,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "저는 {symbol} {price}원 부근의 체결을 보고 있습니다. 제 기준은 그렇습니다.",
+      "text": "저는 {symbol} {price}돈 부근의 체결을 보고 있습니다. 제 기준은 그렇습니다.",
       "requires": []
     },
     {
@@ -4165,7 +4165,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. 저는 {symbol} {price}원 부근의 체결을 보고 있습니다.",
+      "text": "정말로 말씀드립니다. 저는 {symbol} {price}돈 부근의 체결을 보고 있습니다.",
       "requires": []
     },
     {
@@ -4219,7 +4219,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "저는 {symbol} {price}원 체결 보고 있어요.",
+      "text": "저는 {symbol} {price}돈 체결 보고 있어요.",
       "requires": []
     },
     {
@@ -4273,7 +4273,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "저는 {symbol} {price}원 체결 보고 있어요. 제 기준은 그래요.",
+      "text": "저는 {symbol} {price}돈 체결 보고 있어요. 제 기준은 그래요.",
       "requires": []
     },
     {
@@ -4327,7 +4327,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. 저는 {symbol} {price}원 체결 보고 있어요.",
+      "text": "진짜로요. 저는 {symbol} {price}돈 체결 보고 있어요.",
       "requires": []
     },
     {
@@ -4381,7 +4381,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "난 {symbol} {price}원에서 버티는지 보고 있음.",
+      "text": "난 {symbol} {price}돈에서 버티는지 보고 있음.",
       "requires": []
     },
     {
@@ -4435,7 +4435,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "난 {symbol} {price}원에서 버티는지 보고 있음. 내 기준은 그럼.",
+      "text": "난 {symbol} {price}돈에서 버티는지 보고 있음. 내 기준은 그럼.",
       "requires": []
     },
     {
@@ -4489,7 +4489,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. 난 {symbol} {price}원에서 버티는지 보고 있음.",
+      "text": "진짜. 난 {symbol} {price}돈에서 버티는지 보고 있음.",
       "requires": []
     },
     {
@@ -8488,7 +8488,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 지시를 따른 실현손익 {amount}원을 확인했습니다.",
+      "text": "{symbol} 지시를 따른 실현손익 {amount}돈을 확인했습니다.",
       "requires": [
         "leadGain"
       ]
@@ -8499,7 +8499,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 리딩의 제 실현손익은 {amount}원입니다. 좋은 결과였습니다.",
+      "text": "{symbol} 리딩의 제 실현손익은 {amount}돈입니다. 좋은 결과였습니다.",
       "requires": [
         "leadGain"
       ]
@@ -8510,7 +8510,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "제 기록에는 {symbol} 리딩 실현손익 {amount}원이 남아 있습니다.",
+      "text": "제 기록에는 {symbol} 리딩 실현손익 {amount}돈이 남아 있습니다.",
       "requires": [
         "leadGain"
       ]
@@ -8554,7 +8554,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 지시를 따른 실현손익 {amount}원을 확인했습니다. 감사합니다.",
+      "text": "{symbol} 지시를 따른 실현손익 {amount}돈을 확인했습니다. 감사합니다.",
       "requires": [
         "leadGain"
       ]
@@ -8565,7 +8565,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 리딩의 제 실현손익은 {amount}원입니다. 좋은 결과였습니다. 감사합니다.",
+      "text": "{symbol} 리딩의 제 실현손익은 {amount}돈입니다. 좋은 결과였습니다. 감사합니다.",
       "requires": [
         "leadGain"
       ]
@@ -8576,7 +8576,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "제 기록에는 {symbol} 리딩 실현손익 {amount}원이 남아 있습니다. 감사합니다.",
+      "text": "제 기록에는 {symbol} 리딩 실현손익 {amount}돈이 남아 있습니다. 감사합니다.",
       "requires": [
         "leadGain"
       ]
@@ -8620,7 +8620,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} 지시를 따른 실현손익 {amount}원을 확인했습니다.",
+      "text": "정말로 말씀드립니다. {symbol} 지시를 따른 실현손익 {amount}돈을 확인했습니다.",
       "requires": [
         "leadGain"
       ]
@@ -8631,7 +8631,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} 리딩의 제 실현손익은 {amount}원입니다. 좋은 결과였습니다.",
+      "text": "정말로 말씀드립니다. {symbol} 리딩의 제 실현손익은 {amount}돈입니다. 좋은 결과였습니다.",
       "requires": [
         "leadGain"
       ]
@@ -8642,7 +8642,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. 제 기록에는 {symbol} 리딩 실현손익 {amount}원이 남아 있습니다.",
+      "text": "정말로 말씀드립니다. 제 기록에는 {symbol} 리딩 실현손익 {amount}돈이 남아 있습니다.",
       "requires": [
         "leadGain"
       ]
@@ -8686,7 +8686,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 지시 따른 실현손익 {amount}원이에요. 고마워요.",
+      "text": "{symbol} 지시 따른 실현손익 {amount}돈이에요. 고마워요.",
       "requires": [
         "leadGain"
       ]
@@ -8697,7 +8697,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 제 결과는 좋았어요.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 제 결과는 좋았어요.",
       "requires": [
         "leadGain"
       ]
@@ -8708,7 +8708,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "제 기록엔 {symbol} 리딩 실현손익 {amount}원이에요.",
+      "text": "제 기록엔 {symbol} 리딩 실현손익 {amount}돈이에요.",
       "requires": [
         "leadGain"
       ]
@@ -8752,7 +8752,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 지시 따른 실현손익 {amount}원이에요. 고마워요. 고마워요.",
+      "text": "{symbol} 지시 따른 실현손익 {amount}돈이에요. 고마워요. 고마워요.",
       "requires": [
         "leadGain"
       ]
@@ -8763,7 +8763,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 제 결과는 좋았어요. 고마워요.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 제 결과는 좋았어요. 고마워요.",
       "requires": [
         "leadGain"
       ]
@@ -8774,7 +8774,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "제 기록엔 {symbol} 리딩 실현손익 {amount}원이에요. 고마워요.",
+      "text": "제 기록엔 {symbol} 리딩 실현손익 {amount}돈이에요. 고마워요.",
       "requires": [
         "leadGain"
       ]
@@ -8818,7 +8818,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} 지시 따른 실현손익 {amount}원이에요. 고마워요.",
+      "text": "진짜로요. {symbol} 지시 따른 실현손익 {amount}돈이에요. 고마워요.",
       "requires": [
         "leadGain"
       ]
@@ -8829,7 +8829,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} 리딩 실현손익 {amount}원. 제 결과는 좋았어요.",
+      "text": "진짜로요. {symbol} 리딩 실현손익 {amount}돈. 제 결과는 좋았어요.",
       "requires": [
         "leadGain"
       ]
@@ -8840,7 +8840,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. 제 기록엔 {symbol} 리딩 실현손익 {amount}원이에요.",
+      "text": "진짜로요. 제 기록엔 {symbol} 리딩 실현손익 {amount}돈이에요.",
       "requires": [
         "leadGain"
       ]
@@ -8884,7 +8884,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원. 고맙다.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈. 고맙다.",
       "requires": [
         "leadGain"
       ]
@@ -8895,7 +8895,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 나는 괜찮았음.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 나는 괜찮았음.",
       "requires": [
         "leadGain"
       ]
@@ -8906,7 +8906,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "내 기록은 {symbol} 리딩 실현손익 {amount}원임.",
+      "text": "내 기록은 {symbol} 리딩 실현손익 {amount}돈임.",
       "requires": [
         "leadGain"
       ]
@@ -8950,7 +8950,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원. 고맙다. 고맙다.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈. 고맙다. 고맙다.",
       "requires": [
         "leadGain"
       ]
@@ -8961,7 +8961,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 나는 괜찮았음. 고맙다.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 나는 괜찮았음. 고맙다.",
       "requires": [
         "leadGain"
       ]
@@ -8972,7 +8972,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "내 기록은 {symbol} 리딩 실현손익 {amount}원임. 고맙다.",
+      "text": "내 기록은 {symbol} 리딩 실현손익 {amount}돈임. 고맙다.",
       "requires": [
         "leadGain"
       ]
@@ -9016,7 +9016,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} 따라간 실현손익 {amount}원. 고맙다.",
+      "text": "진짜. {symbol} 따라간 실현손익 {amount}돈. 고맙다.",
       "requires": [
         "leadGain"
       ]
@@ -9027,7 +9027,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} 리딩 실현손익 {amount}원. 나는 괜찮았음.",
+      "text": "진짜. {symbol} 리딩 실현손익 {amount}돈. 나는 괜찮았음.",
       "requires": [
         "leadGain"
       ]
@@ -9038,7 +9038,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. 내 기록은 {symbol} 리딩 실현손익 {amount}원임.",
+      "text": "진짜. 내 기록은 {symbol} 리딩 실현손익 {amount}돈임.",
       "requires": [
         "leadGain"
       ]
@@ -9082,7 +9082,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "제 {symbol} 리딩 실현손익은 {amount}원입니다. 손실 경험을 남깁니다.",
+      "text": "제 {symbol} 리딩 실현손익은 {amount}돈입니다. 손실 경험을 남깁니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9093,7 +9093,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 제 결과까지 좋았던 것은 아닙니다.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 제 결과까지 좋았던 것은 아닙니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9104,7 +9104,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 지시를 따른 제 실현손익 {amount}원은 그대로 기록하겠습니다.",
+      "text": "{symbol} 지시를 따른 제 실현손익 {amount}돈은 그대로 기록하겠습니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9148,7 +9148,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "제 {symbol} 리딩 실현손익은 {amount}원입니다. 손실 경험을 남깁니다. 신중히 보셨으면 합니다.",
+      "text": "제 {symbol} 리딩 실현손익은 {amount}돈입니다. 손실 경험을 남깁니다. 신중히 보셨으면 합니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9159,7 +9159,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 제 결과까지 좋았던 것은 아닙니다. 신중히 보셨으면 합니다.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 제 결과까지 좋았던 것은 아닙니다. 신중히 보셨으면 합니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9170,7 +9170,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 지시를 따른 제 실현손익 {amount}원은 그대로 기록하겠습니다. 신중히 보셨으면 합니다.",
+      "text": "{symbol} 지시를 따른 제 실현손익 {amount}돈은 그대로 기록하겠습니다. 신중히 보셨으면 합니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9214,7 +9214,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. 제 {symbol} 리딩 실현손익은 {amount}원입니다. 손실 경험을 남깁니다.",
+      "text": "정말로 말씀드립니다. 제 {symbol} 리딩 실현손익은 {amount}돈입니다. 손실 경험을 남깁니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9225,7 +9225,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} 리딩 실현손익 {amount}원. 제 결과까지 좋았던 것은 아닙니다.",
+      "text": "정말로 말씀드립니다. {symbol} 리딩 실현손익 {amount}돈. 제 결과까지 좋았던 것은 아닙니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9236,7 +9236,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} 지시를 따른 제 실현손익 {amount}원은 그대로 기록하겠습니다.",
+      "text": "정말로 말씀드립니다. {symbol} 지시를 따른 제 실현손익 {amount}돈은 그대로 기록하겠습니다.",
       "requires": [
         "leadLoss"
       ]
@@ -9280,7 +9280,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 지시 따른 실현손익 {amount}원… 제 경험은 이래요.",
+      "text": "{symbol} 지시 따른 실현손익 {amount}돈… 제 경험은 이래요.",
       "requires": [
         "leadLoss"
       ]
@@ -9291,7 +9291,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원이에요. 제 결과는 안 좋았어요.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈이에요. 제 결과는 안 좋았어요.",
       "requires": [
         "leadLoss"
       ]
@@ -9302,7 +9302,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원은 기록해 둘게요.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈은 기록해 둘게요.",
       "requires": [
         "leadLoss"
       ]
@@ -9346,7 +9346,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 지시 따른 실현손익 {amount}원… 제 경험은 이래요. 신중히 봐 주세요.",
+      "text": "{symbol} 지시 따른 실현손익 {amount}돈… 제 경험은 이래요. 신중히 봐 주세요.",
       "requires": [
         "leadLoss"
       ]
@@ -9357,7 +9357,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원이에요. 제 결과는 안 좋았어요. 신중히 봐 주세요.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈이에요. 제 결과는 안 좋았어요. 신중히 봐 주세요.",
       "requires": [
         "leadLoss"
       ]
@@ -9368,7 +9368,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원은 기록해 둘게요. 신중히 봐 주세요.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈은 기록해 둘게요. 신중히 봐 주세요.",
       "requires": [
         "leadLoss"
       ]
@@ -9412,7 +9412,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} 지시 따른 실현손익 {amount}원… 제 경험은 이래요.",
+      "text": "진짜로요. {symbol} 지시 따른 실현손익 {amount}돈… 제 경험은 이래요.",
       "requires": [
         "leadLoss"
       ]
@@ -9423,7 +9423,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} 리딩 실현손익 {amount}원이에요. 제 결과는 안 좋았어요.",
+      "text": "진짜로요. {symbol} 리딩 실현손익 {amount}돈이에요. 제 결과는 안 좋았어요.",
       "requires": [
         "leadLoss"
       ]
@@ -9434,7 +9434,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} 따라간 실현손익 {amount}원은 기록해 둘게요.",
+      "text": "진짜로요. {symbol} 따라간 실현손익 {amount}돈은 기록해 둘게요.",
       "requires": [
         "leadLoss"
       ]
@@ -9478,7 +9478,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원. 내 경험은 이럼.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈. 내 경험은 이럼.",
       "requires": [
         "leadLoss"
       ]
@@ -9489,7 +9489,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 난 안 좋았음.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 난 안 좋았음.",
       "requires": [
         "leadLoss"
       ]
@@ -9500,7 +9500,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원. 이건 기록 남김.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈. 이건 기록 남김.",
       "requires": [
         "leadLoss"
       ]
@@ -9544,7 +9544,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원. 내 경험은 이럼. 신중히 좀 봐.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈. 내 경험은 이럼. 신중히 좀 봐.",
       "requires": [
         "leadLoss"
       ]
@@ -9555,7 +9555,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 리딩 실현손익 {amount}원. 난 안 좋았음. 신중히 좀 봐.",
+      "text": "{symbol} 리딩 실현손익 {amount}돈. 난 안 좋았음. 신중히 좀 봐.",
       "requires": [
         "leadLoss"
       ]
@@ -9566,7 +9566,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 따라간 실현손익 {amount}원. 이건 기록 남김. 신중히 좀 봐.",
+      "text": "{symbol} 따라간 실현손익 {amount}돈. 이건 기록 남김. 신중히 좀 봐.",
       "requires": [
         "leadLoss"
       ]
@@ -9610,7 +9610,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} 따라간 실현손익 {amount}원. 내 경험은 이럼.",
+      "text": "진짜. {symbol} 따라간 실현손익 {amount}돈. 내 경험은 이럼.",
       "requires": [
         "leadLoss"
       ]
@@ -9621,7 +9621,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} 리딩 실현손익 {amount}원. 난 안 좋았음.",
+      "text": "진짜. {symbol} 리딩 실현손익 {amount}돈. 난 안 좋았음.",
       "requires": [
         "leadLoss"
       ]
@@ -9632,7 +9632,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} 따라간 실현손익 {amount}원. 이건 기록 남김.",
+      "text": "진짜. {symbol} 따라간 실현손익 {amount}돈. 이건 기록 남김.",
       "requires": [
         "leadLoss"
       ]
@@ -10129,7 +10129,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원입니다. 다음 움직임을 보겠습니다.",
+      "text": "{symbol} {price}돈입니다. 다음 움직임을 보겠습니다.",
       "requires": []
     },
     {
@@ -10165,7 +10165,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원, 아직 판단을 내리지는 않았습니다.",
+      "text": "{symbol} {price}돈, 아직 판단을 내리지는 않았습니다.",
       "requires": []
     },
     {
@@ -10174,7 +10174,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원을 기준으로 다음 변화를 보고 있습니다.",
+      "text": "{symbol} {price}돈을 기준으로 다음 변화를 보고 있습니다.",
       "requires": []
     },
     {
@@ -10183,7 +10183,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원입니다. 다음 움직임을 보겠습니다. 계속 확인하겠습니다.",
+      "text": "{symbol} {price}돈입니다. 다음 움직임을 보겠습니다. 계속 확인하겠습니다.",
       "requires": []
     },
     {
@@ -10219,7 +10219,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원, 아직 판단을 내리지는 않았습니다. 계속 확인하겠습니다.",
+      "text": "{symbol} {price}돈, 아직 판단을 내리지는 않았습니다. 계속 확인하겠습니다.",
       "requires": []
     },
     {
@@ -10228,7 +10228,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원을 기준으로 다음 변화를 보고 있습니다. 계속 확인하겠습니다.",
+      "text": "{symbol} {price}돈을 기준으로 다음 변화를 보고 있습니다. 계속 확인하겠습니다.",
       "requires": []
     },
     {
@@ -10237,7 +10237,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} {price}원입니다. 다음 움직임을 보겠습니다.",
+      "text": "정말로 말씀드립니다. {symbol} {price}돈입니다. 다음 움직임을 보겠습니다.",
       "requires": []
     },
     {
@@ -10273,7 +10273,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} {price}원, 아직 판단을 내리지는 않았습니다.",
+      "text": "정말로 말씀드립니다. {symbol} {price}돈, 아직 판단을 내리지는 않았습니다.",
       "requires": []
     },
     {
@@ -10282,7 +10282,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "정말로 말씀드립니다. {symbol} {price}원을 기준으로 다음 변화를 보고 있습니다.",
+      "text": "정말로 말씀드립니다. {symbol} {price}돈을 기준으로 다음 변화를 보고 있습니다.",
       "requires": []
     },
     {
@@ -10291,7 +10291,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 지금 {price}원이네요. 다음 체결 보죠.",
+      "text": "{symbol} 지금 {price}돈이네요. 다음 체결 보죠.",
       "requires": []
     },
     {
@@ -10327,7 +10327,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원인데 아직 판단은 안 했어요.",
+      "text": "{symbol} {price}돈인데 아직 판단은 안 했어요.",
       "requires": []
     },
     {
@@ -10336,7 +10336,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원 기준으로 다음 변화 보고 있어요.",
+      "text": "{symbol} {price}돈 기준으로 다음 변화 보고 있어요.",
       "requires": []
     },
     {
@@ -10345,7 +10345,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 지금 {price}원이네요. 다음 체결 보죠. 계속 보고 있을게요.",
+      "text": "{symbol} 지금 {price}돈이네요. 다음 체결 보죠. 계속 보고 있을게요.",
       "requires": []
     },
     {
@@ -10381,7 +10381,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원인데 아직 판단은 안 했어요. 계속 보고 있을게요.",
+      "text": "{symbol} {price}돈인데 아직 판단은 안 했어요. 계속 보고 있을게요.",
       "requires": []
     },
     {
@@ -10390,7 +10390,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원 기준으로 다음 변화 보고 있어요. 계속 보고 있을게요.",
+      "text": "{symbol} {price}돈 기준으로 다음 변화 보고 있어요. 계속 보고 있을게요.",
       "requires": []
     },
     {
@@ -10399,7 +10399,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} 지금 {price}원이네요. 다음 체결 보죠.",
+      "text": "진짜로요. {symbol} 지금 {price}돈이네요. 다음 체결 보죠.",
       "requires": []
     },
     {
@@ -10435,7 +10435,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {price}원인데 아직 판단은 안 했어요.",
+      "text": "진짜로요. {symbol} {price}돈인데 아직 판단은 안 했어요.",
       "requires": []
     },
     {
@@ -10444,7 +10444,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜로요. {symbol} {price}원 기준으로 다음 변화 보고 있어요.",
+      "text": "진짜로요. {symbol} {price}돈 기준으로 다음 변화 보고 있어요.",
       "requires": []
     },
     {
@@ -10453,7 +10453,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} 지금 {price}원. 다음 거 보자.",
+      "text": "{symbol} 지금 {price}돈. 다음 거 보자.",
       "requires": []
     },
     {
@@ -10489,7 +10489,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원. 판단은 아직.",
+      "text": "{symbol} {price}돈. 판단은 아직.",
       "requires": []
     },
     {
@@ -10498,7 +10498,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol} {price}원부터 어떻게 되는지 보는 중.",
+      "text": "{symbol} {price}돈부터 어떻게 되는지 보는 중.",
       "requires": []
     },
     {
@@ -10507,7 +10507,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} 지금 {price}원. 다음 거 보자. 계속 본다.",
+      "text": "{symbol} 지금 {price}돈. 다음 거 보자. 계속 본다.",
       "requires": []
     },
     {
@@ -10543,7 +10543,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원. 판단은 아직. 계속 본다.",
+      "text": "{symbol} {price}돈. 판단은 아직. 계속 본다.",
       "requires": []
     },
     {
@@ -10552,7 +10552,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{symbol} {price}원부터 어떻게 되는지 보는 중. 계속 본다.",
+      "text": "{symbol} {price}돈부터 어떻게 되는지 보는 중. 계속 본다.",
       "requires": []
     },
     {
@@ -10561,7 +10561,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} 지금 {price}원. 다음 거 보자.",
+      "text": "진짜. {symbol} 지금 {price}돈. 다음 거 보자.",
       "requires": []
     },
     {
@@ -10597,7 +10597,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {price}원. 판단은 아직.",
+      "text": "진짜. {symbol} {price}돈. 판단은 아직.",
       "requires": []
     },
     {
@@ -10606,7 +10606,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "진짜. {symbol} {price}원부터 어떻게 되는지 보는 중.",
+      "text": "진짜. {symbol} {price}돈부터 어떻게 되는지 보는 중.",
       "requires": []
     },
     {
@@ -11587,7 +11587,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}원.",
+      "text": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}돈.",
       "requires": [
         "signal"
       ]
@@ -11598,7 +11598,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}원.",
+      "text": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}돈.",
       "requires": [
         "signal"
       ]
@@ -11609,7 +11609,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}원.",
+      "text": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}돈.",
       "requires": [
         "signal"
       ]
@@ -18748,7 +18748,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -18792,7 +18792,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -18836,7 +18836,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -18880,7 +18880,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -18924,7 +18924,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -18968,7 +18968,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19012,7 +19012,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}돈임.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19056,7 +19056,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}돈임.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19100,7 +19100,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}돈임.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19144,7 +19144,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19188,7 +19188,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19232,7 +19232,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "text": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19276,7 +19276,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19320,7 +19320,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19364,7 +19364,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "text": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19408,7 +19408,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}돈임.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19452,7 +19452,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}돈임.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -19496,7 +19496,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "memory",
-      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "text": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}돈임.",
       "requires": [
         "memory:LOSS_BY_LEAD"
       ]
@@ -20343,7 +20343,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "memory",
-      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었습니다.",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20387,7 +20387,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "memory",
-      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었습니다.",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20431,7 +20431,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "memory",
-      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었습니다.",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었습니다.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20475,7 +20475,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "memory",
-      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었어요.",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20519,7 +20519,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "memory",
-      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었어요.",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20563,7 +20563,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "memory",
-      "text": "제 {memSymbol} 리딩 손익은 {memAmount}원이었어요.",
+      "text": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었어요.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20607,7 +20607,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "memory",
-      "text": "내 {memSymbol} 리딩 손익 {memAmount}원이었음.",
+      "text": "내 {memSymbol} 리딩 손익 {memAmount}돈이었음.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20651,7 +20651,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "memory",
-      "text": "내 {memSymbol} 리딩 손익 {memAmount}원이었음.",
+      "text": "내 {memSymbol} 리딩 손익 {memAmount}돈이었음.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -20695,7 +20695,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "memory",
-      "text": "내 {memSymbol} 리딩 손익 {memAmount}원이었음.",
+      "text": "내 {memSymbol} 리딩 손익 {memAmount}돈이었음.",
       "requires": [
         "memory:GAIN_BY_LEAD"
       ]
@@ -21718,7 +21718,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}원이었는데 지금 {price}원? {movePct}% ㄷㄷ..",
+      "text": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}돈이었는데 지금 {price}돈? {movePct}% ㄷㄷ..",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21740,7 +21740,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 관심 목록 다시 켰는데 {seenPrice}원에서 {price}원 됐어. 잠깐 사이 뭐 있었나?",
+      "text": "{stockName} 관심 목록 다시 켰는데 {seenPrice}돈에서 {price}돈 됐어. 잠깐 사이 뭐 있었나?",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21762,7 +21762,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 잠깐만, 아까 {seenPrice}원 아니었어? 지금 {price}원이라니 ㄷㄷ",
+      "text": "{stockName} 잠깐만, 아까 {seenPrice}돈 아니었어? 지금 {price}돈이라니 ㄷㄷ",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21784,7 +21784,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}원이었는데 지금 {price}원? {movePct}% ㄷㄷ..",
+      "text": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}돈이었는데 지금 {price}돈? {movePct}% ㄷㄷ..",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21806,7 +21806,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 관심 목록 다시 켰는데 {seenPrice}원에서 {price}원 됐어. 잠깐 사이 뭐 있었나?",
+      "text": "{stockName} 관심 목록 다시 켰는데 {seenPrice}돈에서 {price}돈 됐어. 잠깐 사이 뭐 있었나?",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21828,7 +21828,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 잠깐만, 아까 {seenPrice}원 아니었어? 지금 {price}원이라니 ㄷㄷ",
+      "text": "{stockName} 잠깐만, 아까 {seenPrice}돈 아니었어? 지금 {price}돈이라니 ㄷㄷ",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21850,7 +21850,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}원이었는데 지금 {price}원? {movePct}% ㄷㄷ..",
+      "text": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}돈이었는데 지금 {price}돈? {movePct}% ㄷㄷ..",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21872,7 +21872,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 관심 목록 다시 켰는데 {seenPrice}원에서 {price}원 됐어. 잠깐 사이 뭐 있었나?",
+      "text": "{stockName} 관심 목록 다시 켰는데 {seenPrice}돈에서 {price}돈 됐어. 잠깐 사이 뭐 있었나?",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21894,7 +21894,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 잠깐만, 아까 {seenPrice}원 아니었어? 지금 {price}원이라니 ㄷㄷ",
+      "text": "{stockName} 잠깐만, 아까 {seenPrice}돈 아니었어? 지금 {price}돈이라니 ㄷㄷ",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -21916,7 +21916,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 와 뭐임? {seenPrice}원이었는데 {price}원까지 빠졌어? {movePct}% ㄷㄷ..",
+      "text": "{stockName} 와 뭐임? {seenPrice}돈이었는데 {price}돈까지 빠졌어? {movePct}% ㄷㄷ..",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -21938,7 +21938,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}원에서 {price}원 무슨 일임?",
+      "text": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}돈에서 {price}돈 무슨 일임?",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -21960,7 +21960,7 @@
       "style": "casual",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 다른 거 보다 왔는데 {price}원? 아까 {seenPrice}원이었잖아;",
+      "text": "{stockName} 다른 거 보다 왔는데 {price}돈? 아까 {seenPrice}돈이었잖아;",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -21982,7 +21982,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 와 뭐임? {seenPrice}원이었는데 {price}원까지 빠졌어? {movePct}% ㄷㄷ..",
+      "text": "{stockName} 와 뭐임? {seenPrice}돈이었는데 {price}돈까지 빠졌어? {movePct}% ㄷㄷ..",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22004,7 +22004,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}원에서 {price}원 무슨 일임?",
+      "text": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}돈에서 {price}돈 무슨 일임?",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22026,7 +22026,7 @@
       "style": "casual",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 다른 거 보다 왔는데 {price}원? 아까 {seenPrice}원이었잖아;",
+      "text": "{stockName} 다른 거 보다 왔는데 {price}돈? 아까 {seenPrice}돈이었잖아;",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22048,7 +22048,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 와 뭐임? {seenPrice}원이었는데 {price}원까지 빠졌어? {movePct}% ㄷㄷ..",
+      "text": "{stockName} 와 뭐임? {seenPrice}돈이었는데 {price}돈까지 빠졌어? {movePct}% ㄷㄷ..",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22070,7 +22070,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}원에서 {price}원 무슨 일임?",
+      "text": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}돈에서 {price}돈 무슨 일임?",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22092,7 +22092,7 @@
       "style": "casual",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 다른 거 보다 왔는데 {price}원? 아까 {seenPrice}원이었잖아;",
+      "text": "{stockName} 다른 거 보다 왔는데 {price}돈? 아까 {seenPrice}돈이었잖아;",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22114,7 +22114,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "text": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22136,7 +22136,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 잠깐 다른 종목 봤는데 {price}원이네 ㄷㄷ 아까 {seenPrice}원이었음",
+      "text": "{stockName} 잠깐 다른 종목 봤는데 {price}돈이네 ㄷㄷ 아까 {seenPrice}돈이었음",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22169,7 +22169,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} {seenPrice}원 찍어뒀는데 {price}원 됐네 ㄷㄷ 무슨 일 있었냐",
+      "text": "{stockName} {seenPrice}돈 찍어뒀는데 {price}돈 됐네 ㄷㄷ 무슨 일 있었냐",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22180,7 +22180,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "text": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22202,7 +22202,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 잠깐 다른 종목 봤는데 {price}원이네 ㄷㄷ 아까 {seenPrice}원이었음",
+      "text": "{stockName} 잠깐 다른 종목 봤는데 {price}돈이네 ㄷㄷ 아까 {seenPrice}돈이었음",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22235,7 +22235,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} {seenPrice}원 찍어뒀는데 {price}원 됐네 ㄷㄷ 무슨 일 있었냐",
+      "text": "{stockName} {seenPrice}돈 찍어뒀는데 {price}돈 됐네 ㄷㄷ 무슨 일 있었냐",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22246,7 +22246,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "text": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22268,7 +22268,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 잠깐 다른 종목 봤는데 {price}원이네 ㄷㄷ 아까 {seenPrice}원이었음",
+      "text": "{stockName} 잠깐 다른 종목 봤는데 {price}돈이네 ㄷㄷ 아까 {seenPrice}돈이었음",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22301,7 +22301,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} {seenPrice}원 찍어뒀는데 {price}원 됐네 ㄷㄷ 무슨 일 있었냐",
+      "text": "{stockName} {seenPrice}돈 찍어뒀는데 {price}돈 됐네 ㄷㄷ 무슨 일 있었냐",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22312,7 +22312,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 와 뭐냐 {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "text": "{stockName} 와 뭐냐 {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22334,7 +22334,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 잠깐 다른 데 봤는데 {price}원 뭐임.. 아까 {seenPrice}원이었는데",
+      "text": "{stockName} 잠깐 다른 데 봤는데 {price}돈 뭐임.. 아까 {seenPrice}돈이었는데",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22367,7 +22367,7 @@
       "style": "rough",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} {seenPrice}원 보고 있었는데 지금 {price}원이네 와..",
+      "text": "{stockName} {seenPrice}돈 보고 있었는데 지금 {price}돈이네 와..",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22378,7 +22378,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 와 뭐냐 {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "text": "{stockName} 와 뭐냐 {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22400,7 +22400,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 잠깐 다른 데 봤는데 {price}원 뭐임.. 아까 {seenPrice}원이었는데",
+      "text": "{stockName} 잠깐 다른 데 봤는데 {price}돈 뭐임.. 아까 {seenPrice}돈이었는데",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22433,7 +22433,7 @@
       "style": "rough",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} {seenPrice}원 보고 있었는데 지금 {price}원이네 와..",
+      "text": "{stockName} {seenPrice}돈 보고 있었는데 지금 {price}돈이네 와..",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22444,7 +22444,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 와 뭐냐 {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "text": "{stockName} 와 뭐냐 {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22466,7 +22466,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 잠깐 다른 데 봤는데 {price}원 뭐임.. 아까 {seenPrice}원이었는데",
+      "text": "{stockName} 잠깐 다른 데 봤는데 {price}돈 뭐임.. 아까 {seenPrice}돈이었는데",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22499,7 +22499,7 @@
       "style": "rough",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} {seenPrice}원 보고 있었는데 지금 {price}원이네 와..",
+      "text": "{stockName} {seenPrice}돈 보고 있었는데 지금 {price}돈이네 와..",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22521,7 +22521,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 올랐습니다. 무슨 일이 있었나요?",
+      "text": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 올랐습니다. 무슨 일이 있었나요?",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22543,7 +22543,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원과 차이가 큽니다.",
+      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈과 차이가 큽니다.",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22565,7 +22565,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 어느새 {price}원인가요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "text": "{stockName} 어느새 {price}돈인가요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22587,7 +22587,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 올랐습니다. 무슨 일이 있었나요?",
+      "text": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 올랐습니다. 무슨 일이 있었나요?",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22609,7 +22609,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원과 차이가 큽니다.",
+      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈과 차이가 큽니다.",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22631,7 +22631,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 어느새 {price}원인가요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "text": "{stockName} 어느새 {price}돈인가요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22653,7 +22653,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 올랐습니다. 무슨 일이 있었나요?",
+      "text": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 올랐습니다. 무슨 일이 있었나요?",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22675,7 +22675,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원과 차이가 큽니다.",
+      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈과 차이가 큽니다.",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22697,7 +22697,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 어느새 {price}원인가요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "text": "{stockName} 어느새 {price}돈인가요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "requires": [
         "notice:WATCH_RISE"
       ]
@@ -22719,7 +22719,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 내려왔습니다. 무슨 일이 있었나요?",
+      "text": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 내려왔습니다. 무슨 일이 있었나요?",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22741,7 +22741,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원보다 많이 낮습니다.",
+      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈보다 많이 낮습니다.",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22763,7 +22763,7 @@
       "style": "formal",
       "intensity": 1,
       "variant": "plain",
-      "text": "{stockName} 어느새 {price}원까지 내려왔나요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "text": "{stockName} 어느새 {price}돈까지 내려왔나요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22785,7 +22785,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 내려왔습니다. 무슨 일이 있었나요?",
+      "text": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 내려왔습니다. 무슨 일이 있었나요?",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22807,7 +22807,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원보다 많이 낮습니다.",
+      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈보다 많이 낮습니다.",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22829,7 +22829,7 @@
       "style": "formal",
       "intensity": 2,
       "variant": "plain",
-      "text": "{stockName} 어느새 {price}원까지 내려왔나요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "text": "{stockName} 어느새 {price}돈까지 내려왔나요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22851,7 +22851,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 내려왔습니다. 무슨 일이 있었나요?",
+      "text": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 내려왔습니다. 무슨 일이 있었나요?",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22873,7 +22873,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원보다 많이 낮습니다.",
+      "text": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈보다 많이 낮습니다.",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -22895,7 +22895,7 @@
       "style": "formal",
       "intensity": 3,
       "variant": "plain",
-      "text": "{stockName} 어느새 {price}원까지 내려왔나요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "text": "{stockName} 어느새 {price}돈까지 내려왔나요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "requires": [
         "notice:WATCH_FALL"
       ]
@@ -29752,7 +29752,7 @@
       "context": "NONE",
       "requires": [],
       "texts": [
-        "{symbol} 지금 {price}원인데 이거 어떻게 보는 거임?",
+        "{symbol} 지금 {price}돈인데 이거 어떻게 보는 거임?",
         "{symbol} 보고 있는 사람? 나만 계속 새로고침하냐",
         "{symbol} 호가 먼저 봄? 체결 먼저 봄? 뭐부터 봐야 됨",
         "{symbol} 차트 켰는데 감이 안 온다. 다들 뭐 보고 있음?",
@@ -29766,12 +29766,12 @@
       "context": "NONE",
       "requires": [],
       "texts": [
-        "{symbol} 지금 {price}원이네. 일단 보는 중",
+        "{symbol} 지금 {price}돈이네. 일단 보는 중",
         "{symbol} 차트랑 눈싸움 중 ㅋㅋ",
         "{symbol} 호가 보고 있으면 시간 순삭임",
         "{symbol} 괜히 다른 창 켰다가 또 돌아옴",
         "{symbol} 보고 있는데 내가 보는 게 맞나 싶다",
-        "{symbol} {price}원... 뭘 해도 내가 하면 반대로 갈 것 같음 ㅋㅋ"
+        "{symbol} {price}돈... 뭘 해도 내가 하면 반대로 갈 것 같음 ㅋㅋ"
       ]
     },
     {
@@ -29979,10 +29979,10 @@
       ],
       "texts": [
         "{symbol} 와 뭐임? 안 본 사이 {moveTalk} 올랐음 ㄷㄷ",
-        "{symbol} {seenPrice}원이었는데 {price}원? 나 어디 갔다 온 거냐 ㅋㅋ",
+        "{symbol} {seenPrice}돈이었는데 {price}돈? 나 어디 갔다 온 거냐 ㅋㅋ",
         "{symbol} 언제 이렇게 올랐냐. 마지막으로 본 뒤 {moveTalk}네",
         "{symbol} 새로고침하고 눈 비빔 ㅋㅋ {moveTalk} 이게 맞음?",
-        "{symbol} 잠깐 딴 데 봤는데 {price}원 됐네. 무슨 일 있었냐",
+        "{symbol} 잠깐 딴 데 봤는데 {price}돈 됐네. 무슨 일 있었냐",
         "{symbol} {seenMinutes}분 사이 {moveTalk}? 나만 지금 봤냐 ㄷㄷ"
       ]
     },
@@ -29995,10 +29995,10 @@
       ],
       "texts": [
         "{symbol} 와 뭐임? 안 본 사이 {moveTalk}네 ㄷㄷ",
-        "{symbol} {seenPrice}원 보고 갔는데 {price}원? 차트 잘못 켠 줄",
+        "{symbol} {seenPrice}돈 보고 갔는데 {price}돈? 차트 잘못 켠 줄",
         "{symbol} 언제 이렇게 빠졌냐. 마지막으로 본 뒤 {moveTalk}임",
         "{symbol} {moveTalk} 보고 멈칫함. 방금 뭐 지나갔냐",
-        "{symbol} 잠깐 다른 창 봤는데 {price}원 됐네. 이거 실화냐",
+        "{symbol} 잠깐 다른 창 봤는데 {price}돈 됐네. 이거 실화냐",
         "{symbol} {seenMinutes}분 사이 {moveTalk}... 눈 한번 비비고 다시 봄"
       ]
     },
@@ -30044,7 +30044,7 @@
       "context": "TARGET",
       "requires": [],
       "texts": [
-        "{symbol} 지금 {price}원인데 이거 어떻게 보는 거임?",
+        "{symbol} 지금 {price}돈인데 이거 어떻게 보는 거임?",
         "{symbol} 보고 있는 사람? 나만 계속 새로고침하냐",
         "{symbol} 호가 먼저 봄? 체결 먼저 봄? 뭐부터 봐야 됨",
         "{symbol} 차트 켰는데 감이 안 온다. 다들 뭐 보고 있음?",
@@ -30058,12 +30058,12 @@
       "context": "TARGET",
       "requires": [],
       "texts": [
-        "{symbol} 지금 {price}원이네. 일단 보는 중",
+        "{symbol} 지금 {price}돈이네. 일단 보는 중",
         "{symbol} 차트랑 눈싸움 중 ㅋㅋ",
         "{symbol} 호가 보고 있으면 시간 순삭임",
         "{symbol} 괜히 다른 창 켰다가 또 돌아옴",
         "{symbol} 보고 있는데 내가 보는 게 맞나 싶다",
-        "{symbol} {price}원... 뭘 해도 내가 하면 반대로 갈 것 같음 ㅋㅋ"
+        "{symbol} {price}돈... 뭘 해도 내가 하면 반대로 갈 것 같음 ㅋㅋ"
       ]
     },
     {
@@ -30399,10 +30399,10 @@
       "requires": [],
       "texts": [
         "{symbol} 뭐임 몇 분 새 {fastPct} ㄷㄷ",
-        "{symbol} 방금 쏜 거 봄? {price}원까지 순식간이네",
+        "{symbol} 방금 쏜 거 봄? {price}돈까지 순식간이네",
         "{symbol} 갑자기 {fastPct}. 누가 긁는 거냐 이거",
-        "와 {symbol} {price}원 ㅋㅋㅋ 잠깐 눈 뗀 사이에 {fastPct}",
-        "{symbol} 불 붙었다. 몇 분 만에 {fastPct}, 지금 {price}원",
+        "와 {symbol} {price}돈 ㅋㅋㅋ 잠깐 눈 뗀 사이에 {fastPct}",
+        "{symbol} 불 붙었다. 몇 분 만에 {fastPct}, 지금 {price}돈",
         "{symbol} 매도 호가 순삭되는 중. {fastPct} 실화냐"
       ]
     },
@@ -30412,9 +30412,9 @@
       "context": "MKT_SPIKE_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 몇 분 사이에 {fastPct} 움직였네요. 지금 {price}원입니다.",
+        "{symbol} 몇 분 사이에 {fastPct} 움직였네요. 지금 {price}돈입니다.",
         "{symbol} 갑자기 강하게 올라오네요. 방금 {fastPct}였습니다.",
-        "{symbol} {price}원까지 순식간이네요. 이 속도면 조심스럽습니다.",
+        "{symbol} {price}돈까지 순식간이네요. 이 속도면 조심스럽습니다.",
         "{symbol} 단기간에 {fastPct}라니, 물량이 꽤 들어온 것 같네요."
       ]
     },
@@ -30425,11 +30425,11 @@
       "requires": [],
       "texts": [
         "{symbol} 뭐야 몇 분 새 {fastPct}... 누가 던지냐",
-        "{symbol} 방금 쭉 빠진 거 봄? {price}원까지 밀림",
+        "{symbol} 방금 쭉 빠진 거 봄? {price}돈까지 밀림",
         "아 {symbol} {fastPct}. 잠깐 사이에 이게 뭐냐",
-        "{symbol} 매수 호가 뚫리는 중. {price}원까지 내려옴",
+        "{symbol} 매수 호가 뚫리는 중. {price}돈까지 내려옴",
         "{symbol} 갑자기 {fastPct} ㄷㄷ 무슨 일 있음?",
-        "{symbol} 쏟아진다... 지금 {price}원. 받는 사람이 없네"
+        "{symbol} 쏟아진다... 지금 {price}돈. 받는 사람이 없네"
       ]
     },
     {
@@ -30438,9 +30438,9 @@
       "context": "MKT_DUMP_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 몇 분 사이에 {fastPct} 빠졌네요. 지금 {price}원입니다.",
+        "{symbol} 몇 분 사이에 {fastPct} 빠졌네요. 지금 {price}돈입니다.",
         "{symbol} 갑자기 매물이 쏟아지네요. 방금 {fastPct}였습니다.",
-        "{symbol} {price}원까지 밀렸습니다. 받아 주는 물량이 얇아 보이네요.",
+        "{symbol} {price}돈까지 밀렸습니다. 받아 주는 물량이 얇아 보이네요.",
         "{symbol} 단기간에 {fastPct}라니, 섣불리 받기는 어렵겠습니다."
       ]
     },
@@ -30450,11 +30450,11 @@
       "context": "MKT_HIGH",
       "requires": [],
       "texts": [
-        "{symbol} 오늘 고점 {dayHigh}원 뚫는 중 ㅋㅋ {dayPct}네",
+        "{symbol} 오늘 고점 {dayHigh}돈 뚫는 중 ㅋㅋ {dayPct}네",
         "{symbol} {dayPct}... 고점에서 안 내려오네",
-        "{symbol} 지금 {price}원. 오늘 제일 높은 자리임",
+        "{symbol} 지금 {price}돈. 오늘 제일 높은 자리임",
         "{symbol} 오늘 {dayPct}인데 아직도 고점 근처에서 버팀",
-        "와 {symbol} {dayHigh}원 찍었네. 어디까지 가는 거냐",
+        "와 {symbol} {dayHigh}돈 찍었네. 어디까지 가는 거냐",
         "{symbol} 오늘 고가 계속 갱신 중. 들고 있는 사람들 좋겠다"
       ]
     },
@@ -30464,9 +30464,9 @@
       "context": "MKT_HIGH_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 오늘 고가 {dayHigh}원 부근입니다. 전일 대비 {dayPct}네요.",
+        "{symbol} 오늘 고가 {dayHigh}돈 부근입니다. 전일 대비 {dayPct}네요.",
         "{symbol} {dayPct}인데도 고점에서 밀리지 않네요.",
-        "{symbol} 지금 {price}원, 오늘 가장 높은 가격대입니다.",
+        "{symbol} 지금 {price}돈, 오늘 가장 높은 가격대입니다.",
         "{symbol} 고가를 계속 높이고 있네요. 추격은 조심스럽습니다."
       ]
     },
@@ -30476,11 +30476,11 @@
       "context": "MKT_LOW",
       "requires": [],
       "texts": [
-        "{symbol} 오늘 저점 {dayLow}원 깨는 중... {dayPct}",
+        "{symbol} 오늘 저점 {dayLow}돈 깨는 중... {dayPct}",
         "{symbol} {dayPct}. 바닥이 어디냐 진짜",
-        "{symbol} 지금 {price}원. 오늘 제일 낮은 자리네",
+        "{symbol} 지금 {price}돈. 오늘 제일 낮은 자리네",
         "{symbol} 오늘 {dayPct}인데 반등 한 번을 안 주네",
-        "아 {symbol} {dayLow}원까지 찍음. 지지 같은 건 없구나",
+        "아 {symbol} {dayLow}돈까지 찍음. 지지 같은 건 없구나",
         "{symbol} 오늘 저가 계속 갱신 중. 들고 있는 분들 괜찮음?"
       ]
     },
@@ -30490,9 +30490,9 @@
       "context": "MKT_LOW_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 오늘 저가 {dayLow}원 부근입니다. 전일 대비 {dayPct}네요.",
+        "{symbol} 오늘 저가 {dayLow}돈 부근입니다. 전일 대비 {dayPct}네요.",
         "{symbol} {dayPct}인데 반등 시도가 보이지 않네요.",
-        "{symbol} 지금 {price}원, 오늘 가장 낮은 가격대입니다.",
+        "{symbol} 지금 {price}돈, 오늘 가장 낮은 가격대입니다.",
         "{symbol} 저가를 계속 낮추고 있네요. 섣불리 받기는 어렵습니다."
       ]
     },
@@ -30502,12 +30502,12 @@
       "context": "MKT_PULLBACK",
       "requires": [],
       "texts": [
-        "{symbol} {dayHigh}원 찍고 {fromHigh} 밀림. 고점에 산 사람 어떡하냐",
-        "{symbol} 아까 {dayHigh}원이었는데 지금 {price}원 ㅋㅋ 차익 나오네",
+        "{symbol} {dayHigh}돈 찍고 {fromHigh} 밀림. 고점에 산 사람 어떡하냐",
+        "{symbol} 아까 {dayHigh}돈이었는데 지금 {price}돈 ㅋㅋ 차익 나오네",
         "{symbol} 고점 대비 {fromHigh}. 여기서 받아야 되나",
-        "{symbol} 위꼬리 길게 달았네. {dayHigh}원이 오늘 끝인가",
+        "{symbol} 위꼬리 길게 달았네. {dayHigh}돈이 오늘 끝인가",
         "{symbol} 올린 만큼 도로 뱉는 중. 고점에서 {fromHigh}",
-        "{symbol} {price}원까지 내려옴. 고점에서 판 사람이 승자네"
+        "{symbol} {price}돈까지 내려옴. 고점에서 판 사람이 승자네"
       ]
     },
     {
@@ -30516,10 +30516,10 @@
       "context": "MKT_PULLBACK_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 고가 {dayHigh}원을 찍은 뒤 {fromHigh} 밀렸네요.",
-        "{symbol} 차익 매물이 나오는 것 같습니다. 지금 {price}원입니다.",
+        "{symbol} 고가 {dayHigh}돈을 찍은 뒤 {fromHigh} 밀렸네요.",
+        "{symbol} 차익 매물이 나오는 것 같습니다. 지금 {price}돈입니다.",
         "{symbol} 고점 대비 {fromHigh}입니다. 눌림인지 꺾인 건지 지켜보겠습니다.",
-        "{symbol} 위꼬리가 길어졌네요. {dayHigh}원을 다시 넘는지가 관건이겠습니다."
+        "{symbol} 위꼬리가 길어졌네요. {dayHigh}돈을 다시 넘는지가 관건이겠습니다."
       ]
     },
     {
@@ -30528,12 +30528,12 @@
       "context": "MKT_REBOUND",
       "requires": [],
       "texts": [
-        "{symbol} {dayLow}원 찍고 {fromLow} 올라옴. 바닥에 주운 사람 부럽다",
-        "{symbol} 아까 {dayLow}원이었는데 지금 {price}원. 반등 나오네",
+        "{symbol} {dayLow}돈 찍고 {fromLow} 올라옴. 바닥에 주운 사람 부럽다",
+        "{symbol} 아까 {dayLow}돈이었는데 지금 {price}돈. 반등 나오네",
         "{symbol} 저점 대비 {fromLow}. 이거 진짜 반등임? 잠깐 튀는 거임?",
-        "{symbol} 아래꼬리 길게 달았네. {dayLow}원이 오늘 바닥인가",
+        "{symbol} 아래꼬리 길게 달았네. {dayLow}돈이 오늘 바닥인가",
         "{symbol} 빠진 만큼 도로 올리는 중. 저점에서 {fromLow}",
-        "{symbol} {price}원까지 올라옴. 아까 던진 사람들 속 쓰리겠다"
+        "{symbol} {price}돈까지 올라옴. 아까 던진 사람들 속 쓰리겠다"
       ]
     },
     {
@@ -30542,10 +30542,10 @@
       "context": "MKT_REBOUND_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 저가 {dayLow}원을 찍은 뒤 {fromLow} 올라왔네요.",
-        "{symbol} 저가 매수가 들어오는 것 같습니다. 지금 {price}원입니다.",
+        "{symbol} 저가 {dayLow}돈을 찍은 뒤 {fromLow} 올라왔네요.",
+        "{symbol} 저가 매수가 들어오는 것 같습니다. 지금 {price}돈입니다.",
         "{symbol} 저점 대비 {fromLow}입니다. 반등이 이어질지 지켜보겠습니다.",
-        "{symbol} 아래꼬리가 길어졌네요. {dayLow}원이 지켜지는지가 관건이겠습니다."
+        "{symbol} 아래꼬리가 길어졌네요. {dayLow}돈이 지켜지는지가 관건이겠습니다."
       ]
     },
     {
@@ -30555,11 +30555,11 @@
       "requires": [],
       "texts": [
         "{symbol} 오늘 {dayPct}. 조용히 잘 가네",
-        "{symbol} 지금 {price}원, {dayPct}네. 고점 {dayHigh}원 다시 보러 가나",
+        "{symbol} 지금 {price}돈, {dayPct}네. 고점 {dayHigh}돈 다시 보러 가나",
         "{symbol} {dayPct}면 나쁘지 않은데 더 갈 힘이 있나",
         "{symbol} 슬금슬금 올라서 {dayPct}. 이런 게 무섭더라",
-        "{symbol} 오늘 {dayPct}인데 고점 {dayHigh}원은 아직 못 넘음",
-        "{symbol} {price}원. {dayPct}면 오늘은 이긴 날이지"
+        "{symbol} 오늘 {dayPct}인데 고점 {dayHigh}돈은 아직 못 넘음",
+        "{symbol} {price}돈. {dayPct}면 오늘은 이긴 날이지"
       ]
     },
     {
@@ -30569,8 +30569,8 @@
       "requires": [],
       "texts": [
         "{symbol} 전일 대비 {dayPct}입니다. 무난하게 오르고 있네요.",
-        "{symbol} 지금 {price}원이고, 오늘 고가는 {dayHigh}원입니다.",
-        "{symbol} {dayPct}네요. 고가 {dayHigh}원을 넘는지 보고 있습니다.",
+        "{symbol} 지금 {price}돈이고, 오늘 고가는 {dayHigh}돈입니다.",
+        "{symbol} {dayPct}네요. 고가 {dayHigh}돈을 넘는지 보고 있습니다.",
         "{symbol} 천천히 올라 {dayPct}까지 왔습니다. 급하지 않아서 오히려 좋네요."
       ]
     },
@@ -30581,11 +30581,11 @@
       "requires": [],
       "texts": [
         "{symbol} 오늘 {dayPct}. 힘이 없네",
-        "{symbol} 지금 {price}원, {dayPct}네. 저점 {dayLow}원 다시 가나",
+        "{symbol} 지금 {price}돈, {dayPct}네. 저점 {dayLow}돈 다시 가나",
         "{symbol} {dayPct}면 아직 버틸 만한데 더 빠지면 골치 아픔",
         "{symbol} 슬금슬금 빠져서 {dayPct}. 이런 게 제일 지침",
-        "{symbol} 오늘 {dayPct}인데 저점 {dayLow}원은 아직 안 깨짐",
-        "{symbol} {price}원. {dayPct}... 오늘은 쉬는 날인가"
+        "{symbol} 오늘 {dayPct}인데 저점 {dayLow}돈은 아직 안 깨짐",
+        "{symbol} {price}돈. {dayPct}... 오늘은 쉬는 날인가"
       ]
     },
     {
@@ -30595,8 +30595,8 @@
       "requires": [],
       "texts": [
         "{symbol} 전일 대비 {dayPct}입니다. 힘이 약해 보이네요.",
-        "{symbol} 지금 {price}원이고, 오늘 저가는 {dayLow}원입니다.",
-        "{symbol} {dayPct}네요. 저가 {dayLow}원이 지켜지는지 보고 있습니다.",
+        "{symbol} 지금 {price}돈이고, 오늘 저가는 {dayLow}돈입니다.",
+        "{symbol} {dayPct}네요. 저가 {dayLow}돈이 지켜지는지 보고 있습니다.",
         "{symbol} 천천히 밀려 {dayPct}까지 왔습니다. 반등 신호는 아직 없네요."
       ]
     },
@@ -30606,12 +30606,12 @@
       "context": "MKT_FLAT",
       "requires": [],
       "texts": [
-        "{symbol} 오늘 {dayLow}~{dayHigh}원에서만 놀고 있음. 지겹다",
+        "{symbol} 오늘 {dayLow}~{dayHigh}돈에서만 놀고 있음. 지겹다",
         "{symbol} {dayPct}... 횡보 언제 끝나냐",
-        "{symbol} 지금 {price}원. 아까도 이 가격이었던 것 같은데 ㅋㅋ",
+        "{symbol} 지금 {price}돈. 아까도 이 가격이었던 것 같은데 ㅋㅋ",
         "{symbol} 오늘 진짜 안 움직이네. {dayPct}에서 꼼짝을 안 함",
         "{symbol} 차트 일자로 누웠다. 누가 좀 깨워 봐",
-        "{symbol} {dayHigh}원도 못 넘고 {dayLow}원도 안 깨고. 뭐 하자는 거임"
+        "{symbol} {dayHigh}돈도 못 넘고 {dayLow}돈도 안 깨고. 뭐 하자는 거임"
       ]
     },
     {
@@ -30620,10 +30620,10 @@
       "context": "MKT_FLAT_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 오늘은 {dayLow}~{dayHigh}원 사이에서만 움직이네요.",
+        "{symbol} 오늘은 {dayLow}~{dayHigh}돈 사이에서만 움직이네요.",
         "{symbol} 전일 대비 {dayPct}, 사실상 제자리입니다.",
-        "{symbol} 지금 {price}원입니다. 방향이 나올 때까지 기다리겠습니다.",
-        "{symbol} 움직임이 거의 없네요. {dayHigh}원을 넘겨야 관심이 붙겠습니다."
+        "{symbol} 지금 {price}돈입니다. 방향이 나올 때까지 기다리겠습니다.",
+        "{symbol} 움직임이 거의 없네요. {dayHigh}돈을 넘겨야 관심이 붙겠습니다."
       ]
     },
     {
@@ -30632,10 +30632,10 @@
       "context": "MKT_RISE",
       "requires": [],
       "texts": [
-        "{symbol} {price}원까지 올린 거 진짜 수급임? 고점 {dayHigh}원에서 물리기 싫은데",
-        "{symbol} {price}원인데 왜 오르는지 아는 사람이 없네. 좀 찜찜함",
-        "이렇게 올리고 한 번에 던지는 거 많이 봄. {symbol} {dayLow}원까지 되돌려도 안 이상함",
-        "{symbol} 지금 따라 사는 건 좀... {dayHigh}원 넘는 거 확인하고 봐도 안 늦음"
+        "{symbol} {price}돈까지 올린 거 진짜 수급임? 고점 {dayHigh}돈에서 물리기 싫은데",
+        "{symbol} {price}돈인데 왜 오르는지 아는 사람이 없네. 좀 찜찜함",
+        "이렇게 올리고 한 번에 던지는 거 많이 봄. {symbol} {dayLow}돈까지 되돌려도 안 이상함",
+        "{symbol} 지금 따라 사는 건 좀... {dayHigh}돈 넘는 거 확인하고 봐도 안 늦음"
       ]
     },
     {
@@ -30644,9 +30644,9 @@
       "context": "MKT_RISE_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} {price}원까지 오른 이유가 분명하지 않네요. 고가 {dayHigh}원 부근은 조심하고 싶습니다.",
-        "{symbol} 오름세가 이어질지는 모르겠습니다. {dayHigh}원을 넘는지 확인하고 싶네요.",
-        "급하게 오른 종목은 되돌림도 빠르더군요. {symbol} 저가 {dayLow}원까지는 열어 두겠습니다."
+        "{symbol} {price}돈까지 오른 이유가 분명하지 않네요. 고가 {dayHigh}돈 부근은 조심하고 싶습니다.",
+        "{symbol} 오름세가 이어질지는 모르겠습니다. {dayHigh}돈을 넘는지 확인하고 싶네요.",
+        "급하게 오른 종목은 되돌림도 빠르더군요. {symbol} 저가 {dayLow}돈까지는 열어 두겠습니다."
       ]
     },
     {
@@ -30655,9 +30655,9 @@
       "context": "MKT_FALL",
       "requires": [],
       "texts": [
-        "{symbol} {price}원이면 싸 보이긴 하는데 저점 {dayLow}원 깨지면 답 없음",
+        "{symbol} {price}돈이면 싸 보이긴 하는데 저점 {dayLow}돈 깨지면 답 없음",
         "{symbol} 여기가 바닥이라는 근거가 있음? 떨어지는 칼 같은데",
-        "{symbol} 반등 나와도 {dayHigh}원까지는 멀다. 섣불리 물타면 안 될 듯",
+        "{symbol} 반등 나와도 {dayHigh}돈까지는 멀다. 섣불리 물타면 안 될 듯",
         "{symbol} 왜 빠지는지 아는 사람 있음? 이유 모르는 하락이 제일 무서움"
       ]
     },
@@ -30667,9 +30667,9 @@
       "context": "MKT_FALL_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} {price}원이 싸 보이지만, 저가 {dayLow}원이 깨지면 더 밀릴 수 있겠습니다.",
+        "{symbol} {price}돈이 싸 보이지만, 저가 {dayLow}돈이 깨지면 더 밀릴 수 있겠습니다.",
         "{symbol} 여기가 바닥이라는 근거는 아직 못 찾았습니다.",
-        "{symbol} 하락 이유가 확인되지 않아 조심스럽습니다. 반등해도 {dayHigh}원까지는 멀어 보이네요."
+        "{symbol} 하락 이유가 확인되지 않아 조심스럽습니다. 반등해도 {dayHigh}돈까지는 멀어 보이네요."
       ]
     },
     {
@@ -30678,10 +30678,10 @@
       "context": "MKT_FLAT",
       "requires": [],
       "texts": [
-        "{symbol} {dayLow}~{dayHigh}원에서 이렇게 조용한 게 더 수상함",
-        "{symbol} 간다 간다 하는데 {price}원에서 꿈쩍도 안 하잖아",
+        "{symbol} {dayLow}~{dayHigh}돈에서 이렇게 조용한 게 더 수상함",
+        "{symbol} 간다 간다 하는데 {price}돈에서 꿈쩍도 안 하잖아",
         "{symbol} 횡보 끝에 위로 간다는 보장 있음? 아래로 깨질 수도 있는데",
-        "{dayHigh}원도 못 넘는 {symbol}에 뭘 기대함"
+        "{dayHigh}돈도 못 넘는 {symbol}에 뭘 기대함"
       ]
     },
     {
@@ -30690,8 +30690,8 @@
       "context": "MKT_FLAT_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} {dayLow}~{dayHigh}원에서 너무 조용한 점이 오히려 마음에 걸립니다.",
-        "{symbol} {price}원에서 움직이지 않는데, 기대만으로 사기는 어렵겠습니다.",
+        "{symbol} {dayLow}~{dayHigh}돈에서 너무 조용한 점이 오히려 마음에 걸립니다.",
+        "{symbol} {price}돈에서 움직이지 않는데, 기대만으로 사기는 어렵겠습니다.",
         "{symbol} 횡보 뒤 방향은 알 수 없습니다. 아래로 열릴 가능성도 봅니다."
       ]
     },
@@ -30701,10 +30701,10 @@
       "context": "MKT_RISE",
       "requires": [],
       "texts": [
-        "{symbol} 왜 오르는 거임? {price}원까지 온 이유 아는 사람?",
-        "{symbol} 지금 {price}원인데 들어가도 됨? 고점 {dayHigh}원이 코앞이라 고민됨",
-        "{symbol} 들고 있는 사람들 어디서 팔 거임? {dayHigh}원 넘으면?",
-        "{symbol} 이거 더 감? 아니면 {dayLow}원까지 다시 내려옴?"
+        "{symbol} 왜 오르는 거임? {price}돈까지 온 이유 아는 사람?",
+        "{symbol} 지금 {price}돈인데 들어가도 됨? 고점 {dayHigh}돈이 코앞이라 고민됨",
+        "{symbol} 들고 있는 사람들 어디서 팔 거임? {dayHigh}돈 넘으면?",
+        "{symbol} 이거 더 감? 아니면 {dayLow}돈까지 다시 내려옴?"
       ]
     },
     {
@@ -30713,8 +30713,8 @@
       "context": "MKT_RISE_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 오르는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
-        "{symbol} {price}원인데 지금 들어가도 괜찮을까요? 고가 {dayHigh}원이 가까워 망설여집니다.",
+        "{symbol} 오르는 이유를 아시는 분 계신가요? 지금 {price}돈입니다.",
+        "{symbol} {price}돈인데 지금 들어가도 괜찮을까요? 고가 {dayHigh}돈이 가까워 망설여집니다.",
         "{symbol} 보유하신 분들은 어느 가격에서 정리하실 계획인가요?"
       ]
     },
@@ -30725,9 +30725,9 @@
       "requires": [],
       "texts": [
         "{symbol} 왜 빠지는 거임? 뭐 나온 거 있음?",
-        "{symbol} {price}원이면 주워도 됨? 저점 {dayLow}원 근처라 고민되네",
+        "{symbol} {price}돈이면 주워도 됨? 저점 {dayLow}돈 근처라 고민되네",
         "{symbol} 들고 있는 사람들 버팀? 손절함?",
-        "{symbol} 어디까지 빠질 것 같음? {dayLow}원은 지켜주나"
+        "{symbol} 어디까지 빠질 것 같음? {dayLow}돈은 지켜주나"
       ]
     },
     {
@@ -30736,8 +30736,8 @@
       "context": "MKT_FALL_POLITE",
       "requires": [],
       "texts": [
-        "{symbol} 빠지는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
-        "{symbol} {price}원이면 매수해도 괜찮을까요? 저가 {dayLow}원 부근이라 고민됩니다.",
+        "{symbol} 빠지는 이유를 아시는 분 계신가요? 지금 {price}돈입니다.",
+        "{symbol} {price}돈이면 매수해도 괜찮을까요? 저가 {dayLow}돈 부근이라 고민됩니다.",
         "{symbol} 보유하신 분들은 버티실 건가요, 정리하실 건가요?"
       ]
     },
@@ -30747,10 +30747,10 @@
       "context": "MKT_FLAT",
       "requires": [],
       "texts": [
-        "{symbol} 오늘 왜 이렇게 조용함? {dayLow}~{dayHigh}원에서 안 벗어나네",
+        "{symbol} 오늘 왜 이렇게 조용함? {dayLow}~{dayHigh}돈에서 안 벗어나네",
         "{symbol} 횡보할 때 모으는 사람 있음? 아니면 다들 딴 거 봄?",
-        "{symbol} {price}원에서 위로 갈까 아래로 갈까. 다들 어떻게 봄?",
-        "{symbol} 이거 기다릴 가치 있음? 오늘 내내 {price}원 근처인데"
+        "{symbol} {price}돈에서 위로 갈까 아래로 갈까. 다들 어떻게 봄?",
+        "{symbol} 이거 기다릴 가치 있음? 오늘 내내 {price}돈 근처인데"
       ]
     },
     {
@@ -30760,8 +30760,8 @@
       "requires": [],
       "texts": [
         "{symbol} 오늘 유난히 조용한데, 이유를 아시는 분 계신가요?",
-        "{symbol} {dayLow}~{dayHigh}원 구간에서 모으시는 분 계신가요?",
-        "{symbol} {price}원에서 어느 쪽으로 움직일 것 같으신가요?"
+        "{symbol} {dayLow}~{dayHigh}돈 구간에서 모으시는 분 계신가요?",
+        "{symbol} {price}돈에서 어느 쪽으로 움직일 것 같으신가요?"
       ]
     },
     {
@@ -30770,9 +30770,9 @@
       "context": "MKT_RISE",
       "requires": [],
       "texts": [
-        "ㅇㅇ {symbol} {price}원까지 온 거 보면 힘은 있음",
-        "나도 그렇게 봄. {dayHigh}원 넘기면 더 갈 듯",
-        "맞음. 저점 {dayLow}원에서 여기까지 올린 게 그냥은 아니지",
+        "ㅇㅇ {symbol} {price}돈까지 온 거 보면 힘은 있음",
+        "나도 그렇게 봄. {dayHigh}돈 넘기면 더 갈 듯",
+        "맞음. 저점 {dayLow}돈에서 여기까지 올린 게 그냥은 아니지",
         "ㄹㅇ {symbol} 오늘 분위기 다르긴 함"
       ]
     },
@@ -30782,9 +30782,9 @@
       "context": "MKT_RISE_POLITE",
       "requires": [],
       "texts": [
-        "동의합니다. {symbol} {price}원까지 올라온 걸 보면 힘이 있네요.",
-        "저도 같은 생각입니다. {dayHigh}원을 넘기면 더 이어질 것 같습니다.",
-        "맞는 말씀입니다. 저가 {dayLow}원에서 여기까지 온 흐름은 무시하기 어렵네요."
+        "동의합니다. {symbol} {price}돈까지 올라온 걸 보면 힘이 있네요.",
+        "저도 같은 생각입니다. {dayHigh}돈을 넘기면 더 이어질 것 같습니다.",
+        "맞는 말씀입니다. 저가 {dayLow}돈에서 여기까지 온 흐름은 무시하기 어렵네요."
       ]
     },
     {
@@ -30793,9 +30793,9 @@
       "context": "MKT_FALL",
       "requires": [],
       "texts": [
-        "ㅇㅇ {symbol} {price}원까지 밀린 거 보면 약하긴 함",
-        "나도 그렇게 봄. {dayLow}원 깨지면 더 빠질 듯",
-        "맞음. 고점 {dayHigh}원에서 여기까지 온 거면 분위기 꺾인 거지",
+        "ㅇㅇ {symbol} {price}돈까지 밀린 거 보면 약하긴 함",
+        "나도 그렇게 봄. {dayLow}돈 깨지면 더 빠질 듯",
+        "맞음. 고점 {dayHigh}돈에서 여기까지 온 거면 분위기 꺾인 거지",
         "ㄹㅇ {symbol} 오늘은 건드리면 안 될 듯"
       ]
     },
@@ -30805,9 +30805,9 @@
       "context": "MKT_FALL_POLITE",
       "requires": [],
       "texts": [
-        "동의합니다. {symbol} {price}원까지 밀린 걸 보면 약해 보이네요.",
-        "저도 같은 생각입니다. {dayLow}원이 깨지면 더 밀릴 것 같습니다.",
-        "맞는 말씀입니다. 고가 {dayHigh}원에서 여기까지 내려온 흐름은 가볍지 않네요."
+        "동의합니다. {symbol} {price}돈까지 밀린 걸 보면 약해 보이네요.",
+        "저도 같은 생각입니다. {dayLow}돈이 깨지면 더 밀릴 것 같습니다.",
+        "맞는 말씀입니다. 고가 {dayHigh}돈에서 여기까지 내려온 흐름은 가볍지 않네요."
       ]
     },
     {
@@ -30816,9 +30816,9 @@
       "context": "MKT_FLAT",
       "requires": [],
       "texts": [
-        "ㅇㅇ {symbol} 오늘은 볼 게 없음. {price}원에서 그대로임",
-        "나도 그 생각함. {dayHigh}원 넘기 전엔 관심 끄는 게 맞음",
-        "맞음. {dayLow}~{dayHigh}원 박스 깨질 때까지는 그냥 구경",
+        "ㅇㅇ {symbol} 오늘은 볼 게 없음. {price}돈에서 그대로임",
+        "나도 그 생각함. {dayHigh}돈 넘기 전엔 관심 끄는 게 맞음",
+        "맞음. {dayLow}~{dayHigh}돈 박스 깨질 때까지는 그냥 구경",
         "ㄹㅇ 이럴 땐 가만히 있는 게 돈 버는 거임"
       ]
     },
@@ -30828,9 +30828,9 @@
       "context": "MKT_FLAT_POLITE",
       "requires": [],
       "texts": [
-        "동의합니다. {symbol} 오늘은 {price}원에서 변화가 없네요.",
-        "저도 그렇게 봅니다. {dayHigh}원을 넘기 전에는 지켜보기만 하겠습니다.",
-        "맞는 말씀입니다. {dayLow}~{dayHigh}원 구간을 벗어날 때까지 기다리겠습니다."
+        "동의합니다. {symbol} 오늘은 {price}돈에서 변화가 없네요.",
+        "저도 그렇게 봅니다. {dayHigh}돈을 넘기 전에는 지켜보기만 하겠습니다.",
+        "맞는 말씀입니다. {dayLow}~{dayHigh}돈 구간을 벗어날 때까지 기다리겠습니다."
       ]
     },
     {
@@ -30839,9 +30839,9 @@
       "context": "MKT_RISE",
       "requires": [],
       "texts": [
-        "오른 건 맞는데 {price}원에서 따라 사는 건 다른 얘기임",
-        "글쎄. {dayHigh}원 못 넘으면 여기가 고점일 수도 있음",
-        "너무 좋게만 보는 거 아님? 저점 {dayLow}원에서 이미 많이 왔는데",
+        "오른 건 맞는데 {price}돈에서 따라 사는 건 다른 얘기임",
+        "글쎄. {dayHigh}돈 못 넘으면 여기가 고점일 수도 있음",
+        "너무 좋게만 보는 거 아님? 저점 {dayLow}돈에서 이미 많이 왔는데",
         "이럴 때 들어가면 꼭 물리던데. 난 좀 식는 거 보고 판단함"
       ]
     },
@@ -30851,9 +30851,9 @@
       "context": "MKT_RISE_POLITE",
       "requires": [],
       "texts": [
-        "오른 것은 맞지만, {price}원에서 따라 사는 것은 다른 문제라고 봅니다.",
-        "저는 조금 다르게 봅니다. {dayHigh}원을 넘지 못하면 여기가 고점일 수 있습니다.",
-        "저가 {dayLow}원에서 이미 많이 올라왔습니다. 지금은 서두를 자리가 아닌 것 같네요."
+        "오른 것은 맞지만, {price}돈에서 따라 사는 것은 다른 문제라고 봅니다.",
+        "저는 조금 다르게 봅니다. {dayHigh}돈을 넘지 못하면 여기가 고점일 수 있습니다.",
+        "저가 {dayLow}돈에서 이미 많이 올라왔습니다. 지금은 서두를 자리가 아닌 것 같네요."
       ]
     },
     {
@@ -30862,9 +30862,9 @@
       "context": "MKT_FALL",
       "requires": [],
       "texts": [
-        "빠진 건 맞는데 {price}원이면 오히려 볼 만한 자리 아님?",
-        "글쎄. {dayLow}원 안 깨지면 여기서 반등 나올 수도 있음",
-        "너무 겁먹은 거 아님? 고점 {dayHigh}원에서 이 정도 눌리는 건 흔함",
+        "빠진 건 맞는데 {price}돈이면 오히려 볼 만한 자리 아님?",
+        "글쎄. {dayLow}돈 안 깨지면 여기서 반등 나올 수도 있음",
+        "너무 겁먹은 거 아님? 고점 {dayHigh}돈에서 이 정도 눌리는 건 흔함",
         "다들 무섭다 할 때가 살 때라던데. 난 좀 더 보고 주울 생각"
       ]
     },
@@ -30874,9 +30874,9 @@
       "context": "MKT_FALL_POLITE",
       "requires": [],
       "texts": [
-        "빠진 것은 맞지만, {price}원이면 오히려 살펴볼 만한 자리라고 봅니다.",
-        "저는 조금 다르게 봅니다. {dayLow}원이 지켜지면 반등이 나올 수 있습니다.",
-        "고가 {dayHigh}원에서 이 정도 조정은 흔한 일입니다. 너무 걱정하실 필요는 없어 보이네요."
+        "빠진 것은 맞지만, {price}돈이면 오히려 살펴볼 만한 자리라고 봅니다.",
+        "저는 조금 다르게 봅니다. {dayLow}돈이 지켜지면 반등이 나올 수 있습니다.",
+        "고가 {dayHigh}돈에서 이 정도 조정은 흔한 일입니다. 너무 걱정하실 필요는 없어 보이네요."
       ]
     },
     {
@@ -30885,9 +30885,9 @@
       "context": "MKT_RISE",
       "requires": [],
       "texts": [
-        "이유는 나도 모름. 근데 {dayHigh}원 넘기면 사고, 못 넘기면 안 삼",
-        "난 {price}원에선 안 들어감. {dayLow}원 근처까지 눌리면 그때 봄",
-        "산다면 조금만. 틀리면 {dayLow}원 깨질 때 자르면 됨",
+        "이유는 나도 모름. 근데 {dayHigh}돈 넘기면 사고, 못 넘기면 안 삼",
+        "난 {price}돈에선 안 들어감. {dayLow}돈 근처까지 눌리면 그때 봄",
+        "산다면 조금만. 틀리면 {dayLow}돈 깨질 때 자르면 됨",
         "뉴스는 못 봤음. 그냥 사는 사람이 많아서 오르는 듯"
       ]
     },
@@ -30897,8 +30897,8 @@
       "context": "MKT_RISE_POLITE",
       "requires": [],
       "texts": [
-        "이유는 저도 모르겠습니다. 다만 {dayHigh}원을 넘는지를 기준으로 보고 있습니다.",
-        "저는 {price}원에서는 들어가지 않습니다. {dayLow}원 부근까지 눌리면 다시 보겠습니다.",
+        "이유는 저도 모르겠습니다. 다만 {dayHigh}돈을 넘는지를 기준으로 보고 있습니다.",
+        "저는 {price}돈에서는 들어가지 않습니다. {dayLow}돈 부근까지 눌리면 다시 보겠습니다.",
         "관련 소식은 확인하지 못했습니다. 매수세가 우위인 것으로만 보입니다."
       ]
     },
@@ -30908,10 +30908,10 @@
       "context": "MKT_FALL",
       "requires": [],
       "texts": [
-        "이유는 나도 모름. 근데 {dayLow}원 깨지면 더 보고, 지키면 조금 주울 생각",
-        "난 {price}원에선 아직 안 삼. 반등 확인하고 들어가도 안 늦음",
+        "이유는 나도 모름. 근데 {dayLow}돈 깨지면 더 보고, 지키면 조금 주울 생각",
+        "난 {price}돈에선 아직 안 삼. 반등 확인하고 들어가도 안 늦음",
         "뉴스는 못 봤음. 그냥 파는 사람이 많아서 빠지는 듯",
-        "버틸 거면 {dayLow}원 기준으로 잡는 게 맞음. 그 밑은 나도 모름"
+        "버틸 거면 {dayLow}돈 기준으로 잡는 게 맞음. 그 밑은 나도 모름"
       ]
     },
     {
@@ -30920,8 +30920,8 @@
       "context": "MKT_FALL_POLITE",
       "requires": [],
       "texts": [
-        "이유는 저도 모르겠습니다. 다만 {dayLow}원이 지켜지는지를 기준으로 보고 있습니다.",
-        "저는 {price}원에서는 아직 사지 않습니다. 반등을 확인한 뒤에 들어가도 늦지 않습니다.",
+        "이유는 저도 모르겠습니다. 다만 {dayLow}돈이 지켜지는지를 기준으로 보고 있습니다.",
+        "저는 {price}돈에서는 아직 사지 않습니다. 반등을 확인한 뒤에 들어가도 늦지 않습니다.",
         "관련 소식은 확인하지 못했습니다. 매도세가 우위인 것으로만 보입니다."
       ]
     },
@@ -30932,9 +30932,9 @@
       "requires": [],
       "texts": [
         "이유 없음. 그냥 다들 딴 종목 보는 중인 듯",
-        "난 {dayHigh}원 넘기 전엔 안 건드림. 횡보에 돈 묶이기 싫어서",
-        "위든 아래든 {dayLow}~{dayHigh}원 벗어나는 쪽 따라갈 생각",
-        "기다릴 거면 {price}원 근처에서 조금씩 모으는 것도 방법이긴 함"
+        "난 {dayHigh}돈 넘기 전엔 안 건드림. 횡보에 돈 묶이기 싫어서",
+        "위든 아래든 {dayLow}~{dayHigh}돈 벗어나는 쪽 따라갈 생각",
+        "기다릴 거면 {price}돈 근처에서 조금씩 모으는 것도 방법이긴 함"
       ]
     },
     {
@@ -30944,8 +30944,8 @@
       "requires": [],
       "texts": [
         "특별한 이유는 없어 보입니다. 관심이 다른 종목에 쏠린 것 같네요.",
-        "저는 {dayHigh}원을 넘기 전에는 손대지 않을 생각입니다.",
-        "{dayLow}~{dayHigh}원 구간을 벗어나는 방향을 따라가려 합니다."
+        "저는 {dayHigh}돈을 넘기 전에는 손대지 않을 생각입니다.",
+        "{dayLow}~{dayHigh}돈 구간을 벗어나는 방향을 따라가려 합니다."
       ]
     },
     {
@@ -30954,14 +30954,14 @@
       "context": "CHATTER",
       "requires": [],
       "texts": [
-        "자 여러분 {symbol} {price}원입니다. 중계는 제가 합니다 ㅋㅋ",
+        "자 여러분 {symbol} {price}돈입니다. 중계는 제가 합니다 ㅋㅋ",
         "{symbol} 보고 있는 사람 나밖에 없음? 나 혼자 떠드는 기분인데",
         "아니 근데 {symbol} 얘기 아무도 안 함? 그럼 내가 함",
-        "{symbol} {price}원. 아까도 말했지만 또 말함 ㅋㅋ",
+        "{symbol} {price}돈. 아까도 말했지만 또 말함 ㅋㅋ",
         "오늘 {symbol} 얘기만 몇 번째인지 모르겠는데 그래도 할 말이 있음",
-        "{symbol} 지금 {price}원인 거 다들 알고 있지? 모르면 내가 계속 알려줌",
+        "{symbol} 지금 {price}돈인 거 다들 알고 있지? 모르면 내가 계속 알려줌",
         "나 {symbol} 화면 하루 종일 켜놓고 있음. 궁금한 거 있으면 물어봐",
-        "조용하길래 한마디 함. {symbol} {price}원임. 이상."
+        "조용하길래 한마디 함. {symbol} {price}돈임. 이상."
       ]
     },
     {
@@ -30988,12 +30988,12 @@
       "texts": [
         "{symbol} 보는 사람 손! 나만 보는 거 아니지?",
         "자 투표 갑니다. {symbol} 오늘 오른다 내린다?",
-        "{symbol} 지금 {price}원인데 다들 한마디씩만 해 봐. 궁금해서 그럼",
+        "{symbol} 지금 {price}돈인데 다들 한마디씩만 해 봐. 궁금해서 그럼",
         "오늘 뭐 샀는지 자랑할 사람 없음? 나 들을 준비 됨",
         "{symbol} 들고 있는 사람 있으면 근황 좀. 심심함",
         "다들 오늘 수익 어떰? 말하기 싫으면 표정만이라도 ㅋㅋ",
         "{symbol} 얘기 나만 재밌어? 반응 좀 해 줘 ㅋㅋ",
-        "아무나 대답 좀. {symbol} {price}원 싼 거임 비싼 거임?"
+        "아무나 대답 좀. {symbol} {price}돈 싼 거임 비싼 거임?"
       ]
     }
   ],
@@ -31200,9 +31200,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 좋네요.",
+        "{symbol} {profitKind}손익 {amount}돈. 좋네요.",
         "{symbol}, {pct}%. 만족합니다.",
-        "{symbol} {profitKind} 수익이 났네요. {amount}원입니다.",
+        "{symbol} {profitKind} 수익이 났네요. {amount}돈입니다.",
         "{symbol} {pct}%. 오늘은 기분 좋습니다."
       ]
     },
@@ -31216,9 +31216,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 좋네.",
+        "{symbol} {profitKind}손익 {amount}돈. 좋네.",
         "{symbol} {pct}%. 만족.",
-        "{symbol} {profitKind} 수익 {amount}원. 이 정도면 됐지.",
+        "{symbol} {profitKind} 수익 {amount}돈. 이 정도면 됐지.",
         "{symbol} {pct}%. 오늘 기분 괜찮다."
       ]
     },
@@ -31232,9 +31232,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익은 {amount}원입니다. 지금까지는 만족스럽네요.",
+        "{symbol} {profitKind}손익은 {amount}돈입니다. 지금까지는 만족스럽네요.",
         "{symbol} 수익률 {pct}%를 보고 있습니다. 좋은 결과네요.",
-        "제 {symbol} {profitKind}손익이 {amount}원입니다. 긍정적으로 보고 있어요.",
+        "제 {symbol} {profitKind}손익이 {amount}돈입니다. 긍정적으로 보고 있어요.",
         "{symbol}은 제 기준 {pct}%입니다. 수치가 좋아 기분은 좋네요."
       ]
     },
@@ -31248,9 +31248,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 지금까지는 만족할 만하네.",
+        "{symbol} {profitKind}손익 {amount}돈. 지금까지는 만족할 만하네.",
         "내 {symbol} 수익률 {pct}%. 이 결과는 좋게 보고 있음.",
-        "{symbol} {profitKind}손익이 {amount}원이네. 나한텐 괜찮은 결과야.",
+        "{symbol} {profitKind}손익이 {amount}돈이네. 나한텐 괜찮은 결과야.",
         "{symbol}은 내 기준 {pct}%. 일단 기분 좋게 보고 있음."
       ]
     },
@@ -31264,9 +31264,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익이 {amount}원이에요. 숫자를 몇 번이나 다시 봤네요.",
+        "{symbol} {profitKind}손익이 {amount}돈이에요. 숫자를 몇 번이나 다시 봤네요.",
         "제 {symbol} 수익률은 {pct}%예요. 이런 얘기는 또 누구한테 하고 싶어지네요.",
-        "{symbol}에서 {profitKind}손익 {amount}원 보고 있어요. 괜히 자꾸 확인하게 됩니다.",
+        "{symbol}에서 {profitKind}손익 {amount}돈 보고 있어요. 괜히 자꾸 확인하게 됩니다.",
         "{symbol} {pct}%네요. 조용히 있으려 했는데 기분이 좋아서 얘기하게 되네요."
       ]
     },
@@ -31280,9 +31280,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원인데 자꾸 다시 보게 됨. 기분 좋네.",
+        "{symbol} {profitKind}손익 {amount}돈인데 자꾸 다시 보게 됨. 기분 좋네.",
         "나 {symbol} {pct}%야. 조용히 있으려 했는데 이건 얘기하고 싶더라.",
-        "{symbol} {profitKind}손익이 {amount}원임. 숫자 보고 또 보고 하는 중.",
+        "{symbol} {profitKind}손익이 {amount}돈임. 숫자 보고 또 보고 하는 중.",
         "{symbol} {pct}%. 누구한테 자랑할 데는 없고 여기다 얘기함."
       ]
     },
@@ -31296,9 +31296,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원이네요. 오늘은 숫자가 제 편입니다.",
+        "{symbol} {profitKind}손익 {amount}돈이네요. 오늘은 숫자가 제 편입니다.",
         "{symbol} {pct}%입니다. 덤덤한 척하기는 어렵네요.",
-        "{symbol} {profitKind}손익이 {amount}원이라 표정 관리가 잘 안 되네요.",
+        "{symbol} {profitKind}손익이 {amount}돈이라 표정 관리가 잘 안 되네요.",
         "제 {symbol}은 {pct}%네요. 이럴 때만 화면이 선명해 보입니다."
       ]
     },
@@ -31312,9 +31312,9 @@
         "profit"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 오늘은 숫자가 내 편이네.",
+        "{symbol} {profitKind}손익 {amount}돈. 오늘은 숫자가 내 편이네.",
         "{symbol} {pct}%. 덤덤한 척하려다가 실패함.",
-        "{symbol} {profitKind}손익 {amount}원이라 표정 관리가 안 되네.",
+        "{symbol} {profitKind}손익 {amount}돈이라 표정 관리가 안 되네.",
         "내 {symbol} {pct}%. 이럴 때만 화면이 잘 보이더라."
       ]
     },
@@ -31328,9 +31328,9 @@
         "profit"
       ],
       "texts": [
-        "살짝 자랑해도 될까요… {symbol} {profitKind}손익 {amount}원이에요.",
+        "살짝 자랑해도 될까요… {symbol} {profitKind}손익 {amount}돈이에요.",
         "{symbol}이 제 기준 {pct}%네요. 괜히 기분 좋아져서요.",
-        "제 {symbol} {profitKind}손익이 {amount}원이에요. 이 정도면 좋아해도 되겠죠?",
+        "제 {symbol} {profitKind}손익이 {amount}돈이에요. 이 정도면 좋아해도 되겠죠?",
         "{symbol} 수익률 {pct}%예요. 말할까 망설였는데 좀 기쁘네요."
       ]
     },
@@ -31344,9 +31344,9 @@
         "profit"
       ],
       "texts": [
-        "조금 자랑해도 되나… {symbol} {profitKind}손익 {amount}원임.",
+        "조금 자랑해도 되나… {symbol} {profitKind}손익 {amount}돈임.",
         "내 {symbol} {pct}%네. 이 정도면 좋아해도 되지?",
-        "{symbol} {profitKind}손익 {amount}원이야. 그냥 기분 좋아서 얘기함…",
+        "{symbol} {profitKind}손익 {amount}돈이야. 그냥 기분 좋아서 얘기함…",
         "{symbol} {pct}%. 자랑까진 아닌데 그래도 좀 기쁘네."
       ]
     },
@@ -31360,9 +31360,9 @@
         "profit"
       ],
       "texts": [
-        "오, {symbol} {profitKind}손익 {amount}원이네요! 기분 좋습니다.",
+        "오, {symbol} {profitKind}손익 {amount}돈이네요! 기분 좋습니다.",
         "{symbol} {pct}%입니다! 숫자를 보니 실감이 나네요.",
-        "아, {symbol}! 제 {profitKind}손익이 {amount}원이에요.",
+        "아, {symbol}! 제 {profitKind}손익이 {amount}돈이에요.",
         "{symbol} 수익률 {pct}%네요. 오늘은 웃게 됩니다!"
       ]
     },
@@ -31376,9 +31376,9 @@
         "profit"
       ],
       "texts": [
-        "오 {symbol} {profitKind}손익 {amount}원! 기분 좋다.",
+        "오 {symbol} {profitKind}손익 {amount}돈! 기분 좋다.",
         "{symbol} {pct}%! 이 숫자 보니까 실감 나네.",
-        "아 {symbol}! 내 {profitKind}손익이 {amount}원임.",
+        "아 {symbol}! 내 {profitKind}손익이 {amount}돈임.",
         "{symbol} 수익률 {pct}%네. 오늘은 웃는다!"
       ]
     },
@@ -31392,9 +31392,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 아쉽네요.",
+        "{symbol} {profitKind}손익 {amount}돈. 아쉽네요.",
         "{symbol} {pct}%입니다. 속상합니다.",
-        "{symbol} 손실을 보고 있습니다. {profitKind}손익 {amount}원입니다.",
+        "{symbol} 손실을 보고 있습니다. {profitKind}손익 {amount}돈입니다.",
         "제 {symbol}은 {pct}%네요. 마음이 무겁습니다."
       ]
     },
@@ -31408,9 +31408,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 아쉽네.",
+        "{symbol} {profitKind}손익 {amount}돈. 아쉽네.",
         "{symbol} {pct}%. 속상하다.",
-        "{symbol} 손실 중. {profitKind}손익 {amount}원임.",
+        "{symbol} 손실 중. {profitKind}손익 {amount}돈임.",
         "내 {symbol} {pct}%네. 마음이 무겁다."
       ]
     },
@@ -31424,9 +31424,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익이 {amount}원입니다. 손실을 보니 판단을 다시 생각하게 되네요.",
+        "{symbol} {profitKind}손익이 {amount}돈입니다. 손실을 보니 판단을 다시 생각하게 되네요.",
         "제 {symbol} 수익률은 {pct}%입니다. 받아들이기 쉽지는 않네요.",
-        "{symbol} {profitKind}손익 {amount}원을 보고 있습니다. 마음을 가라앉히고 싶네요.",
+        "{symbol} {profitKind}손익 {amount}돈을 보고 있습니다. 마음을 가라앉히고 싶네요.",
         "{symbol}은 제 기준 {pct}%입니다. 이 결과는 좀 씁쓸합니다."
       ]
     },
@@ -31440,9 +31440,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 내 판단을 다시 생각하게 되네.",
+        "{symbol} {profitKind}손익 {amount}돈. 내 판단을 다시 생각하게 되네.",
         "내 {symbol} {pct}%. 받아들이기 쉽진 않음.",
-        "{symbol} {profitKind}손익 {amount}원 보고 있음. 마음이 복잡하네.",
+        "{symbol} {profitKind}손익 {amount}돈 보고 있음. 마음이 복잡하네.",
         "{symbol}은 내 기준 {pct}%야. 결과가 좀 씁쓸하다."
       ]
     },
@@ -31456,9 +31456,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익이 {amount}원이에요. 안 보려고 해도 자꾸 확인하네요.",
+        "{symbol} {profitKind}손익이 {amount}돈이에요. 안 보려고 해도 자꾸 확인하네요.",
         "제 {symbol}이 {pct}%네요. 숫자를 보면 자꾸 다른 생각까지 들어요.",
-        "{symbol} {profitKind}손익 {amount}원 보고 있어요. 누구한테 말하고 싶어서 적습니다.",
+        "{symbol} {profitKind}손익 {amount}돈 보고 있어요. 누구한테 말하고 싶어서 적습니다.",
         "{symbol} 수익률이 {pct}%예요. 별말 안 하려고 했는데 속상하긴 하네요."
       ]
     },
@@ -31472,9 +31472,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원임. 안 보려고 해도 자꾸 보게 되네.",
+        "{symbol} {profitKind}손익 {amount}돈임. 안 보려고 해도 자꾸 보게 되네.",
         "내 {symbol} {pct}%. 이 숫자 보면 별생각이 다 듦.",
-        "{symbol} {profitKind}손익 {amount}원 보고 있어. 그냥 누구한테라도 말하고 싶더라.",
+        "{symbol} {profitKind}손익 {amount}돈 보고 있어. 그냥 누구한테라도 말하고 싶더라.",
         "{symbol} {pct}%야. 조용히 있으려 했는데 속상한 건 어쩔 수 없네."
       ]
     },
@@ -31488,9 +31488,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원입니다. 숫자에 정이 안 가네요.",
+        "{symbol} {profitKind}손익 {amount}돈입니다. 숫자에 정이 안 가네요.",
         "제 {symbol}은 {pct}%네요. 화면이 유난히 차갑게 느껴집니다.",
-        "{symbol} {profitKind}손익이 {amount}원이라 웃어넘기기가 어렵네요.",
+        "{symbol} {profitKind}손익이 {amount}돈이라 웃어넘기기가 어렵네요.",
         "{symbol} {pct}%입니다. 침착한 척하는 것도 일이네요."
       ]
     },
@@ -31504,9 +31504,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원. 이 숫자랑은 친해지기 싫네.",
+        "{symbol} {profitKind}손익 {amount}돈. 이 숫자랑은 친해지기 싫네.",
         "내 {symbol} {pct}%. 화면이 유난히 차갑다.",
-        "{symbol} {profitKind}손익 {amount}원이라 웃어넘기려다 실패함.",
+        "{symbol} {profitKind}손익 {amount}돈이라 웃어넘기려다 실패함.",
         "{symbol} {pct}%. 침착한 척도 노동이네."
       ]
     },
@@ -31520,9 +31520,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익이 {amount}원인데… 조금 무섭네요.",
+        "{symbol} {profitKind}손익이 {amount}돈인데… 조금 무섭네요.",
         "제 {symbol}은 {pct}%예요. 어디서 판단이 어긋났는지 모르겠네요.",
-        "{symbol} 손실 얘기를 꺼내도 될까요. {profitKind}손익 {amount}원이에요.",
+        "{symbol} 손실 얘기를 꺼내도 될까요. {profitKind}손익 {amount}돈이에요.",
         "{symbol} {pct}%네요… 숫자를 보기가 좀 힘들어요."
       ]
     },
@@ -31536,9 +31536,9 @@
         "loss"
       ],
       "texts": [
-        "{symbol} {profitKind}손익 {amount}원인데… 좀 무섭다.",
+        "{symbol} {profitKind}손익 {amount}돈인데… 좀 무섭다.",
         "내 {symbol} {pct}%네. 내가 뭘 놓쳤나…",
-        "{symbol} 손실 얘기 좀 해도 되나. {profitKind}손익 {amount}원임.",
+        "{symbol} 손실 얘기 좀 해도 되나. {profitKind}손익 {amount}돈임.",
         "{symbol} {pct}%… 숫자 보기 힘들다."
       ]
     },
@@ -31552,9 +31552,9 @@
         "loss"
       ],
       "texts": [
-        "아, {symbol} {profitKind}손익 {amount}원이네요. 속상합니다.",
+        "아, {symbol} {profitKind}손익 {amount}돈이네요. 속상합니다.",
         "{symbol} {pct}%라니… 눈에 바로 들어오네요.",
-        "제 {symbol} {profitKind}손익이 {amount}원입니다. 한숨이 나오네요.",
+        "제 {symbol} {profitKind}손익이 {amount}돈입니다. 한숨이 나오네요.",
         "아이고, {symbol} 수익률 {pct}%네요. 마음이 무겁습니다."
       ]
     },
@@ -31568,9 +31568,9 @@
         "loss"
       ],
       "texts": [
-        "아 {symbol} {profitKind}손익 {amount}원… 속상하네.",
+        "아 {symbol} {profitKind}손익 {amount}돈… 속상하네.",
         "{symbol} {pct}%라니. 이 숫자는 바로 눈에 들어오네.",
-        "내 {symbol} {profitKind}손익 {amount}원임. 한숨 나온다.",
+        "내 {symbol} {profitKind}손익 {amount}돈임. 한숨 나온다.",
         "아이고 {symbol} {pct}%네. 마음 무겁다."
       ]
     },

@@ -142,7 +142,8 @@ public sealed class SystemMenuUI : IDisposable
         Choice(body,"화면 모드",48,new[]{"창 모드","전체 화면"},()=>GameSettings.Current.fullscreen ? 1 : 0,v=>GameSettings.Current.fullscreen=v==1);
         Header(body,"렌더링",130);
         Choice(body,"품질",178,new[]{"낮음","높음"},()=>GameSettings.Current.quality,v=>GameSettings.Current.quality=v);
-        Choice(body,"프레임 제한",242,new[]{"30","60","120"},()=>Array.IndexOf(new[]{30,60,120},GameSettings.Current.frameRate),v=>GameSettings.Current.frameRate=new[]{30,60,120}[v]);
+        // 마지막 칸 "없음"은 제한을 푼다(0으로 저장). 수직 동기화가 켜져 있으면 화면 주사율에는 여전히 묶인다.
+        Choice(body,"프레임 제한",242,new[]{"30","60","120","없음"},()=>Array.IndexOf(new[]{30,60,120,0},GameSettings.Current.frameRate),v=>GameSettings.Current.frameRate=new[]{30,60,120,0}[v]);
         Choice(body,"수직 동기화",306,new[]{"끔","켬"},()=>GameSettings.Current.vSync ? 1 : 0,v=>GameSettings.Current.vSync=v==1);
         body=categories["오디오"]; Header(body,"출력",0);
         Slider(body,"전체 음량",55,0,1,()=>GameSettings.Current.volume,v=>GameSettings.Current.volume=v,v=>Mathf.RoundToInt(v*100)+"%");
@@ -186,10 +187,10 @@ public sealed class SystemMenuUI : IDisposable
         Show("report","장 마감 정산"); var reports=DailyIncomeController.Instance?.Ledger.Reports;
         if (reports==null || reports.Count==0) { return; }
         var report=reports[reports.Count-1]; GameLocalizedText.Set(reportDate,GameLocale.Day(report.day)+"  17:00",true);
-        GameLocalizedText.Set(reportTotal,report.DayResult.ToString("+#,##0;-#,##0;0")+"원");
+        GameLocalizedText.Set(reportTotal,report.DayResult.ToString("+#,##0;-#,##0;0")+"돈");
         reportTotal.color=MarketColors.ForChange(report.DayResult,Ink);
         decimal[] values={report.Realized,report.company,report.fees,report.Dividends,report.Relief,report.Tax,report.TaxPaid,report.UnpaidTax,report.Assets};
-        for (int i=0;i<values.Length;i++) { GameLocalizedText.Set(reportValues[i],values[i].ToString("N0")+"원"); }
+        for (int i=0;i<values.Length;i++) { GameLocalizedText.Set(reportValues[i],values[i].ToString("N0")+"돈"); }
         GameLocalizedText.Set(marketSummary,MarketSummary(),true);
         ReportSaveState(saved,owner.ClosingSaveRunning);
         reportSleep.interactable=PlayerRestController.Instance!=null && PlayerRestController.Instance.CanSleep;
@@ -236,7 +237,7 @@ public sealed class SystemMenuUI : IDisposable
                 companyRows.Add(new[] { Label(companyContent,"",0,y,350,56,24), Label(companyContent,"",390,y,250,56,24), Label(companyContent,"",650,y,250,56,24), Label(companyContent,"",910,y,290,56,24) });
                 for (int col=1;col<4;col++) { companyRows[i][col].alignment=TextAlignmentOptions.MidlineRight; }
             }
-            string[] row={stock.stockName,data.Profit.ToString("N0")+"원",data.PlayerDividend.ToString("N0")+"원",data.Cash.ToString("N0")+"원"};
+            string[] row={stock.stockName,data.Profit.ToString("N0")+"돈",data.PlayerDividend.ToString("N0")+"돈",data.Cash.ToString("N0")+"돈"};
             for (int col=0;col<4;col++) { companyRows[i][col].gameObject.SetActive(true); GameLocalizedText.Set(companyRows[i][col],row[col]); }
             i++;
         }

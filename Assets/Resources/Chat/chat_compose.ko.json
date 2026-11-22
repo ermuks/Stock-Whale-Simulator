@@ -1,0 +1,297 @@
+{
+ "schemaVersion": 1,
+ "moods": [
+  {
+   "id": "up",
+   "polarity": "positive",
+   "predicates": [
+    "느낌 좋음/느낌 좋다/느낌 좋네#state:day,stock;none",
+    "분위기 괜찮음/분위기 괜찮다/분위기 괜찮네#state:day,stock",
+    "갈 것 같음/갈 것 같다/갈 것 같네#state:stock,day",
+    "힘이 붙음/힘이 붙는다/힘이 붙네#state:stock,day,book",
+    "손이 근질근질함/손이 근질근질하다/손이 근질근질하네#see:stock,day,book;none",
+    "더 사고 싶음/더 사고 싶다/더 사고 싶네#see:stock,view;none",
+    "기분 좋음/기분 좋다/기분 좋네#thanks:stock,acct;none",
+    "빨간불임/빨간불이다/빨간불이네#state:acct,stock",
+    "살아남/살아난다/살아나네#state:money,stock,day",
+    "오늘은 될 것 같음/오늘은 될 것 같다/오늘은 될 것 같네#none",
+    "밥맛이 돎/밥맛이 돈다/밥맛이 도네#thanks:acct,stock;none",
+    "눈이 감/눈이 간다/눈이 가네#state:stock",
+    "살 만함/살 만하다/살 만하네#thanks:stock,acct;none",
+    "이 맛에 함/이 맛에 한다/이 맛에 하지#none"
+   ]
+  },
+  {
+   "id": "anxious",
+   "polarity": "negative",
+   "predicates": [
+    "불안함/불안하다/불안하네#state:stock,view,day,book,air;none",
+    "심상치 않음/심상치 않다/심상치 않네#state:stock,view,day,book,air",
+    "수상함/수상하다/수상하네#state:stock,view,book,air",
+    "손에 땀 남/손에 땀 난다/손에 땀 나네#see:stock,view,book;none",
+    "심장이 쿵쾅거림/심장이 쿵쾅거린다/심장이 쿵쾅거리네#see:stock,view,book;none",
+    "눈을 못 떼겠음/눈을 못 떼겠다/눈을 못 떼겠네#from:stock,view,book",
+    "뭔가 올 것 같음/뭔가 올 것 같다/뭔가 올 것 같네#none",
+    "잠이 안 올 듯함/잠이 안 올 듯하다/잠이 안 올 것 같네#cause:stock,acct;none",
+    "살얼음판임/살얼음판이다/살얼음판이네#state:day,stock",
+    "무서움/무섭다/무섭네#state:stock,day;none",
+    "쎄함/쎄하다/쎄하네#state:stock,day,air;none",
+    "자꾸 신경 쓰임/자꾸 신경 쓰인다/자꾸 신경 쓰이네#state:stock,view,book,acct",
+    "던질까 고민됨/던질까 고민된다/던질까 고민되네#state:stock"
+   ]
+  },
+  {
+   "id": "stressed",
+   "polarity": "negative",
+   "predicates": [
+    "머리 아픔/머리 아프다/머리 아프네#cause:stock,day,acct;causeLife:life;none",
+    "속이 쓰림/속이 쓰리다/속이 쓰리네#cause:stock,acct;none",
+    "한숨만 나옴/한숨만 나온다/한숨만 나오네#cause:stock,acct,day;causeLife:life;none",
+    "다 때려치우고 싶음/다 때려치우고 싶다/다 때려치우고 싶네#none",
+    "눈이 빠질 것 같음/눈이 빠질 것 같다/눈이 빠질 것 같네#cause:book;none",
+    "허리가 나감/허리가 나간다/허리가 나가네#none",
+    "녹는 중임/녹고 있다/녹고 있네#state:money",
+    "파란불임/파란불이다/파란불이네#state:acct,stock",
+    "답이 없음/답이 없다/답이 없네#state:stock,money,day,life",
+    "지침/지친다/지치네#cause:day;causeLife:life;none",
+    "커피로 버티는 중임/커피로 버티는 중이다/커피로 버티고 있네#none",
+    "되는 일이 없음/되는 일이 없다/되는 일이 없네#none",
+    "멘탈 나감/멘탈 나간다/멘탈 나가네#cause:stock,acct,day;none"
+   ]
+  },
+  {
+   "id": "bitter",
+   "polarity": "negative",
+   "predicates": [
+    "아직도 열 받음/아직도 열 받는다/아직도 열 받네#cause:stock;none",
+    "믿은 내가 바보임/믿은 내가 바보다/믿은 내가 바보지#none",
+    "다시는 안 속음/다시는 안 속는다/다시는 안 속지#none",
+    "꼴도 보기 싫음/꼴도 보기 싫다/꼴도 보기 싫네#state:stock",
+    "생각할수록 억울함/생각할수록 억울하다/생각할수록 억울하네#none",
+    "남 말 듣는 게 아니었음/남 말 듣는 게 아니었다/남 말 듣는 게 아니었네#none",
+    "당한 기분임/당한 기분이다/당한 기분이네#cause:stock;none",
+    "이제 아무도 안 믿음/이제 아무도 안 믿는다/이제 아무도 못 믿겠네#none"
+   ]
+  },
+  {
+   "id": "bored",
+   "polarity": "neutral",
+   "predicates": [
+    "심심함/심심하다/심심하네#none",
+    "조용함/조용하다/조용하네#state:day,book,air,stock",
+    "움직임이 없음/움직임이 없다/움직임이 없네#state:stock,day",
+    "졸림/졸리다/졸리네#cause:day;none",
+    "할 게 없음/할 게 없다/할 게 없네#none",
+    "배고픔/배고프다/배고프네#none",
+    "시간 안 감/시간 안 간다/시간 안 가네#none",
+    "멍 때리는 중임/멍 때리는 중이다/멍 때리고 있네#none",
+    "커피가 당김/커피가 당긴다/커피가 당기네#none",
+    "재미없음/재미없다/재미없네#state:day,stock",
+    "뭐 살지 모르겠음/뭐 살지 모르겠다/뭐 살지 모르겠네#none",
+    "구경만 하는 중임/구경만 하는 중이다/구경만 하고 있네#none"
+   ]
+  },
+  {
+   "id": "win",
+   "polarity": "positive",
+   "predicates": [
+    "효자임/효자다/효자네#state:stock",
+    "잘 가는 중임/잘 가고 있다/잘 가네#state:stock",
+    "팔까 말까 고민임/팔까 말까 고민이다/팔까 말까 고민이네#state:stock",
+    "더 들고 갈 예정임/더 들고 갈 거다/더 들고 가야겠네#state:stock",
+    "삶/산다/사네#thanks:stock",
+    "웃음/웃는다/웃네#thanks:stock",
+    "오늘 밥값은 함/오늘 밥값은 한다/오늘 밥값은 하네#state:stock",
+    "버틴 보람 있음/버틴 보람 있다/버틴 보람 있네#state:stock"
+   ]
+  },
+  {
+   "id": "lose",
+   "polarity": "negative",
+   "predicates": [
+    "언제 오름/언제 오르냐/언제 오르나#state:stock",
+    "물려 있음/물려 있다/물려 있네#state:stock",
+    "본전만 오면 팖/본전만 오면 판다/본전만 오면 팔아야지#state:stock",
+    "쳐다보기도 싫음/쳐다보기도 싫다/쳐다보기도 싫네#state:stock",
+    "밥맛이 없음/밥맛이 없다/밥맛이 없네#cause:stock",
+    "평단이 너무 높음/평단이 너무 높다/평단이 너무 높네#state:stock",
+    "왜 샀는지 모르겠음/왜 샀는지 모르겠다/왜 샀는지 모르겠네#state:stock",
+    "잠이 안 옴/잠이 안 온다/잠이 안 오네#cause:stock",
+    "구조대 기다리는 중임/구조대 기다리는 중이다/구조대 기다리고 있네#state:stock"
+   ]
+  },
+  {
+   "id": "smug",
+   "polarity": "positive",
+   "predicates": [
+    "내가 뭐랬음/내가 뭐랬냐/내가 뭐랬어#none",
+    "역시 내 눈이 맞음/역시 내 눈이 맞다/역시 내 눈이 맞네#none",
+    "쉬움/쉽다/쉽네#state:day",
+    "이게 실력임/이게 실력이다/이게 실력이지#none",
+    "내가 고른 거임/내가 고른 거다/내가 골랐지#state:stock",
+    "말한 대로 감/말한 대로 간다/말한 대로 가네#state:stock"
+   ]
+  }
+ ],
+ "subjects": [
+  {
+   "kind": "day",
+   "words": [
+    "오늘 장",
+    "시장",
+    "이번 장"
+   ]
+  },
+  {
+   "kind": "book",
+   "words": [
+    "호가창",
+    "체결창"
+   ]
+  },
+  {
+   "kind": "air",
+   "words": [
+    "분위기",
+    "오늘 수급",
+    "장 흐름"
+   ]
+  },
+  {
+   "kind": "acct",
+   "words": [
+    "내 계좌",
+    "내 수익률"
+   ]
+  },
+  {
+   "kind": "money",
+   "words": [
+    "내 계좌",
+    "잔고",
+    "통장"
+   ]
+  },
+  {
+   "kind": "stock",
+   "words": [
+    "{stockName}"
+   ]
+  },
+  {
+   "kind": "view",
+   "words": [
+    "{stockName} 차트",
+    "{stockName} 호가",
+    "{stockName} 움직임"
+   ]
+  },
+  {
+   "kind": "life",
+   "words": [
+    "월급",
+    "회사",
+    "야근",
+    "출근",
+    "부장",
+    "월요일",
+    "회의"
+   ]
+  }
+ ],
+ "frames": [
+  {
+   "relation": "state",
+   "frames": [
+    "{S} {P}",
+    "{S} {P}",
+    "{I} {S} {P}",
+    "{S} {I} {P}",
+    "{S} {P} {T}"
+   ]
+  },
+  {
+   "relation": "cause",
+   "frames": [
+    "{S} 때문에 {P}",
+    "{S} 때문에 {I} {P}",
+    "{P}. {S} 때문임"
+   ]
+  },
+  {
+   "relation": "see",
+   "frames": [
+    "{S} 보니까 {P}",
+    "{S} 보고 있으니까 {P}",
+    "{S} 보니까 {I} {P}"
+   ]
+  },
+  {
+   "relation": "from",
+   "frames": [
+    "{S}에서 {P}",
+    "{S}에서 {I} {P}"
+   ]
+  },
+  {
+   "relation": "thanks",
+   "frames": [
+    "{S} 덕분에 {P}",
+    "{I} {S} 덕분에 {P}",
+    "{S} 덕분에 {P} {T}"
+   ]
+  },
+  {
+   "relation": "none",
+   "frames": [
+    "{P}",
+    "{I} {P}",
+    "{P} {T}",
+    "아 {P}",
+    "{I} {P} {T}"
+   ]
+  },
+  {
+   "relation": "causeLife",
+   "frames": [
+    "{S} 때문에 {P}",
+    "{S} 때문에 {I} {P}",
+    "{P}. {S} 때문임"
+   ]
+  }
+ ],
+ "intensifiers": [
+  "진짜",
+  "솔직히",
+  "오늘따라",
+  "은근",
+  "계속",
+  "자꾸",
+  "갑자기",
+  "요즘",
+  "아 진짜",
+  "괜히",
+  "슬슬",
+  "벌써"
+ ],
+ "tailsPositive": [
+  "ㅋㅋ",
+  "ㅎㅎ",
+  "ㅋㅋㅋ",
+  "가즈아",
+  "ㅎ"
+ ],
+ "tailsNegative": [
+  "..",
+  "ㅠ",
+  "ㅠㅠ",
+  "하..",
+  "ㅋ",
+  "진짜"
+ ],
+ "tailsNeutral": [
+  "ㅋ",
+  "..",
+  "ㅎ"
+ ]
+}

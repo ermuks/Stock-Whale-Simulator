@@ -465,6 +465,8 @@ public abstract partial class TradeBot : Trader
         Social.Psychology.ClearPromise("stock-unavailable"); return null;
     }
     private float lastPickHeat;
+    private static readonly Unity.Profiling.ProfilerMarker ThinkPending = new("DonDon.Think.Pending"), ThinkPick = new("DonDon.Think.Pick"), ThinkObserve = new("DonDon.Think.Observe"),
+        ThinkPanic = new("DonDon.Think.PanicProfit"), ThinkLiquidity = new("DonDon.Think.Liquidity"), ThinkConsider = new("DonDon.Think.Consider");
     IEnumerator ThinkLoop()
     {
         while (true)
@@ -475,6 +477,7 @@ public abstract partial class TradeBot : Trader
             if (!MarketDayController.CanTrade)
             { continue; }
 
+            ThinkPending.Begin();
             ProcessPendingOrders();
             if (chanceToTryRandomCancel > 0f && Random.value < chanceToTryRandomCancel && StockManager.Instance != null)
             {
@@ -483,26 +486,28 @@ public abstract partial class TradeBot : Trader
                     CancelLater(stock, randomOrderCancelChancePerOrder);
                 }
             }
+            ThinkPending.End();
 
+            ThinkPick.Begin();
             Stock promised = PendingSocialStock();
             Stock pick = promised ?? PickStock();
+            ThinkPick.End();
             lastPickHeat = pick != null && StockInterestManager.Instance != null ? StockInterestManager.Instance.Heat(pick) : 0f;
             // 크게 달아오른 종목을 보면, 가진 다른 종목을 급히 팔고 뛰어드는 봇이 있다.
             if (pick != null && pick.AcceptsOrders && TryChase(pick, lastPickHeat)) { continue; }
             if (pick != null && pick.AcceptsOrders && (CanBuyStock(pick) || CanSellStock(pick)) && StockManager.Instance != null && StockManager.Instance.stocks.Contains(pick))
             {
-                ObserveMarket(pick);
-                if (TryPanicSell(pick))
-                { continue; }
-                // 크게 번 종목이 멈칫하면 일부를 팔아 차익을 챙긴다.
-                if (TryProfitSell(pick))
-                { continue; }
-
-                RefreshLiquidityOrders(pick);
-                if (CancelDistantSellOrdersAndEndTurnIfAny(pick))
+                bool done;
+                using (ThinkObserve.Auto()) { ObserveMarket(pick); }
+                using (ThinkPanic.Auto()) { done = TryPanicSell(pick) || TryProfitSell(pick); }   // 크게 번 종목이 멈칫하면 일부를 팔아 차익을 챙긴다.
+                if (done)
                 { continue; }
 
-                MarketDayController.Instance?.Consider(this, pick);
+                using (ThinkLiquidity.Auto()) { RefreshLiquidityOrders(pick); done = CancelDistantSellOrdersAndEndTurnIfAny(pick); }
+                if (done)
+                { continue; }
+
+                using (ThinkConsider.Auto()) { MarketDayController.Instance?.Consider(this, pick); }
                 if (promised != null && MarketRhythmDirector.Instance != null && MarketRhythmDirector.Instance.TryAct(this, pick, true))
                 { continue; }
                 if ((WorldDramaDirector.Instance == null || !WorldDramaDirector.Instance.TryFundDecision(this, pick)) && !TryThinBookSellOffer(pick) && (MarketRhythmDirector.Instance == null || !MarketRhythmDirector.Instance.TryAct(this, pick)))

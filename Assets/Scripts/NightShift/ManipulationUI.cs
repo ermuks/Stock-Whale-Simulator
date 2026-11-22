@@ -14,7 +14,7 @@ public sealed class ManipulationUI : MonoBehaviour
     /// <summary>이 화면의 글자. 한국어·영어·일본어를 각각 적는다.</summary>
     private static readonly Dictionary<string, (string en, string ja)> Words = new()
     {
-        ["작전"] = ("Tactics", "仕掛け"), ["작전 도구"] = ("Tactics", "仕掛けの道具"), ["원"] = ("KRW", "ウォン"),
+        ["작전"] = ("Tactics", "仕掛け"), ["작전 도구"] = ("Tactics", "仕掛けの道具"), ["돈"] = ("DON", "ドン"),
         ["거래량 부풀리기"] = ("Paint the tape", "出来高の水増し"), ["허수 매수벽"] = ("Fake bid wall", "見せ板の買い壁"), ["종가 관리"] = ("Mark the close", "終値の吊り上げ"),
         ["차명 계좌와 주고받아 거래량만 늘립니다. 45초."] = ("Trade with a nominee account to inflate volume. 45 seconds.", "名義口座と売り買いして出来高だけ増やします。45秒。"),
         ["현재가 2.5% 아래에 큰 매수 주문을 겁니다. 못 거두면 체결됩니다."] = ("Rest a big bid 2.5% below the market. If not pulled in time, it fills.", "現在値の2.5%下に大きな買い注文を置きます。取り消しが遅れると約定します。"),
@@ -30,7 +30,7 @@ public sealed class ManipulationUI : MonoBehaviour
         ["부풀린 거래대금"] = ("Painted turnover", "水増しした売買代金"), ["남은 시간"] = ("Time left", "残り時間"), ["벽에 걸린 돈"] = ("Cash shown in wall", "壁に見せている資金"),
         ["벽 가격"] = ("Wall price", "壁の値段"), ["종가 관리 예산"] = ("Close budget", "終値用の予算"), ["종가 관리 사용"] = ("Close spent", "終値で使った額"),
         ["가용 현금"] = ("Free cash", "使える現金"), ["보유 수량"] = ("Shares held", "保有株数"), ["주"] = ("sh", "株"), ["초"] = ("s", "秒"),
-        ["잠김"] = ("Locked", "ロック中"), ["누적 거래대금 5억 원부터"] = ("From 500M KRW turnover", "累計売買代金5億ウォンから"),
+        ["잠김"] = ("Locked", "ロック中"), ["누적 거래대금 5억 돈부터"] = ("From 500M DON turnover", "累計売買代金5億ドンから"),
         ["내 리딩방을 연 뒤부터"] = ("After you open your room", "自分のルームを開いてから"), ["내 기업이 상장한 뒤부터"] = ("After your company lists", "自社が上場してから"),
         ["거래 불가"] = ("Cannot trade now", "取引不可"), ["넘길 주식이 없습니다"] = ("No shares to pass", "渡す株がありません"), ["현금 부족"] = ("Not enough cash", "現金不足"),
         ["거래량 부풀리기 시작"] = ("Painting started", "水増し開始"), ["거래량 부풀리기 중지"] = ("Painting stopped", "水増し停止"), ["거래량 부풀리기가 끝났습니다"] = ("Painting finished", "水増し終了"),
@@ -82,7 +82,7 @@ public sealed class ManipulationUI : MonoBehaviour
         stockName = Text("Stock", 88, 88, 720, 64, 38);
         following = Action("Next Stock", "›", 832, 88, 48, 56, () => Select(1), false, false);
         price = Text("Current Price", 32, 160, 800, 48, 32); TradingOrderView.Numeric(price); price.alignment = TextAlignmentOptions.MidlineRight;
-        Label("Current Price Unit", "원", 848, 160, 60, 48, 25).color = Muted;
+        Label("Current Price Unit", "돈", 848, 160, 60, 48, 25).color = Muted;
 
         Label("Cash Label", "쓸 현금", 32, 222, 200, 48, 27).color = Muted;
         for (int i = 0; i < fractions.Length; i++)
@@ -107,14 +107,14 @@ public sealed class ManipulationUI : MonoBehaviour
         TradingOrderView.Place((RectTransform)divider.transform, panel, 920, 88, 1, 752, W, H);
         Label("Status Title", "현황", 960, 88, 608, 56, 34);
         heat = Metric("이 종목의 열기", 960, 160, "");
-        free = Metric("가용 현금", 960, 212, "원");
+        free = Metric("가용 현금", 960, 212, "돈");
         held = Metric("보유 수량", 960, 264, "주");
-        painted = Metric("부풀린 거래대금", 960, 340, "원");
+        painted = Metric("부풀린 거래대금", 960, 340, "돈");
         washLeft = Metric("남은 시간", 960, 392, "초");
-        wallPrice = Metric("벽 가격", 960, 468, "원");
-        wallCash = Metric("벽에 걸린 돈", 960, 520, "원");
-        closeBudget = Metric("종가 관리 예산", 960, 596, "원");
-        closeSpent = Metric("종가 관리 사용", 960, 648, "원");
+        wallPrice = Metric("벽 가격", 960, 468, "돈");
+        wallCash = Metric("벽에 걸린 돈", 960, 520, "돈");
+        closeBudget = Metric("종가 관리 예산", 960, 596, "돈");
+        closeSpent = Metric("종가 관리 사용", 960, 648, "돈");
         notice = Text("Notice", 960, 730, 608, 110, 26); notice.color = TabletKitStyle.Accent; notice.textWrappingMode = TextWrappingModes.Normal; notice.alignment = TextAlignmentOptions.TopLeft;
 
         // 탭은 세 화면 위에 함께 떠 있어야 한다. 이미 있는 두 탭을 맨 앞으로 올리고 그 옆에 하나를 더 둔다.

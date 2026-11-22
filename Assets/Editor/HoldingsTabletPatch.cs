@@ -36,9 +36,9 @@ public static class HoldingsTabletPatch
         Label(root,"Cash Label","보유 현금",.035f,.035f,.28f,.045f,30,true);
         Label(root,"Holdings Label","주식 평가액",.36f,.035f,.28f,.045f,30,true);
         Label(root,"Total Assets Label","총 자산",.685f,.035f,.28f,.045f,30,true);
-        manager.textCash = Label(root,"Cash Value","0원",.035f,.09f,.28f,.075f,44);
-        manager.textHoldingsValue = Label(root,"Holdings Value","0원",.36f,.09f,.28f,.075f,44);
-        manager.textTotal = Label(root,"Total Assets Value","0원",.685f,.09f,.28f,.075f,44);
+        manager.textCash = Label(root,"Cash Value","0돈",.035f,.09f,.28f,.075f,44);
+        manager.textHoldingsValue = Label(root,"Holdings Value","0돈",.36f,.09f,.28f,.075f,44);
+        manager.textTotal = Label(root,"Total Assets Value","0돈",.685f,.09f,.28f,.075f,44);
         manager.textCashAvailability = Label(root,"Cash Availability","",.035f,.18f,.93f,.04f,29,true);
         var divider = (RectTransform)root.Find("Image :: Stock Holdings Divider");
         Layout(divider,.035f,.235f,.93f,.0015f); var line = divider.GetComponent<Image>(); line.color = new Color32(52,67,75,255); line.raycastTarget = false;
@@ -54,11 +54,11 @@ public static class HoldingsTabletPatch
         Label(root,"Position Value Label","평가 금액",.685f,.50f,.28f,.045f,30,true);
         item.textQuantity = Label(root,"Quantity Value","0주",.035f,.555f,.28f,.075f,46);
         item.textAvgPrice = Label(root,"Average Price Value","—",.36f,.555f,.28f,.075f,46);
-        item.textCurrentValue = Label(root,"Position Value","0원",.685f,.555f,.28f,.075f,44);
+        item.textCurrentValue = Label(root,"Position Value","0돈",.685f,.555f,.28f,.075f,44);
         item.textAvailability = Label(root,"Sell Availability","",.035f,.655f,.93f,.045f,30,true);
         Label(root,"Profit Loss Label","평가손익",.035f,.77f,.60f,.045f,30,true);
         Label(root,"Return Label","수익률",.72f,.77f,.245f,.045f,30,true).alignment = TextAlignmentOptions.TopRight;
-        item.textEvaluationProfit = Label(root,"Profit Loss Value","0원",.035f,.83f,.60f,.10f,62);
+        item.textEvaluationProfit = Label(root,"Profit Loss Value","0돈",.035f,.83f,.60f,.10f,62);
         item.textProfitPct = Label(root,"Return Value","—",.72f,.83f,.245f,.10f,52);
         item.textProfitPct.alignment = TextAlignmentOptions.TopRight;
         root.gameObject.SetActive(false);

@@ -193,7 +193,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
             if (!beforeSubmit.Contains(order))
             { pending.Add(order); }
         }
-        Feedback = $"{(buy ? "매수" : "매도")} {quantity:N0}주 · {price:N0}원 주문 / 체결은 호가 상황에 따라 달라집니다.";
+        Feedback = $"{(buy ? "매수" : "매도")} {quantity:N0}주 · {price:N0}돈 주문 / 체결은 호가 상황에 따라 달라집니다.";
         return true;
     }
     private void OnFill(Stock stock, decimal price, decimal volume, IOrderOwner buyer, IOrderOwner seller, Order resting)
@@ -242,7 +242,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
         if (Result > 0m)
         { ProfitableSessions++; }
         string grade = Result > 0m ? "수익 기록" : Result < 0m ? "손실 기록" : "변동 없음";
-        Debrief = $"{grade} · {reason}\n매수 {Bought:N0}주 / 매도 {Sold:N0}주 / 체결 {FillCount:N0}건\n작업 손익 {Result:+#,##0;-#,##0;0}원 (잔여 평가 포함)\n잔여 {Inventory:N0}주는 계좌에 남습니다.";
+        Debrief = $"{grade} · {reason}\n매수 {Bought:N0}주 / 매도 {Sold:N0}주 / 체결 {FillCount:N0}건\n작업 손익 {Result:+#,##0;-#,##0;0}돈 (잔여 평가 포함)\n잔여 {Inventory:N0}주는 계좌에 남습니다.";
         CurrentMode = Mode.Review;
         Feedback = "결산을 확인하고 다른 종목이나 예산으로 다음 작업을 준비하세요.";
         Unsubscribe();

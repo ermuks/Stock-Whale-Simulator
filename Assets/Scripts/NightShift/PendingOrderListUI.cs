@@ -29,7 +29,7 @@ public sealed class PendingOrderListUI : MonoBehaviour
         title=Label("Pending Heading",transform,30,0,0,128,56,736,400); GameLocalizedText.Set(title,"미체결");
         count=Label("Pending Order Count",transform,30,136,0,72,56,736,400); TradingOrderView.Numeric(count); count.alignment=TextAlignmentOptions.MidlineRight;
         GameLocalizedText.Set(Label("Pending Company Header",transform,24,0,64,270,32,736,400),"미체결 종목");
-        var price=Label("Pending Price Header",transform,24,286,64,170,32,736,400); GameLocalizedText.Set(price,"가격 · 원"); price.alignment=TextAlignmentOptions.MidlineRight;
+        var price=Label("Pending Price Header",transform,24,286,64,170,32,736,400); GameLocalizedText.Set(price,"가격 · 돈"); price.alignment=TextAlignmentOptions.MidlineRight;
         var volume=Label("Pending Quantity Header",transform,24,472,64,144,32,736,400); GameLocalizedText.Set(volume,"잔량 / 체결"); volume.alignment=TextAlignmentOptions.MidlineRight;
         var viewport=Rect("Area :: Pending Order Scroll",transform,0,104,736,296,736,400);
         var hit=viewport.gameObject.AddComponent<Image>(); hit.color=Color.clear;

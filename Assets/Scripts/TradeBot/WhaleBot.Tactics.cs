@@ -43,7 +43,7 @@ public partial class WhaleBot
             if (painted > 0m)
             {
                 washRounds++; washPainted += painted; WashRoundsTotal++; WashPaintedTotal += painted;
-                if (!washLogged) { washLogged = true; Debug.Log($"[세력] 수법 — 통정매매 시작: {stock.stockName}({stock.symbol}) 한 바퀴 {painted:N0}원, 평소 5초 거래대금 {usual:N0}원"); }
+                if (!washLogged) { washLogged = true; Debug.Log($"[세력] 수법 — 통정매매 시작: {stock.stockName}({stock.symbol}) 한 바퀴 {painted:N0}돈, 평소 5초 거래대금 {usual:N0}돈"); }
             }
         }
 
@@ -64,7 +64,7 @@ public partial class WhaleBot
                     if (wallPrice > 0m)
                     {
                         wallsPlaced++; WallsPlacedTotal++;
-                        if (!wallLogged) { wallLogged = true; Debug.Log($"[세력] 수법 — 허수 매수벽: {stock.stockName}({stock.symbol}) {wallPrice:N0}원에 {show:N0}원어치"); }
+                        if (!wallLogged) { wallLogged = true; Debug.Log($"[세력] 수법 — 허수 매수벽: {stock.stockName}({stock.symbol}) {wallPrice:N0}돈에 {show:N0}돈어치"); }
                     }
                 }
             }
@@ -84,7 +84,7 @@ public partial class WhaleBot
                 {
                     RawBuyLimit(PriceTickPolicy.CeilToTick(ask * 1.01m), quantity, stock);
                     closeSpent += quantity * ask; CloseBuysTotal++;
-                    if (!closeLogged) { closeLogged = true; Debug.Log($"[세력] 수법 — 종가 관리: {stock.stockName}({stock.symbol}) 마감 {market.RemainingSeconds:0}초 전, {ask:N0}원부터 사들임"); }
+                    if (!closeLogged) { closeLogged = true; Debug.Log($"[세력] 수법 — 종가 관리: {stock.stockName}({stock.symbol}) 마감 {market.RemainingSeconds:0}초 전, {ask:N0}돈부터 사들임"); }
                 }
             }
         }

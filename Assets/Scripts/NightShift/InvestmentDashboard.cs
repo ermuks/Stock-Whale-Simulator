@@ -91,7 +91,7 @@ public sealed class InvestmentDashboard : MonoBehaviour
         }
         decimal pnl = stockValue - basisTotal;
         DeviceTerminalUI.Set(valuation, priced ? DeviceTerminalUI.Money(stockValue) : "—");
-        DeviceTerminalUI.Set(profit, priced ? Signed(pnl) + "원  (" + Rate(pnl,basisTotal) + ")" : "평가가격 확인 중"); profit.color = priced ? ProfitColor(pnl) : Ink;
+        DeviceTerminalUI.Set(profit, priced ? Signed(pnl) + "돈  (" + Rate(pnl,basisTotal) + ")" : "평가가격 확인 중"); profit.color = priced ? ProfitColor(pnl) : Ink;
         DeviceTerminalUI.Set(available, DeviceTerminalUI.Money(PlayerAccounts.Available(account)));
         DeviceTerminalUI.Set(total, priced ? DeviceTerminalUI.Money(account.cash + stockValue - PlayerAccounts.TaxDebt(account)) : "—");
         if (allocationFill != null)

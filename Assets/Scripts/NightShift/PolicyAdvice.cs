@@ -92,7 +92,7 @@ public sealed partial class CorporateEconomy
         }
         if (cheapest > 0m && data.Cash < cheapest && WorldDramaDirector.Instance != null && WorldDramaDirector.Instance.Controls(stock))
         {
-            reason = Local("재투자보다 사업 확장이 빠릅니다. 다음 확장 비용(" + cheapest.ToString("N0") + "원)을 모으세요.", "An expansion pays better than reinvesting. Save for the next one (" + cheapest.ToString("N0") + " KRW).", "再投資より事業拡張のほうが効きます。次の拡張費用(" + cheapest.ToString("N0") + "ウォン)を貯めましょう。");
+            reason = Local("재투자보다 사업 확장이 빠릅니다. 다음 확장 비용(" + cheapest.ToString("N0") + "돈)을 모으세요.", "An expansion pays better than reinvesting. Save for the next one (" + cheapest.ToString("N0") + " DON).", "再投資より事業拡張のほうが効きます。次の拡張費用(" + cheapest.ToString("N0") + "ドン)を貯めましょう。");
             return CompanyPolicy.Reserve;
         }
         reason = grow.Invest <= 0m

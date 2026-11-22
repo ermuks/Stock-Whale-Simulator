@@ -22,7 +22,7 @@ public sealed partial class InvestorSociety
     private bool IsTyping(TradeBot bot)
     {
         foreach (var entry in typing) { if (entry.bot == bot) { return true; } }
-        return false;
+        return WritingLine(bot);
     }
     public SocialTypingStatus ReadTyping(int room)
     {
@@ -31,6 +31,19 @@ public sealed partial class InvestorSociety
         {
             if (entry.intent.roomId != room || entry.intent.expires < SocialTime.Seconds || !Present(entry.bot, room)) { continue; }
             count++; name = entry.bot.Social.Nickname;
+        }
+        // 내게 답을 쓰는 중이거나 토론의 말을 쓰는 중인 봇도 센다.
+        double now = SocialTime.Seconds;
+        foreach (var line in pendingLines)
+        {
+            if (line.room != room || now < line.startAt || !SocialBots.TryGetValue(line.bot, out var writer) || writer == null || writer.Social == null) { continue; }
+            count++; name = writer.Social.Nickname;
+        }
+        // 글을 만드는 중(작업 스레드에 맡겨 둔 것)인 봇도 입력 중이다.
+        foreach (var work in ChatScheduler.Flying)
+        {
+            if (work.room != room || !SocialBots.TryGetValue(work.bot, out var composer) || composer == null || composer.Social == null) { continue; }
+            count++; name = composer.Social.Nickname;
         }
         return new SocialTypingStatus(count, count == 1 ? name : null);
     }

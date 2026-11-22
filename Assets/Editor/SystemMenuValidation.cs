@@ -92,9 +92,8 @@ public static class SystemMenuValidation
             }
             if(phase==0)
             {
-                var setup=Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if(setup==null || setup.businessName==null) { return; }
-                setup.businessName.SetTextWithoutNotify("설정 검증 회사"); setup.Refresh(); setup.confirm.onClick.Invoke();
+                if (!NewGame.CanBegin) { return; }
+                NewGame.Begin("설정 검증 회사");
                 phase=1; due=Time.unscaledTime+2; return;
             }
             if(phase==1)

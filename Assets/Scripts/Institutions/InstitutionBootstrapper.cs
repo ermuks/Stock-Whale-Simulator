@@ -21,9 +21,9 @@ public class InstitutionBootstrapper : MonoBehaviour
     [Header("마켓메이커 (거래 발생용)")]
     [Tooltip("종목당 마켓메이커를 생성할지")]
     public bool spawnMarketMakers = true;
-    [Tooltip("마켓메이커 1개당 초기 현금(원)")]
+    [Tooltip("마켓메이커 1개당 초기 현금(돈)")]
     public decimal marketMakerCash = 2_000_000_000m;
-    [Tooltip("마켓메이커 1개당 초기 주식 보유가치(원). 현재가로 나눠 주식수로 환산")]
+    [Tooltip("마켓메이커 1개당 초기 주식 보유가치(돈). 현재가로 나눠 주식수로 환산")]
     public decimal marketMakerStockValue = 2_000_000_000m;
     [Serializable]
     public class InstitutionStockPreset
@@ -38,7 +38,7 @@ public class InstitutionBootstrapper : MonoBehaviour
     public class InstitutionSidePreset
     {
         public decimal cash;
-        public decimal stockValue; // 현재가 기준 보유가치(원)
+        public decimal stockValue; // 현재가 기준 보유가치(돈)
     }
 
     void Reset()

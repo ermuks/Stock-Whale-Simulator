@@ -223,13 +223,13 @@ public sealed class GameLocale : MonoBehaviour
             for (int i=index;i<source.Length && node.children.TryGetValue(source[i],out node);i++)
             {
                 if (node.phrase == null) { continue; }
-                // A literal such as "0원" must not match the last digit of "250,000원".
+                // A literal such as "0돈" must not match the last digit of "250,000돈".
                 if (char.IsDigit(source[index]) && index > 0 && (char.IsDigit(source[index-1]) || source[index-1] == ',' || source[index-1] == '.')) { continue; }
                 best=node.phrase; end=i+1;
             }
             if (best != null) { output.Append(best.translated); index=end; continue; }
-            if ((source[index] == '원' || source[index] == '주') && index > 0 && (char.IsDigit(source[index-1]) || source[index-1] == ')' || "kKMBT".IndexOf(source[index-1]) >= 0))
-            { output.Append(source[index] == '원' ? Code == "ja" ? "ウォン" : " KRW" : Code == "ja" ? "株" : " sh."); index++; continue; }
+            if ((source[index] == '돈' || source[index] == '주') && index > 0 && (char.IsDigit(source[index-1]) || source[index-1] == ')' || "kKMBT".IndexOf(source[index-1]) >= 0))
+            { output.Append(source[index] == '돈' ? Code == "ja" ? "ドン" : " DON" : Code == "ja" ? "株" : " sh."); index++; continue; }
             output.Append(source[index++]);
         }
         string final = output.ToString();

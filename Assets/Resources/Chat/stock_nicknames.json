@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "stocks": [
-    { "symbol": "NM", "ko": ["노보", "노보손보"], "en": ["Nobo"], "ja": ["ノボ"] },
+    { "symbol": "NM", "ko": ["노보", "노보손보"], "en": ["Novo"], "ja": ["ノボ"] },
     { "symbol": "DSA", "ko": ["덕상", "덕상AI"], "en": ["Deoksang", "DSAI"], "ja": ["徳商"] },
     { "symbol": "HBF", "ko": ["두덕리", "두덕"], "en": ["Dudeok"], "ja": ["トゥドク"] },
     { "symbol": "MBI", "ko": ["미바", "미래바"], "en": ["Mirae"], "ja": ["未来バ", "ミラバイ"] },

@@ -44,10 +44,10 @@ public static class ChatFooterCapture
     {
         if (EditorApplication.timeSinceStartup - began > 420)
         {
-            var manager = StockManager.Instance; var day = MarketDayController.Instance; var setupUi = Object.FindAnyObjectByType<PlayerCompanySetupUI>();
+            var manager = StockManager.Instance; var day = MarketDayController.Instance;
             Finish(new Exception("timeout at phase " + phase + " playing=" + EditorApplication.isPlaying + " confirmed=" + (manager != null && manager.SetupConfirmed) + " inProgress=" + (manager != null && manager.SetupInProgress) +
                 " canTrade=" + MarketDayController.CanTrade + " ready=" + (day != null && day.Ready) + " phase=" + (day == null ? "-" : day.Phase.ToString()) +
-                " confirmButton=" + (setupUi == null || setupUi.confirm == null ? "none" : setupUi.confirm.interactable + "/" + setupUi.confirm.gameObject.activeInHierarchy) + " timeScale=" + Time.timeScale));
+                " canBegin=" + NewGame.CanBegin + " timeScale=" + Time.timeScale));
             return;
         }
         if (!EditorApplication.isPlaying || EditorApplication.timeSinceStartup < ready) { return; }
@@ -62,9 +62,8 @@ public static class ChatFooterCapture
             }
             if (!StockManager.Instance.SetupConfirmed)
             {
-                // 시작 화면의 확인 단추가 눌릴 수 있게 되면 누른다.
-                var setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (setup != null && setup.confirm != null && setup.confirm.interactable && !StockManager.Instance.SetupInProgress) { setup.confirm.onClick.Invoke(); }
+                // 시작할 수 있게 되면 새 게임을 시작한다.
+                if (NewGame.CanBegin) { NewGame.Begin(); }
                 ready = EditorApplication.timeSinceStartup + 1; return;
             }
             if (!MarketDayController.CanTrade || !MarketDayController.Instance.Ready) { return; }

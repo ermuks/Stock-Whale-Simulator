@@ -64,17 +64,17 @@ public sealed class CompactGrowthUI : MonoBehaviour
         // 개설 조건은 비용 하나뿐이다. 왼쪽 눈금은 주문 가능 현금이 비용에 얼마나 찼는지 보여 준다.
         decimal cost = career.OpeningCost, cash = decimal.Floor(career.OpeningCash);
         decimal left = System.Math.Max(0m,cost-cash);
-        string headline = career.CanOperateRooms ? "리딩방 개설 완료" : career.Eligible ? "이제 내 리딩방을 열 수 있습니다" : "개설 비용 " + left.ToString("N0") + "원 더 필요";
+        string headline = career.CanOperateRooms ? "리딩방 개설 완료" : career.Eligible ? "이제 내 리딩방을 열 수 있습니다" : "개설 비용 " + left.ToString("N0") + "돈 더 필요";
         DeviceTerminalUI.Set(nextStep,headline);
         DeviceTerminalUI.Set(hint,Time.unscaledTime < feedbackUntil ? feedbackMessage : career.CanOperateRooms ? "내 방에서 참가자를 회유하고 투자 의견을 전달하세요." : career.Eligible ? "개설 버튼을 누르면 비용을 내고 방이 열립니다." : "주문 가능 현금을 모으면 바로 개설할 수 있습니다.");
         DeviceTerminalUI.Set(actionLabel,career.CanOperateRooms ? "내 리딩방으로" : career.Eligible ? "리딩방 개설하기" : "매매하러 가기");
         DeviceTerminalUI.Set(turnoverCaption,career.CanOperateRooms ? "개설 비용 · 납부 완료" : left == 0m ? "개설 비용 · 준비 완료" : "개설 비용 · 모으는 중");
         if (primary != null) { primary.interactable = true; }
         turnover.SetValue(career.CanOperateRooms ? 100f : cost > 0m ? (float)System.Math.Min(100m,100m * cash / cost) : 0f);
-        DeviceTerminalUI.Set(turnoverAmount,career.CanOperateRooms ? cost.ToString("N0") + "원" : cash.ToString("N0") + "원\n/ " + cost.ToString("N0") + "원");
+        DeviceTerminalUI.Set(turnoverAmount,career.CanOperateRooms ? cost.ToString("N0") + "돈" : cash.ToString("N0") + "돈\n/ " + cost.ToString("N0") + "돈");
         if (expanded)
         {
-            DeviceTerminalUI.Set(detailText,"개설 비용 " + cost.ToString("N0") + "원\n주문 가능 현금에서 한 번만 냅니다.\n\n참가자는 자금과 신뢰에 따라 독립적으로 판단합니다.\n기업 경영은 실제 지분 50% 초과 시 가능합니다.");
+            DeviceTerminalUI.Set(detailText,"개설 비용 " + cost.ToString("N0") + "돈\n주문 가능 현금에서 한 번만 냅니다.\n\n참가자는 자금과 신뢰에 따라 독립적으로 판단합니다.\n기업 경영은 실제 지분 50% 초과 시 가능합니다.");
         }
     }
     public void ShowFeedback(string message)

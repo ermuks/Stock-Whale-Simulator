@@ -256,8 +256,7 @@ public static class ScreenTourCapture
             }
             if (!StockManager.Instance.SetupConfirmed)
             {
-                var setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (setup != null && setup.confirm != null && setup.confirm.interactable && !StockManager.Instance.SetupInProgress) { setup.confirm.onClick.Invoke(); }
+                if (NewGame.CanBegin) { NewGame.Begin(); }
                 ready = EditorApplication.timeSinceStartup + 1; return;
             }
             // 점검 단계에서는 일시정지 메뉴를 열기도 한다. 그때는 거래가 멈춰 있어도 계속 진행한다.
@@ -423,7 +422,7 @@ public static class ScreenTourCapture
             report.AppendLine("DAWN INJECTED turnover " + career.Turnover.ToString("N0") + " -> unlock " + opened + " paid " + (before - player.cash).ToString("N0") + " unlocked " + career.DawnUnlocked);
         }, () => only.Contains("dawn") ? chatScreen : null));
         string[] lines = { "님들 안녕하세요", "ㅋㅋㅋㅋ 오늘 장 재밌네", "!분석 노보", "!분석 없는종목", "노보손해보험 지금 살까?", "뭐 살지 추천 좀", "LC디스플레이 오늘 간다 가즈아", "수익 30% 먹었다 ㅋㅋ", "아 물렸다 ㅠㅠ", "이 바보들아", "미안", "내가 세력이다", "개븅신새끼들", "전부 다 뒤져라", "애미 뒤진놈들 ㅋㅋ", "니들은 사회적 암적인 존재야", "roqbdtls Tlqkffusemf", "should i sell this thing", "보지 마 그 종목", "거품 꺼지면 사야지", "ㅂㅂ" };
-        if (steam) { lines = new[] { "morning everyone", "anyone watching Nobo Insurance today?", "LC Display is flying, let's go", "up 30% on that one lol", "should i sell this thing", "thanks, see you at the close" }; }
+        if (steam) { lines = new[] { "morning everyone", "anyone watching Novo Insurance today?", "LC Display is flying, let's go", "up 30% on that one lol", "should i sell this thing", "thanks, see you at the close" }; }
         steps.Add(("dawn-joined", () =>
         {
             if (!only.Contains("dawn") || languageIndex != 0) { return; }

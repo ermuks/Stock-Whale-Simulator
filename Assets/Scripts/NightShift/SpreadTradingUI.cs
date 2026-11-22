@@ -54,14 +54,14 @@ public sealed class SpreadTradingUI : MonoBehaviour
         previous = Action("Previous Stock","‹",32,88,48,() => Select(-1));
         following = Action("Next Stock","›",832,88,48,() => Select(1));
         currentPrice = Number("Current Price",32,168,800,56,32);
-        Label("Current Price Unit","원",848,168,32,56,25).color=Muted;
+        Label("Current Price Unit","돈",848,168,32,56,25).color=Muted;
         Label("Range Label","스프레드 범위",32,264,480,48,29);
         range = Label("Range","",544,264,336,48,30); range.alignment=TextAlignmentOptions.MidlineRight;
         BuildSlider();
         Label("Bid Label","예상 매수가",32,432,400,40,27).color=Muted;
         Label("Ask Label","예상 매도가",480,432,400,40,27).color=Muted;
         bid = Number("Bid",32,480,400,56,40); ask = Number("Ask",480,480,400,56,40);
-        cash = Metric("주문 가능 현금",32,584,848,"원");
+        cash = Metric("주문 가능 현금",32,584,848,"돈");
         shares = Metric("매도 가능 수량",32,640,848,"주");
         elapsed = Label("Elapsed","",32,720,848,40,27);
         start = Action("Start Spread","매매 시작",32,792,408,StartTrading,true);
@@ -73,7 +73,7 @@ public sealed class SpreadTradingUI : MonoBehaviour
         sellRemaining=Metric("매도 잔량",960,224,608,"주");
         bought=Metric("매수 체결",960,304,608,"주");
         sold=Metric("매도 체결",960,360,608,"주");
-        realized=Metric("실현손익",960,416,608,"원");
+        realized=Metric("실현손익",960,416,608,"돈");
         Label("Recent Fills","최근 체결",960,504,608,48,34);
         tape=Label("Fill Tape","—",960,568,608,176,27); tape.textWrappingMode=TextWrappingModes.Normal;
         updated=Label("Updated","",960,784,608,56,25); updated.color=Muted;
@@ -192,7 +192,7 @@ public sealed class SpreadTradingUI : MonoBehaviour
             if (++shown>3)
             { break; }
             buffer.Append(fill.Time).Append("  ").Append(fill.Buy ? "매수" : "매도").AppendLine();
-            buffer.Append(TradingOrderView.Number(fill.Price)).Append("원 · ").Append(TradingOrderView.Number(fill.Quantity)).Append("주").AppendLine();
+            buffer.Append(TradingOrderView.Number(fill.Price)).Append("돈 · ").Append(TradingOrderView.Number(fill.Quantity)).Append("주").AppendLine();
         }
         DeviceTerminalUI.Set(tape,buffer.Length>0 ? buffer.ToString().TrimEnd() : "—");
         start.interactable = !operation.Active && stock != null && stock.AcceptsOrders && MarketDayController.CanTrade && Time.timeScale > 0f;

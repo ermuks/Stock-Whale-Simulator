@@ -122,7 +122,7 @@ public sealed class DeviceOrderSession : MonoBehaviour
         if (!MarketDayController.CanTrade || !stock.AcceptsOrders)
         { return "현재 거래할 수 없는 종목 또는 장 상태입니다."; }
         if (!PriceTickPolicy.IsValidPrice(price))
-        { return "1원 이상 · 호가 단위 " + PriceTickPolicy.GetTickSize(price).ToString("N0") + "원으로 입력하세요."; }
+        { return "1돈 이상 · 호가 단위 " + PriceTickPolicy.GetTickSize(price).ToString("N0") + "돈으로 입력하세요."; }
         if (quantity < 1m || quantity > 1000000m || quantity != decimal.Floor(quantity))
         { return "수량은 1~1,000,000주의 정수로 입력하세요."; }
         if (parts < 1 || parts > 10 || parts > quantity || interval < 1f || interval > 60f)
@@ -131,7 +131,7 @@ public sealed class DeviceOrderSession : MonoBehaviour
         { return "주문 금액이 너무 큽니다."; }
         decimal cost = price * quantity;
         if (buy && cost > AvailableCash)
-        { return "주문 가능 현금이 " + PriceTickPolicy.FormatMoney(cost - AvailableCash) + "원 부족합니다."; }
+        { return "주문 가능 현금이 " + PriceTickPolicy.FormatMoney(cost - AvailableCash) + "돈 부족합니다."; }
         if (!buy && quantity > AvailableShares(stock))
         { return "매도 가능 수량은 " + AvailableShares(stock).ToString("N0") + "주입니다."; }
         return "";

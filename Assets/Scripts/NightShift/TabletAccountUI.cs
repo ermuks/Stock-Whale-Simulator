@@ -109,7 +109,7 @@ public sealed class TabletAccountUI : MonoBehaviour
         {
             text.Append(fill.Time).Append("   ").Append(fill.Stock.stockName).Append("   ").Append(fill.Buy ? "매수" : "매도")
                 .Append("   ").Append(fill.Quantity.ToString("N0")).Append("주   ").Append(DeviceTerminalUI.Money(fill.Price));
-            if (!fill.Buy) { text.Append("   실현 ").Append(InvestmentDashboard.Signed(fill.Realized)).Append("원"); }
+            if (!fill.Buy) { text.Append("   실현 ").Append(InvestmentDashboard.Signed(fill.Realized)).Append("돈"); }
             text.AppendLine().AppendLine();
         }
         foreach (var request in orders.session.History)

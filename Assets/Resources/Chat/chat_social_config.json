@@ -203,7 +203,7 @@
     },
     {
       "key": "maxThreads",
-      "value": 1.0
+      "value": 3.0
     },
     {
       "key": "maxArguments",

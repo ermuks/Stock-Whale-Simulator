@@ -49,8 +49,8 @@ public sealed class DailyIncomeController : MonoBehaviour
         if (PlayerProgression.Instance == null || !PlayerProgression.Instance.CanOperateRooms)
         { Feedback = "리딩방 개설 전"; return false; }
         if (!long.TryParse(text.Replace(",",""),NumberStyles.None,CultureInfo.InvariantCulture,out long value) || !Ledger.ScheduleFee(value))
-        { Feedback = "0~1조 원 · 정수"; return false; }
-        Feedback = "다음 장 " + value.ToString("N0") + "원"; return true;
+        { Feedback = "0~1조 돈 · 정수"; return false; }
+        Feedback = "다음 장 " + value.ToString("N0") + "돈"; return true;
     }
     public decimal Willingness(TradeBot bot)
     {
@@ -78,7 +78,7 @@ public sealed class DailyIncomeController : MonoBehaviour
         if (!Ledger.Admit(bot.Social.Id,available,Math.Max(0m,bot.Equity()),true,out long charge))
         { reason = "이용권 처리 불가"; return false; }
         bot.ApplyTradeCash(-charge);
-        InvestorSociety.Instance?.Trace(bot,"이용권: " + Ledger.Day + "일 · " + charge.ToString("N0") + "원 · 예수금 " + Ledger.Escrow.ToString("N0"));
+        InvestorSociety.Instance?.Trace(bot,"이용권: " + Ledger.Day + "일 · " + charge.ToString("N0") + "돈 · 예수금 " + Ledger.Escrow.ToString("N0"));
         return true;
     }
     public void Renew(TradeBot bot)
@@ -129,7 +129,7 @@ public sealed class DailyIncomeController : MonoBehaviour
             { yield break; }
             // 외부 사업 수익/회원료 입금은 매매 수익률 및 리딩방 해금용 실현손익으로 계산하지 않는다.
             account.cash += report.Transfer;
-            MarketEventFeed.Instance?.Notify("장 마감 정산 " + InvestmentDashboard.Signed(report.Transfer) + "원");
+            MarketEventFeed.Instance?.Notify("장 마감 정산 " + InvestmentDashboard.Signed(report.Transfer) + "돈");
         }
         finally { settlingDay = 0; }
     }

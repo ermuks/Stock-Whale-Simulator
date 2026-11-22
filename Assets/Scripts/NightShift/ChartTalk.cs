@@ -156,7 +156,7 @@ public sealed partial class InvestorSociety
     {
         if (!HypeAllowed || day == null || !SocialReady || StockManager.Instance == null || !ChatHypeAssets.Ready || !ChartTalkAssets.Ready) { return; }
         double now = SocialTime.Seconds;
-        if (Math.Abs(now - chartTickAt) > 30) { chartTracks.Clear(); chartBursts.Clear(); chartHands.Clear(); chartPersonalRest.Clear(); chartNextSample = 0; chartPersonalNext = 0; }
+        if (Math.Abs(now - chartTickAt) > 30) { chartTracks.Clear(); chartBursts.Clear(); chartHands.Clear(); chartHandQueue.Clear(); chartHandCursor = 0; chartPersonalRest.Clear(); chartNextSample = 0; chartPersonalNext = 0; }
         chartTickAt = now;
         if (day.Phase == MarketPhase.Trading && now >= chartNextSample)
         {
@@ -167,13 +167,23 @@ public sealed partial class InvestorSociety
                 if (!chartTracks.TryGetValue(stock, out var track)) { chartTracks.Add(stock, track = new ChartTrack()); }
                 if (track.day != day.Day) { ResetTrack(track); track.day = day.Day; }
                 FeedChart(track, stock.currentPrice, now);
-                ReadShapes(track, stock, stock.currentPrice, now);
+                using (ShapesMarker.Auto()) { ReadShapes(track, stock, stock.currentPrice, now); }
             }
-            ReadHands(now);
-            WatchFlat(now);
+            // 손(봇이 사고판 묶음)은 수천 개가 될 수 있다. 한 프레임에 다 훑지 않고, 지금 있는 것들을 줄 세워 두고 프레임마다 조금씩 본다.
+            if (chartHandCursor >= chartHandQueue.Count) { chartHandQueue.Clear(); chartHandQueue.AddRange(chartHands.Keys); chartHandCursor = 0; }
+            using (FlatMarker.Auto()) { WatchFlat(now); }
         }
-        SpeakChart(now);
+        using (HandsMarker.Auto()) { ReadHands(now); }
+        using (SpeakMarker.Auto()) { SpeakChart(now); }
     }
+    private static readonly Unity.Profiling.ProfilerMarker ShapesMarker = new("DonDon.Chart.Shapes"), HandsMarker = new("DonDon.Chart.Hands"), FlatMarker = new("DonDon.Chart.Flat"), SpeakMarker = new("DonDon.Chart.Speak");
+    /// <summary>이번 바퀴에 볼 손들과 어디까지 봤는지. 값이 크게 움직이는 날에는 손마다 차트를 뒤져야 해서, 한꺼번에 보면 프레임이 수십 ms씩 멎는다.</summary>
+    private readonly List<(int bot, Stock stock)> chartHandQueue = new();
+    private int chartHandCursor;
+    // 정적으로 둔다: 저장은 이 클래스의 인스턴스 필드를 모두 담는데, Stopwatch는 담을 수 없는 형식이라 인스턴스 필드로 두면 마감 저장이 통째로 거부된다.
+    private static readonly System.Diagnostics.Stopwatch chartHandClock = new();
+    /// <summary>한 프레임에 손을 보는 데 쓰는 시간(ms).</summary>
+    private const double HandBudgetMs = 1.0;
     private static void ResetTrack(ChartTrack track)
     {
         track.samples.Clear(); track.pivots.Clear(); track.rest.Clear(); track.legExtreme = 0m; track.legUp = true;
@@ -229,9 +239,13 @@ public sealed partial class InvestorSociety
     private static bool ChartRange(ChartTrack track, double from, double to, out decimal low, out decimal high, out double lowAt, out double highAt)
     {
         low = high = 0m; lowAt = highAt = 0;
-        foreach (var sample in track.samples)
+        // 찍힌 값은 시각 순서다. 구간의 첫 자리를 이분 탐색으로 찾아 그 구간만 본다(전체를 훑으면 장이 길어질수록 느려진다).
+        var samples = track.samples; int first = 0, last = samples.Count;
+        while (first < last) { int middle = (first + last) >> 1; if (samples[middle].at < from) { first = middle + 1; } else { last = middle; } }
+        for (int i = first; i < samples.Count; i++)
         {
-            if (sample.at < from || sample.at > to) { continue; }
+            var sample = samples[i];
+            if (sample.at > to) { break; }
             if (low == 0m || sample.price < low) { low = sample.price; lowAt = sample.at; }
             if (sample.price > high) { high = sample.price; highAt = sample.at; }
         }
@@ -415,15 +429,21 @@ public sealed partial class InvestorSociety
     }
     private void ReadHands(double now)
     {
-        chartHandKeys.Clear();
-        foreach (var pair in chartHands)
+        if (chartHandCursor >= chartHandQueue.Count) { return; }
+        chartHandClock.Restart(); int looked = 0;
+        while (chartHandCursor < chartHandQueue.Count)
         {
-            var hand = pair.Value;
-            if (now - hand.buyLast > HandExpireSec && now - hand.sellLast > HandExpireSec || hand.bot == null) { chartHandKeys.Add(pair.Key); continue; }
+            // 여덟 개마다 시계를 본다. 정해 둔 시간을 넘겼으면 나머지는 다음 프레임에 본다.
+            if ((++looked & 7) == 0 && chartHandClock.Elapsed.TotalMilliseconds >= HandBudgetMs) { break; }
+            var key = chartHandQueue[chartHandCursor++];
+            if (!chartHands.TryGetValue(key, out var hand)) { continue; }
+            if (now - hand.buyLast > HandExpireSec && now - hand.sellLast > HandExpireSec || hand.bot == null) { chartHands.Remove(key); continue; }
             if (!chartTracks.TryGetValue(hand.stock, out var track) || !hand.stock.AcceptsOrders) { continue; }
             decimal price = hand.stock.currentPrice;
             // 산 묶음: 마지막 체결에서 6초는 지나야(다 산 뒤에) 평가한다.
-            if (!hand.buySpoken && hand.buyVolume > 0m && now - hand.buyLast >= 6 && now - hand.buyLast <= HandExpireSec && hand.bot.GetOwnedVolume(hand.stock) > 0m &&
+            // 값이 내 단가에서 충분히 벌어졌을 때만 차트를 뒤진다(아래 두 갈래 모두 그만큼 벌어져야 말한다). 대부분의 손은 여기서 걸러진다.
+            if (!hand.buySpoken && hand.buyVolume > 0m && now - hand.buyLast >= 6 && now - hand.buyLast <= HandExpireSec &&
+                (price >= hand.BuyPrice * (1m + SniperGain) || price <= hand.BuyPrice * (1m - RegretMove)) && hand.bot.GetOwnedVolume(hand.stock) > 0m &&
                 ChartRange(track, hand.buyFirst - HandNearSec, hand.buyLast + HandNearSec, out decimal low, out decimal high, out _, out _) &&
                 ChartRange(track, hand.buyFirst - HandLookbackSec, hand.buyFirst, out decimal priorLow, out decimal priorHigh, out _, out _))
             {
@@ -436,6 +456,7 @@ public sealed partial class InvestorSociety
                 { hand.buySpoken = true; Personal(hand, "topTick", entry, price, now, .7); }
             }
             if (!hand.sellSpoken && hand.sellVolume > 0m && now - hand.sellLast >= 6 && now - hand.sellLast <= HandExpireSec &&
+                (price <= hand.SellPrice * (1m - RegretMove) || price >= hand.SellPrice * (1m + SniperGain)) &&
                 ChartRange(track, hand.sellFirst - HandNearSec, hand.sellLast + HandNearSec, out decimal sellLow, out decimal sellHigh, out _, out _) &&
                 ChartRange(track, hand.sellFirst - HandLookbackSec, hand.sellFirst, out decimal beforeLow, out decimal beforeHigh, out _, out _))
             {
@@ -448,7 +469,6 @@ public sealed partial class InvestorSociety
                 { hand.sellSpoken = true; Personal(hand, "bottomSell", exit, price, now, .7); }
             }
         }
-        foreach (var key in chartHandKeys) { chartHands.Remove(key); }
     }
     private void Personal(ChartHand hand, string key, decimal mine, decimal price, double now, double chance)
     {

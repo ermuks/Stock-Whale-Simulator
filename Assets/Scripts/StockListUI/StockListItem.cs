@@ -77,7 +77,7 @@ public class StockListItem : MonoBehaviour
     private bool arranged;
     /// <summary>
     /// 행의 오른쪽을 두 기둥으로 다시 놓는다(프리팹의 자리를 덮어쓴다).
-    /// 맨 오른쪽: 위에 거래량과 종목 기호(123k SSE), 아래에 거래대금(₩만 붙인다).
+    /// 맨 오른쪽: 위에 거래량과 종목 기호(123k SSE), 아래에 거래대금(Ð만 붙인다).
     /// 그 왼쪽: 위에 최근 거래가, 아래에 조금 작게 전일 대비 등락률. 종목 기호를 따로 적던 줄은 없앤다.
     /// </summary>
     private void Arrange()
@@ -237,7 +237,7 @@ public class StockListItem : MonoBehaviour
 
         if (textTurnover != null)
         {
-            string turnoverLine = "₩" + FormatTurnover(turnoverSum);
+            string turnoverLine = "Ð" + FormatTurnover(turnoverSum);
             if (!GameLocalizedText.Matches(textTurnover, turnoverLine)) { GameLocalizedText.Set(textTurnover, turnoverLine, true); }
         }
 

@@ -21,21 +21,21 @@ public static class ChatSocialNumbers
         else { rounded = Math.Floor(magnitude); }
         string sign = signed && value != 0 ? value > 0 ? "+" : "−" : "";
         if (magnitude > 0 && rounded == 0)
-        { return sign + "1원 미만"; }
+        { return sign + "1돈 미만"; }
         if (rounded == 0)
-        { return "0원"; }
+        { return "0돈"; }
         if (rounded >= 100000000m)
-        { return sign + (rounded / 100000000m).ToString("0.#", Culture) + (compactNoun ? "억원쯤" : "억 정도"); }
+        { return sign + (rounded / 100000000m).ToString("0.#", Culture) + (compactNoun ? "억돈쯤" : "억 정도"); }
         if (rounded >= 10000m)
         {
             string units = (rounded / 10000m).ToString("#,##0", Culture);
-            if (compactNoun) { return sign + units + "만원쯤"; }
+            if (compactNoun) { return sign + units + "만돈쯤"; }
             // One '장' always means 10,000 won; 5,284,003 won must never become '5장'.
             return sign + units + (dialect == 1 ? "장" : dialect == 2 ? " 정도" : "만 정도");
         }
         if (rounded >= 1000m)
-        { return sign + (rounded / 1000m).ToString("0", Culture) + (compactNoun ? "천원쯤" : "천 원 정도"); }
-        return sign + rounded.ToString("0", Culture) + (compactNoun ? "원쯤" : "원 정도");
+        { return sign + (rounded / 1000m).ToString("0", Culture) + (compactNoun ? "천돈쯤" : "천 돈 정도"); }
+        return sign + rounded.ToString("0", Culture) + (compactNoun ? "돈쯤" : "돈 정도");
     }
     public static string Return(string raw, int dialect)
     {

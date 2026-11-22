@@ -211,7 +211,7 @@ public static class ManipulationTools
     public const float WallFrom = 3f, WallFull = 12f; public const decimal WallBand = .05m;
     /// <summary>
     /// 벽으로 치는 최소 금액. 주변 호가보다 몇 배 크더라도 돈으로 따져 작으면 벽이 아니다
-    /// (한 주가 120만 원인 종목에서 23주, 2천7백만 원어치를 보고 "엄청 받쳐 놨다"고 하던 것을 막는다).
+    /// (한 주가 120만 원인 종목에서 23주, 2천7백만 돈어치를 보고 "엄청 받쳐 놨다"고 하던 것을 막는다).
     /// 3천만 원과 시가총액의 0.05% 가운데 큰 쪽이다.
     /// </summary>
     public const decimal WallMinimumValue = 30_000_000m, WallMinimumCapShare = .0005m;

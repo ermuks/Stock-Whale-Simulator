@@ -30,8 +30,12 @@ public sealed class TitleScreen
         owner = controller; font = fontAsset;
         Root = Area(parent, "Area :: Title Screen"); Stretch(Root);
         // 왼쪽을 어둡게 눌러 로고와 메뉴가 방 배경 위에서도 읽히게 한다.
-        var veil = Box(Root, "Image :: Title Veil", new Color(0, 0, 0, .52f)); veil.anchorMin = new Vector2(0, 0); veil.anchorMax = new Vector2(.44f, 1); veil.offsetMin = veil.offsetMax = Vector2.zero;
-        var edge = Box(Root, "Image :: Title Veil Edge", new Color(0, 0, 0, .26f)); edge.anchorMin = new Vector2(.44f, 0); edge.anchorMax = new Vector2(.52f, 1); edge.offsetMin = edge.offsetMax = Vector2.zero;
+        // 상자 두 개를 나란히 세우면 이음매가 세로 선으로 보인다. 왼쪽에서 오른쪽으로 서서히 옅어지는 그림 한 장을 깐다.
+        var veil = Area(Root, "Image :: Title Veil"); veil.anchorMin = new Vector2(0, 0); veil.anchorMax = new Vector2(.66f, 1); veil.offsetMin = veil.offsetMax = Vector2.zero;
+        var fade = new Texture2D(256, 1, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp, filterMode = FilterMode.Bilinear, hideFlags = HideFlags.HideAndDontSave };
+        for (int x = 0; x < 256; x++) { fade.SetPixel(x, 0, new Color(0, 0, 0, .52f * (1f - Mathf.SmoothStep(0f, 1f, Mathf.InverseLerp(.35f, 1f, x / 255f))))); }
+        fade.Apply(false, true);
+        var veilImage = veil.gameObject.AddComponent<RawImage>(); veilImage.texture = fade; veilImage.raycastTarget = false;
 
         // 로고: 오르는 캔들 몇 개, 이름 두 줄, 한 줄 소개.
         var mark = Area(Root, "Area :: Logo Mark"); Pin(mark, 120, 150, 260, 84);

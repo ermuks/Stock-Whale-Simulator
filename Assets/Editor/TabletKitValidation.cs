@@ -61,10 +61,8 @@ public static class TabletKitValidation
             var day=MarketDayController.Instance;
             if (phase==0)
             {
-                var setup=Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (setup?.businessName==null)
-                { return; }
-                setup.businessName.SetTextWithoutNotify("플레이어 기업"); setup.Refresh(); setup.confirm.onClick.Invoke(); Wait(1); return;
+                if (!NewGame.CanBegin) { return; }
+                NewGame.Begin("플레이어 기업"); Wait(1); return;
             }
             if (phase==1)
             {
@@ -78,7 +76,7 @@ public static class TabletKitValidation
                 if (mode==4||mode==6) { SaveChecks(); return; }
                 if (mode==0)
                 {
-                    second.account.cash=0; second.dashboard.Refresh(); Check(second.dashboard.total.text=="0원"&&second.dashboard.empty.gameObject.activeSelf,"empty zero balance is real zero");
+                    second.account.cash=0; second.dashboard.Refresh(); Check(second.dashboard.total.text=="0돈"&&second.dashboard.empty.gameObject.activeSelf,"empty zero balance is real zero");
                 }
                 Fixture();
                 if (mode==1) { OrderChecks(); }

@@ -366,7 +366,22 @@ public static partial class SessionStore
         {
             if(token==null || token.Type==JTokenType.Null) { return null; }
             if(token.Type==JTokenType.String)
-            { var target=Nullable.GetUnderlyingType(expected) ?? expected; string value=(string)token; return target.IsEnum ? Enum.Parse(target,value) : Convert.ChangeType(value,target,Culture); }
+            {
+                var target=Nullable.GetUnderlyingType(expected) ?? expected; string value=(string)token;
+                // double.MinValue·MaxValue("아직 없음"을 뜻하는 값으로 쓰는 필드가 있다)는 글자로 적히며 반올림돼, 다시 읽으면 범위를 넘는다.
+                // 그 한 값 때문에 저장 전체가 거부되지 않게, 넘친 값은 그 형식의 끝값으로 읽는다.
+                if(target==typeof(double) || target==typeof(float))
+                {
+                    try { return Convert.ChangeType(value,target,Culture); }
+                    catch(OverflowException)
+                    {
+                        bool negative=value.TrimStart().StartsWith("-",StringComparison.Ordinal);
+                        if(target==typeof(double)) { return negative ? double.MinValue : double.MaxValue; }
+                        return negative ? float.MinValue : float.MaxValue;
+                    }
+                }
+                return target.IsEnum ? Enum.Parse(target,value) : Convert.ChangeType(value,target,Culture);
+            }
             if(token["u"]!=null)
             { if(!unity.TryGetValue((string)token["u"],out var value)) { throw new InvalidDataException("Missing native reference: "+token["u"]); } return value; }
             if(token["r"]!=null)

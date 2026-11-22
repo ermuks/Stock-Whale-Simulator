@@ -106,23 +106,20 @@ public static class DonDonLocalizationValidation
         try
         {
             camera = DeskViewController.Instance?.ViewCamera ?? Camera.main;
-            var setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>();
             if (phase == 0)
             {
-                if (setup == null || setup.businessName == null) { return; }
+                if (!NewGame.CanBegin) { return; }
                 Check(LocalizationSettings.AvailableLocales.Locales.Count == 3,"only ko/en/ja locales");
-                setup.businessName.SetTextWithoutNotify("안전 수익 회사");
                 GameLocale.SetLanguage(Languages[language]); phase = 1; due = Time.unscaledTime+.7f; return;
             }
             if (phase == 1)
             {
                 if (GameLocale.Code != Languages[language]) { return; }
-                Check(setup.businessName.text == "안전 수익 회사","input unchanged: "+GameLocale.Code);
                 Check(GameLocale.MissingSources.Count == 0,"no missing String Table entries: "+GameLocale.Code);
                 Check(!GameLocale.Supported("zh") && !GameLocale.Supported("fr"),"unsupported languages excluded");
                 Capture("setup-"+GameLocale.Code,1920,1080); Dump("setup-"+GameLocale.Code);
                 if (++language < Languages.Length) { phase = 0; return; }
-                setup.Refresh(); setup.confirm.onClick.Invoke(); phase = 2; due = Time.unscaledTime+3; return;
+                NewGame.Begin("안전 수익 회사"); phase = 2; due = Time.unscaledTime+3; return;
             }
             if (phase == 2)
             {
@@ -197,10 +194,10 @@ public static class DonDonLocalizationValidation
         if (GameLocale.Code == "ko") { Check(rendered == "한국어 원문","Korean source unchanged"); }
         else
         {
-            Check(GameLocale.Text("장 마감 회사 수익 +250,000원").Contains("250,000"),"currency translation preserves every digit");
+            Check(GameLocale.Text("장 마감 회사 수익 +250,000돈").Contains("250,000"),"currency translation preserves every digit");
             Check(!rendered.Contains("5284003") && !rendered.Contains("5,284,003"),"community profit is approximate: "+GameLocale.Code);
             Check(!rendered.Contains("{gain}") && !rendered.Contains("{stock}"),"snapshot slots resolved: "+GameLocale.Code);
-            Check(rendered.Contains(GameLocale.Code == "en" ? "5m" : "500万"),"KRW magnitude preserved: "+GameLocale.Code);
+            Check(rendered.Contains(GameLocale.Code == "en" ? "5m" : "500万"),"DON magnitude preserved: "+GameLocale.Code);
         }
         File.AppendAllText(Path.Combine(folder,"snapshot-test.txt"),GameLocale.Code+": "+rendered+"\n");
         Check(tablet.account.cash == cash && tablet.account.ReservedCash == reserved,"translation does not change account or reservations");

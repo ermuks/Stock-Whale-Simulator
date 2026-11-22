@@ -22,7 +22,6 @@ public static class VisualHierarchyValidation
     private static double began, ready;
     private static int phase, overflow, hotBuilds, coldBuilds, particles;
     private static Camera camera;
-    private static PlayerCompanySetupUI setup;
     private static TabletGroupChatUI chat;
     private static InvestorProfileUI profile;
     private static DeviceTerminalUI journal;
@@ -76,12 +75,12 @@ public static class VisualHierarchyValidation
             if (phase == 0)
             {
                 Application.targetFrameRate = 20; QualitySettings.vSyncCount = 0;
-                camera = Camera.main; camera.fieldOfView = 45f; setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>();
+                if (!NewGame.CanBegin) { return; }
+                camera = Camera.main; camera.fieldOfView = 45f;
                 chat = Object.FindObjectsByType<TabletGroupChatUI>().Single(c => c.monitorChat); profile = chat.visualProfile;
                 journal = Object.FindObjectsByType<DeviceTerminalUI>().Single(t => t.journal);
                 CheckSpriteAssets();
-                Check(setup.retailPreview.text.Length < 25 && !setup.retailIntroduction.transform.Find("Panel :: First Journey/Text :: First Journey Steps").gameObject.activeSelf,"opening replaces prose steps with three icons");
-                Inspect(setup.gameObject,"opening"); Capture("opening-icons.png",true); Click(setup.confirm); Next(2); return;
+                NewGame.Begin(); Next(2); return;
             }
             if (!StockManager.Instance.SetupConfirmed || !MarketDayController.CanTrade || !MarketDayController.Instance.Ready || !NpcLeadingRoom.Instance.PlayerJoined)
             { return; }

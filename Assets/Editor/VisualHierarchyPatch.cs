@@ -24,8 +24,7 @@ public static class VisualHierarchyPatch
         font = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>("Assets/Resources/Chat/Chat Korean.asset");
         secondary = AssetDatabase.LoadAssetAtPath<Material>("Assets/Resources/UI/TradingTerminal/Secondary_Text.mat");
         if (font == null) { throw new Exception("Existing font not found."); }
-        var setup = Object.FindAnyObjectByType<PlayerCompanySetupUI>(FindObjectsInactive.Include);
-        Opening(setup); Journey(Object.FindAnyObjectByType<InvestorJourneyUI>(FindObjectsInactive.Include));
+        Journey(Object.FindAnyObjectByType<InvestorJourneyUI>(FindObjectsInactive.Include));
         Profile(Object.FindObjectsByType<TabletGroupChatUI>(FindObjectsInactive.Include).Single(c => c.monitorChat));
         Growth(Object.FindObjectsByType<DeviceTerminalUI>(FindObjectsInactive.Include).Single(c => c.journal));
         foreach (var pair in poses)
@@ -94,21 +93,6 @@ public static class VisualHierarchyPatch
         var rect = Rect("Button :: " + name,parent,x,y,w,h); var image = Component<Image>(rect.gameObject); image.color = new Color32(25,36,41,255); image.raycastTarget = true;
         var button = Component<Button>(rect.gameObject); button.targetGraphic = image;
         var text = Text(name + " Label",rect,caption,.04f,.04f,.92f,.92f,size); text.alignment = TextAlignmentOptions.Center; return button;
-    }
-    private static void Opening(PlayerCompanySetupUI setup)
-    {
-        var intro = setup.retailIntroduction.transform;
-        intro.Find("Text :: Opening Line").GetComponent<TextMeshProUGUI>().text = "관찰. 판단. 그리고 한 번의 선택.";
-        setup.retailPreview.text = "첫 가입 · 새벽 관찰실"; Layout(setup.retailPreview.rectTransform,0,.52f,.51f,.09f); Style(setup.retailPreview,30f,true);
-        var path = (RectTransform)intro.Find("Panel :: First Journey"); path.GetComponent<Image>().color = Color.clear;
-        path.Find("Text :: First Room").gameObject.SetActive(false); path.Find("Text :: First Journey Steps").gameObject.SetActive(false);
-        string[] labels = {"관찰","매매","리딩방"}; var icons = new[]{TerminalGlyph.Symbol.Eye,TerminalGlyph.Symbol.Trade,TerminalGlyph.Symbol.People};
-        for (int i = 0; i < 3; i++)
-        {
-            Glyph("Opening Step " + i,path,icons[i],.02f+i*.34f,.16f,.28f,.48f);
-            var label = Text("Opening Step " + i,path,labels[i],.02f+i*.34f,.70f,.28f,.15f,32f,true); label.alignment = TextAlignmentOptions.Center;
-        }
-        setup.confirm.GetComponentInChildren<TextMeshProUGUI>().text = "시작";
     }
     private static void Journey(InvestorJourneyUI ui)
     {

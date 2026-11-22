@@ -135,7 +135,7 @@ public class StockInterestManager : MonoBehaviour
 
     /// <summary>
     /// 체결 시 호출. 이번 구간의 거래대금에 더해 둘 뿐이다. 관심도는 구간이 끝날 때 "평소의 몇 배인가"로 정한다.
-    /// 예전에는 체결 한 건마다 거래대금(원)에 따라 관심도를 올렸다. 봇의 주문이 커지자 거의 모든 체결이 상한만큼 올려서
+    /// 예전에는 체결 한 건마다 거래대금(돈)에 따라 관심도를 올렸다. 봇의 주문이 커지자 거의 모든 체결이 상한만큼 올려서
     /// 전 종목이 최대치에 붙었고(그래서 거래가 고르게 퍼졌고), 주가가 비싼 종목일수록 더 빨리 찼다.
     /// </summary>
     public void AddInterest(Stock stock, decimal price, decimal filledVolume)

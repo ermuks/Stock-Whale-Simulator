@@ -289,13 +289,20 @@ public sealed class ChatFooterCards : MonoBehaviour
         messages = chat.scroll == null ? null : (RectTransform)chat.scroll.transform;
         if (messages != null) { messagesBottom = messages.anchorMin.y; }
     }
-    /// <summary>내 리딩방에서는 카드가 작아진 만큼 채팅 목록과 참여자 카드를 아래로 내린다.</summary>
-    private void Compact(bool on)
+    /// <summary>방 카드가 없을 때(리딩방을 열기 전의 공용 라운지) 참여자 카드를 화면 맨 아래로 내리는 거리. 그만큼 채팅 목록이 길어진다.</summary>
+    private const float NoCardShift = RoomTop + RoomHeight - ProfileHeight - ProfileTop;
+    private float shifted;
+    /// <summary>
+    /// 아래쪽 카드가 작거나 없으면 그만큼 채팅 목록과 참여자 카드를 아래로 내려 빈 자리를 채운다.
+    /// 내 리딩방에서는 카드가 작아진 만큼, 방 카드가 아예 없는 공용 라운지에서는 카드 높이만큼 내린다.
+    /// 글 쓰는 칸은 채팅 목록의 아래 가장자리를 따라온다(PlayerChatBar가 맞춘다).
+    /// </summary>
+    private void Compact(float shift)
     {
-        if (compact == on) { return; }
-        compact = on; float shift = on ? OwnShift : 0f;
+        if (Mathf.Approximately(shifted, shift)) { return; }
+        shifted = shift; compact = shift > 0f;
         ChatFooterKit.Place(profilePanel, profilePanel.parent, CardX, ProfileTop + shift, CardWidth, ProfileHeight);
-        if (messages != null) { messages.anchorMin = new Vector2(messages.anchorMin.x, messagesBottom - shift); messages.offsetMin = new Vector2(messages.offsetMin.x, 0f); }
+        if (messages != null) { messages.anchorMin = new Vector2(messages.anchorMin.x, messagesBottom - shift); }
     }
     private void BuildOpen(TextMeshProUGUI like, RectTransform root)
     {
@@ -447,6 +454,9 @@ public sealed class ChatFooterCards : MonoBehaviour
     {
         var career = PlayerProgression.Instance;
         bool locked = !operate && career != null;
+        // 방을 열기 전에는 이 카드(개설 비용과 라운지 화제)를 채팅 화면에 내지 않는다. 개설은 내 리딩방 탭에서 한다.
+        var veil = lobbyCard.GetComponent<CanvasGroup>(); if (veil == null) { veil = lobbyCard.gameObject.AddComponent<CanvasGroup>(); }
+        veil.alpha = locked ? 0f : 1f; veil.blocksRaycasts = !locked; veil.interactable = !locked;
         lockedGroup.SetActive(locked); openGroup.SetActive(!locked);
         RefreshTopics();
         ChatFooterKit.Lit(lobbyHint, locked ? ChatFooterText.T("내 리딩방 탭에서 개설할 수 있습니다") : "");
@@ -497,7 +507,9 @@ public sealed class ChatFooterCards : MonoBehaviour
         if (rooms.invite.gameObject.activeSelf != inviting) { rooms.invite.gameObject.SetActive(inviting); }
         foreach (var button in new[] { rooms.invite, rooms.npcBuy, rooms.npcSell, rooms.issue, rooms.cancel }) { ChatFooterKit.Dim(button); }
         bool opening = room != null && room.PlayerOwned && !operate && PlayerProgression.Instance != null;
-        Compact(room != null && room.PlayerOwned && operate);
+        bool lounge = !opening && !npcSelected && !(room != null && room.PlayerOwned && operate);
+        // 방을 열기 전의 공용 라운지에는 방 카드가 없다. 그 자리를 비워 두지 않고 채팅 목록을 늘린다.
+        Compact(room != null && room.PlayerOwned && operate ? OwnShift : lounge && !operate && PlayerProgression.Instance != null ? NoCardShift : 0f);
         if (openCard.gameObject.activeSelf != opening) { openCard.gameObject.SetActive(opening); }
         if (opening) { RefreshOpen(PlayerProgression.Instance); }
         else if (npcSelected) { RefreshNpc(); }

@@ -350,7 +350,7 @@ public sealed class WorldDramaDirector : MonoBehaviour
         if (!sharesRemain)
         {
             fund.Closed = true; fund.Account.enabled = false;
-            Publish(fund.Account.OwnedCompany, fund.Account.Social.Nickname + ": 자산 정리 완료, 운용 중단. 남은 현금 " + fund.Account.cash.ToString("N0") + "원.");
+            Publish(fund.Account.OwnedCompany, fund.Account.Social.Nickname + ": 자산 정리 완료, 운용 중단. 남은 현금 " + fund.Account.cash.ToString("N0") + "돈.");
         }
     }
     public bool Controls(Stock stock)

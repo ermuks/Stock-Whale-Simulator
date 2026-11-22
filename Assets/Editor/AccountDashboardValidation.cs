@@ -90,8 +90,8 @@ public static class AccountDashboardValidation
             if (phase == 2)
             {
                 first.ShowPage(TabletAccountUI.Page.Dashboard); first.dashboard.Refresh();
-                string startingCash = market.economy.retailStartingCash.ToString("N0") + "원";
-                Check(first.dashboard.total.text == startingCash && first.dashboard.available.text == startingCash && first.dashboard.valuation.text == "0원","empty account displays real cash and total assets");
+                string startingCash = market.economy.retailStartingCash.ToString("N0") + "돈";
+                Check(first.dashboard.total.text == startingCash && first.dashboard.available.text == startingCash && first.dashboard.valuation.text == "0돈","empty account displays real cash and total assets");
                 Check(first.dashboard.empty.gameObject.activeSelf && !first.dashboard.detail.interactable,"empty list and disabled unowned detail");
                 Inspect(first.dashboard.gameObject,"empty dashboard"); Capture("empty-1600x900.png",1600,900); Capture("empty-1920x1080.png",1920,1080);
                 Click(first.tabs[1]); Check(first.events.panel.activeInHierarchy,"events available on account one while account two is locked");
@@ -220,11 +220,11 @@ public static class AccountDashboardValidation
     private static void FinancialChecks()
     {
         var ui = first.dashboard; ui.Refresh();
-        Check(ui.valuation.text == "954,500원" && ui.total.text == "1,200,000원","valuation and total agree with exact ledger math");
-        Check(ui.profit.text == "+38,500원  (+4.20%)" && ui.cost.text == "총 매수원금  916,000원","aggregate return uses total cost, not average of returns");
+        Check(ui.valuation.text == "954,500돈" && ui.total.text == "1,200,000돈","valuation and total agree with exact ledger math");
+        Check(ui.profit.text == "+38,500돈  (+4.20%)" && ui.cost.text == "총 매수원금  916,000돈","aggregate return uses total cost, not average of returns");
         var stock = fixtures[0]; accounts.primary.BuyLimit(1m,100m,0,stock); accounts.primary.SellLimit(5000m,20m,0,stock); ui.Refresh();
-        Check(accounts.primary.ReservedCash == 100m && ui.available.text == "245,400원","available cash excludes reserved buys");
-        Check(ui.total.text == "1,200,000원" && ui.valuation.text == "954,500원","reserved cash and pending sells remain in total assets");
+        Check(accounts.primary.ReservedCash == 100m && ui.available.text == "245,400돈","available cash excludes reserved buys");
+        Check(ui.total.text == "1,200,000돈" && ui.valuation.text == "954,500돈","reserved cash and pending sells remain in total assets");
         Check(accounts.primary.GetHolding(stock) == 100m && accounts.primary.GetOwnedVolume(stock) == 120m && accounts.primary.GetOwnedCost(stock) == 252000m,"sell escrow retains exact quantity and cost");
         Check(!accounts.Transfer(accounts.primary,245401m,out _),"transfer cannot spend reserved cash");
         var rows = ui.content.GetComponentsInChildren<InvestmentPositionRow>();

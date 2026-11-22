@@ -136,7 +136,8 @@ public static class ChatHypeAssets
         foreach (var row in rows)
         {
             if (row == null || string.IsNullOrEmpty(row.key) || row.texts == null || row.texts.Length == 0 ||
-                crowd && (row.holding != "any" && row.holding != "held" && row.holding != "notHeld" || !string.IsNullOrEmpty(row.tone) && row.tone != "formal"))
+                crowd && (row.holding != "any" && row.holding != "held" && row.holding != "notHeld" && row.holding != "heldGain" && row.holding != "heldLoss" ||
+                    !string.IsNullOrEmpty(row.tone) && row.tone != "formal" && row.tone != "greedy" && row.tone != "fearful" && row.tone != "cocky"))
             { throw new ArgumentException("Invalid line group: " + code + " " + row?.key); }
             foreach (string text in row.texts) { CheckSlots(code, text); }
             string key = crowd ? row.key + "/" + row.holding + (string.IsNullOrEmpty(row.tone) ? "" : "/" + row.tone) : row.key;
@@ -171,6 +172,12 @@ public static class ChatHypeAssets
         if (formal && index.TryGetValue(phase + "/" + holding + "/formal", out var polite)) { return polite; }
         return index.TryGetValue(phase + "/" + holding, out var texts) ? texts : None;
     }
+    /// <summary>
+    /// 그 봇의 처지와 기질에 맞춰 쓴 군중 대사(없으면 빈 배열).
+    /// holding: heldGain(들고 있고 수익 중) · heldLoss(들고 있고 물려 있음), tone: greedy(욕심) · fearful(겁) · cocky(큰소리).
+    /// </summary>
+    public static string[] CrowdOf(string phase, string holding, string tone)
+        => Current.crowdIndex.TryGetValue(phase + "/" + holding + (string.IsNullOrEmpty(tone) ? "" : "/" + tone), out var texts) ? texts : None;
     public static string[] Echo(string kind) => Current.echoIndex.TryGetValue(kind, out var texts) ? texts : None;
     public static bool Fits(ChatHypeSetup setup, ChatHypeVerdict verdict) => setup.lean == "any" || verdict.lean == "any" || setup.lean == verdict.lean;
     /// <summary>종목 기호로 줄임말 하나를 돌려준다(없으면 null). 게임 쪽에서 연결한다.</summary>
@@ -304,7 +311,17 @@ public sealed partial class InvestorSociety
             return hypeAllowedValue;
         }
     }
-    private SocialRandom HypeRandom => hypeRandom ??= new SocialRandom(ChatHypeMemory.Salt ^ unchecked((int)DateTime.UtcNow.Ticks));
+    private SocialRandom HypeRandom => hypeRandom ??= new SocialRandom(HypeSeed());
+    /// <summary>
+    /// 평소에는 실행할 때마다 다른 난수열을 쓴다. 검증 실행에서 DONDON_CHAT_SEED에 정수를 주면 그 값으로 고정해
+    /// 토론·기분 글·급등락 군중의 말까지 같은 순서로 다시 볼 수 있다.
+    /// </summary>
+    private static int HypeSeed()
+    {
+        string wanted = Environment.GetEnvironmentVariable("DONDON_CHAT_SEED");
+        if (!string.IsNullOrEmpty(wanted) && int.TryParse(wanted, out int seed)) { return seed; }
+        return ChatHypeMemory.Salt ^ unchecked((int)DateTime.UtcNow.Ticks);
+    }
     /// <summary>디버그 표시용: 지금 폭주 중인 종목과 단계.</summary>
     public string HypeStatus => hypeRun == null ? "없음" : hypeRun.stock.stockName + " · " + hypeRun.PhaseKey + " · " + hypeRun.lines + "줄";
     public string OddballNickname => ResolveOddball()?.Social.Nickname;
@@ -508,6 +525,7 @@ public sealed partial class InvestorSociety
         while (hypeRecentLines.Count > Hype("crowdRepeatWindow")) { hypeRecentLines.Dequeue(); }
         return chosen;
     }
+    private readonly List<string> hypeOwn = new();
     private bool SpeakHypeCrowd(HypeRun run, double now)
     {
         var bot = PickHypeSpeaker(now);
@@ -515,7 +533,28 @@ public sealed partial class InvestorSociety
         // 들고 있는 봇만 보유자 대사를 한다. 없는 봇이 "탔다"고 하지 않는다.
         bool held = bot.GetOwnedVolume(run.stock) > 0m;
         bool formal = bot.Social.Psychology.Traits.Politeness >= Config.Int("styleFormalMin");
-        string text = PickHypeText(ChatHypeAssets.Crowd(run.PhaseKey, "any", formal), ChatHypeAssets.Crowd(run.PhaseKey, held ? "held" : "notHeld", formal));
+        string text = null;
+        if (!formal)
+        {
+            // 같은 급등(급락)을 보고도 사람마다 하는 말이 다르다: 물려 있던 사람은 본전을 말하고, 수익 중인 사람은 느긋하고,
+            // 욕심 많은 사람은 더 사려 하고, 겁 많은 사람은 꺼질까 걱정하고, 허세 센 사람은 "내가 뭐랬냐" 한다.
+            // 처지는 실제 보유와 평단에서, 기질은 그 봇의 욕심·공포·허세에서 읽는다. 맞는 대사가 있으면 절반 넘게 그쪽에서 고른다.
+            hypeOwn.Clear();
+            var mind = bot.Social.Psychology;
+            if (held)
+            {
+                decimal basis = bot.GetOwnedAverage(run.stock);
+                if (basis > 0m) { hypeOwn.AddRange(ChatHypeAssets.CrowdOf(run.PhaseKey, run.stock.currentPrice >= basis ? "heldGain" : "heldLoss", null)); }
+            }
+            string tone = mind.Traits.Bravado >= 72 ? "cocky" : mind.Fear >= 40f && mind.Fear >= mind.Greed * .6f ? "fearful" : mind.Greed >= 72f ? "greedy" : null;
+            if (tone != null)
+            {
+                hypeOwn.AddRange(ChatHypeAssets.CrowdOf(run.PhaseKey, "any", tone));
+                hypeOwn.AddRange(ChatHypeAssets.CrowdOf(run.PhaseKey, held ? "held" : "notHeld", tone));
+            }
+            if (hypeOwn.Count > 0 && HypeRandom.Next() < .6) { text = PickHypeText(Array.Empty<string>(), hypeOwn.ToArray()); }
+        }
+        text ??= PickHypeText(ChatHypeAssets.Crowd(run.PhaseKey, "any", formal), ChatHypeAssets.Crowd(run.PhaseKey, held ? "held" : "notHeld", formal));
         if (text == null) { return false; }
         // 쏟아지는 구간의 짧은 말은 그대로 두고, 말이 길어지는 구간에서만 그 봇의 습관대로 끊는다.
         PublishHype(bot, ChatHypeAssets.Fill(text, HypeSlots(run.stock, 0, 0m)), "hype." + run.PhaseKey, run.stock, 0, run.phase == HypePhase.Flood ? 0 : 1);
@@ -566,6 +605,9 @@ public sealed partial class InvestorSociety
             act = SocialAct.REACT, replyToId = replyTo, topicEvent = "HYPE", templateKey = key, text = text,
             facts = new SocialFacts { symbol = stock?.symbol, stockName = stock?.stockName, at = SocialTime.GameMinute },
             debug = new SocialMessageDebug { trigger = "HYPE" } };
+        // 방이 지금 어느 종목으로 떠드는지는 알려 둔다. 그래야 뒤이어 말을 꺼내는 봇들이 같은 종목을 화제로 삼는다
+        // (예전에는 군중이 A 종목 급등으로 들끓는 동안 대화 쪽 봇들은 그걸 모르고 딴 종목 얘기를 꺼냈다).
+        if (stock != null) { ObserveConversationTopic(message); }
         List<string> pieces = null;
         var rules = ChatHypeAssets.Current.breath;
         if (breath == 2) { pieces = ChatBreath.Split(text, rules, (int)Hype("oddballMaxPieces"), ChatBreathMode.Sentences); }

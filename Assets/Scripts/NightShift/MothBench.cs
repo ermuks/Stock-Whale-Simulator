@@ -51,8 +51,7 @@ public sealed class MothBench : MonoBehaviour
         float waited = 0f;
         while (!StockManager.Instance.SetupConfirmed && waited < 120f)
         {
-            var setup = FindAnyObjectByType<PlayerCompanySetupUI>();
-            if (setup != null && setup.confirm != null && setup.confirm.interactable && !StockManager.Instance.SetupInProgress) { setup.confirm.onClick.Invoke(); }
+            if (NewGame.CanBegin) { NewGame.Begin(); }
             yield return new WaitForSecondsRealtime(1f); waited += 1f;
         }
         while (MarketDayController.Instance == null || !MarketDayController.CanTrade || MarketDayController.Instance.Phase != MarketPhase.Trading) { yield return new WaitForSecondsRealtime(.5f); }

@@ -8,29 +8,29 @@
       "toHour": 9,
       "weight": 3,
       "open": [
-        "오늘 {symbol} {level}원 돌파했는데 내일 {nextLevel}원 가나? ㅋㅋ",
-        "{symbol} {level}원 뚫고 {close}원 마감. 내일도 가려나",
-        "{symbol} {level}원 넘긴 거 본 사람? 내일 시초가 궁금함",
-        "{symbol} 오늘 {dayPct} 찍고 {level}원 위에서 끝남. 이거 진짜임?"
+        "오늘 {symbol} {level}돈 돌파했는데 내일 {nextLevel}돈 가나? ㅋㅋ",
+        "{symbol} {level}돈 뚫고 {close}돈 마감. 내일도 가려나",
+        "{symbol} {level}돈 넘긴 거 본 사람? 내일 시초가 궁금함",
+        "{symbol} 오늘 {dayPct} 찍고 {level}돈 위에서 끝남. 이거 진짜임?"
       ],
       "openMorning": [
-        "어제 {symbol} {level}원 돌파했는데 오늘 {nextLevel}원 가나? ㅋㅋ",
-        "{symbol} 어제 {close}원 마감이었지. 오늘 {level}원 지켜 주려나",
-        "자고 일어나도 {symbol} {level}원 돌파가 안 믿김 ㅋㅋ 오늘 시초가 어디서 뜰까",
-        "{symbol} 어제 {dayPct}였는데 오늘 이어 가면 {nextLevel}원도 보이는 거 아님?"
+        "어제 {symbol} {level}돈 돌파했는데 오늘 {nextLevel}돈 가나? ㅋㅋ",
+        "{symbol} 어제 {close}돈 마감이었지. 오늘 {level}돈 지켜 주려나",
+        "자고 일어나도 {symbol} {level}돈 돌파가 안 믿김 ㅋㅋ 오늘 시초가 어디서 뜰까",
+        "{symbol} 어제 {dayPct}였는데 오늘 이어 가면 {nextLevel}돈도 보이는 거 아님?"
       ],
       "reply": [
-        "{nextLevel}원은 좀 ㅋㅋ 일단 {level}원부터 지켜야지",
+        "{nextLevel}돈은 좀 ㅋㅋ 일단 {level}돈부터 지켜야지",
         "시초가 봐야 앎. 갭 뜨면 무서워서 못 탐",
         "그 정도 오르면 차익 매물 나올 때 됐음",
-        "{nextLevel}원 가면 나 치킨 쏨 ㅋㅋ",
-        "{level}원 돌파는 인정. 근데 거기서 더 살 사람이 있을지가 문제",
+        "{nextLevel}돈 가면 나 치킨 쏨 ㅋㅋ",
+        "{level}돈 돌파는 인정. 근데 거기서 더 살 사람이 있을지가 문제",
         "난 구경만 함. 이미 너무 올라서 손이 안 나감"
       ],
       "replyHolder": [
-        "나 그거 들고 있음 ㅋㅋ {nextLevel}원까지 안 팔 거임",
+        "나 그거 들고 있음 ㅋㅋ {nextLevel}돈까지 안 팔 거임",
         "들고 있는 입장에선 제발 가 줬으면",
-        "나도 주주임. {level}원 넘는 거 보고 소리 지름 ㅋㅋ"
+        "나도 주주임. {level}돈 넘는 거 보고 소리 지름 ㅋㅋ"
       ],
       "back": [
         "ㅋㅋ 일단 시초가 보고 다시 얘기하자",
@@ -46,13 +46,13 @@
       "weight": 2,
       "open": [
         "{symbol} 오늘 {dayPct} 마감. 내일도 이 분위기 이어짐?",
-        "{symbol} {close}원에 끝났네. 내일 더 갈 거라 보는 사람?",
+        "{symbol} {close}돈에 끝났네. 내일 더 갈 거라 보는 사람?",
         "오늘 {symbol} 못 탄 사람 나뿐임? {dayPct}를 그냥 구경함",
         "{symbol} 내일 눌림 주면 살 건데 줄까?"
       ],
       "openMorning": [
         "{symbol} 어제 {dayPct}였는데 오늘도 감?",
-        "어제 {symbol} {close}원 마감 보고 잠. 오늘 시초가 예상 좀",
+        "어제 {symbol} {close}돈 마감 보고 잠. 오늘 시초가 예상 좀",
         "{symbol} 어제 놓친 사람 모여 봐. 오늘 탈 거임?",
         "오늘 {symbol} 눌림 오면 살 사람 손"
       ],
@@ -84,12 +84,12 @@
       "open": [
         "{symbol} 전망좀요... 하...",
         "{symbol} 오늘 {dayPct}. 내일 반등 줌 안 줌?",
-        "{symbol} {close}원 마감 실화냐. 어디까지 빠지는 거임",
+        "{symbol} {close}돈 마감 실화냐. 어디까지 빠지는 거임",
         "{symbol} 지금 줍는 건 무리임? 누가 말려 줘"
       ],
       "openMorning": [
         "{symbol} 어제 {dayPct} 맞고 잠을 못 잠. 오늘 전망좀요...",
-        "{symbol} 오늘은 반등 주겠지? 어제 {close}원까지 밀렸는데",
+        "{symbol} 오늘은 반등 주겠지? 어제 {close}돈까지 밀렸는데",
         "어제 {symbol} 던진 사람 많음? 오늘 더 빠지면 줍게",
         "{symbol} 시초가부터 또 빠지면 어떡하지"
       ],
@@ -181,16 +181,16 @@
       "toHour": 9,
       "weight": 1,
       "open": [
-        "{symbol} 오늘 하루 종일 {close}원 근처. 내일은 좀 움직이려나",
+        "{symbol} 오늘 하루 종일 {close}돈 근처. 내일은 좀 움직이려나",
         "{symbol} 얘는 언제 움직임? 보다가 졸았음",
         "{symbol} 들고 있는 사람 안 지루함?",
-        "{symbol} {close}원에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데"
+        "{symbol} {close}돈에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데"
       ],
       "openMorning": [
-        "{symbol} 어제 하루 종일 {close}원 근처였음. 오늘은 좀 움직이려나",
+        "{symbol} 어제 하루 종일 {close}돈 근처였음. 오늘은 좀 움직이려나",
         "{symbol} 얘는 언제 움직임? 보다가 졸았음",
         "{symbol} 들고 있는 사람 안 지루함?",
-        "{symbol} {close}원에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데"
+        "{symbol} {close}돈에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데"
       ],
       "reply": [
         "안 움직이는 게 제일 편함. 난 좋음",
@@ -198,7 +198,7 @@
         "지루한 종목은 안 봄. 시간 아까움",
         "터지면 크다는 말 믿다가 1년 기다린 사람 여기 있음",
         "거래가 없으면 이유가 있는 거임",
-        "{close}원에서 안 빠지는 것만 해도 어디임"
+        "{close}돈에서 안 빠지는 것만 해도 어디임"
       ],
       "replyHolder": [
         "나 들고 있음. 지루한데 팔 이유도 없음",

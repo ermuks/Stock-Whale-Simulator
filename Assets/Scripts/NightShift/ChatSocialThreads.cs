@@ -33,10 +33,24 @@ public sealed partial class InvestorSociety
     {
         about = null;
         var recent = SocialRoom(room).recent.ToArray();
-        for (int i = recent.Length - 1; i >= 0; i--)
+        // 방금 올라온 말 가운데 이어 말할 거리가 있는 것(종목이 있는 말)에 답한다.
+        // 예전에는 가장 최근 글이면 몇 분 전 것이든 화제가 없는 것이든 골랐고, 화제가 없으면 답글을 접었다.
+        // 먼저 아직 아무도 받지 않은 물음·의심("이거 왜 오르는 거임?")을 찾아 답한다. 없으면 다른 말에 붙는다.
+        // 맞장구·위로·사과처럼 얘기를 맺는 말에는 새로 붙지 않는다(예전에는 "나도 그렇게 봄"에 또 "나도"가 줄줄이 달렸다).
+        double freshness = Config.Get("replyExpiry") * 1.5;
+        for (int pass = 0; pass < 2; pass++)
         {
-            if (SocialBots.TryGetValue(recent[i].senderId, out var other) && CanStartWith(bot, other, room))
-            { about = recent[i]; return other.Social.Id; }
+            for (int i = recent.Length - 1; i >= 0; i--)
+            {
+                var said = recent[i];
+                if (SocialTime.Seconds - said.realAt > freshness) { break; }
+                if (string.IsNullOrEmpty(said.facts?.symbol)) { continue; }
+                bool open = (said.act == SocialAct.ASK || said.act == SocialAct.DOUBT) && said.threadId == 0 && said.replyToId == 0;
+                bool closes = said.act == SocialAct.AGREE || said.act == SocialAct.COMFORT || said.act == SocialAct.APOLOGIZE || said.act == SocialAct.MEDIATE || said.act == SocialAct.FAREWELL;
+                if (pass == 0 ? !open : open || closes) { continue; }
+                if (SocialBots.TryGetValue(said.senderId, out var other) && CanStartWith(bot, other, room))
+                { about = said; return other.Social.Id; }
+            }
         }
         var stock = FindSocialStock(facts.symbol);
         if (stock != null && facts.held)
@@ -111,6 +125,16 @@ public sealed partial class InvestorSociety
             bool secondAttack = thread != null ? thread.kind != SocialThreadKind.ARGUMENT && thread.attacks > 0 :
                 intent.replyToId > 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var parent) && Attack(parent.act);
             if (secondAttack) { weight = 0; }
+        }
+        // 맞장구·답변·위로·사과는 받을 말이 있을 때만 한다. 아무 말도 하지 않은 사람을 불러 "맞는 말임" 하지 않는다.
+        if ((act == SocialAct.AGREE || act == SocialAct.ANSWER || act == SocialAct.COMFORT || act == SocialAct.APOLOGIZE) && intent.replyToId == 0 && intent.threadId == 0) { weight = 0; }
+        if (intent.replyToId > 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var replied))
+        {
+            // 되묻는 말은 그 말에 맞춰 쓴 물음이 있을 때만 한다(자랑에 "얼마에 들어갔어?", 시세 얘기에 "어디까지 갈 거 같음?").
+            // 없으면 방 전체에 던지는 물음이 한 사람에게 붙어서 나간다.
+            if (act == SocialAct.ASK && ChatSocialAssets.Community(SocialAct.ASK, replied.act.ToString()) == null) { weight = 0; }
+            // 딴 얘기(잡담)는 잡담이나 놀림에만 붙는다. 답변에 대고 "의자에서 일어났더니 다리가…" 하지 않는다.
+            if (act == SocialAct.SMALLTALK && replied.act != SocialAct.SMALLTALK && replied.act != SocialAct.MOCK) { weight = 0; }
         }
         AdjustAngerWeight(bot, intent, act, ref weight);
         AdjustQuadrantWeight(bot, intent, act, ref weight);
@@ -204,6 +228,8 @@ public sealed partial class InvestorSociety
         }
         ApplySocialEffects(bot, message, witnesses);
         ReactToRejectedMediation(message, thread, witnesses);
+        // 방 전체에 던진 물음("혹시 OO 보는 사람 있어…?")은 누구도 답할 까닭이 없어 거의 늘 묻혔다. 들은 사람 가운데 하나가 답할 마음을 먹는다.
+        if (message.act == SocialAct.ASK && message.targetId == 0 && message.replyToId == 0 && thread == null) { OfferRoomAnswer(bot, message, witnesses); }
         if (message.targetId > 0)
         {
             DirectedMessages++;
@@ -234,6 +260,32 @@ public sealed partial class InvestorSociety
         mind.Intentions.Add(new SocialIntent { roomId = message.roomId, motive = SocialMotive.REPLY_OBLIGATION, targetId = message.senderId,
             replyToId = message.id, threadId = message.threadId, causeId = message.id, facts = message.facts,
             due = SocialTime.Seconds + delay, expires = wait.expires });
+        ExpectSoon(mind.SocialId);
+    }
+    /// <summary>
+    /// 방 전체에 던진 물음에 답할 사람을 하나 정한다. 그 종목을 들고 있는 사람이 먼저다(아는 사람이 답한다).
+    /// 늘 답이 달리지는 않는다: 열에 서넛은 그냥 묻힌다. 답하는 사람이 없으면 아무 일도 일어나지 않는다(부른 사람이 없으니 무시당했다고 화내지도 않는다).
+    /// </summary>
+    private void OfferRoomAnswer(TradeBot asker, SocialMessage message, List<TradeBot> witnesses)
+    {
+        if (ActiveThreads(message.roomId) >= Config.Int("maxThreads") || asker.Social.Psychology.ActiveThread != 0) { return; }
+        var stock = FindSocialStock(message.facts?.symbol);
+        TradeBot answerer = null;
+        foreach (var witness in witnesses)
+        {
+            var heard = witness.Social.Psychology;
+            if (heard.ActiveThread != 0 || heard.Intentions.Count > 0 || pendingReplies.ContainsKey(heard.SocialId) || pendingOrigins.ContainsKey(heard.SocialId) || !CanStartWith(witness, asker, message.roomId)) { continue; }
+            if (answerer == null) { answerer = witness; }
+            if (stock != null && witness.GetOwnedVolume(stock) > 0m) { answerer = witness; break; }
+        }
+        if (answerer == null) { return; }
+        var mind = answerer.Social.Psychology;
+        if (mind.SocialRng.Next() >= .45 + mind.Traits.Sociability / 200d) { return; }
+        double delay = Config.Get("replyDelayMin") + mind.SocialRng.Next() * (Config.Get("replyDelayMax") - Config.Get("replyDelayMin"));
+        mind.Intentions.Add(new SocialIntent { roomId = message.roomId, motive = SocialMotive.REPLY_OBLIGATION, targetId = message.senderId,
+            replyToId = message.id, causeId = message.id, facts = message.facts,
+            due = SocialTime.Seconds + delay, expires = SocialTime.Seconds + Config.Get("replyExpiry") });
+        ExpectSoon(mind.SocialId);
     }
     private void InviteThirdParty(SocialThread thread, SocialMessage message, List<TradeBot> witnesses)
     {
@@ -254,7 +306,7 @@ public sealed partial class InvestorSociety
             mind.Intentions.Add(new SocialIntent { roomId = thread.roomId, motive = SocialMotive.WITNESSED_EVENT, forcedAct = act,
                 threadId = thread.id, targetId = message.senderId, facts = message.facts, due = SocialTime.Seconds + Config.Get("replyDelayMin"), expires = SocialTime.Seconds + Config.Get("witnessExpiry") });
             // Reserve the participant slot immediately, preventing several observers from overbooking the last slot.
-            thread.participants.Add(mind.SocialId); mind.ActiveThread = thread.id; break;
+            thread.participants.Add(mind.SocialId); mind.ActiveThread = thread.id; ExpectSoon(mind.SocialId); break;
         }
     }
     partial void BeforeSocialTick()

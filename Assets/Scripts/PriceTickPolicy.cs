@@ -1,7 +1,7 @@
 using System;
 using System.Globalization;
 
-/// <summary>한국거래소 일반 주식 호가 단위. 최소 주가는 1원이며 금액 표시는 원 단위.</summary>
+/// <summary>한국거래소 일반 주식 호가 단위. 최소 주가는 1돈이며 금액 표시는 돈 단위.</summary>
 public static class PriceTickPolicy
 {
     private static readonly (decimal maxExclusive, decimal tick)[] Tiers =

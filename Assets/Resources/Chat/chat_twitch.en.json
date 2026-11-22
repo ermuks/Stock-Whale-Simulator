@@ -1,0 +1,210 @@
+{
+ "schemaVersion": 1,
+ "groups": [
+  {
+   "key": "pop.fuss",
+   "lines": [
+    "is it going?",
+    "{stockName} is moving!!",
+    "here we go here we go",
+    "{stockName} liftoff??",
+    "oh {stockName} just woke up",
+    "send it",
+    "guys {stockName}. look. now",
+    "it's happening",
+    "{stockName} just ripped a candle",
+    "ok ok ok {stockName}",
+    "is this the breakout?!",
+    "{stockName} is cooking",
+    "LFG {stockName}",
+    "we're so back",
+    "wait wait wait it's going",
+    "{stockName} engines on",
+    "green candle alert",
+    "oh we are SO going"
+   ]
+  },
+  {
+   "key": "pop.dry",
+   "lines": [
+    "{stockName} up a bit",
+    "{stockName} ticking up",
+    "small move. that's all it is",
+    "{stockName} +{move}%, fine",
+    "it moved. barely",
+    "couple ticks up",
+    "{stockName} drifting higher",
+    "normal wiggle",
+    "ok, slightly green",
+    "eh, it's a tick",
+    "{stockName} doing a little something",
+    "that's noise tbh",
+    "it does this every day"
+   ]
+  },
+  {
+   "key": "pop.doubt",
+   "lines": [
+    "is {stockName} actually going though?",
+    "smells like a fakeout",
+    "it'll come right back, watch",
+    "show me volume first",
+    "{stockName} did this last time and died",
+    "pump then dump, seen it",
+    "too early to call",
+    "someone swept the ask, that's all",
+    "nobody get excited yet",
+    "fool me once lol",
+    "{stockName} about to print a big upper wick",
+    "i'll believe it when it holds"
+   ]
+  },
+  {
+   "key": "pop.joke",
+   "lines": [
+    "{stockName} had its coffee",
+    "who woke {stockName} up lol",
+    "oh it's alive",
+    "{stockName} finally clocked in",
+    "chart's doing a little stretch lol",
+    "every time we say 'is it going' it doesn't lol",
+    "{stockName} took a breath",
+    "don't flirt with me {stockName}",
+    "{stockName} earning its keep for once"
+   ]
+  },
+  {
+   "key": "pop.fomo",
+   "lines": [
+    "is it too late to get in {stockName}?",
+    "should've bought {stockName}",
+    "everyone has {stockName} but me",
+    "in or out, in or out",
+    "why does it only go when i'm not in",
+    "shouldn't have sold yesterday",
+    "my buy finger is twitching",
+    "one dip and i'm in, i swear",
+    "do i chase {stockName} or cry",
+    "fomo is kicking in ngl"
+   ]
+  },
+  {
+   "key": "pop.holder",
+   "lines": [
+    "finally {stockName} moves",
+    "come on {stockName}, just get me to even",
+    "glad i held {stockName}",
+    "this is just the start. or copium",
+    "worth the wait. maybe",
+    "{stockName} keep going",
+    "don't stop here {stockName}",
+    "didn't sell. that's me. hi",
+    "that's my {stockName}, go on",
+    "little more {stockName}, you got this"
+   ]
+  },
+  {
+   "key": "spill.fuss",
+   "lines": [
+    "it's dumping",
+    "{stockName} is dumping!!",
+    "whoa {stockName} is falling",
+    "they're selling they're selling",
+    "{stockName} is cracking",
+    "what just happened to {stockName}",
+    "run",
+    "supply hitting {stockName}",
+    "it's so over for {stockName}",
+    "who is dumping right now",
+    "{stockName} sliding",
+    "look at that sell wall omg",
+    "uh uh uh it's slipping",
+    "{stockName} is leaking bad",
+    "abandon ship",
+    "{stockName} rug incoming",
+    "red candle red candle",
+    "{stockName} going down down"
+   ]
+  },
+  {
+   "key": "spill.dry",
+   "lines": [
+    "{stockName} down a bit",
+    "{stockName} slipping a little",
+    "just a pullback",
+    "{stockName} -{move}%, whatever",
+    "it's catching its breath",
+    "some profit taking",
+    "giving a little back",
+    "normal dip",
+    "a few ticks down",
+    "it has to come down sometimes",
+    "{stockName} taking five",
+    "meh, it's a tick",
+    "healthy. probably"
+   ]
+  },
+  {
+   "key": "spill.doubt",
+   "lines": [
+    "did {stockName} just top?",
+    "if it drops more, it's real",
+    "pullback or the end, can't tell",
+    "looks like a shakeout",
+    "let's see if support holds",
+    "too early to judge",
+    "did the big money just leave {stockName}?",
+    "wait for the bounce, then talk",
+    "this drop looks fake to me",
+    "dropping on volume is the bad kind",
+    "{stockName} shaking out weak hands maybe"
+   ]
+  },
+  {
+   "key": "spill.joke",
+   "lines": [
+    "{stockName} tripped lol",
+    "we said 'is it going' and it went down lol",
+    "{stockName} is out of breath",
+    "oops {stockName} fell over",
+    "who said it was going lol",
+    "stairs up, elevator down lol",
+    "that's what hype gets you lol",
+    "{stockName} went for a bathroom break",
+    "it slipped on its own candle lol"
+   ]
+  },
+  {
+   "key": "spill.holder",
+   "lines": [
+    "not selling {stockName}, not selling",
+    "should've sold {stockName}",
+    "i can sit through this",
+    "my gains are melting",
+    "please stop here {stockName}",
+    "shake all you want, i'm staying",
+    "should've taken profit",
+    "why does it drop the second i hold",
+    "my hands are shaking",
+    "it always rips after i sell so no",
+    "it's a pullback. i believe. {stockName} pls",
+    "diamond hands. sweaty diamond hands"
+   ]
+  },
+  {
+   "key": "spill.outsider",
+   "lines": [
+    "glad i stayed out of {stockName}",
+    "i'll pick up {stockName} lower",
+    "just watching",
+    "maybe i get in on the dip",
+    "good thing i missed it",
+    "let's see how far it goes",
+    "chasing would've hurt",
+    "is this the buy spot?",
+    "nice view from the sidelines",
+    "{stockName} going on sale soon"
+   ]
+  }
+ ]
+}

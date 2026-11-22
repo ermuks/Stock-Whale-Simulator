@@ -183,20 +183,19 @@ public sealed partial class InvestorSociety
             if (message.act == SocialAct.INSULT) { WitnessRelation(witness, message, "affinity", Config.Get("insultWitnessAffinity") * multiplier); }
             if (message.act == SocialAct.LAMENT)
             {
-                bool held = CaptureFacts(witness, FindSocialStock(message.facts?.symbol)).held;
+                WitnessPosition(witness, FindSocialStock(message.facts?.symbol), out bool held, out _, out _);
                 WitnessEmotion(witness, message, "fear", (held ? Config.Get("lamentHeldFear") : Config.Get("lamentOtherFear")) * multiplier);
             }
             if (message.act == SocialAct.BRAG)
             {
-                var own = CaptureFacts(witness, FindSocialStock(message.facts?.symbol));
-                decimal.TryParse(own.pct, System.Globalization.NumberStyles.Number, SocialCulture, out decimal ownReturn);
+                WitnessPosition(witness, FindSocialStock(message.facts?.symbol), out _, out decimal ownReturn, out bool ownLosing);
                 decimal.TryParse(message.facts?.pct, System.Globalization.NumberStyles.Number, SocialCulture, out decimal authorReturn);
                 if (authorReturn > ownReturn)
                 {
                     WitnessEmotion(witness, message, "greed", Config.Get("bragGreed") * multiplier);
                     ConsiderSocialFomo(witness, message);
                 }
-                if (own.losing) { WitnessRelation(witness, message, "affinity", Config.Get("losingBragAffinity") * multiplier); }
+                if (ownLosing) { WitnessRelation(witness, message, "affinity", Config.Get("losingBragAffinity") * multiplier); }
             }
             if ((message.act == SocialAct.PRAISE_PLAYER || message.act == SocialAct.WARN_PLAYER) && message.facts.eventId > 0 && mind.SocialHeardEvents.Add(message.facts.eventId))
             { WitnessEmotion(witness, message, "trust", (message.act == SocialAct.PRAISE_PLAYER ? Config.Get("praiseTrust") : Config.Get("warnTrust")) * multiplier); }

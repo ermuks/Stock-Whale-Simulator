@@ -139,7 +139,7 @@ public sealed class TabletRecordsView : MonoBehaviour
         }
         Color ink = TabletKitStyle.Ink, muted = TabletKitStyle.Muted;
         Write(summaryCaptions[0], T("오늘 실현 손익"), muted);
-        Write(summaryValues[0], InvestmentDashboard.Signed(realized) + (GameLocale.Code == "ko" ? "원" : " " + GameLocale.Text("원")), realized > 0m ? TabletKitStyle.Up : realized < 0m ? TabletKitStyle.Down : ink);
+        Write(summaryValues[0], InvestmentDashboard.Signed(realized) + (GameLocale.Code == "ko" ? "돈" : " " + GameLocale.Text("돈")), realized > 0m ? TabletKitStyle.Up : realized < 0m ? TabletKitStyle.Down : ink);
         Write(summaryCaptions[1], T("오늘 체결"), muted);
         Write(summaryValues[1], string.Format(T("매수 {0} · 매도 {1}"), buys, sells), buys + sells > 0 ? ink : muted);
         Write(summaryCaptions[2], T("오늘 매도 성적"), muted);

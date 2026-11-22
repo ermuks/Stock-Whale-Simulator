@@ -61,10 +61,8 @@ public static class ChartNavigationValidation
             Application.targetFrameRate = 20;
             if (phase == 0)
             {
-                var setup = UnityEngine.Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (setup?.businessName == null)
-                { return; }
-                setup.businessName.SetTextWithoutNotify("차트 검증"); setup.Refresh(); setup.confirm.onClick.Invoke(); phase++; return;
+                if (!NewGame.CanBegin) { return; }
+                NewGame.Begin("차트 검증"); phase++; return;
             }
             if (phase == 1)
             {

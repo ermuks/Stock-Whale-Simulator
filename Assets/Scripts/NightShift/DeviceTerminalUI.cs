@@ -54,7 +54,7 @@ public sealed class DeviceTerminalUI : MonoBehaviour
         if (target != null && !GameLocalizedText.Matches(target,value))
         { GameLocalizedText.Set(target,value); }
     }
-    public static string Money(decimal value) => PriceTickPolicy.FormatMoney(value) + (GameLocale.Code=="ko" ? "원" : " "+GameLocale.Text("원"));
+    public static string Money(decimal value) => PriceTickPolicy.FormatMoney(value) + (GameLocale.Code=="ko" ? "돈" : " "+GameLocale.Text("돈"));
     void Start()
     {
         mainTab.onClick.AddListener(Show);

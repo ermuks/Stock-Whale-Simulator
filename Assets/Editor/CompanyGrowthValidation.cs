@@ -70,9 +70,8 @@ public static class CompanyGrowthValidation
             var day=MarketDayController.Instance; var menu=PauseMenuController.Instance; var economy=CorporateEconomy.Instance;
             if (phase==0)
             {
-                var setup=Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (setup?.businessName==null) { return; }
-                setup.businessName.SetTextWithoutNotify("플레이어 기업"); setup.Refresh(); setup.confirm.onClick.Invoke();
+                if (!NewGame.CanBegin) { return; }
+                NewGame.Begin("플레이어 기업");
                 phase=1; due=Time.unscaledTime+2; return;
             }
             if (phase==1)

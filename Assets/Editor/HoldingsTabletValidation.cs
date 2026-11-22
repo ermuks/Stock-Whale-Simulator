@@ -120,7 +120,7 @@ public static class HoldingsTabletValidation
             if (phase == 8)
             {
                 sample.currentPrice = 4500m; detail.SetFromAccount(sample,fixture);
-                Check(detail.textEvaluationProfit.text == "-3,000원" && detail.textProfitPct.text == "-10.0%","negative position shows exact won loss and return");
+                Check(detail.textEvaluationProfit.text == "-3,000돈" && detail.textProfitPct.text == "-10.0%","negative position shows exact won loss and return");
                 Check(detail.textEvaluationProfit.color == new Color32(76,150,232,255),"loss uses the existing blue palette");
                 Inspect("loss");
                 sample.orderBook.CancelAllOrdersByOwner(fixture,sample); fixture.GrantShares(sample,1000000000m,5000m); sample.currentPrice = 5390m;
@@ -169,12 +169,12 @@ public static class HoldingsTabletValidation
         holdings.account = fixture;
         fixture.SellLimit(6000m,2m,0,sample); fixture.BuyLimit(4000m,1m,0,sample);
         detail.SetFromAccount(sample,fixture); Invoke(holdings,"SetSummaryTexts",fixture.cash,fixture.GetOwnedVolume(sample)*sample.currentPrice);
-        Check(detail.textQuantity.text == "6주" && detail.textAvgPrice.text == "5,000원","cost basis and quantity include pending sell escrow");
-        Check(detail.textEvaluationProfit.text == "+2,340원" && detail.textProfitPct.text == "+7.8%","six shares at 5000 with price 5390 show exact profit");
-        Check(detail.textCurrentPrice.text == "5,390원" && detail.textCurrentValue.text == "32,340원","current price and total position value are distinct");
+        Check(detail.textQuantity.text == "6주" && detail.textAvgPrice.text == "5,000돈","cost basis and quantity include pending sell escrow");
+        Check(detail.textEvaluationProfit.text == "+2,340돈" && detail.textProfitPct.text == "+7.8%","six shares at 5000 with price 5390 show exact profit");
+        Check(detail.textCurrentPrice.text == "5,390돈" && detail.textCurrentValue.text == "32,340돈","current price and total position value are distinct");
         Check(detail.textAvailability.text == "매도 가능 4주  ·  매도 대기 2주","available shares are separated from pending sells");
-        Check(holdings.textCash.text == "1,000,000원" && holdings.textTotal.text == "1,032,340원","reserved cash is included once in total assets");
-        Check(holdings.textCashAvailability.text == "가용 현금 996,000원  ·  매수 예치 4,000원","cash available and buy-order reserve are separately labelled");
+        Check(holdings.textCash.text == "1,000,000돈" && holdings.textTotal.text == "1,032,340돈","reserved cash is included once in total assets");
+        Check(holdings.textCashAvailability.text == "가용 현금 996,000돈  ·  매수 예치 4,000돈","cash available and buy-order reserve are separately labelled");
         Check(detail.textEvaluationProfit.color == new Color32(239,89,100,255),"profit uses the existing red palette");
     }
     private static void CheckDesk(TabletViewController tablet,int index)

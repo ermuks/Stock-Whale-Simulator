@@ -75,7 +75,10 @@ public static class DonDonLocalizationSetup
             AssetDatabase.AddObjectToAsset(font.material,font);
             foreach (var atlas in font.atlasTextures) { AssetDatabase.AddObjectToAsset(atlas,font); }
         }
-        string corpus = new string(string.Concat(rows.Skip(1).Select(row=>row[4])).Distinct().ToArray());
+        // 번역표의 일본어뿐 아니라 일본어로 따로 쓴 채팅 자료(Resources/Chat/*.ja.json)의 글자도 미리 넣어 둔다.
+        // 채팅 대사는 번역표를 거치지 않으므로, 여기서 빠지면 그 글자가 처음 나올 때 아틀라스를 다시 굽느라 버벅인다.
+        string chat = string.Concat(Directory.GetFiles("Assets/Resources/Chat","*.ja.json").Select(File.ReadAllText));
+        string corpus = new string((string.Concat(rows.Skip(1).Select(row=>row[4])) + chat).Where(c=>c >= ' ').Distinct().ToArray());
         // Keep the reviewed Japanese glyphs warm in player content; avoid an initial atlas rebuild.
         var fontSettings = new SerializedObject(font);
         fontSettings.FindProperty("m_ClearDynamicDataOnBuild").boolValue = false;
@@ -93,7 +96,9 @@ public static class DonDonLocalizationSetup
         font.TryAddCharacters(corpus,out string missing);
         if (!string.IsNullOrEmpty(missing)) { Debug.LogWarning("Japanese font missing: " + missing); }
         foreach (var atlas in font.atlasTextures)
-        { if (!AssetDatabase.Contains(atlas)) { AssetDatabase.AddObjectToAsset(atlas,font); } }
+        { if (atlas != null && !AssetDatabase.Contains(atlas)) { AssetDatabase.AddObjectToAsset(atlas,font); } }
+        // 창 없는 배치 모드에서는 새 아틀라스 텍스처를 만들지 못해 빈 자리가 남는다. 빈 자리는 지운다(남은 글자는 게임 중에 추가된다).
+        if (font.atlasTextures.Any(atlas=>atlas == null)) { font.atlasTextures = font.atlasTextures.Where(atlas=>atlas != null).ToArray(); }
         const string resource = "Assets/Resources/Localization/Fonts.asset";
         var fonts = AssetDatabase.LoadAssetAtPath<GameLocaleFonts>(resource);
         if (fonts == null) { fonts = ScriptableObject.CreateInstance<GameLocaleFonts>(); AssetDatabase.CreateAsset(fonts,resource); }

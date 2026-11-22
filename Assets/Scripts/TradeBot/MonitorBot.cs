@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// 모니터링 봇. 초기 20만원, 종목당 5천 주.
+/// 모니터링 봇. 초기 20만돈, 종목당 5천 주.
 /// 목표 매수가/매도가를 정해두고, 현재가가 근접하면 주문 실행.
 /// 떨어지면 매수, 올라가면 매도, 급등하면 FOMO 매수, 수익률 마이너스면 물타기.
 /// </summary>

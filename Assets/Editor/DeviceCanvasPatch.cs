@@ -155,7 +155,7 @@ public static class DeviceCanvasPatch
         var bg = Component<Image>(root.gameObject); bg.sprite = background; bg.type = UnityEngine.UI.Image.Type.Sliced; bg.fillCenter = true; bg.color = Color.white; bg.pixelsPerUnitMultiplier = 2f; bg.raycastTarget = false;
         ui.stockName = Text("Selected Company",root,"선택 종목",.025f,.025f,.31f,.06f,46f);
         ui.ticker = Text("Selected Ticker",root,"",.025f,.095f,.31f,.04f,30f,true);
-        ui.currentPrice = Text("Current Price",root,"0원",.36f,.02f,.29f,.09f,72f);
+        ui.currentPrice = Text("Current Price",root,"0돈",.36f,.02f,.29f,.09f,72f);
         ui.change = Text("Price Change",root,"",.36f,.115f,.29f,.045f,32f);
         var graphRect = Rect("Image :: Price History",root,.69f,.025f,.28f,.09f);
         Component<CanvasRenderer>(graphRect.gameObject);
@@ -188,7 +188,7 @@ public static class DeviceCanvasPatch
         ui.sell = Button("Manual Sell",draft,"매도",.51f,.09f,.49f,.09f,36f);
         Text("Order Type",draft,"주문 유형  지정가",0,.195f,.49f,.07f,30f);
         ui.split = Button("Split Toggle",draft,"분할 주문 OFF",.51f,.19f,.49f,.075f,30f); ui.splitLabel = ui.split.GetComponentInChildren<TextMeshProUGUI>();
-        Text("Limit Price Caption",draft,"주문 가격 · 원",0,.28f,.49f,.065f,29f,true);
+        Text("Limit Price Caption",draft,"주문 가격 · 돈",0,.28f,.49f,.065f,29f,true);
         Text("Quantity Caption",draft,"총 수량 · 주",.51f,.28f,.49f,.065f,29f,true);
         ui.price = Input("Limit Price",draft,"1",0,.35f,.49f,.09f);
         ui.quantity = Input("Order Quantity",draft,"1",.51f,.35f,.49f,.09f);

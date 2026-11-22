@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-// 비상장 소기업. 시가총액 10억 원 미만의 작은 회사들로, 거래소에 없어서 호가창으로는 살 수 없다.
+// 비상장 소기업. 시가총액 10억 돈 미만의 작은 회사들로, 거래소에 없어서 호가창으로는 살 수 없다.
 // 주인(대표 계좌)이 주식을 모두 들고 있고, 플레이어는 주인에게 직접 값을 치르고 지분을 넘겨받는다(평가액에 웃돈을 얹은 값).
 // 돈과 주식은 실제로 옮겨 갈 뿐 지어내지 않는다: 현금은 플레이어 → 주인, 주식은 주인 → 플레이어. 발행 주식 수는 그대로다.
 //
@@ -102,7 +102,7 @@ public sealed partial class CorporateEconomy
         }
     }
 
-    /// <summary>주인이 부르는 한 주의 값: 평가액에 웃돈을 얹는다. 원 단위로 올림.</summary>
+    /// <summary>주인이 부르는 한 주의 값: 평가액에 웃돈을 얹는다. 돈 단위로 올림.</summary>
     public decimal SmallAsk(Stock stock) => stock == null ? 0m : decimal.Ceiling(Math.Max(1m, stock.currentPrice) * (1m + (decimal)Math.Max(0, SmallCatalog.premium)));
     /// <summary>주인(플레이어가 아닌 주주 가운데 가장 많이 든 계좌).</summary>
     private Trader SmallSeller(Stock stock)
@@ -144,26 +144,26 @@ public sealed partial class CorporateEconomy
         payer.ExternalFlow(-mark); seller.ExternalFlow(mark);
         ladderAt = -10f; ObserveControl(stock);
         decimal ratio = PlayerAccounts.Instance.Owned(stock) / stock.issuedShares * 100m;
-        SmallResult = Local(shares.ToString("N0") + "주 인수 · " + cost.ToString("N0") + "원 · 지분 " + ratio.ToString("0.#") + "%",
-            "Bought " + shares.ToString("N0") + " shares · " + cost.ToString("N0") + " KRW · stake " + ratio.ToString("0.#") + "%",
-            shares.ToString("N0") + "株を取得 · " + cost.ToString("N0") + "ウォン · 持ち株 " + ratio.ToString("0.#") + "%");
+        SmallResult = Local(shares.ToString("N0") + "주 인수 · " + cost.ToString("N0") + "돈 · 지분 " + ratio.ToString("0.#") + "%",
+            "Bought " + shares.ToString("N0") + " shares · " + cost.ToString("N0") + " DON · stake " + ratio.ToString("0.#") + "%",
+            shares.ToString("N0") + "株を取得 · " + cost.ToString("N0") + "ドン · 持ち株 " + ratio.ToString("0.#") + "%");
         return true;
     }
 
     /// <summary>상장 대기 목록이 바뀌었다(종목 창이 다시 그린다).</summary>
     public static event Action ListingQueued;
-    /// <summary>시가총액 10억 원을 넘겨 다음 개장에 상장하기로 된 소기업인가.</summary>
+    /// <summary>시가총액 10억 돈을 넘겨 다음 개장에 상장하기로 된 소기업인가.</summary>
     public bool AwaitingListing(Stock stock) => IsSmall(stock) && !stock.IsListed && !stock.IsDelisted && stock.business?.growth != null && stock.business.growth.RequestedDay > 0;
-    /// <summary>상장 요건을 따로 보지 않는 소기업의 상장: 평가액이 10억 원 이상이면 된다.</summary>
+    /// <summary>상장 요건을 따로 보지 않는 소기업의 상장: 평가액이 10억 돈 이상이면 된다.</summary>
     private bool SmallListingReady(Stock stock) => IsSmall(stock) && stock.business?.growth != null && stock.business.growth.Appraisal >= SmallValueLimit;
-    /// <summary>결산 뒤에 부른다. 평가액이 10억 원을 넘긴 소기업은 다음 날 09:00에 상장한다. 그때까지 종목 창에 '상장 대기 중'으로 보인다.</summary>
+    /// <summary>결산 뒤에 부른다. 평가액이 10억 돈을 넘긴 소기업은 다음 날 09:00에 상장한다. 그때까지 종목 창에 '상장 대기 중'으로 보인다.</summary>
     private void QueueSmallListing(Stock stock, int day)
     {
         if (!IsSmall(stock) || stock.IsListed || stock.IsDelisted || stock.IsDelisting) { return; }
         var growth = stock.business?.growth;
         if (growth == null || growth.RequestedDay > 0 || growth.Appraisal < SmallValueLimit) { return; }
         growth.RequestedDay = Math.Max(1, day);
-        MarketEventFeed.Instance?.Notify(Local(stock.stockName + " · 시가총액 10억 원 돌파 · 내일 09:00 상장", stock.stockName + " · passed 1 billion KRW · lists tomorrow at 09:00", stock.stockName + " · 時価総額10億ウォン突破 · 明日09:00に上場"));
+        MarketEventFeed.Instance?.Notify(Local(stock.stockName + " · 시가총액 10억 돈 돌파 · 내일 09:00 상장", stock.stockName + " · passed 1 billion DON · lists tomorrow at 09:00", stock.stockName + " · 時価総額10億ドン突破 · 明日09:00に上場"));
         ListingQueued?.Invoke();
     }
     private readonly List<Stock> myCompanies = new();

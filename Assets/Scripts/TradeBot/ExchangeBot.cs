@@ -10,7 +10,7 @@ public partial class ExchangeBot : TradeBot
     public override bool IsExchangeParticipant => true;
     public static ExchangeBot Instance { get; private set; }
 
-    [Header("새 게임 자산 (원, 직렬화 가능한 설정)")]
+    [Header("새 게임 자산 (돈, 직렬화 가능한 설정)")]
     public bool useMarketCapCash = true;
     [Range(0f, 1f)]
     public float initialCashMarketCapRatio = 0.2f;
@@ -31,7 +31,7 @@ public partial class ExchangeBot : TradeBot
     [Header("뉴스 강도 / 기준가 영향 (퍼센트)")]
     public float weakNewsCutoff = 0.05f, mediumNewsCutoff = 0.1f;
     public float weakNewsPercent = 0.5f, mediumNewsPercent = 1f, strongNewsPercent = 2f;
-    [Header("방어 (현실 초 / 원 / 비율)")]
+    [Header("방어 (현실 초 / 돈 / 비율)")]
     [Min(1f)]
     public float reevaluationSeconds = 60f;
     [Min(0)]

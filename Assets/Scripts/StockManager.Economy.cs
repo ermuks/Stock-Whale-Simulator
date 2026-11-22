@@ -210,7 +210,7 @@ public partial class StockManager
         preview = new PlayerSetupPreview(name, shares, publicShares, price, funding, economy.playerBaseCash + funding, exchangeCash);
         if (exchangeCash < funding)
         {
-            reason = $"거래소 현금 부족: {funding - exchangeCash:N0}원 추가 필요";
+            reason = $"거래소 현금 부족: {funding - exchangeCash:N0}돈 추가 필요";
             return false;
         }
 
@@ -354,7 +354,7 @@ public partial class StockManager
         // 성향 평균(0.5)에 여유(1.15)를 곱한 0.575가 기준 비중이다.
         // 주식을 하나도 안 받은 사람도 이제는 살 돈이 있어서, 딱 맞추면 개장 직후 사는 쪽으로 쏠린다. 그만큼(20%) 낮춰 잡는다.
         retailExposureScale = Mathf.Clamp((float)(held / equity) / .575f * .8f, .01f, 1f);
-        Debug.Log($"[개미 자금] 현금 {equity - held:N0}원 · 보유 주식 {held:N0}원 · 주식 비중 {held / equity * 100m:0.0}% · 목표 비중 배율 {retailExposureScale:0.000}");
+        Debug.Log($"[개미 자금] 현금 {equity - held:N0}돈 · 보유 주식 {held:N0}돈 · 주식 비중 {held / equity * 100m:0.0}% · 목표 비중 배율 {retailExposureScale:0.000}");
     }
 
     public void AssignInitialCash(TradeBot bot)

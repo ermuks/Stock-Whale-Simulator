@@ -81,11 +81,7 @@ public static class UnlockScreenValidation
             {
                 Application.targetFrameRate = 20;
                 QualitySettings.vSyncCount = 0;
-                var setup = UnityEngine.Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (!manager.SetupConfirmed && setup != null && setup.confirm != null && setup.confirm.interactable)
-                {
-                    setup.confirm.onClick.Invoke();
-                }
+                if (NewGame.CanBegin) { NewGame.Begin(); }
 
                 if (manager.SetupConfirmed && day.Ready)
                 {

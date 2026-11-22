@@ -62,7 +62,7 @@ public sealed class InvestorJourneyUI : MonoBehaviour
         }
         else if (Step == 2)
         {
-            title = "내 리딩방 준비"; body = "개설 비용 " + career.OpeningCost.ToString("N0") + "원"; button = "비용 보기";
+            title = "내 리딩방 준비"; body = "개설 비용 " + career.OpeningCost.ToString("N0") + "돈"; button = "비용 보기";
         }
         else if (Step == 3)
         {

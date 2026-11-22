@@ -20,6 +20,10 @@ public sealed class MarketRhythmDirector : MonoBehaviour
     [Range(.002f, .1f)] public float restingNear = .004f;
     [Tooltip("현재가에서 가장 먼 대기 주문 거리")]
     [Range(.01f, .18f)] public float restingFar = .03f;
+    [Tooltip("매수 대기를 걸 때, 현재가 한참 아래(restingFar에서 deepFar 사이)에 걸 확률. 급락 때 받아 주는 호가가 된다.")]
+    [Range(0f, 1f)] public float deepChance = .35f;
+    [Tooltip("깊이 거는 매수 대기가 현재가에서 가장 멀리 떨어지는 거리.")]
+    [Range(.05f, .5f)] public float deepFar = .25f;
     public int RestingOrders { get; private set; }
     [Range(0f, 1f)] public float participation = .72f;
     public int seed = 8147;
@@ -130,7 +134,9 @@ public sealed class MarketRhythmDirector : MonoBehaviour
             var order = orders[i];
             if (order.purpose == OrderPurpose.Resting)
             {
-                if (SessionClock.Time - order.createdAt > restingLife || Math.Abs(order.price / stock.currentPrice - 1m) > (decimal)restingFar * 1.5m)
+                // 아래에 깊이 걸어 둔 매수(줍줍 대기)는 값이 내려올 때를 기다리는 것이라 멀어도 거두지 않는다. 값이 그보다 한참 위로 달아났을 때만 거둔다.
+                decimal away = order.price / stock.currentPrice - 1m;
+                if (SessionClock.Time - order.createdAt > restingLife || (order.isBuy ? away < -(decimal)deepFar * 1.3m : away > (decimal)restingFar * 1.5m))
                 { stock.orderBook.CancelOrder(order, stock); orders.RemoveAt(i); continue; }
                 if (order.isBuy)
                 { restingBuys++; }
@@ -201,7 +207,7 @@ public sealed class MarketRhythmDirector : MonoBehaviour
             available = bot.GetHolding(stock);
             slice = available * (decimal)Mathf.Clamp(resourceFraction, .005f, .1f);
         }
-        // 한 번의 크기: 주식 수로만 묶으면 싼 종목은 주문이 몇만 원어치밖에 안 된다. 금액으로도 잰다(조용할 때 20만~100만 원, 활발할 때 50만~300만 원).
+        // 한 번의 크기: 주식 수로만 묶으면 싼 종목은 주문이 몇만 돈어치밖에 안 된다. 금액으로도 잰다(조용할 때 20만~100만 돈, 활발할 때 50만~300만 돈).
         decimal shares = random.Next(active ? 50 : 15, active ? 250 : 90), worth = random.Next(active ? 500_000 : 200_000, active ? 3_000_000 : 1_000_000);
         decimal quantity = decimal.Floor(Math.Min(available, Math.Min(Math.Max(shares, worth / Math.Max(1m, price)), Math.Max(1m, slice))));
         if (quantity < 1m)
@@ -236,6 +242,13 @@ public sealed class MarketRhythmDirector : MonoBehaviour
         decimal near = (decimal)restingNear, span = Math.Max(.001m, (decimal)restingFar - near);
         decimal distance = near + span * (decimal)(u * u);
         decimal thin = 1m - (distance - near) / span * .6m;
+        // 줍줍 대기: 매수 대기의 일부는 한참 아래에 건다("이 값까지 오면 산다"). 차트를 볼 줄 알고 겁이 적은 사람일수록 그렇게 한다.
+        // 이것이 없으면 매수 대기가 현재가 바로 아래 3% 안에만 있어서, 누가 던지기 시작하면 금세 다 먹히고 호가창 아래쪽이 텅 빈다.
+        if (buy && random.NextDouble() < deepChance * (.6 + mind.ChartSkill * .8) * (1.2 - mind.Fear / 100.0))
+        {
+            distance = (decimal)restingFar + ((decimal)deepFar - (decimal)restingFar) * (decimal)random.NextDouble();
+            thin = 1m;
+        }
         decimal share = (decimal)restingShare, price, quantity;
         if (buy)
         {

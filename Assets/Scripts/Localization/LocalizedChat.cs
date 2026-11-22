@@ -18,7 +18,7 @@ public static class LocalizedChat
             if (slot.name == "target" || slot.name == "departedName")
             { value = slot.value == "방장" ? GameLocale.Text("방장") : value; }
             else if (slot.name == "gain" || slot.name == "loss")
-            { value = GameLocale.Code == "ja" ? Amount(slot.raw,false) + "ウォン" : Amount(slot.raw,false).Replace("~","~₩"); }
+            { value = GameLocale.Code == "ja" ? Amount(slot.raw,false) + "ドン" : Amount(slot.raw,false).Replace("~","~Ð"); }
             else if (slot.name == "return" || slot.name == "moveTalk") { value = Percent(slot.raw); }
             else if (slot.approximate && (slot.name == "amount" || slot.name == "memAmount")) { value = Amount(slot.raw); }
             else if (slot.approximate && (slot.name == "pct" || slot.name == "memPct"))
@@ -29,9 +29,9 @@ public static class LocalizedChat
             values[slot.name] = value;
         }
         string text = GameLocale.Template(social.localizedPhrase,values);
-        // 영어 문장은 "₩{amount}" 꼴이라 부호·어림 표시가 통화 기호 뒤에 붙는다("₩−~600k"). 부호와 어림 표시를 기호 앞으로 옮긴다("−~₩600k").
-        if (GameLocale.Code == "en" && text.IndexOf('₩') >= 0)
-        { text = System.Text.RegularExpressions.Regex.Replace(text,"₩([−+-]?~?)(?=[0-9])","$1₩"); }
+        // 영어 문장은 "Ð{amount}" 꼴이라 부호·어림 표시가 통화 기호 뒤에 붙는다("Ð−~600k"). 부호와 어림 표시를 기호 앞으로 옮긴다("−~Ð600k").
+        if (GameLocale.Code == "en" && text.IndexOf('Ð') >= 0)
+        { text = System.Text.RegularExpressions.Regex.Replace(text,"Ð([−+-]?~?)(?=[0-9])","$1Ð"); }
         string prefix = string.IsNullOrEmpty(social.localizedTarget) ? "" : "@" +
             (social.localizedTarget == "방장" ? GameLocale.Text("방장") : BotNicknames.Localize(social.localizedTarget)) + " ";
         return prefix + text + GameLocale.Text(social.localizedSuffix);

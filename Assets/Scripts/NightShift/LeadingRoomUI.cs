@@ -123,7 +123,7 @@ public sealed class LeadingRoomUI : MonoBehaviour
     {
         if (!decimal.TryParse(buyPrice.text.Replace(",", ""), NumberStyles.None, CultureInfo.InvariantCulture, out decimal buy) ||
             !decimal.TryParse(sellPrice.text.Replace(",", ""), NumberStyles.None, CultureInfo.InvariantCulture, out decimal sell))
-        { GameLocalizedText.Set(feedback,"소수점 없이 원 단위 가격을 입력하세요."); nextUpdate = Time.unscaledTime + 3f; return; }
+        { GameLocalizedText.Set(feedback,"소수점 없이 돈 단위 가격을 입력하세요."); nextUpdate = Time.unscaledTime + 3f; return; }
         InvestorSociety.Instance?.Issue(chat.SelectedRoom, StockManager.Instance.CurrentStock, buy, sell);
     }
     private void Cancel() { InvestorSociety.Instance?.CancelRoom(chat.SelectedRoom); }
@@ -196,11 +196,11 @@ public sealed class LeadingRoomUI : MonoBehaviour
         var npc = NpcLeadingRoom.Instance;
         if (npc == null)
         { return; }
-        Set(npcSummary,npc.LeaderName + " · 운영자\n체결 " + npc.FillCount + "건 · 실현 " + npc.RealizedProfit.ToString("+#,##0;-#,##0;0") + "원");
+        Set(npcSummary,npc.LeaderName + " · 운영자\n체결 " + npc.FillCount + "건 · 실현 " + npc.RealizedProfit.ToString("+#,##0;-#,##0;0") + "돈");
         Set(membershipLabel,npc.PlayerJoined ? "방 나가기" : npc.Available ? "방 참여" : "참여 예약");
         bool signal = npc.PlayerJoined && npc.HasSignal;
         var current = npc.Current;
-        Set(npcSignal,signal ? current.Stock.stockName + " · " + current.Time + " 관측\n" + (current.Buy > 0m ? (current.RestingBuy ? "매수 대기 " : "최근 매수 체결 ") + current.Buy.ToString("N0") + "원" : "매수 신호 없음") + "\n" + (current.Sell > 0m ? "매도 대기 " + current.Sell.ToString("N0") + "원" : "매도 신호 없음") : npc.PlayerJoined ? npc.Status : "참여하면 운영자의 실제 주문과 대화를 볼 수 있습니다.");
+        Set(npcSignal,signal ? current.Stock.stockName + " · " + current.Time + " 관측\n" + (current.Buy > 0m ? (current.RestingBuy ? "매수 대기 " : "최근 매수 체결 ") + current.Buy.ToString("N0") + "돈" : "매수 신호 없음") + "\n" + (current.Sell > 0m ? "매도 대기 " + current.Sell.ToString("N0") + "돈" : "매도 신호 없음") : npc.PlayerJoined ? npc.Status : "참여하면 운영자의 실제 주문과 대화를 볼 수 있습니다.");
         Set(npcFeedback,Time.unscaledTime < npcResultUntil ? npcResult : "주문 검토 → 태블릿 확인 → 직접 제출");
         bool available = signal && MarketDayController.CanTrade;
         npcBuy.interactable = available && current.Buy > 0m;

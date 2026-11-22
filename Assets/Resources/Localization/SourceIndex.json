@@ -112,7 +112,7 @@
     },
     {
       "key": "text.a7da1ec2383f17e8",
-      "source": " {0:N0}원 매수 지시는 거절했는데, 장 끝나기 전에 {1:N0}원까지 갔네요. {2} 기회였어요. 직접 번 건 아니지만 다시 보게 됩니다.",
+      "source": " {0:N0}돈 매수 지시는 거절했는데, 장 끝나기 전에 {1:N0}돈까지 갔네요. {2} 기회였어요. 직접 번 건 아니지만 다시 보게 됩니다.",
       "templateOnly": false
     },
     {
@@ -432,12 +432,12 @@
     },
     {
       "key": "text.778472db8b64ccb6",
-      "source": "0~1조 원 · 정수",
+      "source": "0~1조 돈 · 정수",
       "templateOnly": false
     },
     {
       "key": "text.23965b61719b45c0",
-      "source": "0원",
+      "source": "0돈",
       "templateOnly": false
     },
     {
@@ -462,12 +462,12 @@
     },
     {
       "key": "text.fb12a89e412a9c6e",
-      "source": "1원 미만",
+      "source": "1돈 미만",
       "templateOnly": false
     },
     {
       "key": "text.70d7854e636f35b8",
-      "source": "1원 이상 · 호가 단위 ",
+      "source": "1돈 이상 · 호가 단위 ",
       "templateOnly": false
     },
     {
@@ -507,7 +507,7 @@
     },
     {
       "key": "text.00a06061db967897",
-      "source": "50,000,000원",
+      "source": "50,000,000돈",
       "templateOnly": false
     },
     {
@@ -582,7 +582,7 @@
     },
     {
       "key": "text.8c50fbecb1787a60",
-      "source": "{0} {1:N0}주 · {2:N0}원 주문 / 체결은 호가 상황에 따라 달라집니다.",
+      "source": "{0} {1:N0}주 · {2:N0}돈 주문 / 체결은 호가 상황에 따라 달라집니다.",
       "templateOnly": false
     },
     {
@@ -592,7 +592,7 @@
     },
     {
       "key": "text.af1622738b82d183",
-      "source": "{0} · {1}\n매수 {2:N0}주 / 매도 {3:N0}주 / 체결 {4:N0}건\n작업 손익 {5:+#,##0;-#,##0;0}원 (잔여 평가 포함)\n잔여 {6:N0}주는 계좌에 남습니다.",
+      "source": "{0} · {1}\n매수 {2:N0}주 / 매도 {3:N0}주 / 체결 {4:N0}건\n작업 손익 {5:+#,##0;-#,##0;0}돈 (잔여 평가 포함)\n잔여 {6:N0}주는 계좌에 남습니다.",
       "templateOnly": false
     },
     {
@@ -1157,12 +1157,12 @@
     },
     {
       "key": "text.f76774f5c94ff7cf",
-      "source": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}원임.",
+      "source": "{memWhen} {memSymbol} 따라간 내 손익 {memAmount}돈임.",
       "templateOnly": true
     },
     {
       "key": "text.eca6d92b64fa1a20",
-      "source": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}원이었어요.",
+      "source": "{memWhen} {memSymbol} 따라간 제 손익은 {memAmount}돈이었어요.",
       "templateOnly": true
     },
     {
@@ -1212,7 +1212,7 @@
     },
     {
       "key": "text.41854fb2d930a048",
-      "source": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}원이었습니다.",
+      "source": "{memWhen} {memSymbol} 지시를 따른 제 손익은 {memAmount}돈이었습니다.",
       "templateOnly": true
     },
     {
@@ -1642,12 +1642,12 @@
     },
     {
       "key": "text.dfe2de5e7bd5037d",
-      "source": "{stockName} {seenPrice}원 보고 있었는데 지금 {price}원이네 와..",
+      "source": "{stockName} {seenPrice}돈 보고 있었는데 지금 {price}돈이네 와..",
       "templateOnly": true
     },
     {
       "key": "text.743ba6f1081608dc",
-      "source": "{stockName} {seenPrice}원 찍어뒀는데 {price}원 됐네 ㄷㄷ 무슨 일 있었냐",
+      "source": "{stockName} {seenPrice}돈 찍어뒀는데 {price}돈 됐네 ㄷㄷ 무슨 일 있었냐",
       "templateOnly": true
     },
     {
@@ -1712,12 +1712,12 @@
     },
     {
       "key": "text.cabf92635089bdd5",
-      "source": "{stockName} 관심 목록 다시 켰는데 {seenPrice}원에서 {price}원 됐어. 잠깐 사이 뭐 있었나?",
+      "source": "{stockName} 관심 목록 다시 켰는데 {seenPrice}돈에서 {price}돈 됐어. 잠깐 사이 뭐 있었나?",
       "templateOnly": true
     },
     {
       "key": "text.0a5ffd8299fe0086",
-      "source": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}원에서 {price}원 무슨 일임?",
+      "source": "{stockName} 관심 목록 켰다가 놀랐네. {seenPrice}돈에서 {price}돈 무슨 일임?",
       "templateOnly": true
     },
     {
@@ -1727,12 +1727,12 @@
     },
     {
       "key": "text.789751b55c93c241",
-      "source": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원과 차이가 큽니다.",
+      "source": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈과 차이가 큽니다.",
       "templateOnly": true
     },
     {
       "key": "text.be017bef92e9b7e1",
-      "source": "{stockName} 관심 목록을 다시 확인했더니 {price}원이네요. 앞서 본 {seenPrice}원보다 많이 낮습니다.",
+      "source": "{stockName} 관심 목록을 다시 확인했더니 {price}돈이네요. 앞서 본 {seenPrice}돈보다 많이 낮습니다.",
       "templateOnly": true
     },
     {
@@ -1802,7 +1802,7 @@
     },
     {
       "key": "text.b180ea13edd25e59",
-      "source": "{stockName} 다른 거 보다 왔는데 {price}원? 아까 {seenPrice}원이었잖아;",
+      "source": "{stockName} 다른 거 보다 왔는데 {price}돈? 아까 {seenPrice}돈이었잖아;",
       "templateOnly": true
     },
     {
@@ -1877,12 +1877,12 @@
     },
     {
       "key": "text.9cb8dcedc0b5fefc",
-      "source": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 내려왔습니다. 무슨 일이 있었나요?",
+      "source": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 내려왔습니다. 무슨 일이 있었나요?",
       "templateOnly": true
     },
     {
       "key": "text.0cbb8962e56831ad",
-      "source": "{stockName} 마지막 확인 가격 {seenPrice}원에서 {price}원까지 올랐습니다. 무슨 일이 있었나요?",
+      "source": "{stockName} 마지막 확인 가격 {seenPrice}돈에서 {price}돈까지 올랐습니다. 무슨 일이 있었나요?",
       "templateOnly": true
     },
     {
@@ -2062,12 +2062,12 @@
     },
     {
       "key": "text.bb3b714ce86bb3ee",
-      "source": "{stockName} 어느새 {price}원까지 내려왔나요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "source": "{stockName} 어느새 {price}돈까지 내려왔나요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "templateOnly": true
     },
     {
       "key": "text.a25b55368faf434b",
-      "source": "{stockName} 어느새 {price}원인가요? 직전 확인 때는 {seenPrice}원이었습니다.",
+      "source": "{stockName} 어느새 {price}돈인가요? 직전 확인 때는 {seenPrice}돈이었습니다.",
       "templateOnly": true
     },
     {
@@ -2157,22 +2157,22 @@
     },
     {
       "key": "text.d8d12e4760697359",
-      "source": "{stockName} 와 뭐냐 {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "source": "{stockName} 와 뭐냐 {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "templateOnly": true
     },
     {
       "key": "text.1dc9a583715eabf1",
-      "source": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}원에서 {price}원? {movePct}% ㄷㄷ",
+      "source": "{stockName} 와 뭐냐ㅋㅋ {seenPrice}돈에서 {price}돈? {movePct}% ㄷㄷ",
       "templateOnly": true
     },
     {
       "key": "text.0b87c18289aef52f",
-      "source": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}원이었는데 지금 {price}원? {movePct}% ㄷㄷ..",
+      "source": "{stockName} 와 뭐임? {seenMinutes}분 전엔 {seenPrice}돈이었는데 지금 {price}돈? {movePct}% ㄷㄷ..",
       "templateOnly": true
     },
     {
       "key": "text.fc5a0f8a69fe4b2f",
-      "source": "{stockName} 와 뭐임? {seenPrice}원이었는데 {price}원까지 빠졌어? {movePct}% ㄷㄷ..",
+      "source": "{stockName} 와 뭐임? {seenPrice}돈이었는데 {price}돈까지 빠졌어? {movePct}% ㄷㄷ..",
       "templateOnly": true
     },
     {
@@ -2312,12 +2312,12 @@
     },
     {
       "key": "text.8a81f1e80c2c557d",
-      "source": "{stockName} 잠깐 다른 데 봤는데 {price}원 뭐임.. 아까 {seenPrice}원이었는데",
+      "source": "{stockName} 잠깐 다른 데 봤는데 {price}돈 뭐임.. 아까 {seenPrice}돈이었는데",
       "templateOnly": true
     },
     {
       "key": "text.d60b96d856a2b876",
-      "source": "{stockName} 잠깐 다른 종목 봤는데 {price}원이네 ㄷㄷ 아까 {seenPrice}원이었음",
+      "source": "{stockName} 잠깐 다른 종목 봤는데 {price}돈이네 ㄷㄷ 아까 {seenPrice}돈이었음",
       "templateOnly": true
     },
     {
@@ -2332,7 +2332,7 @@
     },
     {
       "key": "text.385a5188f00d627c",
-      "source": "{stockName} 잠깐만, 아까 {seenPrice}원 아니었어? 지금 {price}원이라니 ㄷㄷ",
+      "source": "{stockName} 잠깐만, 아까 {seenPrice}돈 아니었어? 지금 {price}돈이라니 ㄷㄷ",
       "templateOnly": true
     },
     {
@@ -2632,107 +2632,107 @@
     },
     {
       "key": "text.8b08264b12825293",
-      "source": "{symbol} {price}원 기준으로 다음 변화 보고 있어요.",
+      "source": "{symbol} {price}돈 기준으로 다음 변화 보고 있어요.",
       "templateOnly": true
     },
     {
       "key": "text.cb5ecabe8936412b",
-      "source": "{symbol} {price}원 기준으로 다음 변화 보고 있어요. 계속 보고 있을게요.",
+      "source": "{symbol} {price}돈 기준으로 다음 변화 보고 있어요. 계속 보고 있을게요.",
       "templateOnly": true
     },
     {
       "key": "text.8feea54497f7e459",
-      "source": "{symbol} {price}원, 아직 판단을 내리지는 않았습니다.",
+      "source": "{symbol} {price}돈, 아직 판단을 내리지는 않았습니다.",
       "templateOnly": true
     },
     {
       "key": "text.ea306cb11d88a0e6",
-      "source": "{symbol} {price}원, 아직 판단을 내리지는 않았습니다. 계속 확인하겠습니다.",
+      "source": "{symbol} {price}돈, 아직 판단을 내리지는 않았습니다. 계속 확인하겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.4dd9215a6a6ce7c4",
-      "source": "{symbol} {price}원, 어떻게 보고 계십니까?",
+      "source": "{symbol} {price}돈, 어떻게 보고 계십니까?",
       "templateOnly": true
     },
     {
       "key": "text.5eff93206c8b5cf5",
-      "source": "{symbol} {price}원, 어떻게 보고 계십니까? 의견을 듣고 싶습니다.",
+      "source": "{symbol} {price}돈, 어떻게 보고 계십니까? 의견을 듣고 싶습니다.",
       "templateOnly": true
     },
     {
       "key": "text.15d41f95d5c0704f",
-      "source": "{symbol} {price}원. 판단은 아직.",
+      "source": "{symbol} {price}돈. 판단은 아직.",
       "templateOnly": true
     },
     {
       "key": "text.48ac30e23de6600c",
-      "source": "{symbol} {price}원. 판단은 아직. 계속 본다.",
+      "source": "{symbol} {price}돈. 판단은 아직. 계속 본다.",
       "templateOnly": true
     },
     {
       "key": "text.22466a7dfcbd622e",
-      "source": "{symbol} {price}원... 뭘 해도 내가 하면 반대로 갈 것 같음 ㅋㅋ",
+      "source": "{symbol} {price}돈... 뭘 해도 내가 하면 반대로 갈 것 같음 ㅋㅋ",
       "templateOnly": true
     },
     {
       "key": "text.d07a3aad552ce0d7",
-      "source": "{symbol} {price}원부터 어떻게 되는지 보는 중.",
+      "source": "{symbol} {price}돈부터 어떻게 되는지 보는 중.",
       "templateOnly": true
     },
     {
       "key": "text.f1f50feaeee3522a",
-      "source": "{symbol} {price}원부터 어떻게 되는지 보는 중. 계속 본다.",
+      "source": "{symbol} {price}돈부터 어떻게 되는지 보는 중. 계속 본다.",
       "templateOnly": true
     },
     {
       "key": "text.52eec0732b890f30",
-      "source": "{symbol} {price}원을 기준으로 다음 변화를 보고 있습니다.",
+      "source": "{symbol} {price}돈을 기준으로 다음 변화를 보고 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.a4ddd0ff05139d63",
-      "source": "{symbol} {price}원을 기준으로 다음 변화를 보고 있습니다. 계속 확인하겠습니다.",
+      "source": "{symbol} {price}돈을 기준으로 다음 변화를 보고 있습니다. 계속 확인하겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.ef5f9768af1923ed",
-      "source": "{symbol} {price}원인데 다들 어떻게 봄?",
+      "source": "{symbol} {price}돈인데 다들 어떻게 봄?",
       "templateOnly": true
     },
     {
       "key": "text.53e65f242accd644",
-      "source": "{symbol} {price}원인데 다들 어떻게 봄? 의견 좀 줘.",
+      "source": "{symbol} {price}돈인데 다들 어떻게 봄? 의견 좀 줘.",
       "templateOnly": true
     },
     {
       "key": "text.777cead83705f8df",
-      "source": "{symbol} {price}원인데 아직 판단은 안 했어요.",
+      "source": "{symbol} {price}돈인데 아직 판단은 안 했어요.",
       "templateOnly": true
     },
     {
       "key": "text.7776a15dee7e5e71",
-      "source": "{symbol} {price}원인데 아직 판단은 안 했어요. 계속 보고 있을게요.",
+      "source": "{symbol} {price}돈인데 아직 판단은 안 했어요. 계속 보고 있을게요.",
       "templateOnly": true
     },
     {
       "key": "text.f06c90d268528c00",
-      "source": "{symbol} {price}원인데 어떻게 보세요?",
+      "source": "{symbol} {price}돈인데 어떻게 보세요?",
       "templateOnly": true
     },
     {
       "key": "text.1b19ca8efc7d405c",
-      "source": "{symbol} {price}원인데 어떻게 보세요? 의견 좀 듣고 싶어요.",
+      "source": "{symbol} {price}돈인데 어떻게 보세요? 의견 좀 듣고 싶어요.",
       "templateOnly": true
     },
     {
       "key": "text.47a4343cde2c8764",
-      "source": "{symbol} {price}원입니다. 다음 움직임을 보겠습니다.",
+      "source": "{symbol} {price}돈입니다. 다음 움직임을 보겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.55212cd976d9680c",
-      "source": "{symbol} {price}원입니다. 다음 움직임을 보겠습니다. 계속 확인하겠습니다.",
+      "source": "{symbol} {price}돈입니다. 다음 움직임을 보겠습니다. 계속 확인하겠습니다.",
       "templateOnly": true
     },
     {
@@ -2747,7 +2747,7 @@
     },
     {
       "key": "text.9eeb3a0914648fa3",
-      "source": "{symbol} {profitKind} 수익 {amount}원. 이 정도면 됐지.",
+      "source": "{symbol} {profitKind} 수익 {amount}돈. 이 정도면 됐지.",
       "templateOnly": true
     },
     {
@@ -2762,237 +2762,237 @@
     },
     {
       "key": "text.42165fe14be16181",
-      "source": "{symbol} {profitKind} 수익이 났네요. {amount}원입니다.",
+      "source": "{symbol} {profitKind} 수익이 났네요. {amount}돈입니다.",
       "templateOnly": true
     },
     {
       "key": "text.ec35284fba954cfd",
-      "source": "{symbol} {profitKind}손익 {amount}원 보고 있어. 그냥 누구한테라도 말하고 싶더라.",
+      "source": "{symbol} {profitKind}손익 {amount}돈 보고 있어. 그냥 누구한테라도 말하고 싶더라.",
       "templateOnly": true
     },
     {
       "key": "text.9dbc967b3c220fdb",
-      "source": "{symbol} {profitKind}손익 {amount}원 보고 있어요. 누구한테 말하고 싶어서 적습니다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈 보고 있어요. 누구한테 말하고 싶어서 적습니다.",
       "templateOnly": true
     },
     {
       "key": "text.43cb01004102536d",
-      "source": "{symbol} {profitKind}손익 {amount}원 보고 있음. 마음이 복잡하네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈 보고 있음. 마음이 복잡하네.",
       "templateOnly": true
     },
     {
       "key": "text.6d3a462a22445078",
-      "source": "{symbol} {profitKind}손익 {amount}원 보니까 기분 좋아요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈 보니까 기분 좋아요.",
       "templateOnly": true
     },
     {
       "key": "text.ecf3aaf4fb33fd51",
-      "source": "{symbol} {profitKind}손익 {amount}원 보니까 기분 좋아요. 기분 좋네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈 보니까 기분 좋아요. 기분 좋네요.",
       "templateOnly": true
     },
     {
       "key": "text.0beba15521af2066",
-      "source": "{symbol} {profitKind}손익 {amount}원. 기분은 좋다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 기분은 좋다.",
       "templateOnly": true
     },
     {
       "key": "text.6b8a0c399fa0b791",
-      "source": "{symbol} {profitKind}손익 {amount}원. 기분은 좋다. 기분 좋네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 기분은 좋다. 기분 좋네.",
       "templateOnly": true
     },
     {
       "key": "text.59d9b5b074972dfa",
-      "source": "{symbol} {profitKind}손익 {amount}원. 나만 이러냐.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 나만 이러냐.",
       "templateOnly": true
     },
     {
       "key": "text.1f25928ad73a8945",
-      "source": "{symbol} {profitKind}손익 {amount}원. 나만 이러냐. 참 씁쓸하네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 나만 이러냐. 참 씁쓸하네.",
       "templateOnly": true
     },
     {
       "key": "text.a015aa9618982c7f",
-      "source": "{symbol} {profitKind}손익 {amount}원. 내 판단을 다시 생각하게 되네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 내 판단을 다시 생각하게 되네.",
       "templateOnly": true
     },
     {
       "key": "text.d47330d36b45134a",
-      "source": "{symbol} {profitKind}손익 {amount}원. 마음대로 되는 게 없네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 마음대로 되는 게 없네.",
       "templateOnly": true
     },
     {
       "key": "text.0bae033174ec15ff",
-      "source": "{symbol} {profitKind}손익 {amount}원. 마음대로 되는 게 없네. 참 씁쓸하네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 마음대로 되는 게 없네. 참 씁쓸하네.",
       "templateOnly": true
     },
     {
       "key": "text.caa3fd0fcd9a23b8",
-      "source": "{symbol} {profitKind}손익 {amount}원. 머리 좀 식히자.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 머리 좀 식히자.",
       "templateOnly": true
     },
     {
       "key": "text.13e715d1b8e99b98",
-      "source": "{symbol} {profitKind}손익 {amount}원. 머리 좀 식히자. 참 씁쓸하네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 머리 좀 식히자. 참 씁쓸하네.",
       "templateOnly": true
     },
     {
       "key": "text.968f1420d8e384d2",
-      "source": "{symbol} {profitKind}손익 {amount}원. 아쉽네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 아쉽네.",
       "templateOnly": true
     },
     {
       "key": "text.5e33c1081abe8fe0",
-      "source": "{symbol} {profitKind}손익 {amount}원. 아쉽네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 아쉽네요.",
       "templateOnly": true
     },
     {
       "key": "text.a0c891b89a9d2b93",
-      "source": "{symbol} {profitKind}손익 {amount}원. 오늘은 숫자가 내 편이네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 오늘은 숫자가 내 편이네.",
       "templateOnly": true
     },
     {
       "key": "text.603061f3850fcd22",
-      "source": "{symbol} {profitKind}손익 {amount}원. 웃음 나온다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 웃음 나온다.",
       "templateOnly": true
     },
     {
       "key": "text.6b302bc6946c6efa",
-      "source": "{symbol} {profitKind}손익 {amount}원. 웃음 나온다. 기분 좋네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 웃음 나온다. 기분 좋네.",
       "templateOnly": true
     },
     {
       "key": "text.33137187f1b8e5ad",
-      "source": "{symbol} {profitKind}손익 {amount}원. 이 숫자랑은 친해지기 싫네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 이 숫자랑은 친해지기 싫네.",
       "templateOnly": true
     },
     {
       "key": "text.ecc0950337a8f3e8",
-      "source": "{symbol} {profitKind}손익 {amount}원. 이 정도면 자랑 좀 해도 되죠?",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 이 정도면 자랑 좀 해도 되죠?",
       "templateOnly": true
     },
     {
       "key": "text.c79e1e37239fb93e",
-      "source": "{symbol} {profitKind}손익 {amount}원. 이 정도면 자랑 좀 해도 되죠? 기분 좋네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 이 정도면 자랑 좀 해도 되죠? 기분 좋네요.",
       "templateOnly": true
     },
     {
       "key": "text.fe5e85148add0ef9",
-      "source": "{symbol} {profitKind}손익 {amount}원. 이건 자랑 좀 하자.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 이건 자랑 좀 하자.",
       "templateOnly": true
     },
     {
       "key": "text.32edcc8b9f800e15",
-      "source": "{symbol} {profitKind}손익 {amount}원. 이건 자랑 좀 하자. 기분 좋네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 이건 자랑 좀 하자. 기분 좋네.",
       "templateOnly": true
     },
     {
       "key": "text.dc396f33fece59c7",
-      "source": "{symbol} {profitKind}손익 {amount}원. 좋네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 좋네.",
       "templateOnly": true
     },
     {
       "key": "text.fe89c9a32909cfe7",
-      "source": "{symbol} {profitKind}손익 {amount}원. 좋네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 좋네요.",
       "templateOnly": true
     },
     {
       "key": "text.3fc0e18f5cbf549f",
-      "source": "{symbol} {profitKind}손익 {amount}원. 지금까지는 만족할 만하네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈. 지금까지는 만족할 만하네.",
       "templateOnly": true
     },
     {
       "key": "text.213a4e59cf8d4f93",
-      "source": "{symbol} {profitKind}손익 {amount}원… 잠깐 숨 좀 돌릴게요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈… 잠깐 숨 좀 돌릴게요.",
       "templateOnly": true
     },
     {
       "key": "text.8d4485b08f3416f5",
-      "source": "{symbol} {profitKind}손익 {amount}원… 잠깐 숨 좀 돌릴게요. 참 씁쓸하네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈… 잠깐 숨 좀 돌릴게요. 참 씁쓸하네요.",
       "templateOnly": true
     },
     {
       "key": "text.39dbf24388070376",
-      "source": "{symbol} {profitKind}손익 {amount}원… 저만 이런가요?",
+      "source": "{symbol} {profitKind}손익 {amount}돈… 저만 이런가요?",
       "templateOnly": true
     },
     {
       "key": "text.a8012a97dc2ba446",
-      "source": "{symbol} {profitKind}손익 {amount}원… 저만 이런가요? 참 씁쓸하네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈… 저만 이런가요? 참 씁쓸하네요.",
       "templateOnly": true
     },
     {
       "key": "text.04e6ba3b9ec4d9cb",
-      "source": "{symbol} {profitKind}손익 {amount}원을 보고 있습니다. 마음을 가라앉히고 싶네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈을 보고 있습니다. 마음을 가라앉히고 싶네요.",
       "templateOnly": true
     },
     {
       "key": "text.35a8d769bf59f9bf",
-      "source": "{symbol} {profitKind}손익 {amount}원을 보고 있으니 기분이 좋습니다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈을 보고 있으니 기분이 좋습니다.",
       "templateOnly": true
     },
     {
       "key": "text.530bbefde63bebe5",
-      "source": "{symbol} {profitKind}손익 {amount}원을 보고 있으니 기분이 좋습니다. 기쁜 마음입니다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈을 보고 있으니 기분이 좋습니다. 기쁜 마음입니다.",
       "templateOnly": true
     },
     {
       "key": "text.d1c634a22ffaca12",
-      "source": "{symbol} {profitKind}손익 {amount}원이네요. 마음처럼 안 되네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈이네요. 마음처럼 안 되네요.",
       "templateOnly": true
     },
     {
       "key": "text.adf1c45965fda8e8",
-      "source": "{symbol} {profitKind}손익 {amount}원이네요. 마음처럼 안 되네요. 참 씁쓸하네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈이네요. 마음처럼 안 되네요. 참 씁쓸하네요.",
       "templateOnly": true
     },
     {
       "key": "text.d8d0aba057e07068",
-      "source": "{symbol} {profitKind}손익 {amount}원이네요. 오늘은 숫자가 제 편입니다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈이네요. 오늘은 숫자가 제 편입니다.",
       "templateOnly": true
     },
     {
       "key": "text.39890612cfa811ec",
-      "source": "{symbol} {profitKind}손익 {amount}원이라 웃어넘기려다 실패함.",
+      "source": "{symbol} {profitKind}손익 {amount}돈이라 웃어넘기려다 실패함.",
       "templateOnly": true
     },
     {
       "key": "text.303303f0c2906ad5",
-      "source": "{symbol} {profitKind}손익 {amount}원이라 표정 관리가 안 되네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈이라 표정 관리가 안 되네.",
       "templateOnly": true
     },
     {
       "key": "text.dcffd6ee49e04be2",
-      "source": "{symbol} {profitKind}손익 {amount}원이야. 그냥 기분 좋아서 얘기함…",
+      "source": "{symbol} {profitKind}손익 {amount}돈이야. 그냥 기분 좋아서 얘기함…",
       "templateOnly": true
     },
     {
       "key": "text.80d51c0d22a4bbb6",
-      "source": "{symbol} {profitKind}손익 {amount}원인데 자꾸 다시 보게 됨. 기분 좋네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈인데 자꾸 다시 보게 됨. 기분 좋네.",
       "templateOnly": true
     },
     {
       "key": "text.ec67b2b2c82d7a37",
-      "source": "{symbol} {profitKind}손익 {amount}원인데… 좀 무섭다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈인데… 좀 무섭다.",
       "templateOnly": true
     },
     {
       "key": "text.735a991d19896595",
-      "source": "{symbol} {profitKind}손익 {amount}원임. 안 보려고 해도 자꾸 보게 되네.",
+      "source": "{symbol} {profitKind}손익 {amount}돈임. 안 보려고 해도 자꾸 보게 되네.",
       "templateOnly": true
     },
     {
       "key": "text.cea858b1ca33831a",
-      "source": "{symbol} {profitKind}손익 {amount}원입니다. 다른 분들은 어떠신지요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈입니다. 다른 분들은 어떠신지요.",
       "templateOnly": true
     },
     {
       "key": "text.6d3942dce6623908",
-      "source": "{symbol} {profitKind}손익 {amount}원입니다. 다른 분들은 어떠신지요. 씁쓸합니다.",
+      "source": "{symbol} {profitKind}손익 {amount}돈입니다. 다른 분들은 어떠신지요. 씁쓸합니다.",
       "templateOnly": true
     },
     {
       "key": "text.16265997590af26b",
-      "source": "{symbol} {profitKind}손익 {amount}원입니다. 숫자에 정이 안 가네요.",
+      "source": "{symbol} {profitKind}손익 {amount}돈입니다. 숫자에 정이 안 가네요.",
       "templateOnly": true
     },
     {
@@ -3107,47 +3107,47 @@
     },
     {
       "key": "text.c400f311ff38565a",
-      "source": "{symbol} {profitKind}손익은 {amount}원입니다. 지금까지는 만족스럽네요.",
+      "source": "{symbol} {profitKind}손익은 {amount}돈입니다. 지금까지는 만족스럽네요.",
       "templateOnly": true
     },
     {
       "key": "text.046fe0744366ae00",
-      "source": "{symbol} {profitKind}손익이 {amount}원이네. 나한텐 괜찮은 결과야.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈이네. 나한텐 괜찮은 결과야.",
       "templateOnly": true
     },
     {
       "key": "text.5841b2b57b0343e7",
-      "source": "{symbol} {profitKind}손익이 {amount}원이라 웃어넘기기가 어렵네요.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈이라 웃어넘기기가 어렵네요.",
       "templateOnly": true
     },
     {
       "key": "text.1a69f39d40f9f71d",
-      "source": "{symbol} {profitKind}손익이 {amount}원이라 표정 관리가 잘 안 되네요.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈이라 표정 관리가 잘 안 되네요.",
       "templateOnly": true
     },
     {
       "key": "text.a39e86f6aace6443",
-      "source": "{symbol} {profitKind}손익이 {amount}원이에요. 숫자를 몇 번이나 다시 봤네요.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈이에요. 숫자를 몇 번이나 다시 봤네요.",
       "templateOnly": true
     },
     {
       "key": "text.38a244e4fb739959",
-      "source": "{symbol} {profitKind}손익이 {amount}원이에요. 안 보려고 해도 자꾸 확인하네요.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈이에요. 안 보려고 해도 자꾸 확인하네요.",
       "templateOnly": true
     },
     {
       "key": "text.810d502fcaf2db9e",
-      "source": "{symbol} {profitKind}손익이 {amount}원인데… 조금 무섭네요.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈인데… 조금 무섭네요.",
       "templateOnly": true
     },
     {
       "key": "text.2b3e42249391dc46",
-      "source": "{symbol} {profitKind}손익이 {amount}원임. 숫자 보고 또 보고 하는 중.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈임. 숫자 보고 또 보고 하는 중.",
       "templateOnly": true
     },
     {
       "key": "text.687dde46d6347d38",
-      "source": "{symbol} {profitKind}손익이 {amount}원입니다. 손실을 보니 판단을 다시 생각하게 되네요.",
+      "source": "{symbol} {profitKind}손익이 {amount}돈입니다. 손실을 보니 판단을 다시 생각하게 되네요.",
       "templateOnly": true
     },
     {
@@ -3177,12 +3177,12 @@
     },
     {
       "key": "text.09ce0222859999dd",
-      "source": "{symbol} {seenPrice}원 보고 갔는데 {price}원? 차트 잘못 켠 줄",
+      "source": "{symbol} {seenPrice}돈 보고 갔는데 {price}돈? 차트 잘못 켠 줄",
       "templateOnly": true
     },
     {
       "key": "text.673c1af2eb789600",
-      "source": "{symbol} {seenPrice}원이었는데 {price}원? 나 어디 갔다 온 거냐 ㅋㅋ",
+      "source": "{symbol} {seenPrice}돈이었는데 {price}돈? 나 어디 갔다 온 거냐 ㅋㅋ",
       "templateOnly": true
     },
     {
@@ -3537,42 +3537,42 @@
     },
     {
       "key": "text.584c4dcaa7f378d7",
-      "source": "{symbol} 따라간 실현손익 {amount}원. 고맙다.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈. 고맙다.",
       "templateOnly": true
     },
     {
       "key": "text.ce48b6ca67fdce23",
-      "source": "{symbol} 따라간 실현손익 {amount}원. 고맙다. 고맙다.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈. 고맙다. 고맙다.",
       "templateOnly": true
     },
     {
       "key": "text.b7ecfa58af598849",
-      "source": "{symbol} 따라간 실현손익 {amount}원. 내 경험은 이럼.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈. 내 경험은 이럼.",
       "templateOnly": true
     },
     {
       "key": "text.4f9c6e5b5fdeccc7",
-      "source": "{symbol} 따라간 실현손익 {amount}원. 내 경험은 이럼. 신중히 좀 봐.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈. 내 경험은 이럼. 신중히 좀 봐.",
       "templateOnly": true
     },
     {
       "key": "text.27f2da46cfb66f46",
-      "source": "{symbol} 따라간 실현손익 {amount}원. 이건 기록 남김.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈. 이건 기록 남김.",
       "templateOnly": true
     },
     {
       "key": "text.fcf18971ebedf5df",
-      "source": "{symbol} 따라간 실현손익 {amount}원. 이건 기록 남김. 신중히 좀 봐.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈. 이건 기록 남김. 신중히 좀 봐.",
       "templateOnly": true
     },
     {
       "key": "text.35feef0ca9a320e8",
-      "source": "{symbol} 따라간 실현손익 {amount}원은 기록해 둘게요.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈은 기록해 둘게요.",
       "templateOnly": true
     },
     {
       "key": "text.11c4a86bb8389695",
-      "source": "{symbol} 따라간 실현손익 {amount}원은 기록해 둘게요. 신중히 봐 주세요.",
+      "source": "{symbol} 따라간 실현손익 {amount}돈은 기록해 둘게요. 신중히 봐 주세요.",
       "templateOnly": true
     },
     {
@@ -3667,52 +3667,52 @@
     },
     {
       "key": "text.f45fb4121cbe80ba",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 나는 괜찮았음.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 나는 괜찮았음.",
       "templateOnly": true
     },
     {
       "key": "text.055d334f5f9bc612",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 나는 괜찮았음. 고맙다.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 나는 괜찮았음. 고맙다.",
       "templateOnly": true
     },
     {
       "key": "text.17bfb1d5dd8e30fe",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 난 안 좋았음.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 난 안 좋았음.",
       "templateOnly": true
     },
     {
       "key": "text.c0228ad4526f2ad1",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 난 안 좋았음. 신중히 좀 봐.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 난 안 좋았음. 신중히 좀 봐.",
       "templateOnly": true
     },
     {
       "key": "text.ead2ee113e357cb1",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 제 결과까지 좋았던 것은 아닙니다.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 제 결과까지 좋았던 것은 아닙니다.",
       "templateOnly": true
     },
     {
       "key": "text.9ebbf750fb74c426",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 제 결과까지 좋았던 것은 아닙니다. 신중히 보셨으면 합니다.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 제 결과까지 좋았던 것은 아닙니다. 신중히 보셨으면 합니다.",
       "templateOnly": true
     },
     {
       "key": "text.59fa074d91a31e3b",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 제 결과는 좋았어요.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 제 결과는 좋았어요.",
       "templateOnly": true
     },
     {
       "key": "text.f4d6c2eea1171c1f",
-      "source": "{symbol} 리딩 실현손익 {amount}원. 제 결과는 좋았어요. 고마워요.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈. 제 결과는 좋았어요. 고마워요.",
       "templateOnly": true
     },
     {
       "key": "text.a9e1c0b136d2c9a0",
-      "source": "{symbol} 리딩 실현손익 {amount}원이에요. 제 결과는 안 좋았어요.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈이에요. 제 결과는 안 좋았어요.",
       "templateOnly": true
     },
     {
       "key": "text.1cf54880995a34cd",
-      "source": "{symbol} 리딩 실현손익 {amount}원이에요. 제 결과는 안 좋았어요. 신중히 봐 주세요.",
+      "source": "{symbol} 리딩 실현손익 {amount}돈이에요. 제 결과는 안 좋았어요. 신중히 봐 주세요.",
       "templateOnly": true
     },
     {
@@ -3727,12 +3727,12 @@
     },
     {
       "key": "text.cff9467db58250e4",
-      "source": "{symbol} 리딩의 제 실현손익은 {amount}원입니다. 좋은 결과였습니다.",
+      "source": "{symbol} 리딩의 제 실현손익은 {amount}돈입니다. 좋은 결과였습니다.",
       "templateOnly": true
     },
     {
       "key": "text.c11bee4fb5653ffd",
-      "source": "{symbol} 리딩의 제 실현손익은 {amount}원입니다. 좋은 결과였습니다. 감사합니다.",
+      "source": "{symbol} 리딩의 제 실현손익은 {amount}돈입니다. 좋은 결과였습니다. 감사합니다.",
       "templateOnly": true
     },
     {
@@ -3932,22 +3932,22 @@
     },
     {
       "key": "text.4f867a8b014e04b2",
-      "source": "{symbol} 손실 얘기 좀 해도 되나. {profitKind}손익 {amount}원임.",
+      "source": "{symbol} 손실 얘기 좀 해도 되나. {profitKind}손익 {amount}돈임.",
       "templateOnly": true
     },
     {
       "key": "text.96785bce59429893",
-      "source": "{symbol} 손실 얘기를 꺼내도 될까요. {profitKind}손익 {amount}원이에요.",
+      "source": "{symbol} 손실 얘기를 꺼내도 될까요. {profitKind}손익 {amount}돈이에요.",
       "templateOnly": true
     },
     {
       "key": "text.72352eff88fa7eea",
-      "source": "{symbol} 손실 중. {profitKind}손익 {amount}원임.",
+      "source": "{symbol} 손실 중. {profitKind}손익 {amount}돈임.",
       "templateOnly": true
     },
     {
       "key": "text.27b79b72bbcd2faf",
-      "source": "{symbol} 손실을 보고 있습니다. {profitKind}손익 {amount}원입니다.",
+      "source": "{symbol} 손실을 보고 있습니다. {profitKind}손익 {amount}돈입니다.",
       "templateOnly": true
     },
     {
@@ -4247,12 +4247,12 @@
     },
     {
       "key": "text.af394d414279fcb5",
-      "source": "{symbol} 잠깐 다른 창 봤는데 {price}원 됐네. 이거 실화냐",
+      "source": "{symbol} 잠깐 다른 창 봤는데 {price}돈 됐네. 이거 실화냐",
       "templateOnly": true
     },
     {
       "key": "text.5b1f920a9a20cc56",
-      "source": "{symbol} 잠깐 딴 데 봤는데 {price}원 됐네. 무슨 일 있었냐",
+      "source": "{symbol} 잠깐 딴 데 봤는데 {price}돈 됐네. 무슨 일 있었냐",
       "templateOnly": true
     },
     {
@@ -4277,12 +4277,12 @@
     },
     {
       "key": "text.d83416a44b81cd56",
-      "source": "{symbol} 제 {profitKind}손익 {amount}원이에요. 웃음 나네요.",
+      "source": "{symbol} 제 {profitKind}손익 {amount}돈이에요. 웃음 나네요.",
       "templateOnly": true
     },
     {
       "key": "text.1f31944479af067d",
-      "source": "{symbol} 제 {profitKind}손익 {amount}원이에요. 웃음 나네요. 기분 좋네요.",
+      "source": "{symbol} 제 {profitKind}손익 {amount}돈이에요. 웃음 나네요. 기분 좋네요.",
       "templateOnly": true
     },
     {
@@ -4307,22 +4307,22 @@
     },
     {
       "key": "text.442ae74f519de19b",
-      "source": "{symbol} 제 {profitKind}손익은 {amount}원입니다. 이 정도면 자랑해도 되겠습니까?",
+      "source": "{symbol} 제 {profitKind}손익은 {amount}돈입니다. 이 정도면 자랑해도 되겠습니까?",
       "templateOnly": true
     },
     {
       "key": "text.a341077dd6aba83f",
-      "source": "{symbol} 제 {profitKind}손익은 {amount}원입니다. 이 정도면 자랑해도 되겠습니까? 기쁜 마음입니다.",
+      "source": "{symbol} 제 {profitKind}손익은 {amount}돈입니다. 이 정도면 자랑해도 되겠습니까? 기쁜 마음입니다.",
       "templateOnly": true
     },
     {
       "key": "text.b9457553ee0caf1a",
-      "source": "{symbol} 제 {profitKind}손익이 {amount}원까지 내려왔습니다.",
+      "source": "{symbol} 제 {profitKind}손익이 {amount}돈까지 내려왔습니다.",
       "templateOnly": true
     },
     {
       "key": "text.fc3bd909b843f9ba",
-      "source": "{symbol} 제 {profitKind}손익이 {amount}원까지 내려왔습니다. 씁쓸합니다.",
+      "source": "{symbol} 제 {profitKind}손익이 {amount}돈까지 내려왔습니다. 씁쓸합니다.",
       "templateOnly": true
     },
     {
@@ -4382,32 +4382,32 @@
     },
     {
       "key": "text.a63a9bd5903eb772",
-      "source": "{symbol} 지금 {price}원. 다음 거 보자.",
+      "source": "{symbol} 지금 {price}돈. 다음 거 보자.",
       "templateOnly": true
     },
     {
       "key": "text.55c5233d1fac8210",
-      "source": "{symbol} 지금 {price}원. 다음 거 보자. 계속 본다.",
+      "source": "{symbol} 지금 {price}돈. 다음 거 보자. 계속 본다.",
       "templateOnly": true
     },
     {
       "key": "text.9ef2e944a0502785",
-      "source": "{symbol} 지금 {price}원이네. 일단 보는 중",
+      "source": "{symbol} 지금 {price}돈이네. 일단 보는 중",
       "templateOnly": true
     },
     {
       "key": "text.86aca717639d8ed6",
-      "source": "{symbol} 지금 {price}원이네요. 다음 체결 보죠.",
+      "source": "{symbol} 지금 {price}돈이네요. 다음 체결 보죠.",
       "templateOnly": true
     },
     {
       "key": "text.e80bf2cd34d0e08e",
-      "source": "{symbol} 지금 {price}원이네요. 다음 체결 보죠. 계속 보고 있을게요.",
+      "source": "{symbol} 지금 {price}돈이네요. 다음 체결 보죠. 계속 보고 있을게요.",
       "templateOnly": true
     },
     {
       "key": "text.8ebd575eb08c2e9a",
-      "source": "{symbol} 지금 {price}원인데 이거 어떻게 보는 거임?",
+      "source": "{symbol} 지금 {price}돈인데 이거 어떻게 보는 거임?",
       "templateOnly": true
     },
     {
@@ -4457,32 +4457,32 @@
     },
     {
       "key": "text.dcf976058b279b5d",
-      "source": "{symbol} 지시 따른 실현손익 {amount}원… 제 경험은 이래요.",
+      "source": "{symbol} 지시 따른 실현손익 {amount}돈… 제 경험은 이래요.",
       "templateOnly": true
     },
     {
       "key": "text.8161274fcc1637bc",
-      "source": "{symbol} 지시 따른 실현손익 {amount}원… 제 경험은 이래요. 신중히 봐 주세요.",
+      "source": "{symbol} 지시 따른 실현손익 {amount}돈… 제 경험은 이래요. 신중히 봐 주세요.",
       "templateOnly": true
     },
     {
       "key": "text.23365c5641a793ac",
-      "source": "{symbol} 지시 따른 실현손익 {amount}원이에요. 고마워요.",
+      "source": "{symbol} 지시 따른 실현손익 {amount}돈이에요. 고마워요.",
       "templateOnly": true
     },
     {
       "key": "text.f32dd349fc4e03bf",
-      "source": "{symbol} 지시 따른 실현손익 {amount}원이에요. 고마워요. 고마워요.",
+      "source": "{symbol} 지시 따른 실현손익 {amount}돈이에요. 고마워요. 고마워요.",
       "templateOnly": true
     },
     {
       "key": "text.fa3bebf99a73383d",
-      "source": "{symbol} 지시를 따른 실현손익 {amount}원을 확인했습니다.",
+      "source": "{symbol} 지시를 따른 실현손익 {amount}돈을 확인했습니다.",
       "templateOnly": true
     },
     {
       "key": "text.de0dd3e7bbd24f1f",
-      "source": "{symbol} 지시를 따른 실현손익 {amount}원을 확인했습니다. 감사합니다.",
+      "source": "{symbol} 지시를 따른 실현손익 {amount}돈을 확인했습니다. 감사합니다.",
       "templateOnly": true
     },
     {
@@ -4497,12 +4497,12 @@
     },
     {
       "key": "text.385b9b6f95499d64",
-      "source": "{symbol} 지시를 따른 제 실현손익 {amount}원은 그대로 기록하겠습니다.",
+      "source": "{symbol} 지시를 따른 제 실현손익 {amount}돈은 그대로 기록하겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.fceaa796effb7b72",
-      "source": "{symbol} 지시를 따른 제 실현손익 {amount}원은 그대로 기록하겠습니다. 신중히 보셨으면 합니다.",
+      "source": "{symbol} 지시를 따른 제 실현손익 {amount}돈은 그대로 기록하겠습니다. 신중히 보셨으면 합니다.",
       "templateOnly": true
     },
     {
@@ -4822,7 +4822,7 @@
     },
     {
       "key": "text.37a98c06ad75fbad",
-      "source": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}원.",
+      "source": "{symbol}: {bidStatus}, {askStatus}. 부임 후 실현손익 {signalResult}돈.",
       "templateOnly": true
     },
     {
@@ -4882,7 +4882,7 @@
     },
     {
       "key": "text.f55c3846dcfb31c6",
-      "source": "{symbol}에서 {profitKind}손익 {amount}원 보고 있어요. 괜히 자꾸 확인하게 됩니다.",
+      "source": "{symbol}에서 {profitKind}손익 {amount}돈 보고 있어요. 괜히 자꾸 확인하게 됩니다.",
       "templateOnly": true
     },
     {
@@ -5287,7 +5287,7 @@
     },
     {
       "key": "text.0aaefc4067e0b976",
-      "source": "가격 · 원",
+      "source": "가격 · 돈",
       "templateOnly": false
     },
     {
@@ -5362,7 +5362,7 @@
     },
     {
       "key": "text.5e80288d16cc183c",
-      "source": "가용 현금 {0:N0}원    ·    예치 {1:N0}원",
+      "source": "가용 현금 {0:N0}돈    ·    예치 {1:N0}돈",
       "templateOnly": false
     },
     {
@@ -5642,7 +5642,7 @@
     },
     {
       "key": "text.3d8689bd477034c1",
-      "source": "거래소 현금 부족: {0:N0}원 추가 필요",
+      "source": "거래소 현금 부족: {0:N0}돈 추가 필요",
       "templateOnly": false
     },
     {
@@ -7097,12 +7097,12 @@
     },
     {
       "key": "text.4feb2ff0361c4c72",
-      "source": "난 {symbol} {price}원에서 버티는지 보고 있음.",
+      "source": "난 {symbol} {price}돈에서 버티는지 보고 있음.",
       "templateOnly": true
     },
     {
       "key": "text.0e18288836c82198",
-      "source": "난 {symbol} {price}원에서 버티는지 보고 있음. 내 기준은 그럼.",
+      "source": "난 {symbol} {price}돈에서 버티는지 보고 있음. 내 기준은 그럼.",
       "templateOnly": true
     },
     {
@@ -7202,7 +7202,7 @@
     },
     {
       "key": "text.2f3aafef6468587e",
-      "source": "내 {memSymbol} 리딩 손익 {memAmount}원이었음.",
+      "source": "내 {memSymbol} 리딩 손익 {memAmount}돈이었음.",
       "templateOnly": true
     },
     {
@@ -7242,7 +7242,7 @@
     },
     {
       "key": "text.e09435d9936774fd",
-      "source": "내 {symbol} {profitKind}손익 {amount}원임. 한숨 나온다.",
+      "source": "내 {symbol} {profitKind}손익 {amount}돈임. 한숨 나온다.",
       "templateOnly": true
     },
     {
@@ -7252,12 +7252,12 @@
     },
     {
       "key": "text.2241ac1b2032b31a",
-      "source": "내 기록은 {symbol} 리딩 실현손익 {amount}원임.",
+      "source": "내 기록은 {symbol} 리딩 실현손익 {amount}돈임.",
       "templateOnly": true
     },
     {
       "key": "text.d2c6c6f698687264",
-      "source": "내 기록은 {symbol} 리딩 실현손익 {amount}원임. 고맙다.",
+      "source": "내 기록은 {symbol} 리딩 실현손익 {amount}돈임. 고맙다.",
       "templateOnly": true
     },
     {
@@ -7912,7 +7912,7 @@
     },
     {
       "key": "text.e8f32c1d53b1fde5",
-      "source": "대주주 자비 특별배당 (주당 1원)",
+      "source": "대주주 자비 특별배당 (주당 1돈)",
       "templateOnly": false
     },
     {
@@ -8407,7 +8407,7 @@
     },
     {
       "key": "text.5ce2e917e2c93efb",
-      "source": "만원쯤",
+      "source": "만돈쯤",
       "templateOnly": false
     },
     {
@@ -8667,7 +8667,7 @@
     },
     {
       "key": "text.ee59e0f7cc70cdbb",
-      "source": "매도 이상 (원)",
+      "source": "매도 이상 (돈)",
       "templateOnly": false
     },
     {
@@ -8777,7 +8777,7 @@
     },
     {
       "key": "text.6290aa64a7c239d6",
-      "source": "매수 이하 (원)",
+      "source": "매수 이하 (돈)",
       "templateOnly": false
     },
     {
@@ -10072,7 +10072,7 @@
     },
     {
       "key": "text.6d01fd9a130374dc",
-      "source": "살짝 자랑해도 될까요… {symbol} {profitKind}손익 {amount}원이에요.",
+      "source": "살짝 자랑해도 될까요… {symbol} {profitKind}손익 {amount}돈이에요.",
       "templateOnly": true
     },
     {
@@ -10367,7 +10367,7 @@
     },
     {
       "key": "text.532e3fd78ee4f42f",
-      "source": "소수점 없이 원 단위 가격을 입력하세요.",
+      "source": "소수점 없이 돈 단위 가격을 입력하세요.",
       "templateOnly": false
     },
     {
@@ -10742,7 +10742,7 @@
     },
     {
       "key": "text.6b3e56403c529d07",
-      "source": "시작 단가 {0:N0}원  ·  실제 시가총액 {1:N0}원\n공개 {2:N0}개  ·  본인 보유 {3:N0}개\n조달 현금 {4:N0}원\n최종 초기 현금 {5:N0}원\n거래소 초기 현금 {6:N0}원",
+      "source": "시작 단가 {0:N0}돈  ·  실제 시가총액 {1:N0}돈\n공개 {2:N0}개  ·  본인 보유 {3:N0}개\n조달 현금 {4:N0}돈\n최종 초기 현금 {5:N0}돈\n거래소 초기 현금 {6:N0}돈",
       "templateOnly": false
     },
     {
@@ -11072,7 +11072,7 @@
     },
     {
       "key": "text.499e68be8c2f4c39",
-      "source": "아 {symbol} {profitKind}손익 {amount}원… 속상하네.",
+      "source": "아 {symbol} {profitKind}손익 {amount}돈… 속상하네.",
       "templateOnly": true
     },
     {
@@ -11092,7 +11092,7 @@
     },
     {
       "key": "text.edc7f013ce096541",
-      "source": "아 {symbol}! 내 {profitKind}손익이 {amount}원임.",
+      "source": "아 {symbol}! 내 {profitKind}손익이 {amount}돈임.",
       "templateOnly": true
     },
     {
@@ -11107,7 +11107,7 @@
     },
     {
       "key": "text.aea9ed7610345c4d",
-      "source": "아, {symbol} {profitKind}손익 {amount}원이네요. 속상합니다.",
+      "source": "아, {symbol} {profitKind}손익 {amount}돈이네요. 속상합니다.",
       "templateOnly": true
     },
     {
@@ -11122,7 +11122,7 @@
     },
     {
       "key": "text.48f74ed6e432633d",
-      "source": "아, {symbol}! 제 {profitKind}손익이 {amount}원이에요.",
+      "source": "아, {symbol}! 제 {profitKind}손익이 {amount}돈이에요.",
       "templateOnly": true
     },
     {
@@ -11437,7 +11437,7 @@
     },
     {
       "key": "text.8a5b6bee2f0d3957",
-      "source": "억원쯤",
+      "source": "억돈쯤",
       "templateOnly": false
     },
     {
@@ -11642,12 +11642,12 @@
     },
     {
       "key": "text.629682b054bcc668",
-      "source": "오 {symbol} {profitKind}손익 {amount}원! 기분 좋다.",
+      "source": "오 {symbol} {profitKind}손익 {amount}돈! 기분 좋다.",
       "templateOnly": true
     },
     {
       "key": "text.4e1c30694036186b",
-      "source": "오, {symbol} {profitKind}손익 {amount}원이네요! 기분 좋습니다.",
+      "source": "오, {symbol} {profitKind}손익 {amount}돈이네요! 기분 좋습니다.",
       "templateOnly": true
     },
     {
@@ -11922,127 +11922,127 @@
     },
     {
       "key": "text.c19fd6787279897c",
-      "source": "원",
+      "source": "돈",
       "templateOnly": false
     },
     {
       "key": "text.964674423607d0f1",
-      "source": "원\n/ ",
+      "source": "돈\n/ ",
       "templateOnly": false
     },
     {
       "key": "text.fc701332788ccfc9",
-      "source": "원\n누적 실현손익 ",
+      "source": "돈\n누적 실현손익 ",
       "templateOnly": false
     },
     {
       "key": "text.5c252a2239b1b382",
-      "source": "원\n두 조건을 충족하면 리딩방을 열 수 있습니다.\n\n미체결 주문·평가이익은 성과에 포함되지 않습니다.\n참가자는 자금과 신뢰에 따라 독립적으로 판단합니다.\n기업 경영은 실제 지분 50% 초과 시 가능합니다.",
+      "source": "돈\n두 조건을 충족하면 리딩방을 열 수 있습니다.\n\n미체결 주문·평가이익은 성과에 포함되지 않습니다.\n참가자는 자금과 신뢰에 따라 독립적으로 판단합니다.\n기업 경영은 실제 지분 50% 초과 시 가능합니다.",
       "templateOnly": false
     },
     {
       "key": "text.d77b0d9387866d57",
-      "source": "원     구제 ",
+      "source": "돈     구제 ",
       "templateOnly": false
     },
     {
       "key": "text.2603bdbf087ec045",
-      "source": "원     세금 ",
+      "source": "돈     세금 ",
       "templateOnly": false
     },
     {
       "key": "text.fc6c34c910ffe049",
-      "source": "원  (",
+      "source": "돈  (",
       "templateOnly": false
     },
     {
       "key": "text.0d1428d8fd06bebe",
-      "source": "원 · 실현 성과 없음 · 배신감 +",
+      "source": "돈 · 실현 성과 없음 · 배신감 +",
       "templateOnly": false
     },
     {
       "key": "text.7e82f001e8263f8c",
-      "source": "원 · 예수금 ",
+      "source": "돈 · 예수금 ",
       "templateOnly": false
     },
     {
       "key": "text.e2fe6100200a4943",
-      "source": "원 더 필요",
+      "source": "돈 더 필요",
       "templateOnly": false
     },
     {
       "key": "text.d1c361be6dab0a57",
-      "source": "원 매도 조건 기다리는 중.",
+      "source": "돈 매도 조건 기다리는 중.",
       "templateOnly": false
     },
     {
       "key": "text.2ea4c03472ca13ff",
-      "source": "원 매도 주문 대기",
+      "source": "돈 매도 주문 대기",
       "templateOnly": false
     },
     {
       "key": "text.e07ccef1eaa85888",
-      "source": "원 매수 조건까지 기다릴게요.",
+      "source": "돈 매수 조건까지 기다릴게요.",
       "templateOnly": false
     },
     {
       "key": "text.41e46eafd3bb9627",
-      "source": "원 매수 주문 대기",
+      "source": "돈 매수 주문 대기",
       "templateOnly": false
     },
     {
       "key": "text.5857aafc6720392f",
-      "source": "원 보고 있어요.",
+      "source": "돈 보고 있어요.",
       "templateOnly": false
     },
     {
       "key": "text.b2e5f3992f68aafd",
-      "source": "원 보고 있어요. ",
+      "source": "돈 보고 있어요. ",
       "templateOnly": false
     },
     {
       "key": "text.96da582f116c8e9d",
-      "source": "원 부족합니다.",
+      "source": "돈 부족합니다.",
       "templateOnly": false
     },
     {
       "key": "text.2dfffc3ace9172ab",
-      "source": "원 이체 완료",
+      "source": "돈 이체 완료",
       "templateOnly": false
     },
     {
       "key": "text.eed8441371cdf150",
-      "source": "원 정도",
+      "source": "돈 정도",
       "templateOnly": false
     },
     {
       "key": "text.146bfd99c836e869",
-      "source": "원 주문을 대기 중입니다.",
+      "source": "돈 주문을 대기 중입니다.",
       "templateOnly": false
     },
     {
       "key": "text.604bf6706656509e",
-      "source": "원 최근 매수 체결",
+      "source": "돈 최근 매수 체결",
       "templateOnly": false
     },
     {
       "key": "text.212bac0bcda252fd",
-      "source": "원.",
+      "source": "돈.",
       "templateOnly": false
     },
     {
       "key": "text.358c701710c0cb80",
-      "source": "원. ",
+      "source": "돈. ",
       "templateOnly": false
     },
     {
       "key": "text.1ba22483e0967318",
-      "source": "원. 간격 ",
+      "source": "돈. 간격 ",
       "templateOnly": false
     },
     {
       "key": "text.29b6acc45e60ba59",
-      "source": "원. 평가손익 ",
+      "source": "돈. 평가손익 ",
       "templateOnly": false
     },
     {
@@ -12067,7 +12067,7 @@
     },
     {
       "key": "text.68f9e1497ac4b460",
-      "source": "원에 매수 체결됐습니다.",
+      "source": "돈에 매수 체결됐습니다.",
       "templateOnly": false
     },
     {
@@ -12077,7 +12077,7 @@
     },
     {
       "key": "text.52005270843d8e29",
-      "source": "원으로 입력하세요.",
+      "source": "돈으로 입력하세요.",
       "templateOnly": false
     },
     {
@@ -12087,7 +12087,7 @@
     },
     {
       "key": "text.d3cd1a175d35df04",
-      "source": "원쯤",
+      "source": "돈쯤",
       "templateOnly": false
     },
     {
@@ -12892,7 +12892,7 @@
     },
     {
       "key": "text.baa9a7d408f9b36a",
-      "source": "장 마감 회사 수익 +{amount}원",
+      "source": "장 마감 회사 수익 +{amount}돈",
       "templateOnly": false
     },
     {
@@ -13007,22 +13007,22 @@
     },
     {
       "key": "text.7e6d0d42199b96f7",
-      "source": "저는 {symbol} {price}원 부근의 체결을 보고 있습니다.",
+      "source": "저는 {symbol} {price}돈 부근의 체결을 보고 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.8c83308dc5414ebd",
-      "source": "저는 {symbol} {price}원 부근의 체결을 보고 있습니다. 제 기준은 그렇습니다.",
+      "source": "저는 {symbol} {price}돈 부근의 체결을 보고 있습니다. 제 기준은 그렇습니다.",
       "templateOnly": true
     },
     {
       "key": "text.1ee20858979cbb4f",
-      "source": "저는 {symbol} {price}원 체결 보고 있어요.",
+      "source": "저는 {symbol} {price}돈 체결 보고 있어요.",
       "templateOnly": true
     },
     {
       "key": "text.7162d9f5e0d1e999",
-      "source": "저는 {symbol} {price}원 체결 보고 있어요. 제 기준은 그래요.",
+      "source": "저는 {symbol} {price}돈 체결 보고 있어요. 제 기준은 그래요.",
       "templateOnly": true
     },
     {
@@ -13282,32 +13282,32 @@
     },
     {
       "key": "text.222d9bba2849b4f4",
-      "source": "정말로 말씀드립니다. {symbol} {price}원, 아직 판단을 내리지는 않았습니다.",
+      "source": "정말로 말씀드립니다. {symbol} {price}돈, 아직 판단을 내리지는 않았습니다.",
       "templateOnly": true
     },
     {
       "key": "text.e11325848ed976ef",
-      "source": "정말로 말씀드립니다. {symbol} {price}원, 어떻게 보고 계십니까?",
+      "source": "정말로 말씀드립니다. {symbol} {price}돈, 어떻게 보고 계십니까?",
       "templateOnly": true
     },
     {
       "key": "text.7904d311c22679a8",
-      "source": "정말로 말씀드립니다. {symbol} {price}원을 기준으로 다음 변화를 보고 있습니다.",
+      "source": "정말로 말씀드립니다. {symbol} {price}돈을 기준으로 다음 변화를 보고 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.ef98f0cb5e90af81",
-      "source": "정말로 말씀드립니다. {symbol} {price}원입니다. 다음 움직임을 보겠습니다.",
+      "source": "정말로 말씀드립니다. {symbol} {price}돈입니다. 다음 움직임을 보겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.ebf3c0eb12b809c9",
-      "source": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}원을 보고 있으니 기분이 좋습니다.",
+      "source": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}돈을 보고 있으니 기분이 좋습니다.",
       "templateOnly": true
     },
     {
       "key": "text.1e9dc7c6fae7fde9",
-      "source": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}원입니다. 다른 분들은 어떠신지요.",
+      "source": "정말로 말씀드립니다. {symbol} {profitKind}손익 {amount}돈입니다. 다른 분들은 어떠신지요.",
       "templateOnly": true
     },
     {
@@ -13322,7 +13322,7 @@
     },
     {
       "key": "text.277b5afc06e81d4f",
-      "source": "정말로 말씀드립니다. {symbol} 리딩 실현손익 {amount}원. 제 결과까지 좋았던 것은 아닙니다.",
+      "source": "정말로 말씀드립니다. {symbol} 리딩 실현손익 {amount}돈. 제 결과까지 좋았던 것은 아닙니다.",
       "templateOnly": true
     },
     {
@@ -13332,22 +13332,22 @@
     },
     {
       "key": "text.bd0c5136e201559b",
-      "source": "정말로 말씀드립니다. {symbol} 리딩의 제 실현손익은 {amount}원입니다. 좋은 결과였습니다.",
+      "source": "정말로 말씀드립니다. {symbol} 리딩의 제 실현손익은 {amount}돈입니다. 좋은 결과였습니다.",
       "templateOnly": true
     },
     {
       "key": "text.417def66600eed6b",
-      "source": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익은 {amount}원입니다. 이 정도면 자랑해도 되겠습니까?",
+      "source": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익은 {amount}돈입니다. 이 정도면 자랑해도 되겠습니까?",
       "templateOnly": true
     },
     {
       "key": "text.6b1f1f0c73ba439a",
-      "source": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익이 {amount}원까지 내려왔습니다.",
+      "source": "정말로 말씀드립니다. {symbol} 제 {profitKind}손익이 {amount}돈까지 내려왔습니다.",
       "templateOnly": true
     },
     {
       "key": "text.3eacfda054b1d7d3",
-      "source": "정말로 말씀드립니다. {symbol} 지시를 따른 실현손익 {amount}원을 확인했습니다.",
+      "source": "정말로 말씀드립니다. {symbol} 지시를 따른 실현손익 {amount}돈을 확인했습니다.",
       "templateOnly": true
     },
     {
@@ -13357,7 +13357,7 @@
     },
     {
       "key": "text.4a6d847ef060336a",
-      "source": "정말로 말씀드립니다. {symbol} 지시를 따른 제 실현손익 {amount}원은 그대로 기록하겠습니다.",
+      "source": "정말로 말씀드립니다. {symbol} 지시를 따른 제 실현손익 {amount}돈은 그대로 기록하겠습니다.",
       "templateOnly": true
     },
     {
@@ -13702,7 +13702,7 @@
     },
     {
       "key": "text.39f8813ab47495f1",
-      "source": "정말로 말씀드립니다. 저는 {symbol} {price}원 부근의 체결을 보고 있습니다.",
+      "source": "정말로 말씀드립니다. 저는 {symbol} {price}돈 부근의 체결을 보고 있습니다.",
       "templateOnly": true
     },
     {
@@ -13732,17 +13732,17 @@
     },
     {
       "key": "text.fe16b491446b104d",
-      "source": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익은 {amount}원입니다. 잠시 숨을 고르겠습니다.",
+      "source": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익은 {amount}돈입니다. 잠시 숨을 고르겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.c65f521c9d348a7d",
-      "source": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익이 {amount}원입니다. 오늘은 웃을 수 있겠습니다.",
+      "source": "정말로 말씀드립니다. 제 {symbol} {profitKind}손익이 {amount}돈입니다. 오늘은 웃을 수 있겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.839ff158e0cb1e1c",
-      "source": "정말로 말씀드립니다. 제 {symbol} 리딩 실현손익은 {amount}원입니다. 손실 경험을 남깁니다.",
+      "source": "정말로 말씀드립니다. 제 {symbol} 리딩 실현손익은 {amount}돈입니다. 손실 경험을 남깁니다.",
       "templateOnly": true
     },
     {
@@ -13757,7 +13757,7 @@
     },
     {
       "key": "text.281c1f7e32a5d7a8",
-      "source": "정말로 말씀드립니다. 제 기록에는 {symbol} 리딩 실현손익 {amount}원이 남아 있습니다.",
+      "source": "정말로 말씀드립니다. 제 기록에는 {symbol} 리딩 실현손익 {amount}돈이 남아 있습니다.",
       "templateOnly": true
     },
     {
@@ -13912,57 +13912,57 @@
     },
     {
       "key": "text.1a61a0f604a96c7e",
-      "source": "제 {memSymbol} 리딩 손익은 {memAmount}원이었습니다.",
+      "source": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었습니다.",
       "templateOnly": true
     },
     {
       "key": "text.b257332c6651f5f5",
-      "source": "제 {memSymbol} 리딩 손익은 {memAmount}원이었어요.",
+      "source": "제 {memSymbol} 리딩 손익은 {memAmount}돈이었어요.",
       "templateOnly": true
     },
     {
       "key": "text.4496570198c3f4b7",
-      "source": "제 {symbol} {profitKind}손익은 {amount}원입니다. 잠시 숨을 고르겠습니다.",
+      "source": "제 {symbol} {profitKind}손익은 {amount}돈입니다. 잠시 숨을 고르겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.db19dbf5dda27686",
-      "source": "제 {symbol} {profitKind}손익은 {amount}원입니다. 잠시 숨을 고르겠습니다. 씁쓸합니다.",
+      "source": "제 {symbol} {profitKind}손익은 {amount}돈입니다. 잠시 숨을 고르겠습니다. 씁쓸합니다.",
       "templateOnly": true
     },
     {
       "key": "text.9397d426835f65a4",
-      "source": "제 {symbol} {profitKind}손익이 {amount}원이에요. 이 정도면 좋아해도 되겠죠?",
+      "source": "제 {symbol} {profitKind}손익이 {amount}돈이에요. 이 정도면 좋아해도 되겠죠?",
       "templateOnly": true
     },
     {
       "key": "text.e7b69d9fd4a6cf4c",
-      "source": "제 {symbol} {profitKind}손익이 {amount}원입니다. 긍정적으로 보고 있어요.",
+      "source": "제 {symbol} {profitKind}손익이 {amount}돈입니다. 긍정적으로 보고 있어요.",
       "templateOnly": true
     },
     {
       "key": "text.9db2ece928fcc3a6",
-      "source": "제 {symbol} {profitKind}손익이 {amount}원입니다. 오늘은 웃을 수 있겠습니다.",
+      "source": "제 {symbol} {profitKind}손익이 {amount}돈입니다. 오늘은 웃을 수 있겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.b8b3c9f6056f4320",
-      "source": "제 {symbol} {profitKind}손익이 {amount}원입니다. 오늘은 웃을 수 있겠습니다. 기쁜 마음입니다.",
+      "source": "제 {symbol} {profitKind}손익이 {amount}돈입니다. 오늘은 웃을 수 있겠습니다. 기쁜 마음입니다.",
       "templateOnly": true
     },
     {
       "key": "text.e54fe58a766ec613",
-      "source": "제 {symbol} {profitKind}손익이 {amount}원입니다. 한숨이 나오네요.",
+      "source": "제 {symbol} {profitKind}손익이 {amount}돈입니다. 한숨이 나오네요.",
       "templateOnly": true
     },
     {
       "key": "text.7e207937c1eaaeda",
-      "source": "제 {symbol} 리딩 실현손익은 {amount}원입니다. 손실 경험을 남깁니다.",
+      "source": "제 {symbol} 리딩 실현손익은 {amount}돈입니다. 손실 경험을 남깁니다.",
       "templateOnly": true
     },
     {
       "key": "text.5c0cc8a4ad6039ee",
-      "source": "제 {symbol} 리딩 실현손익은 {amount}원입니다. 손실 경험을 남깁니다. 신중히 보셨으면 합니다.",
+      "source": "제 {symbol} 리딩 실현손익은 {amount}돈입니다. 손실 경험을 남깁니다. 신중히 보셨으면 합니다.",
       "templateOnly": true
     },
     {
@@ -14022,22 +14022,22 @@
     },
     {
       "key": "text.ee6adb1b382e57b8",
-      "source": "제 기록에는 {symbol} 리딩 실현손익 {amount}원이 남아 있습니다.",
+      "source": "제 기록에는 {symbol} 리딩 실현손익 {amount}돈이 남아 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.4855d75acbbc87a0",
-      "source": "제 기록에는 {symbol} 리딩 실현손익 {amount}원이 남아 있습니다. 감사합니다.",
+      "source": "제 기록에는 {symbol} 리딩 실현손익 {amount}돈이 남아 있습니다. 감사합니다.",
       "templateOnly": true
     },
     {
       "key": "text.e704d367df2df0de",
-      "source": "제 기록엔 {symbol} 리딩 실현손익 {amount}원이에요.",
+      "source": "제 기록엔 {symbol} 리딩 실현손익 {amount}돈이에요.",
       "templateOnly": true
     },
     {
       "key": "text.42457309b5dd3f97",
-      "source": "제 기록엔 {symbol} 리딩 실현손익 {amount}원이에요. 고마워요.",
+      "source": "제 기록엔 {symbol} 리딩 실현손익 {amount}돈이에요. 고마워요.",
       "templateOnly": true
     },
     {
@@ -14242,7 +14242,7 @@
     },
     {
       "key": "text.d7c2943df0183cfd",
-      "source": "조금 자랑해도 되나… {symbol} {profitKind}손익 {amount}원임.",
+      "source": "조금 자랑해도 되나… {symbol} {profitKind}손익 {amount}돈임.",
       "templateOnly": true
     },
     {
@@ -14532,7 +14532,7 @@
     },
     {
       "key": "text.87dd89f01f9e177a",
-      "source": "주문 예산 {0:N0}원\n매수 {1:N0}원 / 매도 {2:N0}원\n물량 {3:N0}주 · 미체결 {4}건\n평가 포함 손익 {5:+#,##0;-#,##0;0}원",
+      "source": "주문 예산 {0:N0}돈\n매수 {1:N0}돈 / 매도 {2:N0}돈\n물량 {3:N0}주 · 미체결 {4}건\n평가 포함 손익 {5:+#,##0;-#,##0;0}돈",
       "templateOnly": false
     },
     {
@@ -14912,47 +14912,47 @@
     },
     {
       "key": "text.fe35a264c1adc78b",
-      "source": "진짜. {symbol} {price}원. 판단은 아직.",
+      "source": "진짜. {symbol} {price}돈. 판단은 아직.",
       "templateOnly": true
     },
     {
       "key": "text.f695b72b3de63e4e",
-      "source": "진짜. {symbol} {price}원부터 어떻게 되는지 보는 중.",
+      "source": "진짜. {symbol} {price}돈부터 어떻게 되는지 보는 중.",
       "templateOnly": true
     },
     {
       "key": "text.a2a693cf332e1997",
-      "source": "진짜. {symbol} {price}원인데 다들 어떻게 봄?",
+      "source": "진짜. {symbol} {price}돈인데 다들 어떻게 봄?",
       "templateOnly": true
     },
     {
       "key": "text.96e34383608a1c02",
-      "source": "진짜. {symbol} {profitKind}손익 {amount}원. 기분은 좋다.",
+      "source": "진짜. {symbol} {profitKind}손익 {amount}돈. 기분은 좋다.",
       "templateOnly": true
     },
     {
       "key": "text.62d414d620e0ea70",
-      "source": "진짜. {symbol} {profitKind}손익 {amount}원. 나만 이러냐.",
+      "source": "진짜. {symbol} {profitKind}손익 {amount}돈. 나만 이러냐.",
       "templateOnly": true
     },
     {
       "key": "text.622de9774d80b75d",
-      "source": "진짜. {symbol} {profitKind}손익 {amount}원. 마음대로 되는 게 없네.",
+      "source": "진짜. {symbol} {profitKind}손익 {amount}돈. 마음대로 되는 게 없네.",
       "templateOnly": true
     },
     {
       "key": "text.137c49ece8998caf",
-      "source": "진짜. {symbol} {profitKind}손익 {amount}원. 머리 좀 식히자.",
+      "source": "진짜. {symbol} {profitKind}손익 {amount}돈. 머리 좀 식히자.",
       "templateOnly": true
     },
     {
       "key": "text.b99ca3ee1f560d2d",
-      "source": "진짜. {symbol} {profitKind}손익 {amount}원. 웃음 나온다.",
+      "source": "진짜. {symbol} {profitKind}손익 {amount}돈. 웃음 나온다.",
       "templateOnly": true
     },
     {
       "key": "text.28a5f1aa576a0083",
-      "source": "진짜. {symbol} {profitKind}손익 {amount}원. 이건 자랑 좀 하자.",
+      "source": "진짜. {symbol} {profitKind}손익 {amount}돈. 이건 자랑 좀 하자.",
       "templateOnly": true
     },
     {
@@ -15007,17 +15007,17 @@
     },
     {
       "key": "text.f90a6ed2a233e562",
-      "source": "진짜. {symbol} 따라간 실현손익 {amount}원. 고맙다.",
+      "source": "진짜. {symbol} 따라간 실현손익 {amount}돈. 고맙다.",
       "templateOnly": true
     },
     {
       "key": "text.2d2b2c975e4327cb",
-      "source": "진짜. {symbol} 따라간 실현손익 {amount}원. 내 경험은 이럼.",
+      "source": "진짜. {symbol} 따라간 실현손익 {amount}돈. 내 경험은 이럼.",
       "templateOnly": true
     },
     {
       "key": "text.2aa06e81815625c4",
-      "source": "진짜. {symbol} 따라간 실현손익 {amount}원. 이건 기록 남김.",
+      "source": "진짜. {symbol} 따라간 실현손익 {amount}돈. 이건 기록 남김.",
       "templateOnly": true
     },
     {
@@ -15027,12 +15027,12 @@
     },
     {
       "key": "text.eef31ac53a4768a6",
-      "source": "진짜. {symbol} 리딩 실현손익 {amount}원. 나는 괜찮았음.",
+      "source": "진짜. {symbol} 리딩 실현손익 {amount}돈. 나는 괜찮았음.",
       "templateOnly": true
     },
     {
       "key": "text.dddb5be577101214",
-      "source": "진짜. {symbol} 리딩 실현손익 {amount}원. 난 안 좋았음.",
+      "source": "진짜. {symbol} 리딩 실현손익 {amount}돈. 난 안 좋았음.",
       "templateOnly": true
     },
     {
@@ -15052,7 +15052,7 @@
     },
     {
       "key": "text.bdfedb57a39051a3",
-      "source": "진짜. {symbol} 지금 {price}원. 다음 거 보자.",
+      "source": "진짜. {symbol} 지금 {price}돈. 다음 거 보자.",
       "templateOnly": true
     },
     {
@@ -15182,7 +15182,7 @@
     },
     {
       "key": "text.78f5a0f9820a2130",
-      "source": "진짜. 난 {symbol} {price}원에서 버티는지 보고 있음.",
+      "source": "진짜. 난 {symbol} {price}돈에서 버티는지 보고 있음.",
       "templateOnly": true
     },
     {
@@ -15207,7 +15207,7 @@
     },
     {
       "key": "text.28d01b865969d861",
-      "source": "진짜. 내 기록은 {symbol} 리딩 실현손익 {amount}원임.",
+      "source": "진짜. 내 기록은 {symbol} 리딩 실현손익 {amount}돈임.",
       "templateOnly": true
     },
     {
@@ -15452,42 +15452,42 @@
     },
     {
       "key": "text.9a22187648ae2748",
-      "source": "진짜로요. {symbol} {price}원 기준으로 다음 변화 보고 있어요.",
+      "source": "진짜로요. {symbol} {price}돈 기준으로 다음 변화 보고 있어요.",
       "templateOnly": true
     },
     {
       "key": "text.5e368b3e78cd9e02",
-      "source": "진짜로요. {symbol} {price}원인데 아직 판단은 안 했어요.",
+      "source": "진짜로요. {symbol} {price}돈인데 아직 판단은 안 했어요.",
       "templateOnly": true
     },
     {
       "key": "text.de5e5709338f8c21",
-      "source": "진짜로요. {symbol} {price}원인데 어떻게 보세요?",
+      "source": "진짜로요. {symbol} {price}돈인데 어떻게 보세요?",
       "templateOnly": true
     },
     {
       "key": "text.f63b5a69a08b6bcb",
-      "source": "진짜로요. {symbol} {profitKind}손익 {amount}원 보니까 기분 좋아요.",
+      "source": "진짜로요. {symbol} {profitKind}손익 {amount}돈 보니까 기분 좋아요.",
       "templateOnly": true
     },
     {
       "key": "text.d4f14d1783c7e0da",
-      "source": "진짜로요. {symbol} {profitKind}손익 {amount}원. 이 정도면 자랑 좀 해도 되죠?",
+      "source": "진짜로요. {symbol} {profitKind}손익 {amount}돈. 이 정도면 자랑 좀 해도 되죠?",
       "templateOnly": true
     },
     {
       "key": "text.d3d825e60094002f",
-      "source": "진짜로요. {symbol} {profitKind}손익 {amount}원… 잠깐 숨 좀 돌릴게요.",
+      "source": "진짜로요. {symbol} {profitKind}손익 {amount}돈… 잠깐 숨 좀 돌릴게요.",
       "templateOnly": true
     },
     {
       "key": "text.d9aeb0ad3c594213",
-      "source": "진짜로요. {symbol} {profitKind}손익 {amount}원… 저만 이런가요?",
+      "source": "진짜로요. {symbol} {profitKind}손익 {amount}돈… 저만 이런가요?",
       "templateOnly": true
     },
     {
       "key": "text.0f397eb2b3529a6f",
-      "source": "진짜로요. {symbol} {profitKind}손익 {amount}원이네요. 마음처럼 안 되네요.",
+      "source": "진짜로요. {symbol} {profitKind}손익 {amount}돈이네요. 마음처럼 안 되네요.",
       "templateOnly": true
     },
     {
@@ -15517,7 +15517,7 @@
     },
     {
       "key": "text.4b1a507e2f969312",
-      "source": "진짜로요. {symbol} 따라간 실현손익 {amount}원은 기록해 둘게요.",
+      "source": "진짜로요. {symbol} 따라간 실현손익 {amount}돈은 기록해 둘게요.",
       "templateOnly": true
     },
     {
@@ -15532,12 +15532,12 @@
     },
     {
       "key": "text.d5cb736d510a4b48",
-      "source": "진짜로요. {symbol} 리딩 실현손익 {amount}원. 제 결과는 좋았어요.",
+      "source": "진짜로요. {symbol} 리딩 실현손익 {amount}돈. 제 결과는 좋았어요.",
       "templateOnly": true
     },
     {
       "key": "text.fa73d5134094d669",
-      "source": "진짜로요. {symbol} 리딩 실현손익 {amount}원이에요. 제 결과는 안 좋았어요.",
+      "source": "진짜로요. {symbol} 리딩 실현손익 {amount}돈이에요. 제 결과는 안 좋았어요.",
       "templateOnly": true
     },
     {
@@ -15552,7 +15552,7 @@
     },
     {
       "key": "text.0b7e89c07de941fd",
-      "source": "진짜로요. {symbol} 제 {profitKind}손익 {amount}원이에요. 웃음 나네요.",
+      "source": "진짜로요. {symbol} 제 {profitKind}손익 {amount}돈이에요. 웃음 나네요.",
       "templateOnly": true
     },
     {
@@ -15572,7 +15572,7 @@
     },
     {
       "key": "text.a9192bb80dd1521d",
-      "source": "진짜로요. {symbol} 지금 {price}원이네요. 다음 체결 보죠.",
+      "source": "진짜로요. {symbol} 지금 {price}돈이네요. 다음 체결 보죠.",
       "templateOnly": true
     },
     {
@@ -15582,12 +15582,12 @@
     },
     {
       "key": "text.ff3450c38216fb8e",
-      "source": "진짜로요. {symbol} 지시 따른 실현손익 {amount}원… 제 경험은 이래요.",
+      "source": "진짜로요. {symbol} 지시 따른 실현손익 {amount}돈… 제 경험은 이래요.",
       "templateOnly": true
     },
     {
       "key": "text.7714720e3b2e36c9",
-      "source": "진짜로요. {symbol} 지시 따른 실현손익 {amount}원이에요. 고마워요.",
+      "source": "진짜로요. {symbol} 지시 따른 실현손익 {amount}돈이에요. 고마워요.",
       "templateOnly": true
     },
     {
@@ -15902,7 +15902,7 @@
     },
     {
       "key": "text.397747c6a0652467",
-      "source": "진짜로요. 저는 {symbol} {price}원 체결 보고 있어요.",
+      "source": "진짜로요. 저는 {symbol} {price}돈 체결 보고 있어요.",
       "templateOnly": true
     },
     {
@@ -15932,7 +15932,7 @@
     },
     {
       "key": "text.a8e66c98529ecccd",
-      "source": "진짜로요. 제 기록엔 {symbol} 리딩 실현손익 {amount}원이에요.",
+      "source": "진짜로요. 제 기록엔 {symbol} 리딩 실현손익 {amount}돈이에요.",
       "templateOnly": true
     },
     {
@@ -16197,12 +16197,12 @@
     },
     {
       "key": "text.d98b6641d80cb491",
-      "source": "천 원 정도",
+      "source": "천 돈 정도",
       "templateOnly": false
     },
     {
       "key": "text.d79b7ed2f862b9e8",
-      "source": "천원쯤",
+      "source": "천돈쯤",
       "templateOnly": false
     },
     {
@@ -20787,7 +20787,7 @@
     },
     {
       "key": "text.983e7b006f2a9a27",
-      "source": "{symbol} 방금 쏜 거 봄? {price}원까지 순식간이네",
+      "source": "{symbol} 방금 쏜 거 봄? {price}돈까지 순식간이네",
       "templateOnly": true
     },
     {
@@ -20797,12 +20797,12 @@
     },
     {
       "key": "text.0096831b9408b657",
-      "source": "와 {symbol} {price}원 ㅋㅋㅋ 잠깐 눈 뗀 사이에 {fastPct}",
+      "source": "와 {symbol} {price}돈 ㅋㅋㅋ 잠깐 눈 뗀 사이에 {fastPct}",
       "templateOnly": true
     },
     {
       "key": "text.d54db488435baa35",
-      "source": "{symbol} 불 붙었다. 몇 분 만에 {fastPct}, 지금 {price}원",
+      "source": "{symbol} 불 붙었다. 몇 분 만에 {fastPct}, 지금 {price}돈",
       "templateOnly": true
     },
     {
@@ -20812,7 +20812,7 @@
     },
     {
       "key": "text.8d50a4ec4dc172e3",
-      "source": "{symbol} 몇 분 사이에 {fastPct} 움직였네요. 지금 {price}원입니다.",
+      "source": "{symbol} 몇 분 사이에 {fastPct} 움직였네요. 지금 {price}돈입니다.",
       "templateOnly": true
     },
     {
@@ -20822,7 +20822,7 @@
     },
     {
       "key": "text.f3f60fffc64bce42",
-      "source": "{symbol} {price}원까지 순식간이네요. 이 속도면 조심스럽습니다.",
+      "source": "{symbol} {price}돈까지 순식간이네요. 이 속도면 조심스럽습니다.",
       "templateOnly": true
     },
     {
@@ -20837,7 +20837,7 @@
     },
     {
       "key": "text.070c58e3a5704a04",
-      "source": "{symbol} 방금 쭉 빠진 거 봄? {price}원까지 밀림",
+      "source": "{symbol} 방금 쭉 빠진 거 봄? {price}돈까지 밀림",
       "templateOnly": true
     },
     {
@@ -20847,7 +20847,7 @@
     },
     {
       "key": "text.828019cc2056ce3d",
-      "source": "{symbol} 매수 호가 뚫리는 중. {price}원까지 내려옴",
+      "source": "{symbol} 매수 호가 뚫리는 중. {price}돈까지 내려옴",
       "templateOnly": true
     },
     {
@@ -20857,12 +20857,12 @@
     },
     {
       "key": "text.f1c567f53ed77e07",
-      "source": "{symbol} 쏟아진다... 지금 {price}원. 받는 사람이 없네",
+      "source": "{symbol} 쏟아진다... 지금 {price}돈. 받는 사람이 없네",
       "templateOnly": true
     },
     {
       "key": "text.cf7bffd78aba96c0",
-      "source": "{symbol} 몇 분 사이에 {fastPct} 빠졌네요. 지금 {price}원입니다.",
+      "source": "{symbol} 몇 분 사이에 {fastPct} 빠졌네요. 지금 {price}돈입니다.",
       "templateOnly": true
     },
     {
@@ -20872,7 +20872,7 @@
     },
     {
       "key": "text.8ca1717ef0856594",
-      "source": "{symbol} {price}원까지 밀렸습니다. 받아 주는 물량이 얇아 보이네요.",
+      "source": "{symbol} {price}돈까지 밀렸습니다. 받아 주는 물량이 얇아 보이네요.",
       "templateOnly": true
     },
     {
@@ -20882,7 +20882,7 @@
     },
     {
       "key": "text.9e6e1e9bb95c4462",
-      "source": "{symbol} 오늘 고점 {dayHigh}원 뚫는 중 ㅋㅋ {dayPct}네",
+      "source": "{symbol} 오늘 고점 {dayHigh}돈 뚫는 중 ㅋㅋ {dayPct}네",
       "templateOnly": true
     },
     {
@@ -20892,7 +20892,7 @@
     },
     {
       "key": "text.e097f5f06cb0172b",
-      "source": "{symbol} 지금 {price}원. 오늘 제일 높은 자리임",
+      "source": "{symbol} 지금 {price}돈. 오늘 제일 높은 자리임",
       "templateOnly": true
     },
     {
@@ -20902,7 +20902,7 @@
     },
     {
       "key": "text.8f0f373f5f09bbc0",
-      "source": "와 {symbol} {dayHigh}원 찍었네. 어디까지 가는 거냐",
+      "source": "와 {symbol} {dayHigh}돈 찍었네. 어디까지 가는 거냐",
       "templateOnly": true
     },
     {
@@ -20912,7 +20912,7 @@
     },
     {
       "key": "text.f153cc26e5fb33d2",
-      "source": "{symbol} 오늘 고가 {dayHigh}원 부근입니다. 전일 대비 {dayPct}네요.",
+      "source": "{symbol} 오늘 고가 {dayHigh}돈 부근입니다. 전일 대비 {dayPct}네요.",
       "templateOnly": true
     },
     {
@@ -20922,7 +20922,7 @@
     },
     {
       "key": "text.d012618eed08ef89",
-      "source": "{symbol} 지금 {price}원, 오늘 가장 높은 가격대입니다.",
+      "source": "{symbol} 지금 {price}돈, 오늘 가장 높은 가격대입니다.",
       "templateOnly": true
     },
     {
@@ -20932,7 +20932,7 @@
     },
     {
       "key": "text.e7866ad3c8505ee8",
-      "source": "{symbol} 오늘 저점 {dayLow}원 깨는 중... {dayPct}",
+      "source": "{symbol} 오늘 저점 {dayLow}돈 깨는 중... {dayPct}",
       "templateOnly": true
     },
     {
@@ -20942,7 +20942,7 @@
     },
     {
       "key": "text.ca6d9fed40a8b6c2",
-      "source": "{symbol} 지금 {price}원. 오늘 제일 낮은 자리네",
+      "source": "{symbol} 지금 {price}돈. 오늘 제일 낮은 자리네",
       "templateOnly": true
     },
     {
@@ -20952,7 +20952,7 @@
     },
     {
       "key": "text.caad3a9ea7eea155",
-      "source": "아 {symbol} {dayLow}원까지 찍음. 지지 같은 건 없구나",
+      "source": "아 {symbol} {dayLow}돈까지 찍음. 지지 같은 건 없구나",
       "templateOnly": true
     },
     {
@@ -20962,7 +20962,7 @@
     },
     {
       "key": "text.511a5e70011c365a",
-      "source": "{symbol} 오늘 저가 {dayLow}원 부근입니다. 전일 대비 {dayPct}네요.",
+      "source": "{symbol} 오늘 저가 {dayLow}돈 부근입니다. 전일 대비 {dayPct}네요.",
       "templateOnly": true
     },
     {
@@ -20972,7 +20972,7 @@
     },
     {
       "key": "text.63f0fd1c60cd404e",
-      "source": "{symbol} 지금 {price}원, 오늘 가장 낮은 가격대입니다.",
+      "source": "{symbol} 지금 {price}돈, 오늘 가장 낮은 가격대입니다.",
       "templateOnly": true
     },
     {
@@ -20982,12 +20982,12 @@
     },
     {
       "key": "text.9d840cb8f40de2ae",
-      "source": "{symbol} {dayHigh}원 찍고 {fromHigh} 밀림. 고점에 산 사람 어떡하냐",
+      "source": "{symbol} {dayHigh}돈 찍고 {fromHigh} 밀림. 고점에 산 사람 어떡하냐",
       "templateOnly": true
     },
     {
       "key": "text.093306b6bd7f017e",
-      "source": "{symbol} 아까 {dayHigh}원이었는데 지금 {price}원 ㅋㅋ 차익 나오네",
+      "source": "{symbol} 아까 {dayHigh}돈이었는데 지금 {price}돈 ㅋㅋ 차익 나오네",
       "templateOnly": true
     },
     {
@@ -20997,7 +20997,7 @@
     },
     {
       "key": "text.21fd3d2a2cc5fb24",
-      "source": "{symbol} 위꼬리 길게 달았네. {dayHigh}원이 오늘 끝인가",
+      "source": "{symbol} 위꼬리 길게 달았네. {dayHigh}돈이 오늘 끝인가",
       "templateOnly": true
     },
     {
@@ -21007,17 +21007,17 @@
     },
     {
       "key": "text.87627006a66aa88c",
-      "source": "{symbol} {price}원까지 내려옴. 고점에서 판 사람이 승자네",
+      "source": "{symbol} {price}돈까지 내려옴. 고점에서 판 사람이 승자네",
       "templateOnly": true
     },
     {
       "key": "text.bf07d717fc14db92",
-      "source": "{symbol} 고가 {dayHigh}원을 찍은 뒤 {fromHigh} 밀렸네요.",
+      "source": "{symbol} 고가 {dayHigh}돈을 찍은 뒤 {fromHigh} 밀렸네요.",
       "templateOnly": true
     },
     {
       "key": "text.228a229c1798dd42",
-      "source": "{symbol} 차익 매물이 나오는 것 같습니다. 지금 {price}원입니다.",
+      "source": "{symbol} 차익 매물이 나오는 것 같습니다. 지금 {price}돈입니다.",
       "templateOnly": true
     },
     {
@@ -21027,17 +21027,17 @@
     },
     {
       "key": "text.d28fb90197723770",
-      "source": "{symbol} 위꼬리가 길어졌네요. {dayHigh}원을 다시 넘는지가 관건이겠습니다.",
+      "source": "{symbol} 위꼬리가 길어졌네요. {dayHigh}돈을 다시 넘는지가 관건이겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.4b5d01bb50e4b766",
-      "source": "{symbol} {dayLow}원 찍고 {fromLow} 올라옴. 바닥에 주운 사람 부럽다",
+      "source": "{symbol} {dayLow}돈 찍고 {fromLow} 올라옴. 바닥에 주운 사람 부럽다",
       "templateOnly": true
     },
     {
       "key": "text.4e544e72f0cce00a",
-      "source": "{symbol} 아까 {dayLow}원이었는데 지금 {price}원. 반등 나오네",
+      "source": "{symbol} 아까 {dayLow}돈이었는데 지금 {price}돈. 반등 나오네",
       "templateOnly": true
     },
     {
@@ -21047,7 +21047,7 @@
     },
     {
       "key": "text.91d155ba61da4766",
-      "source": "{symbol} 아래꼬리 길게 달았네. {dayLow}원이 오늘 바닥인가",
+      "source": "{symbol} 아래꼬리 길게 달았네. {dayLow}돈이 오늘 바닥인가",
       "templateOnly": true
     },
     {
@@ -21057,17 +21057,17 @@
     },
     {
       "key": "text.e1adaaba897f72c8",
-      "source": "{symbol} {price}원까지 올라옴. 아까 던진 사람들 속 쓰리겠다",
+      "source": "{symbol} {price}돈까지 올라옴. 아까 던진 사람들 속 쓰리겠다",
       "templateOnly": true
     },
     {
       "key": "text.7a74738039a51df4",
-      "source": "{symbol} 저가 {dayLow}원을 찍은 뒤 {fromLow} 올라왔네요.",
+      "source": "{symbol} 저가 {dayLow}돈을 찍은 뒤 {fromLow} 올라왔네요.",
       "templateOnly": true
     },
     {
       "key": "text.ff1c42ee9cde1aad",
-      "source": "{symbol} 저가 매수가 들어오는 것 같습니다. 지금 {price}원입니다.",
+      "source": "{symbol} 저가 매수가 들어오는 것 같습니다. 지금 {price}돈입니다.",
       "templateOnly": true
     },
     {
@@ -21077,7 +21077,7 @@
     },
     {
       "key": "text.f87779dc0d0aed3b",
-      "source": "{symbol} 아래꼬리가 길어졌네요. {dayLow}원이 지켜지는지가 관건이겠습니다.",
+      "source": "{symbol} 아래꼬리가 길어졌네요. {dayLow}돈이 지켜지는지가 관건이겠습니다.",
       "templateOnly": true
     },
     {
@@ -21087,7 +21087,7 @@
     },
     {
       "key": "text.ea3f301eeeacdcc1",
-      "source": "{symbol} 지금 {price}원, {dayPct}네. 고점 {dayHigh}원 다시 보러 가나",
+      "source": "{symbol} 지금 {price}돈, {dayPct}네. 고점 {dayHigh}돈 다시 보러 가나",
       "templateOnly": true
     },
     {
@@ -21102,12 +21102,12 @@
     },
     {
       "key": "text.71905bfc3d448a7c",
-      "source": "{symbol} 오늘 {dayPct}인데 고점 {dayHigh}원은 아직 못 넘음",
+      "source": "{symbol} 오늘 {dayPct}인데 고점 {dayHigh}돈은 아직 못 넘음",
       "templateOnly": true
     },
     {
       "key": "text.9b21ea83ca687e91",
-      "source": "{symbol} {price}원. {dayPct}면 오늘은 이긴 날이지",
+      "source": "{symbol} {price}돈. {dayPct}면 오늘은 이긴 날이지",
       "templateOnly": true
     },
     {
@@ -21117,12 +21117,12 @@
     },
     {
       "key": "text.42bb09a212610b67",
-      "source": "{symbol} 지금 {price}원이고, 오늘 고가는 {dayHigh}원입니다.",
+      "source": "{symbol} 지금 {price}돈이고, 오늘 고가는 {dayHigh}돈입니다.",
       "templateOnly": true
     },
     {
       "key": "text.08e87bd8c198da98",
-      "source": "{symbol} {dayPct}네요. 고가 {dayHigh}원을 넘는지 보고 있습니다.",
+      "source": "{symbol} {dayPct}네요. 고가 {dayHigh}돈을 넘는지 보고 있습니다.",
       "templateOnly": true
     },
     {
@@ -21137,7 +21137,7 @@
     },
     {
       "key": "text.e90eebac5f39e5cc",
-      "source": "{symbol} 지금 {price}원, {dayPct}네. 저점 {dayLow}원 다시 가나",
+      "source": "{symbol} 지금 {price}돈, {dayPct}네. 저점 {dayLow}돈 다시 가나",
       "templateOnly": true
     },
     {
@@ -21152,12 +21152,12 @@
     },
     {
       "key": "text.b53f4624ce8991f3",
-      "source": "{symbol} 오늘 {dayPct}인데 저점 {dayLow}원은 아직 안 깨짐",
+      "source": "{symbol} 오늘 {dayPct}인데 저점 {dayLow}돈은 아직 안 깨짐",
       "templateOnly": true
     },
     {
       "key": "text.d802dd51544eee66",
-      "source": "{symbol} {price}원. {dayPct}... 오늘은 쉬는 날인가",
+      "source": "{symbol} {price}돈. {dayPct}... 오늘은 쉬는 날인가",
       "templateOnly": true
     },
     {
@@ -21167,12 +21167,12 @@
     },
     {
       "key": "text.b2e89c834a158349",
-      "source": "{symbol} 지금 {price}원이고, 오늘 저가는 {dayLow}원입니다.",
+      "source": "{symbol} 지금 {price}돈이고, 오늘 저가는 {dayLow}돈입니다.",
       "templateOnly": true
     },
     {
       "key": "text.6bc1464a12e49a4b",
-      "source": "{symbol} {dayPct}네요. 저가 {dayLow}원이 지켜지는지 보고 있습니다.",
+      "source": "{symbol} {dayPct}네요. 저가 {dayLow}돈이 지켜지는지 보고 있습니다.",
       "templateOnly": true
     },
     {
@@ -21182,7 +21182,7 @@
     },
     {
       "key": "text.e0c3931ce8e20fff",
-      "source": "{symbol} 오늘 {dayLow}~{dayHigh}원에서만 놀고 있음. 지겹다",
+      "source": "{symbol} 오늘 {dayLow}~{dayHigh}돈에서만 놀고 있음. 지겹다",
       "templateOnly": true
     },
     {
@@ -21192,7 +21192,7 @@
     },
     {
       "key": "text.3a9c1fcdc117e650",
-      "source": "{symbol} 지금 {price}원. 아까도 이 가격이었던 것 같은데 ㅋㅋ",
+      "source": "{symbol} 지금 {price}돈. 아까도 이 가격이었던 것 같은데 ㅋㅋ",
       "templateOnly": true
     },
     {
@@ -21207,12 +21207,12 @@
     },
     {
       "key": "text.da123c460edd4fa7",
-      "source": "{symbol} {dayHigh}원도 못 넘고 {dayLow}원도 안 깨고. 뭐 하자는 거임",
+      "source": "{symbol} {dayHigh}돈도 못 넘고 {dayLow}돈도 안 깨고. 뭐 하자는 거임",
       "templateOnly": true
     },
     {
       "key": "text.4311d7903dc4167a",
-      "source": "{symbol} 오늘은 {dayLow}~{dayHigh}원 사이에서만 움직이네요.",
+      "source": "{symbol} 오늘은 {dayLow}~{dayHigh}돈 사이에서만 움직이네요.",
       "templateOnly": true
     },
     {
@@ -21222,52 +21222,52 @@
     },
     {
       "key": "text.0c2d0fbbe16c86e1",
-      "source": "{symbol} 지금 {price}원입니다. 방향이 나올 때까지 기다리겠습니다.",
+      "source": "{symbol} 지금 {price}돈입니다. 방향이 나올 때까지 기다리겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.1fdc08b9c4447542",
-      "source": "{symbol} 움직임이 거의 없네요. {dayHigh}원을 넘겨야 관심이 붙겠습니다.",
+      "source": "{symbol} 움직임이 거의 없네요. {dayHigh}돈을 넘겨야 관심이 붙겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.4f76a682ff0986d3",
-      "source": "{symbol} {price}원까지 올린 거 진짜 수급임? 고점 {dayHigh}원에서 물리기 싫은데",
+      "source": "{symbol} {price}돈까지 올린 거 진짜 수급임? 고점 {dayHigh}돈에서 물리기 싫은데",
       "templateOnly": true
     },
     {
       "key": "text.19377a4faf5d704d",
-      "source": "{symbol} {price}원인데 왜 오르는지 아는 사람이 없네. 좀 찜찜함",
+      "source": "{symbol} {price}돈인데 왜 오르는지 아는 사람이 없네. 좀 찜찜함",
       "templateOnly": true
     },
     {
       "key": "text.616a365a3aa01117",
-      "source": "이렇게 올리고 한 번에 던지는 거 많이 봄. {symbol} {dayLow}원까지 되돌려도 안 이상함",
+      "source": "이렇게 올리고 한 번에 던지는 거 많이 봄. {symbol} {dayLow}돈까지 되돌려도 안 이상함",
       "templateOnly": true
     },
     {
       "key": "text.992e6eb00e2befdb",
-      "source": "{symbol} 지금 따라 사는 건 좀... {dayHigh}원 넘는 거 확인하고 봐도 안 늦음",
+      "source": "{symbol} 지금 따라 사는 건 좀... {dayHigh}돈 넘는 거 확인하고 봐도 안 늦음",
       "templateOnly": true
     },
     {
       "key": "text.145b5bee6afda082",
-      "source": "{symbol} {price}원까지 오른 이유가 분명하지 않네요. 고가 {dayHigh}원 부근은 조심하고 싶습니다.",
+      "source": "{symbol} {price}돈까지 오른 이유가 분명하지 않네요. 고가 {dayHigh}돈 부근은 조심하고 싶습니다.",
       "templateOnly": true
     },
     {
       "key": "text.5fd48901f30d8873",
-      "source": "{symbol} 오름세가 이어질지는 모르겠습니다. {dayHigh}원을 넘는지 확인하고 싶네요.",
+      "source": "{symbol} 오름세가 이어질지는 모르겠습니다. {dayHigh}돈을 넘는지 확인하고 싶네요.",
       "templateOnly": true
     },
     {
       "key": "text.ba3b396c565ff033",
-      "source": "급하게 오른 종목은 되돌림도 빠르더군요. {symbol} 저가 {dayLow}원까지는 열어 두겠습니다.",
+      "source": "급하게 오른 종목은 되돌림도 빠르더군요. {symbol} 저가 {dayLow}돈까지는 열어 두겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.6d1b6fa9af7cc178",
-      "source": "{symbol} {price}원이면 싸 보이긴 하는데 저점 {dayLow}원 깨지면 답 없음",
+      "source": "{symbol} {price}돈이면 싸 보이긴 하는데 저점 {dayLow}돈 깨지면 답 없음",
       "templateOnly": true
     },
     {
@@ -21277,7 +21277,7 @@
     },
     {
       "key": "text.f1300b4048617f8f",
-      "source": "{symbol} 반등 나와도 {dayHigh}원까지는 멀다. 섣불리 물타면 안 될 듯",
+      "source": "{symbol} 반등 나와도 {dayHigh}돈까지는 멀다. 섣불리 물타면 안 될 듯",
       "templateOnly": true
     },
     {
@@ -21287,7 +21287,7 @@
     },
     {
       "key": "text.6d18abb8519fd816",
-      "source": "{symbol} {price}원이 싸 보이지만, 저가 {dayLow}원이 깨지면 더 밀릴 수 있겠습니다.",
+      "source": "{symbol} {price}돈이 싸 보이지만, 저가 {dayLow}돈이 깨지면 더 밀릴 수 있겠습니다.",
       "templateOnly": true
     },
     {
@@ -21297,17 +21297,17 @@
     },
     {
       "key": "text.ac1b7fc232c41bd0",
-      "source": "{symbol} 하락 이유가 확인되지 않아 조심스럽습니다. 반등해도 {dayHigh}원까지는 멀어 보이네요.",
+      "source": "{symbol} 하락 이유가 확인되지 않아 조심스럽습니다. 반등해도 {dayHigh}돈까지는 멀어 보이네요.",
       "templateOnly": true
     },
     {
       "key": "text.f29e7bf336b12059",
-      "source": "{symbol} {dayLow}~{dayHigh}원에서 이렇게 조용한 게 더 수상함",
+      "source": "{symbol} {dayLow}~{dayHigh}돈에서 이렇게 조용한 게 더 수상함",
       "templateOnly": true
     },
     {
       "key": "text.05719c04ae99c11c",
-      "source": "{symbol} 간다 간다 하는데 {price}원에서 꿈쩍도 안 하잖아",
+      "source": "{symbol} 간다 간다 하는데 {price}돈에서 꿈쩍도 안 하잖아",
       "templateOnly": true
     },
     {
@@ -21317,17 +21317,17 @@
     },
     {
       "key": "text.dc9d59cc0ef6a8db",
-      "source": "{dayHigh}원도 못 넘는 {symbol}에 뭘 기대함",
+      "source": "{dayHigh}돈도 못 넘는 {symbol}에 뭘 기대함",
       "templateOnly": true
     },
     {
       "key": "text.39e5834af449e102",
-      "source": "{symbol} {dayLow}~{dayHigh}원에서 너무 조용한 점이 오히려 마음에 걸립니다.",
+      "source": "{symbol} {dayLow}~{dayHigh}돈에서 너무 조용한 점이 오히려 마음에 걸립니다.",
       "templateOnly": true
     },
     {
       "key": "text.ee12baf33c16fa42",
-      "source": "{symbol} {price}원에서 움직이지 않는데, 기대만으로 사기는 어렵겠습니다.",
+      "source": "{symbol} {price}돈에서 움직이지 않는데, 기대만으로 사기는 어렵겠습니다.",
       "templateOnly": true
     },
     {
@@ -21337,32 +21337,32 @@
     },
     {
       "key": "text.ce589c1872d2ec29",
-      "source": "{symbol} 왜 오르는 거임? {price}원까지 온 이유 아는 사람?",
+      "source": "{symbol} 왜 오르는 거임? {price}돈까지 온 이유 아는 사람?",
       "templateOnly": true
     },
     {
       "key": "text.44fa892d3e9dff33",
-      "source": "{symbol} 지금 {price}원인데 들어가도 됨? 고점 {dayHigh}원이 코앞이라 고민됨",
+      "source": "{symbol} 지금 {price}돈인데 들어가도 됨? 고점 {dayHigh}돈이 코앞이라 고민됨",
       "templateOnly": true
     },
     {
       "key": "text.e85f01e8bb3dcc4b",
-      "source": "{symbol} 들고 있는 사람들 어디서 팔 거임? {dayHigh}원 넘으면?",
+      "source": "{symbol} 들고 있는 사람들 어디서 팔 거임? {dayHigh}돈 넘으면?",
       "templateOnly": true
     },
     {
       "key": "text.ff28c6edb0077491",
-      "source": "{symbol} 이거 더 감? 아니면 {dayLow}원까지 다시 내려옴?",
+      "source": "{symbol} 이거 더 감? 아니면 {dayLow}돈까지 다시 내려옴?",
       "templateOnly": true
     },
     {
       "key": "text.290dd7fa01dceeb3",
-      "source": "{symbol} 오르는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
+      "source": "{symbol} 오르는 이유를 아시는 분 계신가요? 지금 {price}돈입니다.",
       "templateOnly": true
     },
     {
       "key": "text.3f38c153b120ce89",
-      "source": "{symbol} {price}원인데 지금 들어가도 괜찮을까요? 고가 {dayHigh}원이 가까워 망설여집니다.",
+      "source": "{symbol} {price}돈인데 지금 들어가도 괜찮을까요? 고가 {dayHigh}돈이 가까워 망설여집니다.",
       "templateOnly": true
     },
     {
@@ -21377,7 +21377,7 @@
     },
     {
       "key": "text.f6e0858c26314a7e",
-      "source": "{symbol} {price}원이면 주워도 됨? 저점 {dayLow}원 근처라 고민되네",
+      "source": "{symbol} {price}돈이면 주워도 됨? 저점 {dayLow}돈 근처라 고민되네",
       "templateOnly": true
     },
     {
@@ -21387,17 +21387,17 @@
     },
     {
       "key": "text.93e60b901c149a8e",
-      "source": "{symbol} 어디까지 빠질 것 같음? {dayLow}원은 지켜주나",
+      "source": "{symbol} 어디까지 빠질 것 같음? {dayLow}돈은 지켜주나",
       "templateOnly": true
     },
     {
       "key": "text.465f9ce05329b458",
-      "source": "{symbol} 빠지는 이유를 아시는 분 계신가요? 지금 {price}원입니다.",
+      "source": "{symbol} 빠지는 이유를 아시는 분 계신가요? 지금 {price}돈입니다.",
       "templateOnly": true
     },
     {
       "key": "text.f57968dfaa1bdc3e",
-      "source": "{symbol} {price}원이면 매수해도 괜찮을까요? 저가 {dayLow}원 부근이라 고민됩니다.",
+      "source": "{symbol} {price}돈이면 매수해도 괜찮을까요? 저가 {dayLow}돈 부근이라 고민됩니다.",
       "templateOnly": true
     },
     {
@@ -21407,7 +21407,7 @@
     },
     {
       "key": "text.be884aa325da35bb",
-      "source": "{symbol} 오늘 왜 이렇게 조용함? {dayLow}~{dayHigh}원에서 안 벗어나네",
+      "source": "{symbol} 오늘 왜 이렇게 조용함? {dayLow}~{dayHigh}돈에서 안 벗어나네",
       "templateOnly": true
     },
     {
@@ -21417,12 +21417,12 @@
     },
     {
       "key": "text.78992de205ca6ec2",
-      "source": "{symbol} {price}원에서 위로 갈까 아래로 갈까. 다들 어떻게 봄?",
+      "source": "{symbol} {price}돈에서 위로 갈까 아래로 갈까. 다들 어떻게 봄?",
       "templateOnly": true
     },
     {
       "key": "text.d94a0e1c13a9476b",
-      "source": "{symbol} 이거 기다릴 가치 있음? 오늘 내내 {price}원 근처인데",
+      "source": "{symbol} 이거 기다릴 가치 있음? 오늘 내내 {price}돈 근처인데",
       "templateOnly": true
     },
     {
@@ -21432,27 +21432,27 @@
     },
     {
       "key": "text.b4dbd19ba122ccba",
-      "source": "{symbol} {dayLow}~{dayHigh}원 구간에서 모으시는 분 계신가요?",
+      "source": "{symbol} {dayLow}~{dayHigh}돈 구간에서 모으시는 분 계신가요?",
       "templateOnly": true
     },
     {
       "key": "text.45e2f2b9922a875d",
-      "source": "{symbol} {price}원에서 어느 쪽으로 움직일 것 같으신가요?",
+      "source": "{symbol} {price}돈에서 어느 쪽으로 움직일 것 같으신가요?",
       "templateOnly": true
     },
     {
       "key": "text.514ecd403284967c",
-      "source": "ㅇㅇ {symbol} {price}원까지 온 거 보면 힘은 있음",
+      "source": "ㅇㅇ {symbol} {price}돈까지 온 거 보면 힘은 있음",
       "templateOnly": true
     },
     {
       "key": "text.5002489d886503c0",
-      "source": "나도 그렇게 봄. {dayHigh}원 넘기면 더 갈 듯",
+      "source": "나도 그렇게 봄. {dayHigh}돈 넘기면 더 갈 듯",
       "templateOnly": true
     },
     {
       "key": "text.b9f8585b4c0b1235",
-      "source": "맞음. 저점 {dayLow}원에서 여기까지 올린 게 그냥은 아니지",
+      "source": "맞음. 저점 {dayLow}돈에서 여기까지 올린 게 그냥은 아니지",
       "templateOnly": true
     },
     {
@@ -21462,32 +21462,32 @@
     },
     {
       "key": "text.a875c5f8abf2be94",
-      "source": "동의합니다. {symbol} {price}원까지 올라온 걸 보면 힘이 있네요.",
+      "source": "동의합니다. {symbol} {price}돈까지 올라온 걸 보면 힘이 있네요.",
       "templateOnly": true
     },
     {
       "key": "text.ccf112bce24c7c4b",
-      "source": "저도 같은 생각입니다. {dayHigh}원을 넘기면 더 이어질 것 같습니다.",
+      "source": "저도 같은 생각입니다. {dayHigh}돈을 넘기면 더 이어질 것 같습니다.",
       "templateOnly": true
     },
     {
       "key": "text.fbefdbaccffaf2c8",
-      "source": "맞는 말씀입니다. 저가 {dayLow}원에서 여기까지 온 흐름은 무시하기 어렵네요.",
+      "source": "맞는 말씀입니다. 저가 {dayLow}돈에서 여기까지 온 흐름은 무시하기 어렵네요.",
       "templateOnly": true
     },
     {
       "key": "text.06ec9668b6bd377b",
-      "source": "ㅇㅇ {symbol} {price}원까지 밀린 거 보면 약하긴 함",
+      "source": "ㅇㅇ {symbol} {price}돈까지 밀린 거 보면 약하긴 함",
       "templateOnly": true
     },
     {
       "key": "text.c74e7a010e0180ac",
-      "source": "나도 그렇게 봄. {dayLow}원 깨지면 더 빠질 듯",
+      "source": "나도 그렇게 봄. {dayLow}돈 깨지면 더 빠질 듯",
       "templateOnly": true
     },
     {
       "key": "text.b5e973855ca3d484",
-      "source": "맞음. 고점 {dayHigh}원에서 여기까지 온 거면 분위기 꺾인 거지",
+      "source": "맞음. 고점 {dayHigh}돈에서 여기까지 온 거면 분위기 꺾인 거지",
       "templateOnly": true
     },
     {
@@ -21497,32 +21497,32 @@
     },
     {
       "key": "text.57b73b95d5f5823b",
-      "source": "동의합니다. {symbol} {price}원까지 밀린 걸 보면 약해 보이네요.",
+      "source": "동의합니다. {symbol} {price}돈까지 밀린 걸 보면 약해 보이네요.",
       "templateOnly": true
     },
     {
       "key": "text.75aa690b29a20570",
-      "source": "저도 같은 생각입니다. {dayLow}원이 깨지면 더 밀릴 것 같습니다.",
+      "source": "저도 같은 생각입니다. {dayLow}돈이 깨지면 더 밀릴 것 같습니다.",
       "templateOnly": true
     },
     {
       "key": "text.24a96ba2197c7c01",
-      "source": "맞는 말씀입니다. 고가 {dayHigh}원에서 여기까지 내려온 흐름은 가볍지 않네요.",
+      "source": "맞는 말씀입니다. 고가 {dayHigh}돈에서 여기까지 내려온 흐름은 가볍지 않네요.",
       "templateOnly": true
     },
     {
       "key": "text.32d7127fe72deee5",
-      "source": "ㅇㅇ {symbol} 오늘은 볼 게 없음. {price}원에서 그대로임",
+      "source": "ㅇㅇ {symbol} 오늘은 볼 게 없음. {price}돈에서 그대로임",
       "templateOnly": true
     },
     {
       "key": "text.e317fa459b6866e6",
-      "source": "나도 그 생각함. {dayHigh}원 넘기 전엔 관심 끄는 게 맞음",
+      "source": "나도 그 생각함. {dayHigh}돈 넘기 전엔 관심 끄는 게 맞음",
       "templateOnly": true
     },
     {
       "key": "text.5be81b29bdfa5d54",
-      "source": "맞음. {dayLow}~{dayHigh}원 박스 깨질 때까지는 그냥 구경",
+      "source": "맞음. {dayLow}~{dayHigh}돈 박스 깨질 때까지는 그냥 구경",
       "templateOnly": true
     },
     {
@@ -21532,32 +21532,32 @@
     },
     {
       "key": "text.4b9d5a2965783053",
-      "source": "동의합니다. {symbol} 오늘은 {price}원에서 변화가 없네요.",
+      "source": "동의합니다. {symbol} 오늘은 {price}돈에서 변화가 없네요.",
       "templateOnly": true
     },
     {
       "key": "text.160809e5502c6ef6",
-      "source": "저도 그렇게 봅니다. {dayHigh}원을 넘기 전에는 지켜보기만 하겠습니다.",
+      "source": "저도 그렇게 봅니다. {dayHigh}돈을 넘기 전에는 지켜보기만 하겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.d33a7b322994e6d5",
-      "source": "맞는 말씀입니다. {dayLow}~{dayHigh}원 구간을 벗어날 때까지 기다리겠습니다.",
+      "source": "맞는 말씀입니다. {dayLow}~{dayHigh}돈 구간을 벗어날 때까지 기다리겠습니다.",
       "templateOnly": true
     },
     {
       "key": "text.1d509a1f2bc16faa",
-      "source": "오른 건 맞는데 {price}원에서 따라 사는 건 다른 얘기임",
+      "source": "오른 건 맞는데 {price}돈에서 따라 사는 건 다른 얘기임",
       "templateOnly": true
     },
     {
       "key": "text.b759f2b3d08f8359",
-      "source": "글쎄. {dayHigh}원 못 넘으면 여기가 고점일 수도 있음",
+      "source": "글쎄. {dayHigh}돈 못 넘으면 여기가 고점일 수도 있음",
       "templateOnly": true
     },
     {
       "key": "text.21bcf3128b08c40e",
-      "source": "너무 좋게만 보는 거 아님? 저점 {dayLow}원에서 이미 많이 왔는데",
+      "source": "너무 좋게만 보는 거 아님? 저점 {dayLow}돈에서 이미 많이 왔는데",
       "templateOnly": true
     },
     {
@@ -21567,32 +21567,32 @@
     },
     {
       "key": "text.94b31d31be928f97",
-      "source": "오른 것은 맞지만, {price}원에서 따라 사는 것은 다른 문제라고 봅니다.",
+      "source": "오른 것은 맞지만, {price}돈에서 따라 사는 것은 다른 문제라고 봅니다.",
       "templateOnly": true
     },
     {
       "key": "text.de35abab35cb65f6",
-      "source": "저는 조금 다르게 봅니다. {dayHigh}원을 넘지 못하면 여기가 고점일 수 있습니다.",
+      "source": "저는 조금 다르게 봅니다. {dayHigh}돈을 넘지 못하면 여기가 고점일 수 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.4632fa276130dab3",
-      "source": "저가 {dayLow}원에서 이미 많이 올라왔습니다. 지금은 서두를 자리가 아닌 것 같네요.",
+      "source": "저가 {dayLow}돈에서 이미 많이 올라왔습니다. 지금은 서두를 자리가 아닌 것 같네요.",
       "templateOnly": true
     },
     {
       "key": "text.800cfa64dc1e0f0e",
-      "source": "빠진 건 맞는데 {price}원이면 오히려 볼 만한 자리 아님?",
+      "source": "빠진 건 맞는데 {price}돈이면 오히려 볼 만한 자리 아님?",
       "templateOnly": true
     },
     {
       "key": "text.07da418b5dcdebfd",
-      "source": "글쎄. {dayLow}원 안 깨지면 여기서 반등 나올 수도 있음",
+      "source": "글쎄. {dayLow}돈 안 깨지면 여기서 반등 나올 수도 있음",
       "templateOnly": true
     },
     {
       "key": "text.a4b054e61f74a39d",
-      "source": "너무 겁먹은 거 아님? 고점 {dayHigh}원에서 이 정도 눌리는 건 흔함",
+      "source": "너무 겁먹은 거 아님? 고점 {dayHigh}돈에서 이 정도 눌리는 건 흔함",
       "templateOnly": true
     },
     {
@@ -21602,32 +21602,32 @@
     },
     {
       "key": "text.9be7f65ebfaf92da",
-      "source": "빠진 것은 맞지만, {price}원이면 오히려 살펴볼 만한 자리라고 봅니다.",
+      "source": "빠진 것은 맞지만, {price}돈이면 오히려 살펴볼 만한 자리라고 봅니다.",
       "templateOnly": true
     },
     {
       "key": "text.beaaef51c2c0e514",
-      "source": "저는 조금 다르게 봅니다. {dayLow}원이 지켜지면 반등이 나올 수 있습니다.",
+      "source": "저는 조금 다르게 봅니다. {dayLow}돈이 지켜지면 반등이 나올 수 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.b875947e8c89b38b",
-      "source": "고가 {dayHigh}원에서 이 정도 조정은 흔한 일입니다. 너무 걱정하실 필요는 없어 보이네요.",
+      "source": "고가 {dayHigh}돈에서 이 정도 조정은 흔한 일입니다. 너무 걱정하실 필요는 없어 보이네요.",
       "templateOnly": true
     },
     {
       "key": "text.87b003514d5db4fe",
-      "source": "이유는 나도 모름. 근데 {dayHigh}원 넘기면 사고, 못 넘기면 안 삼",
+      "source": "이유는 나도 모름. 근데 {dayHigh}돈 넘기면 사고, 못 넘기면 안 삼",
       "templateOnly": true
     },
     {
       "key": "text.faf91b452d8f5fee",
-      "source": "난 {price}원에선 안 들어감. {dayLow}원 근처까지 눌리면 그때 봄",
+      "source": "난 {price}돈에선 안 들어감. {dayLow}돈 근처까지 눌리면 그때 봄",
       "templateOnly": true
     },
     {
       "key": "text.3135f106f501b17c",
-      "source": "산다면 조금만. 틀리면 {dayLow}원 깨질 때 자르면 됨",
+      "source": "산다면 조금만. 틀리면 {dayLow}돈 깨질 때 자르면 됨",
       "templateOnly": true
     },
     {
@@ -21637,12 +21637,12 @@
     },
     {
       "key": "text.cd15a6912f7e4fe1",
-      "source": "이유는 저도 모르겠습니다. 다만 {dayHigh}원을 넘는지를 기준으로 보고 있습니다.",
+      "source": "이유는 저도 모르겠습니다. 다만 {dayHigh}돈을 넘는지를 기준으로 보고 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.dc8f558e88e8379b",
-      "source": "저는 {price}원에서는 들어가지 않습니다. {dayLow}원 부근까지 눌리면 다시 보겠습니다.",
+      "source": "저는 {price}돈에서는 들어가지 않습니다. {dayLow}돈 부근까지 눌리면 다시 보겠습니다.",
       "templateOnly": true
     },
     {
@@ -21652,12 +21652,12 @@
     },
     {
       "key": "text.806f1e3f1a847310",
-      "source": "이유는 나도 모름. 근데 {dayLow}원 깨지면 더 보고, 지키면 조금 주울 생각",
+      "source": "이유는 나도 모름. 근데 {dayLow}돈 깨지면 더 보고, 지키면 조금 주울 생각",
       "templateOnly": true
     },
     {
       "key": "text.26affc5bba802fec",
-      "source": "난 {price}원에선 아직 안 삼. 반등 확인하고 들어가도 안 늦음",
+      "source": "난 {price}돈에선 아직 안 삼. 반등 확인하고 들어가도 안 늦음",
       "templateOnly": true
     },
     {
@@ -21667,17 +21667,17 @@
     },
     {
       "key": "text.ab15e443e9b07011",
-      "source": "버틸 거면 {dayLow}원 기준으로 잡는 게 맞음. 그 밑은 나도 모름",
+      "source": "버틸 거면 {dayLow}돈 기준으로 잡는 게 맞음. 그 밑은 나도 모름",
       "templateOnly": true
     },
     {
       "key": "text.bb3bd688bf1d1339",
-      "source": "이유는 저도 모르겠습니다. 다만 {dayLow}원이 지켜지는지를 기준으로 보고 있습니다.",
+      "source": "이유는 저도 모르겠습니다. 다만 {dayLow}돈이 지켜지는지를 기준으로 보고 있습니다.",
       "templateOnly": true
     },
     {
       "key": "text.94fcfdea5b3bc59d",
-      "source": "저는 {price}원에서는 아직 사지 않습니다. 반등을 확인한 뒤에 들어가도 늦지 않습니다.",
+      "source": "저는 {price}돈에서는 아직 사지 않습니다. 반등을 확인한 뒤에 들어가도 늦지 않습니다.",
       "templateOnly": true
     },
     {
@@ -21692,17 +21692,17 @@
     },
     {
       "key": "text.046e57beb47c99e6",
-      "source": "난 {dayHigh}원 넘기 전엔 안 건드림. 횡보에 돈 묶이기 싫어서",
+      "source": "난 {dayHigh}돈 넘기 전엔 안 건드림. 횡보에 돈 묶이기 싫어서",
       "templateOnly": true
     },
     {
       "key": "text.36f26af8ba6b287c",
-      "source": "위든 아래든 {dayLow}~{dayHigh}원 벗어나는 쪽 따라갈 생각",
+      "source": "위든 아래든 {dayLow}~{dayHigh}돈 벗어나는 쪽 따라갈 생각",
       "templateOnly": true
     },
     {
       "key": "text.5d8beefae431fffe",
-      "source": "기다릴 거면 {price}원 근처에서 조금씩 모으는 것도 방법이긴 함",
+      "source": "기다릴 거면 {price}돈 근처에서 조금씩 모으는 것도 방법이긴 함",
       "templateOnly": true
     },
     {
@@ -21712,17 +21712,17 @@
     },
     {
       "key": "text.98b227c29920704d",
-      "source": "저는 {dayHigh}원을 넘기 전에는 손대지 않을 생각입니다.",
+      "source": "저는 {dayHigh}돈을 넘기 전에는 손대지 않을 생각입니다.",
       "templateOnly": true
     },
     {
       "key": "text.3b2fc21de3e3fc3a",
-      "source": "{dayLow}~{dayHigh}원 구간을 벗어나는 방향을 따라가려 합니다.",
+      "source": "{dayLow}~{dayHigh}돈 구간을 벗어나는 방향을 따라가려 합니다.",
       "templateOnly": true
     },
     {
       "key": "text.667e4faed7401763",
-      "source": "자 여러분 {symbol} {price}원입니다. 중계는 제가 합니다 ㅋㅋ",
+      "source": "자 여러분 {symbol} {price}돈입니다. 중계는 제가 합니다 ㅋㅋ",
       "templateOnly": true
     },
     {
@@ -21737,7 +21737,7 @@
     },
     {
       "key": "text.262f0d8bf93973e5",
-      "source": "{symbol} {price}원. 아까도 말했지만 또 말함 ㅋㅋ",
+      "source": "{symbol} {price}돈. 아까도 말했지만 또 말함 ㅋㅋ",
       "templateOnly": true
     },
     {
@@ -21747,7 +21747,7 @@
     },
     {
       "key": "text.fe127485936d985e",
-      "source": "{symbol} 지금 {price}원인 거 다들 알고 있지? 모르면 내가 계속 알려줌",
+      "source": "{symbol} 지금 {price}돈인 거 다들 알고 있지? 모르면 내가 계속 알려줌",
       "templateOnly": true
     },
     {
@@ -21757,7 +21757,7 @@
     },
     {
       "key": "text.0d01601ed5e90de4",
-      "source": "조용하길래 한마디 함. {symbol} {price}원임. 이상.",
+      "source": "조용하길래 한마디 함. {symbol} {price}돈임. 이상.",
       "templateOnly": true
     },
     {
@@ -21812,7 +21812,7 @@
     },
     {
       "key": "text.07688b66e2ca77f4",
-      "source": "{symbol} 지금 {price}원인데 다들 한마디씩만 해 봐. 궁금해서 그럼",
+      "source": "{symbol} 지금 {price}돈인데 다들 한마디씩만 해 봐. 궁금해서 그럼",
       "templateOnly": true
     },
     {
@@ -21837,7 +21837,7 @@
     },
     {
       "key": "text.c267af29b8a9a5f3",
-      "source": "아무나 대답 좀. {symbol} {price}원 싼 거임 비싼 거임?",
+      "source": "아무나 대답 좀. {symbol} {price}돈 싼 거임 비싼 거임?",
       "templateOnly": true
     },
     {
@@ -21932,47 +21932,47 @@
     },
     {
       "key": "text.1e231ef96c6f884c",
-      "source": "오늘 {symbol} {level}원 돌파했는데 내일 {nextLevel}원 가나? ㅋㅋ",
+      "source": "오늘 {symbol} {level}돈 돌파했는데 내일 {nextLevel}돈 가나? ㅋㅋ",
       "templateOnly": true
     },
     {
       "key": "text.6c3dd7f93761174c",
-      "source": "{symbol} {level}원 뚫고 {close}원 마감. 내일도 가려나",
+      "source": "{symbol} {level}돈 뚫고 {close}돈 마감. 내일도 가려나",
       "templateOnly": true
     },
     {
       "key": "text.b24e240db22857ac",
-      "source": "{symbol} {level}원 넘긴 거 본 사람? 내일 시초가 궁금함",
+      "source": "{symbol} {level}돈 넘긴 거 본 사람? 내일 시초가 궁금함",
       "templateOnly": true
     },
     {
       "key": "text.00e0121e3e4050e9",
-      "source": "{symbol} 오늘 {dayPct} 찍고 {level}원 위에서 끝남. 이거 진짜임?",
+      "source": "{symbol} 오늘 {dayPct} 찍고 {level}돈 위에서 끝남. 이거 진짜임?",
       "templateOnly": true
     },
     {
       "key": "text.8eb71d35fe08633b",
-      "source": "어제 {symbol} {level}원 돌파했는데 오늘 {nextLevel}원 가나? ㅋㅋ",
+      "source": "어제 {symbol} {level}돈 돌파했는데 오늘 {nextLevel}돈 가나? ㅋㅋ",
       "templateOnly": true
     },
     {
       "key": "text.88c4e4393c23b2de",
-      "source": "{symbol} 어제 {close}원 마감이었지. 오늘 {level}원 지켜 주려나",
+      "source": "{symbol} 어제 {close}돈 마감이었지. 오늘 {level}돈 지켜 주려나",
       "templateOnly": true
     },
     {
       "key": "text.5d438b5be369dbd4",
-      "source": "자고 일어나도 {symbol} {level}원 돌파가 안 믿김 ㅋㅋ 오늘 시초가 어디서 뜰까",
+      "source": "자고 일어나도 {symbol} {level}돈 돌파가 안 믿김 ㅋㅋ 오늘 시초가 어디서 뜰까",
       "templateOnly": true
     },
     {
       "key": "text.0c9b3545f8ae537c",
-      "source": "{symbol} 어제 {dayPct}였는데 오늘 이어 가면 {nextLevel}원도 보이는 거 아님?",
+      "source": "{symbol} 어제 {dayPct}였는데 오늘 이어 가면 {nextLevel}돈도 보이는 거 아님?",
       "templateOnly": true
     },
     {
       "key": "text.adbc6a003d9c2522",
-      "source": "{nextLevel}원은 좀 ㅋㅋ 일단 {level}원부터 지켜야지",
+      "source": "{nextLevel}돈은 좀 ㅋㅋ 일단 {level}돈부터 지켜야지",
       "templateOnly": true
     },
     {
@@ -21987,12 +21987,12 @@
     },
     {
       "key": "text.d818cb7d68456740",
-      "source": "{nextLevel}원 가면 나 치킨 쏨 ㅋㅋ",
+      "source": "{nextLevel}돈 가면 나 치킨 쏨 ㅋㅋ",
       "templateOnly": true
     },
     {
       "key": "text.840ced6eb4f35dc6",
-      "source": "{level}원 돌파는 인정. 근데 거기서 더 살 사람이 있을지가 문제",
+      "source": "{level}돈 돌파는 인정. 근데 거기서 더 살 사람이 있을지가 문제",
       "templateOnly": true
     },
     {
@@ -22002,7 +22002,7 @@
     },
     {
       "key": "text.f73880c329254c8f",
-      "source": "나 그거 들고 있음 ㅋㅋ {nextLevel}원까지 안 팔 거임",
+      "source": "나 그거 들고 있음 ㅋㅋ {nextLevel}돈까지 안 팔 거임",
       "templateOnly": true
     },
     {
@@ -22012,7 +22012,7 @@
     },
     {
       "key": "text.81c6c4e6e7594991",
-      "source": "나도 주주임. {level}원 넘는 거 보고 소리 지름 ㅋㅋ",
+      "source": "나도 주주임. {level}돈 넘는 거 보고 소리 지름 ㅋㅋ",
       "templateOnly": true
     },
     {
@@ -22037,7 +22037,7 @@
     },
     {
       "key": "text.cd121fbff99f40c5",
-      "source": "{symbol} {close}원에 끝났네. 내일 더 갈 거라 보는 사람?",
+      "source": "{symbol} {close}돈에 끝났네. 내일 더 갈 거라 보는 사람?",
       "templateOnly": true
     },
     {
@@ -22057,7 +22057,7 @@
     },
     {
       "key": "text.204c9058faa57825",
-      "source": "어제 {symbol} {close}원 마감 보고 잠. 오늘 시초가 예상 좀",
+      "source": "어제 {symbol} {close}돈 마감 보고 잠. 오늘 시초가 예상 좀",
       "templateOnly": true
     },
     {
@@ -22142,7 +22142,7 @@
     },
     {
       "key": "text.5a5439c0f2af5c74",
-      "source": "{symbol} {close}원 마감 실화냐. 어디까지 빠지는 거임",
+      "source": "{symbol} {close}돈 마감 실화냐. 어디까지 빠지는 거임",
       "templateOnly": true
     },
     {
@@ -22157,7 +22157,7 @@
     },
     {
       "key": "text.43496ab1b0affbcd",
-      "source": "{symbol} 오늘은 반등 주겠지? 어제 {close}원까지 밀렸는데",
+      "source": "{symbol} 오늘은 반등 주겠지? 어제 {close}돈까지 밀렸는데",
       "templateOnly": true
     },
     {
@@ -22387,7 +22387,7 @@
     },
     {
       "key": "text.ea10db5870daa4f4",
-      "source": "{symbol} 오늘 하루 종일 {close}원 근처. 내일은 좀 움직이려나",
+      "source": "{symbol} 오늘 하루 종일 {close}돈 근처. 내일은 좀 움직이려나",
       "templateOnly": true
     },
     {
@@ -22402,12 +22402,12 @@
     },
     {
       "key": "text.a867cbc73bda7b12",
-      "source": "{symbol} {close}원에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데",
+      "source": "{symbol} {close}돈에서 꿈쩍도 안 하네. 이런 게 터지면 크다던데",
       "templateOnly": true
     },
     {
       "key": "text.2a456d315c682886",
-      "source": "{symbol} 어제 하루 종일 {close}원 근처였음. 오늘은 좀 움직이려나",
+      "source": "{symbol} 어제 하루 종일 {close}돈 근처였음. 오늘은 좀 움직이려나",
       "templateOnly": true
     },
     {
@@ -22437,7 +22437,7 @@
     },
     {
       "key": "text.27338e046c68e85d",
-      "source": "{close}원에서 안 빠지는 것만 해도 어디임",
+      "source": "{close}돈에서 안 빠지는 것만 해도 어디임",
       "templateOnly": true
     },
     {

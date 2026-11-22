@@ -145,7 +145,7 @@ public sealed class OpeningRush : MonoBehaviour
         run.Followers.Sort((a, b) => a.delay.CompareTo(b.delay));
         // 넘길 물량: 추종자들이 받아 줄 수 있는 만큼. 가진 주식의 20%, 발행 주식의 3%를 넘기지 않는다.
         run.ToSell = decimal.Floor(Math.Min(total / run.Top, Math.Min(chosen.GetHolding(run.Stock) * .2m, run.Stock.issuedShares * .03m)));
-        Debug.Log($"[세력] 장 시작 몰아주기 예고 — {run.Stock.stockName}({run.Stock.symbol}) 기준가 {run.Reference:N0} · 목표 {run.Top:N0} ({(run.Top / run.Reference - 1m) * 100m:+0}%) · 추종자 {run.Followers.Count}명 · 추종 자금 {total:N0}원 · 넘길 물량 {run.ToSell:N0}주");
+        Debug.Log($"[세력] 장 시작 몰아주기 예고 — {run.Stock.stockName}({run.Stock.symbol}) 기준가 {run.Reference:N0} · 목표 {run.Top:N0} ({(run.Top / run.Reference - 1m) * 100m:+0}%) · 추종자 {run.Followers.Count}명 · 추종 자금 {total:N0}돈 · 넘길 물량 {run.ToSell:N0}주");
         return run;
     }
 
@@ -219,7 +219,7 @@ public sealed class OpeningRush : MonoBehaviour
         // 끝: 방장이 걸어 둔 채 안 팔린 매도는 거둔다.
         CancelOrders(stock, run.Leader, false, run.Floor);
         decimal gain = run.Reference > 0m ? (run.Peak / run.Reference - 1m) * 100m : 0m;
-        LastReport = $"{stock.stockName}({stock.symbol}) 기준가 {run.Reference:N0} · 목표 {run.Top:N0} · 고점 {run.Peak:N0} ({gain:+0.0;-0.0}%) · 방장 매도 {run.Sold:N0}주 {run.Proceeds:N0}원" + (run.Player ? "" : $" · 추종 매수 {run.FollowerBought:N0}주 {run.FollowerSpent:N0}원");
+        LastReport = $"{stock.stockName}({stock.symbol}) 기준가 {run.Reference:N0} · 목표 {run.Top:N0} · 고점 {run.Peak:N0} ({gain:+0.0;-0.0}%) · 방장 매도 {run.Sold:N0}주 {run.Proceeds:N0}돈" + (run.Player ? "" : $" · 추종 매수 {run.FollowerBought:N0}주 {run.FollowerSpent:N0}돈");
         Debug.Log((run.Player ? "[플레이어] " : "[세력] ") + "장 시작 몰아주기 종료 — " + LastReport);
         Stop(ref run);
     }

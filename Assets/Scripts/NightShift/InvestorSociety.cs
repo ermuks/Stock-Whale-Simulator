@@ -61,8 +61,8 @@ public sealed partial class InvestorSociety : MonoBehaviour
     private float nextTick, nextContact;
     private MarketDayController day;
     private readonly Dictionary<int, int> suggestions = new();
-    private static readonly ProfilerMarker TickMarker = new("DonDon.InvestorSociety");
-    void Awake() { Instance = this; random = new System.Random(settings.seed); ChatSocialIds.Reset(); }
+    private static readonly ProfilerMarker TickMarker = new("DonDon.InvestorSociety"), BotsMarker = new("DonDon.Society.Bots"), AdvanceMarker = new("DonDon.Society.Advance");
+    void Awake() { Instance = this; random = new System.Random(settings.seed); ChatSocialIds.Reset(); ChatScheduler.Reset(); }
     void Update()
     {
         if (Time.timeScale > 0f) { Orders?.FlushObservedResults(settings.botsPerTick); }
@@ -83,15 +83,18 @@ public sealed partial class InvestorSociety : MonoBehaviour
         {
             int count = Math.Min(Math.Max(1, settings.botsPerTick), day.Bots.Count);
             MaxBotsProcessedPerTick = Math.Max(MaxBotsProcessedPerTick, count);
-            for (int i = 0; i < count; i++)
+            using (BotsMarker.Auto())
             {
-                if (cursor >= day.Bots.Count) { cursor = 0; }
-                var bot = day.Bots[cursor++];
-                if (bot == null || bot.Social == null || bot.IsExchangeParticipant)
-                { continue; }
-                TickBot(bot, SessionClock.Time);
+                for (int i = 0; i < count; i++)
+                {
+                    if (cursor >= day.Bots.Count) { cursor = 0; }
+                    var bot = day.Bots[cursor++];
+                    if (bot == null || bot.Social == null || bot.IsExchangeParticipant)
+                    { continue; }
+                    TickBot(bot, SessionClock.Time);
+                }
             }
-            SocialAdvance(day.Day, day.GameMinute, SessionClock.Time, settings.botsPerTick);
+            using (AdvanceMarker.Auto()) { SocialAdvance(day.Day, day.GameMinute, SessionClock.Time, settings.botsPerTick); }
         }
     }
     public long NextEventId() => ChatSocialIds.Next();

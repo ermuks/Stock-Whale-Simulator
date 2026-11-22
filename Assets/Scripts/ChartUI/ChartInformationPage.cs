@@ -462,9 +462,9 @@ public sealed class ChartInformationPage : MonoBehaviour
         if (GameLocale.Code == "en")
         {
             return sign + (value >= 1_000_000_000_000m ? (value / 1_000_000_000_000m).ToString("0.##") + "T" : value >= 1_000_000_000m ? (value / 1_000_000_000m).ToString("0.#") + "B" :
-                value >= 1_000_000m ? (value / 1_000_000m).ToString("0.#") + "M" : value.ToString("N0")) + " KRW";
+                value >= 1_000_000m ? (value / 1_000_000m).ToString("0.#") + "M" : value.ToString("N0")) + " DON";
         }
-        string trillion = GameLocale.Code == "ja" ? "兆ウォン" : "조 원", hundredMillion = GameLocale.Code == "ja" ? "億ウォン" : "억 원", won = GameLocale.Code == "ja" ? "ウォン" : "원";
+        string trillion = GameLocale.Code == "ja" ? "兆ドン" : "조 돈", hundredMillion = GameLocale.Code == "ja" ? "億ドン" : "억 돈", won = GameLocale.Code == "ja" ? "ドン" : "돈";
         return sign + (value >= 1_000_000_000_000m ? (value / 1_000_000_000_000m).ToString("0.##") + trillion : value >= 100_000_000m ? (value / 100_000_000m).ToString("N0") + hundredMillion : value.ToString("N0") + won);
     }
 

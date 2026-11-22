@@ -50,7 +50,7 @@ public sealed class PlayerTactics : MonoBehaviour
         }
     }
     /// <summary>잠겨 있을 때 보여 줄 조건(한국어 열쇠).</summary>
-    public static string LockReason(Tool tool) => tool == Tool.Close ? "누적 거래대금 5억 원부터" : tool == Tool.Wash || tool == Tool.Ignite ? "내 리딩방을 연 뒤부터" : "내 기업이 상장한 뒤부터";
+    public static string LockReason(Tool tool) => tool == Tool.Close ? "누적 거래대금 5억 돈부터" : tool == Tool.Wash || tool == Tool.Ignite ? "내 리딩방을 연 뒤부터" : "내 기업이 상장한 뒤부터";
 
     void Awake() { Instance = this; }
     void OnDestroy() { if (Instance == this) { Instance = null; } }

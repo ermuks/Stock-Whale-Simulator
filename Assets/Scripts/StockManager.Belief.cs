@@ -83,21 +83,22 @@ public partial class StockManager
         }
 
         decimal crowd = count >= 5 ? (decimal)(sum / count) : stock.currentPrice;
-        stock.SetFakeValue(Math.Max(1m, PriceTickPolicy.RoundToTick(crowd)));
+        using (TellMarker.Auto()) { stock.SetFakeValue(Math.Max(1m, PriceTickPolicy.RoundToTick(crowd))); }
     }
 
+    private static readonly Unity.Profiling.ProfilerMarker FloatMarker = new("DonDon.Crowd.Float"), BeliefMarker = new("DonDon.Crowd.Belief"), TellMarker = new("DonDon.Crowd.Tell");
     private void UpdateCrowdValues()
     {
         if (Time.unscaledTime >= nextFloatRefresh)
         {
             nextFloatRefresh = Time.unscaledTime + 2f;
-            RefreshFloat();
+            using (FloatMarker.Auto()) { RefreshFloat(); }
         }
 
         if (Time.unscaledTime >= nextBeliefRefresh && MarketDayController.CanTrade)
         {
             nextBeliefRefresh = Time.unscaledTime + 0.5f;
-            RefreshCrowdBelief();
+            using (BeliefMarker.Auto()) { RefreshCrowdBelief(); }
         }
     }
 }

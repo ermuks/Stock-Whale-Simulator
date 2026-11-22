@@ -65,7 +65,7 @@ public sealed class PlayerAccounts : MonoBehaviour
         { reason = "예약금을 제외한 주문 가능 현금 안에서 입력하세요."; return false; }
         Trader to = from == primary ? automated : primary;
         from.cash -= amount; to.cash += amount;
-        reason = amount.ToString("N0") + "원 이체 완료";
+        reason = amount.ToString("N0") + "돈 이체 완료";
         return true;
     }
     void OnDestroy()

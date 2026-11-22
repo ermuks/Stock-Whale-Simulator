@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 // 방문. 평소에는 잠겨 있어서 F를 눌러도 덜컹거리기만 한다.
 // 최종 목표(내 기업 상장 + 사업 확장 + 마감 시가총액)를 이루면 잠금이 풀린다. 문을 보고 F를 누르면 문을 열고 빛 속으로 걸어 나간다. 그것이 엔딩이다.
-// 엔딩 글자가 지나가면 침대에서 눈을 뜬다. 계좌에는 백만 원도 남아 있지 않다. 전부 꿈이었다.
+// 엔딩 글자가 지나가면 침대에서 눈을 뜬다. 계좌에는 백만 돈도 남아 있지 않다. 전부 꿈이었다.
 public sealed class DoorExit : MonoBehaviour
 {
     public static DoorExit Instance { get; private set; }

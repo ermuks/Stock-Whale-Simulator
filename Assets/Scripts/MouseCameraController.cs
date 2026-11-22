@@ -97,7 +97,7 @@ public class MouseCameraController : MonoBehaviour
         if (!IsCursorLocked || _paused || DeskViewController.OwnsView || TabletViewController.IsTabletHeld || PhoneCallController.IsRaised || DisplayAimCursor.HasPointerCapture || ChartManager.HasPointerCapture || DoorNotes.Holding || RoomShell.Cinematic)
         { return; }
 
-        ApplyMouseWheelFov();
+        // 걸어 다니는 동안에는 휠로 확대하지 않는다. 확대는 모니터를 보는 시점에서 Ctrl + 휠로 한다(DeskViewController).
         float mouseX = Input.GetAxis("Mouse X");
         float mouseY = Input.GetAxis("Mouse Y");
         _currentAngleY += mouseX * sensitivity * GameSettings.Current.sensitivity;
@@ -141,20 +141,6 @@ public class MouseCameraController : MonoBehaviour
         strideLeft -= Vector3.Distance(transform.position, position);
         if (strideLeft <= 0f) { strideLeft = Input.GetKey(KeyCode.LeftShift) ? 2.6f : 2.1f; Sfx.Play("Footstep", .5f, null, .08f); }
         transform.position = position;
-    }
-
-    private void ApplyMouseWheelFov()
-    {
-        if (_cam == null || TabletViewController.IsTabletHeld)
-        { return; }
-        float wheel = Input.mouseScrollDelta.y;
-        if (Mathf.Approximately(wheel, 0f))
-        {
-            wheel = Input.GetAxis("Mouse ScrollWheel") * 10f;
-        }
-        if (Mathf.Approximately(wheel, 0f))
-        { return; }
-        _cam.fieldOfView = Mathf.Clamp(_cam.fieldOfView - wheel * GameSettings.Current.wheel, MinFov, MaxFov);
     }
 
     public void CompleteInitialSetup()

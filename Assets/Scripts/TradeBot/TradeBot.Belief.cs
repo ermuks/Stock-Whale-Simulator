@@ -34,6 +34,18 @@ public abstract partial class TradeBot
     // 꺼 둔다. 급등에 몰려드는 역할은 이제 불나방 풀(MothPool)이 맡는다. 둘을 같이 켜 두면 기존 개미까지 스스로 값을 밀어 올려서,
     // 작전도 불나방도 없는 종목이 혼자 몇 배로 부풀었다가 꺼지는 일이 생겼다(빌드 측정에서 산삼전자 +270%, +1012%).
     public const bool FeverEnabled = false;
+    /// <summary>전일 종가보다 이만큼 넘게 빠진 종목부터 "싸졌다"는 생각이 든다. 그 생각이 믿는 값에 더하는 몫의 상한.</summary>
+    public const double BargainFrom = .06, BargainMost = .25;
+    /// <summary>손실이 이만큼을 넘으면 던지기보다 버티는 쪽으로 기운다.</summary>
+    public const double HoldFrom = .2;
+    /// <summary>
+    /// 개미가 투매에 빠질 확률에 곱하는 값, 그리고 한 번에 던지는 몫(보유분의 PanicDumpMin에서 PanicDumpMin + PanicDumpSpan까지).
+    /// 급락 때 내던지는 역할은 불나방이 맡는다. 개미까지 한꺼번에 던지면 받아 줄 매수 호가가 다 사라지고 값이 바닥까지 간다.
+    /// </summary>
+    public const double PanicScale = .3;
+    public const float PanicDumpMin = .15f, PanicDumpSpan = .3f;
+    /// <summary>측정용: 끄면 기준점 심리와 버티기 심리 없이 예전처럼 움직인다. 게임에서는 늘 켜 둔다.</summary>
+    public static bool AnchorPsychology = true;
     /// <summary>확인용: 열병으로(다른 종목을 팔지 않고 현금으로) 뛰어든 횟수.</summary>
     public static int FeverChasesTotal;
     /// <summary>오늘 전일 대비 얼마나 올랐는가(0.5 = +50%).</summary>
@@ -286,6 +298,16 @@ public abstract partial class TradeBot
             projection -= 0.03 + fear * 0.05;
         }
 
+        // 기준점 심리: 개미는 어제 종가를 기억한다. 거기서 많이 빠진 종목은 빠진 만큼 "싸졌다"고 느끼는 사람이 늘어난다.
+        // 차트를 읽을 줄 알고 겁이 적을수록 먼저 줍는다. 투매 중인 사람은 거의 못 느낀다. 값이 기준점 쪽으로 돌아오면 이 생각도 사라진다.
+        // 누구나 보는 전일 대비 등락률만 쓴다. 이것이 없으면 급락 때 받아 주는 손이 없어서, 급등했던 종목이 처음 값보다 훨씬 아래까지 곧장 내려간다.
+        if (AnchorPsychology && StockStatistics.Instance != null && StockStatistics.Instance.TryGetDailyChange(stock, out decimal dayChange) && (double)dayChange < -BargainFrom * 100)
+        {
+            double below = -(double)dayChange / 100 - BargainFrom;
+            double bargain = below * (0.25 + skill * 0.35 + (1 - fear) * 0.3) * (mind.HasPanicFor(stock) ? 0.3 : 1);
+            projection += Math.Min(BargainMost, bargain);
+        }
+
         // 한 번 본 것으로 생각을 다 바꾸지 않는다. 느리게 따라가는 믿음이 급락 때는 저가 매수, 급등 때는 차익 매물이 된다.
         double pull = 0.06 + mind.Traits.Suggestibility / 100.0 * 0.22;
         // 급등주의 열병: 오늘 크게 올랐고 지금도 오르는 종목은 "더 간다"고 믿는다. 믿는 값이 시세를 바짝 따라 올라가고(차익 매물이 줄고) 그보다 조금 더 높게 본다(따라 산다).
@@ -318,7 +340,9 @@ public abstract partial class TradeBot
 
         decimal basis = GetOwnedAverage(stock);
         double loss = basis > 0m ? Math.Max(0, 1 - price / (double)basis) : 0;
-        double chance = (fear * 0.3 + Social.Stress / 100f * 0.2 + Social.Impulsiveness * 0.1 + loss * 1.2 + (drop - threshold) * 1.5) * (1 - skill * 0.6) / Math.Max(0.5f, Social.Recovery) * 0.16;
+        // 버티기 심리: 손실이 커질수록 던지고 싶어지지만, HoldFrom을 넘게 물리면 오히려 못 판다(이미 너무 잃어서 팔면 확정이 된다). 손실이 그 두 배에 이르면 손실 때문에 던지는 일은 없다.
+        if (AnchorPsychology && loss > HoldFrom) { loss = Math.Max(0, HoldFrom * 2 - loss); }
+        double chance = (fear * 0.3 + Social.Stress / 100f * 0.2 + Social.Impulsiveness * 0.1 + loss * 1.2 + (drop - threshold) * 1.5) * (1 - skill * 0.6) / Math.Max(0.5f, Social.Recovery) * 0.16 * PanicScale;
         if (mind.TryPanic(stock.symbol, ChatSocialAudit.GameMinute, chance, UnityEngine.Random.value, 10 + Social.Impulsiveness * 20))
         {
             mind.Companies.ShiftBelief(stock.symbol, -0.03 - fear * 0.03, SessionClock.Time);
@@ -349,8 +373,8 @@ public abstract partial class TradeBot
         decimal price = bidNearby
             ? Math.Max(1m, PriceTickPolicy.FloorToTick(impulseLevels[0].price * (1m - (decimal)UnityEngine.Random.Range(0f, 0.02f))))
             : Math.Max(1m, PriceTickPolicy.OneTickBelow(stock.currentPrice));
-        // 충동적일수록 한 번에 많이 던진다: 보유분의 40%에서 전부까지.
-        decimal volume = decimal.Floor(Math.Max(1m, holding * (decimal)(0.4f + Social.Impulsiveness * 0.6f)));
+        // 충동적일수록 한 번에 많이 던진다: 보유분의 15%에서 45%까지. 한 번에 다 던지지 않고 여러 번에 나눠 판다.
+        decimal volume = decimal.Floor(Math.Max(1m, holding * (decimal)(PanicDumpMin + Social.Impulsiveness * PanicDumpSpan)));
         ImpulseOrder = bidNearby;
         try
         {

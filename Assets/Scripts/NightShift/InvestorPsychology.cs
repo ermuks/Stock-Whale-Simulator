@@ -170,8 +170,24 @@ public sealed partial class InvestorPsychology
         AuditEmotion("decay");
     }
     /// <summary>플레이어가 채팅에서 한 말에 대한 반응. trust는 믿음, grudge는 적대심(배신감)에 더한다. 주문·믿는 값은 건드리지 않는다.</summary>
+    /// <summary>
+    /// 플레이어에 대한 호감(-100~100). 믿음(Trust)이 "저 사람 말을 믿고 따라 사는가"라면 호감은 "사람으로서 좋아하는가"다.
+    /// 채팅에서 주고받는 말로 오르내린다: 위로·축하·칭찬·감사·맞장구·물음에 답해 주기로 오르고, 막말·반대로 내린다.
+    /// 호감이 높은 봇은 내 말을 먼저, 살갑게 받고, 내 말을 더 잘 믿는다(믿음이 더 빨리 쌓인다).
+    /// </summary>
+    public float Fondness { get; private set; }
+    /// <summary>호감을 올리거나 내린다. 붙임성 있는 봇은 더 쉽게 정을 주고, 뒤끝 있는 봇은 더 크게 마음이 상한다.</summary>
+    public void WarmToPlayer(float amount, string cause)
+    {
+        if (amount == 0f) { return; }
+        amount *= amount > 0f ? .6f + Traits.Sociability / 100f * .8f : .7f + Traits.Grudge / 100f * .8f;
+        Fondness = Mathf.Clamp(Fondness + amount, -100f, 100f);
+        LastCause = cause; AuditEmotion("player-fondness");
+    }
     public void ReactToPlayerTalk(float trust, float grudge, string cause)
     {
+        // 좋아하는 사람의 말은 더 잘 믿게 된다.
+        if (trust > 0f) { trust *= 1f + Mathf.Clamp(Fondness, -60f, 100f) / 150f; }
         Trust += trust; Betrayal += grudge;
         LastCause = cause; Clamp(); AuditEmotion("player-talk");
     }

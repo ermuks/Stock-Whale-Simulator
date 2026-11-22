@@ -41,43 +41,27 @@ public sealed class PauseMenuController : MonoBehaviour
     {
         yield return null;
         // 게임을 켜면 언제나 타이틀 화면부터다. 저장이 없어도 바로 세계에 떨어뜨리지 않는다.
-        if (!SessionStore.ValidationMode) { Open(); inSession = false; fresh = true; HideSceneSetup(); ShowHome(); }
+        // 점검 도구로 돌릴 때는 타이틀을 건너뛴다. 도구가 NewGame.Begin으로 직접 시작한다.
+        if (!SessionStore.ValidationMode) { Open(); inSession = false; fresh = true; ShowHome(); }
     }
     // 장면이 방금 올라와 아무 세션도 시작하지 않은 상태인지. 그때는 새 게임을 위해 장면을 다시 부를 필요가 없다.
     private bool fresh;
-    private static PlayerCompanySetupUI SceneSetup() => FindAnyObjectByType<PlayerCompanySetupUI>();
-    /// <summary>장면에 놓인 예전 시작 창은 계산만 맡기고 보이지 않게 한다. 입력은 타이틀의 새 게임 화면이 받는다.</summary>
-    private static void HideSceneSetup()
-    {
-        var setup = SceneSetup(); if (setup == null || !RetailStart) { return; }
-        // (?? 로 쓰면 안 된다. 에디터에서는 없는 컴포넌트가 진짜 null이 아닌 빈 껍데기로 돌아와서, 붙이지 않고 그대로 쓰다가 예외가 난다.)
-        var group = setup.GetComponent<CanvasGroup>();
-        if (group == null) { group = setup.gameObject.AddComponent<CanvasGroup>(); }
-        group.alpha = 0f; group.blocksRaycasts = false;
-    }
-    private static bool RetailStart => StockManager.Instance != null && StockManager.Instance.economy != null && StockManager.Instance.economy.retailPlayerStart;
     /// <summary>타이틀 화면을 띄운다(점검 도구용).</summary>
     public void ShowTitle() { if (!IsOpen) { Open(); } ShowHome(); }
     public void BackToTitle() { if (!loading) { ShowHome(); } }
     /// <summary>새 게임의 회사 이름 화면.</summary>
     public void ShowNewGame()
     {
-        var setup = SceneSetup(); var manager = StockManager.Instance;
-        // 기업을 직접 설계하는 시작 방식(소매 시작이 아닌 경우)은 장면의 창을 그대로 쓴다.
-        if (setup == null || manager == null || !RetailStart || manager.SetupConfirmed) { inSession = true; priorTimeScale = 1; priorCursor = CursorLockMode.None; priorVisible = true; Resume(); return; }
-        HideSceneSetup();
+        var manager = StockManager.Instance;
+        if (manager == null || !NewGame.CanBegin) { inSession = true; priorTimeScale = 1; priorCursor = CursorLockMode.None; priorVisible = true; Resume(); return; }
         CurrentPage = Page.Home;
-        UI.NewGame(setup.businessName != null ? setup.businessName.text : DailyIncomeController.Instance?.CompanyName, manager.economy.retailStartingCash);
+        UI.NewGame(NewGame.SuggestedCompany, manager.economy.retailStartingCash);
     }
     public void StartNewGame()
     {
         if (loading) { return; }
-        var setup = SceneSetup();
-        if (setup == null) { return; }
-        if (setup.businessName != null) { setup.businessName.text = UI.Title.CompanyName; }
-        setup.Refresh();
-        if (!setup.confirm.interactable) { UI.Title.ShowError(setup.error != null ? setup.error.text : ""); return; }
-        setup.Confirm();
+        if (!NewGame.CanBegin) { return; }
+        if (!NewGame.Begin(UI.Title.CompanyName, out string reason)) { UI.Title.ShowError(reason); return; }
         StartCoroutine(Begin());
     }
     // 세계가 준비될 때까지 잠깐 기다렸다가 방으로 들어간다.
@@ -97,8 +81,34 @@ public sealed class PauseMenuController : MonoBehaviour
             if (CurrentPage == Page.Closed) { Open(); } else { Back(); }
         }
     }
+    /// <summary>메뉴가 켜질 때 뒷배경이 흐려지는 데, 꺼질 때 흐림이 풀리는 데 걸리는 시간(초).</summary>
+    private const float BackdropFadeSeconds = .1f;
+    private CanvasGroup fadeGroup;
+    private float fadeTarget = 1f;
+    /// <summary>
+    /// 메뉴 화면(흐린 뒷배경과 그 위의 글자)을 0.1초 동안 서서히 드러내거나 거둔다.
+    /// 켤 때는 또렷한 게임 화면 위로 흐린 그림이 차오르므로 서서히 흐려지는 것처럼 보이고, 끌 때는 그 반대다.
+    /// 게임 시간이 멈춰 있어도 돌도록 실제 시간으로 잰다.
+    /// </summary>
+    private void FadeBackdrop(bool show)
+    {
+        if (fadeGroup == null) { fadeGroup = UI.Root.GetComponent<CanvasGroup>(); if (fadeGroup == null) { fadeGroup = UI.Root.AddComponent<CanvasGroup>(); } }
+        // 켤 때: 닫혀 있던 화면이면 투명한 데서 시작한다. 흐림이 풀리던 도중에 다시 켜면 그 자리에서 이어서 흐려진다.
+        if (show && !fadeShown && fadeGroup.alpha >= 1f) { fadeGroup.alpha = 0f; }
+        fadeShown = show; fadeTarget = show ? 1f : 0f;
+        fadeGroup.blocksRaycasts = show; fadeGroup.interactable = show;
+        if (!show && !UI.Root.activeSelf) { fadeGroup.alpha = 0f; }
+    }
+    private bool fadeShown;
+    private void StepBackdropFade()
+    {
+        if (fadeGroup == null || Mathf.Approximately(fadeGroup.alpha, fadeTarget)) { return; }
+        fadeGroup.alpha = Mathf.MoveTowards(fadeGroup.alpha, fadeTarget, Time.unscaledDeltaTime / BackdropFadeSeconds);
+        if (fadeTarget <= 0f && fadeGroup.alpha <= 0f && UI.Root.activeSelf) { UI.Root.SetActive(false); }
+    }
     private void LateUpdate()
     {
+        StepBackdropFade();
         if (!IsOpen) { return; }
         Time.timeScale = 0f; Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
     }
@@ -117,12 +127,14 @@ public sealed class PauseMenuController : MonoBehaviour
         EventSystem.current?.SetSelectedGameObject(null);
         UI.Backdrop.Capture();
         CurrentPage = Page.Pause; returnPage = Page.Pause; UI.Root.SetActive(true); UI.Pause();
+        FadeBackdrop(true);
         Time.timeScale = 0; Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
     }
     public void Resume()
     {
         if (!inSession || loading || PlayerRestController.Instance != null && PlayerRestController.Instance.State.dead || MarketDayController.Instance != null && MarketDayController.Instance.ReportPending) { return; }
-        CurrentPage = Page.Closed; consumedFrame = Time.frameCount; UI.Root.SetActive(false);
+        // 바로 끄지 않는다. 흐림이 0.1초 동안 풀린 뒤에 꺼진다(LateUpdate).
+        CurrentPage = Page.Closed; consumedFrame = Time.frameCount; FadeBackdrop(false);
         PlayerPrefs.Save();
         foreach (var caster in suspended) { if (caster != null) { caster.enabled = true; } } suspended.Clear();
         Time.timeScale = priorTimeScale; Cursor.lockState = priorCursor; Cursor.visible = priorVisible;
@@ -141,7 +153,7 @@ public sealed class PauseMenuController : MonoBehaviour
             CurrentPage = confirmReturn;
             if (CurrentPage == Page.Settings) { UI.Settings(); } else if (inSession) { CurrentPage = Page.Pause; UI.Pause(); } else { ShowHome(); }
         }
-        else if (CurrentPage == Page.Home && !inSession && UI.Title.Root.gameObject.activeSelf && SceneSetup() != null)
+        else if (CurrentPage == Page.Home && !inSession && UI.Title.Root.gameObject.activeSelf && NewGame.CanBegin)
         {
             // 새 게임 화면에서 ESC: 타이틀 메뉴로.
             ShowHome();

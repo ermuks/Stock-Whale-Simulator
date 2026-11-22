@@ -7,6 +7,9 @@ public sealed partial class InvestorSociety
     private bool socialWired;
     private SocialLogSink socialLog;
     private float nextSocialLogFlush;
+    // 어느 수다가 프레임을 잡아먹는지 프로파일러에서 가려 보기 위한 표식.
+    private static readonly Unity.Profiling.ProfilerMarker HypeMarker = new("DonDon.Talk.Hype"), ChartTalkMarker = new("DonDon.Talk.Chart"), VillainMarker = new("DonDon.Talk.Villain"),
+        PlayerTalkMarker = new("DonDon.Talk.Player"), DebateMarker = new("DonDon.Talk.Debate");
     private void PrepareSocialRuntime()
     {
         BindSocialBots(day.Bots);
@@ -38,11 +41,11 @@ public sealed partial class InvestorSociety
             socialWired = true;
         }
         SocialTime.Set(day.Day, day.GameMinute, SessionClock.Time);
-        TickHype();
-        TickBacklog();
-        TickChartTalk();
-        TickVillain();
-        TickPlayerChat();
+        using (HypeMarker.Auto()) { TickHype(); TickBacklog(); }
+        using (ChartTalkMarker.Auto()) { TickChartTalk(); }
+        using (VillainMarker.Auto()) { TickVillain(); }
+        using (PlayerTalkMarker.Auto()) { TickPendingLines(); TickPlayerChat(); }
+        using (DebateMarker.Auto()) { TickDebate(); TickMoodTalk(); TickTwitch(); }
         EnsureChatBar();
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
@@ -212,7 +215,7 @@ public sealed partial class InvestorSociety
         if (npc == null || npc.Leader != leader || signal == null || signal.ExpiresAt <= SessionClock.Time)
         { return null; }
         return new SocialFacts { signal = true, eventId = signal.Id, symbol = signal.Stock.symbol, stockName = signal.Stock.stockName, at = SocialTime.GameMinute,
-            bidStatus = signal.Buy > 0 ? Money(signal.Buy) + (signal.RestingBuy ? "원 매수 주문 대기" : "원 최근 매수 체결") : "매수 주문 없음",
-            askStatus = signal.Sell > 0 ? Money(signal.Sell) + "원 매도 주문 대기" : "매도 주문 없음", signalResult = Money(npc.RealizedProfit) };
+            bidStatus = signal.Buy > 0 ? Money(signal.Buy) + (signal.RestingBuy ? "돈 매수 주문 대기" : "돈 최근 매수 체결") : "매수 주문 없음",
+            askStatus = signal.Sell > 0 ? Money(signal.Sell) + "돈 매도 주문 대기" : "매도 주문 없음", signalResult = Money(npc.RealizedProfit) };
     }
 }

@@ -224,7 +224,7 @@ public static class DeviceCanvasValidation
         Check(player.cash+counterparty.cash==2000000m && player.GetOwnedVolume(stock)+counterparty.GetOwnedVolume(stock)==20m,"cash and shares conserved across real fill");
         counterparty.BuyLimit(6000m,10m,0,stock); player.SellLimit(6000m,10m,0,stock);
         Check(career.RealizedProfit>=10000m && career.Turnover>=110000m,"growth credits actual realized proceeds minus cost basis");
-        // 이 검증은 뒤에서 현금을 원 단위로 맞춰 본다. 개설 비용은 0으로 두고 권한이 열리는 것만 본다.
+        // 이 검증은 뒤에서 현금을 돈 단위로 맞춰 본다. 개설 비용은 0으로 두고 권한이 열리는 것만 본다.
         career.rules.leadingOpeningCost = 0;
         Check(career.Eligible && career.OpenLeadingRooms(),"opening grants leading-room rights");
         Check(InvestorSociety.Instance.Issue(1,manager.CurrentStock,PriceTickPolicy.RoundToTick(manager.CurrentStock.currentPrice),PriceTickPolicy.OneTickAbove(manager.CurrentStock.currentPrice)),"unlocked permission reaches existing conditional room command");

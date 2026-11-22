@@ -36,7 +36,8 @@ public sealed class GameSettings : MonoBehaviour
     {
         if (Current.marketColors!=MarketColors.RedBlue && Current.marketColors!=MarketColors.GreenRed) { Current.marketColors=MarketColors.RedBlue; }
         Current.quality = Mathf.Clamp(Current.quality,0,Math.Max(0,QualitySettings.names.Length-1));
-        if (Current.frameRate != 30 && Current.frameRate != 60 && Current.frameRate != 120) { Current.frameRate = 60; }
+        // 0은 제한 없음.
+        if (Current.frameRate != 0 && Current.frameRate != 30 && Current.frameRate != 60 && Current.frameRate != 120) { Current.frameRate = 60; }
         Current.volume = Valid(Current.volume,.8f,0,1); Current.sensitivity = Valid(Current.sensitivity,1,.25f,2.5f);
         Current.wheel = Valid(Current.wheel,3,1,6); Current.menuScale = Valid(Current.menuScale,1,.9f,1.1f);
     }
@@ -52,7 +53,7 @@ public sealed class GameSettings : MonoBehaviour
         MarketColors.Apply();
         // Avoid expensive pipeline/OS switches on every slider movement.
         if (QualitySettings.GetQualityLevel() != Current.quality) { QualitySettings.SetQualityLevel(Current.quality,true); }
-        QualitySettings.vSyncCount = Current.vSync ? 1 : 0; Application.targetFrameRate = Current.frameRate;
+        QualitySettings.vSyncCount = Current.vSync ? 1 : 0; Application.targetFrameRate = Current.frameRate <= 0 ? -1 : Current.frameRate;
         if (SessionStore.ValidationMode) { QualitySettings.vSyncCount = 0; Application.targetFrameRate = 20; }
         if (!Application.isEditor)
         {

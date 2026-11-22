@@ -15,7 +15,7 @@ public sealed partial class InvestorPsychology
         Betrayal += impact; BetrayalMemory = Mathf.Clamp(BetrayalMemory + impact*.55f,0,100);
         Remember(new SocialMemory { eventId = eventId, type = SocialMemoryKind.ROOM_FEE, actorId = -1, targetId = SocialId, salience = 35,
             amount = amount.ToString(CultureInfo.InvariantCulture), at = ChatSocialAudit.GameMinute });
-        LastCause = "이용료 " + amount.ToString("N0") + "원 · 실현 성과 없음 · 배신감 +" + impact.ToString("0.00");
+        LastCause = "이용료 " + amount.ToString("N0") + "돈 · 실현 성과 없음 · 배신감 +" + impact.ToString("0.00");
         Clamp(); AuditEmotion("room-fee",eventId);
     }
 }

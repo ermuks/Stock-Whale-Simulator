@@ -205,7 +205,7 @@ public static class AccountDashboardPatch
         var root = Rect("Panel :: Account Transfer",parent,.18f,.26f,.64f,.49f); nav.transferPanel = root.gameObject;
         var image = root.gameObject.AddComponent<Image>(); image.color = new Color32(24,35,42,255); image.raycastTarget = true;
         nav.transferTitle = Text("Transfer Direction",root,"",.06f,.07f,.88f,.12f,42);
-        Text("Transfer Amount Caption",root,"이체 금액 · 원",.06f,.26f,.88f,.09f,32,true);
+        Text("Transfer Amount Caption",root,"이체 금액 · 돈",.06f,.26f,.88f,.09f,32,true);
         var inputRoot = Rect("Area :: Transfer Amount",root,.06f,.38f,.88f,.16f);
         var bg = inputRoot.gameObject.AddComponent<Image>(); bg.color = Dark;
         var input = inputRoot.gameObject.AddComponent<TMP_InputField>(); nav.transferAmount = input; input.targetGraphic = bg;

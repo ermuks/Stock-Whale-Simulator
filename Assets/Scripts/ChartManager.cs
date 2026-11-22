@@ -24,7 +24,7 @@ public partial class ChartManager : MonoBehaviour
     public TextMeshProUGUI textLastPrice;
     [Tooltip("현재 종목 상승률")]
     public TextMeshProUGUI textChangePct;
-    [Tooltip("같은 전일 종가를 기준으로 계산한 원 단위 등락")]
+    [Tooltip("같은 전일 종가를 기준으로 계산한 돈 단위 등락")]
     public TextMeshProUGUI textChangeAmount;
     [Tooltip("현재 종목 진짜가치")]
     public TextMeshProUGUI textRealValue;
@@ -321,7 +321,8 @@ public partial class ChartManager : MonoBehaviour
         { ReleaseChartPointer(); return; }
         Vector2 aimScreen = MouseCameraController.GetAimScreenPosition();
         bool locked = MouseCameraController.IsCursorLocked;
-        if (Input.GetMouseButtonDown(0) && TryGetChartPoint(out Vector3 pressedPoint) && pressedPoint.x < candleRenderer.PlotWidth)
+        // Ctrl을 누르고 있는 동안의 끌기는 시점을 옮기는 것이다. 그때는 차트를 끌지 않는다.
+        if (Input.GetMouseButtonDown(0) && DeskViewController.ChartDragAllowed && TryGetChartPoint(out Vector3 pressedPoint) && pressedPoint.x < candleRenderer.PlotWidth)
         {
             _potentialChartDrag = true; pointerOwner = this;
             _chartDragStartPos = aimScreen; lastMouseX = aimScreen.x;

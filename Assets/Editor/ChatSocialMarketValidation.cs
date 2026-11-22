@@ -69,9 +69,8 @@ public static class ChatSocialMarketValidation
             }
             if (!confirmed && startupFrames > 3)
             {
-                var setup = UnityEngine.Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (setup == null || setup.confirm == null) { return; }
-                setup.confirm.onClick.Invoke(); confirmed = true;
+                if (!NewGame.CanBegin) { return; }
+                NewGame.Begin(); confirmed = true;
                 foreach (var canvas in UnityEngine.Object.FindObjectsByType<Canvas>(FindObjectsInactive.Include)) { canvas.enabled = false; }
                 foreach (var camera in UnityEngine.Object.FindObjectsByType<Camera>(FindObjectsInactive.Include)) { camera.enabled = false; }
             }

@@ -12,7 +12,7 @@ using UnityEngine.SceneManagement;
 // - 매도 호가를 몇 % 뚫고 세 번에 나눠 산다. 그 종목의 거래대금이 가장 뜨거웠을 때의 일부로 식으면(계좌마다 기준이 다르다) 판다.
 //   팔 때는 매수 호가를 뚫지 않는다. 서 있는 호가만큼만, 한 종목에서 초당 몇 번까지만 판다(한꺼번에 던지면 서로의 값을 밟고 바닥까지 내려간다).
 // - 풀로 돌아가는 조건은 하나다: 주식이 한 주도 없을 것. 못 팔았으면(받아 줄 호가가 없다, 거래정지, 장 마감) 팔릴 때까지 풀로 돌아가지 않는다. 다음 날에도 이어서 판다.
-// - 풀로 돌아갈 때 남은 돈은 들고 나간다(계좌는 0원이 된다). 평균적으로는 비싸게 사서 싸게 파니, 그 차이가 시장에 남는다.
+// - 풀로 돌아갈 때 남은 돈은 들고 나간다(계좌는 0돈이 된다). 평균적으로는 비싸게 사서 싸게 파니, 그 차이가 시장에 남는다.
 //
 // 누구나 보는 것만 본다: 그 종목의 거래대금과 값의 움직임. 진짜 가치도, 누가 올리는지도 모른다. 채팅에는 나오지 않는다.
 
@@ -157,7 +157,7 @@ public sealed class MothPool : MonoBehaviour
     {
         var rally = new Rally { stock = stock, up = up, wanted = wanted, startedAt = now, windowAt = now, deployAt = now, startPrice = stock.currentPrice, peakPrice = stock.currentPrice };
         rallies.Add(stock, rally); rallyList.Add(rally); stock.OnMatchedTrade += Count; RalliesTotal++;
-        Debug.Log($"[불나방] {stock.stockName}({stock.symbol}) {(up ? "급등" : "급락")}에 몰려든다 — {wanted}명까지 · 지금 {stock.currentPrice:N0}원 · 풀에 쉬는 계좌 {IdleCount}개");
+        Debug.Log($"[불나방] {stock.stockName}({stock.symbol}) {(up ? "급등" : "급락")}에 몰려든다 — {wanted}명까지 · 지금 {stock.currentPrice:N0}돈 · 풀에 쉬는 계좌 {IdleCount}개");
         return rally;
     }
 
@@ -219,7 +219,7 @@ public sealed class MothPool : MonoBehaviour
         // 다 나갔다(또는 아무도 못 들어갔다).
         rally.stock.OnMatchedTrade -= Count; rallies.Remove(rally.stock); rallyList.Remove(rally); cooldown[rally.stock] = now + CooldownSeconds;
         decimal start = Math.Max(1m, rally.startPrice);
-        Debug.Log($"[불나방] {rally.stock.stockName}({rally.stock.symbol}) 다 떠났다 — {rally.deployed}명 · 들고 온 돈 {rally.brought:N0}원 · 들고 나간 돈 {rally.taken:N0}원 · 시장에 남긴 돈 {rally.brought - rally.taken:N0}원 · 고점 {(rally.peakPrice / start - 1m) * 100m:+0.0;-0.0}% · 지금 {(rally.stock.currentPrice / start - 1m) * 100m:+0.0;-0.0}%");
+        Debug.Log($"[불나방] {rally.stock.stockName}({rally.stock.symbol}) 다 떠났다 — {rally.deployed}명 · 들고 온 돈 {rally.brought:N0}돈 · 들고 나간 돈 {rally.taken:N0}돈 · 시장에 남긴 돈 {rally.brought - rally.taken:N0}돈 · 고점 {(rally.peakPrice / start - 1m) * 100m:+0.0;-0.0}% · 지금 {(rally.stock.currentPrice / start - 1m) * 100m:+0.0;-0.0}%");
     }
 
     private void Deploy(Rally rally, float now)

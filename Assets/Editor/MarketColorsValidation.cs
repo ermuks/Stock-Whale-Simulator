@@ -85,11 +85,9 @@ public static class MarketColorsValidation
             }
             if (phase==0)
             {
-                var setup=Object.FindAnyObjectByType<PlayerCompanySetupUI>();
-                if (setup?.businessName==null)
-                { return; }
+                if (!NewGame.CanBegin) { return; }
                 Check(GameSettings.Current.marketColors==0,"old settings migrate to red/blue");
-                setup.businessName.SetTextWithoutNotify("플레이어 기업"); setup.Refresh(); setup.confirm.onClick.Invoke(); Wait(1); return;
+                NewGame.Begin("플레이어 기업"); Wait(1); return;
             }
             if (phase==1)
             {

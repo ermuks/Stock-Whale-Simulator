@@ -178,9 +178,9 @@ public sealed class NpcLeadingRoom : MonoBehaviour
         if (!changed || now < nextMessage)
         { return; }
         nextMessage = now + Mathf.Max(5f,settings.messageInterval);
-        string message = selected.stockName + ": " + (bid > 0m ? (recentFill ? "최근 " : "매수 ") + bid.ToString("N0") + (recentFill ? "원에 매수 체결됐습니다." : "원 주문을 대기 중입니다.") : "새 매수 신호는 없습니다.");
+        string message = selected.stockName + ": " + (bid > 0m ? (recentFill ? "최근 " : "매수 ") + bid.ToString("N0") + (recentFill ? "돈에 매수 체결됐습니다." : "돈 주문을 대기 중입니다.") : "새 매수 신호는 없습니다.");
         message += ask > 0m ? " 매도 " + ask.ToString("N0") + "원에도 실제 주문이 있습니다." : " 매도 주문은 아직 없습니다.";
-        message += " 부임 후 실현손익 " + RealizedProfit.ToString("+#,##0;-#,##0;0") + "원.";
+        message += " 부임 후 실현손익 " + RealizedProfit.ToString("+#,##0;-#,##0;0") + "돈.";
         var context = new InvestorMessageContext(InvestorSociety.Instance.NextEventId(),RoomId,Math.Sign(RealizedProfit),.8f,0f,true,target:Leader.Social.Id);
         if (InvestorSociety.Instance.SocialReady) { InvestorSociety.Instance.OfferNpcObservation(Leader); }
         else { InvestorSociety.Instance.Speak(Leader,RoomId,message,context,ChatEvent.BuyConsideration); }
