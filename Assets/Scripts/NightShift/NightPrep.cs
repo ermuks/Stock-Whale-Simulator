@@ -83,6 +83,7 @@ public sealed class NightPrep : MonoBehaviour
         Payer.cash -= PlantCost; Tire();
         Planted = stock; PlantedPositive = positive; plantAt = -1f;
         LastResult = Word("기사를 맡겼습니다. 내일 개장 직후에 나갑니다", "Story placed. It runs right after tomorrow's open", "記事を手配しました。明日の寄り付き直後に出ます");
+        SteamAchievements.Unlock(SteamAchievements.NightWork);
         Debug.Log($"[밤 준비] 기사 심기: {stock.stockName}({stock.symbol}) {(positive ? "호재" : "악재")} · {PlantCost:N0}돈 · 피로 {PlayerRestController.Instance?.State.fatigue:0}");
         return true;
     }
@@ -110,6 +111,7 @@ public sealed class NightPrep : MonoBehaviour
         if (ExchangeBot.Instance != null && ExchangeBot.Instance.TryPeekFuture(stock, window, out string title, out float value, out _))
         { tip.Found = true; tip.Title = title; tip.Positive = value >= 1f; }
         LastTip = tip;
+        SteamAchievements.Unlock(SteamAchievements.NightWork);
         LastResult = tip.Found ? Word("내일 나올 기사를 받았습니다", "You have tomorrow's story", "明日の記事を手に入れました") : Word("내일은 이 회사에 나올 기사가 없습니다", "Nothing is scheduled for this company tomorrow", "明日この会社の記事はありません");
         Debug.Log($"[밤 준비] 내일 기사 미리 사기: {stock.stockName}({stock.symbol}) → {(tip.Found ? (tip.Positive ? "호재 · " : "악재 · ") + tip.Title : "예약 없음")} · {TipCost:N0}돈");
         return true;
@@ -144,6 +146,7 @@ public sealed class NightPrep : MonoBehaviour
         string line = Word("내일 개장하면 " + stock.stockName + " 봅니다. 자리 지키세요.", "Watching " + GameLocale.Text(stock.stockName) + " at tomorrow's open. Be at your desk.", "明日の寄り付きで" + GameLocale.Text(stock.stockName) + "を見ます。席にいてください。");
         InvestorSociety.Instance.Speak(null, room.Id, line, default);
         LastResult = Word("회원들에게 예고했습니다", "Your members have been told", "会員に予告しました");
+        SteamAchievements.Unlock(SteamAchievements.NightWork);
         Debug.Log($"[밤 준비] 리딩방 예고: {stock.stockName}({stock.symbol}) · 방 {room.Id} · 회원 {room.Members.Count}명");
         return true;
     }

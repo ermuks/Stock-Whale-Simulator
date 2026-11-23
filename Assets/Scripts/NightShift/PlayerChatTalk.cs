@@ -97,7 +97,7 @@ public sealed partial class InvestorSociety
         // "왜?"·"진짜?"·"no way"처럼 앞말을 되묻는 말도 대답이 아니다(예전에는 "no way"를 "아니오"로 받았다).
         if (talk.AsksBack) { return false; }
         // 내가 새로 묻는 말은 봇의 물음에 대한 대답이 아니다.
-        if (talk.Kind == PlayerTalkKind.AskCompany || talk.Kind == PlayerTalkKind.AskCompare || talk.Kind == PlayerTalkKind.AskTerm || talk.Kind == PlayerTalkKind.AskHolders || talk.Kind == PlayerTalkKind.AskPrice || talk.Kind == PlayerTalkKind.AskOutlook || talk.Kind == PlayerTalkKind.AskWhich) { return false; }
+        if (talk.Kind == PlayerTalkKind.AskListing || talk.Kind == PlayerTalkKind.AskCompany || talk.Kind == PlayerTalkKind.AskCompare || talk.Kind == PlayerTalkKind.AskTerm || talk.Kind == PlayerTalkKind.AskHolders || talk.Kind == PlayerTalkKind.AskPrice || talk.Kind == PlayerTalkKind.AskOutlook || talk.Kind == PlayerTalkKind.AskWhich) { return false; }
         bool names = talk.Kind == PlayerTalkKind.Mention || talk.Kind == PlayerTalkKind.ClaimUp || talk.Kind == PlayerTalkKind.ClaimDown;
         // "그렇구나"·"알겠음"은 알아들었다는 말이지 물음에 대한 "예"가 아니다.
         // 딴 말이 붙은 맞장구("ㅇㅇ 아직 들고 있음", "아니 그게 아니라")는 그 물음에 대한 예·아니오가 아니다.
@@ -317,7 +317,7 @@ public sealed partial class InvestorSociety
     }
     /// <summary>묻는 말에 다는 답인가(존댓말 봇이 받을 때 말투를 고르는 데 쓴다).</summary>
     private static bool AsksKey(string key) => key == "question" || key == "all" || key == "follow" || key == "how" || key == "market" || key == "hot" || key == "whaleTalk" || key == "holdings" || key == "profit" || key == "why" ||
-        key == "which" || key == "outlook" || key == "holders" || key == "price" || key == "company" || key == "compare" || key.EndsWith(".q", StringComparison.Ordinal) || key.StartsWith("topic.term_", StringComparison.Ordinal) ||
+        key == "which" || key == "outlook" || key == "holders" || key == "price" || key == "company" || key == "listing" || key == "compare" || key.EndsWith(".q", StringComparison.Ordinal) || key.StartsWith("topic.term_", StringComparison.Ordinal) ||
         key.StartsWith("ask", StringComparison.Ordinal) || key.StartsWith("news", StringComparison.Ordinal);
     /// <summary>나를 싫어하는 봇이 시큰둥하게 받아도 되는 가벼운 말인가.</summary>
     private static bool SoftKey(string key) => key == "question" || key == "statement" || key == "agree" || key == "disagree" || key == "dunno" || key == "surprise" || key == "how" || key.StartsWith("topic", StringComparison.Ordinal);
@@ -449,6 +449,20 @@ public sealed partial class InvestorSociety
                     var hottest = HottestStock(out float heat);
                     if (trading && hottest != null && heat >= 3f) { stock = hottest; key = "whaleTalk.suspect"; } else { key = "whaleTalk.none"; }
                 }
+                break;
+            }
+            case "listing":
+            {
+                // 상장 여부와 거래가 열리는 때. 종목 창과 공지에 나오는 사실이다.
+                //   상장 대기 중: 다음 개장(장 열기 전이면 오늘 9시, 아니면 내일 9시) · 이미 상장: 지금 거래(장 열기 전이면 9시부터)
+                //   아직 요건 미달: 상장 전 · 종목을 대지 않았으면 규칙을 알려 준다.
+                bool beforeOpen = day != null && day.Phase == MarketPhase.PreOpen;
+                var economy = CorporateEconomy.Instance;
+                if (stock == null) { key = "listing.rule"; }
+                else if (stock.IsDelisted) { key = "listing.gone"; }
+                else if (stock.IsListed) { key = beforeOpen ? "listing.open" : "listing.listed"; }
+                else if (economy != null && economy.AwaitingListing(stock)) { key = beforeOpen ? "listing.today" : "listing.soon"; }
+                else { key = "listing.notyet"; }
                 break;
             }
             case "company":

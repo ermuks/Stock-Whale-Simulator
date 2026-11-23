@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 // 책상 서랍. 기능은 없고, 열어 본 사람이 피식 웃고 닫는 자리다.
-// 서랍을 보고 E(또는 클릭)를 누르면 서랍이 열리고 시선이 그 위로 옮겨 간다.
+// 서랍을 보고 F를 누르면 서랍이 열리고 시선이 그 위로 옮겨 간다.
 // 안에는 도장이 하나 모자란 치킨 쿠폰, 꽝 난 복권, 오늘의 운세 쪽지, 작은 고래 장난감이 있다.
-// 다시 E·Space·Esc를 누르면 닫힌다. 게임 상태는 아무것도 바꾸지 않는다. 씬 파일도 그대로다(실행 중에 만든다).
+// 다시 F나 Esc를 누르면 닫힌다. 게임 상태는 아무것도 바꾸지 않는다. 씬 파일도 그대로다(실행 중에 만든다).
 public sealed class DrawerProp : MonoBehaviour
 {
     public static DrawerProp Instance { get; private set; }
@@ -25,7 +25,7 @@ public sealed class DrawerProp : MonoBehaviour
     private readonly List<(TextMeshProUGUI label, string korean, string english, string japanese)> writing = new();
     private int writtenRevision = -1;
     public bool Open { get; private set; }
-    private bool soundedOpen;
+    private bool soundedOpen, soundsReady;
     public bool Hovered { get; private set; }
     public bool Found => drawer != null;
 
@@ -107,6 +107,14 @@ public sealed class DrawerProp : MonoBehaviour
         for (int i = 0; i < fortuneLines.Length; i++) { GameLocalizedText.Set(fortuneLines[i], lines[i], true); }
     }
 
+    /// <summary>원 표시를 띄울 자리(서랍 앞면의 가운데). 서랍이 아직 만들어지지 않았거나 열려 있으면 false.</summary>
+    public bool MarkerPoint(out Vector3 point)
+    {
+        point = Vector3.zero;
+        if (drawer == null || drawerRenderer == null || Open || slide > 0f) { return false; }
+        point = drawerRenderer.bounds.center;
+        return true;
+    }
     void Awake() { Instance = this; }
     void OnDestroy() { if (Instance == this) { Instance = null; } }
 
@@ -122,6 +130,8 @@ public sealed class DrawerProp : MonoBehaviour
         }
         // 다른 화면으로 넘어가거나 자리로 돌아가면 서랍도 닫힌다.
         if (Open && !views.IsCustomView) { Open = false; }
+        // 여닫는 소리도 미리 읽어 둔다(처음 열 때 파일을 읽느라 멎지 않게).
+        if (!soundsReady && Sfx.Instance != null) { soundsReady = true; Sfx.Warm("DrawerOpen"); Sfx.Warm("DrawerClose"); }
         if (Open != soundedOpen) { soundedOpen = Open; Sfx.Play(Open ? "DrawerOpen" : "DrawerClose", .8f); }
         bool free = !PauseMenuController.BlocksInput && !MouseCameraController.TextEntryActive && Time.timeScale > 0f && !RoomShell.Cinematic;
         // 자리에서 서랍을 바라본 채 F를 누르면 열리고, 열어 둔 채 F를 누르면 닫힌다(침대·문과 같은 방식). 바라보지 않으면 열리지 않는다.
@@ -149,7 +159,10 @@ public sealed class DrawerProp : MonoBehaviour
         // 운세는 서랍이 다 닫힌 뒤에 바뀐다. 열려 있는 동안 글자가 바뀌는 모습은 보이지 않는다.
         if (Open) { fortuneRead = true; }
         else if (fortuneRead && slide <= 0f) { fortuneRead = false; DrawFortune(); }
-        if (slide > 0f && writtenRevision != GameLocale.Revision)
+        // 글자는 서랍이 닫혀 있을 때 미리 써 둔다(처음 만들 때, 언어가 바뀔 때, 닫힌 뒤 운세가 바뀔 때).
+        // 예전에는 서랍이 열리기 시작하는 프레임에 스무 줄 남짓을 한꺼번에 처음 썼다. 그때 글자 모양을 글꼴 판에 새로 굽고
+        // 글자 메시를 한꺼번에 만드느라 여는 순간 화면이 잠깐 멎었다.
+        if (writtenRevision != GameLocale.Revision)
         {
             writtenRevision = GameLocale.Revision;
             foreach (var line in writing) { GameLocalizedText.Set(line.label, Word(line.korean, line.english, line.japanese), true); }
@@ -168,6 +181,10 @@ public sealed class DrawerProp : MonoBehaviour
     private void Build(Transform item, Camera camera)
     {
         drawer = item; drawerRenderer = item.GetComponent<Renderer>(); closedPosition = item.position;
+        // 서랍에는 충돌체가 달려 있다. 강체 없이 충돌체를 움직이면 물리 쪽이 움직일 때마다 고정 물체 목록을 다시 짠다.
+        // 움직이는 물체라고 알려 두면(물리에 밀리지 않는 강체) 그 비용이 들지 않는다.
+        if (item.GetComponent<Collider>() != null && item.GetComponent<Rigidbody>() == null)
+        { var body = item.gameObject.AddComponent<Rigidbody>(); body.isKinematic = true; body.useGravity = false; }
         var box = drawerRenderer.bounds;
         // 서랍은 플레이어 쪽으로 나온다.
         Vector3 toPlayer = camera.transform.position - box.center; toPlayer.y = 0f;

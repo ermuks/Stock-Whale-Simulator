@@ -137,6 +137,7 @@ public sealed partial class CorporateEconomy
     {
         if (!CanManage(stock)) { GrowthResult="경영권 필요"; return false; }
         bool accepted=Ensure(stock).growth.Start(stock.business,type,MarketDayController.Instance.Day,GrowthRules);
+        if (accepted) { SteamAchievements.Unlock(SteamAchievements.Growth); }
         GrowthResult=accepted ? "투자 착수" : "진행 중·자금·단계 확인"; return accepted;
     }
     public bool CanManage(Stock stock) => stock!=null && !stock.IsDelisted && !stock.IsDelisting && StockManager.Instance.SetupConfirmed

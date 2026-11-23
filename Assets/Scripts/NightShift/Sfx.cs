@@ -57,6 +57,12 @@ public sealed class Sfx : MonoBehaviour
         }
         return clips[name] = list.ToArray();
     }
+    /// <summary>이 이름의 소리를 미리 읽어 둔다. 처음 틀 때 파일을 읽고 푸느라 화면이 멎는 것을 막는다.</summary>
+    public static void Warm(string name)
+    {
+        if (Instance == null) { return; }
+        foreach (var clip in Instance.Clips(name)) { if (clip != null && clip.loadState == AudioDataLoadState.Unloaded) { clip.LoadAudioData(); } }
+    }
     /// <summary>이 이름의 소리 파일이 몇 개 있는가.</summary>
     public int Count(string name) => Clips(name).Length;
 

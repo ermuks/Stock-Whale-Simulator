@@ -246,6 +246,7 @@ public sealed partial class InvestorSociety
         CancelRoom(roomId);
         room.Command = new LeadingRoomOrders.Command { Id = ++nextCommand, Room = roomId, Stock = stock, Buy = buy, Sell = sell, Rush = true, IssuedAt = SessionClock.Time, IssuedDay = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.Day };
         LastAction = $"{room.DisplayName}: {stock.stockName} 장 시작 몰아주기. 매수 ≤ {buy:N0} / 매도 ≥ {sell:N0}. 참가자가 개별 판단합니다.";
+        SteamAchievements.Unlock(SteamAchievements.OpeningRushCall);
         Speak(null, roomId, LastAction, default); return true;
     }
 }

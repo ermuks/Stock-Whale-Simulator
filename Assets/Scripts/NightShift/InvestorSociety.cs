@@ -362,7 +362,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
         bool willing = firstMember || random.NextDouble() < mind.JoinChance;
         LastAction = bot.Social.Nickname + ": 참여 제안을 거절했습니다.";
         bool accepted = willing && Join(bot, roomId, playerInvited: true);
-        if (accepted) { LastAction = bot.Social.Nickname + ": 내 리딩방에 참여했습니다. 명령 수락은 별도 판단합니다."; }
+        if (accepted) { LastAction = bot.Social.Nickname + ": 내 리딩방에 참여했습니다. 명령 수락은 별도 판단합니다."; SteamAchievements.Unlock(SteamAchievements.FirstMember); }
         return accepted;
     }
     public bool Issue(int roomId, Stock stock, decimal buy, decimal sell)
@@ -375,6 +375,7 @@ public sealed partial class InvestorSociety : MonoBehaviour
         CancelRoom(roomId);
         room.Command = new LeadingRoomOrders.Command { Id = ++nextCommand, Room = roomId, Stock = stock, Buy = buy, Sell = sell, IssuedAt = SessionClock.Time, IssuedDay = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.Day };
         LastAction = $"{room.DisplayName}: {stock.stockName} 매수 ≤ {buy:N0} / 매도 ≥ {sell:N0}. 참가자가 개별 판단합니다.";
+        SteamAchievements.Unlock(SteamAchievements.FirstCall);
         Speak(null, roomId, LastAction, default); return true;
     }
     /// <summary>꿈에서 깬다: 내 리딩방의 지시를 거두고 회원을 모두 내보낸다(알림 없이). 방은 처음처럼 비어 있다.</summary>

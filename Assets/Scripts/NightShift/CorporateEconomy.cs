@@ -79,7 +79,7 @@ public sealed partial class CorporateEconomy : MonoBehaviour
     {
         if (!CanManage(stock) || !Enum.IsDefined(typeof(CompanyPolicy),policy))
         { return false; }
-        Ensure(stock).Policy = policy; return true;
+        Ensure(stock).Policy = policy; SteamAchievements.Unlock(SteamAchievements.Policy); return true;
     }
     public void ReconnectSession()
     {

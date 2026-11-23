@@ -32,6 +32,8 @@ public sealed partial class PlayerProgression : MonoBehaviour
         /// <summary>새벽 관찰실을 열었는가, 마지막으로 이용료를 낸 날.</summary>
         public bool dawnUnlocked;
         public int dawnFeeDay;
+        /// <summary>새벽 관찰실 AI의 등급(0 기본, 1 정밀 분석). 예전 저장에는 없어서 0으로 읽힌다.</summary>
+        public int dawnAiTier;
         public int invitedRoomMask;
         public int journeyMilestones;
         public double newsCooldownRemaining;
@@ -85,6 +87,8 @@ public sealed partial class PlayerProgression : MonoBehaviour
     void Awake()
     {
         Instance = this; WorldId = Guid.NewGuid().ToString("N");
+        // 새 판은 기본 등급에서 시작한다(등급은 저장된 판을 불러올 때 되살아난다).
+        DawnAi.Tier = 0;
         if (GetComponent<DailyIncomeController>() == null) { gameObject.AddComponent<DailyIncomeController>(); }
         var data = Resources.Load<TextAsset>("Progression/PlayerProgression");
         if (data != null)
@@ -119,10 +123,12 @@ public sealed partial class PlayerProgression : MonoBehaviour
         if (playerBuy == playerSell || resting == null || volume <= 0m)
         { return; }
         Turnover += price * volume;
+        SteamAchievements.Unlock(playerBuy ?SteamAchievements.FirstBuy : SteamAchievements.FirstSell);
         if (playerSell && seller is Trader player)
         {
             decimal basis = ReferenceEquals(resting.owner, player) ? resting.costBasis : player.SubmittedSellCost;
             RealizedProfit += (price - basis) * volume;
+            if (price > basis) { SteamAchievements.Unlock(SteamAchievements.FirstProfit); }
             // 가장 최근에 판 것. 채팅에서 실현 손익을 인증할 때 쓴다. 같은 종목을 잇달아 판 것은 하나로 합친다.
             if (LastSale.symbol == stock.symbol && SessionClock.Time - LastSale.at < 30f)
             { LastSale = (stock.symbol, (LastSale.basis * LastSale.volume + basis * volume) / (LastSale.volume + volume), (LastSale.price * LastSale.volume + price * volume) / (LastSale.volume + volume), LastSale.volume + volume, SessionClock.Time); }
@@ -143,7 +149,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
     }
     public string Capture()
     {
-        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = CanOperateRooms, dreamt = Dreamt, companyFounded = CompanyFounded, dawnUnlocked = DawnUnlocked, dawnFeeDay = DawnFeeDay,
+        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = CanOperateRooms, dreamt = Dreamt, companyFounded = CompanyFounded, dawnUnlocked = DawnUnlocked, dawnFeeDay = DawnFeeDay, dawnAiTier = DawnAi.Tier,
             invitedRoomMask = InvestorSociety.Instance?.InvitedRoomMask ?? 0, journeyMilestones = JourneyMilestones, newsCooldownRemaining = FakeNewsManager.Instance?.PlayerCooldown ?? 0, newsSavedUtc = DateTime.UtcNow.Ticks,
             income = DailyIncomeController.Instance?.Capture() });
     }
@@ -162,7 +168,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
         { return false; }
         if (saved.income != null && (DailyIncomeController.Instance == null || !DailyIncomeController.Instance.CanRestore(saved.income,WorldId)))
         { return false; }
-        Turnover = turnover; RealizedProfit = profit; CanOperateRooms = saved.roomsOpened; Dreamt = saved.dreamt; CompanyFounded = saved.companyFounded; DawnUnlocked = saved.dawnUnlocked; DawnFeeDay = saved.dawnFeeDay;
+        Turnover = turnover; RealizedProfit = profit; CanOperateRooms = saved.roomsOpened; Dreamt = saved.dreamt; CompanyFounded = saved.companyFounded; DawnUnlocked = saved.dawnUnlocked; DawnFeeDay = saved.dawnFeeDay; DawnAi.Tier = Mathf.Clamp(saved.dawnAiTier, 0, 1);
         JourneyMilestones = saved.journeyMilestones;
         if (saved.income != null) { DailyIncomeController.Instance.Restore(saved.income,WorldId); }
         FakeNewsManager.Instance?.RestorePlayerCooldown(saved.newsCooldownRemaining, saved.newsSavedUtc);

@@ -68,13 +68,22 @@ public sealed class PauseMenuController : MonoBehaviour
     private IEnumerator Begin()
     {
         loading = true; CurrentPage = Page.Busy; UI.Busy("불러오는 중…");
+        // 새 게임에서만 프롤로그를 튼다(불러오기는 Reload로 가므로 여기를 지나지 않는다). 메뉴가 열려 있어 게임 시계는 멈춰 있고(Time.timeScale 0),
+        // 그 사이에 세계가 준비된다. 프롤로그가 끝나거나 건너뛰어진 뒤에야 방으로 들어가므로 시계는 08:30에서 출발한다.
+        bool introDone = false;
+        bool introShown = StoryIntro.Play(() => { introDone = true; });
         float until = Time.realtimeSinceStartup + 60;
         while ((StockManager.Instance == null || !StockManager.Instance.EconomyInitialized) && Time.realtimeSinceStartup < until) { yield return null; }
+        while (!introDone) { yield return null; }
         loading = false; inSession = true; fresh = false; priorTimeScale = 1; priorCursor = CursorLockMode.Locked; priorVisible = false;
         Resume();
+        // 프롤로그의 검은 화면이 걷히기 전에 눈을 감은 채 침대에 누워 있게 해 둔다. 검은 화면이 걷히면 눈을 뜨고 일어난다.
+        if (introShown) { BedSleep.Instance?.WakeUp(); }
     }
     private void Update()
     {
+        // 글을 쓰는 중의 Esc는 입력만 끝낸다. 메뉴는 열지 않는다.
+        if (MouseCameraController.TextEntryEscape) { MouseCameraController.EndTextEntry(); consumedFrame = Time.frameCount; return; }
         if (Input.GetKeyDown(KeyCode.Escape) && !(CollapseSleep.Active && CurrentPage == Page.Closed))
         {
             consumedFrame = Time.frameCount;

@@ -154,6 +154,15 @@ public static class PlayerChatProbe
             Drain(now);
             if (FrameSpikes.Running && MarketDayController.Instance != null) { FrameSpikes.Poll(Clock()); }
             if (now >= nextFlush) { nextFlush = now + 5; Write(false, null); }
+            // 프롤로그가 떠 있는 동안에는 그것만 넘기며 찍는다. 대본은 프롤로그가 끝나고 방에 들어간 뒤에 시작한다.
+            if (introMode && !introReported && StoryIntro.Playing) { IntroDrive(); return; }
+            if (introMode && introStarted && !introReported) { if (PauseMenuController.IsOpen) { return; } IntroReport(); }
+            // "DAY 1" 글자가 처음 뜬 틱의 게임 시계와 침대 연출 단계(3 눈 감음, 4 눈 뜨는 중, 5 일어나는 중).
+            if (introMode && introReported && !introDayLogged && DayIntroOverlay.Instance != null && DayIntroOverlay.Instance.Playing)
+            {
+                introDayLogged = true; var market = MarketDayController.Instance;
+                introNotes.Add("DAY 글자가 뜬 순간: 날 " + DayIntroOverlay.Instance.ShownDay + " · 게임 시계 " + (market == null ? "?" : market.ExactGameMinute.ToString("0.000") + "분 " + market.Phase) + " · 침대 연출 단계 " + (BedSleep.Instance == null ? "?" : BedSleep.Instance.Stage.ToString()) + " · 프롤로그 화면 " + (StoryIntro.Playing ? "남아 있음" : "없음"));
+            }
             if (now < ready) { return; }
             if (script == null)
             {
@@ -161,7 +170,17 @@ public static class PlayerChatProbe
                 if (manager == null || day == null) { ready = now + .5; return; }
                 if (!manager.SetupConfirmed)
                 {
-                    if (NewGame.CanBegin) { NewGame.Begin(); }
+                    if (introMode && PauseMenuController.Instance != null)
+                    {
+                        if (NewGame.CanBegin)
+                        {
+                            // 녹화할 언어(DONDON_PROBE_INTRO_LANG). 없으면 지금 언어 그대로.
+                            string wanted = Environment.GetEnvironmentVariable("DONDON_PROBE_INTRO_LANG");
+                            if (!string.IsNullOrEmpty(wanted) && GameLocale.Supported(wanted) && GameLocale.Code != wanted) { introHomeLanguage = GameLocale.Code; GameLocale.SetLanguage(wanted); }
+                            var menu = PauseMenuController.Instance; menu.ShowTitle(); menu.ShowNewGame(); menu.StartNewGame();
+                        }
+                    }
+                    else if (NewGame.CanBegin) { NewGame.Begin(); }
                     ready = now + 1; return;
                 }
                 if (!day.Ready || society == null || !society.PlayerCanWrite(0)) { ready = now + .5; return; }
@@ -185,7 +204,7 @@ public static class PlayerChatProbe
         var day = MarketDayController.Instance;
         current = new Turn { said = text, section = section, phase = day.Phase.ToString(), clock = day.ClockMinute };
         turns.Add(current); saidAt = lastReplyAt = EditorApplication.timeSinceStartup;
-        if (!Society.SubmitPlayerChat(0, text)) { current.notes.Add("(보내지 못함)"); yield break; }
+        if (!Society.SubmitPlayerChat(sayRoom, text)) { current.notes.Add("(보내지 못함)"); yield break; }
         while (true)
         {
             yield return .25f;
@@ -553,7 +572,68 @@ public static class PlayerChatProbe
                     continue;
                 }
                 // "saveload": 장을 마감시켜 마감 저장을 쓰게 하고, 그 저장을 불러온 뒤 밤 시간으로 넘어가 채팅이 다시 도는지 본다.
+                // "mood down|downhard|up|uphard|off": 시세와 상관없이 장 전체 분위기를 그쪽으로 쳐서 방의 말을 본다.
+                if (line.StartsWith("mood ", StringComparison.Ordinal))
+                {
+                    string wanted = line.Substring(5).Trim();
+                    InvestorSociety.ForcedMarketMood = wanted == "down" ? "marketDown" : wanted == "downhard" ? "marketDownHard" : wanted == "up" ? "marketUp" : wanted == "uphard" ? "marketUpHard" : null;
+                    foreach (float wait in Quiet(1f, "장 분위기를 " + (InvestorSociety.ForcedMarketMood ?? "시세대로") + "(으)로 둠")) { yield return wait; }
+                    continue;
+                }
+                // "calshot 이름 날짜": 벽 달력을 그 날짜인 것처럼 보이게 하고 정면에서 찍는다(끝나면 되돌린다).
+                if (line.StartsWith("calshot ", StringComparison.Ordinal))
+                {
+                    var parts = line.Substring(8).Trim().Split(' ');
+                    int.TryParse(parts.Length > 1 ? parts[1] : "0", out int wanted);
+                    foreach (float wait in CalendarShot(parts[0], wanted)) { yield return wait; }
+                    continue;
+                }
+                // "scenes": 방과 책상을 여러 각도에서 4K로 찍는다(상점 이미지의 바탕 그림. shots/scene-이름.png).
+                // "pump": 불나방 풀을 한 종목에 몰아 진짜 급등(거래량 폭발)을 일으킨다. 그 종목을 가운데 화면에 1분봉으로 띄운다.
+                if (line == "pump")
+                {
+                    var manager = StockManager.Instance; var pool = MothPool.Instance; Stock target = null;
+                    // 값이 싼 종목을 고른다. 같은 돈이 들어와도 주식 수가 많아서 거래량 막대가 크게 솟는다.
+                    if (manager != null) { foreach (var each in manager.stocks) { if (each != null && each.AcceptsOrders && each.currentPrice >= 300m && (target == null || each.currentPrice < target.currentPrice)) { target = each; } } }
+                    bool forced = false;
+                    if (manager != null && pool != null && target != null)
+                    {
+                        manager.SelectStock(manager.stocks.IndexOf(target));
+                        var charts = Object.FindFirstObjectByType<ChartManager>(); if (charts != null) { charts.SetChartPeriod(1); }
+                        forced = pool.Force(target, 260);
+                    }
+                    foreach (float wait in Quiet(1f, "급등을 일으킴: " + (target == null ? "종목 없음" : target.symbol + " " + target.currentPrice.ToString("N0")) + (forced ? "" : " (실패)"))) { yield return wait; }
+                    continue;
+                }
+                // "steamrun": 상점 이미지용 장면을 한 번에 찍는다(잔잔한 장 → 전술 사용 → 급등 → 급락. shots/s-이름.png).
+                if (line.StartsWith("propshot ")) { foreach (float wait in PropShot(line.Substring(9).Trim())) { yield return wait; } continue; }
+                if (line == "shadowcheck") { foreach (float wait in ShadowCheck()) { yield return wait; } continue; }
+                if (line == "tabletshot") { foreach (float wait in TabletShot()) { yield return wait; } continue; }
+                if (line == "entryshot") { foreach (float wait in EntryShot()) { yield return wait; } continue; }
+                if (line == "introcheck") { foreach (float wait in IntroCheck()) { yield return wait; } continue; }
+                if (line == "laddercheck") { foreach (float wait in LadderCheck()) { yield return wait; } continue; }
+                // "aidemo full|short": 새벽 관찰실 AI 명령을 차례로 쓰고 화면을 찍는다. "tongue en": 도중에 언어를 바꾼다(끝나면 되돌린다).
+                if (line.StartsWith("aidemo", StringComparison.Ordinal)) { foreach (float wait in AiDemo(line.Substring(6).Trim())) { yield return wait; } continue; }
+                if (line.StartsWith("tongue ", StringComparison.Ordinal))
+                {
+                    string wanted = line.Substring(7).Trim();
+                    if (GameLocale.Supported(wanted) && wanted != GameLocale.Code) { if (restoreLanguage == null) { restoreLanguage = GameLocale.Code; } GameLocale.SetLanguage(wanted); }
+                    foreach (float wait in Quiet(3f, "언어를 " + wanted + "(으)로 바꿈")) { yield return wait; }
+                    continue;
+                }
+                if (line == "videorun2") { foreach (float wait in VideoRun2()) { yield return wait; } continue; }
+                if (line == "videorun") { foreach (float wait in VideoRun()) { yield return wait; } continue; }
+                if (line == "gifrun") { foreach (float wait in GifRun()) { yield return wait; } continue; }
+                if (line == "steamrun") { foreach (float wait in SteamRun()) { yield return wait; } continue; }
+                if (line == "scenes") { foreach (float wait in Scenes()) { yield return wait; } continue; }
                 if (line == "saveload") { foreach (float wait in SaveLoad()) { yield return wait; } continue; }
+                // "stockshot 이름": 종목 목록 화면을 찍는다. 보유 계좌 꼬리표가 보이도록 두 계좌로 몇 종목을 조금씩 사 둔다
+                // (화면 확인용 실행이다. 2번 계좌를 열려고 현금을 넣으므로 이 실행은 저장하지 않는다).
+                if (line.StartsWith("stockshot ", StringComparison.Ordinal))
+                {
+                    foreach (float wait in StockShot(line.Substring(10).Trim())) { yield return wait; }
+                    continue;
+                }
                 if (line.StartsWith("shot ", StringComparison.Ordinal))
                 {
                     // 방을 처음 띄운 직후에는 목록이 채워질 때까지 잠깐 기다렸다가 찍는다.
@@ -733,9 +813,967 @@ public static class PlayerChatProbe
         }
         catch (Exception error) { findings.Add("shot " + name + ": 실패 " + error.Message); }
     }
+    // ── 새벽 관찰실 AI 시연 ──
+    // "aidemo full|short": 새벽 관찰실에 들어가(해금·이용료는 게임의 함수로 낸다) AI 명령을 차례로 쓰고, 답이 올라온 채팅 화면을 한 장씩 찍는다.
+    // 볼거리를 만들려고 게임의 기능을 쓴다: 플레이어 계좌로 두 종목을 사고, 세력이 매도 사다리를 깔고 한 번 내려찍고, 플레이어가 매수벽을 세웠다 거두고, 심어 둔 기사를 낸다.
+    // 시세·주문·채팅을 직접 고치지 않는다. 확인용 실행이므로 저장하지 않는다.
+    private static int sayRoom;
+    private static bool aiDemoSet;
+    private static Stock aiWhaleStock, aiFirst, aiSecond;
+    private static IEnumerable<float> AiDemo(string mode)
+    {
+        foreach (float wait in Quiet(1f, "새벽 관찰실 AI 명령을 돌려 봄 (" + mode + ", " + GameLocale.Code + ")")) { yield return wait; }
+        var note = current; var society = Society; var npc = NpcLeadingRoom.Instance; var career = PlayerProgression.Instance; var manager = StockManager.Instance;
+        if (society == null || npc == null || career == null || manager == null || manager.playerAccount == null) { note.notes.Add("(실패: 필요한 것을 찾지 못함)"); yield break; }
+        var player = manager.playerAccount;
+        TabletGroupChatUI chat = null;
+        foreach (var candidate in Object.FindObjectsByType<TabletGroupChatUI>()) { if (candidate != null && candidate.monitorChat) { chat = candidate; break; } }
+        string W(string ko, string en, string ja) => GameLocale.Code == "ja" ? ja : GameLocale.Code == "en" ? en : ko;
+        string N(Stock stock) => GameLocale.Text(stock.stockName ?? stock.symbol);
+        if (!aiDemoSet)
+        {
+            aiDemoSet = true;
+            player.cash += 300000000m;
+            typeof(PlayerProgression).GetProperty("Turnover").SetValue(career, (decimal)career.rules.dawnRoomTurnover);
+            decimal before = player.cash; bool opened = career.UnlockDawn(player);
+            float until = Time.realtimeSinceStartup + 60f;
+            while (!npc.Available && Time.realtimeSinceStartup < until) { yield return 1f; }
+            npc.RequestJoin(); bool joined = npc.JoinPlayer();
+            note.notes.Add("(해금 " + opened + " · 입장 " + joined + " (" + npc.Status + ") · 낸 돈 " + (before - player.cash).ToString("N0") + " · 글쓰기 " + society.PlayerCanWrite(NpcLeadingRoom.RoomId) + ")");
+            if (!joined) { yield break; }
+            WhaleBot whale = null;
+            foreach (var each in Object.FindObjectsByType<WhaleBot>())
+            {
+                var owned = each.OwnedCompany;
+                if (owned != null && owned.AcceptsOrders && each.GetHolding(owned) >= 5000m) { whale = each; aiWhaleStock = owned; break; }
+            }
+            var rest = new List<Stock>();
+            foreach (var stock in manager.stocks) { if (stock != null && stock.AcceptsOrders && stock.currentPrice > 0m && stock != aiWhaleStock) { rest.Add(stock); } }
+            rest.Sort((a, b) => string.CompareOrdinal(a.symbol, b.symbol));
+            if (rest.Count < 2 || whale == null) { note.notes.Add("(실패: 종목이나 세력이 모자람)"); yield break; }
+            aiFirst = rest[0]; aiSecond = rest[1];
+            void Buy(Stock stock, decimal money)
+            {
+                decimal price = PriceTickPolicy.CeilToTick(stock.currentPrice * 1.03m);
+                player.BuyLimit(price, Math.Max(1m, decimal.Floor(money / price)), 0, stock);
+            }
+            Buy(aiFirst, 20000000m); Buy(aiSecond, 8000000m); Buy(aiWhaleStock, 6000000m);
+            var lay = typeof(WhaleBot).GetMethod("LayAskLadder", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+            object laid = lay == null ? null : lay.Invoke(whale, new object[] { aiWhaleStock, 3000m, 0m });
+            decimal slammed = ManipulationTools.Slam(whale, aiWhaleStock, 400m, .02m, 0m);
+            decimal wall = ManipulationTools.PlaceWall(player, aiSecond, 60000000m);
+            yield return 3f;
+            if (wall > 0m) { ManipulationTools.PullWall(player, aiSecond, wall); }
+            var planted = FakeNewsManager.Instance == null ? null : FakeNewsManager.Instance.PublishPlanted(aiFirst, true);
+            yield return 8f;
+            note.notes.Add("(준비: 세력 종목 " + aiWhaleStock.symbol + " 사다리 " + laid + "주, 내려찍기 " + slammed.ToString("N0") + "주 · 내 매수벽 " + aiSecond.symbol + " " + wall.ToString("N0") + "에 세웠다 거둠 · 심은 기사 " + (planted == null ? "없음" : aiFirst.symbol + " 「" + planted.title + "」")
+                + " · 보유 " + aiFirst.symbol + " " + player.GetOwnedVolume(aiFirst).ToString("N0") + ", " + aiSecond.symbol + " " + player.GetOwnedVolume(aiSecond).ToString("N0") + ", " + aiWhaleStock.symbol + " " + player.GetOwnedVolume(aiWhaleStock).ToString("N0") + ")");
+        }
+        if (aiWhaleStock == null || aiFirst == null || aiSecond == null) { yield break; }
+        if (chat != null) { chat.SelectRoom(NpcLeadingRoom.RoomId); shotRoomSet = true; Canvas.ForceUpdateCanvases(); }
+        sayRoom = NpcLeadingRoom.RoomId;
+        string tag = "ai-" + GameLocale.Code + "-"; int number = 0;
+        IEnumerable<float> Ask(string text, string name, float least = 6f)
+        {
+            foreach (float wait in Say(text, least, least + 5f)) { yield return wait; }
+            yield return 1.5f; Shot(tag + (++number).ToString("00") + "-" + name); yield return .5f;
+        }
+        bool full = mode == "full";
+        if (full) { foreach (float wait in Ask(W("!도움말", "!help", "!ヘルプ"), "help")) { yield return wait; } }
+        foreach (float wait in Ask(W("!분석 ", "!analyze ", "!分析 ") + N(aiWhaleStock), "analyze")) { yield return wait; }
+        foreach (float wait in Ask(W("!세력 ", "!whale ", "!仕手 ") + N(aiWhaleStock), "whale")) { yield return wait; }
+        if (full) { foreach (float wait in Ask(W("!세력 ", "!whale ", "!仕手 ") + N(aiSecond), "whale-wall")) { yield return wait; } }
+        foreach (float wait in Ask(W("!비교 ", "!compare ", "!比較 ") + N(aiFirst) + " " + N(aiSecond), "compare")) { yield return wait; }
+        foreach (float wait in Ask(W("!뉴스 ", "!news ", "!ニュース ") + N(aiFirst), "news")) { yield return wait; }
+        if (full) { foreach (float wait in Ask(W("!뉴스 ", "!news ", "!ニュース ") + N(aiSecond), "news-other")) { yield return wait; } }
+        foreach (float wait in Ask(W("!방", "!room", "!部屋"), "room")) { yield return wait; }
+        foreach (float wait in Ask(W("!내계좌", "!account", "!口座"), "account")) { yield return wait; }
+        if (full)
+        {
+            decimal tick = PriceTickPolicy.GetTickSize(aiWhaleStock.currentPrice);
+            foreach (float wait in Ask(W("!알림 ", "!alert ", "!通知 ") + N(aiWhaleStock) + " " + (aiWhaleStock.currentPrice + tick).ToString("0"), "alert-set")) { yield return wait; }
+            foreach (float wait in Say(W("!알림 ", "!alert ", "!通知 ") + N(aiWhaleStock) + " " + (aiWhaleStock.currentPrice - tick).ToString("0"), 4f, 6f)) { yield return wait; }
+            foreach (float wait in Ask(W("!알림", "!alert", "!通知"), "alert-list", 4f)) { yield return wait; }
+            int reports = society.AiReports; float until = Time.realtimeSinceStartup + 60f;
+            while (society.AiReports == reports && Time.realtimeSinceStartup < until) { yield return 1f; }
+            yield return 4f; Shot(tag + (++number).ToString("00") + "-alert-fired");
+            note = current; note.notes.Add("(알림: " + (society.AiReports > reports ? "울림" : "60초 안에 울리지 않음") + " · 남은 알림 " + DawnAi.Alerts.Count + " · 오늘 쓴 알림 " + DawnAi.AlertsToday + "/" + DawnAi.AlertLimit + ")");
+            foreach (float wait in Ask(W("!성적", "!record", "!成績"), "record-early", 4f)) { yield return wait; }
+            decimal cash = player.cash;
+            foreach (float wait in Ask(W("!업그레이드", "!upgrade", "!アップグレード"), "upgrade-ask", 4f)) { yield return wait; }
+            current.notes.Add("(묻기만 했을 때: 등급 " + DawnAi.Tier + " · 나간 돈 " + (cash - player.cash).ToString("N0") + ")");
+            foreach (float wait in Ask(W("!업그레이드 확인", "!upgrade confirm", "!アップグレード 確認"), "upgrade-done")) { yield return wait; }
+            current.notes.Add("(확인한 뒤: 등급 " + DawnAi.Tier + " · 나간 돈 " + (cash - player.cash).ToString("N0") + ")");
+            foreach (float wait in Ask(W("!분석 ", "!analyze ", "!分析 ") + N(aiFirst), "analyze-precise")) { yield return wait; }
+            foreach (float wait in Ask(W("!세력 ", "!whale ", "!仕手 ") + N(aiWhaleStock), "whale-precise")) { yield return wait; }
+            foreach (float wait in Ask(W("!방구", "!roomy", "!部屋着"), "not-a-command", 4f)) { yield return wait; }
+            // 채점될 분석이 생기도록 몇 종목을 더 분석시킨다(매수·매도 의견이 나온 것만 채점된다).
+            int asked = 0;
+            foreach (var stock in manager.stocks)
+            {
+                if (stock == null || !stock.AcceptsOrders || stock == aiFirst || stock == aiSecond || stock == aiWhaleStock || asked >= 5) { continue; }
+                asked++;
+                foreach (float wait in Say(W("!분석 ", "!analyze ", "!分析 ") + N(stock), 3f, 5f)) { yield return wait; }
+            }
+            foreach (float wait in Quiet(DawnAi.GradeSeconds + 6f, "분석이 채점될 때까지 기다림")) { yield return wait; }
+        }
+        foreach (float wait in Ask(W("!성적", "!record", "!成績"), "record", 4f)) { yield return wait; }
+        current.notes.Add("(성적: 오늘 적중 " + DawnAi.Right + " 빗나감 " + DawnAi.Wrong + " · 누적 " + DawnAi.TotalRight + "/" + (DawnAi.TotalRight + DawnAi.TotalWrong) + " · 채점 대기 " + DawnAi.Calls.Count + " · AI가 올린 글 " + society.AiReports + ")");
+        foreach (float wait in Quiet(1f, "장 시작 전 브리핑을 한 번 더 올림(08:30에 저절로 올라온 것은 DAY " + DawnAi.BriefDay + ")")) { yield return wait; }
+        bool briefed = society.PostAiBriefing(NpcLeadingRoom.RoomId);
+        yield return 6f; Shot(tag + (++number).ToString("00") + "-brief"); yield return .5f;
+        current.notes.Add("(브리핑 " + (briefed ? "올림" : "실패") + ")");
+        sayRoom = 0;
+    }
+
+    // ── 상점 이미지용 촬영 ──
+    // 전부 게임이 실제로 그린 화면이다. 시세·주문·채팅을 직접 고치지 않는다. 쓰는 것은 게임에 있는 기능뿐이다:
+    //   현금을 넣어 둔 계좌로 주문을 내고(stockshot과 같다), 리딩방을 열고(PlayerProgression.OpenLeadingRooms),
+    //   불붙이기를 쓰고(PlayerTactics.Ignite), 불나방 무리를 한 종목에 몰리게 한다(MothPool.Force).
+    private static void Render(Camera camera, string name, int width, int height)
+    {
+        var texture = new RenderTexture(width, height, 24); var pixels = new Texture2D(width, height, TextureFormat.RGB24, false);
+        var previous = RenderTexture.active; var old = camera.targetTexture;
+        camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
+        pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+        Directory.CreateDirectory(Folder + "/shots");
+        File.WriteAllBytes(Path.Combine(Folder + "/shots", "s-" + name + ".png"), pixels.EncodeToPNG());
+        camera.targetTexture = old; RenderTexture.active = previous;
+        Object.DestroyImmediate(pixels); texture.Release(); Object.DestroyImmediate(texture);
+    }
+    private static void RenderFrom(Camera camera, string name, Vector3 position, Vector3 look, float fov, bool tall = false)
+    {
+        Vector3 keptPosition = camera.transform.position; Quaternion keptRotation = camera.transform.rotation; float keptFov = camera.fieldOfView;
+        camera.transform.position = position; camera.transform.rotation = Quaternion.LookRotation(look - position, Vector3.up); camera.fieldOfView = fov;
+        if (tall) { Render(camera, name, 2160, 3240); } else { Render(camera, name, 3840, 2160); }
+        camera.transform.SetPositionAndRotation(keptPosition, keptRotation); camera.fieldOfView = keptFov;
+    }
+    // ── 상점 설명란의 움직이는 그림용 연속 촬영 ──
+    // "gifrun": 같은 자리에서 일정한 간격으로 여러 장을 찍는다(shots/s-g-이름-번호.png). 그림으로 엮는 일은 SteamImage/make_gifs.py가 한다.
+    // steamrun과 마찬가지로 게임의 기능만 부른다. 시세·주문·채팅을 직접 고치지 않는다.
+    private static IEnumerable<float> GifRun()
+    {
+        foreach (float wait in Quiet(1f, "설명란 그림용 연속 장면을 찍음")) { yield return wait; }
+        var note = current;
+        var camera = Camera.main; var views = DeskViewController.Instance;
+        var manager = StockManager.Instance; var pool = MothPool.Instance;
+        if (camera == null || views == null || manager == null || pool == null) { note.notes.Add("(실패: 필요한 것을 찾지 못함)"); yield break; }
+        Vector3 home = camera.transform.position; float homeFov = camera.fieldOfView;
+        Vector3 Center(DeskViewTarget target) { var screen = views.ScreenFor(target); return screen.TransformPoint(screen.rect.center); }
+        Vector3 chart = Center(DeskViewTarget.Chart), chat = Center(DeskViewTarget.Chat);
+        var charts = Object.FindAnyObjectByType<ChartManager>();
+        var cheap = new List<Stock>();
+        foreach (var each in manager.stocks) { if (each != null && each.AcceptsOrders && each.currentPrice >= 300m) { cheap.Add(each); } }
+        cheap.Sort((a, b) => a.currentPrice.CompareTo(b.currentPrice));
+        if (cheap.Count < 2) { note.notes.Add("(실패: 종목이 모자람)"); yield break; }
+        Stock surge = cheap[0], tactic = cheap[1];
+        const int width = 924, height = 520;
+        void Frame(string name, int index, Vector3 position, Vector3 look, float fov)
+        {
+            Vector3 keptPosition = camera.transform.position; Quaternion keptRotation = camera.transform.rotation; float keptFov = camera.fieldOfView;
+            camera.transform.position = position; camera.transform.rotation = Quaternion.LookRotation(look - position, Vector3.up); camera.fieldOfView = fov;
+            Render(camera, "g-" + name + "-" + index.ToString("000"), width, height);
+            camera.transform.SetPositionAndRotation(keptPosition, keptRotation); camera.fieldOfView = keptFov;
+        }
+        Vector3 closePosition = chart + new Vector3(0f, .1f, -3.3f), closeLook = chart + Vector3.down * .05f;
+        Vector3 anglePosition = chart + new Vector3(-2.3f, .5f, -3.4f), angleLook = chart + new Vector3(.2f, -.1f, 0f);
+        Vector3 chatPosition = chat + new Vector3(-.9f, .1f, -3.6f), chatLook = chat + new Vector3(-.5f, -.2f, 0f);
+
+        // 1. 평소의 책상: 6초 동안 30장.
+        manager.SelectStock(manager.stocks.IndexOf(tactic)); if (charts != null) { charts.SetChartPeriod(1); }
+        yield return 3f;
+        for (int i = 0; i < 30; i++) { Frame("desk", i, home, chart + Vector3.down * .2f, homeFov); yield return .2f; }
+
+        // 2. 불붙이기: 차트를 보는 자리에서, 쓰기 1초 전부터 5초 뒤까지 48장.
+        bool opened = PlayerProgression.Instance != null && PlayerProgression.Instance.OpenLeadingRooms();
+        yield return 1f;
+        bool lit = false; decimal before = tactic.currentPrice, top = before;
+        for (int i = 0; i < 48; i++)
+        {
+            if (i == 8) { lit = PlayerTactics.Instance != null && PlayerTactics.Instance.Ignite(tactic, .7f); }
+            if (tactic.currentPrice > top) { top = tactic.currentPrice; }
+            Frame("ignite", i, closePosition, closeLook, 40f); yield return .125f;
+        }
+        note.notes.Add("(불붙이기: 리딩방 " + opened + " · 실행 " + lit + " · " + tactic.symbol + " " + before.ToString("N0") + " → 고점 " + top.ToString("N0") + " → " + tactic.currentPrice.ToString("N0") + ")");
+
+        // 3. 급등: 몰리기 시작한 때부터 32초 동안 64장(차트 가까이).
+        manager.SelectStock(manager.stocks.IndexOf(surge)); if (charts != null) { charts.SetChartPeriod(1); }
+        yield return 2f;
+        decimal began = surge.currentPrice; bool forced = pool.Force(surge, 260);
+        for (int i = 0; i < 64; i++) { Frame("surge", i, closePosition, closeLook, 40f); yield return .5f; }
+        note.notes.Add("(급등: " + surge.symbol + " " + began.ToString("N0") + " → " + surge.currentPrice.ToString("N0") + (forced ? "" : " (실패)") + ")");
+
+        // 4. 채팅방: 급등 직후 16초 동안 48장.
+        for (int i = 0; i < 48; i++) { Frame("chat", i, chatPosition, chatLook, 44f); yield return .33f; }
+        // 5. 차트와 채팅이 함께: 12초 동안 40장.
+        for (int i = 0; i < 40; i++) { Frame("room", i, anglePosition, angleLook, 42f); yield return .3f; }
+
+        // 6. 달력: 목요일(4일)에서 금요일로, 금요일에서 다음 월요일로 넘어가는 모습. 선이 그어지는 동안 촘촘히 찍는다.
+        var calendar = WallCalendar.Instance;
+        if (calendar != null && calendar.Pose(out Vector3 center, out Vector3 normal, out float tall))
+        {
+            Vector3 calendarPosition = center + normal * tall * 1.55f + Vector3.up * .15f;
+            calendar.DayOverride = 4; yield return 1.5f;
+            int frame = 0;
+            for (int i = 0; i < 6; i++) { Frame("calendar", frame++, calendarPosition, center + Vector3.up * .15f, 34f); yield return .07f; }
+            calendar.DayOverride = 5;
+            for (int i = 0; i < 16; i++) { Frame("calendar", frame++, calendarPosition, center + Vector3.up * .15f, 34f); yield return .07f; }
+            calendar.DayOverride = 6;
+            for (int i = 0; i < 34; i++) { Frame("calendar", frame++, calendarPosition, center + Vector3.up * .15f, 34f); yield return .07f; }
+            calendar.DayOverride = 0;
+        }
+        findings.Add("gifrun: 찍음");
+    }
+    // ── 미리보기 동영상용 촬영 ──
+    // "videorun": 게임 시간을 1/30초씩 나아가게 하고(Time.captureFramerate) 게임 프레임마다 1920×1080 한 장을 찍는다(shots/v-이름-번호.jpg).
+    // 찍는 데 걸리는 시간과 상관없이 영상 속 게임은 제 속도로 흐른다. 엮는 일은 SteamImage/make_video.py가 한다.
+    // 게임의 기능만 부른다. 시세·주문·채팅을 직접 고치지 않는다.
+    private static RenderTexture videoTarget; private static Texture2D videoPixels;
+    private static void VideoFrame(Camera camera, string name, int index, Vector3 position, Vector3 look, float fov)
+    {
+        const int width = 1920, height = 1080;
+        if (videoTarget == null) { videoTarget = new RenderTexture(width, height, 24); videoPixels = new Texture2D(width, height, TextureFormat.RGB24, false); }
+        Vector3 keptPosition = camera.transform.position; Quaternion keptRotation = camera.transform.rotation; float keptFov = camera.fieldOfView;
+        camera.transform.position = position; camera.transform.rotation = Quaternion.LookRotation(look - position, Vector3.up); camera.fieldOfView = fov;
+        var previous = RenderTexture.active; var old = camera.targetTexture;
+        camera.targetTexture = videoTarget; camera.Render(); RenderTexture.active = videoTarget;
+        videoPixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); videoPixels.Apply();
+        Directory.CreateDirectory(Folder + "/shots");
+        File.WriteAllBytes(Path.Combine(Folder + "/shots", "v-" + name + "-" + index.ToString("0000") + ".jpg"), videoPixels.EncodeToJPG(95));
+        camera.targetTexture = old; RenderTexture.active = previous;
+        camera.transform.SetPositionAndRotation(keptPosition, keptRotation); camera.fieldOfView = keptFov;
+    }
+    private static IEnumerable<float> VideoRun()
+    {
+        foreach (float wait in Quiet(1f, "미리보기 동영상용 장면을 찍음")) { yield return wait; }
+        var note = current;
+        var camera = Camera.main; var views = DeskViewController.Instance;
+        var manager = StockManager.Instance; var pool = MothPool.Instance;
+        if (camera == null || views == null || manager == null || pool == null) { note.notes.Add("(실패: 필요한 것을 찾지 못함)"); yield break; }
+        Vector3 home = camera.transform.position; float homeFov = camera.fieldOfView;
+        Vector3 Center(DeskViewTarget target) { var screen = views.ScreenFor(target); return screen.TransformPoint(screen.rect.center); }
+        Vector3 chart = Center(DeskViewTarget.Chart), chat = Center(DeskViewTarget.Chat);
+        var charts = Object.FindAnyObjectByType<ChartManager>();
+        var cheap = new List<Stock>();
+        foreach (var each in manager.stocks) { if (each != null && each.AcceptsOrders && each.currentPrice >= 300m) { cheap.Add(each); } }
+        cheap.Sort((a, b) => a.currentPrice.CompareTo(b.currentPrice));
+        if (cheap.Count < 2) { note.notes.Add("(실패: 종목이 모자람)"); yield break; }
+        Stock surge = cheap[0], calm = cheap[1];
+        int lastFrame = -1, skipped = 0, taken = 0;
+        IEnumerable<float> Take(string name, int frames, Vector3 fromPosition, Vector3 toPosition, Vector3 fromLook, Vector3 toLook, float fromFov, float toFov, System.Action<int> each = null)
+        {
+            for (int i = 0; i < frames; i++)
+            {
+                while (Time.frameCount == lastFrame) { yield return 0f; }
+                if (lastFrame >= 0 && Time.frameCount - lastFrame > 1) { skipped += Time.frameCount - lastFrame - 1; }
+                lastFrame = Time.frameCount;
+                if (each != null) { each(i); }
+                float t = frames > 1 ? i / (float)(frames - 1) : 0f; t = t * t * (3f - 2f * t);
+                VideoFrame(camera, name, i, Vector3.Lerp(fromPosition, toPosition, t), Vector3.Lerp(fromLook, toLook, t), Mathf.Lerp(fromFov, toFov, t));
+                taken++;
+            }
+        }
+        IEnumerable<float> Pass(float seconds)
+        {
+            float until = Time.time + seconds;
+            while (Time.time < until) { yield return 0f; }
+            lastFrame = -1;
+        }
+        Vector3 deskLook = chart + Vector3.down * .2f;
+        Vector3 closePosition = chart + new Vector3(0f, .1f, -3.3f), closeLook = chart + Vector3.down * .05f;
+        Vector3 anglePosition = chart + new Vector3(-2.3f, .5f, -3.4f), angleLook = chart + new Vector3(.2f, -.1f, 0f);
+        Vector3 chatPosition = chat + new Vector3(-.9f, .1f, -3.6f), chatLook = chat + new Vector3(-.5f, -.2f, 0f);
+
+        Time.captureFramerate = 30;
+        manager.SelectStock(manager.stocks.IndexOf(calm)); if (charts != null) { charts.SetChartPeriod(1); }
+        foreach (float wait in Pass(3f)) { yield return wait; }
+
+        // 1. 책상: 멀리서 천천히 다가간다. 6초.
+        foreach (float wait in Take("a-desk", 180, home + new Vector3(0f, .25f, -1.6f), home, deskLook, deskLook, homeFov, homeFov)) { yield return wait; }
+
+        // 2. 급등: 차트 가까이에서 30초(영상에서는 빠르게 돌린다). 20번째 장에서 무리가 몰리기 시작한다.
+        manager.SelectStock(manager.stocks.IndexOf(surge)); if (charts != null) { charts.SetChartPeriod(1); }
+        foreach (float wait in Pass(2f)) { yield return wait; }
+        decimal began = surge.currentPrice; bool forced = false;
+        foreach (float wait in Take("b-surge", 900, closePosition + new Vector3(0f, 0f, -.5f), closePosition, closeLook, closeLook, 40f, 40f, i => { if (i == 20) { forced = pool.Force(surge, 260); } })) { yield return wait; }
+        note.notes.Add("(급등: " + surge.symbol + " " + began.ToString("N0") + " → " + surge.currentPrice.ToString("N0") + (forced ? "" : " (실패)") + ")");
+
+        // 3. 채팅방: 10초.
+        foreach (float wait in Take("c-chat", 300, chatPosition + new Vector3(-.25f, 0f, -.3f), chatPosition, chatLook, chatLook, 44f, 44f)) { yield return wait; }
+
+        // 4. 차트와 채팅이 함께: 옆으로 천천히 미끄러진다. 7초.
+        foreach (float wait in Take("d-room", 210, anglePosition + new Vector3(-.5f, 0f, 0f), anglePosition + new Vector3(.4f, 0f, 0f), angleLook, angleLook, 42f, 42f)) { yield return wait; }
+
+        // 5. 달력: 목요일 → 금요일 → 다음 월요일. 6초.
+        var calendar = WallCalendar.Instance;
+        if (calendar != null && calendar.Pose(out Vector3 center, out Vector3 normal, out float tall))
+        {
+            Vector3 calendarLook = center + Vector3.up * .15f, calendarPosition = center + normal * tall * 1.55f + Vector3.up * .15f;
+            calendar.DayOverride = 4;
+            foreach (float wait in Pass(1.5f)) { yield return wait; }
+            foreach (float wait in Take("e-calendar", 180, calendarPosition + normal * tall * .35f, calendarPosition, calendarLook, calendarLook, 34f, 34f, i => { if (i == 20) { calendar.DayOverride = 5; } if (i == 65) { calendar.DayOverride = 6; } })) { yield return wait; }
+            calendar.DayOverride = 0;
+        }
+
+        // 6. 끝: 책상에서 천천히 물러난다(제목이 얹힐 자리). 5초.
+        foreach (float wait in Take("f-end", 150, home, home + new Vector3(0f, .3f, -1.8f), deskLook, deskLook, homeFov, homeFov)) { yield return wait; }
+
+        Time.captureFramerate = 0;
+        note.notes.Add("(동영상: " + taken + "장 · 건너뛴 게임 프레임 " + skipped + ")");
+        findings.Add("videorun: 찍음");
+    }
+
+    // "propshot 이름": 이름에 그 글이 들어간 물건들을 하나씩 가까이서 찍는다(shots/s-prop-번호.png). 소품 모양 확인용.
+    private static IEnumerable<float> PropShot(string word)
+    {
+        foreach (float wait in Quiet(1f, "소품을 가까이서 찍음: " + word)) { yield return wait; }
+        var camera = Camera.main; int count = 0;
+        if (camera == null) { current.notes.Add("(실패: 카메라 없음)"); yield break; }
+        foreach (var each in Object.FindObjectsByType<Transform>())
+        {
+            if (!each.name.Contains(word) || !each.gameObject.activeInHierarchy) { continue; }
+            var renderers = each.GetComponentsInChildren<Renderer>();
+            if (renderers.Length == 0) { continue; }
+            var bounds = renderers[0].bounds; foreach (var renderer in renderers) { bounds.Encapsulate(renderer.bounds); }
+            float reach = Mathf.Max(bounds.extents.magnitude, .05f);
+            Vector3 position = bounds.center + new Vector3(reach * .6f, reach * 1.5f, -reach * 2.0f);
+            Vector3 keptPosition = camera.transform.position; Quaternion keptRotation = camera.transform.rotation; float keptFov = camera.fieldOfView;
+            camera.transform.position = position; camera.transform.rotation = Quaternion.LookRotation(bounds.center - position, Vector3.up); camera.fieldOfView = 40f;
+            Render(camera, "prop-" + count, 1600, 1000);
+            camera.transform.SetPositionAndRotation(keptPosition, keptRotation); camera.fieldOfView = keptFov;
+            current.notes.Add("(" + each.name + " · " + bounds.center.ToString("0.00") + " · 크기 " + bounds.size.ToString("0.00") + ")");
+            count++;
+            if (count >= 6) { break; }
+        }
+        current.notes.Add("(소품 " + count + "개 찍음)");
+    }
+    // "shadowcheck": 그림자가 왜 안 보이는지 알아보는 확인용. 빛과 그림자 설정을 적고, 책상을 위에서 세 번 찍는다
+    // (그대로 / 카메라에 달린 빛을 끄고 / 위에서 내리쬐는 시험용 빛을 하나 더 켜고). 찍은 뒤에는 모두 되돌린다.
+    private static IEnumerable<float> ShadowCheck()
+    {
+        foreach (float wait in Quiet(2f, "그림자 설정을 확인함")) { yield return wait; }
+        var note = current; var camera = Camera.main;
+        if (camera == null) { note.notes.Add("(실패: 카메라 없음)"); yield break; }
+        var pipeline = UnityEngine.Rendering.GraphicsSettings.currentRenderPipeline;
+        note.notes.Add("(파이프라인 " + (pipeline == null ? "없음" : pipeline.name) + " · 품질 " + QualitySettings.names[QualitySettings.GetQualityLevel()] + " · 그래픽 장치 " + SystemInfo.graphicsDeviceType + ")");
+        foreach (var light in Object.FindObjectsByType<Light>())
+        {
+            if (!light.isActiveAndEnabled) { continue; }
+            note.notes.Add("(빛 " + light.name + " · " + light.type + " · 세기 " + light.intensity.ToString("0.00") + " · 거리 " + light.range.ToString("0.0") + " · 그림자 " + light.shadows + " · 자리 " + light.transform.position.ToString("0.0") + ")");
+        }
+        var body = GameObject.Find("desk_body");
+        if (body == null) { note.notes.Add("(실패: 책상 없음)"); yield break; }
+        var bounds = body.GetComponent<Renderer>().bounds;
+        Vector3 top = new Vector3(bounds.center.x, bounds.max.y, bounds.center.z);
+        Vector3 position = top + new Vector3(0f, 2.6f, -3.2f);
+        void Shot(string name)
+        {
+            Vector3 keptPosition = camera.transform.position; Quaternion keptRotation = camera.transform.rotation; float keptFov = camera.fieldOfView;
+            camera.transform.position = position; camera.transform.rotation = Quaternion.LookRotation(top - position, Vector3.up); camera.fieldOfView = 50f;
+            Render(camera, "shadow-" + name, 1920, 1080);
+            camera.transform.SetPositionAndRotation(keptPosition, keptRotation); camera.fieldOfView = keptFov;
+        }
+        Shot("0-asis");
+        var carried = camera.GetComponentInChildren<Light>();
+        if (carried != null) { carried.enabled = false; yield return .5f; Shot("1-no-camera-light"); carried.enabled = true; }
+        var test = new GameObject("Light :: Shadow Test").AddComponent<Light>();
+        test.type = LightType.Spot; test.spotAngle = 80f; test.range = 12f; test.intensity = 6f; test.shadows = LightShadows.Soft;
+        test.transform.position = top + new Vector3(-1.5f, 4f, -1f); test.transform.rotation = Quaternion.LookRotation(top - test.transform.position, Vector3.up);
+        yield return .5f; Shot("2-test-spot");
+        Object.Destroy(test.gameObject);
+        var sun = new GameObject("Light :: Shadow Test Sun").AddComponent<Light>();
+        sun.type = LightType.Directional; sun.intensity = 1.5f; sun.shadows = LightShadows.Hard; sun.transform.rotation = Quaternion.Euler(50f, 30f, 0f);
+        yield return 1f; Shot("3-test-sun");
+        var data = camera.GetComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
+        var asset = pipeline as UnityEngine.Rendering.Universal.UniversalRenderPipelineAsset;
+        note.notes.Add("(카메라 그림자 " + (data == null ? "자료 없음" : data.renderShadows.ToString()) + " · 추가 빛 그림자 지원 " + (asset == null ? "?" : asset.supportsAdditionalLightShadows.ToString()) + " · 주 빛 그림자 지원 " + (asset == null ? "?" : asset.supportsMainLightShadows.ToString()) + " · 그림자 거리 " + (asset == null ? "?" : asset.shadowDistance.ToString("0")) + " · QualitySettings.shadows " + QualitySettings.shadows + ")");
+        Object.Destroy(sun.gameObject);
+    }
+    // "tabletshot": 태블릿을 하나씩 들어 올려, 자리에 앉은 시점 그대로 찍는다(shots/s-tablet-번호.png). 들고 보는 자세 확인용.
+    private static IEnumerable<float> TabletShot()
+    {
+        foreach (float wait in Quiet(1f, "태블릿을 들고 찍음")) { yield return wait; }
+        var camera = Camera.main; int count = 0;
+        if (camera == null) { current.notes.Add("(실패: 카메라 없음)"); yield break; }
+        foreach (var tablet in Object.FindObjectsByType<TabletViewController>())
+        {
+            if (tablet.tabletObject == null) { continue; }
+            tablet.FocusTablet();
+            yield return 1.5f;
+            Render(camera, "tablet-" + count, 1920, 1080);
+            current.notes.Add("(" + tablet.name + " · 들림 " + tablet.IsHeld + " · 자리 " + tablet.tabletObject.localPosition.ToString("0.00") + " · 각도 " + tablet.tabletObject.localEulerAngles.ToString("0") + ")");
+            tablet.ReturnTablet();
+            yield return 2f;
+            count++;
+        }
+        current.notes.Add("(태블릿 " + count + "개 찍음)");
+    }
+    // "entryshot": 보이는 입력 칸을 몇 개 골라 글쓰기 상태로 만든 뒤 가까이서 찍는다(shots/s-entry-번호.png). 입력 중 강조 확인용.
+    private static IEnumerable<float> EntryShot()
+    {
+        foreach (float wait in Quiet(1f, "입력 칸을 잡고 찍음")) { yield return wait; }
+        var camera = Camera.main; int count = 0;
+        if (camera == null) { current.notes.Add("(실패: 카메라 없음)"); yield break; }
+        foreach (var field in Object.FindObjectsByType<TMPro.TMP_InputField>())
+        {
+            if (!field.isActiveAndEnabled || !field.interactable) { continue; }
+            var rect = (RectTransform)field.transform; var corners = new Vector3[4]; rect.GetWorldCorners(corners);
+            Vector3 center = (corners[0] + corners[2]) * .5f; float wide = Vector3.Distance(corners[0], corners[3]);
+            if (wide < .01f) { continue; }
+            field.ActivateInputField();
+            yield return .6f;
+            Vector3 position = center - rect.forward * wide * 1.6f;
+            Vector3 keptPosition = camera.transform.position; Quaternion keptRotation = camera.transform.rotation; float keptFov = camera.fieldOfView;
+            camera.transform.position = position; camera.transform.rotation = Quaternion.LookRotation(center - position, rect.up); camera.fieldOfView = 40f;
+            Render(camera, "entry-" + count, 1600, 700);
+            camera.transform.SetPositionAndRotation(keptPosition, keptRotation); camera.fieldOfView = keptFov;
+            current.notes.Add("(" + field.name + " · 쓰는 중 " + field.isFocused + " · 강조 대상 " + (MouseCameraController.ActiveTextEntry == field) + ")");
+            MouseCameraController.EndTextEntry();
+            yield return .3f;
+            current.notes.Add("(끝낸 뒤 쓰는 중 " + field.isFocused + ")");
+            count++;
+            if (count >= 3) { break; }
+        }
+        current.notes.Add("(입력 칸 " + count + "개 찍음)");
+    }
+    // ── 프롤로그 확인과 녹화 ──
+    // 환경 변수 DONDON_PROBE_INTRO=1이면 점검 도구가 NewGame.Begin을 직접 부르지 않고, 타이틀의 "새 게임" 단추와 같은 길(PauseMenuController.StartNewGame)로 시작한다.
+    // 그러면 프롤로그가 실제 흐름대로 뜬다. 그동안 재생 시각을 1/30초씩 손으로 넘기며 한 장씩 찍는다(shots/intro-번호.jpg).
+    // 프롤로그 화면은 화면에 덧그리는 Canvas라 게임 카메라로는 찍히지 않는다. 찍는 동안만 전용 카메라에 걸어 그림으로 받는다.
+    private static readonly bool introMode = Environment.GetEnvironmentVariable("DONDON_PROBE_INTRO") == "1";
+    private static Camera introCamera; private static RenderTexture introTarget; private static Texture2D introPixels;
+    private static int introFrame = -1, introFinishBefore; private static bool introStarted, introReported; private static bool introResumed; private static bool introDayLogged;
+    private static string introLastScene = "", introLastCaption = ""; private static bool introLastGoal, introLastSkip;
+    private static double introClockAtStart; private static float introScaleAtStart; private static string introHomeLanguage;
+    // 대본이 시작될 때 findings가 비워지므로, 프롤로그 동안 적은 것은 따로 모아 두었다가 introcheck에서 보고서에 옮긴다.
+    private static readonly List<string> introNotes = new();
+    private static void IntroAim(StoryIntro intro, int width, int height)
+    {
+        if (introCamera == null)
+        {
+            introCamera = new GameObject("Camera :: Intro Capture").AddComponent<Camera>(); introCamera.enabled = false;
+            introCamera.clearFlags = CameraClearFlags.SolidColor; introCamera.backgroundColor = Color.black; introCamera.cullingMask = 1 << 5;
+            introCamera.transform.position = new Vector3(5000f, 5000f, 5000f);
+        }
+        if (introTarget == null || introTarget.width != width || introTarget.height != height)
+        {
+            if (introTarget != null) { introCamera.targetTexture = null; introTarget.Release(); Object.DestroyImmediate(introTarget); Object.DestroyImmediate(introPixels); }
+            introTarget = new RenderTexture(width, height, 24); introPixels = new Texture2D(width, height, TextureFormat.RGB24, false);
+        }
+        introCamera.targetTexture = introTarget;
+        foreach (var item in intro.GetComponentsInChildren<Transform>(true)) { item.gameObject.layer = 5; }
+        intro.Canvas.renderMode = RenderMode.ScreenSpaceCamera; intro.Canvas.worldCamera = introCamera; intro.Canvas.planeDistance = 1f;
+    }
+    private static void IntroSave(string name, bool jpg)
+    {
+        Canvas.ForceUpdateCanvases();
+        var previous = RenderTexture.active;
+        introCamera.Render(); RenderTexture.active = introTarget;
+        introPixels.ReadPixels(new Rect(0, 0, introTarget.width, introTarget.height), 0, 0); introPixels.Apply();
+        RenderTexture.active = previous;
+        Directory.CreateDirectory(Folder + "/shots");
+        File.WriteAllBytes(Path.Combine(Folder + "/shots", name + (jpg ? ".jpg" : ".png")), jpg ? introPixels.EncodeToJPG(95) : introPixels.EncodeToPNG());
+    }
+    /// <summary>실제 새 게임 흐름으로 뜬 프롤로그를 처음부터 끝까지 한 장씩 찍는다. 매 편집기 틱마다 한 번 불린다.</summary>
+    private static void IntroDrive()
+    {
+        var intro = StoryIntro.Instance; var day = MarketDayController.Instance;
+        if (!introStarted)
+        {
+            introStarted = true; introFrame = -1; introFinishBefore = StoryIntro.FinishCount;
+            introClockAtStart = day == null ? -1 : day.ExactGameMinute; introScaleAtStart = Time.timeScale;
+            IntroAim(intro, 1920, 1080);
+            introNotes.Add("프롤로그 시작: 게임 시계 " + introClockAtStart.ToString("0.000") + "분 · 시계 배율 " + introScaleAtStart + " · 음악 " + (intro.MusicPlaying ? "재생 중" : "없음") + " · 길이 " + intro.Duration.ToString("0.000") + "초 · 다른 소리 멈춤 " + AudioListener.pause);
+            intro.ManualClock = 0f;
+            return;
+        }
+        // 메뉴가 닫힌(방으로 들어간) 바로 그 틱의 게임 시계. 검은 화면이 아직 덮고 있는 동안이다.
+        if (!introResumed && !PauseMenuController.IsOpen)
+        {
+            introResumed = true;
+            introNotes.Add("메뉴가 닫힌 순간: 게임 시계 " + (day == null ? "?" : day.ExactGameMinute.ToString("0.000")) + "분 · 시계 배율 " + Time.timeScale + " · 끝맺는 중 " + intro.Ending + " · 침대에서 깨어나는 연출 " + (BedSleep.Instance != null && BedSleep.Instance.Stage != 0 ? "시작됨" : "없음"));
+        }
+        if (intro.Ending) { return; }
+        // 앞 틱에 맞춰 둔 시각이 이번 프레임에 그려졌다. 그것을 찍고, 바뀐 것을 적은 뒤 다음 시각으로 넘긴다.
+        introFrame++;
+        float at = introFrame / 30f;
+        if (intro.ShownScene != introLastScene) { introLastScene = intro.ShownScene; introNotes.Add("  " + at.ToString("00.000") + "초 장면 → " + (introLastScene == "" ? "(없음)" : introLastScene)); }
+        if (intro.ShownCaptionKey != introLastCaption) { introLastCaption = intro.ShownCaptionKey; introNotes.Add("  " + at.ToString("00.000") + "초 자막 → " + (introLastCaption == "" ? "(없음)" : introLastCaption)); }
+        if (intro.ShownGoalAlpha > 0f != introLastGoal) { introLastGoal = intro.ShownGoalAlpha > 0f; introNotes.Add("  " + at.ToString("00.000") + "초 목표 표시 → " + (introLastGoal ? "보임" : "숨김")); }
+        if (intro.SkipVisible != introLastSkip) { introLastSkip = intro.SkipVisible; introNotes.Add("  " + at.ToString("00.000") + "초 건너뛰기 단추 → " + (introLastSkip ? "보임" : "숨김")); }
+        if (introFrame < 1800) { IntroSave("intro-" + introFrame.ToString("0000"), true); }
+        intro.ManualClock = (introFrame + 1) / 30f;
+    }
+    /// <summary>프롤로그가 끝나고 메뉴가 닫힌 순간의 상태를 한 번 적는다.</summary>
+    private static void IntroReport()
+    {
+        introReported = true;
+        if (introHomeLanguage != null) { try { GameLocale.SetLanguage(introHomeLanguage); } catch (Exception) { } introHomeLanguage = null; }
+        var day = MarketDayController.Instance; var accounts = PlayerAccounts.Instance;
+        introNotes.Add("프롤로그 끝: 찍은 장면 " + (introFrame + 1) + "장 · 끝맺음 횟수 " + (StoryIntro.FinishCount - introFinishBefore) + " · 남은 프롤로그 화면 " + (GameObject.Find("Area :: Story Intro") != null ? "있음" : "없음") + " · 다른 소리 멈춤 " + AudioListener.pause);
+        introNotes.Add("게임 시작 순간: 게임 시계 " + (day == null ? "?" : day.ExactGameMinute.ToString("0.000") + "분 (" + (day.ClockMinute / 60).ToString("00") + ":" + (day.ClockMinute % 60).ToString("00") + ", " + day.Phase + ")") + " · 프롤로그 직전 " + introClockAtStart.ToString("0.000") + "분 · 시계 배율 " + Time.timeScale);
+        if (accounts != null && accounts.primary != null)
+        {
+            decimal cash = accounts.primary.cash, equity = accounts.primary.Equity();
+            introNotes.Add("게임 시작 순간: 1번 계좌 현금 " + cash.ToString("N0") + " · 평가 자산 합계 " + equity.ToString("N0") + " · 회사 평가액(자산 − 현금) " + (equity - cash).ToString("N0"));
+        }
+    }
+    // "introcheck": 게임이 시작된 뒤에 프롤로그를 다시 틀어 본다(실제 게임에는 이런 길이 없다. 확인용).
+    //   1) 1.2초에 건너뛰기, 59.2초에 건너뛰기: 끝맺음이 한 번씩만 불리는지, 화면과 소리 멈춤이 남지 않는지.
+    //   2) 언어 셋 × 장면 열둘: 자막이 잘리지 않는지, 글자 크기와 줄 수.
+    //   3) 화면 비율 넷에서 찍어 본다(shots/introcheck-*.png).
+    private static IEnumerable<float> IntroCheck()
+    {
+        foreach (float wait in Quiet(1f, "프롤로그의 건너뛰기·언어·화면 비율을 확인함")) { yield return wait; }
+        var note = current; string home = GameLocale.Code;
+        foreach (string line in introNotes) { note.notes.Add(line); }
+        var dayIntro = DayIntroOverlay.Instance; var clockNow = MarketDayController.Instance;
+        note.notes.Add("(DAY 글자: 보여 준 날 " + (dayIntro == null ? "?" : dayIntro.ShownDay.ToString()) + " · 지금 " + (clockNow == null ? "?" : (clockNow.ClockMinute / 60).ToString("00") + ":" + (clockNow.ClockMinute % 60).ToString("00") + " " + clockNow.Phase) + ")");
+        note.notes.Add("(침대에서 깨어나는 연출: " + (BedSleep.Instance == null ? "없음" : "단계 " + BedSleep.Instance.Stage) + " · 화면 잠금 " + RoomShell.Cinematic + ")");
+        foreach (float moment in new[] { 1.2f, 59.2f })
+        {
+            int before = StoryIntro.FinishCount, called = 0; bool pausedBefore = AudioListener.pause;
+            StoryIntro.Play(() => { called++; });
+            var intro = StoryIntro.Instance;
+            if (intro == null) { note.notes.Add("(실패: 프롤로그가 뜨지 않음)"); yield break; }
+            intro.ManualClock = moment; yield return .3f;
+            string seen = intro.ShownScene; bool skipShown = intro.SkipVisible, playing = intro.MusicPlaying;
+            intro.Skip(); intro.Skip(); yield return .4f;
+            bool frozen = intro != null && intro.Ending, stillPlaying = StoryIntro.Playing; int early = called; string held = intro != null ? intro.ShownScene : "";
+            yield return 1.6f;
+            note.notes.Add("(건너뛴 0.4초 뒤: 멈춰서 어두워지는 중 " + frozen + " · 장면 그대로 " + (held == seen) + " · 아직 화면 있음 " + stillPlaying + " · 맡긴 일 " + early + "번)");
+            note.notes.Add("(" + moment.ToString("0.0") + "초에 건너뛰기: 그때 장면 " + seen + " · 안내 글 " + (skipShown ? "보임" : "숨김") + " · 음악 " + (playing ? "재생 중" : "없음") + " → 끝맺음 " + (StoryIntro.FinishCount - before) + "번 · 맡긴 일 " + called + "번 · 재생 중 " + StoryIntro.Playing + " · 남은 화면 " + (GameObject.Find("Area :: Story Intro") != null ? "있음" : "없음") + " · 소리 멈춤 " + pausedBefore + "→" + AudioListener.pause + ")");
+        }
+        int ended = 0; StoryIntro.Play(() => { ended++; });
+        var show = StoryIntro.Instance;
+        if (show == null) { note.notes.Add("(실패: 프롤로그가 뜨지 않음)"); yield break; }
+        show.ManualClock = 0f; IntroAim(show, 1920, 1080); yield return .3f;
+        var caption = show.transform.Find("Area :: Intro Stage/Text :: Intro Narration").GetComponent<TMPro.TextMeshProUGUI>();
+        float[] middles = { 2.5f, 7f, 11.5f, 15.5f, 20f, 25.5f, 31f, 36f, 40.5f, 45.5f, 50.5f, 55f };
+        foreach (string code in new[] { "ko", "en", "ja" })
+        {
+            GameLocale.SetLanguage(code); yield return .3f;
+            var line = new StringBuilder("(" + code + " 자막:");
+            for (int i = 0; i < middles.Length; i++)
+            {
+                show.ManualClock = middles[i]; yield return .12f;
+                caption.ForceMeshUpdate();
+                line.Append(" " + (i + 1) + "번 " + caption.fontSize.ToString("0") + "px/" + caption.textInfo.lineCount + "줄" + (caption.isTextTruncated ? "(잘림!)" : "") + (show.ShownCaptionAlpha >= 1f ? "" : "(흐림 " + show.ShownCaptionAlpha.ToString("0.0") + ")"));
+            }
+            note.notes.Add(line + ")");
+            foreach (float moment in new[] { 25.5f, 31f, 45.5f, 58.2f })
+            { show.ManualClock = moment; yield return .12f; IntroSave("introcheck-" + code + "-1920x1080-" + moment.ToString("00.0"), false); }
+        }
+        // 화면 비율: 2560×1440(16:9), 1920×1200(16:10), 2560×1080(21:9). 일본어(가장 좁게 들어가는 글)로 본다.
+        foreach (var size in new[] { new Vector2Int(2560, 1440), new Vector2Int(1920, 1200), new Vector2Int(2560, 1080) })
+        {
+            IntroAim(show, size.x, size.y); yield return .3f;
+            foreach (float moment in new[] { 31f, 58.2f })
+            {
+                show.ManualClock = moment; yield return .15f; caption.ForceMeshUpdate();
+                IntroSave("introcheck-ja-" + size.x + "x" + size.y + "-" + moment.ToString("00.0"), false);
+                var corners = new Vector3[4]; caption.rectTransform.GetWorldCorners(corners);
+                Vector3 low = introCamera.WorldToViewportPoint(corners[0]), high = introCamera.WorldToViewportPoint(corners[2]);
+                note.notes.Add("(" + size.x + "×" + size.y + " · " + moment.ToString("0.0") + "초: 자막 칸이 화면의 가로 " + (low.x * 100f).ToString("0") + "~" + (high.x * 100f).ToString("0") + "%, 세로 " + (low.y * 100f).ToString("0") + "~" + (high.y * 100f).ToString("0") + "% · 잘림 " + caption.isTextTruncated + ")");
+            }
+        }
+        GameLocale.SetLanguage(home);
+        show.ManualClock = 60.5f; yield return 1.6f;
+        note.notes.Add("(끝까지 재생: 맡긴 일 " + ended + "번 · 재생 중 " + StoryIntro.Playing + " · 소리 멈춤 " + AudioListener.pause + ")");
+        findings.Add("introcheck: 확인함");
+    }
+    // "laddercheck": 세력의 잘게 쪼갠 매도 사다리를 직접 불러 본다(작전이 그 단계에 이를 때까지 기다리지 않는다).
+    // 사다리를 깐 뒤의 매도 호가 10칸과 내 주문을 적고, 불나방 무리로 값을 올린 뒤 다시 깔아 사다리가 위로 옮겨 가는지 본다.
+    private static IEnumerable<float> LadderCheck()
+    {
+        foreach (float wait in Quiet(1f, "세력의 매도 사다리를 확인함")) { yield return wait; }
+        var note = current; WhaleBot whale = null; Stock stock = null;
+        foreach (var each in Object.FindObjectsByType<WhaleBot>())
+        {
+            var owned = each.OwnedCompany;
+            if (owned != null && owned.AcceptsOrders && each.GetHolding(owned) >= 5000m) { whale = each; stock = owned; break; }
+        }
+        if (whale == null) { note.notes.Add("(실패: 주식을 가진 세력을 찾지 못함)"); yield break; }
+        var lay = typeof(WhaleBot).GetMethod("LayAskLadder", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
+        var own = new List<Order>(); var levels = new List<(decimal price, decimal volume)>();
+        string Book()
+        {
+            levels.Clear(); stock.orderBook.GetTopAsks(levels, 10);
+            stock.orderBook.CopyOwnerOrders(whale, own);
+            var mine = new Dictionary<decimal, decimal>(); int count = 0;
+            foreach (var order in own) { if (!order.isBuy && stock.orderBook.IsActive(order)) { count++; mine.TryGetValue(order.price, out decimal had); mine[order.price] = had + order.volume; } }
+            var line = new StringBuilder("현재가 " + stock.currentPrice.ToString("N0") + " · 매도 호가 " + levels.Count + "칸 · 세력의 매도 " + count + "건 |");
+            foreach (var level in levels) { line.Append(" " + level.price.ToString("N0") + ":" + level.volume.ToString("N0") + (mine.ContainsKey(level.price) ? "(세력 " + mine[level.price].ToString("N0") + ")" : "")); }
+            return line.ToString();
+        }
+        note.notes.Add("(" + whale.name + " · " + stock.symbol + " · 보유 " + whale.GetHolding(stock).ToString("N0") + "주)");
+        note.notes.Add("(깔기 전: " + Book() + ")");
+        object laid = lay.Invoke(whale, new object[] { stock, 3000m, 0m });
+        note.notes.Add("(3,000주를 깔았다 → 건 수량 " + laid + ": " + Book() + ")");
+        laid = lay.Invoke(whale, new object[] { stock, 3000m, 0m });
+        note.notes.Add("(바로 다시 불렀다(빈 칸이 없으면 더 얹지 않아야 한다) → 건 수량 " + laid + ": " + Book() + ")");
+        bool forced = MothPool.Instance != null && MothPool.Instance.Force(stock, 120);
+        for (int i = 0; i < 6; i++)
+        {
+            yield return 2.5f;
+            laid = lay.Invoke(whale, new object[] { stock, 3000m, 0m });
+            note.notes.Add("(무리가 사는 중" + (forced ? "" : "(실패)") + " " + ((i + 1) * 2.5f).ToString("0.0") + "초 → 건 수량 " + laid + ": " + Book() + ")");
+        }
+        findings.Add("laddercheck: 확인함");
+    }
+    // ── 미리보기 동영상용 촬영(2배속) ──
+    // "videorun2": 게임 시간을 1/15초씩 나아가게 하고(Time.captureFramerate = 15) 게임 프레임마다 1920×1080 한 장을 찍는다.
+    // 초당 30장으로 틀면 꼭 2배속이다(중간 프레임을 버리지 않고 처음부터 2배속으로 찍는다). 엮는 일은 SteamImage/make_video.py가 한다.
+    // 차트 장면은 한 번에 이어 찍는다: 무리가 몰려 값이 goal(1,000)을 넘으면, 그 종목의 세력(대주주)이 물량을 매수 호가에 내려찍어 무너뜨린다.
+    // 전부 게임의 기능이다(불나방 무리, 세력의 내려찍기). 시세·주문·채팅을 직접 고치지 않는다.
+    private static IEnumerable<float> VideoRun2()
+    {
+        foreach (float wait in Quiet(1f, "미리보기 동영상용 장면을 2배속으로 찍음")) { yield return wait; }
+        var note = current;
+        var camera = Camera.main; var views = DeskViewController.Instance;
+        var manager = StockManager.Instance; var pool = MothPool.Instance;
+        if (camera == null || views == null || manager == null || pool == null) { note.notes.Add("(실패: 필요한 것을 찾지 못함)"); yield break; }
+        Vector3 home = camera.transform.position; float homeFov = camera.fieldOfView;
+        Vector3 Center(DeskViewTarget target) { var screen = views.ScreenFor(target); return screen.TransformPoint(screen.rect.center); }
+        Vector3 chart = Center(DeskViewTarget.Chart), chat = Center(DeskViewTarget.Chat);
+        var charts = Object.FindAnyObjectByType<ChartManager>();
+        var cheap = new List<Stock>();
+        foreach (var each in manager.stocks) { if (each != null && each.AcceptsOrders && each.currentPrice >= 300m) { cheap.Add(each); } }
+        cheap.Sort((a, b) => a.currentPrice.CompareTo(b.currentPrice));
+        if (cheap.Count < 2) { note.notes.Add("(실패: 종목이 모자람)"); yield break; }
+        Stock surge = cheap[0], calm = cheap[1];
+        WhaleBot whale = null;
+        foreach (var each in Object.FindObjectsByType<WhaleBot>()) { if (each.OwnedCompany == surge && each.GetHolding(surge) >= 1000m) { whale = each; break; } }
+        int lastFrame = -1, skipped = 0, taken = 0;
+        IEnumerable<float> Next()
+        {
+            while (Time.frameCount == lastFrame) { yield return 0f; }
+            if (lastFrame >= 0 && Time.frameCount - lastFrame > 1) { skipped += Time.frameCount - lastFrame - 1; }
+            lastFrame = Time.frameCount;
+        }
+        IEnumerable<float> Take(string name, int frames, Vector3 fromPosition, Vector3 toPosition, Vector3 fromLook, Vector3 toLook, float fov, System.Action<int> each = null)
+        {
+            for (int i = 0; i < frames; i++)
+            {
+                foreach (float wait in Next()) { yield return wait; }
+                if (each != null) { each(i); }
+                float t = frames > 1 ? i / (float)(frames - 1) : 0f; t = t * t * (3f - 2f * t);
+                VideoFrame(camera, name, i, Vector3.Lerp(fromPosition, toPosition, t), Vector3.Lerp(fromLook, toLook, t), fov);
+                taken++;
+            }
+        }
+        IEnumerable<float> Pass(float seconds)
+        {
+            float until = Time.time + seconds;
+            while (Time.time < until) { yield return 0f; }
+            lastFrame = -1;
+        }
+        Vector3 deskLook = chart + Vector3.down * .2f;
+        Vector3 closePosition = chart + new Vector3(0f, .1f, -3.3f), closeLook = chart + Vector3.down * .05f;
+        Vector3 anglePosition = chart + new Vector3(-2.3f, .5f, -3.4f), angleLook = chart + new Vector3(.2f, -.1f, 0f);
+        Vector3 chatPosition = chat + new Vector3(-.9f, .1f, -3.6f), chatLook = chat + new Vector3(-.5f, -.2f, 0f);
+
+        Time.captureFramerate = 15;
+        manager.SelectStock(manager.stocks.IndexOf(calm)); if (charts != null) { charts.SetChartPeriod(1); }
+        foreach (float wait in Pass(3f)) { yield return wait; }
+
+        // 1. 책상: 멀리서 다가간다. 105장(영상 3.5초).
+        foreach (float wait in Take("a-desk", 105, home + new Vector3(0f, .25f, -1.6f), home, deskLook, deskLook, homeFov)) { yield return wait; }
+
+        // 2. 차트: 급등 → goal 돌파 → 내려찍기 → 폭락까지 한 번에.
+        // 무리가 몰려도 goal 근처까지 오르는 데는 1분쯤 걸린다. 그동안은 찍지 않고 기다렸다가(차트에는 그동안의 캔들이 그대로 남는다),
+        // goal의 85%를 넘으면 찍기 시작한다. goal을 3% 넘게 뚫으면 무너뜨린다: 무리의 열기를 식히고, 세력이 물량을 매수 호가에 잇달아 내려찍는다.
+        const decimal goal = 1000m; const int MinClimb = 90, MaxClimb = 480, CrashFrames = 240, SlamEvery = 6, SlamCount = 40, HoldFrames = 36;
+        manager.SelectStock(manager.stocks.IndexOf(surge)); if (charts != null) { charts.SetChartPeriod(1); }
+        foreach (float wait in Pass(2f)) { yield return wait; }
+        decimal began = surge.currentPrice, peak = began, low = 0m, sold = 0m; int trigger = -1, index = 0, slams = 0, above = 0;
+        bool forced = pool.Force(surge, 450); float rolledAt = Time.time;
+        while (surge.currentPrice < goal * .85m && Time.time - rolledAt < 150f) { yield return 0f; }
+        float waited = Time.time - rolledAt; decimal startedAt = surge.currentPrice; lastFrame = -1;
+        while (index < (trigger < 0 ? MaxClimb : trigger + CrashFrames))
+        {
+            foreach (float wait in Next()) { yield return wait; }
+            if (trigger < 0 && surge.currentPrice > peak) { peak = surge.currentPrice; }
+            // goal 위에서 HoldFrames장(영상 1.2초) 동안 버틴 뒤에 무너뜨린다. 한 장 스치고 지나간 꼬리는 넘긴 것으로 치지 않는다.
+            above = surge.currentPrice >= goal ? above + 1 : 0;
+            if (trigger < 0 && (index >= MinClimb && above >= HoldFrames || index >= MaxClimb - 1)) { trigger = index; low = surge.currentPrice; pool.Cool(surge); }
+            if (trigger >= 0)
+            {
+                int since = index - trigger;
+                if (whale != null && slams < SlamCount && since == slams * SlamEvery) { sold += ManipulationTools.Slam(whale, surge, decimal.Floor(whale.GetHolding(surge) * .25m), .12m, 0m); slams++; }
+                if (surge.currentPrice < low) { low = surge.currentPrice; }
+            }
+            float t = Mathf.Clamp01(index / 120f); t = t * t * (3f - 2f * t);
+            VideoFrame(camera, "b-chart", index, Vector3.Lerp(closePosition + new Vector3(0f, 0f, -.5f), closePosition, t), closeLook, 40f);
+            taken++; index++;
+        }
+        File.WriteAllText(Path.Combine(Folder + "/shots", "video-meta.txt"), "chart_frames=" + index + " crash_at=" + trigger);
+        note.notes.Add("(차트: " + surge.symbol + " " + began.ToString("N0") + " → (기다린 " + waited.ToString("0") + "초 뒤 " + startedAt.ToString("N0") + "에서 찍기 시작) → 고점 " + peak.ToString("N0") + " → 저점 " + low.ToString("N0") + " → 끝 " + surge.currentPrice.ToString("N0") + " · 무리 " + (forced ? "몰림" : "실패") + " · 내려찍기 " + (whale == null ? "세력 없음" : slams + "번, " + sold.ToString("N0") + "주") + " · 무너뜨린 장 " + trigger + " / 전체 " + index + "장)");
+
+        // 3. 채팅방(무너진 직후의 반응): 300장. 4. 차트와 채팅이 함께: 300장. 영상에는 남는 길이만큼만 쓴다.
+        foreach (float wait in Take("c-chat", 300, chatPosition + new Vector3(-.25f, 0f, -.3f), chatPosition, chatLook, chatLook, 44f)) { yield return wait; }
+        foreach (float wait in Take("d-room", 300, anglePosition + new Vector3(-.5f, 0f, 0f), anglePosition + new Vector3(.4f, 0f, 0f), angleLook, angleLook, 42f)) { yield return wait; }
+
+        // 5. 달력: 목요일 → 금요일 → 다음 월요일. 105장.
+        var calendar = WallCalendar.Instance;
+        if (calendar != null && calendar.Pose(out Vector3 center, out Vector3 normal, out float tall))
+        {
+            Vector3 calendarLook = center + Vector3.up * .15f, calendarPosition = center + normal * tall * 1.55f + Vector3.up * .15f;
+            calendar.DayOverride = 4;
+            foreach (float wait in Pass(1.5f)) { yield return wait; }
+            foreach (float wait in Take("e-calendar", 105, calendarPosition + normal * tall * .35f, calendarPosition, calendarLook, calendarLook, 34f, i => { if (i == 12) { calendar.DayOverride = 5; } if (i == 38) { calendar.DayOverride = 6; } })) { yield return wait; }
+            calendar.DayOverride = 0;
+        }
+
+        // 6. 끝: 책상에서 물러난다(제목이 얹힐 자리). 135장.
+        foreach (float wait in Take("f-end", 135, home, home + new Vector3(0f, .3f, -1.8f), deskLook, deskLook, homeFov)) { yield return wait; }
+
+        Time.captureFramerate = 0;
+        note.notes.Add("(동영상: " + taken + "장 · 건너뛴 게임 프레임 " + skipped + ")");
+        findings.Add("videorun2: 찍음");
+    }
+
+    private static IEnumerable<float> SteamRun()
+    {
+        foreach (float wait in Quiet(1f, "상점 이미지용 장면을 찍음")) { yield return wait; }
+        var note = current;
+        var camera = Camera.main; var views = DeskViewController.Instance; var desk = GameObject.Find("desk_body");
+        var manager = StockManager.Instance; var accounts = PlayerAccounts.Instance; var pool = MothPool.Instance;
+        if (camera == null || views == null || desk == null || manager == null || accounts == null || pool == null) { note.notes.Add("(실패: 필요한 것을 찾지 못함)"); yield break; }
+        Vector3 home = camera.transform.position; float homeFov = camera.fieldOfView;
+        Vector3 Center(DeskViewTarget target) { var screen = views.ScreenFor(target); return screen.TransformPoint(screen.rect.center); }
+        Vector3 chart = Center(DeskViewTarget.Chart), chat = Center(DeskViewTarget.Chat);
+        var charts = Object.FindAnyObjectByType<ChartManager>();
+        // 값이 싼 순서로 두 종목: 가장 싼 것은 급등용, 그다음은 전술용.
+        var cheap = new List<Stock>();
+        foreach (var each in manager.stocks) { if (each != null && each.AcceptsOrders && each.currentPrice >= 300m) { cheap.Add(each); } }
+        cheap.Sort((a, b) => a.currentPrice.CompareTo(b.currentPrice));
+        if (cheap.Count < 2) { note.notes.Add("(실패: 종목이 모자람)"); yield break; }
+        Stock surge = cheap[0], tactic = cheap[1];
+        void Seat(string name) { RenderFrom(camera, name, home, chart + Vector3.down * .2f, homeFov); }
+        void ChartClose(string name) { RenderFrom(camera, name, chart + new Vector3(0f, .1f, -3.3f), chart + Vector3.down * .05f, 40f); }
+        void ChartAngle(string name) { RenderFrom(camera, name, chart + new Vector3(-2.3f, .5f, -3.4f), chart + new Vector3(.2f, -.1f, 0f), 42f); }
+        void ChatFront(string name) { RenderFrom(camera, name, chat + new Vector3(-.9f, .1f, -3.6f), chat + new Vector3(-.5f, -.2f, 0f), 44f); }
+        void Profile()
+        {
+            var market = MarketDayController.Instance; int chosen = 0;
+            for (int i = market.MessageCount - 1; i >= 0 && chosen == 0; i--) { var message = market.GetMessage(i); if (message.Social != null && message.BotId > 0) { chosen = message.BotId; } }
+            foreach (var board in Object.FindObjectsByType<TabletGroupChatUI>()) { if (board != null && board.monitorChat && chosen != 0) { board.SelectProfile(chosen); } }
+        }
+
+        // 1. 잔잔한 장: 평소의 책상.
+        manager.SelectStock(manager.stocks.IndexOf(tactic)); if (charts != null) { charts.SetChartPeriod(1); }
+        yield return 3f;
+        Seat("calm-seat"); RenderFrom(camera, "calm-seathigh", home + new Vector3(0f, 1.3f, .9f), chart + Vector3.down * 1.0f, 60f);
+
+        // 2. 세력 전술: 리딩방을 열어 불붙이기를 열고, 둘째 태블릿의 작전 화면을 든 채로 쓴다.
+        bool opened = PlayerProgression.Instance != null && PlayerProgression.Instance.OpenLeadingRooms();
+        TabletAccountUI device = null;
+        foreach (var each in Object.FindObjectsByType<TabletAccountUI>())
+        { if (views.tablets[1] != null && (each.transform.IsChildOf(views.tablets[1].transform) || views.tablets[1].screen != null && each.transform.IsChildOf(views.tablets[1].screen))) { device = each; } }
+        if (device != null)
+        {
+            device.ShowPage(TabletAccountUI.Page.Automation);
+            foreach (var button in device.GetComponentsInChildren<UnityEngine.UI.Button>(true)) { if (button.name == "Button :: Tab Tactics") { button.onClick.Invoke(); break; } }
+        }
+        if (views.tablets[1] != null) { views.FocusTablet(views.tablets[1]); }
+        yield return 3f;
+        decimal before = tactic.currentPrice;
+        Render(camera, "tactic-tablet-before", 3840, 2160);
+        bool lit = PlayerTactics.Instance != null && PlayerTactics.Instance.Ignite(tactic, .7f);
+        yield return 1.5f;
+        Render(camera, "tactic-tablet-after", 3840, 2160);
+        note.notes.Add("(전술: 리딩방 개설 " + opened + " · 작전 화면 " + (device != null) + " · 불붙이기 " + lit + " · " + tactic.symbol + " " + before.ToString("N0") + " → " + tactic.currentPrice.ToString("N0") + " · " + (PlayerTactics.Instance == null ? "" : PlayerTactics.Instance.Notice) + ")");
+        views.ExitView(true);
+        yield return 2.5f;
+        ChartClose("tactic-chart"); ChartAngle("tactic-angle"); Seat("tactic-seat");
+        yield return 12f;
+        Profile(); yield return 1.5f;
+        ChatFront("tactic-chat"); ChartAngle("tactic-angle-later");
+
+        // 3. 급등: 불나방 무리가 가장 싼 종목에 몰린다.
+        manager.SelectStock(manager.stocks.IndexOf(surge)); if (charts != null) { charts.SetChartPeriod(1); }
+        bool forced = pool.Force(surge, 260); decimal began = surge.currentPrice;
+        yield return 28f;
+        Profile(); yield return 1.5f;
+        note.notes.Add("(급등: " + surge.symbol + " " + began.ToString("N0") + " → " + surge.currentPrice.ToString("N0") + (forced ? "" : " (실패)") + ")");
+        Seat("surge-seat"); ChartClose("surge-chartclose"); ChartAngle("surge-chartangle"); ChatFront("surge-chatfront");
+        RenderFrom(camera, "surge-seathigh", home + new Vector3(0f, 1.3f, .9f), chart + Vector3.down * 1.0f, 60f);
+        // 투자자 심리 칸이 크게 보이는 자리(채팅 화면의 아래쪽과 차트의 호가창).
+        RenderFrom(camera, "surge-psych", chat + new Vector3(-1.5f, -1.1f, -2.7f), chat + new Vector3(-.3f, -1.15f, 0f), 42f);
+        RenderFrom(camera, "surge-psych-wide", chat + new Vector3(-2.2f, -.7f, -3.3f), chat + new Vector3(-.7f, -.9f, 0f), 44f);
+        // 세로 구도(세로 캡슐·라이브러리 캡슐): 차트 중심 둘, 방 중심 둘.
+        RenderFrom(camera, "tall-chart", chart + new Vector3(.7f, .4f, -5.4f), chart + new Vector3(.55f, -.75f, 0f), 50f, true);
+        RenderFrom(camera, "tall-chart2", chart + new Vector3(.3f, .9f, -6.0f), chart + new Vector3(.4f, -.9f, 0f), 46f, true);
+        RenderFrom(camera, "tall-room", home + new Vector3(-2.2f, 1.7f, -2.4f), chart + new Vector3(.5f, -.9f, 0f), 56f, true);
+        RenderFrom(camera, "tall-room2", home + new Vector3(2.0f, 1.9f, -2.8f), chart + new Vector3(-.3f, -.9f, 0f), 56f, true);
+
+        // 4. 급락: 몰렸던 무리가 빠져나가며 값이 꺼진다. 꺼질 때까지 기다린다(길어야 3분).
+        decimal peak = surge.currentPrice; double until = EditorApplication.timeSinceStartup + 190;
+        while (EditorApplication.timeSinceStartup < until && surge.currentPrice > peak * .80m) { if (surge.currentPrice > peak) { peak = surge.currentPrice; } yield return 2f; }
+        yield return 6f;
+        Profile(); yield return 1.5f;
+        note.notes.Add("(급락: " + surge.symbol + " 고점 " + peak.ToString("N0") + " → " + surge.currentPrice.ToString("N0") + ")");
+        ChartClose("crash-chartclose"); ChartAngle("crash-chartangle"); ChatFront("crash-chatfront"); Seat("crash-seat");
+        RenderFrom(camera, "crash-psych", chat + new Vector3(-1.5f, -1.1f, -2.7f), chat + new Vector3(-.3f, -1.15f, 0f), 42f);
+        findings.Add("steamrun: 찍음");
+    }
+    private static IEnumerable<float> Scenes()
+    {
+        foreach (float wait in Quiet(1f, "방과 책상을 여러 각도에서 찍음")) { yield return wait; }
+        var camera = Camera.main; var views = DeskViewController.Instance; var desk = GameObject.Find("desk_body");
+        if (camera == null || views == null || desk == null) { current.notes.Add("(실패: 카메라·책상을 찾지 못함)"); yield break; }
+        var box = desk.GetComponent<Renderer>().bounds;
+        Vector3 home = camera.transform.position; Quaternion homeRotation = camera.transform.rotation; float homeFov = camera.fieldOfView;
+        Vector3 Center(DeskViewTarget target) { var screen = views.ScreenFor(target); return screen == null ? box.center + Vector3.up * 3f : screen.TransformPoint(screen.rect.center); }
+        Vector3 chart = Center(DeskViewTarget.Chart), chat = Center(DeskViewTarget.Chat), stocks = Center(DeskViewTarget.Stocks);
+        float top = box.max.y;
+        var calendar = WallCalendar.Instance; Vector3 wall = chart + Vector3.left * 5f;
+        if (calendar != null) { calendar.DayOverride = 9; calendar.Pose(out wall, out _, out _); }
+        // 채팅 화면에서 방금 말한 투자자 하나를 골라 둔다(그 사람의 신뢰·심리가 아래 칸에 뜬다).
+        var market = MarketDayController.Instance; int chosen = 0;
+        for (int i = market.MessageCount - 1; i >= 0 && chosen == 0; i--) { var message = market.GetMessage(i); if (message.Social != null && message.BotId > 0) { chosen = message.BotId; } }
+        foreach (var board in Object.FindObjectsByType<TabletGroupChatUI>()) { if (board != null && board.monitorChat && chosen != 0) { board.SelectProfile(chosen); } }
+        yield return 2f;
+        current.notes.Add("(자리 " + home.ToString("0.0") + " · 책상 " + box.min.ToString("0.0") + "~" + box.max.ToString("0.0") + " · 가운데 화면 " + chart.ToString("0.0") + " · 채팅 " + chat.ToString("0.0") + " · 종목 " + stocks.ToString("0.0") + " · 달력 " + wall.ToString("0.0") + ")");
+        var shots = new (string name, Vector3 position, Vector3 look, float fov)[]
+        {
+            ("seat", home, chart + Vector3.down * .2f, homeFov),
+            ("chartclose", chart + new Vector3(0f, .1f, -3.3f), chart + Vector3.down * .05f, 40f),
+            ("seathigh", home + new Vector3(0f, 1.3f, .9f), chart + Vector3.down * 1.0f, 60f),
+            ("chatfront", chat + new Vector3(-.9f, .1f, -3.6f), chat + new Vector3(-.5f, -.2f, 0f), 44f),
+            ("chartangle", chart + new Vector3(-2.3f, .5f, -3.4f), chart + new Vector3(.2f, -.1f, 0f), 42f),
+            ("wide", home + new Vector3(0f, 1.0f, -3.6f), chart + Vector3.down * .6f, 52f),
+            ("left", chart + new Vector3(-6.2f, .9f, -5.6f), chart + new Vector3(.6f, -.3f, 0f), 46f),
+            ("right", chart + new Vector3(6.0f, .7f, -5.2f), chart + new Vector3(-.6f, -.3f, 0f), 46f),
+            ("low", new Vector3(box.center.x - 2.9f, top + .7f, box.min.z - .4f), chat + Vector3.down * .9f, 40f),
+            ("lowleft", new Vector3(box.center.x + 3.0f, top + .8f, box.min.z - .3f), stocks + Vector3.down * .8f, 40f),
+            ("tablets", new Vector3(box.center.x, top + 3.4f, box.min.z - .9f), new Vector3(box.center.x, top, box.center.z - .2f), 44f),
+            ("clock", chart + new Vector3(0f, 1.2f, -3.6f), chart + new Vector3(0f, 1.5f, 0f), 36f),
+            ("chatside", chat + new Vector3(-2.6f, .3f, -3.2f), chat, 40f),
+            ("stockside", stocks + new Vector3(2.6f, .3f, -3.2f), stocks, 40f),
+            ("calendar", home + new Vector3(1.6f, .3f, -1.2f), Vector3.Lerp(wall, chart, .28f), 58f),
+            ("room", new Vector3(box.center.x - 1.2f, home.y + 1.0f, box.min.z - .2f), home + new Vector3(1.5f, -1.6f, -7f), 66f),
+        };
+        const int width = 3840, height = 2160;
+        var texture = new RenderTexture(width, height, 24); var pixels = new Texture2D(width, height, TextureFormat.RGB24, false);
+        Directory.CreateDirectory(Folder + "/shots");
+        foreach (var shot in shots)
+        {
+            camera.transform.position = shot.position; camera.transform.rotation = Quaternion.LookRotation(shot.look - shot.position, Vector3.up); camera.fieldOfView = shot.fov;
+            var previous = RenderTexture.active; var old = camera.targetTexture;
+            camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
+            pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+            File.WriteAllBytes(Path.Combine(Folder + "/shots", "scene-" + shot.name + ".png"), pixels.EncodeToPNG());
+            camera.targetTexture = old; RenderTexture.active = previous;
+            camera.transform.SetPositionAndRotation(home, homeRotation); camera.fieldOfView = homeFov;
+            yield return .3f;
+        }
+        Object.DestroyImmediate(pixels); texture.Release(); Object.DestroyImmediate(texture);
+        // 세로 구도(세로 캡슐·라이브러리 캡슐의 바탕). 2160x3240.
+        var tall = new (string name, Vector3 position, Vector3 look, float fov)[]
+        {
+            ("tall-center", home + new Vector3(0f, .5f, 2.0f), chart + Vector3.down * .55f, 62f),
+            ("tall-high", home + new Vector3(0f, 1.6f, 1.2f), chart + Vector3.down * 1.1f, 60f),
+            ("tall-angle", chart + new Vector3(-2.7f, 1.0f, -4.4f), chart + new Vector3(.9f, -.6f, 0f), 56f),
+            ("tall-right", chart + new Vector3(2.7f, 1.0f, -4.4f), chart + new Vector3(-.9f, -.6f, 0f), 56f),
+        };
+        const int tallWidth = 2160, tallHeight = 3240;
+        var tallTexture = new RenderTexture(tallWidth, tallHeight, 24); var tallPixels = new Texture2D(tallWidth, tallHeight, TextureFormat.RGB24, false);
+        foreach (var shot in tall)
+        {
+            camera.transform.position = shot.position; camera.transform.rotation = Quaternion.LookRotation(shot.look - shot.position, Vector3.up); camera.fieldOfView = shot.fov;
+            var previous = RenderTexture.active; var old = camera.targetTexture;
+            camera.targetTexture = tallTexture; camera.Render(); RenderTexture.active = tallTexture;
+            tallPixels.ReadPixels(new Rect(0, 0, tallWidth, tallHeight), 0, 0); tallPixels.Apply();
+            File.WriteAllBytes(Path.Combine(Folder + "/shots", "scene-" + shot.name + ".png"), tallPixels.EncodeToPNG());
+            camera.targetTexture = old; RenderTexture.active = previous;
+            camera.transform.SetPositionAndRotation(home, homeRotation); camera.fieldOfView = homeFov;
+            yield return .3f;
+        }
+        Object.DestroyImmediate(tallPixels); tallTexture.Release(); Object.DestroyImmediate(tallTexture);
+        if (calendar != null) { calendar.DayOverride = 0; }
+        findings.Add("scenes: " + (shots.Length + tall.Length) + "장 찍음");
+    }
+    private static IEnumerable<float> CalendarShot(string name, int day)
+    {
+        var calendar = WallCalendar.Instance; var camera = Camera.main;
+        foreach (float wait in Quiet(1f, "벽 달력을 " + (day > 0 ? day + "일인 것처럼 " : "") + "찍음")) { yield return wait; }
+        if (calendar == null || camera == null) { current.notes.Add("(실패: 달력이나 카메라가 없음)"); yield break; }
+        // 날짜를 하루씩 넘겨서 선이 그어지는 과정도 거치게 한다.
+        if (day > 0) { for (int step = Mathf.Max(1, day - 2); step <= day; step++) { calendar.DayOverride = step; yield return 1.6f; } }
+        yield return 1f;
+        if (!calendar.Pose(out Vector3 center, out Vector3 normal, out float tall)) { current.notes.Add("(실패: 달력이 아직 만들어지지 않음)"); calendar.DayOverride = 0; yield break; }
+        current.notes.Add("(달력 자리 " + center.ToString("0.00") + ", 카메라 자리 " + camera.transform.position.ToString("0.00") + ")");
+        Vector3 position = camera.transform.position; Quaternion rotation = camera.transform.rotation; float fov = camera.fieldOfView;
+        try
+        {
+            // 한 장은 정면에서 가까이, 한 장은 앉은 자리에서 고개를 돌려 본 모습.
+            for (int view = 0; view < 2; view++)
+            {
+                if (view == 0) { camera.transform.position = center + normal * tall * 2.1f; camera.transform.rotation = Quaternion.LookRotation(center - camera.transform.position, Vector3.up); camera.fieldOfView = 30f; }
+                else { camera.transform.position = position; camera.transform.rotation = Quaternion.LookRotation(center - position, Vector3.up); camera.fieldOfView = 55f; }
+                const int width = 1100, height = 1100;
+                var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
+                camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
+                var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+                Directory.CreateDirectory(Folder + "/shots");
+                File.WriteAllBytes(Path.Combine(Folder + "/shots", name + (view == 0 ? "" : "-seat") + ".png"), pixels.EncodeToPNG());
+                camera.targetTexture = old; RenderTexture.active = previous; Object.DestroyImmediate(pixels); texture.Release(); Object.DestroyImmediate(texture);
+            }
+            findings.Add("calshot " + name + ": 찍음");
+        }
+        catch (Exception error) { findings.Add("calshot " + name + ": 실패 " + error.Message); }
+        camera.transform.SetPositionAndRotation(position, rotation); camera.fieldOfView = fov;
+        calendar.DayOverride = 0;
+    }
+    private static IEnumerable<float> StockShot(string name)
+    {
+        foreach (float wait in Quiet(1f, "종목 화면을 찍으려고 두 계좌로 조금씩 삼")) { yield return wait; }
+        var accounts = PlayerAccounts.Instance; var stocks = new List<Stock>();
+        foreach (var stock in StockManager.Instance.stocks) { if (stock != null && stock.AcceptsOrders && stock.currentPrice > 0m) { stocks.Add(stock); } }
+        if (accounts == null || accounts.primary == null || stocks.Count < 3) { current.notes.Add("(실패: 계좌나 종목이 없음)"); yield break; }
+        accounts.primary.cash += 300000000m; accounts.EvaluateUnlock();
+        if (accounts.automated != null) { accounts.automated.cash += 50000000m; }
+        // 첫 종목은 1번 계좌만, 둘째는 두 계좌 모두, 셋째는 2번 계좌만.
+        void Buy(Trader trader, Stock stock)
+        {
+            if (trader == null) { return; }
+            decimal price = PriceTickPolicy.CeilToTick(stock.currentPrice * 1.03m);
+            trader.BuyLimit(price, Math.Max(1m, decimal.Floor(2000000m / price)), 0, stock);
+        }
+        Buy(accounts.primary, stocks[0]); Buy(accounts.primary, stocks[1]);
+        if (accounts.AutomatedUnlocked) { Buy(accounts.automated, stocks[1]); Buy(accounts.automated, stocks[2]); }
+        yield return 12f;
+        current.notes.Add("(2번 계좌 " + (accounts.AutomatedUnlocked ? "열림" : "잠김") + " · 1번 보유: " + stocks[0].symbol + " " + accounts.primary.GetOwnedVolume(stocks[0]) + ", " + stocks[1].symbol + " " + accounts.primary.GetOwnedVolume(stocks[1]) +
+            (accounts.automated == null ? "" : " · 2번 보유: " + stocks[1].symbol + " " + accounts.automated.GetOwnedVolume(stocks[1]) + ", " + stocks[2].symbol + " " + accounts.automated.GetOwnedVolume(stocks[2])) + ")");
+        var views = DeskViewController.Instance; var screen = views == null ? null : views.ScreenFor(DeskViewTarget.Stocks);
+        var camera = Camera.main;
+        if (screen == null || camera == null) { current.notes.Add("(실패: 종목 화면이나 카메라를 찾지 못함)"); yield break; }
+        Canvas.ForceUpdateCanvases();
+        yield return 1f;
+        try
+        {
+            var area = screen.rect;
+            Vector3 position = camera.transform.position; Quaternion rotation = camera.transform.rotation; float fov = camera.fieldOfView;
+            Vector3 forward = -screen.forward, center = screen.TransformPoint(area.center);
+            float worldHeight = Vector3.Distance(screen.TransformPoint(new Vector3(0, area.yMin, 0)), screen.TransformPoint(new Vector3(0, area.yMax, 0)));
+            camera.transform.position = center + forward * worldHeight * 2.2f; camera.transform.rotation = Quaternion.LookRotation(center - camera.transform.position, screen.up); camera.fieldOfView = 27f;
+            int height = 1400, width = Mathf.Clamp(Mathf.RoundToInt(height * area.width / Mathf.Max(1f, area.height)), 600, 2600);
+            var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
+            camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
+            var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
+            Directory.CreateDirectory(Folder + "/shots");
+            File.WriteAllBytes(Path.Combine(Folder + "/shots", name + ".png"), pixels.EncodeToPNG());
+            camera.targetTexture = old; RenderTexture.active = previous; Object.DestroyImmediate(pixels); texture.Release(); Object.DestroyImmediate(texture);
+            camera.transform.SetPositionAndRotation(position, rotation); camera.fieldOfView = fov;
+            findings.Add("stockshot " + name + ": 찍음 (" + width + "x" + height + ")");
+        }
+        catch (Exception error) { findings.Add("stockshot " + name + ": 실패 " + error.Message); }
+    }
     private static void Finish(Exception error)
     {
-        TradeBot.AnchorPsychology = true;
+        TradeBot.AnchorPsychology = true; InvestorSociety.ForcedMarketMood = null;
         if (restoreLanguage != null) { try { GameLocale.SetLanguage(restoreLanguage); } catch (Exception) { } restoreLanguage = null; }
         if (FrameSpikes.Running)
         {

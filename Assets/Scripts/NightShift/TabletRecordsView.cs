@@ -119,7 +119,7 @@ public sealed class TabletRecordsView : MonoBehaviour
         if (owner == null || Time.unscaledTime < next) { return; }
         next = Time.unscaledTime + .3f;
         int current = owner.events.records.Version + owner.orders.session.Version;
-        int today = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.CalendarDay;
+        int today = MarketDayController.Instance == null ? 0 : MarketDayController.Instance.CalendarDate;
         if (current == version && locale == GameLocale.Revision && day == today) { return; }
         version = current; locale = GameLocale.Revision; day = today;
         Refresh(today);

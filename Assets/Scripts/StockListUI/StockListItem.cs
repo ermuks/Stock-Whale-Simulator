@@ -167,6 +167,7 @@ public class StockListItem : MonoBehaviour
 
         Arrange();
 
+        if (_stock != stock) { ListenTrades(stock); }
         _stock = stock;
         if (icon != null && iconSymbol != stock.symbol)
         {
@@ -191,8 +192,9 @@ public class StockListItem : MonoBehaviour
             DeviceTerminalUI.Set(textPrice,PriceTickPolicy.FormatPrice(stock.currentPrice));
         }
 
-        if (!stock.IsListed) { ApplyWaiting(); return; }
+        if (!stock.IsListed) { ApplyAccounts(null); ApplyWaiting(); return; }
         ApplyRiskBadge(stock);
+        ApplyAccounts(stock);
         ApplyHalt(stock.IsTradingHalted);
         LayoutBadge();
         bool nextSelected = StockManager.Instance != null && StockManager.Instance.CurrentStock == stock;
@@ -290,14 +292,72 @@ public class StockListItem : MonoBehaviour
         badgeLayoutDirty = false; badgeLayoutWidth = width; badgeLayoutLocale = GameLocale.Revision;
         // 꼬리표는 글자 길이만큼만(짧게).
         float badgeWidth = Mathf.Clamp(textRisk.GetPreferredValues(textRisk.text).x + 26f,64f,248f);
+        // 보유 계좌 꼬리표가 차지할 폭(켜져 있는 것만).
+        float accountsWidth = 0f;
+        for (int i = 0; i < AccountCount; i++)
+        {
+            if (accountLabels[i] == null || !accountLabels[i].gameObject.activeSelf) { accountWidths[i] = 0f; continue; }
+            accountWidths[i] = Mathf.Clamp(accountLabels[i].GetPreferredValues(accountLabels[i].text).x + 26f, 64f, 200f);
+            accountsWidth += accountWidths[i] + AccountGap;
+        }
         // 흐름 선의 자리(FlowWidth + 여백)만큼 이름이 쓸 수 있는 폭을 줄인다.
-        float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - 16f - textName.rectTransform.anchoredPosition.x - FlowWidth - FlowGap * 2f,120f,650f);
+        float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - accountsWidth - 16f - textName.rectTransform.anchoredPosition.x - FlowWidth - FlowGap * 2f,120f,650f);
         textName.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,nameWidth);
         float x = textName.rectTransform.anchoredPosition.x + Mathf.Min(nameWidth,textName.GetPreferredValues(textName.text).x) + 16f;
         var position = riskBadgeBackground.rectTransform.anchoredPosition; position.x = x;
         riskBadgeBackground.rectTransform.anchoredPosition = position; textRisk.rectTransform.anchoredPosition = position;
         riskBadgeBackground.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,badgeWidth);
         textRisk.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,badgeWidth);
+        // 보유 계좌 꼬리표는 위험 꼬리표 바로 오른쪽에 차례로 놓는다.
+        float next = x + badgeWidth + AccountGap;
+        for (int i = 0; i < AccountCount; i++)
+        {
+            if (accountWidths[i] <= 0f) { continue; }
+            var spot = new Vector2(next, position.y);
+            accountChips[i].rectTransform.anchoredPosition = spot; accountLabels[i].rectTransform.anchoredPosition = spot;
+            accountChips[i].rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, accountWidths[i]);
+            accountLabels[i].rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, accountWidths[i]);
+            next += accountWidths[i] + AccountGap;
+        }
+    }
+
+    // ── 보유 계좌 ──
+    // 내가 이 종목을 들고 있는 계좌를 이름 옆에 작은 꼬리표 하나로 보인다(계좌1, 계좌2, 둘 다면 계좌1·2). 들고 있지 않으면 아무것도 없다.
+    // 꼬리표는 위험 꼬리표를 본떠 만든다(크기·글꼴이 같다). 2번 계좌는 열려 있을 때만 본다.
+    // 두 계좌를 꼬리표 두 개로 따로 보였을 때는 긴 종목 이름이 잘리고 흐름 선과 겹쳤다. 그래서 하나로 묶는다.
+    private const int AccountCount = 1;
+    private const float AccountGap = 10f;
+    // 1번만: 청록, 2번만: 호박색, 둘 다: 밝은 회색.
+    private static readonly Color32[] AccountInk = { new(46, 230, 208, 255), new(236, 180, 90, 255), new(214, 222, 230, 255) };
+    private readonly Image[] accountChips = new Image[AccountCount];
+    private readonly TextMeshProUGUI[] accountLabels = new TextMeshProUGUI[AccountCount];
+    private readonly float[] accountWidths = new float[AccountCount];
+    private int accountMask, accountLocale = -1;
+    private void ApplyAccounts(Stock stock)
+    {
+        var accounts = PlayerAccounts.Instance;
+        int mask = 0;
+        if (stock != null && accounts != null && accounts.Ready)
+        {
+            if (accounts.primary != null && accounts.primary.GetOwnedVolume(stock) > 0m) { mask |= 1; }
+            if (accounts.AutomatedUnlocked && accounts.automated != null && accounts.automated.GetOwnedVolume(stock) > 0m) { mask |= 2; }
+        }
+        if (mask == accountMask && accountLocale == GameLocale.Revision) { return; }
+        accountMask = mask; accountLocale = GameLocale.Revision; badgeLayoutDirty = true;
+        if (textRisk == null || riskBadgeBackground == null) { return; }
+        bool shown = mask != 0;
+        if (accountChips[0] == null)
+        {
+            if (!shown) { return; }
+            accountChips[0] = Instantiate(riskBadgeBackground, transform); accountChips[0].name = "Image :: Held Accounts";
+            accountLabels[0] = Instantiate(textRisk, transform); accountLabels[0].name = "Text :: Held Accounts";
+            accountChips[0].raycastTarget = false; accountLabels[0].raycastTarget = false;
+        }
+        if (accountChips[0].gameObject.activeSelf != shown) { accountChips[0].gameObject.SetActive(shown); accountLabels[0].gameObject.SetActive(shown); }
+        if (!shown) { return; }
+        string code = GameLocale.Code, word = code == "ja" ? "口座" : code == "en" ? "Acct " : "계좌";
+        GameLocalizedText.Set(accountLabels[0], word + (mask == 3 ? "1·2" : mask == 2 ? "2" : "1"), true);
+        Color ink = AccountInk[mask - 1]; accountLabels[0].color = ink; ink.a = .14f; accountChips[0].color = ink;
     }
 
     /// <summary>거래량 표기: 0~9,999 → #,##0 / 10,000~999,999 → k / 1,000,000~ → M</summary>
@@ -329,6 +389,47 @@ public class StockListItem : MonoBehaviour
 
     // 거래정지: 행 전체를 붉게 덮고 왼쪽에 붉은 띠를 세운다. 이름·가격도 붉게 흐려서 주문할 수 없는 종목임이 한눈에 보이게 한다.
     private static readonly Color32 HaltInk = new(236, 96, 104, 255), HaltDim = new(196, 124, 128, 255);
+    // ── 체결 깜빡임 ──
+    // 이 종목에서 체결이 날 때마다 줄 전체가 잠깐(0.6초) 물든다. 거래가 몰리는 종목은 쉴 새 없이 깜빡여서 목록에서 바로 눈에 띈다.
+    // 색은 "누가 쳤는가"를 따른다: 걸려 있던 매수 주문이 체결됐으면 누군가 팔아 치운 것이므로 매도색, 걸려 있던 매도 주문이 체결됐으면 누군가 사 간 것이므로 매수색.
+    private const float TradeFlashSeconds = .6f, TradeFlashAlpha = .02f;
+    private Image tradeFlash;
+    private Stock listened;
+    private float flashUntil = -1f;
+    private void ListenTrades(Stock stock)
+    {
+        if (listened != null) { listened.OnMatchedTrade -= FlashTrade; }
+        listened = isActiveAndEnabled ? stock : null;
+        if (listened != null) { listened.OnMatchedTrade += FlashTrade; }
+        if (tradeFlash != null) { tradeFlash.enabled = false; }
+        flashUntil = -1f;
+    }
+    private void FlashTrade(Stock stock, decimal price, decimal volume, IOrderOwner buyer, IOrderOwner seller, Order resting)
+    {
+        if (resting == null || volume <= 0m)
+        { return; }
+        if (tradeFlash == null)
+        {
+            tradeFlash = HaltImage("Image :: Trade Flash", Color.clear);
+            tradeFlash.rectTransform.anchorMin = Vector2.zero; tradeFlash.rectTransform.anchorMax = Vector2.one;
+            // 바탕 그림 바로 위, 글자와 캔들 아래에 둔다.
+            tradeFlash.transform.SetSiblingIndex(rowBackground != null && rowBackground.transform.parent == transform ? rowBackground.transform.GetSiblingIndex() + 1 : 0);
+        }
+        Color tone = resting.isBuy ? Down : Up; tone.a = TradeFlashAlpha;
+        tradeFlash.color = tone; tradeFlash.enabled = true;
+        flashUntil = Time.unscaledTime + TradeFlashSeconds;
+    }
+    void Update()
+    {
+        if (flashUntil >= 0f && Time.unscaledTime >= flashUntil)
+        {
+            flashUntil = -1f;
+            if (tradeFlash != null) { tradeFlash.enabled = false; }
+        }
+    }
+    void OnEnable() { if (_stock != null && listened == null) { ListenTrades(_stock); } }
+    void OnDisable() { ListenTrades(null); }
+
     private Image haltTint, haltBar;
     private bool haltShown;
     private Color nameColor, priceColor, symbolColor;

@@ -1,11 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-/// <summary>장치 다섯 개의 반투명 원을 하나의 UI 메시로 그린다. 입력을 가로채지 않는다.</summary>
+/// <summary>장치 다섯 개와 서랍의 반투명 원을 하나의 UI 메시로 그린다. 입력을 가로채지 않는다.</summary>
 public sealed class DeskInteractionMarkers : MaskableGraphic
 {
-    private readonly Vector2[] points = new Vector2[5];
-    private readonly bool[] visible = new bool[5];
+    /// <summary>원의 수: 장치 다섯 개(DeskViewTarget의 차례) 다음에 서랍.</summary>
+    public const int Count = 6;
+    public const int Drawer = 5;
+    private readonly Vector2[] points = new Vector2[Count];
+    private readonly bool[] visible = new bool[Count];
     private int hovered = -1;
     private bool showAim;
     private Vector2 aim;

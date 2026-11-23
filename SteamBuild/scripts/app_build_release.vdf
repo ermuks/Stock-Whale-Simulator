@@ -1,0 +1,24 @@
+"AppBuild"
+{
+	"AppID" "5656650"
+	"Desc" "Stock Whale Simulator"
+	"Preview" "0"
+	"SetLive" ""
+	"ContentRoot" "..\Release\"
+	"BuildOutput" "..\output\"
+	"Depots"
+	{
+		"5656651"
+		{
+			"FileMapping"
+			{
+				"LocalPath" "*"
+				"DepotPath" "."
+				"Recursive" "1"
+			}
+			"FileExclusion" "*_DoNotShip*"
+			"FileExclusion" "*.pdb"
+			"FileExclusion" "steam_appid.txt"
+		}
+	}
+}

@@ -153,6 +153,14 @@ public sealed class MothPool : MonoBehaviour
         return true;
     }
 
+    /// <summary>검증용: 이 종목에 몰린 무리의 열기를 식힌다. 거래가 잦아들었을 때와 같은 상태가 되어, 더 들어오지 않고 평소 방식대로 빠져나간다.</summary>
+    public bool Cool(Stock stock)
+    {
+        if (stock == null || !rallies.TryGetValue(stock, out var rally)) { return false; }
+        rally.cooling = true;
+        return true;
+    }
+
     private Rally Begin(Stock stock, bool up, int wanted, float now)
     {
         var rally = new Rally { stock = stock, up = up, wanted = wanted, startedAt = now, windowAt = now, deployAt = now, startPrice = stock.currentPrice, peakPrice = stock.currentPrice };

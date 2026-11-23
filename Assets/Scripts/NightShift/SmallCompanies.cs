@@ -147,6 +147,7 @@ public sealed partial class CorporateEconomy
         SmallResult = Local(shares.ToString("N0") + "주 인수 · " + cost.ToString("N0") + "돈 · 지분 " + ratio.ToString("0.#") + "%",
             "Bought " + shares.ToString("N0") + " shares · " + cost.ToString("N0") + " DON · stake " + ratio.ToString("0.#") + "%",
             shares.ToString("N0") + "株を取得 · " + cost.ToString("N0") + "ドン · 持ち株 " + ratio.ToString("0.#") + "%");
+        SteamAchievements.Unlock(SteamAchievements.SmallCompany);
         return true;
     }
 

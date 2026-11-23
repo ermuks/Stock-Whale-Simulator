@@ -50,7 +50,11 @@ public sealed class ScreenGlow : MonoBehaviour
         holder.transform.SetPositionAndRotation(center + toward * width * .18f, Quaternion.LookRotation(toward, screen.up));
         var light = holder.AddComponent<Light>();
         light.type = LightType.Point;
-        light.range = width * RangeWidths; light.shadows = LightShadows.None; light.color = Cool;
+        light.range = width * RangeWidths; light.color = Cool;
+        // 모니터 세 대의 빛은 그림자를 드리운다. 책상 위 물건들이 플레이어 쪽으로 그림자를 끌어 책상에 놓인 것처럼 보인다.
+        // 태블릿 빛은 약하고 책상에 붙어 있어 켜지 않는다(빛 하나마다 그림자를 여섯 방향으로 그려야 한다).
+        if (index < 3) { light.shadows = LightShadows.Soft; light.shadowStrength = 1f; light.shadowBias = .02f; light.shadowNormalBias = .12f; light.shadowNearPlane = .1f; }
+        else { light.shadows = LightShadows.None; }
         // 빛은 거리의 제곱으로 약해진다. 플레이어 자리에서 원하는 밝기가 되도록 화면 크기에 맞춰 세기를 정한다.
         float distance = width * PlayerDistance;
         strength[index] = (index < 3 ? monitorStrength : tabletStrength) * distance * distance;

@@ -16,6 +16,18 @@ public class TabletViewController : MonoBehaviour
     [Tooltip("기존 태블릿 화면 Canvas. 모델 원점 대신 이 영역을 정면에 맞춘다.")]
     public RectTransform screen;
     [Range(.65f, .94f)] public float screenFill = .86f;
+    // 들고 볼 때의 자세. 화면을 정면으로 가득 채우지 않고, 아래쪽에 비스듬히 들어 모니터가 위와 옆으로 보이게 한다.
+    [Tooltip("들었을 때 태블릿 화면이 시야에서 차지하는 비율(screenFill보다 크게는 안 된다)")]
+    [Range(.45f, .94f)] public float heldFill = .68f;
+    [Tooltip("위쪽이 뒤로 넘어가는 각도(도). 손에 들고 내려다보는 느낌")]
+    [Range(0f, 40f)] public float heldPitch = 15f;
+    [Tooltip("안쪽으로 트는 각도(도). 책상 왼쪽 태블릿은 왼쪽에, 오른쪽 태블릿은 오른쪽에 들린다")]
+    [Range(0f, 30f)] public float heldYaw = 9f;
+    [Tooltip("아래로 내리는 정도(1이면 아래 끝이 시야 아래 끝에 닿는다)")]
+    [Range(0f, 1f)] public float heldDrop = .9f;
+    [Tooltip("옆으로 치우치는 정도(1이면 옆 끝이 시야 옆 끝에 닿는다)")]
+    [Range(0f, 1f)] public float heldAside = .7f;
+    private float _side = 1f;
     [Tooltip("Raycast 대상. 비어 있으면 'Tablet' 레이어")]
     public LayerMask tabletLayerMask;
     public KeyCode focusKey = KeyCode.Alpha1;
@@ -107,7 +119,7 @@ public class TabletViewController : MonoBehaviour
             { UpdateHoldPosition(); }
             return;
         }
-        if (MouseCameraController.TextEntryActive || PhoneCallController.IsRaised || IsTabletHeld && !_isHeld)
+        if (MouseCameraController.TextEntryActive || MouseCameraController.TextEntryEscape || PhoneCallController.IsRaised || IsTabletHeld && !_isHeld)
         { return; }
 
         if (Input.GetKeyDown(focusKey))
@@ -168,6 +180,8 @@ public class TabletViewController : MonoBehaviour
         _originalScale = tabletObject.localScale;
         tabletObject.SetParent(viewCamera.transform, true);
         _heldScale = tabletObject.localScale;
+        // 책상에서 어느 쪽에 놓여 있었는지: 그쪽으로 치우쳐 든다.
+        _side = tabletObject.localPosition.x < 0f ? -1f : 1f;
         CacheScreenGeometry();
         RefreshFramedPose();
         _holdStartPosition = tabletObject.localPosition; _holdStartRotation = tabletObject.localRotation; _holdStartScale = tabletObject.localScale;
@@ -215,10 +229,15 @@ public class TabletViewController : MonoBehaviour
             return;
         }
         float depth = Mathf.Max(viewCamera.nearClipPlane + .3f, holdLocalPosition.z);
-        float fit = depth / DeskViewFraming.Distance(_screenWidth, _screenHeight, _lastFov, _lastAspect, screenFill);
+        float fill = Mathf.Min(screenFill, heldFill);
+        float fit = depth / DeskViewFraming.Distance(_screenWidth, _screenHeight, _lastFov, _lastAspect, fill);
         _targetScale = _heldScale * fit;
-        _targetRotation = Quaternion.Inverse(_screenRotation);
-        _targetPosition = new Vector3(0f, 0f, depth) - _targetRotation * Vector3.Scale(_screenCenter, _targetScale);
+        // 위쪽을 뒤로 넘기고(+X), 놓여 있던 쪽에서 안쪽을 보도록 살짝 튼다.
+        _targetRotation = Quaternion.Euler(heldPitch, _side * heldYaw, 0f) * Quaternion.Inverse(_screenRotation);
+        // 시야의 절반 크기(이 깊이에서)와 태블릿 화면의 절반 크기로, 아래와 옆에 남는 틈을 구해 그만큼 옮긴다.
+        float halfHeight = depth * Mathf.Tan(_lastFov * .5f * Mathf.Deg2Rad), halfWidth = halfHeight * _lastAspect;
+        float down = Mathf.Max(0f, halfHeight - _screenHeight * fit * .5f) * heldDrop, aside = Mathf.Max(0f, halfWidth - _screenWidth * fit * .5f) * heldAside;
+        _targetPosition = new Vector3(_side * aside, -down, depth) - _targetRotation * Vector3.Scale(_screenCenter, _targetScale);
     }
 
     void ApplyMouseWheelToScroll()

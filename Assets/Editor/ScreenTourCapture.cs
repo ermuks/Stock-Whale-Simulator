@@ -213,6 +213,8 @@ public static class ScreenTourCapture
         Directory.CreateDirectory(Folder); report.Clear(); errors.Clear();
         if (File.Exists(Folder + "/report.txt")) { File.Delete(Folder + "/report.txt"); }
         var scene = EditorSceneManager.GetActiveScene();
+        // 창 없이 돌 때(배치)는 열려 있는 씬이 없다. 그때만 게임 씬을 직접 연다(저장하지는 않는다).
+        if (Application.isBatchMode && scene.path != ScenePath) { scene = EditorSceneManager.OpenScene(ScenePath); }
         string refusal = EditorApplication.isPlayingOrWillChangePlaymode ? "play mode is already running" : EditorApplication.isCompiling ? "scripts are compiling" :
             scene.path != ScenePath ? "active scene is " + scene.path : scene.isDirty ? "the scene has unsaved changes" : null;
         if (refusal != null) { File.WriteAllText(Path.Combine(Folder, "report.txt"), "REFUSED: " + refusal + "\n"); return; }

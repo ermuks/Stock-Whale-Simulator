@@ -276,24 +276,15 @@ public partial class WhaleBot
         bool buying = order.Kind == WhaleOperationKind.JoinBid || order.Kind == WhaleOperationKind.TakeAsk || order.Kind == WhaleOperationKind.LiftAsk;
         // 오래 걸려 있는 주문은 거둔다. 한 가격에 벽이 쌓이지 않게 한다.
         CancelOperationOrders(stock, true, !buying, buying ? StaleBuySeconds : StaleSellSeconds);
-        decimal left = order.Quantity, handPrice = 0m;
+        decimal left = order.Quantity;
+        // 물량을 넘길 때(올리는 중에 따라붙는 매수에게, 고점에서, 접을 때)는 한 값에 덩어리로 내놓지 않는다.
+        // 현재가 바로 위부터 여러 호가에 아주 잘게 나눠 건다. 매수세가 받아 가며 값이 오르면 다음 차례에 그 위로 다시 깔린다.
+        if (order.Kind == WhaleOperationKind.JoinAsk) { LayAskLadder(stock, left, operation.SellFloor); return; }
         // 한 주문에 낼 수 있는 수량에는 한도가 있다. 큰 수량은 몇 번에 나눠 낸다.
         for (int i = 0; i < OrdersPerStep && left >= 1m; i++)
         {
             decimal bid = Best(stock, true), ask = Best(stock, false), tick = PriceTickPolicy.GetTickSize(stock.currentPrice);
             decimal price, level = 0m;
-            // 고점에서 넘길 때: 매도 호가 바로 안쪽(호가 사이가 벌어져 있으면 한 칸 아래)에 여러 덩어리를 같은 값으로 내놓는다.
-            if (order.Kind == WhaleOperationKind.JoinAsk && operation.Dumping)
-            {
-                // 값이 내려가 버려 위에 남은 내 매도는 거둔다(주식이 거기 묶여 있으면 더 팔 수 없다).
-                if (i == 0) { CancelOperationOrders(stock, false, true, 4f); }
-                if (i == 0) { handPrice = ask <= 0m ? PriceTickPolicy.CeilToTick(stock.currentPrice + tick) : bid > 0m && ask - bid > tick ? ask - tick : ask; }
-                if (handPrice < operation.SellFloor) { return; }
-                decimal offer = Math.Min(Math.Min(left, 2500m), GetHolding(stock));
-                if (offer < 1m) { return; }
-                SellLimit(handPrice, offer, 0, stock); left -= offer;
-                continue;
-            }
             switch (order.Kind)
             {
                 case WhaleOperationKind.JoinBid:
@@ -302,15 +293,12 @@ public partial class WhaleBot
                 case WhaleOperationKind.TakeAsk:
                     if (ask <= 0m) { return; }
                     price = ask;
+                    // 받아 갈 값 안쪽에 깔아 둔 내 매도는 먼저 거둔다(내 물량을 내가 사지 않는다). 그 위의 칸들은 그대로 둔다.
+                    if (i == 0) { CancelOwnAsksUpTo(stock, price); }
                     break;
                 case WhaleOperationKind.LiftAsk:
                     price = Math.Max(ask, PriceTickPolicy.CeilToTick(stock.currentPrice * 1.012m));
-                    break;
-                case WhaleOperationKind.JoinAsk:
-                    // 최우선 매도호가에 나란히 선다. 예전에는 한 칸 아래에 댔는데, 사는 사람이 없으면 자기 주문보다 또 한 칸 아래에 대기를 되풀이해서
-                    // 세력 혼자 매도 호가를 계단처럼 끌어내렸다. 이미 그 근처에 내 매도가 걸려 있으면 더 얹지 않고 팔리기를 기다린다.
-                    price = ask <= 0m ? PriceTickPolicy.CeilToTick(stock.currentPrice + tick) : ask;
-                    if (price < operation.SellFloor || OwnAskNear(stock, price)) { return; }
+                    if (i == 0) { CancelOwnAsksUpTo(stock, price); }
                     break;
                 default:
                     // 매수 호가를 받아 칠 때는 그 호가에 실제로 서 있는 수량만큼만 판다. 남는 수량을 더 낮은 값에 걸어 호가를 차례로 무너뜨리지 않는다.
@@ -337,15 +325,53 @@ public partial class WhaleBot
         }
     }
 
-    /// <summary>이 값이나 그 바로 위(1% 안)에 내 매도 주문이 이미 걸려 있는가.</summary>
-    private bool OwnAskNear(Stock stock, decimal price)
+    /// <summary>잘게 쪼갠 매도 사다리의 칸 수와, 한 칸에 거는 수량의 상한.</summary>
+    private const int LadderRungs = 12;
+    private const decimal LadderRungMax = 400m;
+    private static readonly decimal[] ladderPrices = new decimal[LadderRungs];
+    private static readonly bool[] ladderTaken = new bool[LadderRungs];
+    /// <summary>
+    /// quantity주를 현재가 바로 위부터 LadderRungs개의 호가에 잘게 나눠 건다(매도). 이미 내 주문이 걸린 칸은 건너뛰고 빈 칸만 채운다.
+    /// 매수세가 강해 아래 칸이 받아 가지면 값이 오르고, 다음에 부를 때 사다리가 그 위에서 다시 시작한다(위로 올라간다).
+    /// 값이 내려가 사다리 위로 벗어난 내 매도는 거둔다. 주식이 거기 묶여 있으면 아래 칸에 다시 걸 수 없다.
+    /// floor 아래의 칸에는 걸지 않는다. 건 수량을 돌려준다.
+    /// </summary>
+    private decimal LayAskLadder(Stock stock, decimal quantity, decimal floor)
     {
+        if (stock == null || stock.orderBook == null || quantity < 1m) { return 0m; }
+        decimal price = PriceTickPolicy.OneTickAbove(Math.Max(stock.currentPrice, Best(stock, true)));
+        for (int i = 0; i < LadderRungs; i++) { ladderPrices[i] = price; ladderTaken[i] = price < floor; price = PriceTickPolicy.OneTickAbove(price); }
+        decimal top = ladderPrices[LadderRungs - 1];
         stock.orderBook.CopyOwnerOrders(this, ownOrders);
         foreach (var order in ownOrders)
         {
-            if (!order.isBuy && order.price <= price * 1.01m && stock.orderBook.IsActive(order)) { return true; }
+            if (order.isBuy || !stock.orderBook.IsActive(order)) { continue; }
+            if (order.price > top) { stock.orderBook.CancelOrder(order, stock); continue; }
+            for (int i = 0; i < LadderRungs; i++) { if (ladderPrices[i] == order.price) { ladderTaken[i] = true; break; } }
         }
-        return false;
+        int open = 0;
+        for (int i = 0; i < LadderRungs; i++) { if (!ladderTaken[i]) { open++; } }
+        decimal free = Math.Min(decimal.Floor(quantity), decimal.Floor(GetHolding(stock))), laid = 0m;
+        if (open == 0 || free < 1m) { return 0m; }
+        // 칸마다 수량이 조금씩 다르다. 남는 수량이 모자라면 가까운 칸부터 채우고 끝낸다.
+        decimal each = Math.Min(LadderRungMax, Math.Max(1m, decimal.Floor(free / open)));
+        for (int i = 0; i < LadderRungs && free >= 1m; i++)
+        {
+            if (ladderTaken[i]) { continue; }
+            decimal size = Math.Min(free, Math.Max(1m, decimal.Floor(each * (decimal)(.7 + Roll() * .6))));
+            SellLimit(ladderPrices[i], size, 0, stock); free -= size; laid += size;
+        }
+        return laid;
+    }
+    /// <summary>price 이하에 걸린 내 매도 주문을 거둔다.</summary>
+    private void CancelOwnAsksUpTo(Stock stock, decimal price)
+    {
+        if (stock == null || stock.orderBook == null) { return; }
+        stock.orderBook.CopyOwnerOrders(this, ownOrders);
+        foreach (var order in ownOrders)
+        {
+            if (!order.isBuy && order.price <= price && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); }
+        }
     }
     /// <summary>방금 Best로 읽은 최우선 호가에 서 있는 수량.</summary>
     private static decimal BestVolume;

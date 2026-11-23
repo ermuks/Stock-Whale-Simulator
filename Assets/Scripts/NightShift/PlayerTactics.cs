@@ -62,6 +62,7 @@ public sealed class PlayerTactics : MonoBehaviour
         if (account == null || stock == null || !stock.AcceptsOrders || !MarketDayController.CanTrade) { Notice = "거래 불가"; return false; }
         if (account.GetHolding(stock) < 1m) { Notice = "넘길 주식이 없습니다"; return false; }
         WashStock = stock; WashPainted = 0m; WashRounds = 0; washUntil = SessionClock.Time + WashSeconds; washNext = 0f; Notice = "거래량 부풀리기 시작";
+        SteamAchievements.Unlock(SteamAchievements.TacticWash);
         return true;
     }
     public void StopWash() { if (WashStock != null) { WashStock = null; Notice = "거래량 부풀리기 중지"; } }
@@ -75,6 +76,7 @@ public sealed class PlayerTactics : MonoBehaviour
         decimal price = ManipulationTools.PlaceWall(account, stock, Free(account) * (decimal)Mathf.Clamp01(fraction));
         if (price <= 0m) { Notice = "현금 부족"; return false; }
         WallStock = stock; WallPrice = price; wallFraction = fraction; wallNext = SessionClock.Time + 2f; Notice = "매수벽을 세웠습니다";
+        SteamAchievements.Unlock(SteamAchievements.TacticWall);
         return true;
     }
     public void PullWall(bool say = true)
@@ -92,6 +94,7 @@ public sealed class PlayerTactics : MonoBehaviour
         if (account == null || stock == null || !stock.AcceptsOrders || !MarketDayController.CanTrade) { Notice = "거래 불가"; return false; }
         decimal bought = ManipulationTools.Ignite(account, stock, Free(account) * (decimal)Mathf.Clamp01(fraction), IgniteReach);
         Notice = bought >= 1m ? "불을 붙였습니다" : "현금 부족";
+        if (bought >= 1m) { SteamAchievements.Unlock(SteamAchievements.TacticIgnite); }
         return bought >= 1m;
     }
     /// <summary>내려찍기: 가진 주식의 fraction만큼을 매수 호가에 한 번에 던진다.</summary>
@@ -104,6 +107,7 @@ public sealed class PlayerTactics : MonoBehaviour
         if (shares < 1m) { Notice = "던질 주식이 없습니다"; return false; }
         decimal sold = ManipulationTools.Slam(account, stock, shares, SlamDepth, 0m);
         Notice = sold >= 1m ? "내려찍었습니다" : "받아 줄 호가가 없습니다";
+        if (sold >= 1m) { SteamAchievements.Unlock(SteamAchievements.TacticSlam); }
         return sold >= 1m;
     }
 
@@ -115,6 +119,7 @@ public sealed class PlayerTactics : MonoBehaviour
         decimal budget = decimal.Floor(Free(account) * (decimal)Mathf.Clamp01(fraction));
         if (budget < stock.currentPrice) { Notice = "현금 부족"; return false; }
         CloseStock = stock; CloseBudget = budget; CloseSpent = 0m; closeDay = MarketDayController.Instance != null ? MarketDayController.Instance.Day : -1; Notice = "종가 관리를 예약했습니다";
+        SteamAchievements.Unlock(SteamAchievements.TacticClose);
         return true;
     }
     public void CancelClose() { if (CloseStock != null) { CloseStock = null; Notice = "종가 관리를 취소했습니다"; } }

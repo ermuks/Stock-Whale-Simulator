@@ -77,6 +77,7 @@ public static class ManipulationTools
         // 되받기: 차명 계좌가 같은 값에 내놓고, 내가 받는다.
         if (passed >= 1m) { Sell(nominee, price, passed, stock); Buy(owner, price, passed, stock); }
         Cleanup(owner, nominee, stock, price);
+        if (passed > 0m) { DawnAi.Note(stock, DawnAi.Wash); }
         return passed * price * 2m;
     }
     /// <summary>차명 계좌에 남은 주식과 돈을 주인에게 돌려놓는다(한 바퀴가 중간에 어긋났을 때).</summary>
@@ -122,7 +123,9 @@ public static class ManipulationTools
         Buy(owner, limit, quantity, stock);
         stock.orderBook.CopyOwnerOrders(owner, owned);
         foreach (var order in owned) { if (order.isBuy && order.price == limit && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); } }
-        return Math.Max(0m, owner.GetOwnedVolume(stock) - before);
+        decimal bought = Math.Max(0m, owner.GetOwnedVolume(stock) - before);
+        if (bought > 0m) { DawnAi.Note(stock, DawnAi.Ignite); }
+        return bought;
     }
 
     /// <summary>
@@ -140,7 +143,9 @@ public static class ManipulationTools
         Sell(owner, limit, quantity, stock);
         stock.orderBook.CopyOwnerOrders(owner, owned);
         foreach (var order in owned) { if (!order.isBuy && order.price == limit && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); } }
-        return Math.Max(0m, before - owner.GetOwnedVolume(stock));
+        decimal sold = Math.Max(0m, before - owner.GetOwnedVolume(stock));
+        if (sold > 0m) { DawnAi.Note(stock, DawnAi.Slam); }
+        return sold;
     }
 
     /// <summary>
@@ -168,7 +173,9 @@ public static class ManipulationTools
         Sell(owner, limit, quantity, stock);
         stock.orderBook.CopyOwnerOrders(owner, owned);
         foreach (var order in owned) { if (!order.isBuy && order.price == limit && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); } }
-        return Math.Max(0m, before - owner.GetOwnedVolume(stock));
+        decimal sold = Math.Max(0m, before - owner.GetOwnedVolume(stock));
+        if (sold > 0m) { DawnAi.Note(stock, DawnAi.Nip); }
+        return sold;
     }
 
     /// <summary>허수 매수벽을 건다. 건 값을 돌려준다(0이면 못 걸었다).</summary>
@@ -181,7 +188,9 @@ public static class ManipulationTools
         decimal quantity = decimal.Floor(Math.Min(cashToShow, Math.Max(0m, owner.cash - owner.ReservedCash)) / price);
         if (quantity < 1m) { return 0m; }
         Buy(owner, price, quantity, stock);
-        return WallVolume(owner, stock, price) > 0m ? price : 0m;
+        if (WallVolume(owner, stock, price) <= 0m) { return 0m; }
+        DawnAi.Note(stock, DawnAi.WallUp);
+        return price;
     }
     /// <summary>그 값에 걸려 있는 내 매수 잔량.</summary>
     public static decimal WallVolume(Trader owner, Stock stock, decimal price)
@@ -196,7 +205,9 @@ public static class ManipulationTools
     {
         if (owner == null || stock == null || stock.orderBook == null || price <= 0m) { return; }
         stock.orderBook.CopyOwnerOrders(owner, owned);
-        foreach (var order in owned) { if (order.isBuy && order.price == price && stock.orderBook.IsActive(order)) { stock.orderBook.CancelOrder(order, stock); } }
+        bool pulled = false;
+        foreach (var order in owned) { if (order.isBuy && order.price == price && stock.orderBook.IsActive(order)) { pulled |= stock.orderBook.CancelOrder(order, stock); } }
+        if (pulled) { DawnAi.Note(stock, DawnAi.WallPulled); }
     }
     /// <summary>값이 벽 가까이 내려왔는가(거둬야 하는가).</summary>
     public static bool WallThreatened(Stock stock, decimal wallPrice)

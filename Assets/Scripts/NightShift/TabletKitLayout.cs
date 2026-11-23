@@ -41,7 +41,7 @@ public sealed class TabletKitLayout : MonoBehaviour
     private void RefreshRealized()
     {
         if (todayRealized==null || owner.events==null || owner.events.records==null || MarketDayController.Instance==null) { return; }
-        int today=MarketDayController.Instance.CalendarDay; decimal realized=0m; int sells=0;
+        int today=MarketDayController.Instance.CalendarDate; decimal realized=0m; int sells=0;
         foreach (var fill in owner.events.records.Fills)
         {
             if (fill.Buy || TabletRecordsView.DayOf(fill.Time)!=today) { continue; }

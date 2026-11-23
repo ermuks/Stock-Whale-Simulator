@@ -220,6 +220,7 @@ public sealed class DoorNotes : MonoBehaviour
         if (note == null || note.State != 1 || held != null) { return; }
         held = note; note.State = 2; note.Paper.color = Bright; note.Root.SetParent(transform, true);
         Sfx.Play("NotePick", .8f);
+        SteamAchievements.Unlock(SteamAchievements.DoorNote);
     }
     /// <summary>들고 있던 쪽지를 가운데 모니터 위쪽에 붙인다.</summary>
     public void PutDown()

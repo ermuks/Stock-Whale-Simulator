@@ -150,7 +150,9 @@ public sealed class GameLocale : MonoBehaviour
     }
     public static string Text(string source) => Render(source,0);
     /// <summary>게임 날짜. 한국어 "3일", 영어 "Day 3", 일본어 "3日目".</summary>
-    public static string Day(int day) => Code == "ja" ? day + "日目" : Code == "en" ? "Day " + day : day + "일";
+    /// <summary>장날의 번호를 달력 날짜로 바꿔 적는다(여섯째 장날 → "8일"). 이미 달력 날짜인 값은 DateText로 적는다.</summary>
+    public static string Day(int day) => DateText(MarketDayController.DateOf(day));
+    public static string DateText(int date) => Code == "ja" ? date + "日目" : Code == "en" ? "Day " + date : date + "일";
     // 저장된 시각 표기("3일 09:02")는 한국어로 적혀 있다. 다른 언어에서는 문장 안에 있어도 그 언어의 표기로 바꾼다.
     private static readonly Regex DayStamp = new(@"(?<![\d가-힣])(?<d>\d+)일 (?<t>\d{1,2}:\d{2})", RegexOptions.Compiled);
     public static string Get(string key,string fallback) => table?.GetEntry(key)?.Value ?? fallback;

@@ -45,7 +45,7 @@ public sealed partial class InvestorSociety
         using (ChartTalkMarker.Auto()) { TickChartTalk(); }
         using (VillainMarker.Auto()) { TickVillain(); }
         using (PlayerTalkMarker.Auto()) { TickPendingLines(); TickPlayerChat(); }
-        using (DebateMarker.Auto()) { TickDebate(); TickMoodTalk(); TickTwitch(); }
+        using (DebateMarker.Auto()) { TickDebate(); TickMoodTalk(); TickTwitch(); TickMarketMood(); }
         EnsureChatBar();
         if (socialLog != null && Time.unscaledTime >= nextSocialLogFlush)
         { socialLog.Flush(); nextSocialLogFlush = Time.unscaledTime + (float)Config.Get("logFlushSeconds"); }
@@ -93,6 +93,7 @@ public sealed partial class InvestorSociety
         // 홍보 글은 방이 있다는 것을 알린다. 본 사람의 인지가 오르고, 몇 사람은 자기가 아는 만큼·믿는 만큼 답한다.
         long promotion = day.PublishPlayerLine(PromoteLines[promoteCount++ % PromoteLines.Length], PromoteTemplate);
         BeginRoomPromotionTalk(promotion);
+        SteamAchievements.Unlock(SteamAchievements.Promote);
         return true;
     }
     // 종목 목록에 보이는 것과 같은 당일 시세판: 0% 기준가(전일 종가, 첫날은 시가)와 당일 고가·저가.

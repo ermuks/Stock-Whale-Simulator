@@ -237,6 +237,18 @@ public sealed class DeskClutter : MonoBehaviour
     private static Transform Part(string name, Transform parent, Mesh mesh, Material material, Vector3 position)
     { return Part(name, parent, mesh, material, position, Quaternion.identity, Vector3.one); }
     private static Vector2 P(float radius, float height) => new Vector2(radius, height);
+    /// <summary>둥근 단면: from도(-90이면 아래 꼭지, 0이면 가장 넓은 허리)에서 위 꼭지(90도)까지. 아래 꼭지에서 시작하면 높이가 0부터 2×height까지다.</summary>
+    private static Vector2[] Arc(float radius, float height, float from, int steps)
+    {
+        var points = new Vector2[steps + 1];
+        for (int i = 0; i <= steps; i++)
+        {
+            float angle = Mathf.Lerp(from, 90f, i / (float)steps) * Mathf.Deg2Rad;
+            points[i] = new Vector2(i == steps ? 0f : radius * Mathf.Cos(angle), height * (Mathf.Sin(angle) - Mathf.Sin(from * Mathf.Deg2Rad)));
+        }
+        if (from <= -90f) { points[0] = new Vector2(0f, 0f); }
+        return points;
+    }
     /// <summary>위를 보는 원판(가장자리에서 가운데로).</summary>
     private static Mesh Disc(float radius) => Shape("disc" + radius.ToString("0.000"), () => PropMesh.Lathe(new[] { P(radius, 0f), P(0f, 0f) }, 48));
 
@@ -660,10 +672,27 @@ public sealed class DeskClutter : MonoBehaviour
         Part("Band", box, Shape("small box band", () => PropMesh.RoundedBox(new Vector3(.10f, .1215f, .2015f), .005f, 3)), Lit(band, .3f), new Vector3(-.08f, .06f, 0f));
         var flap = Shape("small box flap", () => PropMesh.Sheet(.10f, .198f, 4, 6, (u, v) => u * u * .012f));
         Part("Open Flap", box, flap, Lit(paper, .2f), new Vector3(.205f, .145f, 0f), Quaternion.Euler(0f, 0f, 42f), Vector3.one);
-        // 반쯤 삐져나온 알약 판.
-        Part("Blister", box, Shape("blister", () => PropMesh.RoundedBox(new Vector3(.20f, .006f, .13f), .002f, 2)), Lit(new Color(.50f, .51f, .52f), .8f, .85f), new Vector3(.19f, .075f, .01f), Quaternion.Euler(0f, 8f, -6f), Vector3.one);
-        var pill = Shape("blister pill", () => PropMesh.Lathe(new[] { P(.013f, 0f), P(.012f, .005f), P(.007f, .009f), P(0f, .01f) }, 20));
-        for (int i = 0; i < 6; i++) { Part("Pill " + i, box, pill, Lit(new Color(.60f, .60f, .56f), .5f), new Vector3(.215f + i / 2 * .045f, .0795f - i / 2 * .0048f, -.02f + i % 2 * .06f), Quaternion.Euler(0f, 8f, -6f), Vector3.one); }
+        // 열린 쪽 안이 어둡게 들여다보인다.
+        Part("Mouth", box, Shape("small box mouth", () => PropMesh.RoundedBox(new Vector3(.003f, .100f, .180f), .001f, 1)), Lit(new Color(.05f, .05f, .05f), .1f), new Vector3(.1702f, .06f, 0f));
+        // 상자에서 꺼내 책상에 놓아 둔 알약 판: 은박 판 위에 투명한 볼록 칸이 두 줄로 있고, 칸마다 알약이 들어 있다. 몇 칸은 이미 눌러 빼 먹었다.
+        var foil = Part("Blister", box, Shape("blister", () => PropMesh.RoundedBox(new Vector3(.20f, .004f, .13f), .0015f, 2)), Lit(new Color(.62f, .63f, .65f), .75f, .9f), new Vector3(.305f, .002f, .025f), Quaternion.Euler(0f, 17f, 0f), Vector3.one);
+        var dome = Shape("blister dome", () => PropMesh.Lathe(Arc(.0150f, .0110f, 0f, 8), 24));
+        var pill = Shape("blister pill", () => PropMesh.Lathe(Arc(.0115f, .0080f, 0f, 6), 24));
+        var hole = Shape("blister hole", () => PropMesh.Lathe(new[] { P(.0150f, 0f), P(.0125f, .0006f), P(0f, .0002f) }, 24));
+        var clear = Lit(new Color(.86f, .90f, .92f), .9f, 0f, .30f); var white = Lit(new Color(.88f, .86f, .80f), .35f); var torn = Lit(new Color(.30f, .31f, .33f), .5f, .6f);
+        var oblong = new Vector3(1f, 1f, 1.45f);
+        for (int i = 0; i < 8; i++)
+        {
+            var spot = new Vector3(-.066f + i / 2 * .044f, .002f, -.031f + i % 2 * .062f);
+            // 눌러 뺀 칸은 은박이 찢겨 움푹하다.
+            if (i == 0 || i == 1 || i == 5) { Part("Empty Pocket " + i, foil, hole, torn, spot, Quaternion.identity, oblong); continue; }
+            Part("Pill " + i, foil, pill, white, spot, Quaternion.identity, oblong);
+            Part("Pocket " + i, foil, dome, clear, spot, Quaternion.identity, oblong);
+        }
+        // 빼 놓고 안 먹은 알약 두 알: 위아래가 볼록한 납작한 알.
+        var loose = Shape("loose pill", () => PropMesh.Lathe(Arc(.0125f, .0045f, -90f, 12), 24));
+        Part("Loose Pill 0", box, loose, white, new Vector3(.215f, 0f, -.135f), Quaternion.identity, oblong);
+        Part("Loose Pill 1", box, loose, white, new Vector3(.262f, 0f, -.118f), Quaternion.Euler(0f, 64f, 0f), oblong);
     }
 
     /// <summary>영수증: 길고 얇은 감열지가 끝이 말려 있다.</summary>

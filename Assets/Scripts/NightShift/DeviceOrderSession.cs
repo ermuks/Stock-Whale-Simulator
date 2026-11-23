@@ -155,6 +155,7 @@ public sealed class DeviceOrderSession : MonoBehaviour
         subscriptions[stock] = count + 1;
         // Reserve synchronously so consecutive clicks cannot spend the same cash.
         SendSlice(request); RefreshPending(request);
+        if (parts > 1) { SteamAchievements.Unlock(SteamAchievements.SplitOrder); }
         return true;
     }
     void Update()

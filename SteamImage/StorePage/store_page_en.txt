@@ -1,0 +1,65 @@
+=== SHORT DESCRIPTION (plain text, 283 characters) ===
+
+Start as a nobody with a small account in a dark room. Trade through a real order book, read a chat room full of investors who panic, brag and argue, then learn to move them: run a signal room, ignite a stock, take over companies and grow them. A market sim about becoming the whale.
+
+
+=== ABOUT THIS GAME (paste into the Steam editor; [img] lines are where each GIF goes) ===
+
+[img]{STEAM_APP_IMAGE}/extras/01_desk.gif[/img]
+
+[h2]One room. Three monitors. A market that does not wait for you.[/h2]
+You sit at a desk in a damp little room with a stock list, a chart and a chat room. Outside that room, more than a thousand investors are trading the same stocks you are. Every price on your screen is a real order sitting in a real order book, and every candle is somebody actually buying from somebody else.
+
+You start small. What you do with that is up to you.
+
+[img]{STEAM_APP_IMAGE}/extras/02_surge.gif[/img]
+
+[h2]A living market[/h2]
+[list]
+[*][b]Real order book.[/b] Limit orders, queues, spreads, partial fills. If there is nobody to sell to, you do not sell.
+[*][b]Investors with their own money.[/b] Retail traders, patient holders and bigger players each trade their own accounts on their own beliefs.
+[*][b]Moves have causes.[/b] News breaks, crowds pile in, somebody dumps. When a stock runs, you can watch who is feeding it.
+[/list]
+
+[img]{STEAM_APP_IMAGE}/extras/03_chat.gif[/img]
+
+[h2]A chat room that reacts[/h2]
+The lounge never shuts up. When a stock takes off, the chat is on it within seconds: holders gloating, latecomers asking if it is too late, sceptics calling the top. Talk to them and they answer. Ask what a company does, where a stock is trading or who is holding it, and somebody who actually knows will tell you. Or ignore you. They do that too.
+
+Tap any investor to see what they think of you: trust, betrayal, their record following your calls.
+
+[h2]Stop following the market. Push it.[/h2]
+Once you have the capital and the nerve, the second tablet opens up.
+[list]
+[*][b]Ignite[/b] - sweep the asks in one shot and light a stock up.
+[*][b]Paint the tape[/b] - trade with a nominee account to make volume appear.
+[*][b]Fake bid wall[/b] - rest a big bid you hope never fills.
+[*][b]Slam[/b] - dump into the bids and see who flinches.
+[*][b]Mark the close[/b] - buy through the last seconds to print a higher close.
+[/list]
+None of it is guaranteed. The crowd may follow you. It may also notice.
+
+[h2]Run a signal room[/h2]
+Join a room and watch what its host really does with their own orders, or open your own. Invite members from the lounge, call your trades, and find out how long they keep trusting you after a bad one.
+
+[h2]Then buy the company[/h2]
+Small companies can be bought outright. Take a controlling stake, decide between dividends, reinvestment and reserves, fund capacity, research and brand, and take the business public when it is ready. The stock you used to trade becomes the company you run.
+
+[img]{STEAM_APP_IMAGE}/extras/05_calendar.gif[/img]
+
+[h2]Days go by[/h2]
+The market opens in the morning and closes in the evening. Sometimes there is a knock, and a note slides under your door: a stock, and a time. After the close you settle up, go to bed, and one more day gets crossed off the calendar on the wall.
+
+[img]{STEAM_APP_IMAGE}/extras/04_room.gif[/img]
+
+[h2]Features[/h2]
+[list]
+[*]Order-book market simulation with over a thousand autonomous investors
+[*]A reactive chat room: investors respond to the market, to each other and to you
+[*]Investor psychology: trust, betrayal, fear of missing out
+[*]Signal rooms: follow a host or lead your own members
+[*]Market tactics that unlock as you grow
+[*]Company takeovers, management and IPOs
+[*]A second account for automated spread and accumulation orders
+[*]English, Korean and Japanese, each with its own chat written for that language
+[/list]

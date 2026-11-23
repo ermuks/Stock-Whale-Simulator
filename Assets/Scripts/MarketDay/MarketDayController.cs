@@ -113,6 +113,14 @@ public sealed class MarketDayController : MonoBehaviour
     public int GameMinute => (int)ExactGameMinute;
     public int ClockMinute => GameMinute % 1440;
     public int CalendarDay => Day + GameMinute / 1440;
+    /// <summary>
+    /// 장날의 번호(Day)를 달력의 날짜로 바꾼다. 장은 월~금에만 서고 1일이 월요일이다:
+    /// 다섯째 장날은 5일(금), 여섯째 장날은 주말을 건너뛴 8일(월)이다. 화면에 보이는 날짜는 모두 이 값이다.
+    /// (안에서 날을 세고 견주는 값은 여전히 장날 번호다. 저장된 값도 그대로다.)
+    /// </summary>
+    public static int DateOf(int tradingDay) => tradingDay <= 0 ? tradingDay : (tradingDay - 1) / 5 * 7 + (tradingDay - 1) % 5 + 1;
+    /// <summary>지금의 달력 날짜. 자정을 넘기면 하루가 더해진다(금요일 밤을 넘기면 토요일 6일).</summary>
+    public int CalendarDate => DateOf(Day) + GameMinute / 1440;
     public double AbsoluteGameMinute => (Day - 1) * 1440d + ExactGameMinute;
     public double ExactGameMinute
     {
@@ -168,6 +176,7 @@ public sealed class MarketDayController : MonoBehaviour
         if (GetComponent<DeskClutter>() == null) { gameObject.AddComponent<DeskClutter>(); }
         if (GetComponent<RoomShell>() == null) { gameObject.AddComponent<RoomShell>(); }
         if (GetComponent<DoorNotes>() == null) { gameObject.AddComponent<DoorNotes>(); }
+        if (GetComponent<WallCalendar>() == null) { gameObject.AddComponent<WallCalendar>(); }
         if (GetComponent<BedSleep>() == null) { gameObject.AddComponent<BedSleep>(); }
         if (GetComponent<DoorExit>() == null) { gameObject.AddComponent<DoorExit>(); }
         if (GetComponent<RoomAmbience>() == null) { gameObject.AddComponent<RoomAmbience>(); }

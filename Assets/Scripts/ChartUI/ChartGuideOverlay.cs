@@ -278,7 +278,7 @@ public sealed class ChartGuideOverlay : MonoBehaviour
         if (candle.marketDay <= 0)
         { return forming ? "진행 중" : "—"; }
         int minute = Math.Max(0, Math.Min(1439, candle.marketMinute));
-        return $"{candle.marketDay}일 {minute / 60:00}:{minute % 60:00}" + (forming ? " · 진행 중" : "");
+        return $"{MarketDayController.DateOf(candle.marketDay)}일 {minute / 60:00}:{minute % 60:00}" + (forming ? " · 진행 중" : "");
     }
 
     private static void SetText(TMP_Text target, string value)

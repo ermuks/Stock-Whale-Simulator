@@ -66,6 +66,21 @@
     { "key": "aiReact.buy", "texts": ["oh it's flashing buy", "even the ai says buy", "trusting the ai is how you blow up an account", "noted, grain of salt", "a buy on {stockName}, tempting", "it was wrong last time tho"] },
     { "key": "aiReact.sell", "texts": ["sell signal, yikes", "the ai says sell", "already out", "it usually goes the other way lol", "holding {stockName} and now i'm sweating", "noted, grain of salt"] },
     { "key": "aiReact.hold", "texts": ["hold. ok and what do i do with that", "that's vague", "so the ai doesn't know either", "guess we just watch", "thanks for nothing", "even the robot is on the fence"] },
+    { "key": "aiReact.whale", "texts": ["someone's unloading", "whale's in there", "{stockName} is getting worked", "that's not retail doing that", "careful, exit liquidity incoming", "ai caught it", "somebody's playing games"] },
+    { "key": "aiReact.whaleMaybe", "texts": ["hard to say", "something's off though", "caution, noted", "{stockName} did look weird", "gonna keep watching"] },
+    { "key": "aiReact.whaleNone", "texts": ["quiet then", "nobody's touching it", "so no whale", "asked for nothing lol"] },
+    { "key": "aiReact.right", "texts": ["ai got that one", "ok it was right", "should've listened", "credit where due", "{stockName} went exactly like it said", "even a broken clock"] },
+    { "key": "aiReact.wrong", "texts": ["ai wrong again lol", "went the other way?", "who followed that", "this is why it's for reference only", "{stockName} did the opposite lol", "even the ai is bagholding"] },
+    { "key": "aiReact.newsFake", "texts": ["that's a plant", "source is sketchy", "did anyone buy on that?", "{stockName} headline was bait", "who pushed that out", "anonymous tip lol"] },
+    { "key": "aiReact.newsOk", "texts": ["legit then", "saw that already", "confirmed is confirmed", "noted"] },
+    { "key": "aiReact.room", "texts": ["we're all in the same stuff lol", "that's crowded, risky", "guilty, i'm in that", "room's leaning hard", "{stockName} is popular huh", "maybe fade the room"] },
+    { "key": "aiReact.accountUp", "texts": ["doing well", "jealous", "look at those gains", "nice entry on {stockName}", "drinks on you", "took any profit yet?"] },
+    { "key": "aiReact.accountDown", "texts": ["you're still holding that?", "ouch, stuck", "i'm bagholding {stockName} too", "can't cut losses huh", "hang in there", "diamond hands i guess"] },
+    { "key": "aiReact.accountFlat", "texts": ["break even", "dead flat", "nothing's happened yet", "still waiting on it then"] },
+    { "key": "aiReact.upgrade", "texts": ["must be nice", "you paid for that?", "share the precision reads", "big spender", "first time i've seen someone pay the ai"] },
+    { "key": "aiReact.alertUp", "texts": ["there it is", "{stockName} made it", "someone had an alert on that", "it actually got there"] },
+    { "key": "aiReact.alertDown", "texts": ["it dropped that far", "{stockName} tagged it", "dip buy time?", "someone had an alert on that"] },
+    { "key": "aiReact.brief", "texts": ["so that's the watchlist", "briefing's up", "{stockName} moving today?", "for reference only", "i usually fade the ai picks", "clocking in"] },
 
     { "key": "cold", "texts": ["k", "ok and", "so what", "don't care", "you do you", "..."] },
     { "key": "question", "texts": ["no clue honestly", "i'd like to know too", "if anyone knows, tell me too", "hmm not sure", "don't ask me lol, i don't know either", "if i knew that i wouldn't be in this chat lol", "no idea. someone smarter please", "'{said}'... tough one", "gonna need more detail than that", "been wondering the same thing", "depends, probably", "sir this is a casino, nobody knows"] },
@@ -308,6 +323,14 @@
     { "key": "topicAdd.konbini", "texts": ["{said}, valid", "{said}? now i want a snack run", "can't say no to that"] },
 
     { "key": "agree.more", "texts": ["ok", "oh nice", "gotcha", "got it", "ah ok", "noted"] },
-    { "key": "disagree.more", "texts": ["oh really", "ah ok", "oh my bad", "gotcha", "ah, got it"] }
+    { "key": "disagree.more", "texts": ["oh really", "ah ok", "oh my bad", "gotcha", "ah, got it"] },
+
+    { "key": "listing.soon", "texts": ["{stockName} lists tomorrow at 9", "tradable from tomorrow's open", "{stockName}? the notice said it lists 09:00 tomorrow", "can't buy it today. tomorrow's open", "it's marked 'listing soon' on the board. 9am tomorrow"] },
+    { "key": "listing.today", "texts": ["{stockName} lists at 9 today", "today. it trades as soon as the market opens", "hang on, it starts at 9", "you can buy it at today's open"] },
+    { "key": "listing.open", "texts": ["{stockName} is already listed. trades when the market opens at 9", "it's listed, we're just pre-market. 9am", "buyable from today's 9am open", "already on the board. just needs the bell"] },
+    { "key": "listing.listed", "texts": ["{stockName} is already listed", "it's trading right now, check the board", "{stockName}? that's been trading", "already public. it's at {price} now", "it listed a while ago. just buy it"] },
+    { "key": "listing.notyet", "texts": ["{stockName} isn't listed yet", "needs a 1 billion DON valuation to list. not there yet", "still private. once it passes 1 billion it lists 9am the next day", "no shares out for {stockName} yet", "not even on the listing-soon board yet"] },
+    { "key": "listing.gone", "texts": ["{stockName} got delisted", "that one doesn't trade anymore", "{stockName}? it's gone"] },
+    { "key": "listing.rule", "texts": ["small companies list at 9am the day after they pass 1 billion DON", "whoever clears 1 billion at the close shows up at the next open", "anything marked 'listing soon' trades from 9 tomorrow", "which one do you mean? the pending ones sit at the top of the board", "new names only show up at the open, never mid-session"] }
   ]
 }

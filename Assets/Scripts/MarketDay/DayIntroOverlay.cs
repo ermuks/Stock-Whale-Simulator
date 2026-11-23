@@ -57,6 +57,22 @@ public sealed class DayIntroOverlay : MonoBehaviour
         GameLocalizedText.Set(title, "DAY " + day, true);
         Root.SetActive(true); started = Time.unscaledTime; nextCapture = 0f;
         Apply(0f);
+        PlayJingle();
+    }
+    // 하루를 여는 소리(Resources/Audio/Music/DayIntro, 1.4초). "DAY N"이 뜰 때 한 번 난다.
+    // 효과음용 목소리(Sfx)는 다른 소리에 밀려 끊길 수 있어서 전용 소리통을 따로 둔다. 전체 음량 설정(AudioListener.volume)은 그대로 따른다.
+    private const float JingleVolume = .8f;
+    private AudioSource jingle;
+    private void PlayJingle()
+    {
+        if (jingle == null)
+        {
+            var clip = Resources.Load<AudioClip>("Audio/Music/DayIntro");
+            if (clip == null) { return; }
+            jingle = gameObject.AddComponent<AudioSource>();
+            jingle.clip = clip; jingle.playOnAwake = false; jingle.loop = false; jingle.spatialBlend = 0f; jingle.volume = JingleVolume; jingle.ignoreListenerPause = true;
+        }
+        jingle.Stop(); jingle.Play();
     }
 
     void Update()
@@ -66,8 +82,9 @@ public sealed class DayIntroOverlay : MonoBehaviour
         {
             // 날짜가 바뀌면(첫날 포함) 시작한다. 메뉴가 떠 있는 동안은 닫힐 때까지 기다린다.
             if (market == null || !market.Ready || (StockManager.Instance != null && !StockManager.Instance.SetupConfirmed) || PauseMenuController.IsOpen || market.ReportPending || CollapseSleep.Active) { return; }
-            // 첫날은 08:30부터 둘러보다가 장이 열리는 09:00에 "DAY 1"이 뜬다. 둘째 날부터는 일어난 08:00에 뜬다.
-            if (market.Day == 1 && market.Phase == MarketPhase.PreOpen) { return; }
+            // 첫날은 프롤로그가 끝나고 침대에서 눈을 뜰 때(08:30) "DAY 1"이 뜬다. 프롤로그의 검은 화면이 남아 있거나 아직 눈을 감고 누워 있는 동안은 기다린다.
+            // 둘째 날부터는 일어난 08:00에 뜬다.
+            if (market.Day == 1 && (StoryIntro.Playing || BedSleep.Instance != null && BedSleep.Instance.Stage > 0 && BedSleep.Instance.Stage < 4)) { return; }
             if (market.Day != shownDay) { Play(market.Day); }
             return;
         }

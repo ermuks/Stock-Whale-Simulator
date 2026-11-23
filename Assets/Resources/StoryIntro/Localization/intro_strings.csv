@@ -1,0 +1,19 @@
+﻿key,ko,en,ja
+intro.scene.01,"증권사에서 일하던 시절, 나는 매일 숫자를 좇았다.","Back at the brokerage, I spent every day chasing numbers.",証券会社にいた頃、毎日数字を追っていた。
+intro.scene.02,실적은 내가 만들었다. 이름은 늘 다른 사람의 것이었다.,I brought in the results. Someone else always got the credit.,成果を上げたのは俺だ。だが、手柄はいつも他人のものだった。
+intro.scene.03,회의실에서 그들은 내 성과를 자기 것처럼 발표했다.,"In meetings, they presented my work as their own.",会議では、連中が俺の成果を自分の手柄として発表した。
+intro.scene.04,그래도 버텼다. 그날의 연락을 받기 전까지는.,I kept going. Until that call came.,それでも耐えていた。あの電話が来るまでは。
+intro.scene.05,아버지가 돌아가셨다.,My father passed away.,父が亡くなった。
+intro.scene.06,아버지가 남긴 건 작은 법인 하나. 기업가치 2천만 돈.,He left me a small company. Worth twenty million DON.,"父が遺したのは小さな会社ひとつ。評価額は2,000万ドン。"
+intro.scene.07,우울증 치료를 받았다. 하루를 버티는 것조차 힘들었다.,I began treatment for depression. Just getting through the day was hard.,うつ病の治療を始めた。一日を乗り切るだけで精一杯だった。
+intro.scene.08,결국 사표를 냈다. 이제 남의 이름으로 살고 싶지 않았다.,I resigned. I was done building someone else’s name.,ついに辞表を出した。もう他人の名誉のためには働きたくなかった。
+intro.scene.09,살던 집을 정리했다. 돌려받은 보증금은 5천만 돈.,I gave up my apartment. The returned deposit was fifty million DON.,"住んでいた部屋を引き払った。戻った保証金は5,000万ドン。"
+intro.scene.10,새로운 거점은 불도 들어오지 않는 두 평짜리 방.,"My new base was a dark room, barely seven square meters.",新しい拠点は、明かりもつかない二坪ほどの小部屋だった。
+intro.scene.11,모니터 세 대와 태블릿 두 대. 그리고 아버지의 회사.,Three monitors. Two tablets. And my father’s company.,モニターが三台、タブレットが二台。そして父の会社。
+intro.scene.12,아버지. 이번엔 내가 이 회사를 키워볼게.,"Dad. This time, I’ll build this company up.",父さん。今度は俺が、この会社を大きくしてみせる。
+intro.goal.title,최종 목표,FINAL OBJECTIVE,最終目標
+intro.goal.value,시가총액 1조 돈,1 trillion DON market cap,時価総額1兆ドン
+intro.skip,건너뛰기,Skip,スキップ
+intro.company_value.title,보유 기업가치,Company valuation,保有企業評価額
+intro.start_money.title,개인 현금,Personal cash,個人の現金
+intro.skip.hold,{0} 길게 눌러 건너뛰기,Hold {0} to skip,{0}長押しでスキップ

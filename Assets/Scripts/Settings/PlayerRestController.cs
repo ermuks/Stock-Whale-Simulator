@@ -63,6 +63,7 @@ public sealed class PlayerRestController : MonoBehaviour
         ObserveClock(); double hours = SleepHours;
         if (hours <= 0) { return false; }
         State.Sleep(hours, (day.Day - 1) * 1440d + 1920d);
+        SteamAchievements.Unlock(SteamAchievements.Sleep);
         day.StartMorningAfterSleep(); return true;
     }
     public void NightPassedAwake()

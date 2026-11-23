@@ -109,11 +109,11 @@ RectTransform:
   - {fileID: 3018884789869671116}
   m_Father: {fileID: 5213506999075648049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 38, y: -30}
-  m_SizeDelta: {x: 32, y: 114}
-  m_Pivot: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 38, y: 0}
+  m_SizeDelta: {x: 32, y: -88}
+  m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &326467558867519274
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -913,8 +913,8 @@ MonoBehaviour:
   imgLine: {fileID: 147079576912333924}
   lineAnchorMinX: 0.45
   lineAnchorMaxX: 0.55
-  bongAnchorMinX: 0.2
-  bongAnchorMaxX: 0.8
+  bongAnchorMinX: 0
+  bongAnchorMaxX: 1
   rowBackground: {fileID: 4963639908859461029}
   normalBackground: {fileID: 21300000, guid: 2d4531f982374780b13f721d9df1d45e, type: 3}
   selectedBackground: {fileID: 21300000, guid: 5562dc6be8c54f13aa13e79d70f5e6e5, type: 3}

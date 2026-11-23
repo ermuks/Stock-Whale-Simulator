@@ -75,6 +75,7 @@ public class FakeNewsManager : MonoBehaviour
         article = PublishRumor(stock, category, positive, variant);
         if (article == null) { reason = "기사 발행에 실패했습니다. 다시 확인하세요."; return false; }
         playerClock.TryConsume(Time.realtimeSinceStartupAsDouble); playerNewsDay = today;
+        SteamAchievements.Unlock(SteamAchievements.FakeNews);
         reason = "발행 완료 · 재사용 대기 " + FormatCooldown(PlayerCooldown);
         ChatSocialAudit.Journal.Event(new SocialEvent { id = article.id, time = ChatSocialAudit.GameMinute, actor = -1,
             kind = "PLAYER_NEWS_PUBLISHED", reason = stock.symbol + " " + category, value = article.sentiment });

@@ -101,8 +101,19 @@ public sealed class DeskControlHints : MonoBehaviour
             }
             markers.SetMarker(i, local, visible, desk && (int)views.Hovered == i);
         }
+        // 서랍도 모니터처럼 원으로 표시한다. 바라보면 원이 채워진다.
+        var drawer = DrawerProp.Instance;
+        Vector2 drawerLocal = Vector2.zero; bool drawerVisible = false;
+        if (desk && drawer != null && drawer.MarkerPoint(out Vector3 handle))
+        {
+            Vector3 point = views.ViewCamera.WorldToScreenPoint(handle);
+            drawerVisible = point.z > views.ViewCamera.nearClipPlane && views.ViewCamera.pixelRect.Contains(point);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, point, null, out drawerLocal);
+        }
+        bool drawerHovered = drawerVisible && drawer.Hovered;
+        markers.SetMarker(DeskInteractionMarkers.Drawer, drawerLocal, drawerVisible, drawerHovered);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, MouseCameraController.GetAimScreenPosition(), null, out Vector2 aim);
-        markers.SetAim(aim, desk && MouseCameraController.IsCursorLocked && views.Hovered == DeskViewTarget.None);
+        markers.SetAim(aim, desk && MouseCameraController.IsCursorLocked && views.Hovered == DeskViewTarget.None && !drawerHovered);
     }
 
     private bool ViewingOrderForm()
@@ -130,7 +141,7 @@ public sealed class DeskControlHints : MonoBehaviour
         if (focused)
         {
             Arrange(4, true);
-            Hint(0, "Space", labels.back); Hint(1, views.Target >= DeskViewTarget.TabletOne ? "Q / E" : "1 / 2 / 3", views.Target >= DeskViewTarget.TabletOne ? labels.accounts : labels.screens);
+            Hint(0, GameKeyBindings.Interact.ToString(), labels.back); Hint(1, views.Target >= DeskViewTarget.TabletOne ? "Q / E" : "1 / 2 / 3", views.Target >= DeskViewTarget.TabletOne ? labels.accounts : labels.screens);
             Hint(2, "↑ / ↓", labels.stocks);
             if (PhoneCallController.Available) { Hint(3, "Tab", labels.phone); } else { cells[3].gameObject.SetActive(false); }
             return;

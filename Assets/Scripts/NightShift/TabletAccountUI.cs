@@ -97,7 +97,7 @@ public sealed class TabletAccountUI : MonoBehaviour
         { return; }
         next = Time.unscaledTime + .3f;
         var day = MarketDayController.Instance;
-        DeviceTerminalUI.Set(clock,day == null ? "—  —:—" : GameLocale.Day(day.CalendarDay) + "  " + DeviceMarketJournal.Stamp());
+        DeviceTerminalUI.Set(clock,day == null ? "—  —:—" : GameLocale.DateText(day.CalendarDate) + "  " + DeviceMarketJournal.Stamp());
         transferButton.interactable = accounts.AutomatedUnlocked;
         tabs[3].interactable = dashboard.Selected != null && account.GetOwnedVolume(dashboard.Selected) > 0m;
         int version=events.records.Version+orders.session.Version;

@@ -1,0 +1,550 @@
+{
+  "name": "StockWhaleSimulator_NewGame_Prologue",
+  "schemaVersion": 1,
+  "timeUnit": "milliseconds",
+  "totalDurationMs": 60000,
+  "designResolutionPx": {
+    "width": 1920,
+    "height": 1080
+  },
+  "gameplayStartClock": "08:30:00",
+  "marketOpensClock": "09:00:00",
+  "gameplayClockRunsDuringPrologue": false,
+  "backgroundColor": "#07080B",
+  "artAreaPx": {
+    "x": 76,
+    "y": 98,
+    "width": 1108,
+    "height": 884
+  },
+  "captionLayout": {
+    "x": 1240,
+    "y": 385,
+    "width": 590,
+    "height": 320,
+    "safeMarginPx": 64
+  },
+  "skipButton": {
+    "key": "intro.skip",
+    "rectPx": {
+      "x": 1670,
+      "y": 56,
+      "width": 170,
+      "height": 48
+    },
+    "appearAtMs": 1000
+  },
+  "imageAlphaNote": "1920x1080 RGBA PNG: real alpha 0 everywhere outside the painted illustration area; painted panel itself opaque.",
+  "captionNote": "NEVER render text as part of the art. Captions and overlay are separate TextMeshPro UI objects with locale-specific strings.",
+  "storyFacts": {
+    "protagonist": "former brokerage employee",
+    "inheritedCompanyValuationKrw": 20000000,
+    "personalCashFromReturnedRentalDepositKrw": 50000000,
+    "fatherPassedAway": true,
+    "depressionTreatmentShownRespectfully": true,
+    "roomLayoutFrontView": {
+      "camera": "Camera stands just inside the bottom-wall entrance (door is behind camera) looking toward far/top wall, slightly elevated angle showing floor depth",
+      "entranceDoor": "Not visible in shot; physically at BOTTOM wall, LEFT OF CENTER rather than middle",
+      "desk": "Far left, a wide rectangular work surface occupying upper-left corner; 3 monitors angled left/center/right; 1 tablet and medication bottle",
+      "bed": "Far right, against RIGHT wall; long axis runs from back wall toward camera; pillow at back and feet nearer camera",
+      "calendar": "Left wall beside workstation",
+      "trashCan": "Between right edge of workstation and left edge of bed",
+      "light": "Room ceiling lamp off; monitors glow when player sits",
+      "artStyle": "rough black and white indie storyboard, simple silhouettes, no baked subtitles or UI labels",
+      "referenceFloorPlan": "References/ActualRoomFloorPlan_UserReference.png",
+      "referenceScreenshot": "References/ActualInGameScreenshot_UserReference.png",
+      "doNot": "DO NOT put door on far/back wall; DO NOT center door along bottom wall; DO NOT rotate bed; DO NOT draw desk as a slim side-wall-only strip; DO NOT rearrange actual Unity 3D room."
+    },
+    "roomLayoutTopDown": {
+      "frameOfReference": "User floor plan image: top is far wall, bottom is entrance wall, left/right are literal image left/right",
+      "desk": "Top-left; a LARGE rectangular workstation taking most of top-left quadrant, not a narrow side-wall table",
+      "monitors": "THREE monitors at the far/back edge of desk: left diagonal, center horizontal, right diagonal forming a shallow arc",
+      "bed": "Top-right, along right wall; narrow and long along top-to-bottom axis, pillow at top, foot toward entrance bottom",
+      "door": "Bottom wall, LEFT of room center, approximately 35 percent of wall width from left",
+      "calendar": "Left wall adjacent to left edge of desk, projecting beside desk",
+      "trashCan": "In narrow gap at desk right edge, beside bed left edge",
+      "freeFloor": "Most of lower half of room between entrance and furniture remains open"
+    }
+  },
+  "scenes": [
+    {
+      "id": "intro_01",
+      "titleForEditor": "증권사",
+      "image": "Art/Intro_01_brokerage.png",
+      "startMs": 0,
+      "endMs": 4500,
+      "durationMs": 4500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.01",
+        "startLocalMs": 500,
+        "endLocalMs": 4050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "office_ambience_soft",
+      "artNotes": "증권사 직원의 고된 일상, 실루엣만 보이는 사무실"
+    },
+    {
+      "id": "intro_02",
+      "titleForEditor": "실적 가로채기",
+      "image": "Art/Intro_02_stolen_credit.png",
+      "startMs": 4500,
+      "endMs": 9000,
+      "durationMs": 4500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.02",
+        "startLocalMs": 500,
+        "endLocalMs": 4050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "office_ambience_soft",
+      "artNotes": "어깨를 누르는 상사, 얼굴은 검은 그림자"
+    },
+    {
+      "id": "intro_03",
+      "titleForEditor": "회의실",
+      "image": "Art/Intro_03_meeting.png",
+      "startMs": 9000,
+      "endMs": 13500,
+      "durationMs": 4500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.03",
+        "startLocalMs": 500,
+        "endLocalMs": 4050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "meeting_room_murmur_soft",
+      "artNotes": "상사가 차트 앞에서 성과를 발표하는 장면"
+    },
+    {
+      "id": "intro_04",
+      "titleForEditor": "소진",
+      "image": "Art/Intro_04_exhaustion.png",
+      "startMs": 13500,
+      "endMs": 17500,
+      "durationMs": 4000,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.04",
+        "startLocalMs": 500,
+        "endLocalMs": 3550,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "ambient_dip",
+      "artNotes": "고개를 떨군 주인공의 어두운 실루엣"
+    },
+    {
+      "id": "intro_05",
+      "titleForEditor": "장례식",
+      "image": "Art/Intro_05_funeral.png",
+      "startMs": 17500,
+      "endMs": 22500,
+      "durationMs": 5000,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.05",
+        "startLocalMs": 700,
+        "endLocalMs": 4550,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "room_tone_silence",
+      "artNotes": "아버지의 영정, 흑백 꽃과 조문객 실루엣"
+    },
+    {
+      "id": "intro_06",
+      "titleForEditor": "상속 서류",
+      "image": "Art/Intro_06_inheritance.png",
+      "startMs": 22500,
+      "endMs": 28000,
+      "durationMs": 5500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.06",
+        "startLocalMs": 500,
+        "endLocalMs": 5050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "paper_rustle_soft",
+      "artNotes": "어떤 글자도 적혀 있지 않은 회사 승계 서류와 펜"
+    },
+    {
+      "id": "intro_07",
+      "titleForEditor": "우울증 치료",
+      "image": "Art/Intro_07_treatment.png",
+      "startMs": 28000,
+      "endMs": 33500,
+      "durationMs": 5500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.07",
+        "startLocalMs": 500,
+        "endLocalMs": 5050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "quiet_clock_room_tone",
+      "artNotes": "주인공 옆의 빈 글자 없는 약병, 알약, 물컵"
+    },
+    {
+      "id": "intro_08",
+      "titleForEditor": "퇴사",
+      "image": "Art/Intro_08_resignation.png",
+      "startMs": 33500,
+      "endMs": 38000,
+      "durationMs": 4500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.08",
+        "startLocalMs": 500,
+        "endLocalMs": 4050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "pen_on_paper_soft",
+      "artNotes": "텍스트가 없는 사직서와 펜"
+    },
+    {
+      "id": "intro_09",
+      "titleForEditor": "보증금 반환",
+      "image": "Art/Intro_09_deposit.png",
+      "startMs": 38000,
+      "endMs": 42500,
+      "durationMs": 4500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.09",
+        "startLocalMs": 500,
+        "endLocalMs": 4050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "paper_rustle_soft",
+      "artNotes": "글자 없는 계좌 입금 내역 종이"
+    },
+    {
+      "id": "intro_10",
+      "titleForEditor": "두 평짜리 방",
+      "image": "Art/Intro_10_tiny_room.png",
+      "startMs": 42500,
+      "endMs": 48000,
+      "durationMs": 5500,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.10",
+        "startLocalMs": 500,
+        "endLocalMs": 5050,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "faint_room_hum",
+      "artNotes": "최종 사용자 평면도: 책상은 위쪽 왼편의 넓은 직사각형 면적(모니터 3개가 좌사선/중앙/우사선 배열), 침대는 위쪽 오른편에 세로로 길고 베개는 위쪽. 쓰레기통은 책상 오른쪽 끝과 침대 사이, 달력은 왼쪽 벽. 문은 평면도 아래쪽 벽의 중앙보다 왼쪽(약 35% 지점)에 있고 카메라 뒤라 컷신에는 나오지 않는다. 하단 절반의 빈 바닥 공간도 표현."
+    },
+    {
+      "id": "intro_11",
+      "titleForEditor": "세 대의 모니터",
+      "image": "Art/Intro_11_monitors.png",
+      "startMs": 48000,
+      "endMs": 53000,
+      "durationMs": 5000,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.11",
+        "startLocalMs": 500,
+        "endLocalMs": 4550,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "computer_boot_low",
+      "artNotes": "씬 10과 같은 구도/구조: 위쪽 왼편 넓은 책상에 모니터 3개, 태블릿, 약병. 위쪽 오른쪽에 침대가 앞뒤 축으로 놓임. 가운데 틈에 쓰레기통, 왼쪽 벽 달력. 출입문은 화면 뒤/카메라 뒤. 인물만 의자에 앉은 검은 실루엣으로 추가하고 모니터 3대 켜짐."
+    },
+    {
+      "id": "intro_12",
+      "titleForEditor": "목표",
+      "image": "Art/Intro_12_goal.png",
+      "startMs": 53000,
+      "endMs": 60000,
+      "durationMs": 7000,
+      "imageAnimation": {
+        "fadeInMs": 280,
+        "fadeOutMs": 380,
+        "scaleFrom": 1.0,
+        "scaleTo": 1.018,
+        "translationPx": [
+          0,
+          0
+        ]
+      },
+      "caption": {
+        "key": "intro.scene.12",
+        "startLocalMs": 500,
+        "endLocalMs": 3300,
+        "fadeInMs": 250,
+        "fadeOutMs": 320,
+        "rectPx": {
+          "x": 1240,
+          "y": 385,
+          "width": 590,
+          "height": 320
+        },
+        "textAlignment": "MidlineLeft",
+        "fontSizePx": 45,
+        "minFontSizePx": 34,
+        "maxLines": 4
+      },
+      "sfxCue": "single_keyboard_click",
+      "artNotes": "비어 있는 모니터. 목표 문구는 Unity UI에서 후반부에만 렌더링",
+      "goalOverlay": {
+        "titleKey": "intro.goal.title",
+        "valueKey": "intro.goal.value",
+        "startLocalMs": 4000,
+        "endLocalMs": 6500,
+        "fadeInMs": 350,
+        "rectPx": {
+          "x": 1220,
+          "y": 425,
+          "width": 630,
+          "height": 265
+        },
+        "titleFontSizePx": 32,
+        "valueFontSizePx": 54,
+        "valueIsTMP": true,
+        "neverBakeTextIntoTexture": true
+      }
+    }
+  ],
+  "onFinish": {
+    "hidePrologueCanvas": true,
+    "activateGameplay": true,
+    "setGameClockTo": "08:30:00",
+    "runExistingNewGameStartFlow": true
+  },
+  "skipBehavesLikeFinish": true,
+  "music": {
+    "asset": "Audio/Intro_Opening_Theme.wav",
+    "playFromIntroMs": 0,
+    "stopAtIntroMs": 60000,
+    "playback": "oneShot",
+    "loop": false,
+    "synchronizedWithNarration": true,
+    "onSkip": "stopImmediately",
+    "onFinish": "stopOrCrossfadeToExistingGameplayAmbience",
+    "audioNote": "User-supplied Preview.wav has duration 60.040s, 48000Hz, 2 channel(s). Timeline remains 60,000ms; do not shift scenes to match audio file."
+  }
+}

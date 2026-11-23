@@ -234,6 +234,19 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         if (row.Analysis == null) { return; }
         row.Analysis.gameObject.SetActive(card != null);
         if (card == null) { return; }
+        bool report = !string.IsNullOrEmpty(card.kind);
+        // 줄을 돌려쓰므로 칸 너비를 그때그때 맞춘다: 보고서 카드는 줄 이름(종목 이름)이 길고 값이 짧다.
+        float captionWidth = report && card.captionWidth > 0 ? Mathf.Clamp(card.captionWidth, 60, 200) : 90f;
+        for (int i = 0; i < 4; i++)
+        {
+            row.AnalysisCaptions[i].rectTransform.sizeDelta = new Vector2(captionWidth, 26f) * layoutScale;
+            var value = row.AnalysisValues[i].rectTransform;
+            value.anchoredPosition = new Vector2(158f + captionWidth, -(46f + i * 27f)) * layoutScale; value.sizeDelta = new Vector2(258f - captionWidth, 26f) * layoutScale;
+        }
+        // 고리 안의 글이 길면("100%", "-3.0%") 글자를 줄여 고리 안에 넣는다.
+        int scoreLength = report && !string.IsNullOrEmpty(card.scoreText) ? card.scoreText.Length : 2;
+        row.AnalysisScore.fontSize = (scoreLength <= 3 ? 34f : scoreLength == 4 ? 26f : 21f) * layoutScale;
+        if (report) { BindReport(row, card); return; }
         int score = Mathf.Clamp(card.score, 0, 100);
         // 사는 쪽이면 오름 색, 파는 쪽이면 내림 색, 가운데면 흐린 글자색.
         var tone = score >= 58 ? MarketColors.ForChange(1m, CardInk) : score < 42 ? MarketColors.ForChange(-1m, CardInk) : new Color(.86f, .78f, .46f, 1f);
@@ -248,6 +261,27 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             GameLocalizedText.Set(row.AnalysisCaptions[i], captions[i], true);
             GameLocalizedText.Set(row.AnalysisValues[i], PriceTickPolicy.FormatMoney(values[i]), true);
             row.AnalysisValues[i].color = i == 0 || card.open <= 0m ? CardInk : MarketColors.ForChange(values[i] - card.open, CardInk);
+        }
+    }
+
+    private static readonly Color CardAmber = new(.86f, .78f, .46f, 1f), CardAlert = new(.96f, .47f, .30f, 1f);
+    private static Color ReportTone(int tone, int score)
+        => tone == 1 ? MarketColors.ForChange(1m, CardInk) : tone == -1 ? MarketColors.ForChange(-1m, CardInk) : tone == 4 ? CardAlert : tone == 3 ? CardInk
+            : tone == 2 ? (score >= 58 ? MarketColors.ForChange(1m, CardInk) : score < 42 ? MarketColors.ForChange(-1m, CardInk) : CardAmber) : CardAmber;
+    /// <summary>AI의 보고서 카드: 고리(0~100)와 그 안의 글, 아래의 한마디, 제목, 네 줄.</summary>
+    private void BindReport(Row row, ChatAnalysisCard card)
+    {
+        int score = Mathf.Clamp(card.score, 0, 100); var tone = ReportTone(card.tone, score);
+        row.GaugeFill.fillAmount = GaugeSweep * score / 100f; row.GaugeFill.color = tone;
+        GameLocalizedText.Set(row.AnalysisScore, string.IsNullOrEmpty(card.scoreText) ? score.ToString() : card.scoreText, true); row.AnalysisScore.color = tone;
+        GameLocalizedText.Set(row.AnalysisVerdict, card.badge ?? "", true); row.AnalysisVerdict.color = tone;
+        GameLocalizedText.Set(row.AnalysisTitle, card.title ?? "", true);
+        for (int i = 0; i < 4; i++)
+        {
+            GameLocalizedText.Set(row.AnalysisCaptions[i], card.captions != null && i < card.captions.Length ? card.captions[i] ?? "" : "", true);
+            GameLocalizedText.Set(row.AnalysisValues[i], card.values != null && i < card.values.Length ? card.values[i] ?? "" : "", true);
+            int each = card.tones != null && i < card.tones.Length ? card.tones[i] : 0;
+            row.AnalysisValues[i].color = each == 0 ? CardInk : ReportTone(each, 50);
         }
     }
 
@@ -574,6 +608,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
 
     public void SelectProfile(int botId)
     {
+        if (botId > 0) { SteamAchievements.Unlock(SteamAchievements.Profile); }
         selectedBot = botId;
         lastProfileSecond = -1;
         dirty = true;
@@ -729,7 +764,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             lastHudMinute = minute;
             lastHudDay = day.Day;
             lastHudPhase = day.Phase;
-            GameLocalizedText.Set(hudStatus,$"{day.CalendarDay}일 · {day.ClockMinute / 60:D2}:{day.ClockMinute % 60:D2} · {PhaseText(day.Phase)} · {hudSecond / 60:D2}:{hudSecond % 60:D2}");
+            GameLocalizedText.Set(hudStatus,$"{day.CalendarDate}일 · {day.ClockMinute / 60:D2}:{day.ClockMinute % 60:D2} · {PhaseText(day.Phase)} · {hudSecond / 60:D2}:{hudSecond % 60:D2}");
         }
 
         if (!monitorChat && !TabletViewController.IsTabletHeld)
@@ -754,7 +789,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                 lastMinute = minute;
                 lastDay = day.Day;
                 string phase = PhaseText(day.Phase);
-                GameLocalizedText.Set(status,$"{day.CalendarDay}일 · {day.ClockMinute / 60:D2}:{day.ClockMinute % 60:D2} · {phase} · {second / 60:D2}:{second % 60:D2}");
+                GameLocalizedText.Set(status,$"{day.CalendarDate}일 · {day.ClockMinute / 60:D2}:{day.ClockMinute % 60:D2} · {phase} · {second / 60:D2}:{second % 60:D2}");
             }
 
             if (!chatSelected)
@@ -797,7 +832,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                         row.SocialMessage = message.Social;
                         SetNoticeMode(row, message.IsRoomNotice);
                         GameLocalizedText.Set(row.Nickname,message.FromPlayer ? PlayerLabel : message.Nickname,true);
-                        GameLocalizedText.Set(row.Time,$"{message.Day}일 {message.Minute / 60:D2}:{message.Minute % 60:D2}");
+                        GameLocalizedText.Set(row.Time,$"{MarketDayController.DateOf(message.Day)}일 {message.Minute / 60:D2}:{message.Minute % 60:D2}");
                         GameLocalizedText.Set(row.Text,DisplayMessage(message),true);
                         bool removed = removedMessages.Contains(message.Sequence);
                         BindCard(row, removed || message.IsRoomNotice || message.Social == null ? null : message.Social.profitCard);

@@ -47,8 +47,25 @@ public class MouseCameraController : MonoBehaviour
             var selected = UnityEngine.EventSystems.EventSystem.current == null ? null : UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
             if (lastSelected != selected)
             { lastSelected = selected; textEntry = selected == null ? null : selected.GetComponentInParent<TMPro.TMP_InputField>(); }
-            return textEntry != null && textEntry.isFocused;
+            bool active = textEntry != null && textEntry.isFocused;
+            if (active) { textEntryFrame = Time.frameCount; }
+            return active;
         }
+    }
+    private static int textEntryFrame = -10;
+    /// <summary>지금 글을 쓰고 있는 입력 칸(없으면 null).</summary>
+    public static TMPro.TMP_InputField ActiveTextEntry => TextEntryActive ? textEntry : null;
+    /// <summary>
+    /// 글을 쓰는 중에 Esc를 눌렀는가. 이때의 Esc는 입력을 끝내는 데만 쓰이고, 메뉴를 열거나 화면에서 빠져나오지 않는다.
+    /// 입력 칸은 같은 프레임에 스스로 Esc를 받아 꺼질 수 있으므로, 바로 앞 프레임까지 쓰고 있었으면 쓰는 중으로 본다.
+    /// </summary>
+    public static bool TextEntryEscape => Input.GetKeyDown(KeyCode.Escape) && (TextEntryActive || Time.frameCount - textEntryFrame <= 1);
+    /// <summary>글쓰기를 끝낸다(쓰던 글은 그대로 둔다).</summary>
+    public static void EndTextEntry()
+    {
+        if (textEntry != null && textEntry.isFocused) { textEntry.DeactivateInputField(); }
+        var events = UnityEngine.EventSystems.EventSystem.current;
+        if (events != null) { events.SetSelectedGameObject(null); }
     }
 
     /// <summary>에임/마우스 스크린 좌표. 잠금 시 화면 중앙, 아니면 마우스 위치.</summary>
@@ -123,12 +140,14 @@ public class MouseCameraController : MonoBehaviour
     [Tooltip("걷는 빠르기(초당 거리). Shift를 누르면 조금 빨라진다.")]
     public float walkSpeed = 4.2f;
     /// <summary>WASD로 바닥을 걷는다. 눈높이는 그대로이고, 벽과 책상 앞에서 멈춘다.</summary>
-    private void Walk()
+    private void Walk() { WalkFacing(_currentAngleY); }
+    /// <summary>yaw(도) 쪽을 앞으로 삼아 WASD로 걷는다. 태블릿을 든 채 걸을 때는 DeskViewController가 부른다.</summary>
+    public void WalkFacing(float facing)
     {
         if (!WalkEnabled) { return; }
         float forward = (Input.GetKey(KeyCode.W) ? 1f : 0f) - (Input.GetKey(KeyCode.S) ? 1f : 0f), side = (Input.GetKey(KeyCode.D) ? 1f : 0f) - (Input.GetKey(KeyCode.A) ? 1f : 0f);
         if (forward == 0f && side == 0f) { return; }
-        float yaw = _currentAngleY * Mathf.Deg2Rad;
+        float yaw = facing * Mathf.Deg2Rad;
         Vector3 ahead = new Vector3(Mathf.Sin(yaw), 0f, Mathf.Cos(yaw)), right = new Vector3(ahead.z, 0f, -ahead.x);
         Vector3 step = Vector3.ClampMagnitude(ahead * forward + right * side, 1f) * walkSpeed * (Input.GetKey(KeyCode.LeftShift) ? 1.6f : 1f) * Time.unscaledDeltaTime;
         // 가로와 세로를 따로 옮긴다. 막힌 쪽만 멈추고 벽을 따라 미끄러진다.

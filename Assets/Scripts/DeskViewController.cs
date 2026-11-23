@@ -125,9 +125,9 @@ public sealed class DeskViewController : MonoBehaviour
         if (PauseMenuController.BlocksInput) { Hovered = DeskViewTarget.None; return; }
         if (!Ready)
         { Hovered = DeskViewTarget.None; return; }
-        if (MouseCameraController.TextEntryActive)
+        if (MouseCameraController.TextEntryActive || MouseCameraController.TextEntryEscape)
         { Hovered = DeskViewTarget.None; return; }
-        // 쪽지를 들고 읽는 동안에는 화면 단축키가 먹지 않는다(Space는 쪽지를 내려놓는 데 쓴다).
+        // 쪽지를 들고 읽는 동안에는 화면 단축키가 먹지 않는다.
         if (DoorNotes.Holding || RoomShell.Cinematic)
         { Hovered = DeskViewTarget.None; return; }
         if (Input.GetKeyDown(KeyCode.Tab))
@@ -137,16 +137,6 @@ public sealed class DeskViewController : MonoBehaviour
             else if (PhoneCallController.Instance != null)
             { ExitView(true); PhoneCallController.Instance.Raise(); }
             consumedFrame = Time.frameCount;
-            return;
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (PhoneCallController.IsRaised)
-            { PhoneCallController.Instance.Lower(); }
-            else if (IsFocused || moving || custom)
-            { ExitView(); }
-            else
-            { Focus(DeskViewTarget.Chart); }
             return;
         }
         // 화면 단축키: 1 종목 목록, 2 가운데 화면만, 3 채팅까지. 같은 키를 다시 누르면 자리로 돌아온다.
@@ -184,7 +174,8 @@ public sealed class DeskViewController : MonoBehaviour
         }
         if (IsFocused)
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            // 확대한 화면에서 나올 때도 상호작용 키(F)를 쓴다. 들어갈 때와 같은 키다(예전의 Space는 없앴다).
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(GameKeyBindings.Interact) && Time.frameCount != consumedFrame)
             { ExitView(); return; }
             if (MonitorView(Target) && !moving) { MoveMonitorView(); }
             return;
@@ -194,7 +185,8 @@ public sealed class DeskViewController : MonoBehaviour
         Hovered = FindHovered(MouseCameraController.GetAimScreenPosition());
         if (!MouseCameraController.IsCursorLocked && EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         { Hovered = DeskViewTarget.None; return; }
-        if (Hovered != DeskViewTarget.None && Input.GetMouseButtonDown(0))
+        // 바라보는 화면은 클릭으로도, 상호작용 키(F)로도 확대한다(서랍·침대·문과 같은 키).
+        if (Hovered != DeskViewTarget.None && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(GameKeyBindings.Interact)))
         { Focus(Hovered); }
     }
 
@@ -317,7 +309,20 @@ public sealed class DeskViewController : MonoBehaviour
             { ExitView(true); return; }
             if (moving && tablet.IsFramed)
             { moving = false; SetPointerTarget(Target); }
-            Vector2 input = MouseCameraController.TextEntryActive || Input.GetMouseButton(0) ? Vector2.zero : new Vector2(
+            // 태블릿을 든 채로도 걸어 다닌다(WASD). 오른쪽 버튼을 누른 채 끌면 둘러본다. 글을 쓰는 중에는 움직이지 않는다.
+            if (mouseLook != null && !MouseCameraController.TextEntryActive)
+            {
+                if (Input.GetMouseButton(1))
+                {
+                    Vector3 angles = home.rotation.eulerAngles; float pitch = angles.x > 180f ? angles.x - 360f : angles.x;
+                    float turn = mouseLook.sensitivity * GameSettings.Current.sensitivity;
+                    pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * turn, -80f, 80f);
+                    home.rotation = Quaternion.Euler(pitch, angles.y + Input.GetAxis("Mouse X") * turn, 0f);
+                }
+                mouseLook.WalkFacing(home.rotation.eulerAngles.y);
+                home.position = transform.position;
+            }
+            Vector2 input = MouseCameraController.TextEntryActive || Input.GetMouseButton(0) || Input.GetMouseButton(1) ? Vector2.zero : new Vector2(
                 Input.mousePosition.x / Mathf.Max(1f, Screen.width) * 2f - 1f,
                 Input.mousePosition.y / Mathf.Max(1f, Screen.height) * 2f - 1f);
             input = Vector2.ClampMagnitude(input, 1f);

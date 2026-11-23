@@ -29,7 +29,9 @@ public enum PlayerTalkKind { Other, Analyze, Insult, Brag, Lament, AskBuy, AskSe
     // AskTerm: "지정가가 뭐임"(낱말 풀이. Topic에 풀이의 열쇠가 든다).
     AskWhich, AskOutlook, AskHolders, AskPrice, AskTerm,
     // AskCompany: "산삼전자 뭐하는 회사임"(업종으로 답한다). AskCompare: "산전이랑 그푸 중에 뭐 삼?"(Other에 둘째 종목이 든다).
-    AskCompany, AskCompare }
+    AskCompany, AskCompare,
+    // AskListing: "고층건설 상장 언제임?"·"언제부터 거래됨?"(상장했는지, 언제 거래가 열리는지를 사실대로 답한다. 종목이 없으면 규칙을 알려 준다).
+    AskListing }
 
 public struct PlayerTalk
 {
@@ -74,6 +76,22 @@ public struct PlayerTalk
     public bool RudeFamily, RudeDeath;
     /// <summary>"!분석" 뒤에 적은 말(종목을 못 찾았을 때 되돌려 보여 준다).</summary>
     public string Argument;
+    /// <summary>AI 명령의 갈래: analyze, whale, alert, record, compare, news, room, account, upgrade, help. 명령이 아니면 null.</summary>
+    public string Command;
+    // 새벽 관찰실 AI의 명령. 인자를 받지 않는 명령(bare)은 뒤에 글자가 바로 붙으면 명령으로 치지 않는다("!방구").
+    private static readonly (string id, bool bare, string[] words)[] AiCommands =
+    {
+        ("analyze", false, new[] { "!분석", "!analyze", "!analyse", "!analysis", "!分析" }),
+        ("whale", false, new[] { "!세력", "!whales", "!whale", "!仕手", "!大口" }),
+        ("alert", false, new[] { "!알림", "!alerts", "!alert", "!alarm", "!通知", "!アラート" }),
+        ("record", true, new[] { "!성적", "!적중률", "!record", "!score", "!成績" }),
+        ("compare", false, new[] { "!비교", "!compare", "!vs", "!比較" }),
+        ("news", false, new[] { "!뉴스", "!news", "!ニュース" }),
+        ("room", true, new[] { "!방", "!room", "!部屋" }),
+        ("account", true, new[] { "!내계좌", "!계좌", "!account", "!portfolio", "!口座" }),
+        ("upgrade", false, new[] { "!업그레이드", "!upgrade", "!アップグレード" }),
+        ("help", true, new[] { "!도움말", "!도움", "!명령어", "!help", "!commands", "!ヘルプ" }),
+    };
 
     // 영어·일본어에서 실제로 쓰는 말을 표마다 더 보탠다(위의 표들은 한국어를 먼저 적고 번역을 곁들인 것이라 그 나라 말투가 빠져 있었다).
     // 영어는 미국 주식 커뮤니티·디스코드, 일본어는 掲示板·株クラ의 말투를 따른다. 열쇠는 아래 표의 이름, "topic."으로 시작하면 갈래 표의 갈래다.
@@ -291,6 +309,30 @@ public struct PlayerTalk
         "언제 오르", "언제 오름", "언제 올라", "내일 오를", "내일 오르", "내일은 어", "내일 장 어", "내일 어떨", "전망", "다 떨어지", "다 빠지", "is it the bottom", "is this the top", "the bottom", "the top", "going up tomorrow", "will it go up", "will it drop", "why is everything", "outlook", "底か", "天井か", "明日上が", "まだ上が", "まだ下が", "見通し" });
     private static string[] HolderAsk => HolderAskLex[Lang];
     private static readonly string[][] HolderAskLex = Lex("HolderAsk", new[] { "들고 있는 사람", "들고있는 사람", "들고 있는 분", "물린 사람", "물린 분", "산 사람", "탄 사람", "가진 사람", "있는 사람", "누가 삼", "누가 샀", "누가 들", "누가 탔", "보유자", "홀더", "주주", "who holds", "who's holding", "who is holding", "anyone holding", "anyone in", "holders", "持ってる人", "ホルダー", "買った人" });
+    // 상장·거래 시작을 묻는 말.
+    private static string[] ListingAsk => ListingAskLex[Lang];
+    private static readonly string[][] ListingAskLex = Lex(null, new[] { "상장", "언제부터 거래", "거래 언제", "언제 거래", "거래 가능", "거래 시작", "언제 살 수", "언제부터 살", "언제 열", "언제 풀",
+        "listing", "listed", "lists", "get listed", "ipo", "when can i buy", "when can we buy", "when does it trade", "start trading", "starts trading", "when does it open", "tradable", "tradeable",
+        "上場", "いつから買える", "いつから取引", "いつ買える", "取引開始", "いつから売買" });
+    private static string[] DelistAsk => DelistAskLex[Lang];
+    private static readonly string[][] DelistAskLex = Lex(null, new[] { "상장폐지", "상장 폐지", "상폐", "delist", "delisted", "delisting", "上場廃止" });
+    /// <summary>아직 상장하지 않은 회사를 이름으로 찾는다(이름이 그대로 들어 있을 때만). 상장 물음에만 쓴다.</summary>
+    private static Stock FindUnlistedStock(string words)
+    {
+        var manager = StockManager.Instance; string text = Squeeze(words);
+        if (manager == null || text.Length == 0) { return null; }
+        Stock best = null; int bestLength = 0;
+        foreach (var stock in manager.UnlistedStocks)
+        {
+            if (stock == null || stock.IsListed) { continue; }
+            foreach (string raw in new[] { GameLocale.Text(stock.stockName), stock.stockName })
+            {
+                string name = Squeeze(raw);
+                if (name.Length >= 2 && name.Length > bestLength && text.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0) { best = stock; bestLength = name.Length; }
+            }
+        }
+        return best;
+    }
     private static string[] PriceAsk => PriceAskLex[Lang];
     private static readonly string[][] PriceAskLex = Lex("PriceAsk", new[] { "얼마임", "얼마야", "얼마냐", "얼마에요", "얼마예요", "얼마지", "지금 얼마", "현재가", "가격이", "가격 얼마", "가격 좀", "시세", "how much is", "price of", "what's the price", "whats the price", "いくら", "株価" });
     private static string[] BoughtWords => BoughtWordsLex[Lang];
@@ -770,11 +812,24 @@ public struct PlayerTalk
         string line = (text ?? "").Trim(); string lower = line.ToLowerInvariant();
         if (line.Length == 0) { return talk; }
         if (Lang == 1) { lower = (" " + lower + " ").Replace(" you guys ", " you ").Replace(" y'all ", " you ").Replace(" yall ", " you ").Replace(" u ", " you ").Replace(" ur ", " your ").Replace(" r ", " are ").Trim(); }
-        foreach (string command in new[] { "!분석", "！분석", "!analyze", "!analyse", "!analysis", "!分析", "！分析" })
+        if (lower[0] == '!' || lower[0] == '！')
         {
-            if (!lower.StartsWith(command, StringComparison.Ordinal)) { continue; }
-            talk.Kind = PlayerTalkKind.Analyze; talk.Argument = line.Substring(command.Length).Trim(); talk.Stock = FindStock(talk.Argument, true);
-            return talk;
+            string head = "!" + lower.Substring(1);
+            foreach (var entry in AiCommands)
+            {
+                foreach (string command in entry.words)
+                {
+                    if (!head.StartsWith(command, StringComparison.Ordinal) || entry.bare && head.Length > command.Length && !char.IsWhiteSpace(head[command.Length])) { continue; }
+                    talk.Kind = PlayerTalkKind.Analyze; talk.Command = entry.id; talk.Argument = line.Substring(command.Length).Trim(); talk.Stock = FindStock(talk.Argument, true);
+                    if (entry.id == "compare" && talk.Stock != null)
+                    {
+                        // 둘째 종목: 온전한 이름이나 줄임말로 쓴 것을 먼저 찾고, 없으면 낱말마다 앞머리로 찾는다.
+                        talk.Other = FindOtherStock(talk.Argument, talk.Stock);
+                        if (talk.Other == null) { foreach (string word in talk.Argument.Split(' ', ',', '/')) { var found = FindStock(word, true); if (found != null && found != talk.Stock) { talk.Other = found; break; } } }
+                    }
+                    return talk;
+                }
+            }
         }
         talk.CallsAll = Has(lower, All); talk.Laughs = LaughPattern.IsMatch(line); talk.Cries = CryPattern.IsMatch(line);
         // 묻는 말꼬리는 웃음·울음·마침표를 떼고 본다("살까 ㅋㅋ", "언제 오르냐..").
@@ -845,6 +900,10 @@ public struct PlayerTalk
         else if (Has(finance, PickAsk) && talk.Stock == null && !chat) { talk.Kind = PlayerTalkKind.AskPick; }
         // "노보 평단 얼마임 다들"도 들고 있는 사람에게 묻는 말이다.
         else if (talk.Stock != null && (HasWord(lower, HolderAsk) || talk.Wonders && HasWord(lower, AverageWords) && !HasWord(lower, MyAverageWords))) { talk.Kind = PlayerTalkKind.AskHolders; }
+        // "상장 언제임?"·"언제부터 거래됨?": 종목에 대한 의견을 묻는 말이 아니다(예전에는 의견으로 읽어서 "재미없음 요즘" 같은 답이 달렸다).
+        else if (talk.Wonders && HasWord(lower, ListingAsk) && !HasWord(lower, DelistAsk)) { talk.Kind = PlayerTalkKind.AskListing; if (talk.Stock == null) { talk.Stock = FindUnlistedStock(line); } }
+        // "상장폐지 되는 거 아님?": 봇이 답할 수 있는 사실이 없다. 종목 의견("좀 비싼 듯")으로 받으면 동문서답이므로 모르는 물음으로 둔다(대개 아무도 받지 않는다).
+        else if (talk.Wonders && HasWord(lower, DelistAsk)) { talk.Kind = PlayerTalkKind.Question; }
         else if (talk.Stock != null && HasWord(lower, NickAsk)) { talk.Kind = PlayerTalkKind.AskNick; }
         else if (talk.Stock != null && Has(lower, SellAsk)) { talk.Kind = PlayerTalkKind.AskSell; }
         else if (talk.Stock != null && Has(lower, BuyAsk)) { talk.Kind = PlayerTalkKind.AskBuy; }
@@ -1254,6 +1313,7 @@ public sealed partial class InvestorSociety
         }
         long id = PostPlayer(room, text, card);
         PlayerLines++;
+        if (card != null) { SteamAchievements.Unlock(SteamAchievements.ProfitProof); }
         TraceTalk("나: " + text + "  → " + talk.Kind + (talk.Stock != null ? " " + talk.Stock.symbol : "") + (float.IsNaN(talk.Percent) ? "" : " " + talk.Percent.ToString("0.#") + "%") + (card != null ? " 인증 " + actual.ToString("+0.0;-0.0") + "%" : "")
             + (talk.CallsAll ? " 부름" : "") + (talk.Laughs ? " 웃음" : "") + (spam ? " 도배" : ""));
         if (spam) { Plan(room, "spam", null, id, now + 1.2, 0, 1, .7f); return true; }
@@ -1333,6 +1393,7 @@ public sealed partial class InvestorSociety
         {
             case PlayerTalkKind.Analyze:
                 if (room != NpcLeadingRoom.RoomId) { Plan(room, "aiOnly", null, id, now + 1.4, 0, 1, .9f, sure: true); break; }
+                if (talk.Command != null && talk.Command != "analyze") { QueueAiCommand(room, talk, id, now); break; }
                 analysisJobs.Add(new AnalysisJob { due = now + 1.2 + HypeRandom.Next(), room = room, stock = talk.Stock, argument = talk.Argument, replyTo = id });
                 break;
             case PlayerTalkKind.Insult:
@@ -1415,6 +1476,10 @@ public sealed partial class InvestorSociety
                 break;
             case PlayerTalkKind.AskPrice:
                 Plan(room, "price", talk.Stock, id, now + 1.1, near, HypeRandom.Range(1, 3), .6f, sure: true);
+                break;
+            case PlayerTalkKind.AskListing:
+                // 상장했는지, 언제부터 거래되는지: 봇이 아는 사실(종목 창과 공지에 나오는 것)로 답한다.
+                Plan(room, "listing", talk.Stock, id, now + 1.2, near, HypeRandom.Range(1, 3), .5f, sure: true);
                 break;
             case PlayerTalkKind.AskCompany:
                 // "산삼전자 뭐하는 회사임": 종목 정보에 나오는 업종으로 답한다.
@@ -1687,6 +1752,7 @@ public sealed partial class InvestorSociety
             if (analysisJobs[i].due > now) { i++; continue; }
             var job = analysisJobs[i]; analysisJobs.RemoveAt(i); PostAnalysis(job, now);
         }
+        TickDawnAi(now);
         if (now >= talkNextReply)
         {
             for (int i = 0; i < talkReplies.Count; i++)
@@ -1857,9 +1923,12 @@ public sealed partial class InvestorSociety
         if (card == null) { return; }
         string name = GameLocale.Text(job.stock.stockName ?? job.stock.symbol);
         string verdict = TabletGroupChatUI.AnalysisVerdict(card.score);
+        // 정밀 분석(!업그레이드)이면 근거를 더 붙인다.
+        if (DawnAi.Tier > 0) { string more = AnalyzeMore(job.stock, card); if (more.Length > 0) { reason += " " + more; } }
         long id = PostAnalyst(job.room, TalkWord(name + " 분석입니다. " + reason + " 지금은 '" + verdict + "' 구간으로 봅니다. 참고용입니다.",
             name + ". " + reason + " I read this as '" + verdict + "' for now. For reference only.", name + "の分析です。" + reason + " 現時点では「" + verdict + "」と見ます。参考情報です。"), card, job.replyTo);
         AnalysesPosted++;
+        NoteAiCall(job.room, job.stock, card, id, now);
         TraceTalk("    > AI: " + job.stock.symbol + " 점수 " + card.score + " (" + verdict + ") 시가 " + Money(card.open) + " 현재 " + Money(card.price) + " 고가 " + Money(card.high) + " 저가 " + Money(card.low) + " · " + reason);
         // 가끔 봇 하나가 결과에 한마디 한다. 그 말대로 사고팔지는 않는다.
         Plan(job.room, card.score >= 58 ? "aiReact.buy" : card.score < 42 ? "aiReact.sell" : "aiReact.hold", job.stock, id, now + 1.6, 0, 1, .55f);
@@ -1892,6 +1961,14 @@ public sealed partial class InvestorSociety
         string name = GameLocale.Text(stock.stockName ?? stock.symbol);
         // 봇도 이름을 줄여 쓰곤 한다.
         if (name.Length >= 4 && HypeRandom.Next() < .35) { name = name.Substring(0, Math.Max(2, name.Length / 2)); }
+        // 넷에 한 번은 분석 대신 세력 탐지를 시킨다.
+        if (HypeRandom.Next() < .25)
+        {
+            long wondered = PostBotLine(bot, room, TalkWord("!세력 ", "!whale ", "!仕手 ") + name, "talk.analyze", stock, 0);
+            hypeSpokeAt[bot.Social.Id] = now;
+            DawnAi.Jobs.Add(new DawnAi.Job { due = now + 1.4 + HypeRandom.Next(), room = room, command = "whale", argument = name, stock = stock, replyTo = wondered });
+            return;
+        }
         long asked = PostBotLine(bot, room, TalkWord("!분석 ", "!analyze ", "!分析 ") + name, "talk.analyze", stock, 0);
         hypeSpokeAt[bot.Social.Id] = now;
         analysisJobs.Add(new AnalysisJob { due = now + 1.4 + HypeRandom.Next(), room = room, stock = stock, argument = name, replyTo = asked });
