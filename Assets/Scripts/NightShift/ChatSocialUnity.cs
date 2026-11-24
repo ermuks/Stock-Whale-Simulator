@@ -68,6 +68,8 @@ public sealed partial class InvestorSociety
             if (IsRoomOpen(id) && GetRoom(id).Members.Count >= 2) { afterHoursRooms.Add(id); }
         }
         AfterHoursAdvance(manager.stocks, afterHoursRooms);
+        // 수수료 0% 이벤트 날에는 장이 열리기 전(08:30)부터 그 얘기가 돈다. 장중의 틱은 SocialAdvance에서 돈다.
+        TickFeeHolidayTalk();
     }
     // 홍보: 플레이어가 공개방에 자기 리딩방을 알린다. 그 글을 본 사람의 인지가 오르고, 들어올지는 각자 정한다.
     public const string PromoteTemplate = "PLAYER.PROMOTE";

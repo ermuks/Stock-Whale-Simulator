@@ -40,13 +40,20 @@ public sealed class WhaleOperationState
     /// 세력은 자기 회사의 대주주다. 원래 지분을 띄운 값에 넘기고 싸게 되사면 이익이고, 올리느라 비싸게 산 것을 싸게 던지면 손해다.
     /// 던질 때는 떨어뜨리려는 깊이(dumpFloor, 언제나 시작가보다 높다) 아래로 팔지 않는다.
     /// </summary>
-    public decimal Profit => proceeds - spent + lastPosition * startPrice;
+    public decimal Profit => proceeds - spent - fees + lastPosition * startPrice;
+    /// <summary>
+    /// 주식 수가 변하지 않는 거래에서 나간 매도 수수료(통정매매). 넘겼다가 되받으면 주식은 그대로인데 수수료만 나간다.
+    /// 보통의 매도 수수료는 proceeds에 이미 빠져 있다(판 돈은 수수료를 뗀 값으로 적는다). 세력은 이 둘을 모두 비용으로 본다.
+    /// 예전 저장에는 없어서 0으로 읽힌다.
+    /// </summary>
+    public decimal fees;
     /// <summary>작전으로 산 수량의 합과, 그 평균 매수가(기록용).</summary>
     public decimal sharesBought;
     public decimal AverageCost => sharesBought > 0m ? spent / sharesBought : 0m;
     /// <summary>지금까지의 손익: 판 돈 − 산 돈(실현), 그리고 남은 작전 물량을 지금 값으로 친 것까지 더한 값(평가).</summary>
-    public decimal Realized => proceeds - spent;
-    public decimal Paper(decimal price) => proceeds - spent + Math.Max(0m, lastPosition) * price;
+    public decimal Realized => proceeds - spent - fees;
+    /// <summary>남은 물량을 지금 값에 다 팔면 그때도 수수료가 나간다. 그것까지 뺀 값이다.</summary>
+    public decimal Paper(decimal price) => proceeds - spent - fees + Trader.NetOfSellFee(Math.Max(0m, lastPosition) * price);
     /// <summary>이번 물결을 시작할 때까지의 고점. 이번 물결이 이것을 넘지 못하면 계단이 끊긴 것이다.</summary>
     public decimal priorPeak;
     /// <summary>넘기는 동안 마지막으로 팔린 때(단계 시작부터의 초)와 그때의 판 금액.</summary>
@@ -175,7 +182,7 @@ public static class WhaleOperationPlan
     public static void Begin(WhaleOperationState state, decimal price, decimal budget, decimal extraShares, int day, Func<double> roll, bool fast = false)
     {
         state.stage = WhaleOperationState.Build;
-        state.budget = budget; state.spent = 0m; state.proceeds = 0m; state.lastPosition = 0m; state.boughtShares = 0m; state.extraShares = Math.Max(0m, decimal.Floor(extraShares));
+        state.budget = budget; state.spent = 0m; state.proceeds = 0m; state.fees = 0m; state.lastPosition = 0m; state.boughtShares = 0m; state.extraShares = Math.Max(0m, decimal.Floor(extraShares));
         state.startPrice = price; state.peakPrice = price; state.targetPrice = 0m; state.floorPrice = price * FloorShare;
         double tail = roll();
         state.gain = .15m + (decimal)tail * .25m; state.waveGain = state.gain; state.dumpFloor = 0m;
@@ -205,7 +212,8 @@ public static class WhaleOperationPlan
         // 체결된 만큼만 쓴 돈·번 돈으로 친다. 걸어 두기만 한 주문은 세지 않는다.
         decimal moved = position - state.lastPosition;
         if (moved > 0m) { state.sharesBought += moved; state.spent += moved * price; if (state.stage == WhaleOperationState.Repump) { state.repumpSpent += moved * price; } if (state.stage == WhaleOperationState.Scoop) { state.scoopSpent += moved * price; } }
-        else if (moved < 0m) { state.proceeds += -moved * price; if (state.stage == WhaleOperationState.Shake) { state.shakeSold += -moved; } }
+        // 판 돈은 매도 수수료를 뗀 값으로 적는다. 손에 들어온 돈만 번 돈이다(다음 물결의 자금, 이익 판단이 모두 이 값을 쓴다).
+        else if (moved < 0m) { state.proceeds += Trader.NetOfSellFee(-moved * price); if (state.stage == WhaleOperationState.Shake) { state.shakeSold += -moved; } }
         state.boughtShares = Math.Max(state.boughtShares, position);
         state.lastPosition = position;
         if (price > state.peakPrice) { state.peakPrice = price; }

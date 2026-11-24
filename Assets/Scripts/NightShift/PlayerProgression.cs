@@ -12,8 +12,8 @@ public sealed partial class PlayerProgression : MonoBehaviour
         public int schemaVersion = 1;
         // 리딩방을 여는 데 한 번 내는 돈.
         public long leadingOpeningCost = 100000000;
-        // 작전 도구 '종가 관리'가 열리는 누적 거래대금.
-        public long tacticCloseTurnover = 500000000;
+        // 작전 도구 '불붙이기·내려찍기·종가 관리'가 열리는 누적 거래대금(예전에는 5억이었다).
+        public long tacticCloseTurnover = 100000000;
         // 내 비상장기업을 세우는 데 드는 돈. 회사의 첫 값어치를 뺀 나머지는 그 회사의 자본금으로 들어간다.
         public long companyFoundingCost = 300000000;
         // 새벽 관찰실: 여는 데 한 번 내는 돈, 열 수 있는 누적 거래대금, 들어가 있는 동안 하루마다 내는 이용료.

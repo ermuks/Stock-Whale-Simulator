@@ -131,6 +131,22 @@ public partial class WhaleBot
         if (manager == null || manager.stocks == null) { return; }
         int day = Today();
         if (day != planDay) { planDay = day; extraToday = UnityEngine.Random.value < ExtraOperationChance; }
+        // 수수료 0% 이벤트 날: 팔 때 떼이는 돈이 없으니 세력들이 계획에 없던 작전을 벌인다. 장이 열리면 쉬고 있던 세력마다 높은 확률로 바로 시작한다.
+        // 즉흥이라 매집이 짧다(1~3분). 쉬는 날도 따지지 않는다. 하루에 한 번만 정한다.
+        if (FeeHoliday.Active && MarketDayController.CanTrade && holidayPlanDay != day)
+        {
+            holidayPlanDay = day; int started = 0, idle = 0;
+            foreach (var stock in manager.stocks)
+            {
+                if (!(stock.Owner is WhaleBot whale) || !whale.CanOperate(stock, day, false)) { continue; }
+                idle++;
+                if (UnityEngine.Random.value >= HolidayOperationChance) { continue; }
+                whale.BeginOperation(day, true); started++;
+            }
+            HolidayOperationsTotal += started;
+            Debug.Log($"[세력] 수수료 0% 이벤트 — 쉬고 있던 세력 {idle}곳 가운데 {started}곳이 즉흥 작전을 시작");
+            return;
+        }
         int active = 0;
         foreach (var stock in manager.stocks)
         {
@@ -179,7 +195,12 @@ public partial class WhaleBot
         return ratio * ratio;
     }
 
-    private void BeginOperation(int day)
+    /// <summary>수수료 0% 이벤트 날에 쉬고 있던 세력이 즉흥 작전을 벌일 확률, 그리고 그 작전의 매집 시간(초).</summary>
+    public const float HolidayOperationChance = .75f, ImpromptuBuildMin = 60f, ImpromptuBuildMax = 180f;
+    private static int holidayPlanDay = -1;
+    /// <summary>확인용: 수수료 0% 이벤트 날에 시작된 즉흥 작전의 수.</summary>
+    public static int HolidayOperationsTotal;
+    private void BeginOperation(int day, bool impromptu = false)
     {
         var stock = OwnedCompany;
         operation ??= new WhaleOperationState();
@@ -196,9 +217,11 @@ public partial class WhaleBot
         extra = Math.Min(extra, Math.Max(0m, GetHolding(stock)));
         bool fast = Environment.GetEnvironmentVariable("DONDON_WHALE_FAST") == "1";
         WhaleOperationPlan.Begin(operation, stock.currentPrice, budget, extra, day, Roll, fast);
+        // 즉흥 작전은 오래 모으지 않는다. 그날 안에 올리고 넘겨야 한다.
+        if (impromptu && !fast) { operation.buildSeconds = ImpromptuBuildMin + (float)Roll() * (ImpromptuBuildMax - ImpromptuBuildMin); }
         // 누군가 이 계획을 플레이어에게 흘린다: 어느 종목을 몇 시 몇 분에 끌어올리는지.
         DoorNotes.Instance?.AnnounceAfterTrading(stock, operation.buildSeconds);
-        Debug.Log($"[세력] 작전 시작 — {stock.stockName}({stock.symbol}) 시작가 {stock.currentPrice:N0} · 예산 {budget:N0}돈 · 목표 +{operation.gain * 100m:0}% · 흔들기 {operation.shakes}회 · 원래 지분에서 {operation.extraShares:N0}주까지 · 매집 {operation.buildSeconds:0}초 / 끌어올리기 {operation.driveSeconds:0}초");
+        Debug.Log($"[세력] {(impromptu ? "즉흥 " : "")}작전 시작 — {stock.stockName}({stock.symbol}) 시작가 {stock.currentPrice:N0} · 예산 {budget:N0}돈 · 목표 +{operation.gain * 100m:0}% · 흔들기 {operation.shakes}회 · 원래 지분에서 {operation.extraShares:N0}주까지 · 매집 {operation.buildSeconds:0}초 / 끌어올리기 {operation.driveSeconds:0}초");
     }
 
     private bool dumpTalked;

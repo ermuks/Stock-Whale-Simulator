@@ -18,8 +18,13 @@ public partial class WhaleBot
     private const decimal WallIdleShare = .6m, WallBudgetShare = .5m, WallMinimumShare = .05m;
     /// <summary>종가 관리: 마감 이만큼 전부터, 작전 예산의 6%까지.</summary>
     private const float CloseSeconds = 30f; private const decimal CloseBudgetShare = .06m, CloseStepShare = .006m;
+    /// <summary>통정매매에 쓸 수 있는 수수료: 이번 물결의 기대 이익(예산 × 목표 상승률)의 이만큼까지.</summary>
+    private const decimal WashFeeShare = .02m;
     private float washNext, wallNext, closeNext;
-    private decimal wallPrice, closeSpent, washPainted;
+    private decimal wallPrice, closeSpent, washPainted, washFees;
+    private bool washStopLogged;
+    /// <summary>확인용: 세력 전체가 통정매매로 낸 수수료.</summary>
+    public static decimal WashFeesTotal;
     private int closeDay = -1, washRounds, wallsPlaced;
     private bool washLogged, wallLogged, closeLogged;
     /// <summary>확인용: 세력 전체가 쓴 수법의 횟수와 금액.</summary>
@@ -34,7 +39,13 @@ public partial class WhaleBot
         if (!MarketDayController.CanTrade) { return; }
 
         bool igniting = stage == WhaleOperationState.Build && operation.stageSeconds >= operation.buildSeconds * .8f;
-        if ((igniting || driving && OperationHeat < WashBelowHeat) && now >= washNext)
+        // 통정매매는 넘길 때마다 매도 수수료가 나가고 들어오는 돈은 없다. 세력은 그 비용을 이번 물결에서 벌려는 돈에 견준다:
+        // 수수료 합계가 기대 이익(예산 × 이번 물결의 목표 상승률)의 일정 몫을 넘으면 더는 부풀리지 않는다.
+        decimal washAllowance = operation.budget * Math.Max(.10m, operation.waveGain) * WashFeeShare;
+        bool washAffordable = washFees < washAllowance;
+        if (!washAffordable && !washStopLogged && washRounds > 0)
+        { washStopLogged = true; Debug.Log($"[세력] 수법 — 통정매매 중단: {stock.stockName}({stock.symbol}) 수수료 {washFees:N0}돈이 한도 {washAllowance:N0}돈에 닿음 ({washRounds}바퀴, {washPainted:N0}돈)"); }
+        if (washAffordable && (igniting || driving && OperationHeat < WashBelowHeat) && now >= washNext)
         {
             washNext = now + 1.6f + (float)Roll() * 1.4f;
             decimal usual = StockInterestManager.Instance == null ? 0m : (decimal)StockInterestManager.Instance.UsualTurnover(stock);
@@ -43,6 +54,10 @@ public partial class WhaleBot
             if (painted > 0m)
             {
                 washRounds++; washPainted += painted; WashRoundsTotal++; WashPaintedTotal += painted;
+                // 넘길 때 내 매도에, 되받을 때 차명 계좌의 매도에 수수료가 붙는다. 둘 다 내 돈에서 나가므로 찍힌 거래대금 전체에 대한 수수료가 작전 비용이다.
+                // (수수료 0% 이벤트 날에는 0이다. 그날은 마음껏 부풀린다.)
+                decimal fee = painted * Trader.SellFeeRate;
+                washFees += fee; operation.fees += fee; WashFeesTotal += fee;
                 if (!washLogged) { washLogged = true; Debug.Log($"[세력] 수법 — 통정매매 시작: {stock.stockName}({stock.symbol}) 한 바퀴 {painted:N0}돈, 평소 5초 거래대금 {usual:N0}돈"); }
             }
         }
@@ -93,6 +108,6 @@ public partial class WhaleBot
     private void EndTactics(Stock stock)
     {
         if (wallPrice > 0m && stock != null) { ManipulationTools.PullWall(this, stock, wallPrice); WallsPulledTotal++; }
-        wallPrice = 0m; washLogged = wallLogged = false; washRounds = wallsPlaced = 0; washPainted = 0m;
+        wallPrice = 0m; washLogged = wallLogged = washStopLogged = false; washRounds = wallsPlaced = 0; washPainted = 0m; washFees = 0m;
     }
 }

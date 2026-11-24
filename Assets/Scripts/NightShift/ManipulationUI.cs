@@ -16,11 +16,18 @@ public sealed class ManipulationUI : MonoBehaviour
     {
         ["작전"] = ("Tactics", "仕掛け"), ["작전 도구"] = ("Tactics", "仕掛けの道具"), ["돈"] = ("DON", "ドン"),
         ["거래량 부풀리기"] = ("Paint the tape", "出来高の水増し"), ["허수 매수벽"] = ("Fake bid wall", "見せ板の買い壁"), ["종가 관리"] = ("Mark the close", "終値の吊り上げ"),
-        ["차명 계좌와 주고받아 거래량만 늘립니다. 45초."] = ("Trade with a nominee account to inflate volume. 45 seconds.", "名義口座と売り買いして出来高だけ増やします。45秒。"),
-        ["현재가 2.5% 아래에 큰 매수 주문을 겁니다. 못 거두면 체결됩니다."] = ("Rest a big bid 2.5% below the market. If not pulled in time, it fills.", "現在値の2.5%下に大きな買い注文を置きます。取り消しが遅れると約定します。"),
+        // 카드의 설명은 "무엇을 위해 쓰는가"를 먼저 적는다. 작동 방식은 그 뒤에 짧게 붙인다.
+        ["조용한 종목에 눈길을 끕니다. 45초 동안 저절로 거래가 활발해 보이게 합니다."] = ("Draw eyes to a quiet stock. For 45 seconds it looks busy by itself.", "静かな銘柄に注目を集めます。45秒間、自動で取引が活発に見えます。"),
+        ["받쳐 주는 큰돈이 있어 보이게 합니다. 값이 다가오면 저절로 거둡니다."] = ("Make it look like big money supports the price. It pulls itself when the price comes near.", "支える大口がいるように見せます。値が近づくと自動で取り消します。"),
         ["불붙이기"] = ("Ignite", "点火"), ["내려찍기"] = ("Slam", "叩き落とし"), ["실행"] = ("Fire", "実行"),
-        ["매도 호가를 한 번에 5%까지 쓸어 올립니다. 남은 주문은 바로 거둡니다."] = ("Sweep the asks up to 5% in one shot. Leftover is pulled at once.", "売り板を一気に5%まで買い上げます。残りの注文はすぐ取り消します。"),
-        ["보유 주식을 매수 호가에 한 번에 던져 6%까지 내립니다. 남은 주문은 바로 거둡니다."] = ("Dump your shares into the bids in one shot, down to 6%. Leftover is pulled at once.", "保有株を買い板へ一気に投げ、6%まで下げます。残りの注文はすぐ取り消します。"),
+        ["지금 바로 값을 끌어올립니다. 고른 만큼의 현금으로 한 번에 삽니다(최대 +5%)."] = ("Lift the price right now. Buys in one shot with the cash you picked (up to +5%).", "今すぐ値を上げます。選んだ分の現金で一気に買います(最大+5%)。"),
+        ["지금 바로 값을 끌어내립니다. 고른 만큼의 주식을 한 번에 팝니다(최대 -6%)."] = ("Drop the price right now. Sells the share of your stock you picked in one shot (down to -6%).", "今すぐ値を下げます。選んだ分の株を一気に売ります(最大-6%)。"),
+        ["오늘 종가를 높게 끝냅니다. 예약해 두면 마감 40초 전부터 저절로 삽니다."] = ("Finish today at a higher close. Arm it and it buys by itself through the last 40 seconds.", "今日の終値を高くします。予約しておくと引けの40秒前から自動で買います。"),
+        ["한 번에 쓸 비중"] = ("Size per use", "1回に使う割合"), ["실행 중"] = ("Running", "実行中"), ["쓸 돈"] = ("Cash to use", "使う現金"), ["팔 수량"] = ("Shares to sell", "売る株数"),
+        ["지금 바로 값을 끌어올립니다."] = ("Lift the price right now.", "今すぐ値を上げます。"), ["지금 바로 값을 끌어내립니다."] = ("Drop the price right now.", "今すぐ値を下げます。"),
+        ["오늘 종가를 높게 끝냅니다."] = ("Finish today at a higher close.", "今日の終値を高くします。"), ["조용한 종목에 눈길을 끕니다."] = ("Draw eyes to a quiet stock.", "静かな銘柄に注目を集めます。"),
+        ["받쳐 주는 큰돈이 있어 보이게 합니다."] = ("Make it look like big money supports the price.", "支える大口がいるように見せます。"), ["내 현금(내려찍기는 내 주식)에서 쓸 몫"] = ("Share of your cash (for Slam, of your shares)", "現金(叩き落としは保有株)から使う割合"),
+        ["누적 거래대금 1억 돈부터"] = ("From 100M DON turnover", "累計売買代金1億ドンから"), ["내 기업을 세운 뒤부터"] = ("After you found a company", "会社を設立してから"),
         ["불을 붙였습니다"] = ("Ignited", "点火しました"), ["내려찍었습니다"] = ("Slammed", "叩き落としました"),
         ["던질 주식이 없습니다"] = ("No shares to dump", "投げる株がありません"), ["받아 줄 호가가 없습니다"] = ("No bids to hit", "当てる買い板がありません"),
         ["예약하면 장 마감 40초 전부터 사들여 종가를 높게 찍습니다."] =
@@ -44,11 +51,14 @@ public sealed class ManipulationUI : MonoBehaviour
     private TMP_FontAsset font;
     private float scale, next;
     private RectTransform panel;
-    private Button tab, wash, wall, close, ignite, slam, previous, following;
+    private Button tab, act, previous, following;
     private readonly Button[] fractions = new Button[3];
     private readonly List<(TextMeshProUGUI label, string korean)> fixedLabels = new();
-    private TextMeshProUGUI washLock, wallLock, closeLock, igniteLock, slamLock, igniteLabel, slamLabel;
-    private TextMeshProUGUI stockName, price, washLabel, wallLabel, closeLabel, heat, painted, washLeft, wallCash, wallPrice, closeBudget, closeSpent, free, held, notice;
+    private readonly Button[] tools = new Button[5];
+    private readonly TextMeshProUGUI[] toolStates = new TextMeshProUGUI[5], toolNames = new TextMeshProUGUI[5], metricCaptions = new TextMeshProUGUI[2], metricValues = new TextMeshProUGUI[2], metricUnits = new TextMeshProUGUI[2];
+    private MiniPreview preview;
+    private int selected;
+    private TextMeshProUGUI stockName, price, toolTitle, toolLock, purpose, sizeLabel, actLabel, notice;
     private float fraction = .25f;
     private int locale = -1;
 
@@ -70,6 +80,16 @@ public sealed class ManipulationUI : MonoBehaviour
     }
     void OnDestroy() { if (instance == this) { instance = null; } }
 
+    // 도구는 열리는 순서대로 놓는다.
+    private static readonly PlayerTactics.Tool[] Order = { PlayerTactics.Tool.Ignite, PlayerTactics.Tool.Slam, PlayerTactics.Tool.Close, PlayerTactics.Tool.Wash, PlayerTactics.Tool.Wall };
+    private static readonly string[] Names = { "불붙이기", "내려찍기", "종가 관리", "거래량 부풀리기", "허수 매수벽" };
+    private static readonly string[] Purposes = { "지금 바로 값을 끌어올립니다.", "지금 바로 값을 끌어내립니다.", "오늘 종가를 높게 끝냅니다.", "조용한 종목에 눈길을 끕니다.", "받쳐 주는 큰돈이 있어 보이게 합니다." };
+    private static readonly MiniPreview.Kind[] Pictures = { MiniPreview.Kind.Ignite, MiniPreview.Kind.Slam, MiniPreview.Kind.Close, MiniPreview.Kind.Wash, MiniPreview.Kind.Wall };
+
+    /// <summary>
+    /// 왼쪽에서 도구를 고르면 오른쪽에 그 도구의 프리뷰(쓰면 차트가 어떻게 되는지)와 한 줄 설명, 그리고 단추 하나가 나온다.
+    /// 예전에는 다섯 도구의 설명과 단추, 아홉 줄의 현황이 한 화면에 모두 깔려 있었다.
+    /// </summary>
     private void Build()
     {
         panel = new GameObject("Area :: Tactics", typeof(RectTransform), typeof(Image)).GetComponent<RectTransform>();
@@ -79,43 +99,48 @@ public sealed class ManipulationUI : MonoBehaviour
 
         Label("Title", "작전 도구", 32, 8, 280, 56, 40);
         previous = Action("Previous Stock", "‹", 32, 88, 48, 56, () => Select(-1), false, false);
-        stockName = Text("Stock", 88, 88, 720, 64, 38);
-        following = Action("Next Stock", "›", 832, 88, 48, 56, () => Select(1), false, false);
-        price = Text("Current Price", 32, 160, 800, 48, 32); TradingOrderView.Numeric(price); price.alignment = TextAlignmentOptions.MidlineRight;
-        Label("Current Price Unit", "돈", 848, 160, 60, 48, 25).color = Muted;
+        stockName = Text("Stock", 90, 88, 300, 56, 30);
+        following = Action("Next Stock", "›", 398, 88, 48, 56, () => Select(1), false, false);
+        price = Text("Current Price", 452, 88, 112, 56, 27); TradingOrderView.Numeric(price); price.alignment = TextAlignmentOptions.MidlineRight;
+        Label("Current Price Unit", "돈", 570, 88, 40, 56, 22).color = Muted;
 
-        Label("Cash Label", "쓸 현금", 32, 222, 200, 48, 27).color = Muted;
+        // 왼쪽: 도구 다섯 가지. 이름만 적고, 잠겼는지 돌고 있는지만 옆에 붙인다.
+        for (int i = 0; i < Order.Length; i++)
+        {
+            int index = i; float y = 168 + i * 136;
+            tools[i] = Action("Tool " + i, Names[i], 32, y, 574, 120, () => { selected = index; next = 0f; }, false, true, 31);
+            var name = tools[i].GetComponentInChildren<TextMeshProUGUI>(true);
+            toolNames[i] = name; name.rectTransform.anchorMin = new Vector2(.06f, 0f); name.rectTransform.anchorMax = new Vector2(.66f, 1f); name.alignment = TextAlignmentOptions.MidlineLeft;
+            toolStates[i] = Text("Tool State " + i, 32 + 574 * .64f, y, 574 * .31f, 120, 21); toolStates[i].alignment = TextAlignmentOptions.MidlineRight;
+        }
+        var divider = new GameObject("Image :: Tactics Divider", typeof(RectTransform), typeof(Image)) { layer = gameObject.layer };
+        divider.GetComponent<Image>().color = TabletKitStyle.Line; divider.GetComponent<Image>().raycastTarget = false;
+        TradingOrderView.Place((RectTransform)divider.transform, panel, 632, 88, 1, 760, W, H);
+
+        // 오른쪽: 고른 도구.
+        toolTitle = Text("Tool Title", 660, 84, 520, 60, 38);
+        toolLock = Text("Tool Lock", 1060, 84, 508, 60, 23); toolLock.color = TabletKitStyle.Accent; toolLock.alignment = TextAlignmentOptions.MidlineRight;
+        var frame = new GameObject("Image :: Tactic Preview", typeof(RectTransform), typeof(Image)) { layer = gameObject.layer };
+        frame.GetComponent<Image>().color = new Color32(8, 15, 20, 255); frame.GetComponent<Image>().raycastTarget = false;
+        TradingOrderView.Place((RectTransform)frame.transform, panel, 660, 152, 908, 296, W, H);
+        preview = MiniPreview.Create("Tactic Preview Picture", frame.transform, font, 21f * scale);
+        purpose = Text("Tool Purpose", 660, 458, 908, 48, 26); purpose.color = Muted;
+        sizeLabel = Label("Cash Label", "한 번에 쓸 비중", 660, 520, 236, 48, 24); sizeLabel.color = Muted;
         for (int i = 0; i < fractions.Length; i++)
         {
             int index = i;
-            fractions[i] = Action("Cash Fraction " + i, Mathf.RoundToInt(Fractions[i] * 100f) + "%", 250 + i * 214, 222, 204, 48, () => { fraction = Fractions[index]; next = 0f; }, false, false);
+            fractions[i] = Action("Cash Fraction " + i, Mathf.RoundToInt(Fractions[i] * 100f) + "%", 904 + i * 224, 520, 216, 48, () => { fraction = Fractions[index]; next = 0f; }, false, false);
         }
-        // 다섯 가지를 한 화면에 둔다. 설명은 한 줄로 줄였다.
-        Card(0, 290, "불붙이기", "매도 호가를 한 번에 5%까지 쓸어 올립니다. 남은 주문은 바로 거둡니다.", out ignite, out igniteLabel, () => { PlayerTactics.Instance?.Ignite(Current, fraction); next = 0f; });
-        igniteLock = LockLine(0, 290);
-        Card(1, 402, "내려찍기", "보유 주식을 매수 호가에 한 번에 던져 6%까지 내립니다. 남은 주문은 바로 거둡니다.", out slam, out slamLabel, () => { PlayerTactics.Instance?.Slam(Current, fraction); next = 0f; });
-        slamLock = LockLine(1, 402);
-        Card(2, 514, "거래량 부풀리기", "차명 계좌와 주고받아 거래량만 늘립니다. 45초.", out wash, out washLabel, ToggleWash);
-        washLock = LockLine(2, 514);
-        Card(3, 626, "허수 매수벽", "현재가 2.5% 아래에 큰 매수 주문을 겁니다. 못 거두면 체결됩니다.", out wall, out wallLabel, ToggleWall);
-        wallLock = LockLine(3, 626);
-        Card(4, 738, "종가 관리", "예약하면 장 마감 40초 전부터 사들여 종가를 높게 찍습니다.", out close, out closeLabel, ToggleClose);
-        closeLock = LockLine(4, 738);
-
-        var divider = new GameObject("Image :: Tactics Divider", typeof(RectTransform), typeof(Image)) { layer = gameObject.layer };
-        divider.GetComponent<Image>().color = TabletKitStyle.Line; divider.GetComponent<Image>().raycastTarget = false;
-        TradingOrderView.Place((RectTransform)divider.transform, panel, 920, 88, 1, 752, W, H);
-        Label("Status Title", "현황", 960, 88, 608, 56, 34);
-        heat = Metric("이 종목의 열기", 960, 160, "");
-        free = Metric("가용 현금", 960, 212, "돈");
-        held = Metric("보유 수량", 960, 264, "주");
-        painted = Metric("부풀린 거래대금", 960, 340, "돈");
-        washLeft = Metric("남은 시간", 960, 392, "초");
-        wallPrice = Metric("벽 가격", 960, 468, "돈");
-        wallCash = Metric("벽에 걸린 돈", 960, 520, "돈");
-        closeBudget = Metric("종가 관리 예산", 960, 596, "돈");
-        closeSpent = Metric("종가 관리 사용", 960, 648, "돈");
-        notice = Text("Notice", 960, 730, 608, 110, 26); notice.color = TabletKitStyle.Accent; notice.textWrappingMode = TextWrappingModes.Normal; notice.alignment = TextAlignmentOptions.TopLeft;
+        for (int i = 0; i < 2; i++)
+        {
+            float y = 586 + i * 48;
+            metricCaptions[i] = Text("Metric Caption " + i, 660, y, 360, 44, 25); metricCaptions[i].color = Muted;
+            metricValues[i] = Text("Metric Value " + i, 1030, y, 470, 44, 29); TradingOrderView.Numeric(metricValues[i]); metricValues[i].alignment = TextAlignmentOptions.MidlineRight;
+            metricUnits[i] = Text("Metric Unit " + i, 1510, y, 58, 44, 23); metricUnits[i].color = Muted;
+        }
+        act = Action("Tool Action", "", 660, 700, 908, 76, Fire, true, false, 32);
+        actLabel = act.GetComponentInChildren<TextMeshProUGUI>(true);
+        notice = Text("Notice", 660, 788, 908, 60, 22); notice.color = TabletKitStyle.Accent; notice.textWrappingMode = TextWrappingModes.Normal; notice.alignment = TextAlignmentOptions.TopLeft;
 
         // 탭은 세 화면 위에 함께 떠 있어야 한다. 이미 있는 두 탭을 맨 앞으로 올리고 그 옆에 하나를 더 둔다.
         foreach (string name in new[] { "Button :: Tab Spread", "Button :: Tab Accumulate" }) { var other = transform.Find(name); if (other != null) { other.SetAsLastSibling(); } }
@@ -124,21 +149,6 @@ public sealed class ManipulationUI : MonoBehaviour
         TradingOrderView.Place((RectTransform)tab.transform, transform, 710, 12, 180, 48, W, H);
         tab.transform.SetAsLastSibling();
         panel.gameObject.SetActive(false);
-    }
-    private void Card(int index, float y, string title, string description, out Button button, out TextMeshProUGUI buttonLabel, UnityEngine.Events.UnityAction action)
-    {
-        Label("Card Title " + index, title, 32, y, 560, 48, 31);
-        var text = Label("Card Text " + index, description, 32, y + 50, 848, 56, 22);
-        text.color = Muted; text.textWrappingMode = TextWrappingModes.Normal; text.alignment = TextAlignmentOptions.TopLeft; text.overflowMode = TextOverflowModes.Truncate;
-        button = Action("Card Button " + index, "", 620, y, 260, 48, action, true, false);
-        buttonLabel = button.GetComponentInChildren<TextMeshProUGUI>(true);
-    }
-
-    /// <summary>카드 제목 옆에 여는 조건을 적는 줄.</summary>
-    private TextMeshProUGUI LockLine(int index, float y)
-    {
-        var line = Text("Card Lock " + index, 300, y, 310, 48, 22); line.color = TabletKitStyle.Accent; line.alignment = TextAlignmentOptions.MidlineRight;
-        return line;
     }
     private void Show()
     {
@@ -159,24 +169,25 @@ public sealed class ManipulationUI : MonoBehaviour
         int index = manager.stocks.IndexOf(manager.CurrentStock);
         manager.SelectStock((index + delta + manager.stocks.Count) % manager.stocks.Count); next = 0f;
     }
-    private void ToggleWash()
+    /// <summary>고른 도구의 단추 하나: 한 번 쓰는 도구는 실행하고, 켜 두는 도구는 켜거나 끈다.</summary>
+    private void Fire()
     {
         var tactics = PlayerTactics.Instance; if (tactics == null) { return; }
-        if (tactics.WashStock != null) { tactics.StopWash(); } else { tactics.StartWash(Current); }
+        switch (Order[selected])
+        {
+            case PlayerTactics.Tool.Ignite: tactics.Ignite(Current, fraction); break;
+            case PlayerTactics.Tool.Slam: tactics.Slam(Current, fraction); break;
+            case PlayerTactics.Tool.Close: if (tactics.CloseStock != null) { tactics.CancelClose(); } else { tactics.ArmClose(Current, fraction); } break;
+            case PlayerTactics.Tool.Wash: if (tactics.WashStock != null) { tactics.StopWash(); } else { tactics.StartWash(Current); } break;
+            default: if (tactics.WallStock != null) { tactics.PullWall(); } else { tactics.SetWall(Current, fraction); } break;
+        }
         next = 0f;
     }
-    private void ToggleWall()
-    {
-        var tactics = PlayerTactics.Instance; if (tactics == null) { return; }
-        if (tactics.WallStock != null) { tactics.PullWall(); } else { tactics.SetWall(Current, fraction); }
-        next = 0f;
-    }
-    private void ToggleClose()
-    {
-        var tactics = PlayerTactics.Instance; if (tactics == null) { return; }
-        if (tactics.CloseStock != null) { tactics.CancelClose(); } else { tactics.ArmClose(Current, fraction); }
-        next = 0f;
-    }
+    /// <summary>켜 두는 도구가 지금 돌고 있는가.</summary>
+    private static bool Running(PlayerTactics tactics, PlayerTactics.Tool tool) =>
+        tool == PlayerTactics.Tool.Close ? tactics.CloseStock != null : tool == PlayerTactics.Tool.Wash ? tactics.WashStock != null : tool == PlayerTactics.Tool.Wall && tactics.WallStock != null;
+    private void Metric(int row, string caption, string value, string unit)
+    { Lit(metricCaptions[row], T(caption)); Lit(metricValues[row], value); Lit(metricUnits[row], T(unit)); }
 
     void Update()
     {
@@ -187,26 +198,33 @@ public sealed class ManipulationUI : MonoBehaviour
         var account = PlayerAccounts.Instance != null ? PlayerAccounts.Instance.primary : null;
         if (tactics == null || stock == null || account == null) { return; }
         Lit(stockName, GameLocale.Text(stock.stockName)); Lit(price, stock.currentPrice.ToString("N0"));
+        for (int i = 0; i < Order.Length; i++)
+        {
+            bool open = PlayerTactics.Unlocked(Order[i]), running = open && Running(tactics, Order[i]);
+            TabletControlStyle.Emphasize(tools[i], i == selected);
+            // 고른 줄은 밝은 바탕이 된다. 이름이 묻히지 않게 어두운 글씨로 바꾼다.
+            toolNames[i].color = i == selected ? (Color)Ground : !open ? Muted : Ink;
+            Lit(toolStates[i], !open ? T("잠김") : running ? T("실행 중") : ""); toolStates[i].color = i == selected ? (Color)Ground : running ? TabletKitStyle.Accent : Muted;
+        }
+        var tool = Order[selected]; bool usable = PlayerTactics.Unlocked(tool), active = Running(tactics, tool);
+        Lit(toolTitle, T(Names[selected])); Lit(toolLock, usable ? "" : T(PlayerTactics.LockReason(tool)));
+        preview.Show(Pictures[selected]); Lit(purpose, T(Purposes[selected]));
+        // 거래량 부풀리기는 비중을 고르지 않는다(알아서 조금씩 주고받는다).
+        bool sized = tool != PlayerTactics.Tool.Wash && !active;
+        if (sizeLabel.gameObject.activeSelf != sized) { sizeLabel.gameObject.SetActive(sized); foreach (var button in fractions) { button.gameObject.SetActive(sized); } }
         for (int i = 0; i < fractions.Length; i++) { TabletControlStyle.Emphasize(fractions[i], Mathf.Approximately(fraction, Fractions[i])); }
-        // 잠긴 도구는 단추가 눌리지 않고, 설명 자리에 여는 조건이 뜬다.
-        bool canWash = PlayerTactics.Unlocked(PlayerTactics.Tool.Wash), canWall = PlayerTactics.Unlocked(PlayerTactics.Tool.Wall), canClose = PlayerTactics.Unlocked(PlayerTactics.Tool.Close);
-        wash.interactable = canWash; wall.interactable = canWall; close.interactable = canClose;
-        bool canIgnite = PlayerTactics.Unlocked(PlayerTactics.Tool.Ignite), canSlam = PlayerTactics.Unlocked(PlayerTactics.Tool.Slam);
-        ignite.interactable = canIgnite; slam.interactable = canSlam;
-        Lit(igniteLabel, T(canIgnite ? "실행" : "잠김")); Lit(slamLabel, T(canSlam ? "실행" : "잠김"));
-        Lit(igniteLock, canIgnite ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Ignite))); Lit(slamLock, canSlam ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Slam)));
-        Lit(washLabel, T(!canWash ? "잠김" : tactics.WashStock != null ? "중지" : "시작")); Lit(wallLabel, T(!canWall ? "잠김" : tactics.WallStock != null ? "거두기" : "세우기")); Lit(closeLabel, T(!canClose ? "잠김" : tactics.CloseStock != null ? "취소" : "예약"));
-        Lit(washLock, canWash ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Wash))); Lit(wallLock, canWall ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Wall))); Lit(closeLock, canClose ? "" : T(PlayerTactics.LockReason(PlayerTactics.Tool.Close)));
-        float warmth = StockInterestManager.Instance == null ? 0f : StockInterestManager.Instance.Heat(stock);
-        Lit(heat, warmth.ToString("0.0"));
-        Lit(free, System.Math.Max(0m, account.cash - account.ReservedCash).ToString("N0")); Lit(held, account.GetHolding(stock).ToString("N0"));
-        Lit(painted, tactics.WashPainted.ToString("N0")); Lit(washLeft, tactics.WashLeft.ToString("0"));
-        Lit(wallPrice, tactics.WallPrice.ToString("N0")); Lit(wallCash, tactics.WallShown.ToString("N0"));
-        Lit(closeBudget, tactics.CloseBudget.ToString("N0")); Lit(closeSpent, tactics.CloseSpent.ToString("N0"));
-        string running = (tactics.WashStock != null ? GameLocale.Text(tactics.WashStock.stockName) + " · " + T("거래량 부풀리기") + "\n" : "")
-            + (tactics.WallStock != null ? GameLocale.Text(tactics.WallStock.stockName) + " · " + T("허수 매수벽") + "\n" : "")
-            + (tactics.CloseStock != null ? GameLocale.Text(tactics.CloseStock.stockName) + " · " + T("종가 관리") + "\n" : "");
-        Lit(notice, running + T(tactics.Notice));
+        decimal free = System.Math.Max(0m, account.cash - account.ReservedCash), held = account.GetHolding(stock), share = (decimal)fraction;
+        // 고른 도구에 필요한 숫자 두 줄만 보여 준다.
+        if (tool == PlayerTactics.Tool.Slam) { Metric(0, "팔 수량", decimal.Floor(held * share).ToString("N0"), "주"); Metric(1, "보유 수량", held.ToString("N0"), "주"); }
+        else if (tool == PlayerTactics.Tool.Wash) { Metric(0, "부풀린 거래대금", tactics.WashPainted.ToString("N0"), "돈"); Metric(1, "남은 시간", tactics.WashLeft.ToString("0"), "초"); }
+        else if (tool == PlayerTactics.Tool.Close && active) { Metric(0, "종가 관리 예산", tactics.CloseBudget.ToString("N0"), "돈"); Metric(1, "종가 관리 사용", tactics.CloseSpent.ToString("N0"), "돈"); }
+        else if (tool == PlayerTactics.Tool.Wall && active) { Metric(0, "벽 가격", tactics.WallPrice.ToString("N0"), "돈"); Metric(1, "벽에 걸린 돈", tactics.WallShown.ToString("N0"), "돈"); }
+        else { Metric(0, "쓸 돈", decimal.Floor(free * share).ToString("N0"), "돈"); Metric(1, "가용 현금", free.ToString("N0"), "돈"); }
+        act.interactable = usable;
+        string verb = !usable ? "잠김" : tool == PlayerTactics.Tool.Ignite || tool == PlayerTactics.Tool.Slam ? "실행"
+            : tool == PlayerTactics.Tool.Close ? (active ? "취소" : "예약") : tool == PlayerTactics.Tool.Wash ? (active ? "중지" : "시작") : active ? "거두기" : "세우기";
+        Lit(actLabel, T(verb));
+        Lit(notice, T(tactics.Notice));
     }
 
     private static void Lit(TextMeshProUGUI label, string value)

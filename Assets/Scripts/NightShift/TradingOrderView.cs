@@ -103,6 +103,9 @@ public sealed class TradingOrderView : MonoBehaviour
         Label("Order Total",draft,"예상 금액",0,452,280,56,28,736,704).color = Muted;
         Place(ui.amount.rectTransform,draft,288,452,376,56,736,704); TextStyle(ui.amount,36,true); ui.amount.alignment = TextAlignmentOptions.MidlineRight;
         Label("Order Total Unit",draft,"돈",696,452,40,56,26,736,704).color = Muted;
+        // 거래 수수료. 평소에는 매도 대금의 0.05%이고, 거래소의 수수료 0% 이벤트 날에는 0%로 바뀌며 색이 달라진다(Header에서 갱신).
+        feeLabel = Label("Fee Label",draft,"",0,554,300,36,23,736,704); feeLabel.color = Muted;
+        feeValue = Label("Fee Value",draft,"",300,554,436,36,23,736,704); feeValue.alignment = TextAlignmentOptions.MidlineRight;
         // 주문 후 현금·보유를 글자로 적는 대신, 이 주문이 가진 돈(또는 주식)의 얼마를 쓰는지 막대 하나로 보여 준다.
         var hidden = Area("Unused Forecast",draft,0,0,736,704,736,704); hidden.gameObject.SetActive(false);
         afterCash = Forecast(hidden,"주문 후 현금",516,"돈"); afterShares = Forecast(hidden,"주문 후 보유",552,"주");
@@ -204,8 +207,20 @@ public sealed class TradingOrderView : MonoBehaviour
         label.margin=Vector4.zero; label.textWrappingMode=TextWrappingModes.NoWrap;
         label.overflowMode=TextOverflowModes.Ellipsis; label.raycastTarget=false; label.color=Ink;
     }
+    private TextMeshProUGUI feeLabel, feeValue;
+    private static string FeeWord(string korean,string english,string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
+    /// <summary>주문 화면의 수수료 한 줄: "거래 수수료  0.05% · 매도 시". 이벤트 날에는 "0% · 오늘 이벤트"가 강조색으로 적힌다.</summary>
+    private void ShowFee()
+    {
+        if(feeLabel==null) { return; }
+        bool free=FeeHoliday.Active;
+        GameLocalizedText.Set(feeLabel,FeeWord("거래 수수료","Trading fee","取引手数料"),true);
+        GameLocalizedText.Set(feeValue,FeeHoliday.RateText+" · "+(free ? FeeWord("오늘 이벤트","event today","本日イベント") : FeeWord("매도 시","on sells","売却時")),true);
+        feeValue.color=free ? TabletKitStyle.Accent : Muted;
+    }
     public void Header(Stock stock,decimal reference)
     {
+        ShowFee();
         DeviceTerminalUI.Set(ui.stockName,stock.stockName); DeviceTerminalUI.Set(ui.ticker,stock.symbol);
         DeviceTerminalUI.Set(ui.currentPrice,Number(stock.currentPrice));
         if(reference<=0)

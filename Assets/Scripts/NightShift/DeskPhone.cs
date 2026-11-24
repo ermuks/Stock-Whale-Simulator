@@ -27,6 +27,15 @@ public sealed class DeskPhone : MonoBehaviour
         /// <summary>문자가 온 시간: 달력 날짜와 자정부터 센 분.</summary>
         public int ReceivedDate, ReceivedMinute;
         public bool Read;
+        /// <summary>
+        /// 알림 문자(거래소의 공지 등). 종목이 없고, 제목과 본문을 언어마다 적어 둔다. Day는 그 일이 있는 날이다(하루 종일).
+        /// 세력의 작전을 알리는 보통 문자는 이 값들이 비어 있다.
+        /// </summary>
+        public (string ko, string en, string ja) Title, Body;
+        public bool IsNotice => Stock == null;
+        public string Heading => IsNotice ? Local(Title) : GameLocale.Text(Stock.stockName);
+        private static string Local((string ko, string en, string ja) text) => GameLocale.Code == "ja" ? text.ja : GameLocale.Code == "en" ? text.en : text.ko;
+        public string BodyText => IsNotice ? Local(Body) : Word("이 시각에 올린다. 먼저 타.", "They lift it then. Get in first.", "この時刻に上げる。先に乗れ。");
     }
     private enum State { Desk, Rising, Held, Lowering }
     /// <summary>간직하는 문자의 수. 넘으면 가장 오래된 것부터 지운다. 목록 한 화면에 다 들어가는 만큼이다.</summary>
@@ -35,7 +44,10 @@ public sealed class DeskPhone : MonoBehaviour
     private const float ScreenWidth = 978f, ScreenHeight = 2146f, ScreenScale = .00063286f;
     private static readonly Vector3 ModelPosition = new Vector3(.1763134f, -.0019119f, .0506249f), ModelScale = new Vector3(.6328589f, .6328589f, -.6328589f);
     private const string ModelPath = "Modeling/Iphone seceond version finished";
-    private const float MoveSeconds = .22f, HeldDistance = 1.45f, HeldFill = .84f, ReachDistance = 11f, ArrivalSeconds = 7f;
+    private const float MoveSeconds = .22f, HeldDistance = 1.45f, HeldFill = .84f, ReachDistance = 11f;
+    /// <summary>문자가 왔을 때: 진동 횟수와 간격(초), 진동 한 번의 박자(짧게 떨고, 쉬고, 다시 떤다), 번쩍이는 빛의 세기와 닿는 거리.</summary>
+    private const int AlertBuzzes = 3;
+    private const float AlertGap = 1.15f, BuzzBurst = .26f, BuzzPause = .10f, FlashIntensity = 3.2f, FlashRange = 5.5f;
     private static readonly Color Wallpaper = new Color(.028f, .032f, .042f), Card = new Color(.085f, .095f, .12f), CardUnread = new Color(.10f, .145f, .225f), CardHover = new Color(.16f, .19f, .25f);
     private static readonly Color Ink = new Color(.95f, .96f, .98f), Soft = new Color(.58f, .62f, .68f), Faint = new Color(.36f, .39f, .44f), Blue = new Color(.26f, .58f, 1f), Red = new Color(.96f, .26f, .24f), TimeTint = new Color(1f, .74f, .30f);
     private static string Word(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
@@ -52,7 +64,7 @@ public sealed class DeskPhone : MonoBehaviour
     private State state = State.Desk;
     private bool built, aimed, previousLocked;
     private int aimFrame = -1, locale = -1;
-    private float clock, arrivedUntil, nextWrite, restScale = 1f, fromScale = 1f;
+    private float clock, alertAt = -1f, nextWrite, restScale = 1f, fromScale = 1f;
     private Vector3 restPosition, fromPosition;
     private Quaternion restRotation, fromRotation;
     private Vector2 bodyCenter, bodyHalf = new Vector2(ScreenWidth, ScreenHeight) * (ScreenScale * .5f);
@@ -62,6 +74,8 @@ public sealed class DeskPhone : MonoBehaviour
     private GraphicRaycaster raycaster;
     private TMP_FontAsset font;
     private AudioSource buzzer;
+    private Light flash;
+    private int alertPlayed;
     private GameObject idle, idleBadge, list, listPill, detail, empty, hintRoot;
     private Image idleShade;
     private PhoneIcon whenIcon;
@@ -139,9 +153,29 @@ public sealed class DeskPhone : MonoBehaviour
             ReceivedDate = market == null ? MarketDayController.DateOf(day) : market.CalendarDate, ReceivedMinute = market == null ? 0 : market.ClockMinute,
         });
         while (messages.Count > Kept) { messages.RemoveAt(0); }
-        arrivedUntil = Time.unscaledTime + ArrivalSeconds;
-        if (buzzer != null) { buzzer.Play(); }
+        Alert();
         if (built) { Write(); }
+    }
+
+    /// <summary>알림 문자가 지금 온다(거래소의 공지 등). day는 그 일이 있는 날(장날 번호)이다.</summary>
+    public void ReceiveNotice(int day, (string ko, string en, string ja) title, (string ko, string en, string ja) body)
+    {
+        var market = MarketDayController.Instance;
+        messages.Add(new Message
+        {
+            Stock = null, Day = day, Minute = 1019, Title = title, Body = body,
+            ReceivedDate = market == null ? MarketDayController.DateOf(day) : market.CalendarDate, ReceivedMinute = market == null ? 0 : market.ClockMinute,
+        });
+        while (messages.Count > Kept) { messages.RemoveAt(0); }
+        Alert();
+        if (built) { Write(); }
+    }
+
+    /// <summary>문자가 왔음을 알린다. 책상 위에 있으면 세 번 떨며 번쩍이고(Update), 들고 있으면 한 번만 떤다.</summary>
+    private void Alert()
+    {
+        if (state == State.Desk) { alertAt = Time.unscaledTime; alertPlayed = 0; }
+        else if (buzzer != null) { buzzer.Play(); }
     }
 
     // ── 들기와 내려놓기 ──────────────────────────────────────────────────────
@@ -167,7 +201,7 @@ public sealed class DeskPhone : MonoBehaviour
         previousLocked = MouseCameraController.IsCursorLocked;
         if (mouseLook != null) { mouseLook.SetViewCursor(false); } else { Cursor.lockState = CursorLockMode.None; Cursor.visible = true; }
         EventSystem.current?.SetSelectedGameObject(null);
-        state = State.Rising; clock = 0f; Open = null; arrivedUntil = 0f;
+        state = State.Rising; clock = 0f; Open = null; alertAt = -1f;
         Sfx.Play("NotePick", .55f);
         Write();
     }
@@ -228,27 +262,38 @@ public sealed class DeskPhone : MonoBehaviour
         // 작전 시간이 지난 문자는 흐려진다. 들고 있는 동안 가끔 다시 쓴다.
         if (state == State.Held && Time.unscaledTime >= nextWrite) { Write(); }
         // 책상 위: 안 읽은 문자가 있으면 화면의 봉투가 숨 쉬듯 밝아진다.
+        // 문자가 오면 글로 알리지 않는다. 책상 위의 휴대폰이 세 번 떨고(진동 소리), 떠는 동안 화면이 번쩍이며 주변을 비춘다.
+        float since = Time.unscaledTime - alertAt;
+        bool alerting = alertAt >= 0f && since < AlertBuzzes * AlertGap && state == State.Desk;
+        if (alerting && alertPlayed < AlertBuzzes && since >= alertPlayed * AlertGap) { alertPlayed++; if (buzzer != null) { buzzer.Play(); } }
+        // 진동 한 번은 짧게 두 번 떤다(Buzz와 같은 박자). 그 떠는 순간에만 빛이 켜진다.
+        float beatTime = alerting ? since % AlertGap : 1f;
+        bool burst = alerting && (beatTime < BuzzBurst || beatTime >= BuzzBurst + BuzzPause && beatTime < BuzzBurst * 2f + BuzzPause);
+        if (flash != null)
+        {
+            if (flash.enabled != burst) { flash.enabled = burst; }
+            if (burst) { flash.intensity = FlashIntensity * (.72f + .28f * Mathf.Sin(Time.unscaledTime * 70f)); }
+        }
         if (idle.activeSelf)
         {
-            int unread = UnreadCount; bool fresh = Time.unscaledTime < arrivedUntil;
-            float beat = .5f + .5f * Mathf.Sin(Time.unscaledTime * (fresh ? 9f : 2.6f));
-            // 안 읽은 문자가 있으면 화면이 켜져 있다(숨 쉬듯 밝아진다). 없으면 꺼진 듯 어둡다.
-            idleShade.color = new Color(0f, 0f, 0f, unread > 0 ? Mathf.Lerp(.28f, 0f, beat) : .62f);
+            int unread = UnreadCount;
+            float beat = .5f + .5f * Mathf.Sin(Time.unscaledTime * 2.6f);
+            // 안 읽은 문자가 있으면 화면이 켜져 있다(숨 쉬듯 밝아진다). 없으면 꺼진 듯 어둡다. 문자가 오는 순간에는 떠는 박자에 맞춰 환하게 켜졌다 꺼진다.
+            idleShade.color = alerting ? new Color(burst ? 1f : 0f, burst ? 1f : 0f, burst ? 1f : 0f, burst ? .22f : .55f)
+                : new Color(0f, 0f, 0f, unread > 0 ? Mathf.Lerp(.28f, 0f, beat) : .62f);
             if (Time.unscaledTime >= nextIdle)
             {
                 nextIdle = Time.unscaledTime + 1f; var market = MarketDayController.Instance;
                 GameLocalizedText.Set(idleClock, market == null ? "" : Clock(market.ClockMinute), true);
             }
         }
-        bool arrived = state == State.Desk && Time.unscaledTime < arrivedUntil;
-        bool show = Raised || state == State.Desk && aimed && aimFrame == Time.frameCount || arrived;
+        bool show = Raised || state == State.Desk && aimed && aimFrame == Time.frameCount;
         if (hintRoot.activeSelf != show) { hintRoot.SetActive(show); }
         if (show)
         {
             string key = GameKeyBindings.Interact.ToString();
             string text = Raised ? (Open != null ? "Esc   " + Word("목록으로", "Back to the list", "一覧へ") : "Esc   " + Word("내려놓기", "Put it down", "置く"))
-                : aimed && aimFrame == Time.frameCount ? key + "   " + Word("휴대폰 보기", "Check the phone", "スマホを見る")
-                : Word("문자가 왔습니다", "New text message", "メッセージが届いた");
+                : key + "   " + Word("휴대폰 보기", "Check the phone", "スマホを見る");
             GameLocalizedText.Set(hint, text, true);
         }
     }
@@ -341,6 +386,10 @@ public sealed class DeskPhone : MonoBehaviour
         buzzer = rig.gameObject.AddComponent<AudioSource>();
         buzzer.playOnAwake = false; buzzer.loop = false; buzzer.dopplerLevel = 0f; buzzer.spatialBlend = .7f; buzzer.rolloffMode = AudioRolloffMode.Linear;
         buzzer.minDistance = 3f; buzzer.maxDistance = 30f; buzzer.volume = .85f; buzzer.clip = Buzz();
+        // 화면에서 나오는 빛. 문자가 오는 순간에만 켜져 책상과 주변을 번쩍 비춘다.
+        flash = new GameObject("Light :: Phone Flash").AddComponent<Light>();
+        flash.transform.SetParent(rig, false); flash.transform.localPosition = new Vector3(0f, 0f, -.5f);
+        flash.type = LightType.Point; flash.color = new Color(.72f, .86f, 1f); flash.range = FlashRange; flash.intensity = FlashIntensity; flash.shadows = LightShadows.None; flash.enabled = false;
 
         BuildScreen();
         BuildHint();
@@ -349,7 +398,7 @@ public sealed class DeskPhone : MonoBehaviour
 
     private static AudioClip Buzz()
     {
-        const int rate = 44100; const float burst = .26f, pause = .10f;
+        const int rate = 44100; const float burst = BuzzBurst, pause = BuzzPause;
         int count = (int)(rate * (burst * 2f + pause)); var data = new float[count];
         for (int i = 0; i < count; i++)
         {
@@ -531,7 +580,7 @@ public sealed class DeskPhone : MonoBehaviour
     // ── 화면 쓰기 ────────────────────────────────────────────────────────────
     private static string Clock(int minute) => (minute / 60).ToString("00") + ":" + (minute % 60).ToString("00");
     /// <summary>작전 시간: 날짜와 시각.</summary>
-    public static string PlanTime(Message message) => GameLocale.Day(message.Day) + "  " + Clock(message.Minute);
+    public static string PlanTime(Message message) => message.IsNotice ? GameLocale.Day(message.Day) + Word(" 하루 종일", " · all day", " 終日") : GameLocale.Day(message.Day) + "  " + Clock(message.Minute);
     /// <summary>작전 시간이 이미 지났는가.</summary>
     public static bool Passed(Message message)
     {
@@ -575,7 +624,7 @@ public sealed class DeskPhone : MonoBehaviour
                 // 이미 지난 작전은 시각을 회색으로 쓴다.
                 Color time = passed ? Faint : fresh ? TimeTint : new Color(TimeTint.r, TimeTint.g, TimeTint.b, .6f);
                 row.Time.color = time; row.Clock.color = time;
-                GameLocalizedText.Set(row.Name, GameLocale.Text(message.Stock.stockName), true);
+                GameLocalizedText.Set(row.Name, message.Heading, true);
                 GameLocalizedText.Set(row.Time, PlanTime(message) + (passed ? Word(" · 지남", " · passed", " · 終了") : ""), true);
                 GameLocalizedText.Set(row.Stamp, GameLocale.DateText(message.ReceivedDate) + " " + Clock(message.ReceivedMinute), true);
                 GameLocalizedText.Set(row.Mark, fresh ? "" : Word("읽음", "Read", "既読"), true);
@@ -584,12 +633,15 @@ public sealed class DeskPhone : MonoBehaviour
         }
         bool over = Passed(Open);
         GameLocalizedText.Set(backLabel, Word("메시지", "Messages", "メッセージ"), true);
-        GameLocalizedText.Set(sender, Word("발신자 표시 없음", "Unknown sender", "非通知"), true);
+        GameLocalizedText.Set(sender, Open.IsNotice ? Word("거래소", "Exchange", "取引所") : Word("발신자 표시 없음", "Unknown sender", "非通知"), true);
         GameLocalizedText.Set(receivedValue, GameLocale.DateText(Open.ReceivedDate) + "  " + Clock(Open.ReceivedMinute), true);
-        GameLocalizedText.Set(stockValue, GameLocale.Text(Open.Stock.stockName), true);
+        GameLocalizedText.Set(stockValue, Open.Heading, true);
         GameLocalizedText.Set(whenValue, PlanTime(Open) + (over ? Word(" · 지남", " · passed", " · 終了") : ""), true);
         whenValue.color = over ? Faint : TimeTint; whenIcon.color = over ? Faint : TimeTint;
-        GameLocalizedText.Set(body, Word("이 시각에 올린다. 먼저 타.", "They lift it then. Get in first.", "この時刻に上げる。先に乗れ。"), true);
+        GameLocalizedText.Set(body, Open.BodyText, true);
+        // 알림 문자는 본문이 길어서 말풍선을 키운다.
+        var bubbleRect = (RectTransform)body.transform.parent;
+        bubbleRect.anchorMin = new Vector2(.06f, 1f - .358f - (Open.IsNotice ? .145f : .066f)); bubbleRect.anchorMax = new Vector2(Open.IsNotice ? .90f : .72f, 1f - .358f);
         GameLocalizedText.Set(noReply, Word("답장할 수 없는 번호입니다", "You can't reply to this number", "この番号には返信できません"), true);
     }
 }

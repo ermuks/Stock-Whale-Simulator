@@ -51,7 +51,7 @@ public class Trader : MonoBehaviour, IOrderOwner
     {
         if (Registry.Count == 0)
         {
-            nextInitialAccountId = 0;
+            nextInitialAccountId = 0; SellFeesCollected = 0m; SellFeeBase = 0m; sellFeesToday = 0m;
         }
 
         InitialAccountId = ++nextInitialAccountId;
@@ -61,6 +61,40 @@ public class Trader : MonoBehaviour, IOrderOwner
     protected virtual void OnDestroy()
     {
         Registry.Remove(this);
+    }
+
+    /// <summary>
+    /// 매도 수수료. 봇이 주식을 팔아 받는 돈(매도 대금)의 0.05%를 체결되는 순간 떼어 거래소 계좌에 넣는다.
+    /// 거래소는 이 돈으로 값을 받치고 시장을 유지한다(거래소가 사들일 수 있는 양은 가진 현금에 비례한다).
+    /// 내는 쪽: 거래소를 뺀 모든 계좌(플레이어, 개미, 기관, 세력, 불나방, 차명 계좌). 안 내는 쪽: 수수료를 받는 거래소 자신.
+    /// 거래소가 "수수료 0% 이벤트"를 여는 날(FeeHoliday)에는 아무도 내지 않는다.
+    /// </summary>
+    public const decimal StandardSellFeeRate = .0005m;
+    /// <summary>지금 적용되는 매도 수수료율. 수수료 0% 이벤트 날에는 0이다.</summary>
+    public static decimal SellFeeRate => FeeHoliday.Active ? 0m : StandardSellFeeRate;
+    /// <summary>이 계좌가 매도 수수료를 내는가.</summary>
+    public virtual bool PaysSellFee => true;
+    /// <summary>확인용: 이번 실행에서 걷힌 수수료와 그 바탕이 된 매도 대금.</summary>
+    public static decimal SellFeesCollected { get; private set; }
+    public static decimal SellFeeBase { get; private set; }
+    private static decimal sellFeesToday;
+    /// <summary>오늘 걷힌 수수료를 돌려주고 0으로 되돌린다(장 마감 기록용).</summary>
+    public static decimal TakeDaySellFees() { decimal taken = sellFeesToday; sellFeesToday = 0m; return taken; }
+    /// <summary>이 계좌가 지금까지 낸 매도 수수료.</summary>
+    public decimal SellFeesPaid { get; private set; }
+    /// <summary>수수료를 떼고 손에 남는 매도 대금.</summary>
+    public static decimal NetOfSellFee(decimal revenue) => revenue * (1m - SellFeeRate);
+    /// <summary>매도 대금에서 수수료를 떼어 거래소에 넣고, 남은 돈을 돌려준다. 수수료를 내지 않는 계좌는 그대로 돌려준다.</summary>
+    private decimal AfterSellFee(decimal revenue)
+    {
+        if (!PaysSellFee || revenue <= 0m) { return revenue; }
+        var exchange = ExchangeBot.Instance;
+        if (exchange == null || ReferenceEquals(exchange, this)) { return revenue; }
+        decimal fee = revenue * SellFeeRate;
+        if (fee <= 0m) { return revenue; }
+        exchange.ApplyTradeCash(fee);
+        SellFeesCollected += fee; SellFeeBase += revenue; sellFeesToday += fee; SellFeesPaid += fee;
+        return revenue - fee;
     }
 
     public void ApplyTradeCash(decimal amount)
@@ -337,7 +371,7 @@ public class Trader : MonoBehaviour, IOrderOwner
         RemoveHolding(stock, sellVol);
         TradeResult result = stock.ExecuteTrade(price, sellVol, false, addUnfilledToBook: true, subTickSteps: subTickSteps, orderOwner: this);
         LastRestingOrder = result.restingOrder;
-        ApplyTradeCash(result.totalCost);
+        ApplyTradeCash(AfterSellFee(result.totalCost));
         ChangeEscrow(stock, -result.filledVolume, avgCostBeforeSell);
         PositionChanged(stock);
         MarketDayController.Instance?.Sold(this, stock, result.filledVolume, result.averagePrice, avgCostBeforeSell);
@@ -426,7 +460,7 @@ public class Trader : MonoBehaviour, IOrderOwner
         if (stock == null || volume <= 0m || revenue <= 0m)
         { return; }
 
-        ApplyTradeCash(revenue);
+        ApplyTradeCash(AfterSellFee(revenue));
         if (KeepOrderHistory) { RecordOrder($"SELL(book) {volume:F0} avg@{price:F0} (rev {revenue:F0})"); }
     }
 

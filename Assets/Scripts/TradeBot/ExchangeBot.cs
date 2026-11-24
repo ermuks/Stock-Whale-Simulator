@@ -8,6 +8,8 @@ using Unity.Profiling;
 public partial class ExchangeBot : TradeBot
 {
     public override bool IsExchangeParticipant => true;
+    /// <summary>거래소는 수수료를 받는 쪽이다. 자기 매도에는 수수료가 없다.</summary>
+    public override bool PaysSellFee => false;
     public static ExchangeBot Instance { get; private set; }
 
     [Header("새 게임 자산 (돈, 직렬화 가능한 설정)")]

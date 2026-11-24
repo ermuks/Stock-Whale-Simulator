@@ -167,8 +167,16 @@ public static class PhoneCapture
             phone.Receive(stocks[2], market.Day + 1, 10 * 60 + 30);
             report.AppendLine("PHONE messages " + phone.Messages.Count + " unread " + phone.UnreadCount);
             Aim(Above(.30f));
-        }, 1.2));
-        steps.Add(("shot arrival", () => Shoot("05-message-arrived"), .2));
+        }, .14));
+        // 문자가 온 직후(떠는 순간)와 조금 뒤(쉬는 순간)를 찍는다. 안내 글자는 뜨지 않아야 하고, 빛은 떠는 순간에만 켜져 있어야 한다.
+        steps.Add(("shot arrival", () => { ReportAlert("during the first burst"); Shoot("05-message-arrived"); }, .2));
+        steps.Add(("shot arrival pause", () => { ReportAlert("in the pause"); Shoot("05b-message-arrived-pause"); }, 3.6));
+        steps.Add(("after alert", () => ReportAlert("after the alert"), .1));
+        // 책상이 보이는 각도에서 한 통을 더 받아, 떠는 순간의 빛과 평소의 모습을 견준다.
+        steps.Add(("look at desk", () => Aim(spot + Vector3.up * .9f), .8));
+        steps.Add(("shot desk quiet", () => Shoot("05c-desk-before-message"), .2));
+        steps.Add(("receive again", () => { var market = MarketDayController.Instance; phone.Receive(StockManager.Instance.stocks[4], market.Day + 1, 11 * 60); }, .14));
+        steps.Add(("shot desk flash", () => { ReportAlert("desk shot"); Shoot("05d-desk-message-flash"); }, 3.6));
         steps.Add(("shot closeup", () => Closeup("06-phone-on-desk-closeup", spot), .2));
         // 6. 휴대폰을 겨눔.
         steps.Add(("aim phone", () => Aim(spot), 1.0));
@@ -202,6 +210,14 @@ public static class PhoneCapture
             + " materials " + renderer.materialCount + " material " + (material == null ? "none" : material.name + " / " + material.shader.name) + " texture " + (graphic.mainTexture == null ? "none" : graphic.mainTexture.name)
             + " canvas " + (graphic.canvas == null ? "none" : graphic.canvas.name + " " + graphic.canvas.renderMode) + " world " + graphic.transform.position.ToString("F2") + " lossy " + graphic.transform.lossyScale.ToString("F5"));
         Object.Destroy(mesh);
+    }
+
+    private static void ReportAlert(string when)
+    {
+        Light flash = null;
+        foreach (var light in Object.FindObjectsByType<Light>(FindObjectsInactive.Include)) { if (light.name == "Light :: Phone Flash") { flash = light; } }
+        var hint = GameObject.Find("Area :: Phone Hint");
+        report.AppendLine("ALERT " + when + ": flash " + (flash == null ? "missing" : flash.enabled ? "ON intensity " + flash.intensity.ToString("F2") : "off") + " | hint text shown " + (hint != null && hint.activeInHierarchy));
     }
 
     private static void Aim(Vector3 point)

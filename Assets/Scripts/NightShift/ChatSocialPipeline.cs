@@ -63,7 +63,7 @@ public sealed partial class InvestorSociety
         { return; }
         using (BeforeMarker.Auto()) { BeforeSocialTick(); RefreshChatterboxes(SocialTime.Seconds); }
         using (TypingMarker.Auto()) { FlushTyping(); }
-        using (RoomTalkMarker.Auto()) { TickRoomTalk(); }
+        using (RoomTalkMarker.Auto()) { TickRoomTalk(); TickFeeHolidayTalk(); }
         readySocialIntents.Clear();
         ScanMarker.Begin();
         int count = Math.Min(Math.Max(1, budget), socialBots.Count);

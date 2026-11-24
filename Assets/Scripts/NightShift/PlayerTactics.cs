@@ -33,7 +33,11 @@ public sealed class PlayerTactics : MonoBehaviour
     /// <summary>불붙이기가 쓸어 올리는 높이와 내려찍기가 받아 치는 깊이.</summary>
     public const decimal IgniteReach = .05m, SlamDepth = .06m;
     /// <summary>
-    /// 작전 도구는 차례로 열린다. 종가 관리: 누적 거래대금이 기준(5억)을 넘으면. 거래량 부풀리기: 내 리딩방을 연 뒤. 허수 매수벽: 내 기업이 상장한 뒤.
+    /// 작전 도구는 차례로 열린다.
+    ///  - 불붙이기·내려찍기·종가 관리: 누적 거래대금이 기준(1억 돈)을 넘으면. 내 돈으로 한 번에 사고파는 일이라 일찍 열어 준다.
+    ///  - 거래량 부풀리기: 내 리딩방을 연 뒤.
+    ///  - 허수 매수벽: 내 기업을 세운 뒤.
+    /// 예전에는 종가 관리가 5억, 불붙이기가 리딩방, 내려찍기와 매수벽이 "내 기업 상장"이라 게임의 끝 무렵에야 써 볼 수 있었다.
     /// 진행 정보를 읽을 수 없을 때(검증용 장면 등)는 열려 있는 것으로 본다.
     /// </summary>
     public static bool Unlocked(Tool tool)
@@ -41,16 +45,13 @@ public sealed class PlayerTactics : MonoBehaviour
         var career = PlayerProgression.Instance;
         switch (tool)
         {
-            case Tool.Close: return career == null || career.Turnover >= career.rules.tacticCloseTurnover;
-            // 불붙이기는 거래량 부풀리기와, 내려찍기는 허수 매수벽과 함께 열린다.
-            case Tool.Wash: case Tool.Ignite: return career == null || career.CanOperateRooms;
-            default:
-                var company = CorporateEconomy.Instance != null ? CorporateEconomy.Instance.PlayerCompany : null;
-                return CorporateEconomy.Instance == null || company != null && company.IsListed && company.business?.growth?.FounderBusiness == true;
+            case Tool.Close: case Tool.Ignite: case Tool.Slam: return career == null || career.Turnover >= career.rules.tacticCloseTurnover;
+            case Tool.Wash: return career == null || career.CanOperateRooms;
+            default: return career == null || CorporateEconomy.Instance == null || career.CompanyFounded || CorporateEconomy.Instance.PlayerCompany != null;
         }
     }
     /// <summary>잠겨 있을 때 보여 줄 조건(한국어 열쇠).</summary>
-    public static string LockReason(Tool tool) => tool == Tool.Close ? "누적 거래대금 5억 돈부터" : tool == Tool.Wash || tool == Tool.Ignite ? "내 리딩방을 연 뒤부터" : "내 기업이 상장한 뒤부터";
+    public static string LockReason(Tool tool) => tool == Tool.Wash ? "내 리딩방을 연 뒤부터" : tool == Tool.Wall ? "내 기업을 세운 뒤부터" : "누적 거래대금 1억 돈부터";
 
     void Awake() { Instance = this; }
     void OnDestroy() { if (Instance == this) { Instance = null; } }

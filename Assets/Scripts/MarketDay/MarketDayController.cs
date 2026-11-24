@@ -177,6 +177,7 @@ public sealed class MarketDayController : MonoBehaviour
         if (GetComponent<RoomShell>() == null) { gameObject.AddComponent<RoomShell>(); }
         if (GetComponent<DoorNotes>() == null) { gameObject.AddComponent<DoorNotes>(); }
         if (GetComponent<DeskPhone>() == null) { gameObject.AddComponent<DeskPhone>(); }
+        if (GetComponent<FeeHoliday>() == null) { gameObject.AddComponent<FeeHoliday>(); }
         if (GetComponent<WallCalendar>() == null) { gameObject.AddComponent<WallCalendar>(); }
         if (GetComponent<BedSleep>() == null) { gameObject.AddComponent<BedSleep>(); }
         if (GetComponent<DoorExit>() == null) { gameObject.AddComponent<DoorExit>(); }
@@ -657,6 +658,9 @@ public sealed class MarketDayController : MonoBehaviour
             }
 
             closingTraders.Clear();
+            // 오늘 봇들의 매도에서 거래소가 걷은 수수료(매도 대금의 0.05%).
+            decimal dayFees = Trader.TakeDaySellFees();
+            if (dayFees > 0m) { Debug.Log($"[거래소] {Day}일 매도 수수료 수입 {dayFees:N0}돈 · 거래소 현금 {(ExchangeBot.Instance == null ? 0m : ExchangeBot.Instance.cash):N0}돈"); }
             if (DailyIncomeController.Instance != null) { yield return DailyIncomeController.Instance.Settle(Day); }
             Phase = MarketPhase.PostClose;
             elapsed = 0f; ReportPending = true;

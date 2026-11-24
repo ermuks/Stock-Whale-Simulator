@@ -27,6 +27,7 @@ public sealed class UnlockGridUI : MonoBehaviour
     private RectTransform grid;
     private TextMeshProUGUI title, description, cost, duration, remainingCaption, remaining, status;
     private Image statusIcon, detailTrack, detailFill;
+    private MiniPreview preview;
     private Button start;
     private PlayerProgression bound;
     private string selectedId;
@@ -61,7 +62,10 @@ public sealed class UnlockGridUI : MonoBehaviour
         TabletKitStyle.Surface("Unlock Divider", transform, GridWidth + .02f, 0, .0015f, 1, TabletKitStyle.Line);
 
         title = TabletKitStyle.Label("Unlock Title", transform, "", DetailX, 0, DetailWidth, .075f, 36);
-        description = TabletKitStyle.Label("Unlock Description", transform, "", DetailX, .09f, DetailWidth, .36f, 25);
+        // 고른 항목은 글로 길게 설명하지 않는다. 쓰면 차트에 무슨 일이 생기는지 움직이는 그림으로 보여 주고, 그 아래에 한 줄만 적는다.
+        var frame = TabletKitStyle.Surface("Unlock Preview", transform, DetailX, .09f, DetailWidth, .28f, TabletKitStyle.Panel);
+        preview = MiniPreview.Create("Unlock Preview Picture", frame.transform, title.font, 20f);
+        description = TabletKitStyle.Label("Unlock Description", transform, "", DetailX, .385f, DetailWidth, .075f, 22);
         description.color = TabletKitStyle.Muted;
         description.alignment = TextAlignmentOptions.TopLeft;
         description.textWrappingMode = TextWrappingModes.Normal;
@@ -263,7 +267,8 @@ public sealed class UnlockGridUI : MonoBehaviour
         bool can = progression.CanStartUnlock(shown, out string reason);
         if (shown.Written)
         {
-            GameLocalizedText.Set(title, shown.LocalTitle, true); GameLocalizedText.Set(description, shown.LocalDescription, true);
+            GameLocalizedText.Set(title, shown.LocalTitle, true); GameLocalizedText.Set(description, shown.LocalSummary, true);
+            preview.Show(shown.Preview);
             GameLocalizedText.Set(cost, shown.cost > 0 ? DeviceTerminalUI.Money(shown.cost) : Condition, true);
             if (shown.external) { GameLocalizedText.Set(duration, "—", true); } else { DeviceTerminalUI.Set(duration, GameTime(shown.minutes)); }
         }

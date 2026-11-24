@@ -6,6 +6,7 @@ using System.Text;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 // 새 게임의 미리 그린 차트와 개미의 하루 벌이를 확인하는 도구. 창 없이 돌린다:
@@ -57,7 +58,7 @@ public static class ChartSeedCapture
     private static void Log(string message, string stack, LogType type)
     {
         if ((type == LogType.Exception || type == LogType.Error) && !stack.Contains("UnityEditor.Search")) { errors.Add(message + "\n" + stack); }
-        if (type == LogType.Log && message.Contains("하루 벌이")) { payLogs.Add(message); }
+        if (type == LogType.Log && (message.Contains("하루 벌이") || message.Contains("매도 수수료") || message.Contains("통정매매 중단") || message.Contains("수수료 0% 이벤트"))) { payLogs.Add(message); }
     }
 
     private static void Tick()
@@ -162,8 +163,162 @@ public static class ChartSeedCapture
         }
     }
 
+    /// <summary>
+    /// 해금 탭과 작전 탭을 찍는다(환경 변수 DONDON_CAPTURE=unlocks 일 때). 해금 항목을 하나씩 골라 설명을 찍고,
+    /// 둘째 태블릿은 순자산 1억 돈이 넘어야 열리므로 이 실행에서만 현금을 넣어 연다(저장되지 않는다).
+    /// </summary>
+    private static void PlanUnlocks(DeskViewController views)
+    {
+        steps.Clear();
+        var career = PlayerProgression.Instance;
+        report.AppendLine("UNLOCK items: " + career.UnlockItems.Count + " | tactic turnover needed " + career.rules.tacticCloseTurnover.ToString("N0"));
+        foreach (var item in career.UnlockItems)
+        { report.AppendLine("UNLOCK " + item.id + " | " + item.LocalTitle + " | cost " + item.cost.ToString("N0") + " | minutes " + item.minutes + " | requires " + item.requires + " | state " + career.StateOf(item) + " | lines " + item.LocalDescription.Split('\n').Length); }
+        foreach (PlayerTactics.Tool tool in Enum.GetValues(typeof(PlayerTactics.Tool)))
+        { report.AppendLine("TACTIC " + tool + " unlocked " + PlayerTactics.Unlocked(tool) + " | lock reason " + PlayerTactics.LockReason(tool)); }
+        TabletAccountUI first = null, second = null;
+        foreach (var tablet in Object.FindObjectsByType<TabletAccountUI>(FindObjectsInactive.Include)) { if (tablet.second) { second = tablet; } else { first = tablet; } }
+        var select = typeof(UnlockGridUI).GetMethod("Select", BindingFlags.Instance | BindingFlags.NonPublic);
+        steps.Add(("open first tablet", () => views.Focus(DeskViewTarget.TabletOne), 1.5, null));
+        steps.Add(("unlock page", () => first.ShowPage(TabletAccountUI.Page.Unlocks), 1.0, null));
+        foreach (string id in new[] { PlayerProgression.CrowdValueUnlock, PlayerProgression.NightPlantUnlock, PlayerProgression.CloseUnlock, PlayerProgression.WallUnlock })
+        {
+            string pick = id;
+            steps.Add(("select " + pick, () => select.Invoke(first.GetComponentInChildren<UnlockGridUI>(true), new object[] { pick }), 3.7, null));
+            steps.Add(("shot " + pick, () => Shoot("unlock-" + pick.Replace('.', '-')), .2, null));
+        }
+        steps.Add(("fund second tablet", () =>
+        {
+            views.ExitView(true);
+            var account = PlayerAccounts.Instance.primary; account.cash += 300_000_000m; PlayerAccounts.Instance.EvaluateUnlock();
+            report.AppendLine("SECOND tablet locked " + second.Locked);
+        }, .6, null));
+        steps.Add(("open second tablet", () => views.Focus(DeskViewTarget.TabletTwo), 1.5, null));
+        steps.Add(("tactics tab", () =>
+        {
+            Button tab = null;
+            foreach (var button in second.GetComponentsInChildren<Button>(true)) { if (button.name == "Button :: Tab Tactics") { tab = button; } }
+            report.AppendLine("TACTICS tab found " + (tab != null));
+            if (tab != null) { tab.onClick.Invoke(); }
+        }, 1.2, null));
+        // 프리뷰가 다 그려진 뒤에 찍는다. 도구를 바꿔 가며 세 가지를 본다.
+        foreach (int pick in new[] { 0, 3, 4 })
+        {
+            int index = pick;
+            steps.Add(("pick tool " + index, () => { foreach (var button in second.GetComponentsInChildren<Button>(true)) { if (button.name == "Button :: Tool " + index) { button.onClick.Invoke(); } } }, 3.9, null));
+            steps.Add(("shot tool " + index, () => Shoot("tactics-tool-" + index), .2, null));
+        }
+        steps.Add(("leave", () => views.ExitView(true), .4, null));
+    }
+
+    /// <summary>
+    /// 매도 수수료를 확인한다(환경 변수 DONDON_CAPTURE=fees 일 때). 첫날 장을 실제 속도로 얼마간 돌린 뒤,
+    /// 걷힌 수수료가 봇들의 매도 대금의 0.05%인지, 봇들이 낸 돈의 합과 같은지, 플레이어와 거래소는 내지 않는지 적는다.
+    /// 그다음 장을 끝까지 넘겨 마감 기록(거래소의 그날 수수료 수입)이 남는지 본다.
+    /// </summary>
+    private static void PlanFees()
+    {
+        steps.Clear();
+        var market = MarketDayController.Instance; decimal exchangeBefore = 0m;
+        steps.Add(("trading starts", () =>
+        {
+            exchangeBefore = ExchangeBot.Instance.cash;
+            var player = PlayerAccounts.Instance.primary;
+            report.AppendLine("FEE rate " + Trader.SellFeeRate + " | pays: exchange " + ExchangeBot.Instance.PaysSellFee + ", player " + player.PaysSellFee + ", a retail bot " + market.Bots[5].PaysSellFee + " (" + market.Bots[5].GetType().Name + ")");
+            report.AppendLine("FEE at open: exchange cash " + exchangeBefore.ToString("N0") + " collected so far " + Trader.SellFeesCollected.ToString("N2"));
+        }, 50, () => MarketDayController.CanTrade && market.Day == 1));
+        steps.Add(("after trading", () =>
+        {
+            decimal paid = 0m, most = 0m; int payers = 0, sellersExempt = 0; string top = "";
+            foreach (var trader in Trader.Registry)
+            {
+                if (trader.SellFeesPaid > 0m) { payers++; paid += trader.SellFeesPaid; if (trader.SellFeesPaid > most) { most = trader.SellFeesPaid; top = trader.GetType().Name; } if (!trader.PaysSellFee) { sellersExempt++; } }
+            }
+            decimal collected = Trader.SellFeesCollected, basis = Trader.SellFeeBase;
+            report.AppendLine("FEE after 50s of trading: collected " + collected.ToString("N2") + " on bot sell proceeds of " + basis.ToString("N0") + " -> rate " + (basis > 0m ? (collected / basis * 100m).ToString("0.00000") : "-") + "%");
+            report.AppendLine("FEE paid by " + payers + " accounts, sum " + paid.ToString("N2") + (paid == collected ? " (= collected)" : " (DIFFERS from collected)") + " | exempt accounts that paid: " + sellersExempt + " | biggest payer " + top + " " + most.ToString("N2"));
+            report.AppendLine("FEE exchange cash now " + ExchangeBot.Instance.cash.ToString("N0") + " (change " + (ExchangeBot.Instance.cash - exchangeBefore).ToString("N0") + ", which also includes its own trades) | player paid " + PlayerAccounts.Instance.primary.SellFeesPaid.ToString("N2") + " | exchange paid " + ExchangeBot.Instance.SellFeesPaid.ToString("N2"));
+            report.AppendLine("WHALE wash rounds " + WhaleBot.WashRoundsTotal + " painted " + WhaleBot.WashPaintedTotal.ToString("N0") + " wash fees " + WhaleBot.WashFeesTotal.ToString("N2"));
+            Elapsed.SetValue(market, market.tradingSeconds);
+        }, .5, null));
+        steps.Add(("closed", () => { foreach (string line in payLogs) { report.AppendLine("LOG " + line); } report.AppendLine("DAY1 closed: " + State()); }, .2, () => market.Phase == MarketPhase.PostClose && market.ReportPending));
+    }
+
+    /// <summary>
+    /// 수수료 0% 이벤트를 확인한다(DONDON_CAPTURE=holiday, DONDON_FEE_HOLIDAY=2로 둘째 날을 이벤트 날로 못 박고 돌린다).
+    /// 첫날: 플레이어가 한 번 사고팔아 수수료를 내는지 보고, 장을 넘겨 예고 문자가 오는지 본다.
+    /// 둘째 날: 08:30에 시작 문자·화면 표시·봇들의 대화가 시작되는지, 장이 열리면 세력의 즉흥 작전이 시작되고 수수료가 0으로 걷히는지 본다.
+    /// </summary>
+    private static void PlanHoliday(DeskViewController views)
+    {
+        steps.Clear();
+        var market = MarketDayController.Instance; var phone = DeskPhone.Instance; var player = PlayerAccounts.Instance.primary;
+        TabletAccountUI first = null;
+        foreach (var tablet in Object.FindObjectsByType<TabletAccountUI>(FindObjectsInactive.Include)) { if (!tablet.second) { first = tablet; } }
+        decimal feesBefore = 0m; int chatBefore = 0;
+        report.AppendLine("HOLIDAY days: " + string.Join(",", System.Linq.Enumerable.Where(System.Linq.Enumerable.Range(1, 30), FeeHoliday.IsEventDay)) + " (forced " + Environment.GetEnvironmentVariable("DONDON_FEE_HOLIDAY") + ") | player pays fee " + player.PaysSellFee + " | rate now " + Trader.SellFeeRate);
+        steps.Add(("player buys", () =>
+        {
+            var stock = StockManager.Instance.stocks[1];
+            stock.orderBook.TryBest(out _, out decimal ask);
+            player.BuyLimit(PriceTickPolicy.CeilToTick(ask * 1.02m), 2000, 0, stock);
+            report.AppendLine("PLAYER bought " + player.GetHolding(stock).ToString("N0") + " of " + stock.symbol + " near " + ask.ToString("N0"));
+        }, 2.0, () => MarketDayController.CanTrade && market.Day == 1 && StockManager.Instance.stocks[1].orderBook.TryBest(out _, out _)));
+        steps.Add(("player sells", () =>
+        {
+            var stock = StockManager.Instance.stocks[1]; decimal held = player.GetHolding(stock), cash = player.cash;
+            if (!stock.orderBook.TryBest(out decimal bid, out _) || bid <= 0m) { bid = stock.currentPrice; }
+            player.SellLimit(PriceTickPolicy.FloorToTick(bid * .95m), held, 0, stock);
+            decimal sold = held - player.GetOwnedVolume(stock), gained = player.cash - cash;
+            report.AppendLine("PLAYER sold " + sold.ToString("N0") + " for " + gained.ToString("N2") + " in hand | fee paid " + player.SellFeesPaid.ToString("N2") + " | gross " + (gained + player.SellFeesPaid).ToString("N2")
+                + " | rate " + (gained + player.SellFeesPaid > 0m ? (player.SellFeesPaid / (gained + player.SellFeesPaid) * 100m).ToString("0.00000") : "-") + "%");
+        }, 1.0, null));
+        steps.Add(("order screen day one", () => { views.Focus(DeskViewTarget.TabletOne); first.ShowPage(TabletAccountUI.Page.Orders); }, 2.0, null));
+        steps.Add(("shot order day one", () => { Shoot("holiday-1-order-screen-normal"); views.ExitView(true); }, .5, null));
+        steps.Add(("skip day one", () => Elapsed.SetValue(market, market.tradingSeconds), .5, null));
+        steps.Add(("close report", () => { PauseMenuController.Instance.ContinueAfterReport(); }, 2.5, () => market.Phase == MarketPhase.PostClose && market.ReportPending));
+        steps.Add(("notice the day before", () =>
+        {
+            report.AppendLine("NOTICE after day 1: messages " + phone.Messages.Count + " unread " + phone.UnreadCount + (phone.Messages.Count > 0 ? " | newest: " + phone.Messages[phone.Messages.Count - 1].Heading + " / " + phone.Messages[phone.Messages.Count - 1].BodyText : ""));
+            market.StartMorningAfterSleep();
+            // 정산 화면을 단추가 아니라 코드로 닫으면 시간이 멈춘 채 남을 때가 있다. 이 도구에서만 다시 흐르게 한다.
+            Time.timeScale = 1f;
+        }, 1.0, () => market.Phase == MarketPhase.PostClose && !market.ReportPending));
+        steps.Add(("event starts", () =>
+        {
+            feesBefore = Trader.SellFeesCollected; chatBefore = InvestorSociety.Instance.FeeHolidayLines;
+            report.AppendLine("EVENT started: " + State() + " clock " + market.ClockMinute / 60 + ":" + (market.ClockMinute % 60).ToString("00") + " | active " + FeeHoliday.Active + " rate " + Trader.SellFeeRate + " text " + FeeHoliday.RateText
+                + " | messages " + phone.Messages.Count + " newest: " + phone.Messages[phone.Messages.Count - 1].Heading);
+        }, 22, () => market.Day == 2 && FeeHoliday.Started));
+        steps.Add(("chat before open", () =>
+        {
+            report.AppendLine("CHAT lines about the event after 22s: " + (InvestorSociety.Instance.FeeHolidayLines - chatBefore) + " | " + State());
+            views.Focus(DeskViewTarget.Chat);
+        }, 1.6, null));
+        steps.Add(("shot chat", () => { Shoot("holiday-2-chat-before-open"); views.ExitView(true); }, .6, null));
+        steps.Add(("shot desk", () => Shoot("holiday-3-desk-with-badge"), .3, null));
+        steps.Add(("raise phone", () => phone.Raise(), 1.0, null));
+        steps.Add(("shot phone list", () => Shoot("holiday-4-phone-list"), .2, null));
+        steps.Add(("open notice", () => phone.OpenMessage(0), .8, null));
+        steps.Add(("shot phone notice", () => { Shoot("holiday-5-phone-notice"); phone.Lower(); }, .8, null));
+        steps.Add(("wait for open", () => { report.AppendLine("OPEN day 2: " + State()); }, 14, () => MarketDayController.CanTrade && market.Day == 2));
+        steps.Add(("after open", () =>
+        {
+            int operating = 0;
+            foreach (var stock in StockManager.Instance.stocks) { if (stock.Owner is WhaleBot whale && whale.Operating) { operating++; } }
+            report.AppendLine("WHALES impromptu operations started " + WhaleBot.HolidayOperationsTotal + " | operating now " + operating + " | fees collected on the event day " + (Trader.SellFeesCollected - feesBefore).ToString("N2")
+                + " | chat lines " + (InvestorSociety.Instance.FeeHolidayLines - chatBefore) + " | phone messages " + phone.Messages.Count);
+            foreach (string line in payLogs) { report.AppendLine("LOG " + line); }
+            views.Focus(DeskViewTarget.TabletOne); first.ShowPage(TabletAccountUI.Page.Orders);
+        }, 2.0, null));
+        steps.Add(("shot order event", () => { Shoot("holiday-6-order-screen-event"); views.ExitView(true); }, .4, null));
+    }
+
     private static void Plan(DeskViewController views)
     {
+        if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "unlocks") { PlanUnlocks(views); return; }
+        if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "fees") { PlanFees(); return; }
+        if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "holiday") { PlanHoliday(views); return; }
         steps.Clear();
         var chart = Object.FindAnyObjectByType<ChartManager>(); var market = MarketDayController.Instance; var manager = StockManager.Instance;
         int[] periods = { 0, 1, 5, 15, 60, 1440 }; string[] names = { "base", "1m", "5m", "15m", "1h", "1d" };
@@ -214,10 +369,22 @@ public static class ChartSeedCapture
     {
         int factor = Mathf.Max(1, Mathf.CeilToInt(1080f / Mathf.Max(1, Screen.height)));
         int width = Screen.width * factor, height = Screen.height * factor;
+        // 화면에 덮어 그리는 표시(이벤트 표시, 휴대폰 안내)는 카메라로 찍히지 않으므로 찍는 동안만 카메라에 붙인다.
+        var overlays = new List<(Canvas canvas, float scale)>();
+        foreach (var canvas in Object.FindObjectsByType<Canvas>())
+        {
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.ScreenSpaceOverlay && canvas.gameObject.activeInHierarchy && (canvas.name == "Area :: Fee Holiday" || canvas.name == "Area :: Phone Hint"))
+            { overlays.Add((canvas, canvas.scaleFactor)); }
+        }
         var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;
-        camera.targetTexture = texture; camera.Render(); RenderTexture.active = texture;
+        camera.targetTexture = texture;
+        foreach (var item in overlays)
+        { item.canvas.renderMode = RenderMode.ScreenSpaceCamera; item.canvas.worldCamera = camera; item.canvas.planeDistance = camera.nearClipPlane + .2f; item.canvas.scaleFactor = item.scale * factor; }
+        Canvas.ForceUpdateCanvases();
+        camera.Render(); RenderTexture.active = texture;
         var pixels = new Texture2D(width, height, TextureFormat.RGB24, false); pixels.ReadPixels(new Rect(0, 0, width, height), 0, 0); pixels.Apply();
         File.WriteAllBytes(Path.Combine(Folder, name + ".png"), pixels.EncodeToPNG());
+        foreach (var item in overlays) { item.canvas.renderMode = RenderMode.ScreenSpaceOverlay; item.canvas.worldCamera = null; item.canvas.scaleFactor = item.scale; }
         camera.targetTexture = old; RenderTexture.active = previous; Object.Destroy(pixels); texture.Release(); Object.Destroy(texture);
         report.AppendLine("VIEW " + name);
     }
