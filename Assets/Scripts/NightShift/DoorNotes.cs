@@ -14,6 +14,8 @@ public sealed class DoorNotes : MonoBehaviour
     /// <summary>바닥의 쪽지를 겨누고 있다(F가 쪽지 줍기로 쓰인다).</summary>
     public static bool Aiming => Instance != null && Instance.aimed != null;
     public const KeyCode PickKey = KeyCode.F;
+    /// <summary>true면 쪽지 대신 휴대폰 문자(DeskPhone)로 알린다. 쪽지 화면을 찍는 점검 도구만 false로 바꾼다.</summary>
+    public static bool ByPhone = true;
     private const int StuckLimit = 6;
     /// <summary>노크가 울리고 이만큼 뒤에 쪽지가 들어오기 시작한다.</summary>
     private const float KnockLeadSeconds = 1.1f;
@@ -110,6 +112,15 @@ public sealed class DoorNotes : MonoBehaviour
         for (int i = waiting.Count - 1; i >= 0; i--)
         {
             if (UnityEngine.Time.time < waiting[i].at) { continue; }
+            // 이제는 쪽지 대신 책상의 휴대폰으로 문자가 온다. 휴대폰이 아직 준비되지 않았으면 준비될 때까지 기다리고,
+            // 휴대폰을 놓을 자리가 없는 장면에서만 예전처럼 문틈으로 쪽지가 들어온다.
+            var phone = ByPhone ? DeskPhone.Instance : null;
+            if (phone != null && !phone.Unavailable)
+            {
+                if (!phone.Ready) { continue; }
+                phone.Receive(waiting[i].stock, waiting[i].day, waiting[i].minute); waiting.RemoveAt(i);
+                continue;
+            }
             Deliver(waiting[i].stock, waiting[i].day, waiting[i].minute, shell); waiting.RemoveAt(i);
         }
         if (locale != GameLocale.Revision) { locale = GameLocale.Revision; foreach (var note in notes) { Write(note); } }

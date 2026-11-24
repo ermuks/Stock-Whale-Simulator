@@ -144,7 +144,8 @@ public sealed class DrawerProp : MonoBehaviour
         else if (free && !DeskViewController.OwnsView && slide <= 0f)
         {
             Ray ray = views.ViewCamera.ScreenPointToRay(MouseCameraController.GetAimScreenPosition());
-            Hovered = views.Hovered == DeskViewTarget.None && drawerRenderer.bounds.IntersectRay(ray);
+            // 책상 위의 휴대폰을 내려다보는 시선은 그 아래의 서랍도 지나간다. 그때는 휴대폰이 먼저다.
+            Hovered = views.Hovered == DeskViewTarget.None && !DeskPhone.Aiming && drawerRenderer.bounds.IntersectRay(ray);
             if (Hovered && key) { Open = views.FocusCustom(ViewPose(views.ViewCamera), 52f); }
         }
         // 서랍은 부드럽게 미끄러져 나오고 들어간다.

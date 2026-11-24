@@ -55,6 +55,25 @@ public partial class StockManager
             OnStockListed?.Invoke(stock);
         }
     }
+    /// <summary>시작 가격을 정해 둔 값에서 위아래로 이만큼까지 흔든다.</summary>
+    public const double StartPriceSpread = 0.12;
+    /// <summary>
+    /// 종목의 시작 가격. 정해 둔 값(500, 1,000, 10,000…)은 딱 떨어져서 막 시작한 장처럼 보인다.
+    /// 한참 거래돼 온 종목처럼 보이게 ±12% 안에서 흔들고 호가 단위에 맞춘다(예: 10,000 → 10,870).
+    /// 같은 판에서는 언제나 같은 값이다(게임의 고정 시드와 종목 코드로 정한다). 정해 둔 값 자체는 고치지 않는다.
+    /// </summary>
+    public decimal MessyStartPrice(OwnerCompanyDefinition definition)
+    {
+        decimal planned = Math.Max(1m, definition.startPrice);
+        uint mixed = unchecked((uint)CandleHistoryManager.StableSeed(economy.seed, "START:" + definition.stockId));
+        unchecked { mixed ^= mixed >> 16; mixed *= 0x85EBCA6Bu; mixed ^= mixed >> 13; mixed *= 0xC2B2AE35u; mixed ^= mixed >> 16; }
+        double share = mixed / (double)uint.MaxValue * 2d - 1d;
+        decimal price = PriceTickPolicy.RoundToTick(planned * (decimal)(1d + share * StartPriceSpread));
+        // 어쩌다 다시 딱 떨어지는 값이 나오면(끝자리가 0으로만 이어지면) 호가 몇 칸을 옮긴다.
+        decimal round = 1m; while (planned / round >= 100m) { round *= 10m; }
+        if (price % round == 0m) { decimal tick = PriceTickPolicy.GetTickSize(price); price = PriceTickPolicy.RoundToTick(price + tick * (3 + mixed % 5)); }
+        return Math.Max(1m, price);
+    }
     public void BuildEconomyStocks()
     {
         initialRandom = new System.Random(economy.seed);
@@ -69,7 +88,7 @@ public partial class StockManager
             if (definition.stockId == businessRules.entryCompany && businessRules.entryIssuedShares > 0)
             { definition.issuedShares = businessRules.entryIssuedShares; }
             definition.name = CurrentName(definition.name);
-            var stock = new Stock(definition.stockId, definition.name, PriceTickPolicy.RoundToTick(Math.Max(1m, definition.startPrice)), definition.issuedShares);
+            var stock = new Stock(definition.stockId, definition.name, MessyStartPrice(definition), definition.issuedShares);
             stock.OwnerId = definition.ownerId;
             stock.IsListed = definition.initiallyListed;
             if (definition==economy.companies[0] && economy.retailPlayerStart)
@@ -355,6 +374,37 @@ public partial class StockManager
         // 주식을 하나도 안 받은 사람도 이제는 살 돈이 있어서, 딱 맞추면 개장 직후 사는 쪽으로 쏠린다. 그만큼(20%) 낮춰 잡는다.
         retailExposureScale = Mathf.Clamp((float)(held / equity) / .575f * .8f, .01f, 1f);
         Debug.Log($"[개미 자금] 현금 {equity - held:N0}돈 · 보유 주식 {held:N0}돈 · 주식 비중 {held / equity * 100m:0.0}% · 목표 비중 배율 {retailExposureScale:0.000}");
+    }
+
+    /// <summary>
+    /// 개미의 하루 벌이(바깥에서 들어오는 돈: 월급, 용돈, 다른 데서 번 돈). 장이 열릴 때마다 개미 한 명이 이 범위에서 무작위로 받는다(1만 돈 단위).
+    /// 평균 50만 돈이라 개미가 천 명이면 하루에 5억 돈쯤이 시장에 새로 들어온다. 처음 개미 현금 합계(약 1.1조)의 0.05%에 못 미쳐서 값을 밀어 올리지는 않고,
+    /// 세력과 플레이어에게 돈을 잃은 개미가 빈손으로 남지 않게 한다. 개미가 가난하면 세력도 플레이어도 벌 돈이 없다.
+    /// </summary>
+    public const long RetailPayMin = 300_000L, RetailPayMax = 700_000L, RetailPayStep = 10_000L;
+    /// <summary>개미인가: 거래소 참여자, 기업 소유주, 세력을 뺀 봇.</summary>
+    public static bool IsRetail(TradeBot bot) => bot != null && !bot.IsExchangeParticipant && !bot.IsCompanyOwner && !(bot is WhaleBot);
+    /// <summary>이 개미가 day일에 받는 돈. 같은 판의 같은 날, 같은 계좌는 언제나 같은 값이다(저장을 불러와도 달라지지 않는다).</summary>
+    public long RetailPay(TradeBot bot, int day)
+    {
+        // 계좌 번호나 날짜가 1씩 다른 씨앗을 그대로 쓰면 첫 난수가 줄지어 나온다(어제 38만, 오늘 40만, 내일 42만…). 씨앗을 한 번 흩뜨려서 쓴다.
+        uint mixed = unchecked((uint)CandleHistoryManager.StableSeed(economy.seed, "PAY:" + bot.InitialAccountId + ":" + day));
+        unchecked { mixed ^= mixed >> 16; mixed *= 0x85EBCA6Bu; mixed ^= mixed >> 13; mixed *= 0xC2B2AE35u; mixed ^= mixed >> 16; }
+        long steps = (RetailPayMax - RetailPayMin) / RetailPayStep;
+        return RetailPayMin + mixed % (uint)(steps + 1) * RetailPayStep;
+    }
+    /// <summary>
+    /// 개미 한 명에게 하루 벌이를 넣는다. 넣은 돈을 돌려준다(개미가 아니면 0).
+    /// 바깥에서 들어온 돈으로 기록되므로 그날의 매매 수익에는 잡히지 않는다(돈을 받았다고 수익 자랑을 하지 않는다).
+    /// 첫날은 주지 않는다: 처음 현금을 막 나눠 받은 날이다.
+    /// </summary>
+    public decimal PayRetail(TradeBot bot, int day)
+    {
+        if (!useInitialEconomy || day <= 1 || !IsRetail(bot) || !bot.InitialCashAssigned)
+        { return 0m; }
+        long pay = RetailPay(bot, day);
+        bot.cash += pay;
+        return pay;
     }
 
     public void AssignInitialCash(TradeBot bot)

@@ -115,6 +115,9 @@ public sealed class DeskClutter : MonoBehaviour
                 pad.Expand(new Vector3(.16f, 4f, .16f) * unit); pads.Add(pad);
             }
         }
+        // 두 태블릿 사이에는 휴대폰이 놓인다. 그 자리도 비워 둔다.
+        if (DeskPhone.RestSpot(views, out Vector3 phoneSpot, out _, out float phoneHeight))
+        { pads.Add(new Bounds(phoneSpot, new Vector3(phoneHeight * .8f, 4f * unit, phoneHeight * 1.3f))); }
         // 겹치는 물건은 가까운 빈자리로 옮긴다: 플레이어 쪽과 양옆으로 조금씩 넓혀 가며 찾고, 책상 위에 자리가 없을 때만 치운다.
         float step = .14f * unit;
         Vector3 sideways = Vector3.Cross(Vector3.up, toPlayer);

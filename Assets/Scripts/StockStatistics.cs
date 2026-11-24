@@ -126,6 +126,8 @@ public class StockStatistics : MonoBehaviour
                 recentTrades = new List<TradeRecord>(),
                 strengthTrades = new List<TradeRecord>()
             };
+            // 새 게임의 지난 시세(미리 만든 일봉·분봉)가 이미 있으면 52주 최고·최저에 넣는다.
+            WidenToHistory(ref stats);
             _stats[stock] = stats;
             _lastSurgeTime[stock] = 0f;
             _prevWindowVolume[stock] = 0m;
@@ -142,6 +144,32 @@ public class StockStatistics : MonoBehaviour
         stock.OnTradeExecutedWithStock += OnTradeExecuted;
         stock.OnMatchedTrade -= OnMatchedPrice;
         stock.OnMatchedTrade += OnMatchedPrice;
+    }
+
+    /// <summary>
+    /// 52주 최고·최저를 차트에 남아 있는 기록(미리 만든 지난 시세와 그 뒤의 실제 체결)의 고가·저가까지 넓힌다.
+    /// 옆 패널의 숫자가 차트에 보이는 값과 어긋나지 않게 한다. 화면에 보여 주는 값일 뿐이다(봇은 이 값을 쓰지 않는다).
+    /// </summary>
+    private static void WidenToHistory(ref StockStats stats)
+    {
+        var history = CandleHistoryManager.Instance;
+        if (history == null || stats.stock == null)
+        { return; }
+        var minutes = history.MinuteHistory(stats.stock);
+        for (int i = 0; i < minutes.Count; i++)
+        {
+            decimal high = (decimal)minutes[i].high, low = (decimal)minutes[i].low;
+            if (high > stats.week52High) { stats.week52High = high; }
+            if (low > 0m && low < stats.week52Low) { stats.week52Low = low; }
+        }
+    }
+    /// <summary>지난 시세를 만든 뒤에 부른다: 이미 등록된 종목의 52주 최고·최저에 그 기록을 넣는다.</summary>
+    public void IncludeHistory(Stock stock)
+    {
+        if (stock == null || !_stats.TryGetValue(stock, out var stats))
+        { return; }
+        WidenToHistory(ref stats);
+        _stats[stock] = stats;
     }
 
     /// <summary>새 장이 열릴 때만 전일 종가를 확정한다. 마감 후에는 그날 등락률을 유지한다.</summary>
@@ -373,8 +401,10 @@ public class StockStatistics : MonoBehaviour
             bool modified = false;
             if (now - stats.week52StartTime >= week52InSeconds)
             {
+                // 예전에는 여기서 지금 값 하나로 되돌렸다(차트에 보이는 고가·저가가 패널에서 사라졌다). 이제는 차트에 남아 있는 기록으로 다시 잰다.
                 stats.week52High = stats.stock.currentPrice;
                 stats.week52Low = stats.stock.currentPrice;
+                WidenToHistory(ref stats);
                 stats.week52StartTime = now;
                 modified = true;
             }

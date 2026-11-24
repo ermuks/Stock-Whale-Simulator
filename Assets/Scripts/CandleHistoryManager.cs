@@ -123,26 +123,157 @@ public class CandleHistoryManager : MonoBehaviour
         { return; }
 
         int seed = ExchangeBot.Instance == null ? 24680 : ExchangeBot.Instance.historySeed;
-        var prices = new System.Random(StableSeed(seed, stock.symbol));
-        var volumes = new System.Random(StableSeed(seed ^ 0x315421, stock.symbol));
-        var closes = new decimal[61];
-        closes[60] = stock.currentPrice;
-        for (int i = 59; i >= 0; i--)
+        // 지난 며칠의 분봉을 먼저 만든다. 1분·5분·15분·1시간·1일 봉은 이 분봉을 묶어서 그린다.
+        var series = BuildSeedMinutes(stock.currentPrice, stock.issuedShares, StableSeed(seed, stock.symbol));
+        if (!minuteHistory.TryGetValue(stock, out var minutes))
+        { minutes = new List<CandleData>(series.Count + 512); minuteHistory.Add(stock, minutes); }
+        if (minutes.Count == 0)
         {
-            decimal change = (decimal)(0.001 + prices.NextDouble() * 0.009) * (prices.NextDouble() < 0.5 ? -1m : 1m);
-            closes[i] = closes[i + 1] / (1m + change);
+            // 그보다 앞선 날들은 하루에 한 봉씩만 둔다(1일 봉 보기에서만 보인다).
+            minutes.AddRange(BuildSeedDays((decimal)series[0].open, stock.issuedShares, StableSeed(seed ^ 0x5D17, stock.symbol)));
+            minutes.AddRange(series);
         }
 
-        for (int i = 0; i < 60; i++)
+        // 기본 보기의 지난 봉 60개는 같은 기록의 마지막 하루(480분)를 여덟 개씩 묶은 것이다(어느 보기로 봐도 같은 흐름이 이어진다).
+        int from = series.Count - SeedBaseCandles * SeedBaseSpan;
+        for (int i = 0; i < SeedBaseCandles; i++)
         {
-            decimal open = closes[i], close = closes[i + 1];
-            decimal high = Math.Max(open, close) * (1m + (decimal)(0.001 + prices.NextDouble() * 0.004));
-            decimal low = Math.Min(open, close) * (1m - (decimal)(0.001 + prices.NextDouble() * 0.004));
-            decimal spread = (high - low) / open;
-            decimal volume = stock.issuedShares * 0.0001m * (1m + spread / 0.01m) * (decimal)(0.8 + volumes.NextDouble() * 0.4);
-            volume = decimal.Floor(Math.Min(volume, stock.issuedShares * 0.005m));
-            list.Add(new CandleData { open = (float)open, high = (float)high, low = (float)low, close = (float)close, exactClose = close, volume = (float)volume, nonExchangeVolume = volume, historical = true, completedTime = Time.timeAsDouble - (60 - i) * Math.Max(0.1f, candleDuration) });
+            var merged = series[from + i * SeedBaseSpan];
+            for (int k = 1; k < SeedBaseSpan; k++)
+            {
+                var next = series[from + i * SeedBaseSpan + k];
+                merged.high = Math.Max(merged.high, next.high); merged.low = Math.Min(merged.low, next.low);
+                merged.close = next.close; merged.exactClose = next.exactClose;
+                merged.volume += next.volume; merged.nonExchangeVolume += next.nonExchangeVolume;
+            }
+            // 기본 보기의 봉은 시각 없이 차례로만 놓인다(예전과 같다).
+            merged.marketDay = 0; merged.marketMinute = 0;
+            merged.completedTime = Time.timeAsDouble - (SeedBaseCandles - i) * Math.Max(0.1f, candleDuration);
+            list.Add(merged);
         }
+        // 옆 패널의 52주 최고·최저도 이 지난 시세를 따른다.
+        StockStatistics.Instance?.IncludeHistory(stock);
+    }
+
+    /// <summary>미리 그려 두는 지난 시세: 거래일 수, 장이 열리는 분(09:00), 하루의 분 수(17:00까지).</summary>
+    public const int SeedDays = 5, SeedOpenMinute = 540, SeedMinutesPerDay = 480;
+    /// <summary>분봉보다 앞선 날들을 일봉으로만 만들어 두는 날 수. 1일 봉 보기가 휑하지 않게 한다.</summary>
+    public const int SeedDailyDays = 55;
+    /// <summary>일봉으로만 만든 지난 날의 표시(completedTime). 분·시간 단위 보기에서는 이 봉을 빼고 그린다.</summary>
+    public const double DailyOnly = -1d;
+    /// <summary>
+    /// 분봉 기록보다 앞선 SeedDailyDays일을 하루 한 봉씩 만든다. 마지막 날의 종가에서 밤사이 갭을 거쳐 분봉 첫날의 시가(nextOpen)로 이어진다.
+    /// 변동이 몰려 다니고(조용한 주와 요동치는 주), 가끔 며칠씩 한쪽으로 간다. 값은 호가 단위에 맞춘다.
+    /// </summary>
+    public static List<CandleData> BuildSeedDays(decimal nextOpen, decimal issuedShares, int seed)
+    {
+        var random = new System.Random(seed);
+        double Gauss()
+        {
+            double u = 1d - random.NextDouble(), v = random.NextDouble();
+            return Math.Sqrt(-2d * Math.Log(u)) * Math.Cos(2d * Math.PI * v);
+        }
+        int total = SeedDailyDays;
+        var opens = new double[total]; var closes = new double[total]; var highs = new double[total]; var lows = new double[total]; var activity = new double[total];
+        double level = 0d, swing = 1d, trend = 0d; int run = 0;
+        for (int i = 0; i < total; i++)
+        {
+            swing = Math.Min(2.6, Math.Max(0.45, Math.Exp(Math.Log(swing) * 0.85 + Gauss() * 0.28)));
+            if (run <= 0 && random.NextDouble() < 0.10) { run = 2 + random.Next(5); trend = (random.NextDouble() < 0.5 ? -1d : 1d) * (0.008 + random.NextDouble() * 0.014); }
+            double sigma = 0.021 * swing;
+            if (i > 0) { level += Gauss() * 0.006; }
+            opens[i] = level;
+            double move = Gauss() * sigma + (run > 0 ? trend : 0d) - level * 0.02;
+            run--; level += move; closes[i] = level;
+            highs[i] = Math.Max(opens[i], closes[i]) + Math.Abs(Gauss()) * sigma * 0.55;
+            lows[i] = Math.Min(opens[i], closes[i]) - Math.Abs(Gauss()) * sigma * 0.55;
+            activity[i] = swing * (0.7 + random.NextDouble() * 0.6) * (1d + Math.Abs(move) / 0.021);
+        }
+        // 마지막 날 종가 뒤의 밤사이 갭까지 더한 자리가 분봉 첫날의 시가다.
+        double end = level + Gauss() * 0.006;
+        var result = new List<CandleData>(total);
+        decimal Price(double value) => Math.Max(1m, PriceTickPolicy.RoundToTick(nextOpen * (decimal)Math.Exp(value - end)));
+        for (int i = 0; i < total; i++)
+        {
+            decimal open = Price(opens[i]), close = Price(closes[i]);
+            decimal high = Math.Max(Price(highs[i]), Math.Max(open, close)), low = Math.Min(Price(lows[i]), Math.Min(open, close));
+            decimal volume = decimal.Floor(Math.Min(issuedShares * 0.011m * (decimal)activity[i], issuedShares * 0.2m));
+            result.Add(new CandleData
+            {
+                open = (float)open, high = (float)high, low = (float)low, close = (float)close, exactClose = close, volume = (float)volume, nonExchangeVolume = volume,
+                historical = true, completedTime = DailyOnly, marketDay = i - total - (SeedDays - 1), marketMinute = SeedOpenMinute,
+            });
+        }
+        return result;
+    }
+    /// <summary>기본 보기에 놓는 지난 봉의 수와, 한 봉에 묶는 분봉의 수.</summary>
+    public const int SeedBaseCandles = 60, SeedBaseSpan = 8;
+    /// <summary>
+    /// 새 게임의 지난 시세를 분봉으로 만든다. 마지막 봉의 종가가 지금 값(lastPrice)과 같다. 날짜는 게임 첫날의 앞날들(0일, -1일, …)이다.
+    /// 예전에는 봉마다 ±0.1~1%를 동전 던지기로 정해 오르내림이 한결같았다. 이제는 실제 시세처럼 굴곡을 준다:
+    ///  - 변동이 몰려 다닌다(조용한 구간과 요동치는 구간이 번갈아 온다). 장 시작과 마감 무렵이 더 거칠다.
+    ///  - 가끔 한쪽으로 달리는 구간(수십 분)과 갑자기 튀는 봉이 있다. 날마다 분위기와 방향이 다르고, 밤사이에 갭이 뜬다.
+    /// 값은 모두 호가 단위에 맞춘다(시가·고가·저가·종가). 거래량은 변동이 큰 봉일수록 많다.
+    /// 화면에 보여 주기만 하는 기록이다. 계좌·호가·체결은 건드리지 않는다.
+    /// </summary>
+    public static List<CandleData> BuildSeedMinutes(decimal lastPrice, decimal issuedShares, int seed)
+    {
+        // 분봉 하나의 평소 변동. 첫 측정(0.0016)에서는 하루 폭이 15~40%나 돼서 절반 아래로 낮췄다: 하루 폭 6~15%쯤이 되게.
+        const double Base = 0.0007;
+        var random = new System.Random(seed);
+        double Gauss()
+        {
+            double u = 1d - random.NextDouble(), v = random.NextDouble();
+            return Math.Sqrt(-2d * Math.Log(u)) * Math.Cos(2d * Math.PI * v);
+        }
+        int total = SeedDays * SeedMinutesPerDay;
+        var opens = new double[total]; var closes = new double[total]; var highs = new double[total]; var lows = new double[total]; var activity = new double[total];
+        double level = 0d, swing = 1d, runDrift = 0d; int run = 0;
+        for (int day = 0; day < SeedDays; day++)
+        {
+            // 밤사이의 갭, 그날의 방향과 분위기.
+            if (day > 0) { level += Gauss() * 0.007; }
+            double dayDrift = Gauss() * 0.012 / SeedMinutesPerDay, mood = 0.65 + random.NextDouble() * 0.9;
+            for (int minute = 0; minute < SeedMinutesPerDay; minute++)
+            {
+                int i = day * SeedMinutesPerDay + minute;
+                double edge = 2d * minute / (SeedMinutesPerDay - 1) - 1d, shape = 1d + 1.2 * edge * edge;
+                // 변동은 몰려 다닌다: 평소 수준(1)으로 천천히 돌아오면서 제멋대로 부풀고 가라앉는다.
+                swing = Math.Min(3.5, Math.Max(0.35, Math.Exp(Math.Log(swing) * 0.96 + Gauss() * 0.14)));
+                if (run <= 0 && random.NextDouble() < 0.012)
+                { run = 8 + random.Next(30); runDrift = (random.NextDouble() < 0.5 ? -1d : 1d) * Base * (0.6 + random.NextDouble() * 1.2); swing = Math.Min(3.5, swing * 1.6); }
+                double jump = 0d;
+                if (random.NextDouble() < 0.004) { jump = Gauss() * Base * 6d; swing = Math.Min(3.5, swing * 2d); }
+                double sigma = Base * shape * swing * mood;
+                double move = Gauss() * sigma + dayDrift + (run > 0 ? runDrift : 0d) + jump - level * 0.0006;
+                run--;
+                opens[i] = level; level += move; closes[i] = level;
+                highs[i] = Math.Max(opens[i], closes[i]) + Math.Abs(Gauss()) * sigma * 0.7;
+                lows[i] = Math.Min(opens[i], closes[i]) - Math.Abs(Gauss()) * sigma * 0.7;
+                activity[i] = shape * swing * mood * (0.6 + random.NextDouble() * 0.8) * (1d + Math.Abs(move) / Base * 0.9);
+            }
+        }
+
+        // 마지막 종가가 지금 값이 되게 통째로 옮기고, 호가 단위에 맞춘다.
+        var result = new List<CandleData>(total);
+        double end = level; decimal previous = 0m;
+        decimal Price(double value) => Math.Max(1m, PriceTickPolicy.RoundToTick(lastPrice * (decimal)Math.Exp(value - end)));
+        for (int i = 0; i < total; i++)
+        {
+            int minute = i % SeedMinutesPerDay;
+            // 하루 안에서는 앞 봉의 종가가 다음 봉의 시가다. 날이 바뀌면 갭이 뜰 수 있다.
+            decimal open = minute == 0 || previous <= 0m ? Price(opens[i]) : previous;
+            decimal close = i == total - 1 ? lastPrice : Price(closes[i]);
+            decimal high = Math.Max(Price(highs[i]), Math.Max(open, close)), low = Math.Min(Price(lows[i]), Math.Min(open, close));
+            decimal volume = decimal.Floor(Math.Min(issuedShares * 0.0000333m * (decimal)activity[i], issuedShares * 0.002m));
+            result.Add(new CandleData
+            {
+                open = (float)open, high = (float)high, low = (float)low, close = (float)close, exactClose = close, volume = (float)volume, nonExchangeVolume = volume,
+                historical = true, marketDay = i / SeedMinutesPerDay - (SeedDays - 1), marketMinute = SeedOpenMinute + minute,
+            });
+            previous = close;
+        }
+        return result;
     }
 
     public static int StableSeed(int seed, string symbol)

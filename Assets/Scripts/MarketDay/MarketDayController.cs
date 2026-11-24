@@ -176,6 +176,7 @@ public sealed class MarketDayController : MonoBehaviour
         if (GetComponent<DeskClutter>() == null) { gameObject.AddComponent<DeskClutter>(); }
         if (GetComponent<RoomShell>() == null) { gameObject.AddComponent<RoomShell>(); }
         if (GetComponent<DoorNotes>() == null) { gameObject.AddComponent<DoorNotes>(); }
+        if (GetComponent<DeskPhone>() == null) { gameObject.AddComponent<DeskPhone>(); }
         if (GetComponent<WallCalendar>() == null) { gameObject.AddComponent<WallCalendar>(); }
         if (GetComponent<BedSleep>() == null) { gameObject.AddComponent<BedSleep>(); }
         if (GetComponent<DoorExit>() == null) { gameObject.AddComponent<DoorExit>(); }
@@ -501,6 +502,14 @@ public sealed class MarketDayController : MonoBehaviour
         {
             if (CorporateEconomy.Instance!=null) { yield return CorporateEconomy.Instance.ProcessListings(Day); }
             DailyIncomeController.Instance?.BeginDay(Day);
+            // 장이 열릴 때 개미마다 하루 벌이가 들어온다(리딩방 이용료를 내기 전에 받는다).
+            decimal retailPay = 0m; int retailPaid = 0;
+            for (int i = 0; i < Bots.Count; i++)
+            {
+                decimal pay = StockManager.Instance == null ? 0m : StockManager.Instance.PayRetail(Bots[i], Day);
+                if (pay > 0m) { retailPay += pay; retailPaid++; }
+            }
+            if (retailPaid > 0) { Debug.Log($"[개미 자금] {Day}일 하루 벌이 {retailPay:N0}돈 · {retailPaid:N0}명 · 한 명 평균 {retailPay / retailPaid:N0}돈"); }
             for (int i = 0; i < Bots.Count; i++)
             {
                 DailyIncomeController.Instance?.Renew(Bots[i]);

@@ -133,7 +133,7 @@ public sealed class DeskViewController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Tab))
         {
             if (PhoneCallController.IsRaised)
-            { PhoneCallController.Instance.Lower(); }
+            { PhoneCallController.LowerAny(); }
             else if (PhoneCallController.Instance != null)
             { ExitView(true); PhoneCallController.Instance.Raise(); }
             consumedFrame = Time.frameCount;
@@ -143,8 +143,9 @@ public sealed class DeskViewController : MonoBehaviour
         DeskViewTarget quick = Input.GetKeyDown(KeyCode.Alpha1) ? DeskViewTarget.Stocks : Input.GetKeyDown(KeyCode.Alpha2) ? DeskViewTarget.Chart : Input.GetKeyDown(KeyCode.Alpha3) ? DeskViewTarget.Chat : DeskViewTarget.None;
         if (quick != DeskViewTarget.None)
         {
+            // 휴대폰을 들고 있었으면 내려놓고 곧바로 그 화면을 확대한다.
             if (PhoneCallController.IsRaised)
-            { PhoneCallController.Instance.Lower(); }
+            { PhoneCallController.LowerAny(); }
             // 시점을 옮겨 놓았으면 같은 키는 그 프리셋으로 되돌린다. 프리셋에 있을 때 누르면 자리로 돌아간다.
             if (Target == quick && hasPreset && !moving && ((transform.position - preset.position).sqrMagnitude > .000001f || Quaternion.Angle(transform.rotation, preset.rotation) > .05f))
             { viewReady = false; turning = false; following = false; SetPointerTarget(DeskViewTarget.None); BeginTransition(preset, focusFieldOfView); }
@@ -182,8 +183,11 @@ public sealed class DeskViewController : MonoBehaviour
         }
         if (moving)
         { return; }
+        // 책상 위의 휴대폰을 겨누고 있으면 상호작용 키와 클릭은 휴대폰의 것이다(태블릿 화면과 겹쳐 보여도 휴대폰이 앞에 있다).
+        if (DeskPhone.Aiming)
+        { Hovered = DeskViewTarget.None; return; }
         Hovered = FindHovered(MouseCameraController.GetAimScreenPosition());
-        if (!MouseCameraController.IsCursorLocked && EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        if (MouseCameraController.AimIsPointer && EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
         { Hovered = DeskViewTarget.None; return; }
         // 바라보는 화면은 클릭으로도, 상호작용 키(F)로도 확대한다(서랍·침대·문과 같은 키).
         if (Hovered != DeskViewTarget.None && (Input.GetMouseButtonDown(0) || Input.GetKeyDown(GameKeyBindings.Interact)))
@@ -213,7 +217,7 @@ public sealed class DeskViewController : MonoBehaviour
         { return; }
         custom = false;
         if (PhoneCallController.IsRaised)
-        { PhoneCallController.Instance.Lower(); }
+        { PhoneCallController.LowerAny(); }
         if (!hasHome)
         {
             home = new Pose(transform.position, transform.rotation); homeFov = viewCamera.fieldOfView;

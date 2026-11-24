@@ -84,6 +84,8 @@ public sealed class PauseMenuController : MonoBehaviour
     {
         // 글을 쓰는 중의 Esc는 입력만 끝낸다. 메뉴는 열지 않는다.
         if (MouseCameraController.TextEntryEscape) { MouseCameraController.EndTextEntry(); consumedFrame = Time.frameCount; return; }
+        // 휴대폰을 들고 있는 동안의 Esc는 휴대폰의 것이다(내용 → 목록 → 내려놓기). 메뉴는 열지 않는다.
+        if (CurrentPage == Page.Closed && DeskPhone.Raised && !CollapseSleep.Active && !MorningBriefing.Blocking && Input.GetKeyDown(KeyCode.Escape)) { return; }
         if (Input.GetKeyDown(KeyCode.Escape) && !(CollapseSleep.Active && CurrentPage == Page.Closed))
         {
             consumedFrame = Time.frameCount;

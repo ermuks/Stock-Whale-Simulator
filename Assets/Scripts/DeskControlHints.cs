@@ -88,33 +88,68 @@ public sealed class DeskControlHints : MonoBehaviour
         if (showLabels && next != state)
         { state = next; RefreshLabels(phone, paused); }
         bool desk = shown && !views.IsFocused && !views.IsTransitioning && !phone;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, MouseCameraController.GetAimScreenPosition(), null, out Vector2 aim);
+        // 원은 늘 떠 있지 않는다. 화면 가운데(조준점)가 이 거리 안으로 들어와야 테두리 원이 보이기 시작한다.
+        float range = markerRect.rect.height * .17f;
         for (int i = 0; i < 5; i++)
         {
             RectTransform screen = views.ScreenFor((DeskViewTarget)i);
-            Vector2 local = Vector2.zero; bool visible = false;
+            Vector2 local = Vector2.zero; bool visible = false; float closeness = 0f;
             if (desk && screen != null && screen.gameObject.activeInHierarchy)
             {
                 Vector3 center = screen.TransformPoint(screen.rect.center);
                 Vector3 point = views.ViewCamera.WorldToScreenPoint(center);
                 visible = point.z > views.ViewCamera.nearClipPlane && views.ViewCamera.pixelRect.Contains(point) && Vector3.Dot(screen.forward, center - views.ViewCamera.transform.position) > 0f;
                 RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, point, null, out local);
+                // 화면은 넓으므로 가운데가 아니라 화면의 테두리까지의 거리로 잰다(화면 안이면 0).
+                if (visible) { closeness = Closeness(DistanceToScreen(screen, aim), range); }
             }
-            markers.SetMarker(i, local, visible, desk && (int)views.Hovered == i);
+            markers.SetMarker(i, local, visible, desk && (int)views.Hovered == i, closeness);
         }
         // 서랍도 모니터처럼 원으로 표시한다. 바라보면 원이 채워진다.
         var drawer = DrawerProp.Instance;
         Vector2 drawerLocal = Vector2.zero; bool drawerVisible = false;
         if (desk && drawer != null && drawer.MarkerPoint(out Vector3 handle))
-        {
-            Vector3 point = views.ViewCamera.WorldToScreenPoint(handle);
-            drawerVisible = point.z > views.ViewCamera.nearClipPlane && views.ViewCamera.pixelRect.Contains(point);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, point, null, out drawerLocal);
-        }
+        { drawerVisible = MarkerAt(handle, out drawerLocal); }
         bool drawerHovered = drawerVisible && drawer.Hovered;
-        markers.SetMarker(DeskInteractionMarkers.Drawer, drawerLocal, drawerVisible, drawerHovered);
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, MouseCameraController.GetAimScreenPosition(), null, out Vector2 aim);
-        markers.SetAim(aim, desk && MouseCameraController.IsCursorLocked && views.Hovered == DeskViewTarget.None && !drawerHovered);
+        markers.SetMarker(DeskInteractionMarkers.Drawer, drawerLocal, drawerVisible, drawerHovered, Closeness((aim - drawerLocal).magnitude, range * 1.25f));
+        // 책상 위의 휴대폰.
+        var handset = DeskPhone.Instance;
+        Vector2 phoneLocal = Vector2.zero; bool phoneVisible = false;
+        if (desk && handset != null && handset.MarkerPoint(out Vector3 spot))
+        { phoneVisible = MarkerAt(spot, out phoneLocal); }
+        bool phoneHovered = phoneVisible && DeskPhone.Aiming;
+        markers.SetMarker(DeskInteractionMarkers.Phone, phoneLocal, phoneVisible, phoneHovered, Closeness((aim - phoneLocal).magnitude, range * 1.25f));
+        markers.SetAim(aim, desk && MouseCameraController.IsCursorLocked && views.Hovered == DeskViewTarget.None && !drawerHovered && !phoneHovered);
     }
+
+    /// <summary>세계의 한 점을 원을 그리는 판 위의 자리로 옮긴다. 화면 밖이면 false.</summary>
+    private bool MarkerAt(Vector3 world, out Vector2 local)
+    {
+        Vector3 point = views.ViewCamera.WorldToScreenPoint(world);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, point, null, out local);
+        return point.z > views.ViewCamera.nearClipPlane && views.ViewCamera.pixelRect.Contains(point);
+    }
+
+    private readonly Vector3[] screenCorners = new Vector3[4];
+    /// <summary>조준점에서 이 화면(자리에서 보이는 네모)까지의 거리. 화면 안을 가리키면 0.</summary>
+    private float DistanceToScreen(RectTransform screen, Vector2 aim)
+    {
+        screen.GetWorldCorners(screenCorners);
+        float left = float.MaxValue, right = float.MinValue, bottom = float.MaxValue, top = float.MinValue;
+        foreach (var corner in screenCorners)
+        {
+            Vector3 point = views.ViewCamera.WorldToScreenPoint(corner);
+            if (point.z <= 0f) { return float.MaxValue; }
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(markerRect, point, null, out Vector2 local);
+            left = Mathf.Min(left, local.x); right = Mathf.Max(right, local.x); bottom = Mathf.Min(bottom, local.y); top = Mathf.Max(top, local.y);
+        }
+        float dx = Mathf.Max(0f, Mathf.Max(left - aim.x, aim.x - right)), dy = Mathf.Max(0f, Mathf.Max(bottom - aim.y, aim.y - top));
+        return Mathf.Sqrt(dx * dx + dy * dy);
+    }
+    /// <summary>거리를 가까운 정도(0~1)로 바꾼다. range에서 보이기 시작해 그 절반 거리에서 다 진해진다.</summary>
+    private static float Closeness(float distance, float range)
+    { return Mathf.Clamp01(Mathf.InverseLerp(range, range * .5f, distance)); }
 
     private bool ViewingOrderForm()
     {
@@ -134,7 +169,7 @@ public sealed class DeskControlHints : MonoBehaviour
         if (phone)
         {
             Arrange(3, true);
-            Hint(0, "Tab", labels.close); Hint(1, "Q / E", labels.tablets); Hint(2, PauseKey(), paused ? labels.resume : labels.pause);
+            Hint(0, DeskPhone.Raised ? "Esc" : "Tab", labels.close); Hint(1, "Q / E", labels.tablets); Hint(2, PauseKey(), paused ? labels.resume : labels.pause);
             return;
         }
         bool focused = views.IsFocused;

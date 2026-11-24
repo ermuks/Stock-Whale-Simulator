@@ -7,7 +7,14 @@ public sealed class PhoneCallController : MonoBehaviour
 {
     public enum Caller { Institution, Research, Spam }
     public static PhoneCallController Instance { get; private set; }
-    public static bool IsRaised => Instance != null && Instance.raised;
+    /// <summary>휴대폰을 들고 있는가. 책상의 휴대폰(DeskPhone, 문자)을 든 것도 포함한다: 그동안 시선·차트·태블릿 입력이 멈춘다.</summary>
+    public static bool IsRaised => Instance != null && Instance.raised || DeskPhone.Raised;
+    /// <summary>들고 있는 휴대폰이 있으면 내려놓는다(전화든 문자든).</summary>
+    public static void LowerAny()
+    {
+        if (Instance != null) { Instance.Lower(); }
+        if (DeskPhone.Instance != null) { DeskPhone.Instance.Lower(); }
+    }
     public Transform grip;
     public TextMeshProUGUI title, body, alert;
     public Button answer, decline, close;

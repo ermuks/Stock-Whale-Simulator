@@ -70,7 +70,11 @@ public class MouseCameraController : MonoBehaviour
 
     /// <summary>에임/마우스 스크린 좌표. 잠금 시 화면 중앙, 아니면 마우스 위치.</summary>
     public static Vector2 GetAimScreenPosition()
-    { return IsCursorLocked ? new Vector2(Screen.width * 0.5f, Screen.height * 0.5f) : (Vector2)Input.mousePosition; }
+    { return AimOverride ?? (IsCursorLocked ? new Vector2(Screen.width * 0.5f, Screen.height * 0.5f) : (Vector2)Input.mousePosition); }
+    /// <summary>확인용: 값을 주면 조준점이 그 자리에 고정된다(창 없이 돌리는 촬영 도구는 커서를 잠글 수 없다). 게임에서는 늘 null이다.</summary>
+    public static Vector2? AimOverride;
+    /// <summary>조준점이 마우스 커서인가(커서가 풀려 있을 때). 이때는 커서가 화면 위의 단추를 가리키고 있을 수 있다.</summary>
+    public static bool AimIsPointer => AimOverride == null && !IsCursorLocked;
 
     private Camera _cam;
     void Start()

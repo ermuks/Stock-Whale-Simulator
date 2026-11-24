@@ -974,6 +974,8 @@ public static class ScreenTourCapture
         {
             if (!only.Contains("room")) { return; }
             DeskViewController.Instance.ExitView(true);
+            // 이 단계들은 예전의 문틈 쪽지를 찍는다. 문자로 가지 않게 잠시 쪽지로 돌려 둔다.
+            DoorNotes.ByPhone = false;
             DoorNotes.Instance.AnnounceAt(StockManager.Instance.stocks[languageIndex + 1], 2, 14 * 60 + 20); DoorNotes.Instance.DeliverNow();
         }, () =>
         {
