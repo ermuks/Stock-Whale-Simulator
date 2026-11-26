@@ -29,7 +29,11 @@ public static partial class SessionStore
         "PlayerProgression","PlayerAccounts","DailyIncomeController","FakeNewsManager","NewsManager","ItCompanyManager",
         "StockNewsAttentionManager","StockInterestManager","MarketSentiment","DelistingManager","PsychologicalLevelManager",
         "LiquidityBotManager","TradeBotManager","InstitutionBootstrapper","WorldDramaDirector","MarketRhythmDirector",
-        "TradingOperationController","DeviceOrderSession","DeviceMarketJournal","NpcLeadingRoom","CompanyNewsAudience","SocialContactController","PhoneCallController","IncumbentExchangeAI","PlayerRestController"
+        "TradingOperationController","DeviceOrderSession","DeviceMarketJournal","NpcLeadingRoom","CompanyNewsAudience","SocialContactController","PhoneCallController","IncumbentExchangeAI","PlayerRestController",
+        // 작전 도구: 돌고 있는 작전과 종목별 성적(산 돈·판 돈·번 돈)을 저장해, 불러온 뒤에도 "이 종목으로 번 돈"이 이어지게 한다.
+        "PlayerTactics",
+        // 자산 태블릿의 곡선: 오늘의 총자산 점들과 날마다의 마감 총자산.
+        "AssetTrail"
     };
     public static bool ValidationMode => !string.IsNullOrEmpty(Environment.GetEnvironmentVariable("DONDON_SETTINGS_OUTPUT"));
     private static string Folder => ValidationMode ? Environment.GetEnvironmentVariable("DONDON_SETTINGS_OUTPUT") : Application.persistentDataPath;
@@ -219,6 +223,7 @@ public static partial class SessionStore
             foreach(var component in Object.FindObjectsByType<Component>(FindObjectsInactive.Include)) { unity[Key(component)]=component; }
             foreach(var stock in StockManager.Instance.stocks.Concat(StockManager.Instance.UnlistedStocks)) { stocks[stock.symbol]=stock; }
         }
+        private readonly HashSet<string> dropped = new();
         private FieldInfo[] Fields(Type type)
         {
             if (fields.TryGetValue(type,out var found)) { return found; }
@@ -235,6 +240,9 @@ public static partial class SessionStore
                     if (type==typeof(PhoneCallController) && (field.Name=="raised" || field.Name=="previousLocked")) { continue; }
                     if (type==typeof(PhoneCallController) && field.Name=="nextUi" || type==typeof(PlayerAccounts) && field.Name=="next") { continue; }
                     if (type==typeof(InvestorSociety) && (field.Name=="socialWired" || field.Name=="nextSocialLogFlush")) { continue; }
+                    // 가치 눈금자용 작업 자료(봇 기대값 표본과 그 흩어짐). 0.5초마다 다시 세므로 저장하지 않는다.
+                    if (type==typeof(StockManager) && (field.Name=="crowdSample" || field.Name=="crowdSpread")) { continue; }
+                    if (type==typeof(AssetTrail) && field.Name=="owned") { continue; }
                     all.Add(field);
                 }
             }
@@ -343,7 +351,9 @@ public static partial class SessionStore
                 if(node["fields"] is JObject values)
                 {
                     var names=new HashSet<string>(Fields(type).Select(FieldKey));
-                    foreach(var field in values.Properties()) { if(!names.Contains(field.Name)) { throw new InvalidDataException("Session fields changed: "+field.Name); } }
+                    // 예전 저장에 있던 칸이 지금 코드에 없으면(계좌 통합, 해금 폐지처럼 없앤 것들) 그 값만 버리고 나머지는 불러온다.
+                    // 예전에는 여기서 저장 전체를 거부했다. 칸 하나를 없앨 때마다 모든 저장이 못 쓰게 됐다.
+                    foreach(var field in values.Properties()) { if(!names.Contains(field.Name) && dropped.Add(field.Name)) { Debug.Log("[저장] 지금은 없는 칸을 건너뜁니다: "+field.Name); } }
                 }
             }
             // Values (including tuple keys) are populated before the hash-based collections.

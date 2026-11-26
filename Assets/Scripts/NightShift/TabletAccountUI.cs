@@ -43,7 +43,7 @@ public sealed class TabletAccountUI : MonoBehaviour
         transferCancel.onClick.AddListener(() => transferPanel.SetActive(false));
         transferSubmit.onClick.AddListener(Transfer);
         accounts.Unlocked += Unlock;
-        DeviceTerminalUI.Set(accountTitle,second ? "2번 계좌 · 자동 운용" : "1번 계좌 · 내 투자");
+        DeviceTerminalUI.Set(accountTitle,"");
         lockRoot.SetActive(Locked); contentRoot.SetActive(!Locked);
         events.newsReader = NewsDeskUI.Install(this);
         TabletControlStyle.Apply(this);
@@ -67,7 +67,8 @@ public sealed class TabletAccountUI : MonoBehaviour
         { return; }
         if (page == Page.Automation && !second)
         { return; }
-        if ((page == Page.Unlocks || page == Page.Night) && second)
+        // 해금 화면은 없어졌다(처음부터 다 열려 있다). 밤 준비는 조작 태블릿(2번)에 있다.
+        if (page == Page.Unlocks || page == Page.Night && !second)
         { return; }
         if (page == Page.Detail && (dashboard.Selected == null || account.GetOwnedVolume(dashboard.Selected) <= 0m))
         { page = Page.Dashboard; }
@@ -98,7 +99,7 @@ public sealed class TabletAccountUI : MonoBehaviour
         next = Time.unscaledTime + .3f;
         var day = MarketDayController.Instance;
         DeviceTerminalUI.Set(clock,day == null ? "—  —:—" : GameLocale.DateText(day.CalendarDate) + "  " + DeviceMarketJournal.Stamp());
-        transferButton.interactable = accounts.AutomatedUnlocked;
+        if (transferButton.gameObject.activeSelf) { transferButton.gameObject.SetActive(false); }   // 계좌가 하나라 이체가 없다.
         tabs[3].interactable = dashboard.Selected != null && account.GetOwnedVolume(dashboard.Selected) > 0m;
         int version=events.records.Version+orders.session.Version;
         if (CurrentPage != Page.Records || seenVersion == version || recordsView != null)

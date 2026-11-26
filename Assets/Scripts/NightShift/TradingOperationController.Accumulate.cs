@@ -34,7 +34,11 @@ public sealed partial class TradingOperationController
     /// <summary>가격대와 쓸 현금(가용 현금의 비율)을 정하고 매집을 시작한다.</summary>
     public bool StartAccumulate(Stock stock, decimal low, decimal high, float cashFraction)
     {
+        Adopt();
         if (Active)
+        { Feedback = "매매 실행 중"; return false; }
+        // 한 종목에는 자동 매매를 하나만 돌린다(같은 종목의 스프레드와 매집이 서로의 주문을 건드리지 않게).
+        if (RunOn(stock) != null)
         { Feedback = "매매 실행 중"; return false; }
         var accounts = PlayerAccounts.Instance;
         if (accounts != null && account == accounts.automated && !accounts.AutomatedUnlocked)
@@ -59,7 +63,7 @@ public sealed partial class TradingOperationController
         nextAccumulate = nextTake = nextAverageDown = 0f; crashStarted = 0f; crashLow = 0m;
         AccumulateStatus = AccumulatePhase.Idle;
         AccumulateStartedGameMinute = DeviceMarketJournal.GameNow;
-        CurrentMode = Mode.Accumulate;
+        CurrentMode = Mode.Accumulate; StartedAt = SessionClock.Time;
         Target.OnMatchedTrade += OnFill;
         RefreshAccumulate();
         return true;

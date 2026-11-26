@@ -323,7 +323,7 @@ public abstract partial class TradeBot
                 projection += sway * (0.03 + Social.Chase * 0.05) / (1 + Math.Max(0, (double)FeverGain(stock) - 1));
             }
         }
-        mind.Companies.ObservePrice(stock.symbol, price, projection, pull, SessionClock.Time);
+        mind.Companies.ObservePrice(stock.symbol, price, projection, pull, SessionClock.Time, trend >= 0 ? RallyFever(stock) : 0);
         if (mind.HasPanicFor(stock) && trend > 0.02)
         {
             mind.EndPanic();

@@ -223,6 +223,15 @@ public sealed partial class InvestorSociety
         float most = Mathf.Max(Mathf.Max(up, anxious), Mathf.Max(stressed, bitter));
         string mood = most < 4f ? "bored" : most == bitter ? "bitter" : most == stressed ? "stressed" : most == anxious ? "anxious" : "up";
         if (mood != "bored" && mood != "bitter" && day.Phase == MarketPhase.Trading) { about = held != null && held.AcceptsOrders && HypeRandom.Next() < .5 ? held : DebateStock(); }
+        // 기분과 종목의 상황이 어긋나면 종목을 붙이지 않는다(종목 없는 한마디가 된다):
+        // 들뜬 사람이 무너지는 종목을 들먹이지 않고, 들고 있지도 않은 사람이 한창 오르는 종목을 두고 불안하다고 하지 않는다.
+        if (about != null)
+        {
+            var read = SituationOf(about);
+            if (read.valid && (mood == "up" && (ChatSituationRules.Falling(read.kind) || read.kind == ChatSituation.DeadCatBounce) ||
+                (mood == "anxious" || mood == "stressed") && ChatSituationRules.Rising(read.kind) && bot.GetOwnedVolume(about) <= 0m))
+            { about = null; }
+        }
         return mood;
     }
     /// <summary>

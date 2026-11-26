@@ -4,7 +4,7 @@ using System.Collections.Generic;
 /// <summary>차트 전용 읽기 모델. 매도 예약 수량을 포함한 평단과 실제 미체결 주문만 읽는다.</summary>
 public sealed class ChartTradeLevels
 {
-    public enum Kind { Average, Buy, Sell }
+    public enum Kind { Average, Buy, Sell, Crowd }
     public readonly struct Level
     {
         public readonly int Account;
@@ -27,6 +27,9 @@ public sealed class ChartTradeLevels
         ReadAccount(stock, primary, 1);
         if (automated != primary)
         { ReadAccount(stock, automated, 2); }
+        // 시장이 믿는 가격(봇들 기대값의 평균). 값은 이쪽으로 끌려가므로 차트 위에 선으로 겹쳐 그 방향을 보인다.
+        if (stock.fakeValue > 0m && PlayerProgression.Has(PlayerProgression.CrowdValueUnlock))
+        { Add(0, Kind.Crowd, PriceTickPolicy.RoundToTick(stock.fakeValue), 1m); }
         levels.Sort(ComparePrice);
     }
 

@@ -1117,7 +1117,7 @@ public sealed partial class InvestorSociety
     /// <summary>플레이어의 "오른다·내린다"를 이만큼(초) 뒤에 따진다. 그 사이 2% 넘게 그 방향으로 갔으면 맞은 것, 반대로 2% 넘게 갔으면 틀린 것.</summary>
     private const float CallMinSec = 90f, CallMaxSec = 150f; private const decimal CallMove = .02m;
     private Stock talkOther;
-    private sealed class TalkReply { public Stock other; public double due; public int room; public string key; public Stock stock; public long replyTo; public int onlyBot, notBot; public float percent; public double wait; public string said; public decimal entry; }
+    private sealed class TalkReply { public Stock other; public double due; public int room; public string key; public Stock stock; public long replyTo; public int onlyBot, notBot; public float percent; public double wait; public string said; public decimal entry; public ChatProfitCard card; }
     private sealed class PlayerCall { public Stock stock; public decimal price; public bool up; public double due; public int room; public long messageId; }
     private sealed class AnalysisJob { public double due; public int room; public Stock stock; public string argument; public long replyTo; }
     private readonly List<TalkReply> talkReplies = new();
@@ -1226,6 +1226,8 @@ public sealed partial class InvestorSociety
     /// <summary>인증 카드를 붙여 올린다. 글은 카드의 종목과 수익률로 만든다. 봇들은 실제 계좌에서 나온 인증으로 받는다.</summary>
     public bool SubmitPlayerProof(int room, ChatProfitCard proof) => proof != null && SubmitPlayerChat(room, "", proof);
     private decimal talkEntry;
+    /// <summary>지금 예약하는 답글들이 보고 말할 인증 카드(없으면 null). 답할 봇이 정해지면 그 봇의 재산에 견줘 금액을 읽는다(ChatProofReaction.cs).</summary>
+    private ChatProfitCard talkCard;
     /// <summary>
     /// 인증 카드와 함께 올린 글에 대한 반응. 카드에서 사실(수익인지 손실인지, 얼마인지)을, 글에서 말투를 읽어 둘을 합쳐 받는다:
     ///  - 수익 + 으스대는 말: 부러워하면서도 얄미워한다. 원한이 많은 봇은 배가 더 아프다.
@@ -1255,7 +1257,8 @@ public sealed partial class InvestorSociety
             }
             else { mind.ReactToPlayerTalk(hurting || asks ? 3f : 2f, 0f, "플레이어의 손실 인증"); }
         });
-        talkEntry = proof.averageCost;
+        // 답글들은 이 카드의 금액과 수익률을 함께 보고 말한다(+1%라도 500돈과 5,000만돈은 다른 얘기다).
+        talkEntry = proof.averageCost; talkCard = proof;
         try
         {
             string side = gain ? "gain" : "loss";
@@ -1266,7 +1269,7 @@ public sealed partial class InvestorSociety
             // 으스댄 수익에는 예전처럼 질투도 붙는다.
             if (gain && cocky && size >= 5f) { Plan(room, "brag.proof.envy", stock, id, now + 3.2, 0, 1, .7f, rate); }
         }
-        finally { talkEntry = 0m; }
+        finally { talkEntry = 0m; talkCard = null; }
         if (gain) { Sway(room, stock, 1.2f); }
     }
     /// <summary>글과 인증 카드를 함께 올린다. 글이 비어 있으면 카드의 종목과 수익률로 한 줄을 만들어 준다.</summary>
@@ -1431,9 +1434,15 @@ public sealed partial class InvestorSociety
                         bool sore = talk.Stock != null && bot.GetOwnedVolume(talk.Stock) > 0m && bot.GetAvgPrice(talk.Stock) > talk.Stock.currentPrice || mind.Traits.Grudge >= 70;
                         mind.ReactToPlayerTalk(Mathf.Clamp(gain * 1f, 2f, 25f) * (sore ? .3f : 1f), sore ? Mathf.Clamp(gain * .5f, 2f, 16f) : 0f, "플레이어의 수익 인증 " + gain.ToString("+0.0") + "%");
                     });
-                    Plan(room, "brag.proof.praise", talk.Stock, id, now + 1.2, near, HypeRandom.Range(1, 3), 1f, gain);
-                    GainRenown(Mathf.Clamp(gain / 4f, 1f, 6f), "수익 인증 " + gain.ToString("+0") + "%", room, id, now);
-                    Plan(room, "brag.proof.envy", talk.Stock, id, now + 2.6, 0, gain >= 10f ? HypeRandom.Range(1, 3) : HypeRandom.Range(0, 2), .8f, gain);
+                    // 칭찬과 질투도 카드의 금액을 보고 한다(푼돈 자랑에 "배 아프다"고 하지 않는다).
+                    talkCard = card;
+                    try
+                    {
+                        Plan(room, "brag.proof.praise", talk.Stock, id, now + 1.2, near, HypeRandom.Range(1, 3), 1f, gain);
+                        GainRenown(Mathf.Clamp(gain / 4f, 1f, 6f), "수익 인증 " + gain.ToString("+0") + "%", room, id, now);
+                        Plan(room, "brag.proof.envy", talk.Stock, id, now + 2.6, 0, gain >= 10f ? HypeRandom.Range(1, 3) : HypeRandom.Range(0, 2), .8f, gain);
+                    }
+                    finally { talkCard = null; }
                     Sway(room, talk.Stock, 1.2f);
                 }
                 else if (held)
@@ -1451,8 +1460,14 @@ public sealed partial class InvestorSociety
                 break;
             case PlayerTalkKind.Lament:
                 Hearers(room, (bot, mind) => mind.ReactToPlayerTalk(card != null ? 2f : .5f, 0f, "플레이어의 손실 한탄"));
-                Plan(room, "lament.comfort", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), .9f, (float)actual, sure: true);
-                Plan(room, "lament.mock", talk.Stock, id, now + 2.8, 0, HypeRandom.Range(0, 2), .7f, (float)actual);
+                // 카드가 붙은 한탄이면 위로와 놀림도 그 카드의 금액과 손실률을 보고 한다.
+                talkCard = card;
+                try
+                {
+                    Plan(room, "lament.comfort", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 3), .9f, (float)actual, sure: true);
+                    Plan(room, "lament.mock", talk.Stock, id, now + 2.8, 0, HypeRandom.Range(0, 2), .7f, (float)actual);
+                }
+                finally { talkCard = null; }
                 break;
             case PlayerTalkKind.AskBuy: case PlayerTalkKind.AskSell: case PlayerTalkKind.AskOpinion:
                 Plan(room, talk.Kind == PlayerTalkKind.AskBuy ? "askBuy" : talk.Kind == PlayerTalkKind.AskSell ? "askSell" : "ask", talk.Stock, id, now + 1.3, near, HypeRandom.Range(1, 4), .9f, sure: true);
@@ -1714,7 +1729,7 @@ public sealed partial class InvestorSociety
         {
             if (!(sure && i == 0) && HypeRandom.Next() >= chance) { continue; }
             talkReplies.Add(new TalkReply { due = first + i * (1.1 + HypeRandom.Next() * 1.6), room = room, key = key, stock = stock, replyTo = replyTo, onlyBot = i == 0 ? onlyBot : 0,
-                notBot = i == 0 ? notBot : onlyBot != 0 ? onlyBot : notBot, percent = percent, said = talkSaid, entry = talkEntry, other = talkOther });
+                notBot = i == 0 ? notBot : onlyBot != 0 ? onlyBot : notBot, percent = percent, said = talkSaid, entry = talkEntry, other = talkOther, card = talkCard });
         }
         while (talkReplies.Count > 12) { talkReplies.RemoveAt(0); }
     }
@@ -1826,7 +1841,20 @@ public sealed partial class InvestorSociety
         // 막말에 대한 핀잔은 나를 어떻게 보든 같다.
         if (stance != null && !scold) { key += "." + stance; }
         var subject = stock ?? pick;
-        string text = PickHypeText(UsableLines(PlayerTalkAssets.Lines(key), subject != null, news != null, mine > 0m, !string.IsNullOrEmpty(reply.said)), Array.Empty<string>());
+        // 인증 카드에 다는 답은 수익률만이 아니라 금액도 보고 한다: 푼돈이면 가볍게 놀리고, 수익률이 얇아도 금액이 크면 판돈에 놀란다(ChatProofReaction.cs).
+        // 금액은 이 봇의 재산에 견줘 읽는다. 속상해하거나 조언을 구하는 글, 위로하는 차례에는 놀림을 빼고 고른다. 존댓말 봇과 시큰둥한 봇은 하던 대로 한다.
+        string proofText = null;
+        if (reply.card != null && ProofReplyKey(reply.key) && key != "cold" && !key.StartsWith("formal", StringComparison.Ordinal))
+        {
+            bool gentle = reply.key.EndsWith(".sad", StringComparison.Ordinal) || reply.key.EndsWith(".ask", StringComparison.Ordinal) || reply.key == "lament.comfort";
+            proofText = ProofLine(bot, reply.card, gentle, null, HypeRandom.Next, out string proofKey, out var proofRead);
+            // 축하나 위로가 어울리는 카드에는 예전의 말투별 대사(으스댐·겸손·속상함에 맞춘 말)도 셋에 한 번 섞는다.
+            // 놀림이나 판돈 얘기가 맞는 카드에는 섞지 않는다: "+1% ㄷㄷ"가 500돈짜리 카드에 달리지 않게.
+            bool plainFits = ChatProofMath.PlainFits(proofRead.mood) && reply.key != "lament.mock" && (reply.key != "brag.proof.envy" || proofRead.mood != ChatProofMood.Modest);
+            if (proofText != null && plainFits && HypeRandom.Next() < .35) { proofText = null; }
+            if (proofText != null) { key = proofKey; TraceTalk("    (인증 읽기: 금액 " + proofRead.tier + " · 수익률 " + proofRead.percentTier + " → " + proofRead.mood + ")"); }
+        }
+        string text = proofText ?? PickHypeText(UsableLines(PlayerTalkAssets.Lines(key), subject != null, news != null, mine > 0m, !string.IsNullOrEmpty(reply.said)), Array.Empty<string>());
         if (text == null) { return -1; }
         var slots = subject != null ? ChartSlots(subject, subject.currentPrice, subject.currentPrice, mine) : HypeSlots(null, 0, 0m);
         if (pick != null) { slots["pick"] = GameLocale.Text(pick.stockName ?? pick.symbol ?? ""); }
@@ -1851,6 +1879,8 @@ public sealed partial class InvestorSociety
         TraceTalk("    > " + bot.Social.Nickname + ": " + line + "  [" + key + "]");
         return 1;
     }
+    /// <summary>인증 카드를 보고 하는 답글의 갈래인가(카드 반응, 자랑에 대한 칭찬·질투, 한탄에 대한 위로·놀림). 조언과 훈수는 금액과 상관없다.</summary>
+    private static bool ProofReplyKey(string key) => key.StartsWith("proof.", StringComparison.Ordinal) || key == "brag.proof.praise" || key == "brag.proof.envy" || key == "lament.comfort" || key == "lament.mock";
     private void NotePlayerCall(int room, Stock stock, bool up, long id, double now)
     {
         if (stock == null || playerCalls.Count >= 3) { return; }

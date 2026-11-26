@@ -4,6 +4,10 @@
   {
    "key": "pop.fuss",
    "lines": [
+    "오 {stockName} 간다 간다",
+    "어? 어? 쏜다",
+    "ㄱㄱㄱㄱ",
+    "와 뭐야 {stockName}",
     "쏘나?",
     "{stockName} 쏘나??",
     "어어 {stockName} 쏜다",
@@ -27,6 +31,10 @@
   {
    "key": "pop.dry",
    "lines": [
+    "ㅇㅇ 좀 오름",
+    "뭐 살짝",
+    "{stockName} 틱 좀 먹음",
+    "그냥 그럼",
     "{stockName} 좀 오르네",
     "{stockName} 살짝 뜨네",
     "오르긴 하네",
@@ -45,6 +53,10 @@
   {
    "key": "pop.doubt",
    "lines": [
+    "ㄴㄴ 아직임",
+    "속지 마 ㅋㅋ",
+    "{stockName} 또 낚시지",
+    "에이 금방 내려옴",
     "{stockName} 이거 진짜 가는 거 맞음?",
     "또 속이는 거 아니냐",
     "저러다 다시 내려옴",
@@ -62,6 +74,10 @@
   {
    "key": "pop.joke",
    "lines": [
+    "{stockName} 일어났냐 ㅋㅋ",
+    "오 살아 있네",
+    "기지개 한 번 켰음",
+    "{stockName} 월급값 하네",
     "{stockName} 커피 마셨냐",
     "{stockName} 누가 깨웠냐 ㅋㅋ",
     "오 살아있었네 {stockName}",
@@ -76,6 +92,10 @@
   {
    "key": "pop.fomo",
    "lines": [
+    "아 ㅋㅋ 또 나만 없네",
+    "살까 살까 살까",
+    "{stockName} 아 몰라 탄다",
+    "하… 왜 안 샀지",
     "{stockName} 지금 타도 됨?",
     "아 {stockName} 살걸",
     "나만 없어 {stockName}",
@@ -91,44 +111,103 @@
   {
    "key": "pop.holder",
    "lines": [
+    "오 가자",
+    "{stockName} ㄱㄱ",
+    "좀 더 좀 더",
+    "이제 일하냐",
     "{stockName} 드디어 움직이네",
-    "가자 {stockName} 본전만 와라",
-    "{stockName} 들고 있길 잘했다",
-    "오 {stockName} 내 거다 가자",
     "{stockName} 이제 시작이지",
     "기다린 보람이 있나",
     "{stockName} 더 가라 더",
-    "안 팔고 버틴 사람 나야 나",
     "{stockName} 여기서 멈추지 마라",
     "{stockName} 좀 더 힘내 봐"
    ]
   },
   {
+   "key": "pop.holderGain",
+   "lines": [
+    "개꿀 ㅋㅋ",
+    "{stockName} 잘한다 잘한다",
+    "ㅇㅇ 계속 가",
+    "수익 한 틱 추가 ㅋㅋ",
+    "{stockName} 들고 있길 잘했다",
+    "오 {stockName} 내 거다 가자",
+    "{stockName} 더 가라 더",
+    "안 팔고 버틴 사람 나야 나",
+    "{stockName} 이제 시작이지",
+    "수익 더 불려 줘라",
+    "기다린 보람이 있나",
+    "{stockName} 오늘도 일하네"
+   ]
+  },
+  {
+   "key": "pop.holderLoss",
+   "lines": [
+    "오 제발",
+    "{stockName} 본전 ㄱㄱ",
+    "ㅠㅠ 좀만 더",
+    "이번엔 진짜 가자",
+    "가자 {stockName} 본전만 와라",
+    "{stockName} 드디어 움직이네",
+    "{stockName} 여기서 멈추지 마라",
+    "{stockName} 좀 더 힘내 봐",
+    "조금만 더 오면 본전",
+    "제발 이번엔 가 줘라",
+    "물린 사람 좀 살려 줘라 {stockName}",
+    "설레게만 하고 가지 마라"
+   ]
+  },
+  {
    "key": "spill.fuss",
    "lines": [
-    "쏟는다",
-    "{stockName} 쏟는다 쏟아",
-    "어어 {stockName} 쏟아진다",
-    "던진다 던져",
-    "{stockName} 무너진다",
+    "어어어",
+    "아 {stockName} 왜 ㅠㅠ",
+    "뭐야 뭐야",
+    "헐 밀린다",
+    "쏟나?",
+    "{stockName} 쏟나??",
+    "어어 {stockName} 밀린다",
+    "던지는 사람 나왔다",
     "야 {stockName} 뭐냐 갑자기",
-    "튀어 튀어",
     "{stockName} 물량 나온다",
-    "끝났다 {stockName} 끝났어",
     "아 {stockName} 흘러내린다",
     "누가 던지냐 지금",
-    "{stockName} 줄줄 샌다",
-    "큰일났다 {stockName}",
+    "{stockName} 왜 밀려",
     "어 어 어 밀린다",
-    "{stockName} 설거지 시작이냐",
-    "매도벽 봐라 미쳤다",
+    "어 꺾이나",
+    "매도 나온다 나와",
     "{stockName} 빠진다 빠져",
-    "도망쳐"
+    "잠깐 뭐야 {stockName}",
+    "{stockName} 힘 빠지나",
+    "분위기 쎄한데"
+   ]
+  },
+  {
+   "key": "spill.calm",
+   "lines": [
+    "ㅇㅇ 쉬어",
+    "에이 이 정도야",
+    "{stockName} 숨 좀 쉬자",
+    "별거 아님 ㅋㅋ",
+    "숨 고르네",
+    "{stockName} 좀 쉬어 가네",
+    "많이 올랐으니 쉴 때도 됐지",
+    "이 정도는 티도 안 남",
+    "{stockName} 한 틱 쉬는 거임",
+    "오른 거에 비하면 아무것도 아님",
+    "쉬었다 가자",
+    "{stockName} 잠깐 쉬네",
+    "이걸로 놀라면 급등주 못 탐",
+    "숨 좀 돌리는 중"
    ]
   },
   {
    "key": "spill.dry",
    "lines": [
+    "뭐 좀 밀림",
+    "ㅇㅇ 조정",
+    "{stockName} 틱 좀 뱉음",
+    "그냥 그런 거",
     "{stockName} 좀 빠지네",
     "{stockName} 살짝 밀리네",
     "조정이지 뭐",
@@ -147,12 +226,16 @@
   {
    "key": "spill.doubt",
    "lines": [
+    "끝난 거 아님?",
+    "{stockName} 수상한데",
+    "털기임? 진짜임?",
+    "ㄹㅇ 쎄하다",
     "{stockName} 이거 고점 찍은 거 아님?",
     "여기서 더 빠지면 진짜임",
     "{stockName} 눌림인지 끝인지 모르겠네",
     "털기 같은데",
     "{stockName} 개미 털고 가려는 거 아님?",
-    "거래량 터지면서 빠지면 위험함",
+    "거래량 터지면서 빠지면 그땐 진짜임",
     "{stockName} 지지 받는지 봐야 됨",
     "아직 판단 이름",
     "{stockName} 세력 나간 거 아니냐",
@@ -163,6 +246,10 @@
   {
    "key": "spill.joke",
    "lines": [
+    "{stockName} 삐끗 ㅋㅋ",
+    "아 ㅋㅋ 누가 밀었냐",
+    "쏘나 한 사람 나와",
+    "{stockName} 잠깐 졸았음",
     "{stockName} 발 헛디뎠네 ㅋㅋ",
     "쏘나 했더니 쏟네 ㅋㅋ",
     "{stockName} 숨 차나 봄",
@@ -177,23 +264,59 @@
   {
    "key": "spill.holder",
    "lines": [
+    "아 안 돼",
+    "{stockName} 버텨",
+    "ㄴㄴ 안 팔아",
+    "쫄리네 ㄹㅇ",
     "{stockName} 안 판다 안 팔아",
-    "아 {stockName} 팔걸",
+    "{stockName} 이 정도는 버틴다",
+    "흔들어도 안 내린다",
+    "{stockName} 눌림이라고 믿는다",
+    "{stockName} 제발 여기서 멈춰",
+    "본전 근처라 더 쫄림"
+   ]
+  },
+  {
+   "key": "spill.holderGain",
+   "lines": [
+    "아 ㅋㅋ 팔걸",
+    "{stockName} 수익 깎지 마",
+    "에이 좀 버텨",
+    "익절각 재는 중",
     "{stockName} 이 정도는 버틴다",
     "내 수익 녹는다",
-    "{stockName} 제발 여기서 멈춰",
-    "흔들어도 안 내린다",
     "아 익절할걸 그랬나",
-    "{stockName} 왜 내가 안 팔면 빠지냐",
-    "손이 떨리네",
+    "흔들어도 안 내린다",
     "{stockName} 눌림이라고 믿는다",
     "여기서 팔면 꼭 오르더라",
-    "{stockName} 본전까지 오면 어떡하지"
+    "아 {stockName} 팔걸",
+    "{stockName} 왜 내가 안 팔면 빠지냐"
+   ]
+  },
+  {
+   "key": "spill.holderLoss",
+   "lines": [
+    "하… 또",
+    "ㅠㅠ {stockName} 그만",
+    "아 본전 멀어짐",
+    "왜 나만 ㅠㅠ",
+    "{stockName} 제발 여기서 멈춰",
+    "{stockName} 왜 내가 들고 있으면 빠지냐",
+    "손이 떨리네",
+    "또 밀리네 본전이 멀어진다",
+    "{stockName} 안 판다 안 팔아",
+    "오르나 했더니 또",
+    "물타기 할까 말까",
+    "{stockName} 그만 좀 밀려라"
    ]
   },
   {
    "key": "spill.outsider",
    "lines": [
+    "ㅋㅋ 안 사길 잘함",
+    "{stockName} 더 빠져라",
+    "줍줍각?",
+    "구경 꿀잼",
     "{stockName} 안 타길 잘했네",
     "{stockName} 더 빠지면 줍는다",
     "구경이나 해야지",

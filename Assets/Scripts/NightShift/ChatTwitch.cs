@@ -81,19 +81,31 @@ public sealed partial class InvestorSociety
             if (trend >= TwitchPriorRise || dayMove >= TwitchDayRise) { found = stock; kind = "spill"; move = recent; }
         }
         if (found == null) { return; }
-        twitchRest[found] = now + 16 + HypeRandom.Next() * 18; twitchNext = now + 5 + HypeRandom.Next() * 8;
+        twitchRest[found] = now + 16 + HypeRandom.Next() * 18;
+        // 같은 1%라도 하루 전체에서 무엇인지에 따라 말이 달라진다(ChatSituationRules.Twitch):
+        //   크게 오른 종목이 살짝 밀린 것 → 느긋한 말만("숨 고르네"). 예전에는 오늘 +4%만 넘으면 "끝났다"까지 나왔다.
+        //   무너지는 종목이 살짝 밀린 것 → 따로 말하지 않는다. 무너지는 종목이 살짝 튄 것 → 시큰둥하거나 의심하는 말만.
+        var read = SituationOf(found);
+        var mode = read.valid ? ChatSituationRules.Twitch(kind == "pop", read) : ChatSituationRules.TwitchMode.Normal;
+        if (mode == ChatSituationRules.TwitchMode.Silent) { return; }
+        // 호들갑이 아닌 말은 그 언어권이 이 상황을 입에 올리는 만큼만 한다(조용히 보는 사람이 많은 언어권은 그냥 지나간다).
+        var engine = ChatReactionAssets.Current;
+        if (mode != ChatSituationRules.TwitchMode.Normal && engine != null && HypeRandom.Next() >= engine.TalkChance(read.kind, ChatStance.Watch)) { return; }
+        twitchNext = now + 5 + HypeRandom.Next() * 8;
         debateFolk.Clear(); float clock = SessionClock.Time; var odd = ResolveOddball(); int formal = Config.Int("styleFormalMin");
         foreach (var candidate in socialBots)
         { if (DebateEligible(candidate, clock, odd, formal) && (!hypeSpokeAt.TryGetValue(candidate.Social.Id, out double spoke) || now - spoke > 25)) { debateFolk.Add(candidate); } }
-        // 한 사람만 툭 던질 때도 있고, 두세 사람이 저마다 다른 투로 한마디씩 할 때도 있다.
-        int speakers = 1 + (HypeRandom.Next() < .55 ? 1 : 0) + (HypeRandom.Next() < .22 ? 1 : 0); double delay = 0;
+        // 한 사람만 툭 던질 때도 있고, 두세 사람이 저마다 다른 투로 한마디씩 할 때도 있다. 느긋한 얘기에는 여럿이 달려들지 않는다.
+        int speakers = mode == ChatSituationRules.TwitchMode.Normal ? 1 + (HypeRandom.Next() < .55 ? 1 : 0) + (HypeRandom.Next() < .22 ? 1 : 0) : 1 + (HypeRandom.Next() < .3 ? 1 : 0);
+        double delay = 0;
         string moved = Math.Abs(move * 100m).ToString("0.0", SocialCulture);
         for (int n = 0; n < speakers && debateFolk.Count > 0; n++)
         {
             int index = HypeRandom.Range(0, debateFolk.Count); var bot = debateFolk[index]; debateFolk.RemoveAt(index);
             bool holding = bot.GetOwnedVolume(found) > 0m;
-            string tone = TwitchTone(bot, kind, holding);
-            var pool = ChatTwitchAssets.Lines(kind + "." + tone) ?? ChatTwitchAssets.Lines(kind + ".dry");
+            string tone = TwitchTone(bot, kind, holding, mode, holding ? BotView(bot, found, out _) : ChatSpeakerView.Watcher);
+            // 보유자의 말은 수익 중인 사람과 물린 사람이 다르다. 그렇게 나눠 쓴 묶음이 없는 언어에서는 예전의 한 묶음(holder)을 쓴다.
+            var pool = ChatTwitchAssets.Lines(kind + "." + tone) ?? (tone.StartsWith("holder", StringComparison.Ordinal) ? ChatTwitchAssets.Lines(kind + ".holder") : null) ?? ChatTwitchAssets.Lines(kind + ".dry");
             if (pool == null) { continue; }
             // 방금 나온 문장은 빼고 고르게 한다(다 빠졌으면 그대로 둔다).
             var fresh = new List<string>(pool.Length);
@@ -101,10 +113,15 @@ public sealed partial class InvestorSociety
             string[] choices = fresh.Count > 0 ? fresh.ToArray() : pool;
             var slots = new Dictionary<string, string>(ChartSlots(found, found.currentPrice, found.currentPrice, bot.GetAvgPrice(found))) { ["move"] = moved };
             string nickname = bot.Social.Nickname, label = kind + "." + tone + (holding ? ", 보유" : ", 미보유"), picked = null;
+            // 말맛(ChatVoice.cs): 잔움직임은 잔잔한 일이다. 호들갑·조바심만 한 단 올려 치고(세기 1), 나머지는 가장 낮게 친다(세기 0).
+            // 규칙과 버릇은 여기(메인 스레드)에서 읽어 두고, 입히는 일은 작업 스레드가 한다(ChatVoice는 넘겨받은 것만 쓴다).
+            var voice = ChatReactionAssets.Voice(GameLocale.Code); uint habit = SpeechHabit(bot.Social.Id);
+            int level = tone == "fuss" || tone == "fomo" ? ChatVoice.Warm : ChatVoice.Mild;
+            var lean = tone == "calm" || tone == "dry" ? ChatVoiceLean.Calm : kind == "pop" ? ChatVoiceLean.Up : ChatVoiceLean.Down;
             QueueCompose(bot, DebateRoom, random =>
             {
                 picked = choices[random.Next(choices.Length)];
-                return ChatHypeAssets.Fill(picked, slots);
+                return ChatHypeAssets.Fill(ChatVoice.Apply(picked, voice, level, lean, habit, random.NextDouble), slots);
             }, "twitch." + kind + "." + tone, found, 0, "TWITCH", now, delay, said =>
             {
                 TwitchLines++;
@@ -116,18 +133,28 @@ public sealed partial class InvestorSociety
         }
     }
     /// <summary>이 봇은 이 움직임을 어떤 투로 말할까. 귀가 얇고 들떠 있을수록(밀릴 때는 겁먹었을수록) 호들갑, 무던할수록 심드렁하다.</summary>
-    private string TwitchTone(TradeBot bot, string kind, bool holding)
+    /// <remarks>
+    /// mode가 Calm이면(크게 오른 종목의 잔밀림) 호들갑·의심은 빠지고 느긋한 투(calm)가 들어온다.
+    /// Wary면(무너지는 종목의 잔반등) 호들갑·조바심이 빠진다. 보유자의 투는 처지에 따라 holderGain·holderLoss로 갈린다.
+    /// </remarks>
+    private string TwitchTone(TradeBot bot, string kind, bool holding, ChatSituationRules.TwitchMode mode, ChatSpeakerView view)
     {
         var mind = bot.Social.Psychology;
         float feeling = kind == "pop" ? mind.Greed : mind.Fear;
         double excited = Math.Max(0, Math.Min(1, (mind.Traits.Suggestibility - 30) / 60d * .6 + (feeling - 40f) / 50d * .4));
+        bool normal = mode == ChatSituationRules.TwitchMode.Normal;
+        string holder = view == ChatSpeakerView.Loss || view == ChatSpeakerView.DeepLoss ? "holderLoss" : view == ChatSpeakerView.Even ? "holder" : "holderGain";
         twitchTones.Clear();
-        twitchTones.Add(("fuss", .45 + excited * .8));
+        if (normal) { twitchTones.Add(("fuss", .45 + excited * .8)); }
+        else if (mode == ChatSituationRules.TwitchMode.Calm) { twitchTones.Add(("calm", .9)); }
         twitchTones.Add(("dry", .3 + (1 - excited) * .5));
-        twitchTones.Add(("doubt", .35));
+        if (normal || mode == ChatSituationRules.TwitchMode.Wary) { twitchTones.Add(("doubt", normal ? .35 : .6)); }
         twitchTones.Add(("joke", .2 + mind.Traits.Bravado / 100d * .2));
-        if (holding) { twitchTones.Add(("holder", kind == "pop" ? .45 : .55)); }
-        else { twitchTones.Add((kind == "pop" ? "fomo" : "outsider", kind == "pop" ? .25 + excited * .4 : .35)); }
+        // 크게 수익 중인 사람은 크게 오른 종목의 잔밀림에 "내 수익 녹는다"고 하지 않는다. 느긋한 말이나 농담을 한다.
+        bool relaxed = mode == ChatSituationRules.TwitchMode.Calm && view == ChatSpeakerView.DeepProfit;
+        if (holding) { if (!relaxed) { twitchTones.Add((holder, kind == "pop" ? .45 : .55)); } }
+        else if (kind != "pop") { twitchTones.Add(("outsider", .35)); }
+        else if (normal) { twitchTones.Add(("fomo", .25 + excited * .4)); }
         double total = 0; foreach (var tone in twitchTones) { total += tone.weight; }
         double roll = HypeRandom.Next() * total;
         foreach (var tone in twitchTones) { roll -= tone.weight; if (roll <= 0) { return tone.tone; } }

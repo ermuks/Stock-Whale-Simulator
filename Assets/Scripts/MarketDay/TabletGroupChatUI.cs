@@ -476,6 +476,14 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         messageMeasure.richText = true;
         BuildTypingIndicator();
         nicknameMeasure = rowTemplate.Find("Text :: Nickname").GetComponent<TextMeshProUGUI>();
+        // 얼굴과 이름을 키운다(게임 카메라에서 얼굴이 점처럼, 이름이 읽히지 않을 만큼 작았다). 줄 틀에서 한 번만 바꾸면 모든 줄과 높이 재기가 같이 따른다.
+        if (!faceEnlarged)
+        {
+            faceEnlarged = true;
+            foreach (string part in new[] { "Image :: Avatar", "Image :: Stress" }) { if (rowTemplate.Find(part) is RectTransform face) { face.sizeDelta *= 1.5f; } }
+            nicknameMeasure.enableAutoSizing = false; nicknameMeasure.fontSize *= 1.3f;
+            if (rowTemplate.Find("Text :: Timestamp") is Transform stamp) { stamp.GetComponent<TextMeshProUGUI>().fontSize *= 1.15f; }
+        }
         moderationMenu = gameObject.AddComponent<ChatSocialMenuUnity>(); moderationMenu.Initialize(this, nicknameMeasure.font);
         // 내 리딩방에서는 목록이 더 길어진다. 그만큼의 줄을 미리 만들어 둔다.
         int visible = Mathf.Clamp(Mathf.CeilToInt(scroll.viewport.rect.height / rowHeight) + 4, 1, rowPoolLimit);
@@ -706,10 +714,11 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         var source = row.Bubble.GetComponent<Image>();
         row.NoticeBackground.sprite = source.sprite; row.NoticeBackground.type = Image.Type.Sliced;
         row.NoticeBackground.pixelsPerUnitMultiplier = source.pixelsPerUnitMultiplier;
-        row.NoticeBackground.color = new Color(1f, 1f, 1f, .8f); row.NoticeBackground.raycastTarget = false;
+        // 입장·퇴장 같은 방 알림은 대화보다 눈에 띄면 안 된다: 바탕 없이 흐린 작은 글자 한 줄.
+        row.NoticeBackground.color = Color.clear; row.NoticeBackground.raycastTarget = false;
         row.NoticeText = Instantiate(row.Text, row.Rect);
-        row.NoticeText.name = "Text :: Room Notice"; row.NoticeText.fontSize = row.Text.fontSize * .86f;
-        row.NoticeText.alignment = TextAlignmentOptions.Center; row.NoticeText.color = new Color(.76f, .81f, .84f, 1f);
+        row.NoticeText.name = "Text :: Room Notice"; row.NoticeText.fontSize = row.Text.fontSize * .76f;
+        row.NoticeText.alignment = TextAlignmentOptions.Center; row.NoticeText.color = new Color32(110, 129, 142, 255);
         row.NoticeText.enableAutoSizing = false; row.NoticeText.textWrappingMode = TextWrappingModes.NoWrap;
         row.NoticeText.margin = Vector4.zero; row.NoticeText.fontStyle = FontStyles.Normal;
         row.NoticeText.overflowMode = TextOverflowModes.Ellipsis; row.NoticeText.raycastTarget = false;
@@ -729,8 +738,25 @@ public sealed class TabletGroupChatUI : MonoBehaviour
         if (notice && row.Card != null) { row.HasCard = false; row.Card.gameObject.SetActive(false); }
         if (notice && row.Analysis != null) { row.Analysis.gameObject.SetActive(false); }
     }
-    private void LayoutNotice(Row row, BotChatMessage message)
+    private bool IsJoin(int index) => index >= 0 && index < MessageCount && Message(index).Notice == ChatRoomNotice.Join;
+    /// <summary>바로 윗줄도 입장 알림이면 이 줄은 윗줄에 묶인다(보이지 않는다).</summary>
+    private bool JoinCollapsed(int index) => IsJoin(index) && IsJoin(index - 1);
+    /// <summary>이 입장 알림 뒤에 이어서 묶인 입장 알림의 수.</summary>
+    private int JoinFollowers(int index) { int count = 0; while (IsJoin(index + 1 + count)) { count++; } return IsJoin(index) ? count : 0; }
+    private void LayoutNotice(Row row, BotChatMessage message, int index)
     {
+        int more = JoinFollowers(index);
+        if (more > 0)
+        {
+            string code = GameLocale.Code;
+            string suffix = code == "ja" ? $"  (他{more}人)" : code == "en" ? $"  (+{more} more)" : $"  (외 {more}명)";
+            GameLocalizedText.Set(row.NoticeText, DisplayMessage(message) + suffix, true);
+            float roomWidth = Mathf.Max(1f, row.Rect.rect.width - 40f * layoutScale);
+            float wide = Mathf.Min(roomWidth, row.NoticeText.GetPreferredValues(row.NoticeText.text).x + 36f * layoutScale);
+            row.NoticeBackground.rectTransform.sizeDelta = new Vector2(wide, 34f * layoutScale);
+            row.NoticeText.rectTransform.sizeDelta = new Vector2(Mathf.Max(1f, wide - 24f * layoutScale), 34f * layoutScale);
+            return;
+        }
         GameLocalizedText.Set(row.NoticeText, DisplayMessage(message),true);
         float available = Mathf.Max(1f, row.Rect.rect.width - 40f * layoutScale);
         float width = Mathf.Min(available, row.NoticeText.GetPreferredValues(row.NoticeText.text).x + 36f * layoutScale);
@@ -825,6 +851,8 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                     var message = Message(index);
                     row.Rect.anchoredPosition = new Vector2(0f, -rowOffsets[index]);
                     row.Rect.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, rowHeights[index]);
+                    // 묶여서 높이가 0인 입장 알림 줄은 그리지 않는다.
+                    if (rowHeights[index] <= .5f) { row.Rect.gameObject.SetActive(false); row.Sequence = -1; continue; }
                     if (row.Sequence != message.Sequence)
                     {
                         row.Sequence = message.Sequence;
@@ -837,13 +865,22 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                         bool removed = removedMessages.Contains(message.Sequence);
                         BindCard(row, removed || message.IsRoomNotice || message.Social == null ? null : message.Social.profitCard);
                         BindAnalysis(row, removed || message.IsRoomNotice || message.Social == null ? null : message.Social.analysisCard);
-                        int avatarIndex = (int)((uint)message.BotId % 3u);
-                        row.Avatar.sprite = avatarIndex == 0 ? avatarOrange : avatarIndex == 1 ? avatarBlue : avatarPink;
-                        // 종목 분석 AI는 제 얼굴이 있다.
-                        if (message.TemplateId == AnalysisTemplate)
+                        // 얼굴: 봇마다 번호로 조립한 기하 얼굴(UiPictograms.Avatar). 같은 사람은 늘 같은 얼굴이라 누가 누군지 기억할 수 있다.
+                        // 예전에는 세 가지 색 원을 수천 명이 나눠 썼다. 둘레의 고리(스트레스 게이지)는 그대로 둔다.
+                        bool analysis = message.TemplateId == AnalysisTemplate;
+                        var face = row.Avatar.rectTransform;
+                        if (analysis)
                         {
+                            // 종목 분석 AI는 제 얼굴이 있다.
                             if (analysisAvatar == null) { analysisAvatar = LoadChatSprite("AnalysisAvatar"); }
-                            if (analysisAvatar != null) { row.Avatar.sprite = analysisAvatar; }
+                            row.Avatar.sprite = analysisAvatar; row.Avatar.color = Color.white;
+                            foreach (Transform layer in face) { if (layer.name.StartsWith("Image :: Avatar ")) { layer.gameObject.SetActive(false); } }
+                        }
+                        else
+                        {
+                            row.Avatar.color = Color.clear;
+                            UiPictograms.Avatar(face, message.FromPlayer ? -1 : message.BotId, Color.clear);
+                            foreach (Transform layer in face) { if (layer.name.StartsWith("Image :: Avatar ") && layer.name != "Image :: Avatar Ring") { layer.gameObject.SetActive(true); } }
                         }
                         if (row.StressRing != null) { row.StressRing.SetValue(message.Stress); }
                         else
@@ -856,7 +893,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
                     {
                         row.Continued = false; row.ToMe = false;
                         if (row.ReplyBand.gameObject.activeSelf) { row.ReplyBand.gameObject.SetActive(false); row.ReplyQuote.gameObject.SetActive(false); }
-                        LayoutNotice(row, message); continue;
+                        LayoutNotice(row, message, index); continue;
                     }
                     // 내 글에 단 답: 강조 띠를 깔고, 위에 내가 쓴 글을 한 줄 인용한다. 얼굴과 이름은 그만큼 내려간다.
                     bool toMe = RepliesToMe(message), quotes = toMe && QuotesMe(message); float lift = quotes ? QuoteHeight * layoutScale : 0f;
@@ -995,6 +1032,14 @@ public sealed class TabletGroupChatUI : MonoBehaviour
             retainedSequences.Add(message.Sequence);
             // 윗줄이 지워져 묶음의 첫 줄이 되면 이름이 다시 붙어야 하므로, 묶였는지가 바뀐 줄은 다시 잰다.
             bool continued = Continues(i);
+            // 방 알림은 대화 한 줄보다 훨씬 낮게, 연달아 온 입장 알림은 첫 줄 하나로 묶는다(나머지 줄은 높이 0).
+            // 윗줄이 지워지면 묶음의 첫 줄이 바뀌므로 알림의 높이는 저장해 두지 않고 매번 정한다.
+            if (message.IsRoomNotice)
+            {
+                float noticeHeight = JoinCollapsed(i) ? 0f : 38f * layoutScale;
+                rowOffsets.Add(total); rowHeights.Add(noticeHeight); total += noticeHeight;
+                continue;
+            }
             if (!measuredHeights.TryGetValue(message.Sequence, out float height) || !measuredContinued.TryGetValue(message.Sequence, out bool was) || was != continued)
             {
                 float words = message.IsRoomNotice ? 0f : messageMeasure.GetPreferredValues(DisplayMessage(message), width, Mathf.Infinity).y;
@@ -1063,6 +1108,7 @@ public sealed class TabletGroupChatUI : MonoBehaviour
     }
 
     private bool wasHeld;
+    private bool faceEnlarged;
     private int lastHudSecond = -1;
     private MarketPhase lastHudPhase;
     private static string PhaseText(MarketPhase phase)

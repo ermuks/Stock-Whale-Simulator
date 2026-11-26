@@ -45,6 +45,9 @@ public class Trader : MonoBehaviour, IOrderOwner
     private decimal baseline, externalNet;
     private bool baselineReady;
     public decimal DailyReturn { get; private set; }
+    /// <summary>오늘 개장 때부터 지금까지 번 돈(바깥에서 들어온 돈은 뺀다)과, 그 기준이 되는 개장 때의 총자산.</summary>
+    public decimal DayProfitSoFar => baselineReady ? Equity() - baseline - externalNet : 0m;
+    public decimal DayBaseline => baselineReady ? baseline : 0m;
     public int DailySettledDay { get; private set; }
 
     protected virtual void Awake()

@@ -21,16 +21,17 @@ public sealed class PendingOrderListUI : MonoBehaviour
     private readonly List<Row> rows=new(8);
     private int visibleCount=-1;
     private const float RowHeight=88f;
+    private static string Word(string ko,string en,string ja) => GameLocale.Code=="ja" ? ja : GameLocale.Code=="en" ? en : ko;
     public int Count => entries.Count;
     public void SetScale(float value) { scale=value; visibleCount=-1; }
     public void Configure(DeviceOrderSession orders,TextMeshProUGUI fontTemplate,float fontScale=1f)
     {
         session=orders; template=fontTemplate; scale=fontScale; reading=Resources.Load<TMP_FontAsset>("UI/News/Pretendard Reading");
-        title=Label("Pending Heading",transform,30,0,0,128,56,736,400); GameLocalizedText.Set(title,"미체결");
-        count=Label("Pending Order Count",transform,30,136,0,72,56,736,400); TradingOrderView.Numeric(count); count.alignment=TextAlignmentOptions.MidlineRight;
-        GameLocalizedText.Set(Label("Pending Company Header",transform,24,0,64,270,32,736,400),"미체결 종목");
+        title=Label("Pending Heading",transform,28,0,0,300,56,736,400); LiteralText.Apply(title,"미체결 주문","Open orders","未約定注文");
+        count=Label("Pending Order Count",transform,28,300,0,72,56,736,400); TradingOrderView.Numeric(count); count.alignment=TextAlignmentOptions.MidlineRight;
+        LiteralText.Apply(Label("Pending Company Header",transform,24,0,64,270,32,736,400),"종목","Stock","銘柄");
         var price=Label("Pending Price Header",transform,24,286,64,170,32,736,400); GameLocalizedText.Set(price,"가격 · 돈"); price.alignment=TextAlignmentOptions.MidlineRight;
-        var volume=Label("Pending Quantity Header",transform,24,472,64,144,32,736,400); GameLocalizedText.Set(volume,"잔량 / 체결"); volume.alignment=TextAlignmentOptions.MidlineRight;
+        var volume=Label("Pending Quantity Header",transform,24,472,64,144,32,736,400); LiteralText.Apply(volume,"잔량 / 체결","Left / filled","残り / 約定"); volume.alignment=TextAlignmentOptions.MidlineRight;
         var viewport=Rect("Area :: Pending Order Scroll",transform,0,104,736,296,736,400);
         var hit=viewport.gameObject.AddComponent<Image>(); hit.color=Color.clear;
         viewport.gameObject.AddComponent<RectMask2D>();

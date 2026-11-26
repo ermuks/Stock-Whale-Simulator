@@ -42,7 +42,18 @@ public sealed class MothPool : MonoBehaviour
 {
     public static MothPool Instance { get; private set; }
     /// <summary>풀의 크기. 성능을 보면서 조절한다.</summary>
-    public const int Size = 500;
+    public static readonly int Size = PoolSize();
+    /// <summary>기본 크기. 점검할 때는 환경 변수 DONDON_MOTH_POOL로 바꿔서 잰다(50~4000).</summary>
+    // 1,500으로 늘렸다(예전 500). 측정(창 없이, 스크립트 비용만): 개미 1.2배 + 풀 500일 때 프레임 평균 5.2ms · 상위 1% 7.9ms,
+    // 풀 1,500일 때 5.9ms · 9.7ms, 개미 1.4배 + 풀 2,500일 때 6.9ms · 11.1ms. 셋 다 16.7ms를 넘긴 프레임은 0.3% 아래였다.
+    public const int DefaultSize = 1500;
+    /// <summary>풀이 예전(500)의 몇 배인가. 들여보내는 빠르기와 한 프레임에 돌보는 수를 여기에 맞춘다.</summary>
+    private static float Growth => Mathf.Max(1f, Size / 500f);
+    private static int PoolSize()
+    {
+        string wanted = System.Environment.GetEnvironmentVariable("DONDON_MOTH_POOL");
+        return int.TryParse(wanted, out int value) ? Mathf.Clamp(value, 50, 4000) : DefaultSize;
+    }
     /// <summary>초당 몇 명씩 들여보내는가. 한꺼번에 넣으면 주문이 한 프레임에 몰려 끊긴다.</summary>
     public const float DeployPerSecond = 12f;
     /// <summary>한 프레임에 처리하는 불나방의 수(사고, 팔고, 돌아가는 일). 나머지는 다음 프레임으로 넘긴다.</summary>
@@ -180,7 +191,7 @@ public sealed class MothPool : MonoBehaviour
         if (open && !closing && now >= scanAt) { scanAt = now + 1f; Scan(manager, now); }
         for (int i = rallyList.Count - 1; i >= 0; i--) { Tend(rallyList[i], now, open, closing); }
         // 한 프레임에 정해진 수만큼만 움직인다. 나머지는 다음 프레임에 이어서 한다.
-        int actions = Math.Min(ActionsPerFrame, busy.Count);
+        int actions = Math.Min(Mathf.RoundToInt(ActionsPerFrame * Growth), busy.Count);
         for (int i = 0; i < actions && busy.Count > 0; i++)
         {
             if (cursor >= busy.Count) { cursor = 0; }
@@ -220,7 +231,7 @@ public sealed class MothPool : MonoBehaviour
         if (closing || !rally.stock.AcceptsOrders) { rally.cooling = true; }
         if (open && !rally.cooling && rally.deployed < rally.wanted && now >= rally.deployAt)
         {
-            rally.deployAt = now + 1f / DeployPerSecond;
+            rally.deployAt = now + 1f / (DeployPerSecond * Growth);
             Deploy(rally, now);
         }
         if (rally.active > 0 || !rally.cooling && now - rally.startedAt < 20f && rally.deployed < rally.wanted) { return; }
@@ -238,7 +249,9 @@ public sealed class MothPool : MonoBehaviour
         // 완전히 새로 세팅한다: 새 돈, 새 기준. 돈의 크기는 그 종목의 유통 물량 값에 맞춘다.
         decimal floatValue = StockManager.Instance.FloatValue(rally.stock);
         decimal typical = floatValue > 0m ? floatValue * FirepowerShare / Math.Max(1, moths.Count) : 5_000_000m;
-        moth.purse = decimal.Floor(Math.Max(PurseMin, Math.Min(PurseMax, typical * (decimal)UnityEngine.Random.Range(.5f, 1.5f))));
+        // 풀이 커진 만큼 한 계좌의 돈은 작아진다(몰려온 돈의 합은 그대로다). 다만 한 주도 못 사는 돈으로는 오지 않는다.
+        decimal least = Math.Max(PurseMin / (decimal)Growth, rally.stock.currentPrice * 1.1m);
+        moth.purse = decimal.Floor(Math.Max(least, Math.Min(PurseMax, typical * (decimal)UnityEngine.Random.Range(.5f, 1.5f))));
         moth.account.cash = moth.purse;
         moth.stock = rally.stock; moth.rally = rally; moth.phase = Phase.Buying; moth.buys = 0;
         moth.joinedAt = now; moth.nextAt = now + UnityEngine.Random.Range(0f, 1.5f); moth.leaveShare = UnityEngine.Random.Range(LeaveShareMin, LeaveShareMax);

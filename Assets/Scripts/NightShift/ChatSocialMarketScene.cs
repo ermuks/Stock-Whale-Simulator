@@ -24,86 +24,40 @@ public sealed partial class InvestorSociety
         public double last = double.MinValue;
     }
 
+    // 예전에는 여기서 따로 찍은 5~15분 전의 값과 비교해 급등·급락을 정했다. 지금은 상황 판정(ChatSituation)이 맡는다.
+    // 이 필드는 쓰지 않지만 지우지 않는다: 저장 파일에 이 이름이 들어 있어서, 없애면 예전 저장을 불러올 수 없다.
     private readonly Dictionary<Stock, MarketTrail> marketTrails = new();
 
-    // 최근 움직임은 5~15분 전에 본 가격과 비교한다. 그보다 오래된 가격은 버린다.
-    private const double TrailSampleMinutes = 1, TrailNearMinutes = 5, TrailFarMinutes = 15;
-    // 이 시장은 하루에도 수십 %씩 움직인다. 1~3% 움직임을 두고 "벌써 얼마냐", "고가 찍었네"라고 놀라면 어색하다.
-    // 급변은 몇 분 사이 5%, 고가·저가 얘기는 전일 대비 7% 이상일 때, 눌림·반등은 6% 이상 되돌렸을 때, 오름·내림세는 3% 이상일 때만 말한다.
-    private const decimal FastMovePercent = 5m, ExtremeDayPercent = 7m, ExtremeGapPercent = .5m, SwingPercent = 6m;
-    private const decimal TrendPercent = 3m, FlatDayPercent = .7m, FlatRangePercent = 1.5m;
+    /// <summary>부호와 %가 붙은 등락률("+3.2%", "+490%"). 모든 대사의 {dayPct}·{fromHigh}·{fromLow}가 이 꼴이다. 대사 쪽에서 %를 또 붙이지 않는다.</summary>
+    private static string SignedPercent(decimal value) => ChatSituationMath.SignedPercent(value);
 
-    private static string SignedPercent(decimal value) => value.ToString("+0.0;-0.0;0.0", SocialCulture) + "%";
-
+    /// <summary>
+    /// 말에 담을 시세 사실을 적는다. 무엇이 "말할 만한 상황"인지는 상황 판정이 정한다(ChatSituation.cs):
+    /// 몇 분 사이에 5% 빠졌다는 것만으로 급락이라 하지 않고, 오늘 오른 폭의 몇 할을 돌려줬는지까지 본다.
+    /// +500%에서 +490%가 된 종목은 여기서 UP(여전히 오른 종목)이지 DUMP가 아니다.
+    /// </summary>
     private void CaptureMarketScene(Stock stock, SocialFacts facts)
     {
         if (stock == null || stock.currentPrice <= 0m)
         { return; }
 
-        double now = SocialTime.GameMinute;
-        decimal price = stock.currentPrice;
-        if (!marketTrails.TryGetValue(stock, out var trail))
-        {
-            trail = new MarketTrail();
-            marketTrails.Add(stock, trail);
-        }
-
-        // 날이 바뀌었거나 시간이 되돌아갔으면(불러오기) 이전 관찰은 버린다.
-        if (now < trail.last || Math.Floor(now / 1440d) != Math.Floor(trail.last / 1440d))
-        { trail.samples.Clear(); }
-
-        while (trail.samples.Count > 0 && now - trail.samples.Peek().minute > TrailFarMinutes)
-        { trail.samples.Dequeue(); }
-
-        decimal fast = 0m;
-        bool hasFast = false;
-        if (trail.samples.Count > 0 && now - trail.samples.Peek().minute >= TrailNearMinutes && trail.samples.Peek().price > 0m)
-        {
-            fast = (price / trail.samples.Peek().price - 1m) * 100m;
-            hasFast = true;
-        }
-
-        if (trail.samples.Count == 0 || now - trail.last >= TrailSampleMinutes)
-        {
-            trail.samples.Enqueue((now, price));
-            trail.last = now;
-        }
-
-        if (ReadMarketDay == null)
+        var read = SituationOf(stock);
+        if (!read.valid)
         { return; }
 
-        MarketDay day = ReadMarketDay(stock);
-        if (day.reference <= 0m || day.high <= 0m || day.low <= 0m)
-        { return; }
-
-        decimal high = Math.Max(day.high, price), low = Math.Min(day.low, price);
-        decimal dayPercent = (price / day.reference - 1m) * 100m;
-        decimal fromHigh = (price / high - 1m) * 100m, fromLow = (price / low - 1m) * 100m;
-        decimal highPercent = (high / day.reference - 1m) * 100m, lowPercent = (low / day.reference - 1m) * 100m;
-        decimal range = (high - low) / day.reference * 100m;
-
-        string state = null;
-        if (hasFast && fast >= FastMovePercent) { state = "SPIKE"; }
-        else if (hasFast && fast <= -FastMovePercent) { state = "DUMP"; }
-        else if (dayPercent >= ExtremeDayPercent && fromHigh >= -ExtremeGapPercent) { state = "HIGH"; }
-        else if (dayPercent <= -ExtremeDayPercent && fromLow <= ExtremeGapPercent) { state = "LOW"; }
-        else if (highPercent >= SwingPercent && fromHigh <= -SwingPercent) { state = "PULLBACK"; }
-        else if (lowPercent <= -SwingPercent && fromLow >= SwingPercent) { state = "REBOUND"; }
-        else if (dayPercent >= TrendPercent) { state = "UP"; }
-        else if (dayPercent <= -TrendPercent) { state = "DOWN"; }
-        // 장 초반처럼 고가와 저가가 아직 같으면 "구간"이라고 부를 것이 없다. 그때는 횡보 얘기를 하지 않는다.
-        else if (Math.Abs(dayPercent) < FlatDayPercent && range < FlatRangePercent && Money(high) != Money(low)) { state = "FLAT"; }
-
+        string state = ChatSituationRules.LegacyState(read.kind);
         if (state == null)
         { return; }
 
+        facts.situation = read.kind.ToString();
         facts.marketState = state;
-        facts.dayPct = SignedPercent(dayPercent);
-        facts.dayHigh = Money(high);
-        facts.dayLow = Money(low);
-        facts.fastPct = hasFast ? SignedPercent(fast) : null;
-        facts.fromHigh = SignedPercent(fromHigh);
-        facts.fromLow = SignedPercent(fromLow);
+        facts.dayPct = SignedPercent(read.dayPct);
+        facts.dayHigh = Money(read.high);
+        facts.dayLow = Money(read.low);
+        // 급등·급락 대사만 쓰는 값이다(최근 2분의 움직임). 그 상황일 때는 늘 채워져 있다.
+        facts.fastPct = state == "SPIKE" || state == "DUMP" ? SignedPercent(Math.Abs(read.r120) >= Math.Abs(read.r30) ? read.r120 : read.r30) : null;
+        facts.fromHigh = SignedPercent(read.fromHigh);
+        facts.fromLow = SignedPercent(read.fromLow);
     }
 
     private static string MarketDirection(string state) => state switch

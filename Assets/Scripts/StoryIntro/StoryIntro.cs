@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Video;
 
 /// <summary>
 /// 새 게임을 시작할 때 한 번 보여 주는 60초 프롤로그. 삽화 12장을 정해진 시각에 차례로 보여 주고, 나레이션은 그림과 따로 글자로 띄운다.
@@ -18,9 +19,14 @@ public sealed class StoryIntro : MonoBehaviour
     [Serializable] public sealed class Caption { public string key; public int startLocalMs, endLocalMs, fadeInMs = 250, fadeOutMs = 320; public RectPx rectPx; public float fontSizePx = 45f, minFontSizePx = 34f; public int maxLines = 4; }
     [Serializable] public sealed class GoalOverlay { public string titleKey, valueKey; public int startLocalMs, endLocalMs, fadeInMs = 350; public RectPx rectPx; public float titleFontSizePx = 32f, valueFontSizePx = 54f; }
     [Serializable] public sealed class Scene { public string id, image; public int startMs, endMs; public ImageAnimation imageAnimation; public Caption caption; public GoalOverlay goalOverlay; }
+    /// <summary>영상 속 빈 꼬리표에 얹는 글(예: 매수, 매도). 영상의 시각(밀리초)과 자리(px)로 정한다. 글은 언어마다 따로 읽는다.</summary>
+    [Serializable] public sealed class Tag { public string key; public int startMs, endMs, fadeInMs = 120, fadeOutMs = 160; public RectPx rectPx; public float fontSizePx = 22f; public string color = "#E6EBEF"; }
     [Serializable] public sealed class SkipButton { public string key; public RectPx rectPx; public int appearAtMs = 1000; }
     [Serializable] public sealed class Size { public float width = 1920f, height = 1080f; }
-    [Serializable] public sealed class Timeline { public int schemaVersion, totalDurationMs; public Size designResolutionPx; public string backgroundColor; public RectPx artAreaPx; public SkipButton skipButton; public Scene[] scenes; }
+    [Serializable] public sealed class Timeline { public int schemaVersion, totalDurationMs; public Size designResolutionPx; public string backgroundColor; public RectPx artAreaPx; public SkipButton skipButton; public Scene[] scenes;
+        /// <summary>영상으로 트는 프롤로그: 영상 파일의 자리(Resources/StoryIntro/ 아래, 확장자 없이). 있으면 장면의 그림 대신 이 영상을 처음부터 끝까지 틀고, 장면은 자막이 바뀌는 때만 정한다.</summary>
+        public string video;
+        public Tag[] tags; }
 
     private const string Folder = "StoryIntro/", TimelinePath = Folder + "Data/intro_timeline", StringsPath = Folder + "Localization/intro_strings", MusicPath = Folder + "Audio/Intro_Opening_Theme";
     private const int SortingOrder = 30800;
@@ -64,6 +70,18 @@ public sealed class StoryIntro : MonoBehaviour
     private CanvasGroup captionGroup, goalGroup, skipGroup;
     private AudioSource music;
     private int shownIndex = -2;
+    // 영상으로 트는 프롤로그: 영상, 재생기, 그려 받는 판. 영상에 소리가 들어 있으면 그 소리를 쓰고 따로 둔 음악은 틀지 않는다.
+    private VideoClip film;
+    private VideoPlayer player;
+    private RenderTexture screen;
+    private bool filmStarted, filmSound, filmEnded;
+    private float stalled;
+    private TextMeshProUGUI[] tagLabels;
+    private CanvasGroup[] tagGroups;
+    /// <summary>영상으로 틀고 있는가, 영상이 실제로 돌고 있는가, 영상의 지금 시각(확인용).</summary>
+    public bool UsesVideo => film != null;
+    public bool VideoRunning => player != null && player.isPlaying;
+    public double VideoTime => player != null ? player.time : 0;
     private string captionKey;
 
     /// <summary>프롤로그를 튼다. 끝나거나 건너뛰면 finished를 한 번 부른다. 자료가 없어 틀 수 없으면 바로 finished를 부르고 false를 돌려준다.</summary>
@@ -96,18 +114,27 @@ public sealed class StoryIntro : MonoBehaviour
         if (timeline == null || timeline.schemaVersion != 1 || timeline.totalDurationMs <= 0 || timeline.scenes == null || timeline.scenes.Length == 0)
         { return false; }
         if (timeline.designResolutionPx == null) { timeline.designResolutionPx = new Size(); }
+        if (!string.IsNullOrEmpty(timeline.video))
+        {
+            film = Resources.Load<VideoClip>(Folder + timeline.video);
+            if (film == null) { Debug.LogWarning("[프롤로그] 영상을 찾지 못했습니다: " + timeline.video); return false; }
+        }
         art = new Texture2D[timeline.scenes.Length];
         for (int i = 0; i < timeline.scenes.Length; i++)
         {
             var scene = timeline.scenes[i];
-            if (scene == null || string.IsNullOrEmpty(scene.image) || scene.endMs <= scene.startMs)
+            if (scene == null || scene.endMs <= scene.startMs)
+            { return false; }
+            if (scene.imageAnimation == null) { scene.imageAnimation = new ImageAnimation(); }
+            // 영상으로 트는 프롤로그는 장면마다 그림이 없어도 된다.
+            if (film != null && string.IsNullOrEmpty(scene.image)) { continue; }
+            if (string.IsNullOrEmpty(scene.image))
             { return false; }
             string path = scene.image; int dot = path.LastIndexOf('.');
             if (dot > 0) { path = path.Substring(0, dot); }
             art[i] = Resources.Load<Texture2D>(Folder + path);
-            if (art[i] == null)
+            if (art[i] == null && film == null)
             { return false; }
-            if (scene.imageAnimation == null) { scene.imageAnimation = new ImageAnimation(); }
         }
         var table = Resources.Load<TextAsset>(StringsPath);
         if (table == null)
@@ -242,7 +269,49 @@ public sealed class StoryIntro : MonoBehaviour
             music = gameObject.AddComponent<AudioSource>();
             music.clip = clip; music.playOnAwake = false; music.loop = false; music.spatialBlend = 0f; music.volume = MusicVolume; music.ignoreListenerPause = true;
         }
+        if (film != null) { BuildVideo(); }
+        // 영상 속 꼬리표의 글. 그림(영상) 바로 위, 자막과 같은 층에 놓는다.
+        int tagCount = timeline.tags == null ? 0 : timeline.tags.Length;
+        tagLabels = new TextMeshProUGUI[tagCount]; tagGroups = new CanvasGroup[tagCount];
+        for (int i = 0; i < tagCount; i++)
+        {
+            var tag = timeline.tags[i];
+            if (tag == null || tag.rectPx == null || string.IsNullOrEmpty(tag.key)) { continue; }
+            var label = Label("Text :: Intro Tag " + i, stage, tag.fontSizePx);
+            Place(label.rectTransform, tag.rectPx); label.alignment = TextAlignmentOptions.Center; label.enableAutoSizing = true; label.fontSizeMax = tag.fontSizePx; label.fontSizeMin = tag.fontSizePx * .6f;
+            if (ColorUtility.TryParseHtmlString(tag.color, out Color ink)) { label.color = ink; }
+            label.transform.SetSiblingIndex(picture.transform.GetSiblingIndex() + 1);
+            tagLabels[i] = label; tagGroups[i] = label.gameObject.AddComponent<CanvasGroup>(); tagGroups[i].alpha = 0f; tagGroups[i].blocksRaycasts = false;
+        }
         RefreshWords();
+    }
+
+    /// <summary>
+    /// 영상을 그림 자리에 튼다. 메뉴가 열려 있어 게임 시간이 멈춰 있어도 돌아야 하므로 실제 시간으로 재생한다.
+    /// 영상의 소리는 다른 소리가 멈춰 있는 동안에도 들리게 따로 둔 스피커로 보낸다.
+    /// </summary>
+    private void BuildVideo()
+    {
+        screen = new RenderTexture(Mathf.Max(16, (int)film.width), Mathf.Max(16, (int)film.height), 0, RenderTextureFormat.ARGB32) { name = "Intro Video" };
+        screen.Create();
+        var active = RenderTexture.active; RenderTexture.active = screen; GL.Clear(true, true, Color.black); RenderTexture.active = active;
+        player = gameObject.AddComponent<VideoPlayer>();
+        player.playOnAwake = false; player.source = VideoSource.VideoClip; player.clip = film; player.isLooping = false; player.skipOnDrop = true;
+        player.renderMode = VideoRenderMode.RenderTexture; player.targetTexture = screen; player.aspectRatio = VideoAspectRatio.FitInside;
+        player.timeUpdateMode = VideoTimeUpdateMode.UnscaledGameTime; player.waitForFirstFrame = true;
+        if (film.audioTrackCount > 0)
+        {
+            var speaker = gameObject.AddComponent<AudioSource>();
+            speaker.playOnAwake = false; speaker.spatialBlend = 0f; speaker.volume = MusicVolume; speaker.ignoreListenerPause = true;
+            player.audioOutputMode = VideoAudioOutputMode.AudioSource; player.EnableAudioTrack(0, true); player.SetTargetAudioSource(0, speaker);
+            // 영상의 소리가 주인이다. 예전 음악은 틀지 않고, 끝맺을 때는 이 스피커의 소리를 줄인다.
+            if (music != null) { Destroy(music); }
+            music = speaker; filmSound = true;
+        }
+        else { player.audioOutputMode = VideoAudioOutputMode.None; }
+        picture.texture = screen; picture.color = Color.white; picture.rectTransform.localScale = Vector3.one;
+        player.loopPointReached += _ => filmEnded = true;
+        player.Prepare();
     }
 
     private void Begin()
@@ -251,7 +320,7 @@ public sealed class StoryIntro : MonoBehaviour
         // 프롤로그 동안에는 게임의 다른 소리(방의 소음, 효과음)를 멈춰 둔다. 음악만 들린다.
         listenerWasPaused = AudioListener.pause; AudioListener.pause = true;
         Elapsed = 0f;
-        if (music != null) { music.Play(); }
+        if (music != null && !filmSound) { music.Play(); }
         Apply(0f);
     }
 
@@ -261,7 +330,25 @@ public sealed class StoryIntro : MonoBehaviour
         { return; }
         if (ending)
         { End(); return; }
-        if (ManualClock >= 0f) { Elapsed = ManualClock; }
+        if (film != null)
+        {
+            // 영상이 준비되면 틀고, 그 뒤로는 영상의 시각을 그대로 따른다(자막이 영상과 어긋나지 않는다). 준비되는 동안에는 0초에 머문다.
+            if (!filmStarted) { if (player.isPrepared) { player.Play(); filmStarted = true; } Elapsed = 0f; }
+            else if (ManualClock >= 0f) { Elapsed = ManualClock; }
+            else
+            {
+                // 영상이 돌고 있으면 영상의 시각을 그대로 쓴다. 영상이 끝까지 갔으면 그 뒤는 실제 시간으로 이어서 센다(끝맺음으로 넘어가야 한다).
+                // 중간에 잠깐 멎었을 때는(창을 바꾸거나 끊겼을 때) 자막도 그 자리에서 기다린다. 다만 3초 넘게 멎어 있으면 실제 시간으로 넘긴다(게임이 여기서 멈춰 서면 안 된다).
+                float at = (float)player.time;
+                if (at > Elapsed + .0005f) { Elapsed = at; stalled = 0f; }
+                else
+                {
+                    stalled += Time.unscaledDeltaTime;
+                    if (filmEnded || stalled > 3f) { Elapsed += Time.unscaledDeltaTime; }
+                }
+            }
+        }
+        else if (ManualClock >= 0f) { Elapsed = ManualClock; }
         else { Elapsed += Time.unscaledDeltaTime; }
         if (Elapsed >= Duration)
         { BeginEnd(EndFadeSeconds); return; }
@@ -279,6 +366,8 @@ public sealed class StoryIntro : MonoBehaviour
         if (ending || done)
         { return; }
         ending = true; endClock = 0f; endFade = Mathf.Max(.01f, fadeSeconds); musicAtEnd = music != null ? music.volume : 0f;
+        // 건너뛰면 영상도 그 자리에서 멈춘다.
+        if (player != null && player.isPlaying && fadeSeconds >= SkipFadeSeconds) { player.Pause(); }
         if (skipGroup != null) { skipGroup.alpha = 0f; }
     }
 
@@ -318,22 +407,23 @@ public sealed class StoryIntro : MonoBehaviour
         if (index != shownIndex)
         {
             shownIndex = index;
-            picture.texture = index < 0 ? null : art[index];
+            if (film == null) { picture.texture = index < 0 ? null : art[index]; }
             ShownScene = index < 0 ? "" : timeline.scenes[index].id;
             captionKey = null;
         }
         if (index < 0)
         {
-            picture.color = new Color(1f, 1f, 1f, 0f); captionGroup.alpha = 0f; goalGroup.alpha = 0f;
+            picture.color = new Color(1f, 1f, 1f, film != null ? 1f : 0f); captionGroup.alpha = 0f; goalGroup.alpha = 0f;
             ShownImageAlpha = ShownCaptionAlpha = ShownGoalAlpha = 0f; ShownCaptionKey = "";
         }
         else
         {
             var scene = timeline.scenes[index]; var motion = scene.imageAnimation;
             float local = now - scene.startMs, length = scene.endMs - scene.startMs;
-            ShownImageAlpha = Fade(local, 0f, length, motion.fadeInMs, motion.fadeOutMs);
+            // 영상은 장면 사이를 스스로 잇는다. 그림처럼 장면마다 나타났다 사라지게 하지 않는다.
+            ShownImageAlpha = film != null ? 1f : Fade(local, 0f, length, motion.fadeInMs, motion.fadeOutMs);
             picture.color = new Color(1f, 1f, 1f, ShownImageAlpha);
-            float scale = Mathf.Lerp(motion.scaleFrom, motion.scaleTo, Mathf.Clamp01(local / length));
+            float scale = film != null ? 1f : Mathf.Lerp(motion.scaleFrom, motion.scaleTo, Mathf.Clamp01(local / length));
             picture.rectTransform.localScale = new Vector3(scale, scale, 1f);
 
             var words = scene.caption;
@@ -367,6 +457,12 @@ public sealed class StoryIntro : MonoBehaviour
             ShownGoalAlpha = hasGoal ? Fade(local, goal.startLocalMs, goal.endLocalMs, goal.fadeInMs, CaptionFadeOutSeconds * 1000f) : 0f;
             goalGroup.alpha = ShownGoalAlpha;
         }
+        for (int i = 0; tagGroups != null && i < tagGroups.Length; i++)
+        {
+            if (tagGroups[i] == null) { continue; }
+            var tag = timeline.tags[i];
+            tagGroups[i].alpha = Fade(now, tag.startMs, tag.endMs, tag.fadeInMs, tag.fadeOutMs);
+        }
         if (skipGroup != null)
         {
             bool show = now >= timeline.skipButton.appearAtMs;
@@ -383,12 +479,35 @@ public sealed class StoryIntro : MonoBehaviour
         return Mathf.Min(rise, fall);
     }
 
+    /// <summary>
+    /// 이 언어로 나올 글자를 미리 글꼴 판에 올려 둔다. 처음 보는 글자는 화면에 뜨는 순간 글꼴 판에 새로 구워지는데,
+    /// 일본어에서는 그 일이 둘째 자막에서 몇 초 동안 화면을 멈춰 세웠다(영상은 그동안 혼자 흘러가서 장면 하나를 통째로 놓쳤다).
+    /// 시작하기 전(아직 검은 화면일 때)에 한꺼번에 해 둔다.
+    /// </summary>
+    private void WarmGlyphs()
+    {
+        if (caption == null || caption.font == null) { return; }
+        // 글을 실제로 한 번씩 넣어서 그려 본다. 언어에 따라 글꼴이 바뀌므로(일본어는 일본어 글꼴), 글꼴에 글자를 직접 넣는 것으로는 모자랐다.
+        float alpha = captionGroup != null ? captionGroup.alpha : 0f;
+        if (captionGroup != null) { captionGroup.alpha = 0f; }
+        foreach (string key in strings.Keys)
+        {
+            string text = Word(key);
+            if (string.IsNullOrEmpty(text)) { continue; }
+            GameLocalizedText.Set(caption, Lines(text), true); caption.ForceMeshUpdate();
+        }
+        GameLocalizedText.Set(caption, "", true);
+        if (captionGroup != null) { captionGroup.alpha = alpha; }
+    }
+
     /// <summary>언어가 바뀌면 지금 떠 있는 글도 바로 바꾼다.</summary>
     private void RefreshWords()
     {
+        WarmGlyphs();
         // "{0}"에는 지금 상호작용 키의 이름이 들어간다.
         if (skipLabel != null) { GameLocalizedText.Set(skipLabel, Word(HoldKey).Replace("{0}", GameKeyBindings.Interact.ToString()), true); }
         if (!string.IsNullOrEmpty(captionKey)) { GameLocalizedText.Set(caption, Lines(Word(captionKey)), true); }
+        for (int i = 0; tagLabels != null && i < tagLabels.Length; i++) { if (tagLabels[i] != null) { GameLocalizedText.Set(tagLabels[i], Word(timeline.tags[i].key), true); } }
         var scene = shownIndex >= 0 ? timeline.scenes[shownIndex] : null;
         if (scene != null && scene.goalOverlay != null && !string.IsNullOrEmpty(scene.goalOverlay.valueKey))
         {
@@ -416,6 +535,8 @@ public sealed class StoryIntro : MonoBehaviour
         // 장면이 바뀌어 사라지는 경우에도 소리 멈춤과 구독을 풀어 둔다. 맡겨 둔 일은 부르지 않는다(이미 끝났거나, 게임이 닫히는 중이다).
         GameLocale.Changed -= RefreshWords;
         if (!called && Instance == this) { AudioListener.pause = listenerWasPaused; }
+        if (player != null) { player.Stop(); player.targetTexture = null; }
+        if (screen != null) { screen.Release(); Destroy(screen); screen = null; }
         if (Instance == this) { Instance = null; }
         done = true;
     }

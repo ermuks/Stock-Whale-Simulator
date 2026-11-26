@@ -90,6 +90,8 @@ public sealed class InvestmentDashboard : MonoBehaviour
             priced &= stock.currentPrice > 0m;
         }
         decimal pnl = stockValue - basisTotal;
+        // 보유 비중의 분모: 주식 평가금 + 쓸 수 있는 돈(자산 지도와 같은 기준).
+        decimal weightBase = stockValue + Math.Max(0m, PlayerAccounts.Available(account));
         DeviceTerminalUI.Set(valuation, priced ? DeviceTerminalUI.Money(stockValue) : "—");
         DeviceTerminalUI.Set(profit, priced ? Signed(pnl) + "돈  (" + Rate(pnl,basisTotal) + ")" : "평가가격 확인 중"); profit.color = priced ? ProfitColor(pnl) : Ink;
         DeviceTerminalUI.Set(available, DeviceTerminalUI.Money(PlayerAccounts.Available(account)));
@@ -125,7 +127,7 @@ public sealed class InvestmentDashboard : MonoBehaviour
                 rect.anchorMin = new Vector2(0,1); rect.anchorMax = Vector2.one; rect.pivot = new Vector2(.5f,1);
                 rect.sizeDelta = new Vector2(0,rowHeight); rect.anchoredPosition = new Vector2(0,-i*rowHeight);
             }
-            pool[i].Bind(ordered[i],account,Selected == ordered[i]);
+            pool[i].Bind(ordered[i],account,Selected == ordered[i],weightBase > 0m ? (float)(account.GetOwnedVolume(ordered[i]) * ordered[i].currentPrice / weightBase) : 0f);
         }
         detail.interactable = owned.Contains(Selected);
     }

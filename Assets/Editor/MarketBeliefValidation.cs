@@ -48,6 +48,7 @@ public static class MarketBeliefValidation
     private static decimal smallestBrag = decimal.MaxValue;
     private static string smallestBragText = "";
     private static InvestorSociety cardSociety;
+    private static System.IO.StreamWriter hoursLive;
     private static int cardHolding, cardGain, cardLoss, cardHoldingLoss, cardShots, spokenMoney;
     private static float cardShotAt = -1f;
     private static bool chatFocused;
@@ -218,7 +219,7 @@ public static class MarketBeliefValidation
             }
 
             CheckUnlock(day, t);
-            Accumulate(day, manager, t);
+            Accumulate(day, manager, t); InjectDumps(day, manager, t); InjectTactics(day, manager, t); ForceMoths(manager, t);
             WatchCards(t);
             if (Time.time >= nextSample)
             {
@@ -452,6 +453,175 @@ public static class MarketBeliefValidation
         }
     }
 
+    /// <summary>
+    /// 검증용 주입: 아무 소식 없이 한 종목을 내려찍는다(DONDON_INJECT_DUMP="종목:깊이,종목:깊이", 예 "KMF:0.15,HBF:0.10").
+    /// 시세가 "시장이 믿는 가격"보다 싸졌을 때 값이 그 가격까지 돌아오는지 재려는 것이다.
+    /// 주식은 거래소 보유분에서 넘겨받고(새로 만들지 않는다), 실제 매수 호가에 실제 주문으로 판다. 목표 깊이에 닿거나 60초가 지나면 손을 뗀다.
+    /// </summary>
+    private sealed class Dump { public Stock stock; public decimal from, depth; public float until; public bool done, armed; public decimal sold; }
+    private static readonly List<Dump> dumps = new();
+    private static bool dumpsRead; private static float nextDump;
+    private static StreamWriter dumpLog;
+    private static void InjectDumps(MarketDayController day, StockManager manager, float t)
+    {
+        if (!dumpsRead)
+        {
+            dumpsRead = true; dumps.Clear();
+            string wanted = Environment.GetEnvironmentVariable("DONDON_INJECT_DUMP");
+            if (!string.IsNullOrEmpty(wanted))
+            {
+                foreach (string part in wanted.Split(','))
+                {
+                    string[] pair = part.Split(':'); var stock = manager.FindStock(pair[0].Trim());
+                    decimal depth = pair.Length > 1 && decimal.TryParse(pair[1], NumberStyles.Float, CultureInfo.InvariantCulture, out decimal d) ? d : .15m;
+                    if (stock != null) { dumps.Add(new Dump { stock = stock, depth = depth }); }
+                }
+                dumpLog = Writer("dumps.txt");
+            }
+        }
+        if (dumps.Count == 0 || t < 150f || day.Phase != MarketPhase.Trading || Time.time < nextDump) { return; }
+        nextDump = Time.time + 2f;
+        var player = manager.playerAccount; var exchange = ExchangeBot.Instance;
+        foreach (var dump in dumps)
+        {
+            if (dump.done) { continue; }
+            var stock = dump.stock;
+            if (!dump.armed)
+            {
+                dump.armed = true; dump.from = stock.currentPrice; dump.until = Time.time + 60f;
+                // 유통 물량의 넉넉한 몫을 넘겨받는다. 거래소가 내줄 수 있는 만큼만 받는다.
+                decimal want = decimal.Floor(400_000_000m / Math.Max(1m, stock.currentPrice)); decimal got = 0m;
+                for (int i = 0; i < 6 && got <= 0m && want >= 1m; i++) { if (exchange != null && exchange.TransferInventory(player, stock, want, stock.currentPrice)) { got = want; } else { want = decimal.Floor(want / 2m); } }
+                dumpLog.AutoFlush = true; dumpLog.WriteLine($"t={t:F0} {stock.symbol} start price={N(stock.currentPrice)} crowd={N(stock.fakeValue)} shares={N(got)} target={N(dump.from * (1m - dump.depth))}");
+            }
+            decimal held = player.GetHolding(stock);
+            if (stock.currentPrice <= dump.from * (1m - dump.depth) || Time.time >= dump.until || held < 1m)
+            {
+                dump.done = true;
+                dumpLog.WriteLine($"t={t:F0} {stock.symbol} stop price={N(stock.currentPrice)} ({Pct(stock.currentPrice / dump.from - 1m)}) crowd={N(stock.fakeValue)} sold={N(dump.sold)} left={N(held)}");
+                dumpLog.Flush();
+                continue;
+            }
+            decimal chunk = Math.Min(held, decimal.Floor(40_000_000m / Math.Max(1m, stock.currentPrice)) + 1m);
+            dump.sold += ManipulationTools.Slam(player, stock, chunk, .03m, 0m);
+        }
+    }
+
+    /// <summary>
+    /// 검증용 주입: 플레이어의 작전 도구를 정해진 때에 쓴다(DONDON_INJECT_TACTIC="도구:종목:비중:시각,…", 예 "ignite:KMF:0.25:200,slam:KMF:1:420").
+    /// 도구는 ignite, slam, wash, wall, close. 화면에 적힌 효과(값이 오른다, 눈길을 끈다 …)가 실제로 나는지, 그리고 그 결과 내 돈이 어떻게 되는지 잰다.
+    /// 쓰기 직전과 10초·60초·180초 뒤의 값·시장이 믿는 가격·열기·그 종목에서의 내 손익(판 돈 − 산 돈 + 남은 주식의 평가)을 tactics.txt에 적는다.
+    /// </summary>
+    private sealed class TacticShot { public string tool; public Stock stock; public float fraction, at; public bool fired; public decimal price0, cash0, held0; public int reported; public bool accepted; }
+    private static readonly List<TacticShot> shots = new();
+    private static bool shotsRead; private static StreamWriter tacticLog;
+    private static readonly float[] TacticMarks = { 10f, 60f, 180f };
+    private static void InjectTactics(MarketDayController day, StockManager manager, float t)
+    {
+        if (!shotsRead)
+        {
+            shotsRead = true; shots.Clear();
+            string wanted = Environment.GetEnvironmentVariable("DONDON_INJECT_TACTIC");
+            if (!string.IsNullOrEmpty(wanted))
+            {
+                foreach (string part in wanted.Split(','))
+                {
+                    string[] f = part.Split(':'); if (f.Length < 4) { continue; }
+                    var stock = manager.FindStock(f[1].Trim());
+                    if (stock == null || !float.TryParse(f[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float fraction) || !float.TryParse(f[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float at)) { continue; }
+                    shots.Add(new TacticShot { tool = f[0].Trim().ToLowerInvariant(), stock = stock, fraction = fraction, at = at });
+                }
+                tacticLog = Writer("tactics.txt");
+            }
+        }
+        if (shots.Count == 0 || day.Phase != MarketPhase.Trading) { return; }
+        var player = manager.playerAccount; var tactics = PlayerTactics.Instance;
+        if (player == null || tactics == null) { return; }
+        foreach (var shot in shots)
+        {
+            var stock = shot.stock;
+            float heat = StockInterestManager.Instance == null ? 0f : StockInterestManager.Instance.Heat(stock);
+            if (!shot.fired)
+            {
+                if (t < shot.at) { continue; }
+                shot.fired = true; shot.price0 = stock.currentPrice; shot.cash0 = player.cash; shot.held0 = player.GetOwnedVolume(stock);
+                // 작전 탭 도식의 예보(불붙이기: 마지막으로 사들일 값과 쓸 돈)를 실제 결과와 견준다.
+                decimal lastForecast = 0m, spentForecast = 0m;
+                bool forecast = shot.tool == "ignite" && TacticDiagram.ForecastIgnite(stock, PlayerTactics.Account, shot.fraction, out lastForecast, out spentForecast);
+                if (shot.tool == "ignite")
+                {
+                    decimal cashBefore = PlayerTactics.Account.cash;
+                    bool ok = tactics.Ignite(stock, shot.fraction);
+                    decimal spentActual = cashBefore - PlayerTactics.Account.cash;
+                    tacticLog.WriteLine($"FORECAST ignite {stock.symbol} forecast={(forecast ? N(lastForecast) : "none")} actualPrice={N(stock.currentPrice)} lastTrade={N(stock.orderBook.lastPrice)} spentForecast={N(spentForecast)} cashOut={N(spentActual)} match={(forecast && stock.orderBook.lastPrice == lastForecast)}");
+                    shot.accepted = ok;
+                    tacticLog.WriteLine($"t={t:F0} {shot.tool} {stock.symbol} x{shot.fraction.ToString(CultureInfo.InvariantCulture)} accepted={shot.accepted} notice='{tactics.Notice}' | before price={N(shot.price0)}");
+                    tacticLog.Flush();
+                    continue;
+                }
+                shot.accepted = shot.tool == "ignite" ? tactics.Ignite(stock, shot.fraction) : shot.tool == "slam" ? tactics.Slam(stock, shot.fraction)
+                    : shot.tool == "wash" ? tactics.StartWash(stock) : shot.tool == "unload" ? tactics.StartUnload(stock, shot.fraction) : shot.tool == "wall" ? tactics.SetWall(stock, shot.fraction) : shot.tool == "close" && tactics.ArmClose(stock, shot.fraction);
+                tacticLog.WriteLine($"t={t:F0} {shot.tool} {stock.symbol} x{shot.fraction.ToString(CultureInfo.InvariantCulture)} accepted={shot.accepted} notice='{tactics.Notice}' | before price={N(shot.price0)} crowd={N(stock.fakeValue)} heat={heat:F1} cash={N(shot.cash0)} held={N(shot.held0)} | right after price={N(stock.currentPrice)} ({Pct(stock.currentPrice / shot.price0 - 1m)}) cash={N(player.cash)} held={N(player.GetOwnedVolume(stock))}");
+                tacticLog.Flush();
+                continue;
+            }
+            if (shot.reported >= TacticMarks.Length || t < shot.at + TacticMarks[shot.reported]) { continue; }
+            decimal held = player.GetOwnedVolume(stock);
+            // 이 종목에서의 손익: 현금이 달라진 만큼 + 주식 수가 달라진 만큼의 지금 값(다른 종목의 작전이 겹치면 현금에는 그것도 섞인다).
+            decimal result = player.cash - shot.cash0 + (held - shot.held0) * stock.currentPrice + shot.held0 * (stock.currentPrice - shot.price0);
+            tacticLog.WriteLine($"   +{TacticMarks[shot.reported]:F0}s {shot.tool} {stock.symbol} price={N(stock.currentPrice)} ({Pct(stock.currentPrice / shot.price0 - 1m)}) crowd={N(stock.fakeValue)} heat={heat:F1} held={N(held)} cashDelta={N(player.cash - shot.cash0)} resultOnStock={N(result)} book: realized={N(tactics.Book(stock).Realized)} ignite={N(tactics.Book(stock).IgniteCash)} slam={N(tactics.Book(stock).SlamCash)} washPainted={N(tactics.Book(stock).WashPainted)} unloaded={N(tactics.Book(stock).UnloadShares)} runs={tactics.Runs.Count}");
+            tacticLog.Flush(); shot.reported++;
+        }
+    }
+
+    private static string Pct(decimal fraction) => (fraction * 100m).ToString("+0.0;-0.0;0.0", CultureInfo.InvariantCulture) + "%";
+    // ── 성능 측정(DONDON_PERF=1): 프레임 제한을 풀고, 장중의 프레임마다 걸린 시간을 모은다. 창 없이 돌리므로 그리는 비용은 거의 들어 있지 않다(스크립트 비용을 비교하는 용도다). ──
+    public static bool Perf;
+    private static readonly List<float> frameMs = new(200000);
+    private static bool mothsRead; private static readonly List<(Stock stock, int wanted, float at, bool done)> forcedMoths = new();
+    public static void FrameSample(float seconds)
+    {
+        var day = MarketDayController.Instance;
+        if (Perf && readyAt >= 0 && day != null && day.Phase == MarketPhase.Trading && Time.time - readyAt > 20f) { frameMs.Add(seconds * 1000f); }
+    }
+    private static string PerfLine(MarketDayController day)
+    {
+        if (!Perf || frameMs.Count == 0) { return "perf=off"; }
+        var sorted = new List<float>(frameMs); sorted.Sort();
+        float At(double share) => sorted[Math.Min(sorted.Count - 1, (int)(sorted.Count * share))];
+        double sum = 0; int over16 = 0, over33 = 0, over50 = 0;
+        foreach (float ms in sorted) { sum += ms; if (ms > 16.7f) { over16++; } if (ms > 33.3f) { over33++; } if (ms > 50f) { over50++; } }
+        int traders = Trader.Registry.Count, pool = MothPool.Size;
+        return string.Format(CultureInfo.InvariantCulture, "perf frames={0} avgMs={1:F2} p50={2:F2} p95={3:F2} p99={4:F2} maxMs={5:F1} over16.7ms={6} ({7:P2}) over33ms={8} over50ms={9} | bots={10} traders={11} mothPool={12} managedMB={13}",
+            sorted.Count, sum / sorted.Count, At(.5), At(.95), At(.99), sorted[sorted.Count - 1], over16, over16 / (double)sorted.Count, over33, over50, day == null ? 0 : day.Bots.Count, traders, pool, GC.GetTotalMemory(false) >> 20);
+    }
+    /// <summary>검증용: 정해진 때에 불나방을 한 종목에 불러들인다(DONDON_FORCE_MOTHS="종목:인원:시각,…", 인원 0은 풀 전체).</summary>
+    private static void ForceMoths(StockManager manager, float t)
+    {
+        if (!mothsRead)
+        {
+            mothsRead = true; forcedMoths.Clear();
+            string wanted = Environment.GetEnvironmentVariable("DONDON_FORCE_MOTHS");
+            if (!string.IsNullOrEmpty(wanted))
+            {
+                foreach (string part in wanted.Split(','))
+                {
+                    string[] f = part.Split(':'); if (f.Length < 3) { continue; }
+                    var stock = manager.FindStock(f[0].Trim());
+                    if (stock != null && int.TryParse(f[1], out int count) && float.TryParse(f[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float at)) { forcedMoths.Add((stock, count <= 0 ? MothPool.Size : count, at, false)); }
+                }
+            }
+        }
+        for (int i = 0; i < forcedMoths.Count; i++)
+        {
+            var item = forcedMoths[i];
+            if (item.done || t < item.at || MothPool.Instance == null) { continue; }
+            bool ok = MothPool.Instance.Force(item.stock, item.wanted);
+            Debug.Log("[검증] 불나방 강제 호출 " + item.stock.symbol + " " + item.wanted + "명 → " + ok);
+            forcedMoths[i] = (item.stock, item.wanted, item.at, true);
+        }
+    }
+
     private static string N(decimal value)
     { return decimal.Round(value, 1).ToString(CultureInfo.InvariantCulture); }
 
@@ -505,6 +675,21 @@ public static class MarketBeliefValidation
     {
         if (message == null)
         { return; }
+
+        // 시간대 잡담(AFTER.…)이 실제로 몇 시에 어느 방에서 나왔는지 적어 둔다(Validation/ChatSituation/hours-live.txt).
+        if (message.templateKey != null && message.templateKey.StartsWith("AFTER.", StringComparison.Ordinal))
+        {
+            if (hoursLive == null)
+            {
+                string folder = System.IO.Path.Combine(System.IO.Directory.GetParent(Application.dataPath).FullName, "Validation", "ChatSituation");
+                System.IO.Directory.CreateDirectory(folder);
+                hoursLive = new System.IO.StreamWriter(System.IO.Path.Combine(folder, "hours-live.txt"), false, new System.Text.UTF8Encoding(false));
+            }
+            var clock = MarketDayController.Instance;
+            int minute = clock == null ? -1 : clock.ClockMinute;
+            hoursLive.WriteLine((minute / 60).ToString("00") + ":" + (minute % 60).ToString("00") + " room" + message.roomId + " " + (clock == null ? "" : clock.Phase.ToString()) + " " + message.templateKey + " | " + message.text);
+            hoursLive.Flush();
+        }
 
         // 대화 일관성 집계: @상대를 붙인 말이 실제로 그 상대의 말(같은 종목)에 이어지는가.
         spoken[message.id] = message;
@@ -906,6 +1091,7 @@ public static class MarketBeliefValidation
                 summary.WriteLine("errors=" + errors + " frames=" + frames + " timeScale=" + Time.timeScale + " observedSeconds=" + (readyAt < 0 ? 0 : Time.time - readyAt).ToString("F1", CultureInfo.InvariantCulture));
                 summary.WriteLine("wallSeconds=" + (EditorApplication.timeSinceStartup - began).ToString("F1", CultureInfo.InvariantCulture));
                 summary.WriteLine("bots=" + (day == null ? 0 : day.Bots.Count) + " integrityFailed=" + (day != null && day.IntegrityFailed));
+                summary.WriteLine(PerfLine(day));
                 if (InvestorSociety.Instance != null)
                 {
                     var chatter = new StringBuilder("chatterboxes=");
@@ -1010,13 +1196,25 @@ public sealed class MarketBeliefProbe : MonoBehaviour
     private void Awake()
     {
         Application.runInBackground = true;
-        Application.targetFrameRate = 20;
+        // 기본은 정상 속도다. DONDON_TIME_SCALE(1~4)을 주면 그만큼 빨리 돌린다: 한 프레임의 게임 시간은 그대로 두고(20fps의 0.05초) 프레임을 더 자주 돈다.
+        string wanted = System.Environment.GetEnvironmentVariable("DONDON_TIME_SCALE");
+        if (!float.TryParse(wanted, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out scale)) { scale = 1f; }
+        scale = Mathf.Clamp(scale, 1f, 4f);
+        // DONDON_PERF=1이면 프레임 제한을 풀고 정상 속도로 돌리면서 프레임 시간을 잰다.
+        MarketBeliefValidation.Perf = System.Environment.GetEnvironmentVariable("DONDON_PERF") == "1";
+        if (MarketBeliefValidation.Perf) { scale = 1f; }
+        Application.targetFrameRate = MarketBeliefValidation.Perf ? -1 : Mathf.RoundToInt(20 * scale);
         QualitySettings.vSyncCount = 0;
-        // 정상 속도로만 관찰한다. 배속을 쓰지 않는다.
-        Time.timeScale = 1;
+        Time.timeScale = scale;
         Time.captureDeltaTime = 0;
     }
+    private float scale = 1f;
 
     private void Update()
-    { MarketBeliefValidation.Step(); }
+    {
+        // 게임이 스스로 속도를 1로 되돌리면(메뉴를 닫을 때 등) 다시 맞춘다. 멈춘 상태(0)는 건드리지 않는다.
+        if (scale > 1f && Mathf.Approximately(Time.timeScale, 1f)) { Time.timeScale = scale; }
+        MarketBeliefValidation.FrameSample(Time.unscaledDeltaTime);
+        MarketBeliefValidation.Step();
+    }
 }

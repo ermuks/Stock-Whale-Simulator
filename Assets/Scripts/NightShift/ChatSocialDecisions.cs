@@ -83,6 +83,9 @@ public sealed partial class InvestorSociety
     public void ObserveFomoPrice(TradeBot bot, Stock stock, double risePercent)
     {
         if (stock == null || bot.GetOwnedVolume(stock) > 0 || risePercent < Config.Get("fomoRisePct")) { return; }
+        // 못 탄 조바심은 오르는 종목에서만 생긴다. 크게 빠진 종목이 잠깐 튄 것, 올랐다가 다 돌려준 종목을 두고 "나만 없어"라고 하지 않는다.
+        var situation = SituationOf(stock);
+        if (situation.valid && !ChatSituationRules.FomoFits(situation.kind)) { return; }
         ActivateFomo(bot, stock.symbol);
     }
     private void ActivateFomo(TradeBot bot, string symbol)

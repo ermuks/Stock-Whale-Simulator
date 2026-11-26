@@ -15,7 +15,7 @@ public sealed class DrawerProp : MonoBehaviour
     private static string Word(string korean, string english, string japanese) => GameLocale.Code == "ja" ? japanese : GameLocale.Code == "en" ? english : korean;
     private Transform drawer;
     private Renderer drawerRenderer;
-    private Vector3 closedPosition, pull, interior;
+    private Vector3 closedPosition, pull, interior, handleOffset;
     private float slide;
     private Light lamp;
     private GameObject hintRoot;
@@ -107,13 +107,34 @@ public sealed class DrawerProp : MonoBehaviour
         for (int i = 0; i < fortuneLines.Length; i++) { GameLocalizedText.Set(fortuneLines[i], lines[i], true); }
     }
 
-    /// <summary>원 표시를 띄울 자리(서랍 앞면의 가운데). 서랍이 아직 만들어지지 않았거나 열려 있으면 false.</summary>
+    /// <summary>원 표시를 띄울 자리(서랍 앞면의 손잡이). 서랍이 아직 만들어지지 않았거나 열려 있으면 false.</summary>
     public bool MarkerPoint(out Vector3 point)
     {
         point = Vector3.zero;
         if (drawer == null || drawerRenderer == null || Open || slide > 0f) { return false; }
-        point = drawerRenderer.bounds.center;
+        point = drawer.position + handleOffset;
         return true;
+    }
+    /// <summary>
+    /// 손잡이 자리(서랍 위치에서 잰 거리). 손잡이는 서랍 모델에서 플레이어 쪽으로 가장 튀어나온 부분이다.
+    /// 모델의 꼭짓점을 읽을 수 있으면 그 튀어나온 꼭짓점들의 가운데를, 읽을 수 없으면 앞면의 가운데를 쓴다.
+    /// 예전에는 서랍 상자의 한가운데(서랍 속)를 썼다. 그래서 원이 서랍 안쪽에 떠 보였다.
+    /// </summary>
+    private Vector3 FindHandle(Bounds box, Vector3 toPlayer, float depth)
+    {
+        Vector3 face = box.center + toPlayer * depth * .5f;
+        var filter = drawer.GetComponent<MeshFilter>(); var mesh = filter != null ? filter.sharedMesh : null;
+        if (mesh != null && mesh.isReadable)
+        {
+            var points = mesh.vertices; float far = float.MinValue;
+            var world = new Vector3[points.Length];
+            for (int i = 0; i < points.Length; i++) { world[i] = drawer.TransformPoint(points[i]); far = Mathf.Max(far, Vector3.Dot(world[i], toPlayer)); }
+            Vector3 sum = Vector3.zero; int count = 0; float band = depth * .012f;
+            foreach (var p in world) { if (Vector3.Dot(p, toPlayer) >= far - band) { sum += p; count++; } }
+            if (count > 0) { face = sum / count; }
+        }
+        // 앞면에 딱 붙으면 원이 반쯤 묻혀 보일 수 있어 아주 조금 앞으로 뺀다.
+        return face + toPlayer * depth * .01f - drawer.position;
     }
     void Awake() { Instance = this; }
     void OnDestroy() { if (Instance == this) { Instance = null; } }
@@ -192,6 +213,8 @@ public sealed class DrawerProp : MonoBehaviour
         toPlayer = Mathf.Abs(toPlayer.z) >= Mathf.Abs(toPlayer.x) ? new Vector3(0f, 0f, Mathf.Sign(toPlayer.z)) : new Vector3(Mathf.Sign(toPlayer.x), 0f, 0f);
         float depth = Mathf.Abs(toPlayer.z) > 0f ? box.size.z : box.size.x, width = Mathf.Abs(toPlayer.z) > 0f ? box.size.x : box.size.z;
         pull = toPlayer * depth * PullShare;
+        handleOffset = FindHandle(box, toPlayer, depth);
+        Debug.Log($"[서랍] 원 표시 자리: 손잡이 {drawer.position + handleOffset} | 서랍 가운데 {box.center} | 앞면까지 {depth * .5f:0.###}");
         interior = new Vector3(box.center.x, box.min.y + Floor, box.center.z);
         font = Resources.Load<TMP_FontAsset>("UI/News/Pretendard Reading") ?? TMP_Settings.defaultFontAsset;
 

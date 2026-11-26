@@ -46,7 +46,13 @@ public sealed partial class PlayerProgression : MonoBehaviour
     public decimal RealizedProfit { get; private set; }
     /// <summary>가장 최근에 판 것(종목, 평단, 판 값, 수량, 시각). 이번 실행 동안만 기억한다.</summary>
     public (string symbol, decimal basis, decimal price, decimal volume, float at) LastSale { get; private set; }
-    public bool CanOperateRooms { get; private set; }
+    /// <summary>
+    /// 처음부터 모든 것이 열려 있다: 리딩방, 새벽 관찰실, 차트 정보, 밤 준비, 작전 도구. 돈을 모아 하나씩 여는 단계는 없앴다.
+    /// (엔딩 뒤 꿈에서 깨면 리딩방과 내 기업은 사라진다. 그것은 그대로다.)
+    /// </summary>
+    public const bool OpenStart = true;
+    private bool roomsOpened, dawnOpened;
+    public bool CanOperateRooms { get => roomsOpened || OpenStart && !Dreamt; private set => roomsOpened = value; }
     /// <summary>엔딩 뒤 꿈에서 깼다. 리딩방도 내 기업도 처음부터 없던 것이다(내 기업을 다시 만들어 주지 않는다).</summary>
     public bool Dreamt { get; private set; }
     /// <summary>꿈에서 깬다: 리딩방 운영 자격이 사라진다. 다시 열려면 개설 비용을 다시 모아야 한다.</summary>
@@ -56,7 +62,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
     public decimal FoundingCost => rules.companyFoundingCost;
     public void MarkCompanyFounded(bool founded) { CompanyFounded = founded; }
     /// <summary>새벽 관찰실을 열었는가. 열려면 누적 거래대금이 기준을 넘어야 하고 한 번 돈을 낸다.</summary>
-    public bool DawnUnlocked { get; private set; }
+    public bool DawnUnlocked { get => dawnOpened || OpenStart; private set => dawnOpened = value; }
     public int DawnFeeDay { get; private set; }
     public bool DawnEligible => Turnover >= rules.dawnRoomTurnover;
     /// <summary>돈을 내고 새벽 관찰실을 연다. 조건이 안 되거나 돈이 모자라면 false.</summary>
@@ -70,7 +76,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
     /// <summary>오늘 치 이용료를 낸다. 이미 냈으면 아무 일도 없다. 돈이 모자라면 false(방에서 나가야 한다).</summary>
     public bool PayDawnFee(Trader payer, int day)
     {
-        if (DawnFeeDay >= day) { return true; }
+        if (OpenStart || DawnFeeDay >= day) { return true; }
         if (payer == null || PlayerAccounts.Available(payer) < rules.dawnRoomDailyFee) { return false; }
         payer.cash -= rules.dawnRoomDailyFee; DawnFeeDay = day;
         return true;
@@ -97,6 +103,19 @@ public sealed partial class PlayerProgression : MonoBehaviour
             if (candidate != null && candidate.schemaVersion == 1 && candidate.leadingOpeningCost > 0)
             { rules = candidate; }
         }
+    }
+    /// <summary>새 게임을 막 시작했다: 세계가 준비되면 내 회사를 곧바로 세운다(설립 비용은 시작 자금에 얹어 받았다).</summary>
+    public static bool FoundOnStart;
+    private void FoundCompanyOnStart()
+    {
+        if (!FoundOnStart) { return; }
+        var manager = StockManager.Instance; var market = MarketDayController.Instance;
+        if (manager == null || !manager.EconomyInitialized || market == null || !market.Ready || CorporateEconomy.Instance == null || WorldDramaDirector.Instance == null || PlayerAccounts.Instance == null || !PlayerAccounts.Instance.Ready) { return; }
+        FoundOnStart = false;
+        if (CompanyFounded || Dreamt) { return; }
+        bool founded = CorporateEconomy.Instance.FoundCompany();
+        var company = CorporateEconomy.Instance.PlayerCompany;
+        Debug.Log($"[시작] 내 회사 설립 {(founded ? "완료" : "실패")} — {CorporateEconomy.Instance.GrowthResult} · 회사 현금 {(company?.business == null ? 0m : company.business.Cash):N0}돈 · 내 현금 {manager.playerAccount.cash:N0}돈");
     }
     void OnEnable()
     { StockManager.OnStockListed += Register; StockManager.OnStockDelisted += Remove; }
@@ -149,7 +168,7 @@ public sealed partial class PlayerProgression : MonoBehaviour
     }
     public string Capture()
     {
-        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = CanOperateRooms, dreamt = Dreamt, companyFounded = CompanyFounded, dawnUnlocked = DawnUnlocked, dawnFeeDay = DawnFeeDay, dawnAiTier = DawnAi.Tier,
+        return JsonUtility.ToJson(new Snapshot { worldId = WorldId, turnover = Turnover.ToString(CultureInfo.InvariantCulture), realizedProfit = RealizedProfit.ToString(CultureInfo.InvariantCulture), roomsOpened = roomsOpened, dreamt = Dreamt, companyFounded = CompanyFounded, dawnUnlocked = dawnOpened, dawnFeeDay = DawnFeeDay, dawnAiTier = DawnAi.Tier,
             invitedRoomMask = InvestorSociety.Instance?.InvitedRoomMask ?? 0, journeyMilestones = JourneyMilestones, newsCooldownRemaining = FakeNewsManager.Instance?.PlayerCooldown ?? 0, newsSavedUtc = DateTime.UtcNow.Ticks,
             income = DailyIncomeController.Instance?.Capture() });
     }

@@ -194,8 +194,16 @@ public sealed class ChartGuideOverlay : MonoBehaviour
             if (!active)
             { continue; }
             var level = labelledLevels[i]; var label = tradeTexts[i];
-            string kind = level.Type == ChartTradeLevels.Kind.Average ? "내 평단" : level.Type == ChartTradeLevels.Kind.Buy ? "매수대기" : "매도대기";
-            SetText(label, $"{kind} · {level.Account}번  {level.Price.ToString("N0", Numbers)}");
+            // 쉬운 말로: 내 평균 산 값 · 사려고 건 값 · 팔려고 건 값 · 시장이 믿는 가격. 계좌가 하나라 계좌 번호는 적지 않는다.
+            string code = GameLocale.Code;
+            string kind = level.Type switch
+            {
+                ChartTradeLevels.Kind.Average => code == "ja" ? "平均単価" : code == "en" ? "My avg price" : "내 평균단가",
+                ChartTradeLevels.Kind.Buy => code == "ja" ? "買い注文" : code == "en" ? "My buy order" : "매수 주문",
+                ChartTradeLevels.Kind.Sell => code == "ja" ? "売り注文" : code == "en" ? "My sell order" : "매도 주문",
+                _ => code == "ja" ? "市場が信じる値" : code == "en" ? "Crowd expects" : "시장이 믿는 가격"
+            };
+            SetText(label, $"{kind}  {level.Price.ToString("N0", Numbers)}");
             Color tint = TradeColor(level.Type);
             if (label.color != tint) { label.color = tint; }
             float width = Mathf.Min(plotWidth * .48f, label.GetPreferredValues(label.text).x + 16f);
@@ -230,7 +238,11 @@ public sealed class ChartGuideOverlay : MonoBehaviour
     private static bool SameLevel(ChartTradeLevels.Level a, ChartTradeLevels.Level b)
     { return a.Account == b.Account && a.Type == b.Type && a.Price == b.Price && a.Quantity == b.Quantity; }
     private static Color TradeColor(ChartTradeLevels.Kind kind)
-    { return kind == ChartTradeLevels.Kind.Average ? new Color32(73, 195, 201, 255) : kind == ChartTradeLevels.Kind.Buy ? MarketColors.Up : MarketColors.Down; }
+    {
+        // 시장이 믿는 가격은 가치 눈금자와 같은 청록, 내 평균 산 값은 밝은 회색(둘이 같은 색이면 헷갈린다).
+        return kind == ChartTradeLevels.Kind.Crowd ? new Color32(46, 232, 207, 255) : kind == ChartTradeLevels.Kind.Average ? new Color32(206, 214, 222, 255)
+            : kind == ChartTradeLevels.Kind.Buy ? MarketColors.Up : MarketColors.Down;
+    }
     private void EnsureTradeLabels(int count)
     {
         while (tradeBadges.Count < count)

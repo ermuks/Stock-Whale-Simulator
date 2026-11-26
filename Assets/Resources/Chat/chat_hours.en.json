@@ -1,0 +1,552 @@
+{
+  "schemaVersion": 1,
+  "topics": [
+    {
+      "key": "EARLY_BIRD", "fromHour": 4, "toHour": 8, "weight": 1,
+      "open": [
+        "anyone else up this early",
+        "who's awake rn",
+        "early crew roll call",
+        "is it just me up at this hour",
+        "chat's dead, anyone actually awake?",
+        "up way too early, who else",
+        "morning people where you at"
+      ],
+      "reply": [
+        "here. body clock is broken",
+        "never went to bed tbh",
+        "just got back from the gym",
+        "dog woke me up, no choice",
+        "east coast gang, it's not that early for us",
+        "here but my brain isn't",
+        "making coffee, half alive",
+        "kid's up so i'm up",
+        "here lol. couldn't fall back asleep",
+        "opening shift at work, already up",
+        "lying in bed scrolling, counts right?"
+      ],
+      "back": [
+        "lol more of us than i thought",
+        "respect the grind",
+        "ok good it's not just me",
+        "everyone's got a story huh",
+        "alright, let's get through today"
+      ]
+    },
+    {
+      "key": "BREAKFAST", "fromHour": 5, "toHour": 9, "weight": 1,
+      "open": [
+        "y'all actually eat breakfast?",
+        "what's everyone having for breakfast",
+        "breakfast people, what's the move",
+        "skipped breakfast again, already starving",
+        "does coffee count as breakfast",
+        "anyone eat a real breakfast today"
+      ],
+      "reply": [
+        "coffee is breakfast, coffee is life",
+        "eggs and toast like an adult",
+        "cold pizza. no regrets",
+        "protein bar in the car",
+        "bowl of cereal, peak cuisine",
+        "i don't eat till noon, intermittent fasting",
+        "bagel from the place by my office",
+        "oatmeal. i'm boring and i know it",
+        "leftovers from last night",
+        "overslept so nothing lol",
+        "banana and a prayer"
+      ],
+      "back": [
+        "lmao fair",
+        "ok i need to eat something",
+        "cold pizza is undefeated",
+        "respect, that's actually healthy",
+        "we're all surviving on vibes"
+      ]
+    },
+    {
+      "key": "COMMUTE", "fromHour": 7, "toHour": 9, "weight": 1.2,
+      "open": [
+        "traffic is insane today",
+        "commuting rn and already want to go home",
+        "train is packed, can barely hold my phone",
+        "why is the commute always a war",
+        "stuck in traffic, anyone else",
+        "anyone else on the way to work"
+      ],
+      "reply": [
+        "same, haven't moved in 20 min",
+        "wfh, my commute is 10 steps lol",
+        "on the subway, someone's backpack is in my face",
+        "left early just to get a seat",
+        "biking in, the wind is brutal",
+        "podcast is the only thing keeping me sane",
+        "missed my train by like 3 seconds",
+        "unemployed, sorry lmao",
+        "carpool lane is the only joy in my life",
+        "almost there, coffee in hand"
+      ],
+      "back": [
+        "lol rough out here",
+        "wfh people don't know how good they have it",
+        "ok my stop, later",
+        "we ride at dawn",
+        "survive the commute, survive the day"
+      ]
+    },
+    {
+      "key": "PREMARKET", "fromHour": 7, "toHour": 9, "weight": 1,
+      "open": [
+        "premarket nerves are real",
+        "anyone else weirdly nervous before the open",
+        "waiting for the bell is the longest part of the day",
+        "what do y'all do before the open",
+        "can't focus, just staring at the clock till open",
+        "is the open ever not stressful"
+      ],
+      "reply": [
+        "same, keep checking yesterday's close",
+        "i don't touch anything the first 30 min",
+        "just drinking coffee and staring at the wall",
+        "writing my plan down so i don't freestyle",
+        "it's like the night before a test lol",
+        "eat something first, hungry trades are bad trades",
+        "the waiting is the fun part ngl",
+        "reminding myself to not chase the first candle",
+        "on the train, refreshing nothing",
+        "nervous is good, means you care"
+      ],
+      "back": [
+        "ok glad it's not just me",
+        "yeah plan first, then click",
+        "deep breaths everyone",
+        "see y'all at the bell",
+        "no chasing today, noted"
+      ]
+    },
+    {
+      "key": "WORK_START", "fromHour": 9, "toHour": 10, "weight": 1.4,
+      "open": [
+        "first thing today is a meeting. pray for me",
+        "do not want to work today",
+        "sat down at my desk and my hands won't move",
+        "came in to 40 unread emails",
+        "already want to go home and i just got here",
+        "boss wants to 'quickly sync'. never good"
+      ],
+      "reply": [
+        "camera off, charts on",
+        "same, coffee first then we'll see",
+        "just make it to lunch",
+        "pto today lol sorry",
+        "standup is 30 min of people saying 'no blockers'",
+        "knock out the worst task first, helps",
+        "nobody wants to work, that's why it's called work",
+        "my manager schedules 9am meetings for fun",
+        "inbox zero is a myth",
+        "paycheck = more shares, keep going"
+      ],
+      "back": [
+        "lol ok surviving",
+        "pto envy is real",
+        "fair. coffee time",
+        "lunch is the finish line",
+        "good luck out there everyone"
+      ]
+    },
+    {
+      "key": "SLACKING", "fromHour": 9, "toHour": 12, "weight": 1.2,
+      "open": [
+        "who's 'working' and watching charts rn",
+        "pretending to work, actually in here",
+        "spreadsheet on one half, chart on the other lol",
+        "how do y'all sneak charts at work",
+        "minimizing every time someone walks by",
+        "officially stealing company time, roll call"
+      ],
+      "reply": [
+        "me. boss walked by, nearly died",
+        "bathroom stall is my trading desk",
+        "phone face up next to the keyboard",
+        "wfh, no shame",
+        "privacy screen was the best $20 i spent",
+        "got caught once, be careful",
+        "book a meeting room, sit in it alone",
+        "i'll do actual work after lunch, probably",
+        "i own the company and still sneak it lol",
+        "slack status: 'in a meeting'"
+      ],
+      "back": [
+        "pros, all of you",
+        "oh that's smart",
+        "the boss sneaking it is sending me",
+        "don't get caught y'all",
+        "stealing that trick"
+      ]
+    },
+    {
+      "key": "COFFEE", "fromHour": 9, "toHour": 11, "weight": 1,
+      "open": [
+        "can't think without coffee",
+        "already on coffee number two",
+        "anyone surviving the morning without caffeine?",
+        "what's everyone's coffee order",
+        "about to make a coffee run, worth it?",
+        "charts don't make sense until the coffee kicks in"
+      ],
+      "reply": [
+        "iced coffee, even in january",
+        "black, like my portfolio's future",
+        "office coffee is a crime but i drink it",
+        "cold brew or nothing",
+        "on cup three, heart is doing stuff",
+        "tea person, fight me",
+        "energy drink, i know, i know",
+        "quit coffee a month ago, surprisingly fine",
+        "skip the latte, buy shares lol",
+        "oat milk latte, i'm basic and proud"
+      ],
+      "back": [
+        "lol everyone's different",
+        "ok going for a run to the cafe",
+        "can't quit, won't quit",
+        "the latte math is too real",
+        "caffeine is a personality at this point"
+      ]
+    },
+    {
+      "key": "LUNCH_MENU", "fromHour": 11, "toHour": 13, "weight": 1.6,
+      "open": [
+        "what should i get for lunch",
+        "lunch ideas? brain is empty",
+        "what's everyone eating for lunch",
+        "picking lunch is the hardest decision of my day",
+        "hungry but can't decide what to eat",
+        "someone just pick my lunch for me"
+      ],
+      "reply": [
+        "chipotle, it's always chipotle",
+        "burger and fries, you've earned it",
+        "green day = sushi, red day = pb&j",
+        "leftovers, save the money",
+        "pho. warm and easy",
+        "sandwich from the deli",
+        "salad. i'm on a diet. kill me",
+        "pizza by the slice",
+        "teriyaki bowl, can't go wrong",
+        "skipping lunch to watch the chart lol",
+        "tacos. it's always a taco day",
+        "doordash and regret the fees"
+      ],
+      "back": [
+        "ooh that's the one",
+        "ok decided, thanks",
+        "now i'm even hungrier",
+        "lol gonna end up with the usual anyway",
+        "eat something, don't skip"
+      ]
+    },
+    {
+      "key": "LUNCH_AFTER", "fromHour": 12, "toHour": 14, "weight": 1.3,
+      "open": [
+        "y'all eat yet?",
+        "just got back from lunch, what'd everyone have",
+        "anyone actually take a lunch break",
+        "chat got quiet, everyone at lunch?",
+        "back from lunch. did i miss anything"
+      ],
+      "reply": [
+        "yep, burrito the size of my arm",
+        "not yet, glued to the chart",
+        "microwaved ramen at my desk",
+        "ate and i'm already hungry again",
+        "eating rn while watching lol",
+        "skipped it, no appetite",
+        "went for lunch and missed the whole move",
+        "sad desk salad",
+        "food's still not here, 40 min",
+        "ate, now it's nap o'clock"
+      ],
+      "back": [
+        "eat properly y'all",
+        "lol nice",
+        "that sounds good actually",
+        "fuel up for the afternoon",
+        "missing the move while eating is a classic"
+      ]
+    },
+    {
+      "key": "AFTERNOON_SLUMP", "fromHour": 13, "toHour": 16, "weight": 1.2,
+      "open": [
+        "food coma is hitting hard",
+        "eyes keep closing ngl",
+        "why am i so sleepy after lunch",
+        "almost dozed off watching the chart",
+        "the 2pm slump is real",
+        "anyone else fighting for their life rn"
+      ],
+      "reply": [
+        "literally nodded off a sec ago",
+        "another coffee, it's the only way",
+        "10 min power nap in the car",
+        "splash water on your face, works",
+        "don't fat finger an order half asleep",
+        "smaller lunch = less slump, learned that",
+        "walk around the block",
+        "nap now and you're up till 3am, push through",
+        "chewing gum like my life depends on it",
+        "just put your head down 10 min, honestly better"
+      ],
+      "back": [
+        "ok coffee it is",
+        "lol same boat",
+        "gonna walk it off",
+        "10 min. setting an alarm",
+        "push through, team"
+      ]
+    },
+    {
+      "key": "SNACK_TIME", "fromHour": 14, "toHour": 17, "weight": 1,
+      "open": [
+        "need sugar asap",
+        "snack recommendations, i'm fading",
+        "4pm hunger is undefeated",
+        "craving something sweet rn",
+        "snack or no snack, help",
+        "what's everyone snacking on"
+      ],
+      "reply": [
+        "chocolate. don't overthink it",
+        "got a drawer full of chips for this",
+        "vending machine run",
+        "trail mix, pretending to be healthy",
+        "ice cream sandwich, trust",
+        "saving my appetite for dinner",
+        "apple and peanut butter",
+        "granola bar, the official snack of sadness",
+        "gas station hot cheetos",
+        "water. i'm on a cut. pray for me"
+      ],
+      "back": [
+        "ooh good call",
+        "ok heading to the vending machine",
+        "now i'm hungrier, thanks",
+        "respect the discipline",
+        "snack acquired"
+      ]
+    },
+    {
+      "key": "OFF_COUNTDOWN", "fromHour": 15, "toHour": 18, "weight": 1.2,
+      "open": [
+        "how long till i can log off",
+        "the clock is NOT moving",
+        "counting minutes till 5",
+        "anyone getting out on time today?",
+        "i just want to go home",
+        "what time do y'all clock out"
+      ],
+      "reply": [
+        "5 on the dot, bag's already packed",
+        "staying late today, gave up",
+        "someone always drops work at 4:55",
+        "wfh, i never really leave lol",
+        "market close is my clock out",
+        "two hours left, pain",
+        "boss is still here so i'm still here",
+        "took a half day, already home",
+        "thinking about takeout to survive",
+        "you'll just watch charts at home anyway lol"
+      ],
+      "back": [
+        "lol too real",
+        "half day envy",
+        "good luck staying late",
+        "almost there y'all",
+        "logging off mentally already"
+      ]
+    },
+    {
+      "key": "DINNER_MENU", "fromHour": 16, "toHour": 19, "weight": 1.6,
+      "open": [
+        "what's for dinner",
+        "dinner ideas? i got nothing",
+        "what's everyone eating tonight",
+        "already thinking about dinner",
+        "want something good for dinner tonight",
+        "someone pick my dinner"
+      ],
+      "reply": [
+        "green day steak, red day ramen",
+        "wings. done. decided",
+        "pasta, easiest thing ever",
+        "taco tuesday energy any day",
+        "thai takeout",
+        "frozen pizza and no shame",
+        "mom's making dinner, heading over",
+        "big salad, trying to be good",
+        "burgers on the grill",
+        "whatever's in the fridge, saving money",
+        "breakfast for dinner, pancakes",
+        "skipping dinner, day 3 of a diet"
+      ],
+      "back": [
+        "oh that's it",
+        "ok ordering now",
+        "mouth is watering",
+        "decided, ty",
+        "lol probably ramen again"
+      ]
+    },
+    {
+      "key": "OVERTIME", "fromHour": 17, "toHour": 21, "weight": 1,
+      "open": [
+        "anyone still at work",
+        "working late again",
+        "who else hasn't clocked out",
+        "late shift buddies, let's survive",
+        "last one left in the office",
+        "y'all go home already? still here"
+      ],
+      "reply": [
+        "still here, haven't eaten",
+        "just escaped, hang in there",
+        "at least tell me it's paid overtime",
+        "home but still working, same thing",
+        "left on time, sorry lol",
+        "order food while you work",
+        "late all week, i'm numb",
+        "empty office at night is creepy",
+        "wrap up and go, health first",
+        "small business owner, there is no clocking out"
+      ],
+      "back": [
+        "thanks, hanging in",
+        "let's survive this",
+        "envy everyone who left",
+        "wrapping up soon",
+        "overtime pay... don't ask"
+      ]
+    },
+    {
+      "key": "EVENING_REST", "fromHour": 19, "toHour": 23, "weight": 1,
+      "open": [
+        "what are y'all doing tonight",
+        "how do you unwind after the day",
+        "home and bored, what's everyone up to",
+        "evening plans anyone?",
+        "what's the move tonight"
+      ],
+      "reply": [
+        "netflix on, phone in hand",
+        "gym. legs are jelly",
+        "couple rounds of ranked",
+        "beer and youtube",
+        "lying down. elite activity",
+        "reviewing today's trades",
+        "kids are asleep, finally free",
+        "going for a walk",
+        "laundry. glamorous",
+        "watching the game, we're losing again",
+        "doomscrolling till midnight probably"
+      ],
+      "back": [
+        "nice, productive",
+        "lol same",
+        "might do that too",
+        "rest is underrated",
+        "enjoy y'all"
+      ]
+    },
+    {
+      "key": "NIGHT_SNACK", "fromHour": 21, "toHour": 1, "weight": 1.2,
+      "open": [
+        "late night snack, yes or no",
+        "why am i hungry right now",
+        "craving food but trying to be good",
+        "is ordering wings at this hour insane",
+        "best late night food, go"
+      ],
+      "reply": [
+        "eat it. tomorrow you can deal",
+        "don't, you'll regret it in the morning",
+        "instant ramen with an egg",
+        "already ordered lmao",
+        "wings are always the answer",
+        "glass of water and bed. that's the win",
+        "green day? you've earned it",
+        "frozen burrito in the microwave rn",
+        "cereal at midnight hits different",
+        "i always hold out then eat at 2am anyway"
+      ],
+      "back": [
+        "ok ordering",
+        "fine, i'll resist",
+        "stop tempting me lol",
+        "gonna cave probably",
+        "future me's problem"
+      ]
+    },
+    {
+      "key": "CANT_SLEEP", "fromHour": 23, "toHour": 4, "weight": 1.2,
+      "open": [
+        "should be asleep but can't put my phone down",
+        "work tomorrow and i'm wide awake",
+        "'going to bed' an hour ago lol",
+        "lying in bed, eyes wide open",
+        "anyone else can't sleep"
+      ],
+      "reply": [
+        "same, scrolling in the dark",
+        "put the phone down, that's step one",
+        "thinking about tomorrow makes it worse",
+        "try some warm tea",
+        "the night i plan to sleep early is always the latest",
+        "gave up, watching videos",
+        "counting sheep, not candles",
+        "too much coffee today probably",
+        "sleeping means tomorrow comes",
+        "took a nap today, big mistake",
+        "melatonin gang"
+      ],
+      "back": [
+        "lol that's me",
+        "ok actually sleeping now",
+        "phone down is the hardest part",
+        "5 more min then bed",
+        "night y'all"
+      ]
+    },
+    {
+      "key": "DAWN_AWAKE", "fromHour": 1, "toHour": 5, "weight": 1.5,
+      "open": [
+        "why is everyone still up lol",
+        "y'all don't sleep?",
+        "it's the middle of the night and chat's alive",
+        "don't you guys have work tomorrow",
+        "raise your hand if you're still awake",
+        "everyone here at this hour is unwell lmao"
+      ],
+      "reply": [
+        "you're up too lol",
+        "couldn't sleep, wandered in",
+        "nocturnal, it's my natural habitat",
+        "west coast, it's not even that late",
+        "day off tomorrow, no rules",
+        "work tomorrow. don't ask",
+        "night shift, bored",
+        "making 3am noodles",
+        "baby woke up, now i'm up",
+        "still mad about today's losses",
+        "quiet hours are the best hours",
+        "gaming and lost track of time"
+      ],
+      "back": [
+        "lmao fair",
+        "we're all in this together",
+        "go to sleep y'all",
+        "ok i'm heading to bed",
+        "night crew stays winning"
+      ]
+    }
+  ]
+}

@@ -100,6 +100,8 @@ public sealed class SocialTraits
     public string memoryKind, memAmount;
     /// <summary>화면에서 본 시세: 상태(SPIKE·DUMP·HIGH·LOW·PULLBACK·REBOUND·UP·DOWN·FLAT), 전일 대비, 당일 고가·저가, 최근 몇 분 움직임, 고가·저가 대비.</summary>
     public string marketState, dayPct, dayHigh, dayLow, fastPct, fromHigh, fromLow;
+    /// <summary>그 종목의 상황(ChatSituation의 이름). marketState는 이 상황을 예전 대사 묶음의 이름으로 옮긴 것이다. 말할 것이 없으면 둘 다 null.</summary>
+    public string situation;
     public long memoryEventId;
     public double at;
 }

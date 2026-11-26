@@ -13,7 +13,15 @@ public sealed class TradingOrderView : MonoBehaviour
     private TextMeshProUGUI available, reserved, owned, sellable, average, profit, afterCash, afterShares;
     private TextMeshProUGUI[] confirmationValues;
     private TextMeshProUGUI reviewCaption, submitCaption;
-    private Image buyLine, sellLine, budgetFill;
+    private Image buyLine, sellLine, budgetFill, sectorIcon;
+    private RectTransform logo;
+    private Stock logoStock;
+    private Slider ratio;
+    private float ratioTouched = -10f;
+    private TextMeshProUGUI totalCaption;
+    private static string Word(string ko,string en,string ja) => GameLocale.Code=="ja" ? ja : GameLocale.Code=="en" ? en : ko;
+    /// <summary>이 화면에서 새로 쓴 쉬운 말은 번역 표를 거치지 않고 언어마다 직접 적는다.</summary>
+    private static TextMeshProUGUI Literal(TextMeshProUGUI label,string ko,string en,string ja) { LiteralText.Apply(label,ko,en,ja); return label; }
     private TextMeshProUGUI buyCaption, sellCaption;
     private void Tile(Transform parent,float y)
     {
@@ -38,8 +46,10 @@ public sealed class TradingOrderView : MonoBehaviour
         if (scale <= 0f) { scale = 1f; }
         foreach (Transform child in transform) { child.gameObject.SetActive(false); }
         var background = GetComponent<Image>(); background.sprite = null; background.type = Image.Type.Simple; background.color = Background;
-        HeaderElement(ui.stockName,32,16,580,52,38,false);
-        HeaderElement(ui.ticker,32,72,580,32,23,false); ui.ticker.color = Muted;
+        logo=Area("Stock Logo",transform,32,22,60,60,1600,880);
+        HeaderElement(ui.stockName,108,16,520,52,38,false);
+        HeaderElement(ui.ticker,140,72,480,32,23,false); ui.ticker.color = Muted;
+        sectorIcon=Area("Sector Icon",transform,108,74,26,28,1600,880).gameObject.AddComponent<Image>(); sectorIcon.preserveAspect=true; sectorIcon.raycastTarget=false; sectorIcon.color=Muted;
         HeaderElement(ui.currentPrice,640,8,400,72,44,true);
         Label("Price Unit",transform,"돈",1052,8,40,72,26,1600,880).color = Muted;
         HeaderElement(ui.change,1104,8,464,72,28,true);
@@ -51,20 +61,20 @@ public sealed class TradingOrderView : MonoBehaviour
         // 예약금·매도 가능·평균가는 밑의 미체결 목록과 자산 탭에서 보인다.
         var unused = Area("Unused Metrics",left,0,0,736,704,736,704); unused.gameObject.SetActive(false);
         reserved = Metric(unused,"예약금",40,"돈"); sellable = Metric(unused,"매도 가능",144,"주"); average = Metric(unused,"평균가",184,"돈");
-        Tile(left,0);
-        Label("주문 가능 Label",left,"주문 가능",20,0,240,88,27,736,704).color=Muted;
-        available = Label("주문 가능 Value",left,"",264,0,416,88,38,736,704); Numeric(available); available.alignment=TextAlignmentOptions.MidlineRight;
-        Label("주문 가능 Unit",left,"돈",692,0,40,88,25,736,704).color=Muted;
-        Tile(left,100);
-        Label("보유 Label",left,"보유",20,100,96,88,27,736,704).color=Muted;
-        owned = Label("보유 Value",left,"",116,100,200,88,38,736,704); Numeric(owned); owned.alignment=TextAlignmentOptions.MidlineRight;
-        Label("보유 Unit",left,"주",324,100,40,88,25,736,704).color=Muted;
-        profit = Label("평가손익 Value",left,"",380,100,300,88,32,736,704); Numeric(profit); profit.alignment=TextAlignmentOptions.MidlineRight;
-        Label("평가손익 Unit",left,"돈",692,100,40,88,25,736,704).color=Muted;
-        Place((RectTransform)pending.transform,left,0,216,736,488,736,704);
+        // 위: 호가 사다리(내 값이 어디쯤인지, 이 값이면 바로 되는지). 줄을 누르면 그 값이 가격 칸에 들어간다.
+        var ladderArea = Area("Order Ladder",left,0,0,736,320,736,704);
+        OrderLadder.Create(ui,ladderArea,reading,scale);
+        // 가운데 한 줄: 쓸 수 있는 돈, 그리고 이 종목을 얼마나 들고 있고 지금 팔면 얼마인지.
+        Rule(left,0,322,736,736,704);
+        Literal(Label("주문 가능 Label",left,"",0,328,170,38,23,736,704),"주문 가능 금액","Buying power","注文可能額").color=Muted;
+        available = Label("주문 가능 Value",left,"",170,328,190,38,27,736,704); Numeric(available); available.alignment=TextAlignmentOptions.MidlineRight;
+        Literal(Label("보유 Label",left,"",384,328,60,38,23,736,704),"보유","Held","保有").color=Muted;
+        owned = Label("보유 Value",left,"",444,328,110,38,27,736,704); Numeric(owned); owned.alignment=TextAlignmentOptions.MidlineRight;
+        profit = Label("평가손익 Value",left,"",560,328,176,38,24,736,704); Numeric(profit); profit.alignment=TextAlignmentOptions.MidlineRight;
+        Place((RectTransform)pending.transform,left,0,374,736,330,736,704);
         ui.cancel.transform.SetParent(pending.transform,false);
         Place((RectTransform)ui.cancel.transform,pending.transform,592,0,144,ControlHeight,736,488);
-        Action(ui.cancel,"전체 취소");
+        Action(ui.cancel,"전체 취소"); Literal(ui.cancel.GetComponentInChildren<TextMeshProUGUI>(true),"전체 취소","Cancel all","全取消"); TabletControlStyle.Danger(ui.cancel);
 
         Place((RectTransform)ui.draftPanel.transform,right,0,0,736,704,736,704);
         Place((RectTransform)ui.reviewPanel.transform,right,0,0,736,704,736,704);
@@ -79,28 +89,32 @@ public sealed class TradingOrderView : MonoBehaviour
         buyLine.color = sellLine.color = Muted; buyLine.gameObject.SetActive(false); sellLine.gameObject.SetActive(false);
         buyCaption = ui.buy.GetComponentInChildren<TextMeshProUGUI>(true); sellCaption = ui.sell.GetComponentInChildren<TextMeshProUGUI>(true);
         var type = Area("Order Type Tabs",draft,0,72,464,ControlHeight,736,704);
-        var limit = Label("Limit Order Type",type,"지정가",0,0,160,56,28,464,56);
+        var limit = Literal(Label("Limit Order Type",type,"",0,0,200,56,25,464,56),"지정가","Limit price","指値");
         limit.alignment = TextAlignmentOptions.Center;
         Rule(type,0,54,160,464,56).color = Muted;
         current = quickButtons[0];
-        Place((RectTransform)current.transform,draft,568,72,168,ControlHeight,736,704); Action(current,"현재가");
+        Place((RectTransform)current.transform,draft,568,72,168,ControlHeight,736,704); Action(current,"현재가"); Literal(current.GetComponentInChildren<TextMeshProUGUI>(true),"현재가","Market price","現在値");
         InputRow(draft,ui.price,"가격","돈",144);
         InputRow(draft,ui.quantity,"수량","주",216);
-        Label("Quantity Ratio",draft,"비율",0,288,120,56,28,736,704).color = Muted;
-        Place((RectTransform)quick.transform,draft,144,288,592,ControlHeight,736,704);
+        Literal(Label("Quantity Ratio",draft,"",0,288,140,56,24,736,704),"비율","Ratio","割合").color = Muted;
+        // 비율: 슬라이더로 끌어 고르고, 밑의 25·50·75·100% 눈금을 누르면 그 비율로 딱 맞춘다(눈금은 예전의 비율 단추 그대로).
+        ratio=RatioSlider(draft,144,288,592,26);
+        Place((RectTransform)quick.transform,draft,144,318,592,26,736,704);
         for (int i = 1; i < quickButtons.Length; i++)
         {
-            Place((RectTransform)quickButtons[i].transform,quick.transform,(i-1)*152,0,136,ControlHeight,592,56);
+            Place((RectTransform)quickButtons[i].transform,quick.transform,(i-1)*152,0,136,26,592,26);
             Action(quickButtons[i],i==4 ? "100%" : (i*25)+"%");
-            Numeric(quickButtons[i].GetComponentInChildren<TextMeshProUGUI>());
+            Numeric(quickButtons[i].GetComponentInChildren<TextMeshProUGUI>()); quickButtons[i].GetComponentInChildren<TextMeshProUGUI>().fontSize=20*scale;
+            // 눈금은 상자 없이 글자만(누르면 그 비율). 슬라이더 바로 밑에 붙어 있어 눈금으로 읽힌다.
+            TabletControlStyle.Row(quickButtons[i],false); quickButtons[i].GetComponentInChildren<TextMeshProUGUI>().color=Muted;
         }
         Place((RectTransform)ui.splitPanel.transform,draft,0,360,736,ControlHeight,736,704);
         foreach (Transform child in ui.splitPanel.transform) { child.gameObject.SetActive(false); }
-        Place((RectTransform)ui.split.transform,draft,0,360,128,ControlHeight,736,704); Action(ui.split,"분할 OFF");
+        Place((RectTransform)ui.split.transform,draft,0,360,128,ControlHeight,736,704); Action(ui.split,"분할 OFF"); ui.split.GetComponentInChildren<TextMeshProUGUI>(true).fontSize=21*scale;
         SplitInput(ui.parts,"횟수","회",144,296);
         SplitInput(ui.interval,"간격","초",448,600);
         Rule(draft,0,436,736,736,704);
-        Label("Order Total",draft,"예상 금액",0,452,280,56,28,736,704).color = Muted;
+        totalCaption=Label("Order Total",draft,"",0,452,288,56,24,736,704); totalCaption.color = Muted;
         Place(ui.amount.rectTransform,draft,288,452,376,56,736,704); TextStyle(ui.amount,36,true); ui.amount.alignment = TextAlignmentOptions.MidlineRight;
         Label("Order Total Unit",draft,"돈",696,452,40,56,26,736,704).color = Muted;
         // 거래 수수료. 평소에는 매도 대금의 0.05%이고, 거래소의 수수료 0% 이벤트 날에는 0%로 바뀌며 색이 달라진다(Header에서 갱신).
@@ -131,6 +145,28 @@ public sealed class TradingOrderView : MonoBehaviour
         Place((RectTransform)ui.back.transform,confirm,0,648,360,ControlHeight,736,704); Action(ui.back,"수정");
         Place((RectTransform)ui.submit.transform,confirm,376,648,360,ControlHeight,736,704); Action(ui.submit,"주문",true);
         ui.reviewPanel.SetActive(false);
+    }
+    /// <summary>수량 비율 슬라이더(0~100%). 끌면 살 수 있는(팔 수 있는) 최대 수량의 그만큼이 수량 칸에 들어간다.</summary>
+    private Slider RatioSlider(Transform parent,float x,float y,float w,float h)
+    {
+        var root=Area("Quantity Ratio Slider",parent,x,y,w,h,736,704);
+        root.gameObject.AddComponent<Image>().color=Color.clear;
+        RectTransform Part(string part,Transform holder,float bottom,float top,Color tone,bool image)
+        {
+            var item=new GameObject((image ? "Image :: " : "Area :: ")+"Ratio "+part,typeof(RectTransform)); item.layer=gameObject.layer;
+            var rect=(RectTransform)item.transform; rect.SetParent(holder,false);
+            rect.anchorMin=new Vector2(0f,bottom); rect.anchorMax=new Vector2(1f,top); rect.offsetMin=rect.offsetMax=Vector2.zero;
+            if (image) { var picture=item.AddComponent<Image>(); picture.color=tone; picture.raycastTarget=false; }
+            return rect;
+        }
+        Part("Track",root,.4f,.6f,Line,true);
+        var fillArea=Part("Fill Area",root,.4f,.6f,Color.clear,false); var handleArea=Part("Handle Area",root,0f,1f,Color.clear,false);
+        var fill=Part("Fill",fillArea,0f,1f,TabletKitStyle.Accent,true);
+        var handle=Part("Handle",handleArea,0f,1f,Ink,true); handle.sizeDelta=new Vector2(14f*scale,0f); handle.GetComponent<Image>().raycastTarget=true;
+        var slider=root.gameObject.AddComponent<Slider>(); slider.minValue=0f; slider.maxValue=100f; slider.wholeNumbers=true;
+        slider.fillRect=fill; slider.handleRect=handle; slider.targetGraphic=handle.GetComponent<Image>();
+        slider.onValueChanged.AddListener(value => { ratioTouched=Time.unscaledTime; ui.SetQuantityRatio((decimal)value/100m); });
+        return slider;
     }
     private void SplitInput(TMP_InputField field,string caption,string unit,float labelX,float fieldX)
     {
@@ -169,7 +205,6 @@ public sealed class TradingOrderView : MonoBehaviour
         var viewport=field.textViewport; viewport.anchorMin=Vector2.zero; viewport.anchorMax=Vector2.one;
         viewport.offsetMin=new Vector2(16*scale,0); viewport.offsetMax=new Vector2(-16*scale,0);
         var text=field.textComponent.rectTransform; text.anchorMin=Vector2.zero; text.anchorMax=Vector2.one; text.offsetMin=text.offsetMax=Vector2.zero;
-        var image=field.targetGraphic as Image; if(image!=null) { image.color=TabletKitStyle.Hover; }
     }
     private void Segment(Button button,string caption)
     {
@@ -221,7 +256,11 @@ public sealed class TradingOrderView : MonoBehaviour
     public void Header(Stock stock,decimal reference)
     {
         ShowFee();
-        DeviceTerminalUI.Set(ui.stockName,stock.stockName); DeviceTerminalUI.Set(ui.ticker,stock.symbol);
+        DeviceTerminalUI.Set(ui.stockName,stock.stockName);
+        // 약호 옆에 업종(그림과 이름). 로고는 종목이 바뀔 때만 다시 조립한다.
+        var sector=UiPictograms.SectorOf(stock); string tickerLine=stock.symbol+"  ·  "+UiPictograms.SectorName(sector);
+        if (!GameLocalizedText.Matches(ui.ticker,tickerLine)) { GameLocalizedText.Set(ui.ticker,tickerLine,true); }
+        if (logoStock!=stock) { logoStock=stock; UiPictograms.Logo(logo,stock,Background); sectorIcon.sprite=UiPictograms.SectorIcon(sector); }
         DeviceTerminalUI.Set(ui.currentPrice,Number(stock.currentPrice));
         if(reference<=0)
         { DeviceTerminalUI.Set(ui.change,"—"); ui.change.color=Muted; return; }
@@ -241,18 +280,21 @@ public sealed class TradingOrderView : MonoBehaviour
     {
         // 사는 쪽·파는 쪽은 시세 색 그대로 칠한다. 주문 단추도 같은 색이라 지금 무엇을 누르는지 색으로 안다.
         Color sideColor=buying?MarketColors.Up:MarketColors.Down;
-        Color buyColor=buying?sideColor:(Color)TabletKitStyle.Panel, sellColor=buying?(Color)TabletKitStyle.Panel:sideColor;
+        Color buyColor=buying?sideColor:TabletControlStyle.Raised, sellColor=buying?TabletControlStyle.Raised:sideColor;
         if(ui.buy.image.color!=buyColor) { ui.buy.image.color=buyColor; }
         if(ui.sell.image.color!=sellColor) { ui.sell.image.color=sellColor; }
-        buyCaption.color=buying?TabletKitStyle.Background:Muted; sellCaption.color=buying?Muted:TabletKitStyle.Background;
+        buyCaption.color=buying?TabletControlStyle.OnFill(sideColor):Muted; sellCaption.color=buying?Muted:TabletControlStyle.OnFill(sideColor);
         decimal whole=buying?ui.session.AvailableCash:ui.session.AvailableShares(stock), part=buying?cost:quantity;
         float used=whole>0?(float)(part/whole):part>0?2f:0f;
         budgetFill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(used),1f); budgetFill.color=used>1f?Error:sideColor;
-        DeviceTerminalUI.Set(ui.splitLabel,splitting?"분할 ON":"분할 OFF");
+        Literal(ui.splitLabel,splitting?"분할 ON":"분할 OFF",splitting?"Split ON":"Split OFF",splitting?"分割 ON":"分割 OFF");
+        // 슬라이더는 수량 칸을 따라간다(손으로 끄는 중에는 건드리지 않는다).
+        if (ratio!=null && Time.unscaledTime-ratioTouched>.6f) { float shown=Mathf.Clamp01(used)*100f; if (Mathf.Abs(ratio.value-shown)>.5f) { ratio.SetValueWithoutNotify(shown); } }
+        if (totalCaption!=null) { string share=used<=0f ? "" : used>1f ? Word(" · 가진 것보다 많음"," · more than you have"," · 保有を超過") : (buying ? Word(" · 가진 돈의 "," · "," · 資金の ") : Word(" · 가진 주식의 "," · "," · 保有株の "))+(used<.0001f ? "<0.01" : (used*100f).ToString(used<.01f ? "0.00" : used<.1f ? "0.0" : "0"))+"%"+(GameLocale.Code=="en" ? (buying ? " of cash" : " of shares") : ""); Literal(totalCaption,"예상 금액"+share,"Order total"+share,"予想金額"+share); }
         DeviceTerminalUI.Set(ui.amount,cost>0?Number(cost):"—");
         DeviceTerminalUI.Set(reviewCaption,splitting?(buying?"분할 매수 확인":"분할 매도 확인"):(buying?"매수 주문":"매도 주문"));
-        TabletControlStyle.Emphasize(ui.review,!splitting);
-        if(!splitting) { ui.review.image.color=sideColor; reviewCaption.color=TabletKitStyle.Background; }
+        // 화면의 주 동작이다. 분할 주문도 같은 단추를 누르므로 늘 매수·매도 색의 주 동작 모양이다.
+        TabletControlStyle.MainAction(ui.review,sideColor);
         DeviceTerminalUI.Set(afterCash,string.IsNullOrEmpty(error)?Number(ui.session.AvailableCash+(buying?-cost:cost)):"—");
         DeviceTerminalUI.Set(afterShares,string.IsNullOrEmpty(error)?Number(ui.session.account.GetOwnedVolume(stock)+(buying?quantity:-quantity)):"—");
         ShowError(error);
@@ -263,7 +305,7 @@ public sealed class TradingOrderView : MonoBehaviour
         for(int i=0;i<values.Length;i++) { DeviceTerminalUI.Set(confirmationValues[i],values[i]); }
         DeviceTerminalUI.Set(ui.confirmation,"");
         DeviceTerminalUI.Set(submitCaption,buying?"매수 주문":"매도 주문");
-        ui.submit.image.color=buying?MarketColors.Up:MarketColors.Down; submitCaption.color=TabletKitStyle.Background;
+        TabletControlStyle.MainAction(ui.submit,buying?MarketColors.Up:MarketColors.Down);
     }
     public void ShowError(string error) { DeviceTerminalUI.Set(ui.validation,ShortError(error)); }
     public static string ShortError(string error)

@@ -28,7 +28,8 @@ public sealed class PlayerChatBar : MonoBehaviour
     /// <summary>붙여 둔 인증: 0 없음, 1 보유, 2 실현.</summary>
     private int attached;
     private float next, noteUntil;
-    private static readonly Color EntryRest = new(.10f, .14f, .17f, 1f), EntryLit = new(.13f, .20f, .23f, 1f);
+    // 입력 칸은 바탕보다 어두운 우물에 테두리다(TabletControlStyle.Frame). 단추(보유 인증·실현 인증)는 밝게 솟은 채움이라 모양으로 갈린다.
+    private static readonly Color EntryRest = new(.027f, .047f, .063f, 1f), EntryLit = new(.05f, .08f, .10f, 1f);
     private bool shrunk;
     private RectTransform listRect;
     private float barBase, barReserve;
@@ -92,14 +93,14 @@ public sealed class PlayerChatBar : MonoBehaviour
         // 커서는 굵고 밝게, 빠르게 깜빡인다(색을 따로 쓰겠다고 켜지 않으면 글자색을 따라가서 잘 안 보인다).
         field.customCaretColor = true; field.caretColor = new Color(.25f, 1f, .90f, 1f); field.selectionColor = new Color(.18f, .90f, .82f, .35f);
         field.caretWidth = Mathf.Max(3, Mathf.RoundToInt(4f * scale)); field.caretBlinkRate = 1.6f;
-        field.onSubmit.AddListener(_ => Send());
+        field.onSubmit.AddListener(_ => Send()); TabletControlStyle.Frame(field);
 
         var button = new GameObject("Button :: Send Chat", typeof(RectTransform), typeof(Image), typeof(Button)) { layer = gameObject.layer };
         var buttonRect = (RectTransform)button.transform; buttonRect.SetParent(bar, false);
         buttonRect.anchorMin = new Vector2(1f, 0f); buttonRect.anchorMax = new Vector2(1f, 1f); buttonRect.pivot = new Vector2(1f, .5f);
         buttonRect.offsetMin = new Vector2(-134f, 7f) * scale; buttonRect.offsetMax = new Vector2(-8f, -7f) * scale;
         send = button.GetComponent<Button>(); send.targetGraphic = button.GetComponent<Image>(); TabletControlStyle.Button(send, true);
-        sendLabel = Label("Text :: Send Chat", buttonRect, 23f, new Color(.04f, .08f, .10f, 1f), TextAlignmentOptions.Center);
+        sendLabel = Label("Text :: Send Chat", buttonRect, 23f, new Color(.04f, .08f, .10f, 1f), TextAlignmentOptions.Center); TabletControlStyle.Emphasize(send, true);
         send.onClick.AddListener(Send);
         proofHolding = ProofButton("Button :: Proof Holding", -134f - 2f * ProofWidth, out proofHoldingLabel, () => Prove(false));
         proofRealized = ProofButton("Button :: Proof Realized", -134f - ProofWidth, out proofRealizedLabel, () => Prove(true));
@@ -167,7 +168,7 @@ public sealed class PlayerChatBar : MonoBehaviour
         rect.anchorMin = rect.anchorMax = rect.pivot = new Vector2(0f, 1f); rect.anchoredPosition = new Vector2(140f, -128f) * scale; rect.sizeDelta = new Vector2(280f, 66f) * scale;
         gateButton = button.GetComponent<Button>(); gateButton.targetGraphic = button.GetComponent<Image>(); TabletControlStyle.Button(gateButton, true);
         gateButtonLabel = Label("Text :: Dawn Room Button", rect, 28f, new Color(.04f, .08f, .10f, 1f), TextAlignmentOptions.Center);
-        gateButton.onClick.AddListener(PressGate);
+        gateButton.onClick.AddListener(PressGate); TabletControlStyle.Emphasize(gateButton, true);
         // 단추 아래: 가격과 조건, 그리고 이용료.
         gatePrice = Place(Label("Text :: Gate Price", gate, 25f, new Color(.18f, .90f, .82f, 1f), TextAlignmentOptions.Center), 24f, 210f, 512f, 38f);
         gateNote = Place(Label("Text :: Gate Note", gate, 21f, new Color(.60f, .66f, .71f, 1f), TextAlignmentOptions.Center), 24f, 252f, 512f, 56f);
@@ -248,7 +249,7 @@ public sealed class PlayerChatBar : MonoBehaviour
             GameLocalizedText.Set(gatePrice, rules.dawnRoomCost.ToString("N0") + Word("돈", " DON", "ドン"), true);
             GameLocalizedText.Set(gateNote, Word("조건: 누적 거래대금 ", "Requires lifetime turnover of ", "条件: 累計売買代金") + rules.dawnRoomTurnover.ToString("N0") + Word("돈 이상", " DON or more", "ドン以上")
                 + "\n" + Word("입장 중 하루 ", "While inside: ", "入室中は1日") + rules.dawnRoomDailyFee.ToString("N0") + Word("돈", " DON a day", "ドン"), true);
-            gateButton.interactable = career.DawnEligible && payer != null && PlayerAccounts.Available(payer) >= rules.dawnRoomCost;
+            gateButton.interactable = career.DawnEligible && payer != null && PlayerAccounts.Available(payer) >= rules.dawnRoomCost; TabletControlStyle.Emphasize(gateButton, true);
             if (Time.unscaledTime >= noteUntil)
             { GameLocalizedText.Set(gateStatus, Word("지금 거래대금 ", "Turnover so far ", "現在の売買代金 ") + decimal.Floor(career.Turnover).ToString("N0") + Word("돈", " DON", "ドン"), true); }
         }
@@ -257,7 +258,7 @@ public sealed class PlayerChatBar : MonoBehaviour
             GameLocalizedText.Set(gateButtonLabel, Word("입장하기", "Enter", "入室する"), true);
             GameLocalizedText.Set(gatePrice, Word("하루 이용료 ", "Daily fee ", "1日の利用料 ") + rules.dawnRoomDailyFee.ToString("N0") + Word("돈", " DON", "ドン"), true);
             GameLocalizedText.Set(gateNote, Word("운영자의 실제 주문 관측과 종목 분석 AI를 볼 수 있습니다.\n들어가 있는 동안 날마다 이용료가 나갑니다.", "See the host's real orders and the stock analysis AI.\nThe fee is charged each day you stay.", "運営者の実際の注文と銘柄分析AIが見られます。\n入室中は毎日利用料がかかります。"), true);
-            gateButton.interactable = npc.Available && payer != null && PlayerAccounts.Available(payer) >= rules.dawnRoomDailyFee;
+            gateButton.interactable = npc.Available && payer != null && PlayerAccounts.Available(payer) >= rules.dawnRoomDailyFee; TabletControlStyle.Emphasize(gateButton, true);
             if (Time.unscaledTime >= noteUntil) { GameLocalizedText.Set(gateStatus, npc.Available ? "" : Word("운영자를 기다리는 중", "Waiting for the host", "運営者を待っています"), true); }
         }
     }

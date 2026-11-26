@@ -101,6 +101,9 @@ public partial class ChartManager : MonoBehaviour
     private List<CandleData> _currentVisibleCandles = new List<CandleData>();
     private readonly List<CandleData> _fullCandles = new List<CandleData>(101);
     private ChartGuideOverlay _guides;
+    private RectTransform headerLogo;
+    private bool statsEnlarged;
+    private Stock headerLogoStock;
     /// <summary>종목별 세션 거래량·거래대금 (거래 체결 시 누적, 차트 표시용)</summary>
     private readonly Dictionary<Stock, (decimal volume, decimal turnover)> _sessionStats = new Dictionary<Stock, (decimal, decimal)>();
     private float _lastStatsRefreshTime;
@@ -170,24 +173,40 @@ public partial class ChartManager : MonoBehaviour
     {
         if (textName == null || textName.transform.parent is not RectTransform header)
         { return; }
-        PlaceHeaderText(textName,header,.025f,.035f,.22f,.28f,36f);
-        PlaceHeaderText(textSymbol,header,.025f,.31f,.22f,.20f,22f,true);
-        PlaceHeaderText(textRiskBadge,header,.25f,.075f,.13f,.215f,22f,true);
-        PlaceHeaderText(textLastPrice,header,.025f,.50f,.22f,.48f,58f);
-        PlaceHeaderText(textChangePct,header,.25f,.48f,.14f,.28f,36f);
-        PlaceHeaderText(textChangeAmount,header,.25f,.76f,.14f,.23f,26f);
+        // 머리는 세 구역이다. 왼쪽: 누구(로고·이름·업종)와 지금 값(가장 크게). 가운데: 가치 눈금자. 오른쪽: 내 보유와 거래량.
+        if (header.Find("Area :: Header Logo") == null)
+        {
+            headerLogo = new GameObject("Area :: Header Logo", typeof(RectTransform)).GetComponent<RectTransform>();
+            headerLogo.SetParent(header, false); headerLogo.gameObject.layer = header.gameObject.layer;
+        }
+        headerLogo.anchorMin = new Vector2(.016f, 1f - .50f); headerLogo.anchorMax = new Vector2(.066f, 1f - .06f); headerLogo.offsetMin = headerLogo.offsetMax = Vector2.zero;
+        PlaceHeaderText(textName,header,.074f,.04f,.26f,.27f,36f);
+        PlaceHeaderText(textSymbol,header,.074f,.31f,.26f,.19f,22f,true);
+        PlaceHeaderText(textRiskBadge,header,.28f,.06f,.08f,.2f,22f,true);
+        PlaceHeaderText(textLastPrice,header,.016f,.48f,.19f,.52f,70f);
+        // 지금 값은 머리에서 가장 큰 글자다. 칸보다 글자가 크면 줄임표 모드가 글을 통째로 숨기므로 넘쳐도 그리게 둔다.
+        textLastPrice.overflowMode = TextOverflowModes.Overflow; textLastPrice.alignment = TextAlignmentOptions.MidlineLeft;
+        PlaceHeaderText(textChangePct,header,.21f,.54f,.15f,.26f,36f);
+        PlaceHeaderText(textChangeAmount,header,.21f,.79f,.15f,.2f,26f);
         // Both statistics columns share caption/value baselines and right edges.
-        PlaceHeaderText(textRealValue,header,.40f,.27f,.13f,.23f,25f,true,true);
-        PlaceHeaderText(textFakeValue,header,.40f,.72f,.13f,.23f,25f,true,true);
-        PlaceHeaderText(textVolume,header,.545f,.27f,.14f,.23f,25f,true,true);
-        PlaceHeaderText(textTurnover,header,.545f,.72f,.14f,.23f,25f,true,true);
-        PlaceHeaderCaption(header,"Real Caption",.40f,.08f,.13f);
-        PlaceHeaderCaption(header,"Fake Caption",.40f,.53f,.13f);
-        // 해금 화면에서는 "기업 실제 가치", "시장이 믿는 가격"이라고 부른다. 여기서도 같은 이름을 쓴다.
-        RenameHeaderCaption(header,"Real Caption","기업 실제 가치");
-        RenameHeaderCaption(header,"Fake Caption","시장이 믿는 가격");
-        PlaceHeaderCaption(header,"Volume Caption",.545f,.08f,.14f);
-        PlaceHeaderCaption(header,"Turnover Caption",.545f,.53f,.14f);
+        // 기업 실제 가치 · 시장이 믿는 가격 · 지금 값을 숫자 세 칸 대신 가치 눈금자 한 줄로 그린다(ValueRuler). 예전 칸은 숨긴다.
+        foreach (var old in new[] { textRealValue, textFakeValue }) { if (old != null) { old.gameObject.SetActive(false); } }
+        foreach (string name in new[] { "Real Caption", "Fake Caption" }) { var child = header.Find("Text :: " + name); if (child != null) { child.gameObject.SetActive(false); } }
+        if (header.Find("Area :: Value Ruler") == null)
+        {
+            var area = new GameObject("Area :: Value Ruler", typeof(RectTransform)).GetComponent<RectTransform>();
+            area.SetParent(header, false); area.gameObject.layer = header.gameObject.layer;
+            area.anchorMin = new Vector2(.375f, 1f - .98f); area.anchorMax = new Vector2(.68f, 1f - .02f); area.offsetMin = area.offsetMax = Vector2.zero;
+            ValueRuler.Create(area, textName.font);
+        }
+        // 거래량·거래대금은 오른쪽 구역의 맨 아래 줄(ConfigureHoldingPanel).
+        // 호가창 옆 통계(52주 최고·최저, 전일 종가, 당일 고가·저가, 체결 강도)는 게임 카메라에서 읽히지 않을 만큼 작았다. 한 번만 키운다.
+        if (!statsEnlarged && text52WeekHigh != null && text52WeekHigh.transform.parent != null)
+        {
+            statsEnlarged = true;
+            foreach (var label in text52WeekHigh.transform.parent.GetComponentsInChildren<TextMeshProUGUI>(true))
+            { label.enableAutoSizing = false; label.fontSize *= 1.35f; label.textWrappingMode = TextWrappingModes.NoWrap; label.overflowMode = TextOverflowModes.Overflow; }
+        }
         // 오른쪽에 남긴 자리에는 이 종목의 내 보유 현황을 둔다.
         ConfigureHoldingPanel(header);
     }
@@ -473,9 +492,13 @@ public partial class ChartManager : MonoBehaviour
         if (textName != null)
         {
             GameLocalizedText.Set(textName,currentStock.stockName);
+            if (headerLogo != null && headerLogoStock != currentStock) { headerLogoStock = currentStock; UiPictograms.Logo(headerLogo, currentStock, new Color32(18, 26, 33, 255)); }
         }
         if (textRiskBadge != null)
         {
+            // 안전한 종목에는 꼬리표를 달지 않는다(종목 목록과 같은 규칙). 주의·위험·거래정지만 보인다.
+            bool quiet = !currentStock.IsTradingHalted && (currentStock.RiskPending || currentStock.RiskGrade == StockRiskGrade.Safe);
+            if (textRiskBadge.gameObject.activeSelf == quiet) { textRiskBadge.gameObject.SetActive(!quiet); }
             GameLocalizedText.Set(textRiskBadge,currentStock.RiskLabel);
             textRiskBadge.color = currentStock.IsTradingHalted ? new Color32(145, 152, 158, 255) : currentStock.RiskGrade == StockRiskGrade.Safe ? new Color32(127, 165, 140, 255) : currentStock.RiskGrade == StockRiskGrade.Warning ? new Color32(205, 182, 116, 255) : currentStock.RiskGrade == StockRiskGrade.Danger ? new Color32(217, 151, 102, 255) : new Color32(221, 119, 127, 255);
         }
@@ -651,6 +674,8 @@ public partial class ChartManager : MonoBehaviour
             if (item != null)
             {
                 _tradeHistoryItems.Add(item);
+                // 최근 체결 줄의 글자도 키운다(줄 높이 안에서 넘치지 않게 1.3배까지).
+                foreach (var label in go.GetComponentsInChildren<TextMeshProUGUI>(true)) { label.enableAutoSizing = false; label.fontSize *= 1.3f; label.overflowMode = TextOverflowModes.Overflow; }
                 go.SetActive(false);
             }
         }

@@ -23,6 +23,11 @@ using UnityEngine;
     /// <summary>시장과 상관없는 잡담인가. 잡담에서는 인증을 요구하거나 지난 말을 들추지 않는다.</summary>
     public bool casual;
     public string[] open, pro, con, joke, ask, fact, branches;
+    /// <summary>
+    /// 이 주제를 꺼내면 안 되는 상황들(ChatSituation의 이름). 종목 얘기에만 쓴다.
+    /// "지금이 바닥이냐"는 +490% 오른 종목에서, "고점이냐"는 투매 중인 종목에서 말이 안 된다. 비워 두면 코드의 기본값을 쓴다.
+    /// </summary>
+    public string[] avoid;
     /// <summary>달아올랐을 때 가끔 나오는 긴 글(찬성 쪽, 반대 쪽). 경험담과 까닭이 든 글이다.</summary>
     public string[] rantPro, rantCon;
 }
@@ -147,6 +152,8 @@ public sealed partial class InvestorSociety
         {
             var candidate = locale.topics[HypeRandom.Range(0, locale.topics.Length)];
             if (candidate == null || candidate.open == null || candidate.open.Length == 0 || candidate.stock && subject == null) { continue; }
+            // 그 종목의 지금 상황에서 말이 되는 주제만 꺼낸다.
+            if (candidate.stock && !DebateTopicFits(candidate, subject)) { continue; }
             topic = candidate;
         }
         if (topic == null) { debateNext = now + 20; return; }
@@ -180,6 +187,18 @@ public sealed partial class InvestorSociety
             if (!run.side.Contains(0)) { run.side[0] = 0; }
             if (!run.side.Contains(1)) { run.side[run.side[0] == 0 ? 1 : 0] = 1; }
         }
+    }
+    /// <summary>
+    /// 이 종목의 지금 상황에서 이 주제로 다툴 수 있는가. 주제 파일의 avoid에 그 상황이 있으면 안 된다.
+    /// avoid가 없는 주제는 코드의 기본값(ChatSituationRules.DebateFits)을 따른다. 상황을 알 수 없으면 막지 않는다.
+    /// </summary>
+    private bool DebateTopicFits(DebateTopic topic, Stock stock)
+    {
+        if (topic == null || !topic.stock || stock == null) { return true; }
+        var read = SituationOf(stock);
+        if (!read.valid) { return true; }
+        if (topic.avoid == null || topic.avoid.Length == 0) { return ChatSituationRules.DebateFits(topic.id, read.kind); }
+        return Array.IndexOf(topic.avoid, read.kind.ToString()) < 0;
     }
     private Stock DebateStock()
     {
@@ -342,7 +361,7 @@ public sealed partial class InvestorSociety
         if (run.trail.Count > 0 && HypeRandom.Next() < .18)
         {
             string earlier = run.trail[run.trail.Count - 1];
-            if (locale.index.TryGetValue(earlier, out var old) && (!old.stock || run.stock != null || (run.stock = DebateStock()) != null))
+            if (locale.index.TryGetValue(earlier, out var old) && (!old.stock || run.stock != null || (run.stock = DebateStock()) != null) && DebateTopicFits(old, run.stock))
             {
                 run.trail.RemoveAt(run.trail.Count - 1); run.topic = earlier; run.sinceBranch = 0; run.heat *= .5f; DebateBranches++;
                 TraceDebate("    (하던 얘기로 돌아감: " + earlier + ")");
@@ -357,6 +376,7 @@ public sealed partial class InvestorSociety
             string id = topic.branches != null && topic.branches.Length > 0 && HypeRandom.Next() < .7 ? topic.branches[HypeRandom.Range(0, topic.branches.Length)] : locale.topics[HypeRandom.Range(0, locale.topics.Length)].id;
             if (id == run.topic || run.trail.Contains(id) || !locale.index.TryGetValue(id, out var candidate)) { continue; }
             if (candidate.stock && run.stock == null && (run.stock = DebateStock()) == null) { continue; }
+            if (candidate.stock && !DebateTopicFits(candidate, run.stock)) { continue; }
             next = candidate;
         }
         if (next == null) { run.sinceBranch = 0; return; }
@@ -484,7 +504,7 @@ public sealed partial class InvestorSociety
                 if (!early || talk.Stock == null || !talk.Stock.AcceptsOrders) { return false; }
                 // 내가 꺼낸 종목 얘기로 넘어간다.
                 DebateTopic next = null; int seen = 0;
-                foreach (var candidate in locale.topics) { if (candidate != null && candidate.stock && candidate.id != run.topic && locale.index.ContainsKey(candidate.id)) { seen++; if (HypeRandom.Range(0, seen) == 0) { next = candidate; } } }
+                foreach (var candidate in locale.topics) { if (candidate != null && candidate.stock && candidate.id != run.topic && locale.index.ContainsKey(candidate.id) && DebateTopicFits(candidate, talk.Stock)) { seen++; if (HypeRandom.Range(0, seen) == 0) { next = candidate; } } }
                 if (next == null) { return false; }
                 run.trail.Add(run.topic); run.topic = next.id; run.stock = talk.Stock; run.sinceBranch = 0; run.heat *= .5f; DebateBranches++;
                 AssignSides(run, next);

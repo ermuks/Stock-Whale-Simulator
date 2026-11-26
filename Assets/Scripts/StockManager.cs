@@ -153,6 +153,14 @@ public partial class StockManager : MonoBehaviour
         { return; }
         // 종목 넘기기는 위·아래 화살표다. 모니터를 확대해 보는 동안에는 W와 S도 같은 일을 한다(자리에서는 W·S가 걷기다).
         bool zoomed = DeskViewController.MonitorZoomed && !MouseCameraController.TextEntryActive;
+        // 모니터를 확대해 보는 동안 스페이스바는 내가 가진 종목만 위에서 아래로 차례로 고른다.
+        if (zoomed && Input.GetKeyDown(KeyCode.Space))
+        {
+            var picked = EventSystem.current == null ? null : EventSystem.current.currentSelectedGameObject;
+            if (picked == null || picked.GetComponentInParent<TMP_InputField>() == null && picked.GetComponentInParent<InputField>() == null)
+            { StockListUIManager.VisibleList?.SelectNextHeldStock(); }
+            return;
+        }
         int direction = Input.GetKeyDown(KeyCode.UpArrow) || zoomed && Input.GetKeyDown(KeyCode.W) ? -1 : Input.GetKeyDown(KeyCode.DownArrow) || zoomed && Input.GetKeyDown(KeyCode.S) ? 1 : 0;
         if (direction == 0)
         { return; }

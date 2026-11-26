@@ -27,7 +27,20 @@ public class TabletViewController : MonoBehaviour
     [Range(0f, 1f)] public float heldDrop = .9f;
     [Tooltip("옆으로 치우치는 정도(1이면 옆 끝이 시야 옆 끝에 닿는다)")]
     [Range(0f, 1f)] public float heldAside = .7f;
-    private float _side = 1f;
+    private float _side = 1f, _lastSize;
+    private string SideKey => "DonDon.TabletSide." + (tabletObject != null ? tabletObject.name : name);
+    /// <summary>들고 있는 태블릿을 화면의 반대쪽으로 옮긴다(왼쪽 ↔ 오른쪽). 고른 쪽은 기억해 둔다.</summary>
+    public void FlipSide()
+    {
+        if (!_isHeld || tabletObject == null || viewCamera == null) { return; }
+        _side = -_side;
+        PlayerPrefs.SetInt(SideKey, PlayerPrefs.GetInt(SideKey, 0) == 1 ? 0 : 1);
+        _holdStartPosition = tabletObject.localPosition; _holdStartRotation = tabletObject.localRotation; _holdStartScale = tabletObject.localScale;
+        RefreshFramedPose();
+        // 옮겨 가는 모습을 잠깐 보여 준다(장면에서 즉시 이동으로 해 두었어도 여기서는 미끄러진다).
+        _moveT = 0f; _flipping = true;
+    }
+    private bool _flipping;
     [Tooltip("Raycast 대상. 비어 있으면 'Tablet' 레이어")]
     public LayerMask tabletLayerMask;
     public KeyCode focusKey = KeyCode.Alpha1;
@@ -65,7 +78,7 @@ public class TabletViewController : MonoBehaviour
     private readonly Vector3[] _screenCorners = new Vector3[4];
     public bool IsHeld => _isHeld;
     public bool IsReturning => _returnRoutine != null;
-    public bool IsFramed => _isHeld && (moveSpeed <= 0f || _moveT >= 1f);
+    public bool IsFramed => _isHeld && !_flipping && (moveSpeed <= 0f || _moveT >= 1f);
     public void FocusTablet()
     {
         if (DeskViewController.Instance != null && DeskViewController.Instance.OwnsTablet(this))
@@ -180,8 +193,8 @@ public class TabletViewController : MonoBehaviour
         _originalScale = tabletObject.localScale;
         tabletObject.SetParent(viewCamera.transform, true);
         _heldScale = tabletObject.localScale;
-        // 책상에서 어느 쪽에 놓여 있었는지: 그쪽으로 치우쳐 든다.
-        _side = tabletObject.localPosition.x < 0f ? -1f : 1f;
+        // 책상에서 어느 쪽에 놓여 있었는지: 그쪽으로 치우쳐 든다. 짧게 오른쪽 클릭해서 반대쪽으로 바꿔 두었으면 그쪽으로 든다(다음에도 기억한다).
+        _side = (tabletObject.localPosition.x < 0f ? -1f : 1f) * (PlayerPrefs.GetInt(SideKey, 0) == 1 ? -1f : 1f);
         CacheScreenGeometry();
         RefreshFramedPose();
         _holdStartPosition = tabletObject.localPosition; _holdStartRotation = tabletObject.localRotation; _holdStartScale = tabletObject.localScale;
@@ -229,7 +242,9 @@ public class TabletViewController : MonoBehaviour
             return;
         }
         float depth = Mathf.Max(viewCamera.nearClipPlane + .3f, holdLocalPosition.z);
-        float fill = Mathf.Min(screenFill, heldFill);
+        // 크기는 설정(UI > 태블릿 크기)에서 정한다. 장면에 적힌 heldFill은 설정을 읽을 수 없을 때만 쓴다.
+        _lastSize = GameSettings.Current != null && GameSettings.Current.tabletView > 0f ? GameSettings.Current.tabletView : heldFill;
+        float fill = Mathf.Min(screenFill, _lastSize);
         float fit = depth / DeskViewFraming.Distance(_screenWidth, _screenHeight, _lastFov, _lastAspect, fill);
         _targetScale = _heldScale * fit;
         // 위쪽을 뒤로 넘기고(+X), 놓여 있던 쪽에서 안쪽을 보도록 살짝 튼다.
@@ -256,12 +271,15 @@ public class TabletViewController : MonoBehaviour
 
     void UpdateHoldPosition()
     {
-        bool resized = !Mathf.Approximately(_lastAspect, viewCamera.aspect) || !Mathf.Approximately(_lastFov, viewCamera.fieldOfView);
+        bool resized = !Mathf.Approximately(_lastAspect, viewCamera.aspect) || !Mathf.Approximately(_lastFov, viewCamera.fieldOfView)
+            || GameSettings.Current != null && GameSettings.Current.tabletView > 0f && !Mathf.Approximately(_lastSize, GameSettings.Current.tabletView);
         if (!resized && IsFramed)
         { return; }
         if (resized)
         { RefreshFramedPose(); }
-        _moveT = moveSpeed <= 0f ? 1f : Mathf.Min(1f, _moveT + Time.unscaledDeltaTime * moveSpeed);
+        float speed = _flipping ? Mathf.Max(moveSpeed, 5f) : moveSpeed;
+        _moveT = speed <= 0f ? 1f : Mathf.Min(1f, _moveT + Time.unscaledDeltaTime * speed);
+        if (_moveT >= 1f) { _flipping = false; }
         float t = _moveT * _moveT * (3f - 2f * _moveT);
         tabletObject.localPosition = Vector3.Lerp(_holdStartPosition, _targetPosition, t);
         tabletObject.localRotation = Quaternion.Slerp(_holdStartRotation, _targetRotation, t);

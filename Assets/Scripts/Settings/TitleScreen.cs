@@ -62,7 +62,8 @@ public sealed class TitleScreen
         // 새 게임: 회사 이름 하나만 묻는다. 시작 자금은 크게 보여 준다.
         form = Area(Root, "Area :: New Game"); Pin(form, 120, 470, 720, 380);
         nameCaption = Label(form, "Company Caption", "", 22, FontStyles.Normal); Pin(nameCaption.rectTransform, 0, 0, 600, 30); nameCaption.color = Muted;
-        words.Add((nameCaption, "회사 이름", "Company name", "会社の名前"));
+        // 내 회사는 작전에 쓰는 범죄법인이다. 이름은 플레이어가 짓는다.
+        words.Add((nameCaption, "범죄법인 이름", "Name your front company", "フロント企業の名前"));
         nameField = Field(form, 0, 38, 600, 76);
         cashCaption = Label(form, "Cash Caption", "", 22, FontStyles.Normal); Pin(cashCaption.rectTransform, 0, 136, 300, 30); cashCaption.color = Muted;
         words.Add((cashCaption, "시작 자금", "Starting cash", "開始資金"));

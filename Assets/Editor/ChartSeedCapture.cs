@@ -164,6 +164,124 @@ public static class ChartSeedCapture
     }
 
     /// <summary>
+    /// 프롤로그를 처음부터 끝까지 틀어 놓고 장면마다 한 장씩 찍는다(DONDON_CAPTURE=intro, DONDON_CAPTURE_LANG로 언어).
+    /// 자료(그림·시간표·대사)가 하나라도 맞지 않으면 프롤로그는 통째로 건너뛰어진다. 그때는 shown False로 적힌다.
+    /// </summary>
+    private static void PlanIntro()
+    {
+        steps.Clear();
+        string language = Environment.GetEnvironmentVariable("DONDON_CAPTURE_LANG");
+        if (language == "en" || language == "ja" || language == "ko") { steps.Add(("language " + language, () => GameLocale.SetLanguage(language), .6, null)); }
+        bool finished = false; string seen = "";
+        steps.Add(("play intro", () => { bool shown = StoryIntro.Play(() => finished = true); report.AppendLine("INTRO shown " + shown + " | playing " + StoryIntro.Playing); }, 1.6, null));
+        // DONDON_CAPTURE_TIMES="2.2,2.6,6.5"처럼 주면 영상이 그 시각에 닿는 순간마다 한 장씩 찍는다(영상 속 표시의 자리를 볼 때 쓴다).
+        string times = Environment.GetEnvironmentVariable("DONDON_CAPTURE_TIMES");
+        if (!string.IsNullOrEmpty(times))
+        {
+            foreach (string part in times.Split(','))
+            {
+                if (!double.TryParse(part, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out double at)) { continue; }
+                steps.Add(("intro at " + part, () =>
+                {
+                    report.AppendLine("INTRO at " + part + " video " + (StoryIntro.Instance != null ? StoryIntro.Instance.VideoTime.ToString("0.00") : "ended"));
+                    if (StoryIntro.Instance != null) { Shoot("intro-at-" + part.Trim().Replace('.', '_')); }
+                }, .02, () => StoryIntro.Instance == null || StoryIntro.Instance.VideoTime >= at));
+            }
+            steps.Add(("intro skip", () => StoryIntro.Instance?.Skip(), 2.5, null));
+            return;
+        }
+        for (int i = 0; i < 16; i++)
+        {
+            int index = i;
+            steps.Add(("intro frame " + index, () =>
+            {
+                string scene = StoryIntro.Instance != null ? StoryIntro.Instance.ShownScene : "(ended)";
+                report.AppendLine("INTRO step " + index + " scene " + scene + " | finished " + finished + (StoryIntro.Instance != null ? " | elapsed " + StoryIntro.Instance.Elapsed.ToString("0.00") + " | video " + StoryIntro.Instance.UsesVideo + " running " + StoryIntro.Instance.VideoRunning + " at " + StoryIntro.Instance.VideoTime.ToString("0.00") + " | caption " + StoryIntro.Instance.ShownCaptionKey + " alpha " + StoryIntro.Instance.ShownCaptionAlpha.ToString("0.00") : ""));
+                if (StoryIntro.Instance != null) { seen = scene; Shoot("intro-" + (index + 1).ToString("00") + "-" + scene); }
+            }, 2.0, null));
+        }
+        steps.Add(("intro end", () => report.AppendLine("INTRO finished " + finished + " | still playing " + StoryIntro.Playing + " | finish count " + StoryIntro.FinishCount), .5, null));
+    }
+
+    /// <summary>
+    /// 두 태블릿의 모든 탭을 찍는다(DONDON_CAPTURE=tablets). 1번은 보는 곳(자산·기록·뉴스), 2번은 하는 곳(주문·작전·내 기업·기사·밤 준비)이다.
+    /// 화면에 보일 것이 있도록, 장이 열린 뒤 두 종목을 조금 사고 작전 도구 몇 개를 서로 다른 종목에 켜 둔다(실제 주문이다).
+    /// DONDON_CAPTURE_LANG에 en이나 ja를 주면 그 언어로 찍는다.
+    /// </summary>
+    private static void PlanTablets(DeskViewController views)
+    {
+        steps.Clear();
+        var market = MarketDayController.Instance; var manager = StockManager.Instance; var player = PlayerAccounts.Instance.primary;
+        string language = Environment.GetEnvironmentVariable("DONDON_CAPTURE_LANG");
+        if (language == "en" || language == "ja" || language == "ko") { steps.Add(("language " + language, () => GameLocale.SetLanguage(language), .6, null)); }
+        TabletAccountUI first = null, second = null;
+        foreach (var tablet in Object.FindObjectsByType<TabletAccountUI>(FindObjectsInactive.Include)) { if (tablet.second) { second = tablet; } else { first = tablet; } }
+        void Press(TabletAccountUI tablet, string name)
+        {
+            Button found = null;
+            foreach (var button in tablet.GetComponentsInChildren<Button>(true)) { if (button.name == name) { found = button; } }
+            report.AppendLine("PRESS " + name + " found " + (found != null));
+            if (found != null) { found.onClick.Invoke(); }
+        }
+        steps.Add(("wait for trading", () => report.AppendLine("TABLETS start: " + State() + " | cash " + player.cash.ToString("N0") + " | company founded " + PlayerProgression.Instance.CompanyFounded + " | rooms " + PlayerProgression.Instance.CanOperateRooms), 25, () => MarketDayController.CanTrade));
+        steps.Add(("buy two stocks", () =>
+        {
+            foreach (int index in new[] { 1, 4 })
+            {
+                var stock = manager.stocks[index]; stock.orderBook.TryBest(out _, out decimal ask);
+                if (ask > 0m) { player.BuyLimit(PriceTickPolicy.CeilToTick(ask * 1.01m), decimal.Floor(60_000_000m / ask), 0, stock); }
+            }
+        }, 6, null));
+        steps.Add(("start tools", () =>
+        {
+            var tactics = PlayerTactics.Instance;
+            report.AppendLine("TOOLS wash " + tactics.StartWash(manager.stocks[1]) + " | wall " + tactics.SetWall(manager.stocks[4], .1f) + " | close " + tactics.ArmClose(manager.stocks[2], .05f) + " | ignite " + tactics.Ignite(manager.stocks[1], .05f));
+            manager.SelectStock(1);
+        }, 8, null));
+        steps.Add(("desk", () => Shoot("tablets-00-desk"), .3, null));
+        // 모니터 세 대를 게임의 확대 시점(1·2·3번 프리셋)에서 그대로 찍는다. 검수는 이 카메라 기준이다.
+        steps.Add(("focus stocks", () => views.Focus(DeskViewTarget.Stocks), 1.8, null));
+        steps.Add(("shot stocks", () => Shoot("tablets-01-monitor-stocks"), .3, null));
+        steps.Add(("focus chart", () => views.Focus(DeskViewTarget.Chart), 1.8, null));
+        steps.Add(("shot chart", () => Shoot("tablets-02-monitor-chart"), .3, null));
+        steps.Add(("focus chat", () => views.Focus(DeskViewTarget.Chat), 1.8, null));
+        steps.Add(("shot chat", () => Shoot("tablets-03-monitor-chat"), .3, null));
+        steps.Add(("back to desk", () => views.ExitView(true), 1.2, null));
+        steps.Add(("open first tablet", () => views.Focus(DeskViewTarget.TabletOne), 1.8, null));
+        steps.Add(("shot assets", () => { report.AppendLine("FIRST page " + first.CurrentPage + " locked " + first.Locked); Shoot("tablets-1a-assets"); }, .3, null));
+        steps.Add(("records", () => first.ShowPage(TabletAccountUI.Page.Records), 1.0, null));
+        steps.Add(("shot records", () => Shoot("tablets-1b-records"), .3, null));
+        steps.Add(("news", () => first.ShowPage(TabletAccountUI.Page.Events), 1.2, null));
+        steps.Add(("shot news", () => { Shoot("tablets-1c-news"); first.ShowPage(TabletAccountUI.Page.Dashboard); }, .3, null));
+        steps.Add(("open second tablet", () => views.Focus(DeskViewTarget.TabletTwo), 1.8, null));
+        steps.Add(("orders", () => { report.AppendLine("SECOND page " + second.CurrentPage + " locked " + second.Locked); second.ShowPage(TabletAccountUI.Page.Orders); }, 1.2, null));
+        steps.Add(("shot orders", () => Shoot("tablets-2a-orders"), .3, null));
+        steps.Add(("ops", () => second.ShowPage(TabletAccountUI.Page.Automation), 1.2, null));
+        steps.Add(("spread tab", () => Press(second, "Button :: Tab Spread"), 1.0, null));
+        steps.Add(("shot spread", () => Shoot("tablets-2b-spread"), .3, null));
+        steps.Add(("accumulate tab", () => Press(second, "Button :: Tab Accumulate"), 1.0, null));
+        steps.Add(("shot accumulate", () => Shoot("tablets-2c-accumulate"), .3, null));
+        steps.Add(("tactics tab", () => Press(second, "Button :: Tab Tactics"), 1.5, null));
+        steps.Add(("shot tactics", () => Shoot("tablets-2d-tactics"), .3, null));
+        steps.Add(("pick wash", () => Press(second, "Button :: Tool 4"), 3.9, null));
+        steps.Add(("shot tactics wash", () => Shoot("tablets-2e-tactics-wash-running"), .3, null));
+        steps.Add(("other stock", () => { manager.SelectStock(4); Press(second, "Button :: Tool 5"); }, 3.9, null));
+        steps.Add(("shot tactics wall", () => Shoot("tablets-2f-tactics-wall-other-stock"), .3, null));
+        steps.Add(("company", () => second.ShowPage(TabletAccountUI.Page.Management), 1.5, null));
+        steps.Add(("shot company", () => Shoot("tablets-2g-company"), .3, null));
+        steps.Add(("press", () => second.ShowPage(TabletAccountUI.Page.Special), 1.5, null));
+        steps.Add(("shot press", () => Shoot("tablets-2h-press"), .3, null));
+        steps.Add(("night", () => second.ShowPage(TabletAccountUI.Page.Night), 1.2, null));
+        steps.Add(("shot night", () => { Shoot("tablets-2i-night"); second.ShowPage(TabletAccountUI.Page.Automation); }, .3, null));
+        steps.Add(("leave", () =>
+        {
+            views.ExitView(true);
+            var tactics = PlayerTactics.Instance; var book = tactics.Book(manager.stocks[1]);
+            report.AppendLine("LEDGER " + manager.stocks[1].symbol + " bought " + book.Bought.ToString("N0") + " spent " + book.Spent.ToString("N0") + " sold " + book.Sold.ToString("N0") + " realized " + book.Realized.ToString("N0") + " | runs " + tactics.Runs.Count + " | player holds " + player.GetOwnedVolume(manager.stocks[1]).ToString("N0"));
+        }, .4, null));
+    }
+
+    /// <summary>
     /// 해금 탭과 작전 탭을 찍는다(환경 변수 DONDON_CAPTURE=unlocks 일 때). 해금 항목을 하나씩 골라 설명을 찍고,
     /// 둘째 태블릿은 순자산 1억 돈이 넘어야 열리므로 이 실행에서만 현금을 넣어 연다(저장되지 않는다).
     /// </summary>
@@ -316,6 +434,8 @@ public static class ChartSeedCapture
 
     private static void Plan(DeskViewController views)
     {
+        if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "tablets") { PlanTablets(views); return; }
+        if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "intro") { PlanIntro(); return; }
         if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "unlocks") { PlanUnlocks(views); return; }
         if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "fees") { PlanFees(); return; }
         if (Environment.GetEnvironmentVariable("DONDON_CAPTURE") == "holiday") { PlanHoliday(views); return; }
@@ -373,7 +493,7 @@ public static class ChartSeedCapture
         var overlays = new List<(Canvas canvas, float scale)>();
         foreach (var canvas in Object.FindObjectsByType<Canvas>())
         {
-            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.ScreenSpaceOverlay && canvas.gameObject.activeInHierarchy && (canvas.name == "Area :: Fee Holiday" || canvas.name == "Area :: Phone Hint"))
+            if (canvas.isRootCanvas && canvas.renderMode == RenderMode.ScreenSpaceOverlay && canvas.gameObject.activeInHierarchy && (canvas.name == "Area :: Fee Holiday" || canvas.name == "Area :: Phone Hint" || canvas.GetComponentInParent<StoryIntro>() != null))
             { overlays.Add((canvas, canvas.scaleFactor)); }
         }
         var texture = new RenderTexture(width, height, 24); var previous = RenderTexture.active; var old = camera.targetTexture;

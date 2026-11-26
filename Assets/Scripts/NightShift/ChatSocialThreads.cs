@@ -132,7 +132,8 @@ public sealed partial class InvestorSociety
         {
             // 되묻는 말은 그 말에 맞춰 쓴 물음이 있을 때만 한다(자랑에 "얼마에 들어갔어?", 시세 얘기에 "어디까지 갈 거 같음?").
             // 없으면 방 전체에 던지는 물음이 한 사람에게 붙어서 나간다.
-            if (act == SocialAct.ASK && ChatSocialAssets.Community(SocialAct.ASK, replied.act.ToString()) == null) { weight = 0; }
+            // 새벽 관찰실에는 어떤 말에든 달 수 있는 되물음 대사가 따로 있다("그럼 손절은 어디?").
+            if (act == SocialAct.ASK && ChatSocialAssets.Community(SocialAct.ASK, replied.act.ToString()) == null && !DawnFollowUp(intent)) { weight = 0; }
             // 딴 얘기(잡담)는 잡담이나 놀림에만 붙는다. 답변에 대고 "의자에서 일어났더니 다리가…" 하지 않는다.
             if (act == SocialAct.SMALLTALK && replied.act != SocialAct.SMALLTALK && replied.act != SocialAct.MOCK) { weight = 0; }
         }
@@ -185,7 +186,7 @@ public sealed partial class InvestorSociety
                     kind = parent.act == SocialAct.ASK || parent.act == SocialAct.DOUBT ? SocialThreadKind.QUESTION : SocialThreadKind.CHAT,
                     attacks = Attack(parent.act) ? 1 : 0, lastAt = SocialTime.Seconds, symbol = parent.facts?.symbol,
                     initialPrice = FindSocialStock(parent.facts?.symbol)?.currentPrice ?? 0 };
-                thread.maxTurns = DrawTurns(bot, thread.kind); thread.participants.Add(parent.senderId); thread.participants.Add(message.senderId);
+                thread.maxTurns = DrawTurns(bot, thread.kind); DawnThreadTurns(thread); thread.participants.Add(parent.senderId); thread.participants.Add(message.senderId);
                 socialThreads[thread.id] = thread; SocialRoom(message.roomId).threads.Add(thread); parent.threadId = thread.id;
                 origin.Social.Psychology.ActiveThread = thread.id;
                 ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = "THREAD_START", id = thread.id, room = thread.roomId, actor = parent.senderId, target = message.senderId });
@@ -200,7 +201,7 @@ public sealed partial class InvestorSociety
             if (thread.attacks >= Config.Int("argumentAttackCount") && thread.kind != SocialThreadKind.ARGUMENT && ActiveThreads(thread.roomId, true) < Config.Int("maxArguments"))
             {
                 thread.kind = SocialThreadKind.ARGUMENT; thread.maxTurns = DrawTurns(bot, thread.kind);
-                thread.maxTurns = Math.Max(thread.turnCount, thread.maxTurns);
+                thread.maxTurns = Math.Max(thread.turnCount, thread.maxTurns); DawnThreadTurns(thread);
                 ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = "ARGUMENT", id = thread.id, room = thread.roomId, actor = message.senderId, target = message.targetId });
             }
         }

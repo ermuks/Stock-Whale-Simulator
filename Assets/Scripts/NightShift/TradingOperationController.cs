@@ -6,7 +6,109 @@ using UnityEngine;
 public sealed partial class TradingOperationController : MonoBehaviour
 {
     public enum Mode { Standby, Prepared, Build, Drive, Unwind, Paused, Review, Spread, Accumulate }
-    public static TradingOperationController Instance { get; private set; }
+
+    // ── 여러 종목을 한꺼번에 ────────────────────────────────────────────────────
+    // 예전에는 이 장치가 하나뿐이라 스프레드나 매집을 한 종목에서만 돌릴 수 있었다.
+    // 이제 같은 장치를 MaxRuns개 두고, 종목마다 하나씩 맡긴다(한 종목에는 하나만 돈다).
+    // 장면에 놓인 첫 장치(root)가 깨어날 때 나머지를 같은 게임오브젝트에 미리 만들어 둔다.
+    // 필요할 때 만들지 않고 미리 만드는 까닭: 저장은 장치를 "게임오브젝트 경로 + 몇 번째 컴포넌트"로 찾는다(SessionStore).
+    // 저장할 때 있던 장치가 불러올 때 없으면 그 저장 전체가 거부되므로, 개수는 언제나 같아야 한다. MaxRuns를 줄이면 예전 저장을 못 읽는다.
+    public const int MaxRuns = 6;
+    private static TradingOperationController root;
+    private static bool spawning;
+    private static readonly List<TradingOperationController> all = new(MaxRuns);
+    /// <summary>모든 장치(쉬는 것 포함). 첫째가 장면에 놓인 원래 장치다.</summary>
+    public static IReadOnlyList<TradingOperationController> All => all;
+    /// <summary>지금 돌고 있는 자동 매매들.</summary>
+    public static IEnumerable<TradingOperationController> ActiveRuns
+    {
+        get
+        {
+            for (int i = 0; i < all.Count; i++) { if (all[i] != null && all[i].Active) { yield return all[i]; } }
+        }
+    }
+    /// <summary>그 종목에서 돌고 있는 장치. 없으면 null.</summary>
+    public static TradingOperationController RunOn(Stock stock)
+    {
+        if (stock == null) { return null; }
+        for (int i = 0; i < all.Count; i++) { if (all[i] != null && all[i].Active && all[i].Target == stock) { return all[i]; } }
+        return null;
+    }
+    /// <summary>
+    /// 지금 보고 있는 종목(StockManager.CurrentStock)을 맡은 장치.
+    ///  1) 그 종목에서 돌고 있는 장치가 있으면 그것.
+    ///  2) 없으면 쉬는 장치: 그 종목을 마지막으로 맡았던 것(방금 끝난 결과가 남아 있다) → 한 번도 안 쓴 것 → 아무 쉬는 것.
+    ///  3) 모두 다른 종목에서 돌고 있으면 원래 장치(돌고 있으므로 새로 시작할 수 없다).
+    /// 화면은 이 값을 붙들어 두지 말고 그릴 때마다 다시 읽어야 한다(종목을 바꾸면 다른 장치가 나온다).
+    /// </summary>
+    public static TradingOperationController Instance
+    {
+        get
+        {
+            if (root == null) { return null; }
+            var stock = StockManager.Instance == null ? null : StockManager.Instance.CurrentStock;
+            TradingOperationController last = null, fresh = null, idle = null;
+            for (int i = 0; i < all.Count; i++)
+            {
+                var item = all[i];
+                if (item == null || !item.enabled) { continue; }
+                if (item.Active)
+                {
+                    if (stock != null && item.Target == stock) { return item; }
+                    continue;
+                }
+                if (stock != null && item.Target == stock) { if (last == null) { last = item; } }
+                else if (item.Target == null) { if (fresh == null) { fresh = item; } }
+                else if (idle == null) { idle = item; }
+            }
+            return last != null ? last : fresh != null ? fresh : idle != null ? idle : root;
+        }
+    }
+    /// <summary>모든 장치가 쓸 계좌와 주문 창구를 한 번에 정한다(태블릿이 올라올 때 부른다).</summary>
+    public static void Configure(Trader account, DeviceOrderSession session)
+    {
+        for (int i = 0; i < all.Count; i++)
+        {
+            if (all[i] == null) { continue; }
+            all[i].account = account; all[i].spreadSession = session;
+        }
+    }
+    /// <summary>원래 장치의 설정을 물려받는다.</summary>
+    private void CopySettings(TradingOperationController source)
+    {
+        account = source.account; spreadSession = source.spreadSession; spreadRefreshSeconds = source.spreadRefreshSeconds;
+        BudgetFraction = source.BudgetFraction; SpreadTicks = source.SpreadTicks;
+    }
+    /// <summary>계좌나 주문 창구가 비어 있으면 원래 장치의 것을 쓴다(시작 직전에 부른다).</summary>
+    private void Adopt()
+    {
+        if (root != null && root != this)
+        {
+            if (account == null) { account = root.account; }
+            if (spreadSession == null) { spreadSession = root.spreadSession; }
+        }
+        // 계좌는 하나다. 예전 저장을 불러와 두 번째 계좌(이제 쓰지 않는다)를 가리키게 됐으면 본계좌로 돌린다.
+        // PlayerAccounts도 같은 일을 하지만 "지금 보는 종목의 장치"만 살피므로, 쉬고 있던 장치는 여기서 스스로 고친다.
+        var accounts = PlayerAccounts.Instance;
+        if (accounts == null || accounts.primary == null || accounts.automated == null || accounts.primary == accounts.automated) { return; }
+        if (account == accounts.automated) { account = accounts.primary; }
+        if (spreadSession != null && spreadSession == accounts.automatedOrders && accounts.primaryOrders != null) { spreadSession = accounts.primaryOrders; }
+    }
+    /// <summary>이 실행을 시작한 시각(SessionClock). 목록에서 최근 것을 먼저 보여 줄 때 쓴다.</summary>
+    public float StartedAt { get; private set; }
+    /// <summary>
+    /// 이 실행으로 번 돈. 스프레드는 사고팔아 실현한 차익, 매집은 모은 주식의 평가손익(지금 값 − 산 값),
+    /// 그 밖의 방식은 평가를 포함한 작업 손익이다.
+    /// </summary>
+    public decimal RunProfit => Target == null ? 0m : CurrentMode == Mode.Spread ? SpreadRealized : CurrentMode == Mode.Accumulate ? Bought * Target.currentPrice - Spent : MarkedResult;
+    /// <summary>방식에 맞게 멈춘다(목록의 ✕ 단추).</summary>
+    public void Stop()
+    {
+        if (SpreadRunning) { CancelSpread(); }
+        else if (AccumulateRunning) { CancelAccumulate(); }
+        else { Finish(); }
+    }
+
     public Trader account;
     public Mode CurrentMode { get; private set; }
     public Stock Target { get; private set; }
@@ -52,9 +154,26 @@ public sealed partial class TradingOperationController : MonoBehaviour
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
+        // 원래 장치가 만들고 있는 나머지 장치: 명단에만 올린다(끄지 않는다).
+        if (spawning)
+        { all.Add(this); return; }
+        // 장면에 실수로 둘이 놓였을 때만 뒤의 것을 끈다.
+        if (root != null && root != this)
         { enabled = false; return; }
-        Instance = this;
+        root = this;
+        all.Clear(); all.Add(this);
+        spawning = true;
+        try
+        {
+            for (int i = 1; i < MaxRuns; i++)
+            {
+                var extra = gameObject.AddComponent<TradingOperationController>();
+                if (!all.Contains(extra)) { all.Add(extra); }
+                extra.CopySettings(this);
+            }
+        }
+        finally
+        { spawning = false; }
     }
     public void ReconnectSession()
     {
@@ -63,6 +182,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
     }
     void Start()
     {
+        Adopt();
         if (account == null && StockManager.Instance != null)
         { account = StockManager.Instance.playerAccount; }
     }
@@ -75,6 +195,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
     }
     public bool Prepare()
     {
+        Adopt();
         if (PlayerAccounts.Instance != null && account == PlayerAccounts.Instance.automated && !PlayerAccounts.Instance.AutomatedUnlocked)
         { Feedback = "2번 계좌가 잠겨 있습니다."; return false; }
         if (Active)
@@ -96,6 +217,7 @@ public sealed partial class TradingOperationController : MonoBehaviour
         FillCount = 0;
         pending.Clear();
         Target.OnMatchedTrade += OnFill;
+        StartedAt = SessionClock.Time;
         CurrentMode = Mode.Prepared;
         Feedback = "예산이 준비되었습니다. 필요할 때 주문 방식을 선택하세요. 시간 제한은 없습니다.";
         return true;
@@ -260,7 +382,8 @@ public sealed partial class TradingOperationController : MonoBehaviour
     void OnDestroy()
     {
         Unsubscribe();
-        if (Instance == this)
-        { Instance = null; }
+        all.Remove(this);
+        if (root == this)
+        { root = null; }
     }
 }

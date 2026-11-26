@@ -8,7 +8,12 @@ using UnityEngine;
 /// </summary>
 public static class NewGame
 {
-    public const string DefaultCompany = "내 작은 회사";
+    /// <summary>예전의 기본 이름. 저장된 이름이 이것이면 아직 이름을 정하지 않은 것으로 본다.</summary>
+    private const string LegacyCompany = "내 작은 회사";
+    /// <summary>
+    /// 새 게임 화면에 처음 적혀 있는 회사 이름. 내 회사는 작전을 벌이는 데 쓰는 범죄법인이다. 겉으로는 더없이 멀쩡한 이름을 단다.
+    /// </summary>
+    public static string DefaultCompany => GameLocale.Code == "ja" ? "合法投資(株)" : GameLocale.Code == "en" ? "Totally Legal Inc." : "합법투자(주)";
 
     /// <summary>지금 새 게임을 시작할 수 있는가(아직 시작하지 않았고, 시작하는 중도 아니다).</summary>
     public static bool CanBegin
@@ -22,7 +27,7 @@ public static class NewGame
     }
 
     /// <summary>새 게임 화면에 처음 적어 둘 회사 이름.</summary>
-    public static string SuggestedCompany => DailyIncomeController.Instance != null && DailyIncomeController.ValidName(DailyIncomeController.Instance.CompanyName) ? DailyIncomeController.Instance.CompanyName : DefaultCompany;
+    public static string SuggestedCompany => DailyIncomeController.Instance != null && DailyIncomeController.ValidName(DailyIncomeController.Instance.CompanyName) && DailyIncomeController.Instance.CompanyName != LegacyCompany ? DailyIncomeController.Instance.CompanyName : DefaultCompany;
 
     public static bool Begin(string company = null) => Begin(company, out _);
 
@@ -42,6 +47,8 @@ public static class NewGame
         }
         if (!manager.ConfirmPlayer(first.name, Number(first.issuedShares), Number(manager.economy.defaultPublicPercentage), out reason)) { return false; }
         if (!manager.economy.retailPlayerStart) { GameLocale.ProtectLiteral(first.name); }
+        // 내 회사는 처음부터 세워져 있다. 세계가 준비되는 대로 설립 비용을 치르고 연다.
+        PlayerProgression.FoundOnStart = true;
         NpcLeadingRoom.Instance?.RequestJoin();
         StockManager.OnInitialEconomyReady -= Ready; StockManager.OnInitialEconomyReady += Ready;
         return true;

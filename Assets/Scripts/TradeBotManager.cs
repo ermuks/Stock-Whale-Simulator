@@ -101,6 +101,20 @@ public class TradeBotManager : MonoBehaviour
     private List<WhaleFollowerBot> _followerPool = new List<WhaleFollowerBot>();
     private List<WhaleFollowerBot> _activeFollowers = new List<WhaleFollowerBot>();
     private float _lastPopulationCheck;
+    /// <summary>
+    /// 개미 수의 배율. 장면에는 종류별로 모두 1,110명이 적혀 있다. 1.2면 1,332명이다.
+    /// 점검할 때는 환경 변수 DONDON_BOT_SCALE로 바꿔서 잰다(0.5~1.6). 봇 전체는 2,000명을 넘을 수 없다(MarketDayController.maxBots).
+    /// </summary>
+    public const float DefaultPopulationScale = 1.2f;
+    public static float PopulationScale
+    {
+        get
+        {
+            string wanted = System.Environment.GetEnvironmentVariable("DONDON_BOT_SCALE");
+            return float.TryParse(wanted, System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float value) ? Mathf.Clamp(value, .5f, 1.6f) : DefaultPopulationScale;
+        }
+    }
+    private static int Scaled(int count, float scale) => Mathf.Max(0, Mathf.RoundToInt(count * scale));
     void Start()
     {
         bool configuredEconomy = StockManager.Instance != null && StockManager.Instance.useInitialEconomy;
@@ -109,6 +123,17 @@ public class TradeBotManager : MonoBehaviour
             StockManager.Instance.EnsureOwnerAccounts();
         }
 
+        // 개미의 수를 한꺼번에 늘리거나 줄인다(장면에 적힌 종류별 수에 곱한다). 드나드는 기준(목표·최소·최대 인원)도 같이 맞춘다.
+        float population = PopulationScale;
+        if (!Mathf.Approximately(population, 1f))
+        {
+            fomoBotCount = Scaled(fomoBotCount, population); holderBotCount = Scaled(holderBotCount, population); stupidBotCount = Scaled(stupidBotCount, population);
+            randomBotCount = Scaled(randomBotCount, population); scalperBotCount = Scaled(scalperBotCount, population); bookBotCount = Scaled(bookBotCount, population);
+            spreadFillerBotCount = Scaled(spreadFillerBotCount, population); smartBotCount = Scaled(smartBotCount, population); panicBotCount = Scaled(panicBotCount, population);
+            monitorBotCount = Scaled(monitorBotCount, population);
+            targetActiveBots = Scaled(targetActiveBots, population); minActiveBots = Scaled(minActiveBots, population); maxActiveBots = Scaled(maxActiveBots, population);
+            Debug.Log("[봇] 개미 수 배율 " + population.ToString("0.00") + " — 목표 " + targetActiveBots.ToString("N0") + "명 · 최소 " + minActiveBots.ToString("N0") + "명 · 최대 " + maxActiveBots.ToString("N0") + "명");
+        }
         SpawnBots<FomoBot>(fomoBotCount);
         SpawnBots<HolderBot>(holderBotCount);
         SpawnBots<StupidBot>(stupidBotCount);

@@ -12,6 +12,15 @@ public partial class StockManager
     private decimal floatTotal;
     private float nextFloatRefresh, nextBeliefRefresh;
     private int beliefCursor;
+    private readonly List<double> crowdSample = new(2048);
+    private readonly Dictionary<Stock, (decimal low, decimal high)> crowdSpread = new();
+    /// <summary>그 종목을 두고 봇들이 기대하는 값의 가운데 절반(25%~75%). 아직 모르면 false.</summary>
+    public bool TryCrowdSpread(Stock stock, out decimal low, out decimal high)
+    {
+        low = high = 0m;
+        if (stock == null || !crowdSpread.TryGetValue(stock, out var spread)) { return false; }
+        low = spread.low; high = spread.high; return true;
+    }
 
     /// <summary>전체 유통 시총에서 이 종목이 차지하는 비중(0~1). 소유주·거래소 보유분은 유통량에서 뺀다.</summary>
     public decimal FloatShare(Stock stock)
@@ -68,6 +77,7 @@ public partial class StockManager
 
         double sum = 0;
         int count = 0;
+        crowdSample.Clear();
         var bots = MarketDayController.Instance.Bots;
         for (int i = 0; i < bots.Count; i++)
         {
@@ -75,14 +85,18 @@ public partial class StockManager
             if (bot == null || bot.Social == null || bot.KnowsRealValue || !bot.isActiveAndEnabled)
             { continue; }
 
-            if (bot.Social.Psychology.Companies.TryBelief(stock.symbol, out double belief))
+            // 화면의 "시장이 믿는 가격"은 봇들의 기대값(천천히 움직이는 쪽)의 평균이다. 눈앞의 시세에 끌려다니는 느낌은 넣지 않는다.
+            if (bot.Social.Psychology.Companies.TryAnchor(stock.symbol, out double belief))
             {
                 sum += belief;
                 count++;
+                crowdSample.Add(belief);
             }
         }
 
         decimal crowd = count >= 5 ? (decimal)(sum / count) : stock.currentPrice;
+        // 흩어짐: 봇들 기대값의 가운데 절반(25%~75%). 가운데 모니터의 가치 눈금자가 이 폭을 옅은 띠로 그린다.
+        if (count >= 5) { crowdSample.Sort(); crowdSpread[stock] = ((decimal)crowdSample[count / 4], (decimal)crowdSample[count * 3 / 4]); }
         using (TellMarker.Auto()) { stock.SetFakeValue(Math.Max(1m, PriceTickPolicy.RoundToTick(crowd))); }
     }
 

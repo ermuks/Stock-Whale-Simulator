@@ -50,7 +50,10 @@ public static class ChatHypeAssets
         "roundRestSec", "lullSec", "lullMovePct", "openMinutes", "closeMinutes",
         "breathEnabled", "breathHeavyShare", "breathLightShare", "breathHeavyChance", "breathLightChance", "breathMaxPieces"
     };
-    private static readonly HashSet<string> KnownSlots = new() { "stockName", "price", "movePct", "digit", "nameLen", "count", "clock", "minutes", "round", "topic" };
+    // dayPct·fromHigh·fromLow는 부호와 %가 붙어서 들어온다("+490%"). retrace·gainLeft도 %가 붙는다("15%"). 대사에서 %를 또 붙이지 않는다.
+    // movePct만 예전 그대로 숫자만 들어온다("+12.3")(대사가 "{movePct}%"로 쓴다).
+    private static readonly HashSet<string> KnownSlots = new() { "stockName", "price", "movePct", "digit", "nameLen", "count", "clock", "minutes", "round", "topic",
+        "dayPct", "fromHigh", "fromLow", "retrace", "gainLeft", "dayTalk", "multTalk", "bagger", "dayHigh", "dayLow" };
     private static readonly Regex SlotPattern = new(@"\{([A-Za-z]+)\}", RegexOptions.Compiled | RegexOptions.CultureInvariant);
     private static readonly string[] None = Array.Empty<string>();
     private static Dictionary<string, double> values;
@@ -263,6 +266,8 @@ public sealed partial class InvestorSociety
         /// <summary>급등이면 고점, 급락이면 저점.</summary>
         public decimal extreme;
         public int lines;
+        /// <summary>군중이 마지막으로 올린 말(맞장구가 여기에 달린다), 이번 폭주에서 한 맞장구의 수, 바로 앞의 말이 맞장구였는가.</summary>
+        public long lastId; public int backs; public bool lastWasBack;
         public bool crash, oddballRolled, oddballSpoke;
         public string PhaseKey => crash ? "crash" + phase : phase.ToString().ToLowerInvariant();
         public string GapKey => phase.ToString().ToLowerInvariant();
@@ -447,8 +452,13 @@ public sealed partial class InvestorSociety
             if (!stock.AcceptsOrders || hypeRestUntil.TryGetValue(stock, out double rest) && now < rest || !HypeWindow(stock, out decimal low, out decimal high, out double span) || span < minimumSpan)
             { continue; }
             double rise = (double)(stock.currentPrice / low - 1m) * 100d / Hype("surgeRisePct"), drop = (double)(1m - stock.currentPrice / high) * 100d / Hype("crashDropPct");
-            if (rise >= bestScore) { best = stock; bestScore = rise; crash = false; }
-            if (drop >= bestScore) { best = stock; bestScore = drop; crash = true; }
+            if (rise < bestScore && drop < bestScore) { continue; }
+            // 40초 사이의 움직임만으로 방 전체가 들끓지는 않는다. 하루 전체에서 그 움직임이 무엇인지 본다:
+            // +500%였던 종목이 12% 내려온 것은 눌림이지 폭락이 아니고(차트 수다가 조용히 다룬다), −35%인 종목이 12% 튄 것은 급등이 아니다.
+            var read = SituationOf(stock);
+            bool crashFits = !read.valid || ChatSituationRules.CrashRunFits(read.kind), surgeFits = !read.valid || ChatSituationRules.SurgeRunFits(read.kind);
+            if (rise >= bestScore && surgeFits) { best = stock; bestScore = rise; crash = false; }
+            if (drop >= bestScore && crashFits) { best = stock; bestScore = drop; crash = true; }
         }
         if (best != null) { StartHype(best, crash, now); }
     }
@@ -534,6 +544,24 @@ public sealed partial class InvestorSociety
         bool held = bot.GetOwnedVolume(run.stock) > 0m;
         bool formal = bot.Social.Psychology.Traits.Politeness >= Config.Int("styleFormalMin");
         string text = null;
+        // 말맛(ChatVoice.cs): 세기는 폭주의 단계가 정한다. 알아채는 동안 2, 쏟아질 때 3, 식어 갈 때 2, 꺾인 뒤 1.
+        var voice = formal ? null : ChatReactionAssets.Voice(ChatHypeAssets.LanguageCode);
+        int level = run.phase == HypePhase.Flood ? ChatVoice.Extreme : run.phase == HypePhase.Break ? ChatVoice.Warm : ChatVoice.Strong;
+        var lean = run.phase == HypePhase.Break ? ChatVoiceLean.Calm : run.crash ? ChatVoiceLean.Down : ChatVoiceLean.Up;
+        // 다들 한마디씩 쏟아낼 때 누군가는 앞사람 말에 "ㄹㅇ", "ㅋㅋㅋㅋ" 하고 맞장구만 친다. 연달아 하지 않고, 폭주 한 번에 몇 번만 한다.
+        if (voice != null && run.lastId != 0 && !run.lastWasBack && run.backs < voice.backMaxPerRun && (run.phase == HypePhase.Flood || run.phase == HypePhase.Heat) &&
+            BackDue(voice, now) && HypeRandom.Next() < voice.backChance)
+        {
+            string back = TakeBack(voice, ChatVoice.BackMood(lean, HypeRandom.Next()), level, HypeRandom.Next, now);
+            if (back != null)
+            {
+                run.backs++; run.lastWasBack = true;
+                PublishHype(bot, back, "hype." + run.PhaseKey + ".back", run.stock, run.lastId, 0);
+                hypeSpokeAt[bot.Social.Id] = now;
+                return true;
+            }
+        }
+        bool dressed = false;
         if (!formal)
         {
             // 같은 급등(급락)을 보고도 사람마다 하는 말이 다르다: 물려 있던 사람은 본전을 말하고, 수익 중인 사람은 느긋하고,
@@ -554,10 +582,22 @@ public sealed partial class InvestorSociety
             }
             if (hypeOwn.Count > 0 && HypeRandom.Next() < .6) { text = PickHypeText(Array.Empty<string>(), hypeOwn.ToArray()); }
         }
-        text ??= PickHypeText(ChatHypeAssets.Crowd(run.PhaseKey, "any", formal), ChatHypeAssets.Crowd(run.PhaseKey, held ? "held" : "notHeld", formal));
+        // 급락 군중의 보유자 대사는 물린 사람의 말이다("나 물림", "손절각인가"). 수익 중인 보유자는 그 대사를 하지 않는다:
+        // 크게 수익 중이면 그 사람의 처지에 맞춘 상황 대사를 하고("많이 빠지긴 하네. 그래도 수익"), 아니면 누구나 할 수 있는 말만 한다.
+        bool gaining = false;
+        if (held && run.crash && !formal)
+        {
+            var view = BotView(bot, run.stock, out _);
+            gaining = view == ChatSpeakerView.DeepProfit || view == ChatSpeakerView.Profit;
+            // 상황 대사는 엔진이 이미 말맛을 입혀서 준다.
+            if (text == null && view == ChatSpeakerView.DeepProfit && HypeRandom.Next() < .6) { text = SituationLine(bot, run.stock, SituationOf(run.stock), out _); dressed = text != null; }
+        }
+        text ??= PickHypeText(ChatHypeAssets.Crowd(run.PhaseKey, "any", formal), gaining ? Array.Empty<string>() : ChatHypeAssets.Crowd(run.PhaseKey, held ? "held" : "notHeld", formal));
         if (text == null) { return false; }
+        if (voice != null && !dressed) { text = ChatVoice.Apply(text, voice, level, lean, SpeechHabit(bot.Social.Id), HypeRandom.Next); }
         // 쏟아지는 구간의 짧은 말은 그대로 두고, 말이 길어지는 구간에서만 그 봇의 습관대로 끊는다.
-        PublishHype(bot, ChatHypeAssets.Fill(text, HypeSlots(run.stock, 0, 0m)), "hype." + run.PhaseKey, run.stock, 0, run.phase == HypePhase.Flood ? 0 : 1);
+        var said = PublishHype(bot, ChatHypeAssets.Fill(text, HypeSlots(run.stock, 0, 0m)), "hype." + run.PhaseKey, run.stock, 0, run.phase == HypePhase.Flood ? 0 : 1);
+        run.lastId = said.last.id; run.lastWasBack = false;
         hypeSpokeAt[bot.Social.Id] = now;
         return true;
     }
@@ -593,6 +633,10 @@ public sealed partial class InvestorSociety
             move = hypeRun != null && hypeRun.stock == stock ? (hypeRun.crash ? drop : rise) : rise >= -drop ? rise : drop;
         }
         slots["movePct"] = Percent(move);
+        // 하루 전체에서 본 수치(전일 대비, 고점·저점 대비, 오른 폭 가운데 돌려준 몫 …). 급등락 군중·차트 수다·잔움직임·토론·기분 글이 모두 같은 꼴로 받는다.
+        var read = SituationOf(stock);
+        slots["dayPct"] = ChatSituationMath.SignedPercent(read.valid ? read.dayPct : 0m);
+        ChatReactionAssets.Current?.FillSlots(read, slots);
         return slots;
     }
     /// <summary>

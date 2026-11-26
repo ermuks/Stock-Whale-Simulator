@@ -180,7 +180,7 @@ public sealed partial class PlayerProgression
     { return Instance != null && Instance.IsUnlocked(id); }
 
     public bool IsUnlocked(string id)
-    { return !string.IsNullOrEmpty(id) && unlocked.Contains(id); }
+    { return !string.IsNullOrEmpty(id) && (OpenStart || unlocked.Contains(id)); }
 
     public UnlockItem FindUnlock(string id)
     {
@@ -347,6 +347,7 @@ public sealed partial class PlayerProgression
 
     void Update()
     {
+        FoundCompanyOnStart();
         if (string.IsNullOrEmpty(pendingUnlock) || MarketDayController.Instance == null || !MarketDayController.Instance.Ready)
         { return; }
 

@@ -191,7 +191,7 @@ public partial class StockManager
         {
             var rules=CorporateEconomy.LoadGrowthRules(); decimal cap=0;
             foreach (var item in stocks) { cap+=item.currentPrice*item.issuedShares; }
-            preview=new PlayerSetupPreview(name,rules.founderShares,0,rules.founderValue/(decimal)rules.founderShares,0,economy.retailStartingCash,
+            preview=new PlayerSetupPreview(name,rules.founderShares,0,rules.founderValue/(decimal)rules.founderShares,0,PlayerStartCash,
                 economy.marketCapExchangeCash ? cap*(decimal)economy.exchangeCashRatio : economy.directExchangeCash);
             return true;
         }
@@ -312,7 +312,7 @@ public partial class StockManager
 
             if (economy.retailPlayerStart)
             {
-                decimal transfer = playerAccount.cash - economy.retailStartingCash;
+                decimal transfer = playerAccount.cash - PlayerStartCash - StartFoundingCash;
                 playerAccount.ApplyTradeCash(-transfer);
                 exchange.ApplyTradeCash(transfer);
                 // Founder keeps all private shares. Only liquid personal starting cash is normalized.
@@ -492,6 +492,74 @@ public partial class StockManager
         participants.Clear();
     }
 
+    /// <summary>
+    /// 새 게임에서 플레이어가 쥐고 시작하는 현금. 처음부터 작전을 벌일 수 있을 만큼 준다(예전에는 5천만 돈으로 시작해 하나씩 열어 갔다).
+    /// 내 회사를 세우는 돈(설립 비용)은 이와 별도로 얹어 주고, 시작하자마자 회사를 세우는 데 쓴다.
+    /// </summary>
+    public const long PlayerStartCash = 1_000_000_000L;
+    private static long StartFoundingCash => PlayerProgression.Instance == null ? 0L : PlayerProgression.Instance.rules.companyFoundingCost;
+    /// <summary>개미 한 명이 공모주에 넣는 돈의 위쪽 끝(쓸 수 있는 현금에 대한 비율).</summary>
+    private const decimal SubscriptionCashShare = .25m;
+    /// <summary>개미 손에 이만큼(거래소 보유분에 대한 비율)도 없으면 아직 물량이 풀리지 않은 종목으로 본다.</summary>
+    private const decimal FloatMissingShare = .05m;
+    /// <summary>
+    /// 공모주 청약. 새로 상장한 종목의 공모 물량은 주관사(거래소)가 전부 떠안는다. 그대로 두면 주식을 가진 개미가 한 명도 없어서
+    /// 파는 사람은 거래소의 듬성듬성한 첫 호가뿐이고, 몇 주만 사도 값이 몇 배로 뛰고는 아무도 거래하지 않는 종목이 된다.
+    /// 그래서 처음 세계를 만들 때 기존 종목을 개미에게 나눠 주듯이(DistributePublicShares), 공모 물량의 일부를 개미에게 넘긴다.
+    /// 다만 거저 주지 않는다: 개미는 공모가로 값을 치르고, 그 돈은 거래소로 간다(돈과 주식이 새로 생기지 않는다).
+    ///
+    /// 개미 손에 이미 물량이 풀려 있으면 아무 일도 하지 않는다. 그래서 여러 번 불러도 되고, 따로 저장할 것도 없다
+    /// (이 기능이 없던 때에 상장해 물량이 묶여 있는 종목은 다음 개장 때 풀린다). 넘긴 주식 수를 돌려준다.
+    /// </summary>
+    public decimal SubscribePublicShares(Stock stock)
+    {
+        var exchange = ExchangeBot.Instance;
+        if (!useInitialEconomy || !EconomyInitialized || stock == null || exchange == null || !stock.IsListed || stock.IsDelisting || stock.currentPrice < 1m)
+        { return 0m; }
+
+        // 공모가: 막 상장했으면 지금 값이 공모가다. 뒤늦게 푸는 경우에는 시장이 믿는 값보다 비싸게 넘기지 않는다.
+        decimal price = PriceTickPolicy.FloorToTick(stock.fakeValue >= 1m ? Math.Min(stock.currentPrice, stock.fakeValue) : stock.currentPrice);
+        decimal held = exchange.GetHolding(stock), pool = decimal.Floor(held * (decimal)Mathf.Clamp01(economy.publicDistributionRatio));
+        if (price < 1m || pool < 1m) { return 0m; }
+
+        participants.Clear();
+        decimal weightSum = 0m, retailHeld = 0m;
+        var rng = new System.Random(CandleHistoryManager.StableSeed(economy.seed, "SUBSCRIPTION:" + stock.symbol));
+        foreach (var trader in Trader.Registry)
+        {
+            if (!(trader is TradeBot bot) || !IsRetail(bot)) { continue; }
+            retailHeld += bot.GetOwnedVolume(stock);
+            if (rng.NextDouble() >= Mathf.Clamp01(economy.participationProbability)) { continue; }
+            decimal weight = (decimal)(economy.allocationWeightMin + rng.NextDouble() * Math.Max(0f, economy.allocationWeightMax - economy.allocationWeightMin));
+            if (weight <= 0m) { continue; }
+            participants.Add((bot, weight)); weightSum += weight;
+        }
+        if (retailHeld > held * FloatMissingShare || weightSum <= 0m) { participants.Clear(); return 0m; }
+
+        decimal given = 0m, paid = 0m; int buyers = 0;
+        foreach (var participant in participants)
+        {
+            // 한 사람 몫이 한두 주뿐일 때 소수점을 버리면 물량의 절반이 사라진다. 소수점만큼의 확률로 한 주를 더 준다.
+            decimal share = pool * participant.weight / weightSum, quantity = decimal.Floor(share);
+            if (rng.NextDouble() < (double)(share - quantity)) { quantity += 1m; }
+            var bot = participant.bot;
+            quantity = Math.Min(quantity, decimal.Floor(Math.Max(0m, bot.cash - bot.ReservedCash) * SubscriptionCashShare / price));
+            if (quantity < 1m || !exchange.TransferInventory(bot, stock, quantity, price)) { continue; }
+            decimal cost = quantity * price, mark = quantity * stock.currentPrice;
+            bot.ApplyTradeCash(-cost); exchange.ApplyTradeCash(cost);
+            // 주고받은 것은 거래다. 바깥에서 들어온 것으로 적힌 주식 값을 되돌려, 하루 손익에는 공모가와 시세의 차이만 남긴다.
+            bot.ExternalFlow(-mark); exchange.ExternalFlow(mark);
+            given += quantity; paid += cost; buyers++;
+        }
+        participants.Clear();
+        if (given > 0m)
+        {
+            exchange.ResetInitialInventory(stock);
+            Debug.Log($"[공모주] {stock.stockName}({stock.symbol}) 개미 {buyers:N0}명이 {given:N0}주 청약 · 공모가 {price:N0}돈 · 대금 {paid:N0}돈 · 거래소에 남은 물량 {exchange.GetHolding(stock):N0}주");
+        }
+        return given;
+    }
+
     [ContextMenu("테스트: 다음 미상장 소유주 종목 상장")]
     public void ListNextOwnerCompany()
     {
@@ -511,6 +579,8 @@ public partial class StockManager
         stock.IsNewListing = true;
         stocks.Add(stock);
         // Public shares were purchased by the underwriter with finite cash; subsequent trades use the book.
+        // 주관사가 떠안은 공모 물량의 일부를 개미가 공모가로 청약한다(거래소가 첫 호가를 깔기 전에 한다).
+        SubscribePublicShares(stock);
         CandleHistoryManager.Instance?.RegisterStock(stock);
         StockInterestManager.Instance?.RegisterStock(stock);
         StockStatistics.Instance?.RegisterStock(stock);

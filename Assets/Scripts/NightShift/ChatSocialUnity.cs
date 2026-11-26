@@ -41,6 +41,8 @@ public sealed partial class InvestorSociety
             socialWired = true;
         }
         SocialTime.Set(day.Day, day.GameMinute, SessionClock.Time);
+        // 말하는 장치들보다 먼저: 종목마다 지금 상황을 읽을 당일 기록을 잇는다.
+        TickSituations();
         using (HypeMarker.Auto()) { TickHype(); TickBacklog(); }
         using (ChartTalkMarker.Auto()) { TickChartTalk(); }
         using (VillainMarker.Auto()) { TickVillain(); }
@@ -155,6 +157,9 @@ public sealed partial class InvestorSociety
         NoteBotQuestion(bot, message);
         ApplyChatInfluence(bot, message);
         if (SplitSocialDelivery(bot, message)) { return; }
+        // 확인용 기록(DONDON_CHAT_REVIEW). 급등락 군중·차트 수다·잔움직임·토론·기분 글을 포함해 화면에 뜨는 봇의 말은 모두 이 길목을 지난다.
+        // 끊어 친 말은 조각마다 한 줄이다. 변수가 없으면 참·거짓 하나만 보고 지나간다.
+        if (ChatReview.On) { WriteChatReview(bot, message); }
         var context = new InvestorMessageContext(message.facts?.eventId ?? 0, message.roomId,
             message.act == SocialAct.PRAISE_PLAYER ? 1 : message.act == SocialAct.WARN_PLAYER ? -1 : 0,
             bot.Social.Confidence, bot.Social.Psychology.Trust, message.facts != null && message.facts.directLead,

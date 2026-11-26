@@ -18,6 +18,11 @@ public sealed class AfterHoursTopic
     public string[] reply, replyHolder;
     /// <summary>말을 꺼낸 사람이 답을 듣고 마무리하는 문장.</summary>
     public string[] back;
+    /// <summary>
+    /// 그 언어로 따로 쓴 화제인가(Chat/chat_market.*의 close.… 묶음에서 만든다). 이런 화제의 문장은 번역을 거치지 않는다.
+    /// 파일(chat_afterhours.json)에서 읽은 화제는 늘 false다.
+    /// </summary>
+    [NonSerialized] public bool native;
 }
 
 [Serializable]
@@ -145,8 +150,23 @@ public sealed partial class InvestorSociety
             entry.values["close"] = Money(close);
             entry.values["dayPct"] = SignedPercent(move);
             decimal level = CrossedLevel(day.reference, close);
+            // 종가의 등락률만 보면 놓치는 날이 있다: 몇 배로 끝난 날(MONSTER), 장중에 크게 올랐다가 절반 넘게 돌려주고 끝난 날(FADE),
+            // −20% 넘게 무너진 날(CRASH). +30%까지 갔다가 +5%로 끝난 종목을 두고 "내일도 이 분위기 이어짐?"이라고 묻지 않는다.
+            // 이런 날의 얘기는 그 언어로 따로 쓴 문장으로 한다. 그 언어의 문장이 없으면 아래의 평소 갈래(오름·내림·제자리)로 간다.
+            decimal dayHigh = Math.Max(day.high, close), dayLow = day.low > 0m ? Math.Min(day.low, close) : close;
+            string special = ChatSituationRules.CloseKind(day.reference, dayHigh, dayLow, close);
+            var engine = ChatReactionAssets.Current;
+            if (special != null && engine != null && NativeAfterTopic(engine, special) != null)
+            {
+                entry.kind = special;
+                var read = ChatSituationMath.Classify(new ChatSituationInput { reference = day.reference, price = close, high = dayHigh, low = dayLow, highAge = 0, lowAge = 1 });
+                engine.FillSlots(read, entry.values);
+                entry.values["stockName"] = GameLocale.Text(stock.stockName ?? stock.symbol ?? "");
+                entry.values["highPct"] = SignedPercent(read.highPct);
+                entry.values["lowPct"] = SignedPercent(read.lowPct);
+            }
             // 딱 떨어지는 가격을 넘겼어도 제대로 오른 날에만 '돌파'라고 한다.
-            if (level > 0m && move >= BreakMovePercent)
+            else if (level > 0m && move >= BreakMovePercent)
             {
                 entry.kind = "BREAK";
                 entry.values["level"] = Money(level);
@@ -244,6 +264,8 @@ public sealed partial class InvestorSociety
         if (topic == null)
         {
             about = null;
+            // 새벽 관찰실은 종목을 보는 방이다. 밥·잠 같은 잡담은 거의 꺼내지 않는다.
+            if (roomId == NpcLeadingRoom.RoomId && afterRandom.NextDouble() >= DawnRoomCasualChance) { return; }
             topic = PickAfterTopic(room, hour, "CASUAL", null);
         }
 
@@ -323,8 +345,39 @@ public sealed partial class InvestorSociety
         return chosen;
     }
 
+    // 그 언어로 따로 쓴 마감 화제(언어·갈래별로 한 번 만들어 둔다). 정적이다: 저장 파일에 넣을 것이 아니다.
+    private static readonly Dictionary<string, AfterHoursTopic> nativeAfterTopics = new(StringComparer.Ordinal);
+    private static bool IsNativeAfterKind(string kind) => kind == "MONSTER" || kind == "FADE" || kind == "CRASH";
+    /// <summary>
+    /// 언어별 시세 반응 파일의 close.{갈래}.open · .reply · .replyHolder · .back 묶음으로 마감 화제를 만든다.
+    /// 꺼내는 말(open)과 받는 말(reply)이 없으면 null.
+    /// </summary>
+    private static AfterHoursTopic NativeAfterTopic(ChatReactionEngine engine, string kind)
+    {
+        string name = engine.Code + ":" + kind;
+        if (nativeAfterTopics.TryGetValue(name, out var topic)) { return topic; }
+        string[] open = engine.Lines("close." + kind + ".open"), reply = engine.Lines("close." + kind + ".reply");
+        if (open.Length > 0 && reply.Length > 0)
+        {
+            topic = new AfterHoursTopic { key = kind, kind = kind, fromHour = 17, toHour = 9, weight = 1, open = open, reply = reply,
+                replyHolder = engine.Lines("close." + kind + ".replyHolder"), back = engine.Lines("close." + kind + ".back"), native = true };
+        }
+        nativeAfterTopics[name] = topic;
+        return topic;
+    }
+
     private AfterHoursTopic PickAfterTopic(AfterRoom room, int hour, string kind, string symbol)
     {
+        if (IsNativeAfterKind(kind))
+        {
+            // 종가 판은 마감 때의 언어로 읽었다. 그 뒤 언어를 바꿨으면 그 종목 얘기는 건너뛴다(빈칸에 넣을 값이 그 언어의 것이 아니다).
+            var engine = ChatReactionAssets.Current;
+            var native = engine == null ? null : NativeAfterTopic(engine, kind);
+            if (native == null) { return null; }
+            foreach (string mark in room.recentTopics) { if (mark == TopicMark(native, symbol)) { return null; } }
+            return native;
+        }
+        if (kind == "CASUAL") { return PickCasualTopic(room, hour); }
         AfterHoursTopic chosen = null;
         double total = 0;
         foreach (var topic in AfterHoursLines.topics)
@@ -424,12 +477,14 @@ public sealed partial class InvestorSociety
             return value;
         });
         string key = "AFTER." + thread.topic.key + "." + part;
+        // 그 언어로 따로 쓴 문장은 이미 화면에 뜰 글이다. 번역용 정보(원문 틀과 빈칸 값)를 남기지 않는다.
+        bool native = thread.topic.native;
         var message = new SocialMessage
         {
             id = ChatSocialIds.Next(), roomId = roomId, senderId = bot.Social.Id, targetId = target == null ? 0 : target.Social.Id,
             at = SocialTime.GameMinute, realAt = SocialTime.Seconds, replyToId = replyTo, facts = facts, topicEvent = "AFTER_HOURS", templateKey = key,
             act = part == "open" ? (thread.about == null ? SocialAct.SMALLTALK : SocialAct.ASK) : part == "back" ? SocialAct.REACT : SocialAct.ANSWER,
-            localizedPhrase = phrase, localizedValues = values.ToArray(), localizedTarget = target == null ? null : target.Social.Nickname,
+            localizedPhrase = native ? null : phrase, localizedValues = native ? null : values.ToArray(), localizedTarget = native || target == null ? null : target.Social.Nickname,
             debug = new SocialMessageDebug { trigger = "AFTER_HOURS", speechKey = key, weights = Array.Empty<SocialWeight>(), slots = facts }
         };
         message.text = target == null ? text : "@" + target.Social.Nickname + " " + text;

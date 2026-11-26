@@ -157,6 +157,31 @@ public class StockListUIManager : MonoBehaviour
         Reveal(_items[next]);
         return true;
     }
+    /// <summary>
+    /// 지금 종목 다음부터 목록을 위에서 아래로 훑어 내가 가진 종목 하나를 고른다. 끝에 닿으면 맨 위로 돌아간다.
+    /// 가진 종목이 없으면 아무것도 하지 않는다(false).
+    /// </summary>
+    public bool SelectNextHeldStock()
+    {
+        var market = StockManager.Instance; var account = PlayerAccounts.Instance != null && PlayerAccounts.Instance.Ready ? PlayerAccounts.Instance.primary : null;
+        if (market == null || account == null || _items.Count == 0)
+        { return false; }
+        int current = _items.FindIndex(item => item.BoundStock == market.CurrentStock);
+        for (int step = 1; step <= _items.Count; step++)
+        {
+            int at = ((current < 0 ? -1 : current) + step) % _items.Count;
+            var stock = _items[at].BoundStock;
+            if (stock == null || stock == market.CurrentStock && step < _items.Count || account.GetOwnedVolume(stock) <= 0m)
+            { continue; }
+            int index = market.stocks.IndexOf(stock);
+            if (index < 0)
+            { continue; }
+            market.SelectStock(index);
+            Reveal(_items[at]);
+            return true;
+        }
+        return false;
+    }
     private void Reveal(StockListItem item)
     {
         if (scroll == null || scroll.viewport == null)

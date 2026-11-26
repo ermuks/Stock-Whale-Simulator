@@ -21,6 +21,7 @@ public sealed class NewsDeskUI : MonoBehaviour
     private readonly List<NewsArticle> visible = new(40);
     private readonly List<Button> rows = new(40);
     private readonly List<TextMeshProUGUI> titles = new(40), meta = new(40);
+    private readonly List<Image> thumbs = new(40);
     private readonly Dictionary<DeviceMarketJournal.Entry, NewsArticle> alerts = new();
     private readonly StringBuilder buffer = new();
     private NewsArticle selected, draft;
@@ -80,8 +81,14 @@ public sealed class NewsDeskUI : MonoBehaviour
             button.image.color = Color.clear; button.transition = Selectable.Transition.ColorTint;
             var title = terminal.eventTitles[i]; var details = terminal.eventTags[i];
             Style(title,30,Ink,true); Style(details,25,Muted,false);
-            Rect(title.rectTransform,.04f,.07f,.92f,.56f); title.textWrappingMode = TextWrappingModes.Normal;
-            Rect(details.rectTransform,.04f,.69f,.92f,.29f); details.textWrappingMode = TextWrappingModes.Normal;
+            // 썸네일: 그 회사의 업종 그림. 색은 기사의 결(호재 빨강 · 악재 파랑 · 그 밖 회색), 확인 안 된 소문이면 흐리게.
+            var thumb = Panel(button.transform,"Article Thumb",.02f,.14f,.13f,.72f,new Color32(16,27,34,255));
+            var picture = new GameObject("Image :: Article Thumb Picture", typeof(RectTransform)).AddComponent<Image>();
+            picture.rectTransform.SetParent(thumb.transform,false); picture.gameObject.layer = thumb.gameObject.layer; picture.raycastTarget = false; picture.preserveAspect = true;
+            picture.rectTransform.anchorMin = new Vector2(.18f,.18f); picture.rectTransform.anchorMax = new Vector2(.82f,.82f); picture.rectTransform.offsetMin = picture.rectTransform.offsetMax = Vector2.zero;
+            thumbs.Add(picture);
+            Rect(title.rectTransform,.17f,.07f,.80f,.56f); title.textWrappingMode = TextWrappingModes.Normal;
+            Rect(details.rectTransform,.17f,.69f,.80f,.29f); details.textWrappingMode = TextWrappingModes.Normal;
             Panel(button.transform,"Article Row Divider",0,.99f,1,.005f,Line);
             rows.Add(button); titles.Add(title); meta.Add(details);
         }
@@ -149,6 +156,14 @@ public sealed class NewsDeskUI : MonoBehaviour
             Set(meta[i],(string.IsNullOrEmpty(article.company) ? article.source : article.company) + "  ·  " + article.time +
                 (article.credibility < .5 ? " · 미확인" : article.correction ? " · 후속" : ""));
             rows[i].image.color = article == selected ? Selected : Color.clear;
+            if (i < thumbs.Count)
+            {
+                var company = FindStock(article.symbol);
+                thumbs[i].sprite = company != null ? UiPictograms.SectorIcon(UiPictograms.SectorOf(company)) : UiPictograms.Cell(UiPictograms.MarkSystem);
+                Color tone = article.sentiment > .15 ? (Color)MarketColors.Up : article.sentiment < -.15 ? (Color)MarketColors.Down : Muted;
+                tone.a = article.credibility < .5 ? .45f : 1f;
+                thumbs[i].color = tone;
+            }
         }
         listContent.sizeDelta = new Vector2(0,visible.Count * 157); listScroll.verticalNormalizedPosition = scroll;
         empty.gameObject.SetActive(visible.Count == 0); Set(countText, (mode == "alerts" ? "시장 알림 " : "최근 기사 ") + visible.Count);

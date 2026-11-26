@@ -121,7 +121,9 @@ public sealed partial class InvestorSociety
         public int dumpStage, bounceStage, knowingStage; public bool twinTop, twinBottom, deadCat, roundTrip;
         public int dayUpStage, dayDownStage, day = -1;
     }
-    private sealed class ChartBurst { public Stock stock; public string key; public int left, spoken; public double next; public decimal peak, low; public long replyTo; public int skipBot; public string replyName; }
+    private sealed class ChartBurst { public Stock stock; public string key; public int left, spoken; public double next; public decimal peak, low; public long replyTo; public int skipBot; public string replyName;
+        /// <summary>이 얘기에서 마지막으로 올라온 말과 그 말을 한 봇(다음 사람이 가끔 그 말에 맞장구만 친다), 바로 앞의 말이 맞장구였는가.</summary>
+        public long lastId; public int lastBot; public bool lastWasBack; }
     /// <summary>차트 수다가 마지막으로 다룬 종목. 화제가 다른 종목으로 넘어가면 첫 마디에 종목 이름을 붙인다.</summary>
     private Stock chartLastStock;
     /// <summary>종목 이름이 없는 대사 앞에 이름을 붙인다("벽 믿고 버틴다" → "테줌마 벽 믿고 버틴다"). 여러 종목 얘기가 섞인 방에서 무엇을 두고 하는 말인지 알 수 있게.</summary>
@@ -351,16 +353,19 @@ public sealed partial class InvestorSociety
             if (book.Bid >= .5f && book.Bid > book.Ask) { Shape(track, stock, "bidWall", now, 2, price, book.BidPrice, ChartWindowRestSec); }
             else if (book.Ask >= .5f && book.Ask > book.Bid) { Shape(track, stock, "askWall", now, 2, book.AskPrice, price, ChartWindowRestSec); }
         }
-        if (ReadMarketDay != null && stock != null)
+        if (stock != null)
         {
-            var board = ReadMarketDay(stock);
-            if (board.reference > 0m && ChartRange(track, 0, now, out decimal sessionLow, out decimal sessionHigh, out _, out _))
+            // 당일 고가·저가는 장 전체의 것이어야 한다. 예전에는 이 기록(최근 900초만 남긴다)의 최고·최저를 "당일 고가·저가"로 썼다.
+            // 불러온 직후나 장이 길어진 날에는 그 값이 진짜 고가·저가가 아니어서, 신고가가 아닌데 신고가라고 하는 일이 있었다.
+            // 이제 상황 판정이 따로 세는 장 전체의 고가·저가를 쓴다.
+            var read = SituationOf(stock);
+            if (read.valid)
             {
-                decimal dayMove = price / board.reference - 1m;
-                if (track.dayUpStage < DayStages.Length && dayMove >= DayStages[track.dayUpStage] && price >= sessionHigh)
-                { track.dayUpStage++; Shape(track, stock, "dayHigh", now, 2, price, sessionLow, 0); }
-                if (track.dayDownStage < DayStages.Length && dayMove <= -DayStages[track.dayDownStage] && price <= sessionLow)
-                { track.dayDownStage++; Shape(track, stock, "dayLow", now, 2, sessionHigh, price, 0); }
+                decimal dayMove = read.dayPct / 100m;
+                if (track.dayUpStage < DayStages.Length && dayMove >= DayStages[track.dayUpStage] && price >= read.high)
+                { track.dayUpStage++; Shape(track, stock, "dayHigh", now, 2, price, read.low, 0); }
+                if (track.dayDownStage < DayStages.Length && dayMove <= -DayStages[track.dayDownStage] && price <= read.low)
+                { track.dayDownStage++; Shape(track, stock, "dayLow", now, 2, read.high, price, 0); }
             }
         }
     }
@@ -389,10 +394,30 @@ public sealed partial class InvestorSociety
         track.rest[key] = now + restSec;
         // 종목 없이 부르면 점검용이다(ChartSelfTest). 알아챈 이름만 적고 아무 말도 하지 않는다.
         if (stock == null) { chartDryShapes.Add(key); return; }
+        // 모양은 최근 몇 분의 꺾임만 본 것이다. 그 꺾임이 하루 전체에서 무엇인지는 상황 판정이 안다(ChatSituation.cs).
+        // 상황과 맞으면 그 모양의 대사를 그대로 하고, 어긋나면 상황 대사로 바꿔 말하거나(눌림을 폭락처럼 떠들지 않는다) 아예 말하지 않는다.
+        var situation = SituationOf(stock);
+        string shape = key;
+        if (situation.valid)
+        {
+            string verdict = ChatSituationRules.ChartShape(shape, situation.kind);
+            if (verdict == ChatSituationRules.Redirect)
+            {
+                // 그 언어권이 이 상황을 입에 올리는 만큼만 말한다. 한 사건에 몇 명이 말하는지도 언어마다 다르다. 그 언어의 대사가 없으면 조용히 넘어간다.
+                var engine = ChatReactionAssets.Current;
+                if (engine == null || HypeRandom.Next() >= engine.TalkChance(situation.kind, ChatStance.Watch)) { verdict = null; }
+                else { key = "sit." + situation.kind; lines = engine.BurstLines(lines, HypeRandom.Next()); }
+            }
+            if (verdict == null)
+            {
+                TraceChart(day.ClockMinute / 60 + ":" + (day.ClockMinute % 60).ToString("00") + " " + stock.symbol + " " + shape + " (" + situation.kind + ": 말하지 않음)");
+                return;
+            }
+        }
         // 극한의 상황(고점에서 18% 넘게 붕괴, 하루 22% 넘는 급락)에서만, 낮은 확률로 지나가던 빌런이 들어온다.
         if (key == "dump2" || key == "dayLow" && track.dayDownStage >= 2) { OfferVillain(); }
         ChartShapesSeen++;
-        TraceChart(day.ClockMinute / 60 + ":" + (day.ClockMinute % 60).ToString("00") + " " + stock.symbol + " " + key + " price " + Money(stock.currentPrice) + " peak " + Money(peak) + " low " + Money(low));
+        TraceChart(day.ClockMinute / 60 + ":" + (day.ClockMinute % 60).ToString("00") + " " + stock.symbol + " " + shape + (key != shape ? " → " + key : "") + " [" + situation.kind + "] price " + Money(stock.currentPrice) + " peak " + Money(peak) + " low " + Money(low));
         ChatSocialAudit.Journal.Event(new SocialEvent { time = SocialTime.GameMinute, kind = "CHART_SHAPE", reason = stock.symbol + " " + key, value = (double)stock.currentPrice });
         // 같은 종목에 대해 아직 덜 한 얘기는 새 모양이 덮는다(이미 지나간 얘기를 뒤늦게 하지 않는다). 폭주 연출이 그 종목을 다루는 중이면 줄 수를 줄인다.
         chartBursts.RemoveAll(burst => burst.stock == stock && burst.replyTo == 0);
@@ -480,8 +505,10 @@ public sealed partial class InvestorSociety
             && bot.Social.Psychology.Traits.Politeness < Config.Int("styleFormalMin");
         TraceChart(day.ClockMinute / 60 + ":" + (day.ClockMinute % 60).ToString("00") + " " + hand.stock.symbol + " " + key + " " + bot.Social.Nickname + " mine " + Money(mine) + " now " + Money(price) + (speaks ? "" : " (silent)"));
         if (!speaks) { return; }
-        string text = NamedLine(PickHypeText(ChartTalkAssets.Lines(key), Array.Empty<string>()));
+        string text = PickHypeText(ChartTalkAssets.Lines(key), Array.Empty<string>());
         if (text == null) { return; }
+        // 말맛(ChatVoice.cs): 자기 타점 얘기는 눈에 띄는 정도(세기 1)로 친다. 자랑은 오르는 얘기, 한탄은 내리는 얘기의 말머리를 쓴다.
+        text = NamedLine(ChatVoice.Apply(text, ChatReactionAssets.Voice(GameLocale.Code), ChatVoice.Warm, key == "sniper" || key == "topSell" ? ChatVoiceLean.Up : ChatVoiceLean.Down, SpeechHabit(bot.Social.Id), HypeRandom.Next));
         chartLastStock = hand.stock;
         var slots = ChartSlots(hand.stock, price, price, mine);
         var said = PublishHype(bot, ChatHypeAssets.Fill(text, slots), "chart." + key, hand.stock, 0, 1);
@@ -549,18 +576,58 @@ public sealed partial class InvestorSociety
             if (bot == null || bot.Social.Id == burst.skipBot) { burst.next = now + 1; return; }
             // 존댓말을 쓰는 봇은 이런 수다에 끼지 않는다. 익명 채팅방의 차트 수다는 반말이다.
             if (bot.Social.Psychology.Traits.Politeness >= Config.Int("styleFormalMin")) { burst.next = now + .3; return; }
-            bool reply = burst.replyTo != 0;
-            string text = reply ? PickHypeText(ChartTalkAssets.Lines(burst.key), Array.Empty<string>())
-                : PickHypeText(ChartTalkAssets.Lines(burst.key + ".any"), ChartTalkAssets.Lines(burst.key + (bot.GetOwnedVolume(burst.stock) > 0m ? ".held" : ".notHeld")));
-            // 답글은 누구에게 하는 말인지 붙인다. 새 화제의 첫 마디, 다른 종목 얘기 뒤의 첫 마디에는 종목 이름을 붙인다.
+            bool reply = burst.replyTo != 0, held = bot.GetOwnedVolume(burst.stock) > 0m;
+            // 상황 대사로 바꿔 말하기로 한 얘기("sit.…")인가.
+            bool situational = !reply && burst.key.StartsWith("sit.", StringComparison.Ordinal);
+            string text = null, spokenKey = burst.key;
+            // 말맛(ChatVoice.cs): 세기와 말머리의 갈래는 그 종목의 지금 상황에서 온다. 모양만 보고 떠드는 말이라 큰일(세기 2)까지만 친다.
+            var voice = ChatReactionAssets.Voice(GameLocale.Code);
+            var read = SituationOf(burst.stock);
+            int level = read.valid ? Math.Min(ChatVoice.Strong, ChatVoice.Level(voice, read.kind)) : ChatVoice.Mild;
+            var lean = read.valid ? ChatVoice.Lean(read.kind) : ChatVoiceLean.Calm;
+            long backTo = 0;
+            if (reply) { text = ChatVoice.After(PickHypeText(ChartTalkAssets.Lines(burst.key), Array.Empty<string>()), voice, ChatVoice.Warm, HypeRandom.Next); }
+            // 두 번째 사람부터는 가끔 앞사람 말에 "ㄹㅇ", "그니까" 하고 맞장구만 친다. 연달아 하지 않고, 방 전체로도 몇 초에 한 번만 한다(BackDue).
+            else if (burst.spoken >= 1 && burst.lastId != 0 && !burst.lastWasBack && burst.lastBot != bot.Social.Id && BackDue(voice, now) && HypeRandom.Next() < voice.backChance)
+            {
+                text = TakeBack(voice, ChatVoice.BackMood(lean, HypeRandom.Next()), level, HypeRandom.Next, now);
+                if (text != null) { backTo = burst.lastId; spokenKey = burst.key + ".back"; }
+            }
+            if (!reply && backTo == 0)
+            {
+                // 모양의 보유자 대사는 손익을 전제로 쓴 것이 많다("나 물린 거 맞지 이거", "오늘은 내가 승자다").
+                // 이 봇의 처지가 그 전제와 어긋나면(수익 중인데 손실 대사, 물렸는데 수익 대사) 상황 × 처지로 고른 대사를 대신 한다.
+                bool misfit = false;
+                if (!situational && held && read.valid)
+                {
+                    var view = BotView(bot, burst.stock, out _);
+                    misfit = ChatSituationRules.LossFlavored(burst.key) && (view == ChatSpeakerView.DeepProfit || view == ChatSpeakerView.Profit) ||
+                        ChatSituationRules.GainFlavored(burst.key) && (view == ChatSpeakerView.Loss || view == ChatSpeakerView.DeepLoss);
+                }
+                if (situational || misfit)
+                {
+                    // 얘기를 꺼내기로 한 뒤 상황이 바뀌었으면 지금 상황으로 말한다.
+                    text = SituationLine(bot, burst.stock, read, out string picked);
+                    if (text != null) { spokenKey = "sit." + picked.Substring("market.".Length); }
+                }
+                // 처지가 어긋나는 보유자는 상황 대사가 없으면 누구나 할 수 있는 말(any)만 한다. 상황 대사로 하기로 한 얘기는 대사가 없으면 하지 않는다.
+                if (text == null && !situational)
+                {
+                    text = PickHypeText(ChartTalkAssets.Lines(burst.key + ".any"), misfit ? Array.Empty<string>() : ChartTalkAssets.Lines(burst.key + (held ? ".held" : ".notHeld")));
+                    // 상황 대사(SituationLine)는 엔진이 이미 말맛을 입혀서 준다. 모양의 대사에는 여기서 입힌다.
+                    if (text != null) { text = ChatVoice.Apply(text, voice, level, lean, SpeechHabit(bot.Social.Id), HypeRandom.Next); }
+                }
+            }
+            // 답글은 누구에게 하는 말인지 붙인다. 새 화제의 첫 마디, 다른 종목 얘기 뒤의 첫 마디에는 종목 이름을 붙인다. 맞장구에는 아무것도 붙이지 않는다.
             if (text != null && reply && !string.IsNullOrEmpty(burst.replyName)) { text = "@" + burst.replyName + " " + text; }
-            else if (text != null && !reply && (burst.spoken == 0 || chartLastStock != burst.stock)) { text = NamedLine(text); }
+            else if (text != null && !reply && backTo == 0 && (burst.spoken == 0 || chartLastStock != burst.stock)) { text = NamedLine(text); }
             if (text != null)
             {
                 burst.spoken++; if (!reply) { chartLastStock = burst.stock; }
-                var said = PublishHype(bot, ChatHypeAssets.Fill(text, ChartSlots(burst.stock, burst.peak, burst.low, 0m)), "chart." + burst.key, burst.stock, burst.replyTo, 0);
+                var said = PublishHype(bot, ChatHypeAssets.Fill(text, ChartSlots(burst.stock, burst.peak, burst.low, 0m)), "chart." + spokenKey, burst.stock, backTo != 0 ? backTo : burst.replyTo, 0);
+                burst.lastId = said.last.id; burst.lastBot = bot.Social.Id; burst.lastWasBack = backTo != 0;
                 hypeSpokeAt[bot.Social.Id] = now; ChartLinesSaid++;
-                TraceChart("    > " + bot.Social.Nickname + ": " + said.last.text + "  [" + burst.key + (reply ? "" : bot.GetOwnedVolume(burst.stock) > 0m ? ", 보유" : ", 미보유") + "]");
+                TraceChart("    > " + bot.Social.Nickname + ": " + said.last.text + "  [" + spokenKey + (reply ? "" : held ? ", 보유" : ", 미보유") + "]");
                 chartNextLine = said.doneAt + ChartLineGapMin + HypeRandom.Next() * (ChartLineGapMax - ChartLineGapMin);
             }
             burst.left--; burst.next = chartNextLine;
@@ -568,7 +635,12 @@ public sealed partial class InvestorSociety
             return;
         }
     }
-    /// <summary>{stockName} {price} {peak} {low} {drop}(고점 대비 %) {rise}(저점 대비 %) {entry}(내 체결가) {gain}(내 체결가 대비 %) {dayPct}.</summary>
+    /// <summary>
+    /// {stockName} {price} {peak} {low} {drop}(그 모양의 고점 대비, 부호 없는 숫자) {rise}(그 모양의 저점 대비, 부호 없는 숫자)
+    /// {entry}(내 체결가) {gain}(내 체결가 대비, 부호 없는 숫자). 이 넷은 숫자만 들어가므로 대사가 "-{drop}%"처럼 부호와 %를 붙여 쓴다.
+    /// {dayPct}와 하루 전체의 수치({fromHigh}, {retrace} …)는 HypeSlots가 채운다. 그쪽은 부호와 %가 이미 붙어 있다("+490%").
+    /// {low}는 여기서 그 모양의 저점으로 덮어쓴다(당일 저가가 아니다).
+    /// </summary>
     private Dictionary<string, string> ChartSlots(Stock stock, decimal peak, decimal low, decimal mine)
     {
         var slots = HypeSlots(stock, 0, 0m);
@@ -578,9 +650,6 @@ public sealed partial class InvestorSociety
         slots["rise"] = low > 0m ? Math.Abs((price / low - 1m) * 100m).ToString("0", SocialCulture) : "0";
         slots["entry"] = Money(mine);
         slots["gain"] = mine > 0m ? Math.Abs((price / mine - 1m) * 100m).ToString("0", SocialCulture) : "0";
-        decimal dayMove = 0m;
-        if (ReadMarketDay != null) { var board = ReadMarketDay(stock); if (board.reference > 0m) { dayMove = (price / board.reference - 1m) * 100m; } }
-        slots["dayPct"] = dayMove.ToString("+0;-0;0", SocialCulture);
         return slots;
     }
 }

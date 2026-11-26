@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "numberLineChance": 0.3,
+  "groups": [
+    {"key": "TeaseSmall", "texts": ["lmao that's adorable", "big money moves", "a W is a W. a tiny W", "careful, the taxman's watching", "that's like two snacks", "ok warren", "posting pennies lol", "hey it's not red", "don't quit your day job", "frame it","that's it? lol", "congrats on the gas money", "don't spend it all in one place", "that won't even cover lunch", "bro posted {amount} lol", "a win's a win i guess", "fees ate half of that", "cute", "the screenshot took more effort than the trade", "ok but what are you buying with that?", "green is green, technically"]},
+    {"key": "TeaseSmall.sold", "texts": ["locked in a whole coffee", "retirement secured"]},
+    {"key": "TeaseSmall.hold", "texts": ["one tick and that's gone", "not even worth hitting sell"]},
+
+    {"key": "Modest", "texts": ["nice little W", "ayy good stuff", "we take those", "solid day", "that'll do", "decent, gg", "clean", "good trade fr", "can't complain about that", "slow and steady, nice","solid, take it", "lunch is paid for", "not bad at all", "a green day's a green day", "{amount} for a day's work, i'll take that", "base hits add up", "clean little win", "nothing wrong with that", "nice one", "what was the setup?"]},
+    {"key": "Modest.sold", "texts": ["ring the register", "took it and left, respect"]},
+    {"key": "Modest.hold", "texts": ["still open tho, don't get cute", "that can vanish quick, set a stop"]},
+
+    {"key": "PctNoSeed", "texts": ["the % tho", "bro bet lunch money and went god mode", "all that skill, no size lol", "insane % on pocket change", "pain. should've sized up", "right idea, wrong amount", "this with size and you're retired", "tiny bag, giant brain", "respect the % ngl", "next time bet more, coward","great % but... the size lol", "{pct} and it's only {amount}?", "right call, tiny bet", "the skill's there, the bankroll isn't", "now do it with real size", "imagine that with another zero on it", "size up next time", "monster trade, hobby sizing", "by % you're the best trader in here", "why so small?", "{pct} on lunch money hurts to see"]},
+    {"key": "PctNoSeed.edge", "texts": ["flexing the % because the amount won't flex lol", "that's a demo account return"]},
+
+    {"key": "StakeAwe", "texts": ["that size is illegal", "bro is the market", "ok whale", "how many zeros is that", "my guy runs a fund", "sheesh the bankroll", "size like that scares me", "that's not an account that's a bank", "we are not the same", "wild size fr", "bro the SIZE", "holy size", "whale spotted", "what is that account lol", "{amount}?? on that?", "ok that's serious money","the % is nothing but that size...", "{pct} is {amount}? how big is your account", "size is size", "different league", "i make {pct} and it buys me a sandwich", "we've got a whale in here", "a {pct} move pays my whole year", "what are you even running?", "how much did you put in?", "that account's on another level", "must be nice having that kind of size"]},
+    {"key": "StakeAwe.hold", "texts": ["how do you sleep holding that much", "one tick on that position is my rent", "{stake} in one name? seriously?"]},
+    {"key": "StakeAwe.sold", "texts": ["surprised the book could even take that"]},
+
+    {"key": "Envy", "texts": ["ok that's a W", "nice hit", "lets gooo congrats", "jealous fr", "big W", "must be nice lol", "good for you (i'm crying)", "that's a bag", "cooking today huh", "paid. respect","oh nice", "damn ok", "sheesh congrats", "love that for you", "jealous ngl", "W", "ate that", "drinks on you tonight","ok i'm jealous", "{amount} is months of pay for me", "drinks are on you", "where'd you get in?", "teach me", "you win today", "this hurts to look at", "that's a proper win", "what's the next play?", "{amount}, congrats fr", "take the rest of the day off"]},
+    {"key": "Envy.sold", "texts": ["realized is real. congrats", "that's a screenshot worth posting"]},
+    {"key": "Envy.hold", "texts": ["holding through that takes more nerve than i've got", "it's not real till you sell tho"]},
+
+    {"key": "Shock", "texts": ["NO SHOT", "what am i looking at", "generational trade", "i need to sit down", "that's not real", "are you kidding me", "screaming", "that's a lifetime of wins in one", "legend", "i'm actually speechless","holy", "WHAT", "bro what", "nahhh no way", "that's insane", "lmaooo {amount}", "i'm sick", "absolutely unreal", "sheeesh", "ok that's disgusting (compliment)","what the hell", "no way", "{amount}?? is that real", "that's life-changing", "you can just retire", "that's a whole car", "i'm not even jealous, just stunned", "ticker. now. please", "what are you buying next, i'm following", "{pct} AND {amount} is just unfair", "why wasn't i in that", "are your hands shaking?"]},
+    {"key": "Shock.sold", "texts": ["actually selling it is the most impressive part", "walk away. never trade again"]},
+    {"key": "Shock.hold", "texts": ["holding that without flinching is the real flex", "when do you sell? i couldn't sit in that"]},
+
+    {"key": "ShrugLoss", "texts": ["eh you're fine", "that's nothing lol", "L but a tiny one", "rounding error", "you'll live", "walk it off", "happens", "shake it off", "who cares fr", "literally a snack","that's not even a loss", "call it fees", "posting a {amount} loss lol", "skip one coffee and you're even", "that's a scratch", "you'll never notice it", "nothing to stress about", "cheapest lesson you'll ever get", "if that one hurts this game isn't for you", "barely counts"]},
+    {"key": "ShrugLoss.edge", "texts": ["so dramatic lol", "trade you losses", "{amount} and acting like it's over lol"]},
+
+    {"key": "Sting", "texts": ["oof that's a rough one", "ugh, sorry", "pain. been there", "that's a bad day", "F", "it happens to all of us", "tomorrow's another one", "rest up", "hate to see it", "you'll bounce back","that one hurts", "yeah that stings", "been down that much, i know the feeling", "close the chart for today", "{amount} sticks with you for a few days", "paid tuition on that one", "you'll make it back", "hang in there, everyone eats one", "did you have a stop?", "go eat something"]},
+    {"key": "Sting.sold", "texts": ["cutting it was right. holding would've been worse", "taking the loss is a skill"]},
+    {"key": "Sting.hold", "texts": ["not realized yet at least", "so are you holding or cutting?"]},
+    {"key": "Sting.edge", "texts": ["there goes the paycheck", "expensive class"]},
+
+    {"key": "PctWreck", "texts": ["that % lol... at least it's tiny", "wrecked but make it cheap", "ugly % cute amount", "small size diff", "cheap way to learn that", "the % jumpscared me", "thank god that was small", "could've been so much worse", "tiny bag took one for the team", "phew, small money","brutal % but at least it's small", "{pct} down and it's only {amount}, cheap lesson", "small size saved you", "that would've been a disaster with real size", "the % is a crime scene, the amount is fine", "be glad you didn't size up", "sizing small was the best decision in that trade", "call it a vaccine", "cheap price for that lesson", "why'd you hold it that long?"]},
+    {"key": "PctWreck.edge", "texts": ["cut in half and it's one pizza lol", "the % is hell, the amount is a tuesday"]},
+
+    {"key": "StakeOuch", "texts": ["that amount tho...", "sheesh that's real money", "size cuts both ways huh", "that tick cost a salary", "big boy losses", "i felt that and it's not even mine", "whale problems", "oof the raw number", "that number made me flinch", "careful with that size man","small % but that amount...", "{pct} is {amount}??", "that's the thing about size, small moves hurt", "at that size {pct} is scary", "whales bleed that just breathing", "my whole account is smaller than that loss", "big size, big red", "how much is in there for that to be {pct}?", "is that just a normal day at your size?", "maybe trim that a little?"]},
+    {"key": "StakeOuch.hold", "texts": ["every tick on that position is my salary"]},
+
+    {"key": "Disaster", "texts": ["oh man", "bro i'm so sorry", "that's brutal", "pain. real pain", "damn. i'm sorry", "take a break fr", "that one's heavy", "sending hugs", "one day at a time", "please log off for today","oof", "oh no", "bro...", "that hurts to look at", "jesus", "nah that's rough","oh... that's a big one", "{amount}... i've got nothing", "you ok? seriously", "breathe first", "not even sure what to say", "don't touch anything else today", "that's a house", "money comes back. look after yourself", "living through that drawdown is no joke", "don't revenge trade it", "how did it get that far?"]},
+    {"key": "Disaster.sold", "texts": ["at least you cut it. that's the hard part", "takes guts to hit sell there"]},
+    {"key": "Disaster.hold", "texts": ["still holding? what's the plan?", "not realized, not over"]},
+    {"key": "Disaster.edge", "texts": ["that's a lot of rent...", "the exchange should send you a thank-you card", "you donated a car to the market"]}
+  ]
+}

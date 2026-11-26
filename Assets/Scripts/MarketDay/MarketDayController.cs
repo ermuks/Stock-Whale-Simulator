@@ -178,12 +178,14 @@ public sealed class MarketDayController : MonoBehaviour
         if (GetComponent<DoorNotes>() == null) { gameObject.AddComponent<DoorNotes>(); }
         if (GetComponent<DeskPhone>() == null) { gameObject.AddComponent<DeskPhone>(); }
         if (GetComponent<FeeHoliday>() == null) { gameObject.AddComponent<FeeHoliday>(); }
+        if (GetComponent<OperationBadge>() == null) { gameObject.AddComponent<OperationBadge>(); }
         if (GetComponent<WallCalendar>() == null) { gameObject.AddComponent<WallCalendar>(); }
         if (GetComponent<BedSleep>() == null) { gameObject.AddComponent<BedSleep>(); }
         if (GetComponent<DoorExit>() == null) { gameObject.AddComponent<DoorExit>(); }
         if (GetComponent<RoomAmbience>() == null) { gameObject.AddComponent<RoomAmbience>(); }
         if (GetComponent<Sfx>() == null) { gameObject.AddComponent<Sfx>(); }
         if (GetComponent<PlayerTactics>() == null) { gameObject.AddComponent<PlayerTactics>(); }
+        if (GetComponent<AssetTrail>() == null) { gameObject.AddComponent<AssetTrail>(); }
         if (GetComponent<CrashWatch>() == null) { gameObject.AddComponent<CrashWatch>(); }
         if (GetComponent<NightPrep>() == null) { gameObject.AddComponent<NightPrep>(); }
         if (GetComponent<MorningBriefing>() == null) { gameObject.AddComponent<MorningBriefing>(); }
@@ -503,6 +505,9 @@ public sealed class MarketDayController : MonoBehaviour
         {
             if (CorporateEconomy.Instance!=null) { yield return CorporateEconomy.Instance.ProcessListings(Day); }
             DailyIncomeController.Instance?.BeginDay(Day);
+            // 공모 물량이 거래소에 묶인 채 개미 손에 하나도 없는 상장 종목이 있으면 지금 푼다(예전에 상장한 종목의 뒤처리. 이미 풀린 종목은 건드리지 않는다).
+            if (StockManager.Instance != null)
+            { foreach (var listed in StockManager.Instance.stocks) { StockManager.Instance.SubscribePublicShares(listed); } }
             // 장이 열릴 때 개미마다 하루 벌이가 들어온다(리딩방 이용료를 내기 전에 받는다).
             decimal retailPay = 0m; int retailPaid = 0;
             for (int i = 0; i < Bots.Count; i++)
@@ -802,7 +807,9 @@ public sealed class MarketDayController : MonoBehaviour
         decimal previous = eventPrices.TryGetValue(stock, out var p) ? p : price;
         if (previous > 0m && Math.Abs(price - previous) / previous >= (decimal)surgeRatio)
         {
-            Enqueue(price > previous ? ChatEvent.PriceRise : ChatEvent.PriceFall, stock, null, previous);
+            // 한 계단(surgeRatio) 움직였다고 다 얘깃거리는 아니다. 그 종목의 지금 상황에서 말할 만한 움직임일 때만 사건으로 올린다
+            // (+500%에서 +490%로 내려온 것은 급락 사건이 아니다). 기준 가격은 어느 쪽이든 옮긴다.
+            if (InvestorSociety.PriceEventMatters(stock, price > previous)) { Enqueue(price > previous ? ChatEvent.PriceRise : ChatEvent.PriceFall, stock, null, previous); }
             eventPrices[stock] = price;
         }
 

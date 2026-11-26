@@ -160,8 +160,12 @@ public sealed class SystemMenuUI : IDisposable
         Slider(body,"휠 감도",258,1,6,()=>GameSettings.Current.wheel,v=>GameSettings.Current.wheel=v,v=>v.ToString("0.0"));
         body=categories["UI"]; Header(body,"시스템 메뉴",0);
         Slider(body,"메뉴 크기",55,.9f,1.1f,()=>GameSettings.Current.menuScale,v=>GameSettings.Current.menuScale=v,v=>Mathf.RoundToInt(v*100)+"%");
-        Header(body,"시세 색상",150);
-        MarketColorChoices(body,210);
+        // 태블릿을 들고 볼 때의 크기. 작게 하면 뒤의 모니터가 더 많이 보인다.
+        Slider(body,"태블릿 크기",118,.3f,.9f,()=>GameSettings.Current.tabletView,v=>GameSettings.Current.tabletView=v,v=>Mathf.RoundToInt(v*100)+"%");
+        var tabletCaption=body.Find("Text :: 태블릿 크기")?.GetComponent<TextMeshProUGUI>();
+        if (tabletCaption!=null) { refreshers.Add(()=>GameLocalizedText.Set(tabletCaption,GameLocale.Code=="ja" ? "タブレットの大きさ" : GameLocale.Code=="en" ? "Tablet size" : "태블릿 크기",true)); }
+        Header(body,"시세 색상",212);
+        MarketColorChoices(body,272);
     }
     private void MarketColorChoices(Transform body,float y)
     {

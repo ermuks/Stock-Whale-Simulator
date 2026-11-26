@@ -220,6 +220,19 @@ public sealed class DeviceTerminalUI : MonoBehaviour
         price.SetTextWithoutNotify(PriceTickPolicy.RoundToTick(selected.currentPrice).ToString("0",CultureInfo.InvariantCulture));
         next = 0f;
     }
+    // ── 주문 화면의 그림(호가 사다리·비율 슬라이더)이 쓰는 입구. 주문을 넣거나 취소하지 않는다. ──
+    public Stock SelectedStock => selected;
+    public bool Buying => buying;
+    public decimal DraftPrice => Number(price);
+    public decimal DraftQuantity => Number(quantity);
+    /// <summary>사다리의 줄을 누르면 그 값을 가격 칸에 넣는다.</summary>
+    public void SetDraftPrice(decimal value)
+    {
+        if (selected == null || value <= 0m) { return; }
+        price.text = PriceTickPolicy.RoundToTick(value).ToString("0", CultureInfo.InvariantCulture); next = 0f;
+    }
+    /// <summary>슬라이더: 살 수 있는(팔 수 있는) 최대 수량의 fraction만큼을 수량 칸에 넣는다. 25·50·75·100% 단추와 같은 계산이다.</summary>
+    public void SetQuantityRatio(decimal fraction) => SetQuantity(Math.Max(0m, Math.Min(1m, fraction)));
     private void SetQuantity(decimal fraction)
     {
         if (selected == null)

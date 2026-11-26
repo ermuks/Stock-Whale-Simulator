@@ -14,11 +14,11 @@ public sealed class DeskOperationUI : MonoBehaviour
     public Image heatFill, progressFill;
     public TextMeshProUGUI monitorStatus;
     [System.NonSerialized] public SpreadTradingUI spreadView;
-    private TradingOperationController operation;
+    // 자동 매매 장치는 종목마다 하나씩 돈다. 지금 보는 종목의 장치를 붙들어 두지 않고 쓸 때마다 다시 읽는다.
+    private static TradingOperationController Operation => TradingOperationController.Instance;
     private float nextRefresh;
     void Start()
     {
-        operation = TradingOperationController.Instance;
         deskTab.onClick.AddListener(ShowDesk);
         legacyTab.onClick.AddListener(ShowLegacy);
         if (!journal)
@@ -44,13 +44,13 @@ public sealed class DeskOperationUI : MonoBehaviour
         deskPanel.SetActive(false);
         legacyPanel.SetActive(true);
     }
-    private void Prepare() { operation?.Prepare(); nextRefresh = 0f; }
-    private void ChangeBudget() { operation?.CycleBudget(); nextRefresh = 0f; }
-    private void Build() { operation?.SetMode(TradingOperationController.Mode.Build); }
-    private void Drive() { operation?.SetMode(TradingOperationController.Mode.Drive); }
-    private void Unwind() { operation?.SetMode(TradingOperationController.Mode.Unwind); }
-    private void Pause() { operation?.SetMode(TradingOperationController.Mode.Paused); }
-    private void Finish() { operation?.Finish(); }
+    private void Prepare() { Operation?.Prepare(); nextRefresh = 0f; }
+    private void ChangeBudget() { Operation?.CycleBudget(); nextRefresh = 0f; }
+    private void Build() { Operation?.SetMode(TradingOperationController.Mode.Build); }
+    private void Drive() { Operation?.SetMode(TradingOperationController.Mode.Drive); }
+    private void Unwind() { Operation?.SetMode(TradingOperationController.Mode.Unwind); }
+    private void Pause() { Operation?.SetMode(TradingOperationController.Mode.Paused); }
+    private void Finish() { Operation?.Finish(); }
     private static void Text(TextMeshProUGUI target, string value)
     {
         if (target != null && !GameLocalizedText.Matches(target,value))
@@ -58,7 +58,10 @@ public sealed class DeskOperationUI : MonoBehaviour
     }
     void Update()
     {
-        if (spreadView != null || operation == null || Time.unscaledTime < nextRefresh)
+        if (spreadView != null || Time.unscaledTime < nextRefresh)
+        { return; }
+        var operation = Operation;
+        if (operation == null)
         { return; }
         nextRefresh = Time.unscaledTime + .5f;
         var manager = StockManager.Instance;

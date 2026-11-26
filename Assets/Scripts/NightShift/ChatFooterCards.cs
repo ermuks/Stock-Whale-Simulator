@@ -297,12 +297,15 @@ public sealed class ChatFooterCards : MonoBehaviour
     /// 내 리딩방에서는 카드가 작아진 만큼, 방 카드가 아예 없는 공용 라운지에서는 카드 높이만큼 내린다.
     /// 글 쓰는 칸은 채팅 목록의 아래 가장자리를 따라온다(PlayerChatBar가 맞춘다).
     /// </summary>
-    private void Compact(float shift)
+    private bool profileHidden;
+    /// <summary>참여자를 아직 고르지 않았으면 참여자 카드를 접고 그 자리만큼 채팅 목록을 늘린다("메시지를 눌러…" 빈 상자가 자리를 차지했다).</summary>
+    private void Compact(float shift, bool emptyProfile = false)
     {
-        if (Mathf.Approximately(shifted, shift)) { return; }
-        shifted = shift; compact = shift > 0f;
+        if (Mathf.Approximately(shifted, shift) && profileHidden == emptyProfile) { return; }
+        shifted = shift; compact = shift > 0f; profileHidden = emptyProfile;
         ChatFooterKit.Place(profilePanel, profilePanel.parent, CardX, ProfileTop + shift, CardWidth, ProfileHeight);
-        if (messages != null) { messages.anchorMin = new Vector2(messages.anchorMin.x, messagesBottom - shift); }
+        if (profilePanel.gameObject.activeSelf == emptyProfile) { profilePanel.gameObject.SetActive(!emptyProfile); }
+        if (messages != null) { messages.anchorMin = new Vector2(messages.anchorMin.x, messagesBottom - shift - (emptyProfile ? ProfileHeight + .008f : 0f)); }
     }
     private void BuildOpen(TextMeshProUGUI like, RectTransform root)
     {
@@ -509,7 +512,7 @@ public sealed class ChatFooterCards : MonoBehaviour
         bool opening = room != null && room.PlayerOwned && !operate && PlayerProgression.Instance != null;
         bool lounge = !opening && !npcSelected && !(room != null && room.PlayerOwned && operate);
         // 방을 열기 전의 공용 라운지에는 방 카드가 없다. 그 자리를 비워 두지 않고 채팅 목록을 늘린다.
-        Compact(room != null && room.PlayerOwned && operate ? OwnShift : lounge && !operate && PlayerProgression.Instance != null ? NoCardShift : 0f);
+        Compact(room != null && room.PlayerOwned && operate ? OwnShift : lounge && !operate && PlayerProgression.Instance != null ? NoCardShift : 0f, chat.visualProfile.SelectedBotId <= 0);
         if (openCard.gameObject.activeSelf != opening) { openCard.gameObject.SetActive(opening); }
         if (opening) { RefreshOpen(PlayerProgression.Instance); }
         else if (npcSelected) { RefreshNpc(); }

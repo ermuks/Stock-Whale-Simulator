@@ -63,7 +63,7 @@ public sealed partial class InvestorSociety
         { return; }
         using (BeforeMarker.Auto()) { BeforeSocialTick(); RefreshChatterboxes(SocialTime.Seconds); }
         using (TypingMarker.Auto()) { FlushTyping(); }
-        using (RoomTalkMarker.Auto()) { TickRoomTalk(); TickFeeHolidayTalk(); }
+        using (RoomTalkMarker.Auto()) { TickRoomTalk(); TickFeeHolidayTalk(); TickDayTalk(); }
         readySocialIntents.Clear();
         ScanMarker.Begin();
         int count = Math.Min(Math.Max(1, budget), socialBots.Count);
@@ -341,6 +341,9 @@ public sealed partial class InvestorSociety
         if (intent.facts != null && intent.facts.signal && RefreshOfferedFacts != null)
         { facts = RefreshOfferedFacts(bot, intent.facts) ?? facts; }
         PrepareSocialFacts(bot, intent, ref facts);
+        // 시세가 계기인 말(안 본 사이 값이 달라졌다, 가격이 한 계단 움직였다)은 지금 상황과 어긋나면 하지 않는다.
+        // +500%에서 +490%가 된 종목을 두고 "왜 이렇게 빠졌냐"고 놀라지 않는다. 가만히 있는 것도 반응이다.
+        if (!MarketTriggerFits(bot, intent, facts)) { return; }
         if (intent.replyToId != 0 && socialMessageIndex.TryGetValue(intent.replyToId, out var answered) && answered.facts != null)
         { facts.parentNews = answered.facts.companyNewsId > 0 || !string.IsNullOrEmpty(answered.facts.newsHeadline); }
         WeighMarker.Begin();
@@ -438,6 +441,8 @@ public sealed partial class InvestorSociety
             if (lastAct.TryGetValue(mind.SocialId, out var previous) && previous == act && consecutiveAct[mind.SocialId] >= Config.Int("maxConsecutiveAct") && !(intent.threadId > 0 && (act == SocialAct.MOCK || act == SocialAct.REBUT)))
             { weight = 0; }
             AdjustSocialWeight(bot, intent, act, ref weight);
+            // 새벽 관찰실은 따로 가린다: 근거 없는 혼잣말·잡담·놀림을 막고, 되묻기와 근거 있는 반박을 늘린다(ChatDawnRoom.cs).
+            AdjustDawnWeight(bot, intent, facts, act, ref weight);
             if (weight > 0) { result.Add(new SocialWeight { key = entry.key, value = weight }); }
         }
         return result;

@@ -175,10 +175,13 @@ public sealed class DeskControlHints : MonoBehaviour
         bool focused = views.IsFocused;
         if (focused)
         {
-            Arrange(4, true);
+            // 모니터를 확대해 보는 동안에는 스페이스바로 가진 종목만 차례로 고른다.
+            bool monitor = DeskViewController.MonitorZoomed;
+            Arrange(monitor ? 5 : 4, true);
             Hint(0, GameKeyBindings.Interact.ToString(), labels.back); Hint(1, views.Target >= DeskViewTarget.TabletOne ? "Q / E" : "1 / 2 / 3", views.Target >= DeskViewTarget.TabletOne ? labels.accounts : labels.screens);
             Hint(2, "↑ / ↓", labels.stocks);
             if (PhoneCallController.Available) { Hint(3, "Tab", labels.phone); } else { cells[3].gameObject.SetActive(false); }
+            if (monitor) { string code = GameLocale.Code; Hint(4, "Space", code == "ja" ? "保有銘柄" : code == "en" ? "Holdings" : "보유 종목", true); }
             return;
         }
         if (PhoneCallController.Available)
@@ -212,13 +215,13 @@ public sealed class DeskControlHints : MonoBehaviour
         return key == KeyCode.Space || key == KeyCode.Tab ? "P" : key.ToString();
     }
 
-    private void Hint(int index, string key, string caption)
+    private void Hint(int index, string key, string caption, bool literal = false)
     {
         cells[index].gameObject.SetActive(true);
         if (!GameLocalizedText.Matches(keys[index],key))
         { GameLocalizedText.Set(keys[index],key); }
         if (!GameLocalizedText.Matches(captions[index],caption))
-        { GameLocalizedText.Set(captions[index],caption); }
+        { GameLocalizedText.Set(captions[index],caption,literal); }
     }
 
     private static RectTransform Rect(string name, Transform parent, Vector2 position, Vector2 size)

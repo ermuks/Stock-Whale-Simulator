@@ -16,6 +16,12 @@ public sealed partial class InvestorSociety
         message.debug ??= new SocialMessageDebug();
         message.debug.speechDisposition = mind.Traits.SpeechLabel; message.debug.speechKey = null; message.debug.speechVoice = VoiceLabel(mind);
         var random = CosmeticRandom(mind, message, 0x58c43af1u);
+        // 인증 카드가 붙은 말에 다는 답은 수익률만이 아니라 금액도 보고 한다(ChatProofReaction.cs): 푼돈이면 가볍게 놀리고, 큰돈이면 놀란다.
+        if (TryProofReply(mind, template, message, parent, out string proofLine)) { return proofLine; }
+        // 새벽 관찰실의 말은 그 방의 대사로 한다(ChatDawnRoom.cs): 지금의 실제 값을 대고, 물음에는 어쩔 것인지를 답한다.
+        if (TryDawnLine(mind, template, message, parent, recent, out string dawnLine)) { return dawnLine; }
+        // 라운지에서 남의 말에 다는 맞장구는 가끔 한두 마디로 끝난다("ㄹㅇ", "그니까", "fr", "それな")(ChatProofReaction.cs의 TryBackchannel). 몇 초에 한 번만.
+        if (TryBackchannel(mind, template, message, parent, out string backLine)) { return backLine; }
         double communityChance = ChatSocialConfig.Current.Get(mind.Traits.Serious ? "communitySeriousChance" : "communityPlayfulChance");
         string phrase = ContextualSocialText(template, message, parent);
         bool community = false;
@@ -23,6 +29,14 @@ public sealed partial class InvestorSociety
         bool communityRoll = random.Next() < communityChance;
         bool marketLine = PrefersMarketLine(message) && CommunityAllowed(template, message) && MarketGroup(template, message, parent) != null;
         var chatterGroup = ChatterGroup(mind, template, message, parent);
+        // 시세를 두고 하는 혼잣말은 번역하지 않는다. 그 언어로 따로 쓴 대사에서, 지금 상황과 말하는 사람의 처지에 맞는 것을 고른다
+        // (ChatSituationSociety.cs). 그 언어의 대사 파일이 없을 때만 아래의 예전 길(한국어 원문 → 번역)로 간다.
+        bool priceTalk = message.facts != null && (message.facts.notice == "WATCH_RISE" || message.facts.notice == "WATCH_FALL" ||
+            message.facts.sourceEvent == "PriceRise" || message.facts.sourceEvent == "PriceFall");
+        bool nativeCovers = false;
+        if ((priceTalk || chatterGroup == null) && TryNativeMarketLine(mind, template, message, parent, recent, out string nativeLine, out nativeCovers)) { return nativeLine; }
+        // 그 언어의 엔진이 맡는 말인데 엔진이 시세 얘기를 안 하기로 했으면(그 언어권이 이 상황을 잘 입에 올리지 않는다) 번역된 시세 대사로도 말하지 않는다.
+        if (nativeCovers) { marketLine = false; }
         // 남의 말에 다는 답이고, 그 말의 갈래에 맞춰 쓴 답글 묶음이 있으면(자랑에 묻는 말, 한탄에 맞장구 …) 그것을 쓴다.
         // 예전에는 열에 몇 번만 썼고, 나머지는 방 전체에 하는 말투의 기본 문장이 나가서 "@아무개 혹시 OO 보는 사람 있어…?"가 됐다.
         SocialCommunityPhrases replyGroup = null;

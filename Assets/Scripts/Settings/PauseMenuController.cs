@@ -55,7 +55,7 @@ public sealed class PauseMenuController : MonoBehaviour
         var manager = StockManager.Instance;
         if (manager == null || !NewGame.CanBegin) { inSession = true; priorTimeScale = 1; priorCursor = CursorLockMode.None; priorVisible = true; Resume(); return; }
         CurrentPage = Page.Home;
-        UI.NewGame(NewGame.SuggestedCompany, manager.economy.retailStartingCash);
+        UI.NewGame(NewGame.SuggestedCompany, StockManager.PlayerStartCash);
     }
     public void StartNewGame()
     {
@@ -80,12 +80,25 @@ public sealed class PauseMenuController : MonoBehaviour
         // 프롤로그의 검은 화면이 걷히기 전에 눈을 감은 채 침대에 누워 있게 해 둔다. 검은 화면이 걷히면 눈을 뜨고 일어난다.
         if (introShown) { BedSleep.Instance?.WakeUp(); }
     }
+    /// <summary>지금 Esc를 누르면 확대한 화면(모니터·태블릿·서랍)에서 빠져나오는가. 쪽지를 들고 있거나 연출 중이면 화면 쪽이 Esc를 받지 않으므로 아니다.</summary>
+    private static bool ViewTakesEscape
+    {
+        get
+        {
+            if (DoorNotes.Holding || RoomShell.Cinematic) { return false; }
+            var views = DeskViewController.Instance;
+            return views != null && views.Ready && (views.IsFocused || views.IsCustomView) || TabletViewController.IsTabletHeld;
+        }
+    }
     private void Update()
     {
         // 글을 쓰는 중의 Esc는 입력만 끝낸다. 메뉴는 열지 않는다.
         if (MouseCameraController.TextEntryEscape) { MouseCameraController.EndTextEntry(); consumedFrame = Time.frameCount; return; }
         // 휴대폰을 들고 있는 동안의 Esc는 휴대폰의 것이다(내용 → 목록 → 내려놓기). 메뉴는 열지 않는다.
         if (CurrentPage == Page.Closed && DeskPhone.Raised && !CollapseSleep.Active && !MorningBriefing.Blocking && Input.GetKeyDown(KeyCode.Escape)) { return; }
+        // 모니터·태블릿을 확대해 보는 중(서랍을 들여다보는 중)의 Esc는 그 화면의 것이다: 확대를 풀고 자리로 돌아간다. 메뉴는 열지 않는다.
+        // 이 스크립트가 화면 쪽보다 먼저 돌기 때문에, 여기서 비켜 주지 않으면 메뉴가 먼저 열려 확대가 풀리지 않는다.
+        if (CurrentPage == Page.Closed && ViewTakesEscape && !CollapseSleep.Active && !MorningBriefing.Blocking && Input.GetKeyDown(KeyCode.Escape)) { return; }
         if (Input.GetKeyDown(KeyCode.Escape) && !(CollapseSleep.Active && CurrentPage == Page.Closed))
         {
             consumedFrame = Time.frameCount;

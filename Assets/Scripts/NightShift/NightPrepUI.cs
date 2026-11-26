@@ -25,7 +25,8 @@ public sealed class NightPrepUI : MonoBehaviour
 
     public static NightPrepUI Install(TabletAccountUI owner)
     {
-        if (owner == null || owner.second) { return null; }
+        // 밤 준비는 하는 일이라 조작 태블릿(2번)에 둔다.
+        if (owner == null || !owner.second) { return null; }
         var image = TabletKitStyle.Surface("Night Prep", owner.contentRoot.transform, .02f, .18f, .96f, .80f, TabletKitStyle.Background);
         image.name = "Panel :: Night Prep";
         var screens = new List<GameObject>(owner.screens) { image.gameObject }; owner.screens = screens.ToArray();

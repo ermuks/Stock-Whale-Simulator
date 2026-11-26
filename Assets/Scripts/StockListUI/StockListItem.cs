@@ -91,8 +91,22 @@ public class StockListItem : MonoBehaviour
         Column(textChangePct10, false, edge + side + gap, middle, 40f, new Color32(138, 150, 163, 255));
         // 이름과 꼬리표는 행의 세로 가운데에 둔다.
         if (textName != null) { Middle(textName.rectTransform); textName.alignment = TextAlignmentOptions.MidlineLeft; }
-        if (riskBadgeBackground != null) { Middle(riskBadgeBackground.rectTransform); }
-        if (textRisk != null) { Middle(textRisk.rectTransform); }
+        // 이름 왼쪽에 회사 로고, 이름 밑에 업종(그림 + 이름). 이름은 그만큼 오른쪽·위로 옮긴다.
+        if (textName != null)
+        {
+            var nameRect = textName.rectTransform; nameRect.anchoredPosition = new Vector2(nameRect.anchoredPosition.x + LogoShift, 26f);
+            logo = new GameObject("Area :: Company Logo", typeof(RectTransform)).GetComponent<RectTransform>();
+            logo.SetParent(transform, false); logo.gameObject.layer = gameObject.layer;
+            logo.anchorMin = logo.anchorMax = new Vector2(0f, .5f); logo.pivot = new Vector2(0f, .5f); logo.sizeDelta = new Vector2(140f, 140f); logo.anchoredPosition = new Vector2(34f, 0f);
+            sectorIcon = new GameObject("Image :: Sector Icon", typeof(RectTransform)).AddComponent<Image>(); sectorIcon.raycastTarget = false; sectorIcon.preserveAspect = true;
+            var iconRect = sectorIcon.rectTransform; iconRect.SetParent(transform, false); sectorIcon.gameObject.layer = gameObject.layer;
+            iconRect.anchorMin = iconRect.anchorMax = new Vector2(0f, .5f); iconRect.pivot = new Vector2(0f, .5f); iconRect.sizeDelta = new Vector2(40f, 40f); iconRect.anchoredPosition = new Vector2(nameRect.anchoredPosition.x, -44f);
+            sectorLabel = Instantiate(textName, transform); sectorLabel.name = "Text :: Sector"; sectorLabel.raycastTarget = false;
+            var labelRect = sectorLabel.rectTransform; labelRect.anchoredPosition = new Vector2(nameRect.anchoredPosition.x + 52f, -44f); labelRect.sizeDelta = new Vector2(460f, 50f);
+            sectorLabel.fontSize = 38f; sectorLabel.enableAutoSizing = false; sectorLabel.color = SectorInk; sectorIcon.color = SectorInk;
+        }
+        if (riskBadgeBackground != null) { Middle(riskBadgeBackground.rectTransform); riskBadgeBackground.rectTransform.anchoredPosition = new Vector2(riskBadgeBackground.rectTransform.anchoredPosition.x, 20f); }
+        if (textRisk != null) { Middle(textRisk.rectTransform); textRisk.rectTransform.anchoredPosition = new Vector2(textRisk.rectTransform.anchoredPosition.x, 20f); }
         if (textSymbol != null) { textSymbol.gameObject.SetActive(false); }
         // 이름과 가격 사이의 빈 자리에 오늘의 흐름 선을 둔다.
         var holder = new GameObject("Image :: Flow Line", typeof(RectTransform), typeof(CanvasRenderer)) { layer = gameObject.layer };
@@ -101,7 +115,28 @@ public class StockListItem : MonoBehaviour
         var area = flow.rectTransform;
         area.anchorMin = new Vector2(1f, .2f); area.anchorMax = new Vector2(1f, .8f); area.pivot = new Vector2(1f, .5f);
         area.sizeDelta = new Vector2(FlowWidth, 0f); area.anchoredPosition = new Vector2(-(edge + side + gap + middle + FlowGap), 0f);
+        // 오늘의 미니 캔들(시가·고가·저가·종가)은 흐름 선 바로 왼쪽으로 옮긴다(맨 왼쪽은 로고 자리다).
+        var candle = transform.Find("Image :: Simple Candle") as RectTransform;
+        if (candle != null)
+        {
+            candle.anchorMin = new Vector2(1f, candle.anchorMin.y); candle.anchorMax = new Vector2(1f, candle.anchorMax.y); candle.pivot = new Vector2(1f, candle.pivot.y);
+            candle.anchoredPosition = new Vector2(-(edge + side + gap + middle + FlowGap + FlowWidth + 18f), candle.anchoredPosition.y);
+        }
+        // 오른쪽 끝의 보조 정보(거래량·거래대금)와 등락률은 한 단 밝고 크게: 예전에는 너무 흐려 읽히지 않았다.
+        Column(textVolume10, true, edge, side, 40f, new Color32(206, 214, 222, 255));
+        Column(textTurnover, false, edge, side, 38f, new Color32(166, 180, 192, 255));
+        Column(textPrice, true, edge + side + gap, middle, 62f, PriceInk);
+        Column(textChangePct10, false, edge + side + gap, middle, 44f, new Color32(166, 180, 192, 255));
+        // 고른 종목: 줄 왼쪽 끝의 굵은 청록 막대 + 은은한 청록 바탕. 체결 깜빡임은 줄 전체를 물들이지 않고 로고 옆 작은 눈금으로만 보인다.
+        selectBar = HaltImage("Image :: Selected Bar", TabletKitStyle.Accent);
+        selectBar.rectTransform.anchorMin = new Vector2(0f, .08f); selectBar.rectTransform.anchorMax = new Vector2(0f, .92f); selectBar.rectTransform.pivot = new Vector2(0f, .5f);
+        selectBar.rectTransform.sizeDelta = new Vector2(10f, 0f); selectBar.rectTransform.anchoredPosition = Vector2.zero; selectBar.enabled = false;
+        if (selectionHighlight != null) { selectionHighlight.color = new Color(.18f, .91f, .81f, .08f); }
+        tradeTick = HaltImage("Image :: Trade Tick", Color.clear);
+        tradeTick.rectTransform.anchorMin = tradeTick.rectTransform.anchorMax = new Vector2(0f, .5f); tradeTick.rectTransform.pivot = new Vector2(0f, .5f);
+        tradeTick.rectTransform.sizeDelta = new Vector2(8f, 56f); tradeTick.rectTransform.anchoredPosition = new Vector2(184f, 0f); tradeTick.enabled = false;
     }
+    private Image selectBar, tradeTick;
 
     // ── 흐름 선 ──
     // 오늘의 분봉 종가를 선으로 잇는다. 가운데가 전일 종가다. 가로는 오늘 지금까지 흐른 만큼을 폭에 가득 채운다(장 초반에도 모양이 보이게. 적어도 20분 폭).
@@ -144,7 +179,24 @@ public class StockListItem : MonoBehaviour
         flowPoints.Add(new Vector2(Mathf.Clamp01(lastX + 1f / span), Height((float)stock.currentPrice)));
         flow.Show(flowPoints, 5f);
     }
-    private static readonly Color32 PriceInk = new(236, 240, 243, 255);
+    private static readonly Color32 PriceInk = new(236, 240, 243, 255), SectorInk = new(150, 166, 178, 255);
+    private const float LogoShift = 96f;
+    private RectTransform logo;
+    private Image sectorIcon;
+    private TextMeshProUGUI sectorLabel;
+    private Stock logoStock;
+    private int sectorLocale = -1;
+    /// <summary>로고와 업종 줄을 그 종목으로 맞춘다(종목이나 언어가 바뀔 때만).</summary>
+    private void ApplyIdentity(Stock stock)
+    {
+        if (logo == null || stock == null) { return; }
+        if (logoStock == stock && sectorLocale == GameLocale.Revision) { return; }
+        logoStock = stock; sectorLocale = GameLocale.Revision;
+        UiPictograms.Logo(logo, stock, new Color32(23, 29, 34, 255));
+        var sector = UiPictograms.SectorOf(stock);
+        sectorIcon.sprite = UiPictograms.SectorIcon(sector);
+        GameLocalizedText.Set(sectorLabel, UiPictograms.SectorName(sector), true);
+    }
     private static void Middle(RectTransform rect)
     {
         rect.anchorMin = new Vector2(rect.anchorMin.x, .5f); rect.anchorMax = new Vector2(rect.anchorMax.x, .5f); rect.pivot = new Vector2(rect.pivot.x, .5f);
@@ -192,9 +244,11 @@ public class StockListItem : MonoBehaviour
             DeviceTerminalUI.Set(textPrice,PriceTickPolicy.FormatPrice(stock.currentPrice));
         }
 
+        ApplyIdentity(stock);
         if (!stock.IsListed) { ApplyAccounts(null); ApplyWaiting(); return; }
         ApplyRiskBadge(stock);
         ApplyAccounts(stock);
+        ApplyOperating(stock);
         ApplyHalt(stock.IsTradingHalted);
         LayoutBadge();
         bool nextSelected = StockManager.Instance != null && StockManager.Instance.CurrentStock == stock;
@@ -205,6 +259,7 @@ public class StockListItem : MonoBehaviour
             if (selectionHighlight != null)
             {
                 selectionHighlight.enabled = selected;
+                if (selectBar != null) { selectBar.enabled = selected; }
             }
             else if (rowBackground != null)
             {
@@ -260,6 +315,8 @@ public class StockListItem : MonoBehaviour
     /// <summary>아직 상장하지 않은(다음 개장에 상장하는) 종목의 행: 꼬리표에 '상장 대기 중', 거래는 내일 09:00부터.</summary>
     private void ApplyWaiting()
     {
+        // 상장 대기 꼬리표는 늘 보인다(안전 등급이라 숨겨 둔 꼬리표를 다시 켠다).
+        if (riskHidden) { riskHidden = false; badgeLayoutDirty = true; if (textRisk != null) { textRisk.gameObject.SetActive(true); } if (riskBadgeBackground != null) { riskBadgeBackground.gameObject.SetActive(true); } }
         string code = GameLocale.Code;
         string badge = code == "ja" ? "上場待ち" : code == "en" ? "Listing soon" : "상장 대기 중";
         string note = code == "ja" ? "明日 09:00" : code == "en" ? "09:00 tomorrow" : "내일 09:00";
@@ -291,7 +348,7 @@ public class StockListItem : MonoBehaviour
         { return; }
         badgeLayoutDirty = false; badgeLayoutWidth = width; badgeLayoutLocale = GameLocale.Revision;
         // 꼬리표는 글자 길이만큼만(짧게).
-        float badgeWidth = Mathf.Clamp(textRisk.GetPreferredValues(textRisk.text).x + 26f,64f,248f);
+        float badgeWidth = riskHidden ? -AccountGap : Mathf.Clamp(textRisk.GetPreferredValues(textRisk.text).x + 26f,64f,248f);
         // 보유 계좌 꼬리표가 차지할 폭(켜져 있는 것만).
         float accountsWidth = 0f;
         for (int i = 0; i < AccountCount; i++)
@@ -301,7 +358,7 @@ public class StockListItem : MonoBehaviour
             accountsWidth += accountWidths[i] + AccountGap;
         }
         // 흐름 선의 자리(FlowWidth + 여백)만큼 이름이 쓸 수 있는 폭을 줄인다.
-        float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - accountsWidth - 16f - textName.rectTransform.anchoredPosition.x - FlowWidth - FlowGap * 2f,120f,650f);
+        float nameWidth = Mathf.Clamp(width - 40f - 570f - 32f - badgeWidth - accountsWidth - 16f - textName.rectTransform.anchoredPosition.x - FlowWidth - FlowGap * 2f - 64f,120f,650f);
         textName.rectTransform.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal,nameWidth);
         float x = textName.rectTransform.anchoredPosition.x + Mathf.Min(nameWidth,textName.GetPreferredValues(textName.text).x) + 16f;
         var position = riskBadgeBackground.rectTransform.anchoredPosition; position.x = x;
@@ -325,7 +382,7 @@ public class StockListItem : MonoBehaviour
     // 내가 이 종목을 들고 있는 계좌를 이름 옆에 작은 꼬리표 하나로 보인다(계좌1, 계좌2, 둘 다면 계좌1·2). 들고 있지 않으면 아무것도 없다.
     // 꼬리표는 위험 꼬리표를 본떠 만든다(크기·글꼴이 같다). 2번 계좌는 열려 있을 때만 본다.
     // 두 계좌를 꼬리표 두 개로 따로 보였을 때는 긴 종목 이름이 잘리고 흐름 선과 겹쳤다. 그래서 하나로 묶는다.
-    private const int AccountCount = 1;
+    private const int AccountCount = 2;
     private const float AccountGap = 10f;
     // 1번만: 청록, 2번만: 호박색, 둘 다: 밝은 회색.
     private static readonly Color32[] AccountInk = { new(46, 230, 208, 255), new(236, 180, 90, 255), new(214, 222, 230, 255) };
@@ -340,7 +397,7 @@ public class StockListItem : MonoBehaviour
         if (stock != null && accounts != null && accounts.Ready)
         {
             if (accounts.primary != null && accounts.primary.GetOwnedVolume(stock) > 0m) { mask |= 1; }
-            if (accounts.AutomatedUnlocked && accounts.automated != null && accounts.automated.GetOwnedVolume(stock) > 0m) { mask |= 2; }
+            if (accounts.automated != null && accounts.automated != accounts.primary && accounts.automated.GetOwnedVolume(stock) > 0m) { mask |= 1; }
         }
         if (mask == accountMask && accountLocale == GameLocale.Revision) { return; }
         accountMask = mask; accountLocale = GameLocale.Revision; badgeLayoutDirty = true;
@@ -355,9 +412,34 @@ public class StockListItem : MonoBehaviour
         }
         if (accountChips[0].gameObject.activeSelf != shown) { accountChips[0].gameObject.SetActive(shown); accountLabels[0].gameObject.SetActive(shown); }
         if (!shown) { return; }
-        string code = GameLocale.Code, word = code == "ja" ? "口座" : code == "en" ? "Acct " : "계좌";
-        GameLocalizedText.Set(accountLabels[0], word + (mask == 3 ? "1·2" : mask == 2 ? "2" : "1"), true);
+        // 계좌가 하나라 번호는 붙이지 않는다. 들고 있다는 것만 알린다.
+        string code = GameLocale.Code;
+        GameLocalizedText.Set(accountLabels[0], code == "ja" ? "保有" : code == "en" ? "Held" : "보유", true);
+        mask = 1;
         Color ink = AccountInk[mask - 1]; accountLabels[0].color = ink; ink.a = .14f; accountChips[0].color = ink;
+    }
+
+    // ── 작전 중 ──
+    // 이 종목에서 내가 무언가를 돌리고 있으면(작전 도구, 스프레드, 매집) 보유 꼬리표 옆에 호박색 꼬리표 하나를 더 붙인다.
+    // 목록을 훑어보기만 해도 어디에 손을 대고 있는지 보인다.
+    private bool operating; private int operatingLocale = -1; private float nextOperating;
+    private void ApplyOperating(Stock stock)
+    {
+        bool on = stock != null && stock.IsListed && PlayerOperations.Active(stock);
+        if (on == operating && operatingLocale == GameLocale.Revision) { return; }
+        operating = on; operatingLocale = GameLocale.Revision; badgeLayoutDirty = true;
+        if (textRisk == null || riskBadgeBackground == null) { return; }
+        if (accountChips[1] == null)
+        {
+            if (!on) { return; }
+            accountChips[1] = Instantiate(riskBadgeBackground, transform); accountChips[1].name = "Image :: Operating";
+            accountLabels[1] = Instantiate(textRisk, transform); accountLabels[1].name = "Text :: Operating";
+            accountChips[1].raycastTarget = false; accountLabels[1].raycastTarget = false;
+        }
+        if (accountChips[1].gameObject.activeSelf != on) { accountChips[1].gameObject.SetActive(on); accountLabels[1].gameObject.SetActive(on); }
+        if (!on) { return; }
+        GameLocalizedText.Set(accountLabels[1], PlayerOperations.Chip, true);
+        Color ink = AccountInk[1]; accountLabels[1].color = ink; ink.a = .16f; accountChips[1].color = ink;
     }
 
     /// <summary>거래량 표기: 0~9,999 → #,##0 / 10,000~999,999 → k / 1,000,000~ → M</summary>
@@ -408,15 +490,10 @@ public class StockListItem : MonoBehaviour
     {
         if (resting == null || volume <= 0m)
         { return; }
-        if (tradeFlash == null)
-        {
-            tradeFlash = HaltImage("Image :: Trade Flash", Color.clear);
-            tradeFlash.rectTransform.anchorMin = Vector2.zero; tradeFlash.rectTransform.anchorMax = Vector2.one;
-            // 바탕 그림 바로 위, 글자와 캔들 아래에 둔다.
-            tradeFlash.transform.SetSiblingIndex(rowBackground != null && rowBackground.transform.parent == transform ? rowBackground.transform.GetSiblingIndex() + 1 : 0);
-        }
-        Color tone = resting.isBuy ? Down : Up; tone.a = TradeFlashAlpha;
-        tradeFlash.color = tone; tradeFlash.enabled = true;
+        // 줄 전체를 물들이던 깜빡임 대신, 로고 옆 작은 눈금이 체결 쪽 색으로 잠깐 켜진다(거래가 몰리는 종목은 쉴 새 없이 깜빡인다).
+        if (tradeTick == null) { return; }
+        tradeFlash = tradeTick;
+        tradeTick.color = resting.isBuy ? Down : Up; tradeTick.enabled = true;
         flashUntil = Time.unscaledTime + TradeFlashSeconds;
     }
     void Update()
@@ -466,8 +543,13 @@ public class StockListItem : MonoBehaviour
         return image;
     }
 
+    /// <summary>안전한 종목에는 꼬리표를 달지 않는다(모든 줄에 붙은 "안전"이 정작 다른 표시를 묻었다). 주의·위험·거래정지만 보인다.</summary>
+    private bool riskHidden;
     void ApplyRiskBadge(Stock stock)
     {
+        bool quiet = !stock.IsTradingHalted && (stock.RiskPending || stock.RiskGrade == StockRiskGrade.Safe);
+        if (quiet != riskHidden) { riskHidden = quiet; badgeLayoutDirty = true; if (textRisk != null) { textRisk.gameObject.SetActive(!quiet); } if (riskBadgeBackground != null) { riskBadgeBackground.gameObject.SetActive(!quiet); } }
+        if (quiet) { return; }
         Color color = stock.RiskPending ? new Color32(157, 166, 175, 255) : stock.RiskGrade switch
         {
             StockRiskGrade.Safe => new Color32(133, 182, 151, 255),

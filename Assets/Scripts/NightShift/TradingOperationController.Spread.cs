@@ -52,9 +52,30 @@ public sealed partial class TradingOperationController
         }
         return bid >= 1m && ask > bid && PriceTickPolicy.IsValidPrice(bid) && PriceTickPolicy.IsValidPrice(ask);
     }
+    /// <summary>
+    /// 스프레드 매수 호가에 쓸 현금. 스프레드는 쓸 수 있는 현금을 모두 매수 호가에 건다.
+    /// 여러 종목에서 돌리면 먼저 시작한 종목이 현금을 다 가져가 나머지는 매수 호가를 못 낸다.
+    /// 그래서 같은 계좌의 스프레드들이 (남은 현금 + 지금 걸어 둔 매수 호가의 돈)을 고르게 나눠 쓴다. 하나만 돌 때는 예전과 같다.
+    /// </summary>
+    private decimal SpreadCashShare()
+    {
+        decimal own = SpreadAvailableCash + (Live(spreadBuy) ? spreadBuy.price * spreadBuy.volume : 0m);
+        decimal pool = SpreadAvailableCash; int runs = 0;
+        for (int i = 0; i < all.Count; i++)
+        {
+            var other = all[i];
+            if (other == null || !other.SpreadRunning || other.account != account) { continue; }
+            runs++;
+            if (other.Live(other.spreadBuy)) { pool += other.spreadBuy.price * other.spreadBuy.volume; }
+        }
+        return runs <= 1 ? own : Math.Min(own, pool / runs);
+    }
     public bool StartSpread(Stock stock)
     {
+        Adopt();
         if (Active)
+        { Feedback = "매매 실행 중"; return false; }
+        if (RunOn(stock) != null)
         { Feedback = "매매 실행 중"; return false; }
         var accounts = PlayerAccounts.Instance;
         if (accounts != null && account == accounts.automated && !accounts.AutomatedUnlocked)
@@ -75,7 +96,7 @@ public sealed partial class TradingOperationController
         FillCount = 0; Elapsed = 0f;
         pending.Clear(); spreadBuy = spreadSell = null;
         SpreadBid = bid; SpreadAsk = ask;
-        CurrentMode = Mode.Spread;
+        CurrentMode = Mode.Spread; StartedAt = SessionClock.Time;
         SpreadStartedGameMinute=SpreadUpdatedGameMinute=DeviceMarketJournal.GameNow; SpreadEndedGameMinute=0;
         Target.OnMatchedTrade += OnFill;
         nextSpread = 0f;
@@ -118,7 +139,7 @@ public sealed partial class TradingOperationController
         { Retire(ref spreadBuy); }
         if (!Live(spreadSell) || spreadSell.price != ask)
         { Retire(ref spreadSell); }
-        decimal buyCash = SpreadAvailableCash + (Live(spreadBuy) ? spreadBuy.price * spreadBuy.volume : 0m);
+        decimal buyCash = SpreadCashShare();
         decimal sellShares = SpreadAvailableShares(Target) + SpreadSellRemaining;
         MaintainQuote(ref spreadBuy, true, bid, decimal.Floor(buyCash / bid));
         MaintainQuote(ref spreadSell, false, ask, decimal.Floor(sellShares));

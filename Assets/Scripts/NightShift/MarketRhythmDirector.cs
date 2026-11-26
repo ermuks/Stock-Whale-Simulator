@@ -180,7 +180,11 @@ public sealed class MarketRhythmDirector : MonoBehaviour
         bool chasing = buy && mind.HasFomoFor(stock);
         // 국면은 거래의 활발함만 정한다. 거래량을 유지하기 위해 남긴다.
         bool active = tape.Rhythm == Rhythm.Expansion || tape.Rhythm == Rhythm.ProfitTaking || tape.Activity > 35f;
-        bool cross = random.NextDouble() < (chasing ? .8 : active ? .68 : .3);
+        // 믿는 값과 시세가 많이 벌어져 있으면 기다리지 않고 호가를 친다(싸다고 보면 매도 호가를 사고, 비싸다고 보면 매수 호가에 판다).
+        // 예전에는 "싸다"고 느껴도 대부분 매수 호가에 걸어 두기만 해서 값이 올라오지 않았다. 차이가 3%를 넘는 만큼 급해진다(15% 차이에서 가장 급하다).
+        float edge = believed > 0m ? (float)(believed / stock.currentPrice - 1m) : 0f;
+        double eager = Mathf.Clamp((buy ? edge : -edge) - .03f, 0f, .12f) * 3.5f;
+        bool cross = random.NextDouble() < Math.Min(.92, (chasing ? .8 : active ? .68 : .3) + eager);
         if (buy == cross)
         { stock.orderBook.GetTopAsks(levels, 1); }
         else

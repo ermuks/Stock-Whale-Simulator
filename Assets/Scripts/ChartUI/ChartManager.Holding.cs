@@ -6,7 +6,7 @@ using UnityEngine;
 public partial class ChartManager
 {
     private const int HoldingRows = 4;
-    private const float HoldingLeft = .72f, HoldingWidth = .255f;
+    private const float HoldingLeft = .70f, HoldingWidth = .28f;
     private static readonly string[] HoldingNames = { "평균단가", "수익률", "평가손익", "평가금액" };
     private static readonly (string en, string ja)[] HoldingNamesOther =
     { ("Avg. price", "平均単価"), ("Return", "損益率"), ("Unrealized P/L", "評価損益"), ("Market value", "評価額") };
@@ -29,12 +29,34 @@ public partial class ChartManager
                 holdingValues[i] = HoldingText(header, "Text :: Holding Value " + i);
             }
         }
-        PlaceHeaderText(holdingEmpty, header, HoldingLeft, .38f, HoldingWidth, .24f, 24f, true, true);
-        for (int i = 0; i < HoldingRows; i++)
+        // 세 줄. 위: 평가손익(가장 크게)과 수익률. 가운데: 평균단가 · 평가금액. 아래: 거래량 · 거래대금(이 종목 전체).
+        float L = HoldingLeft, W = HoldingWidth;
+        PlaceHeaderText(holdingEmpty, header, L, .10f, W, .30f, 26f, true);
+        PlaceHeaderText(holdingCaptions[2], header, L, .02f, W * .55f, .17f, 20f, true);
+        PlaceHeaderText(holdingValues[2], header, L, .17f, W * .64f, .30f, 34f);
+        PlaceHeaderText(holdingCaptions[1], header, L + W * .6f, .02f, W * .4f, .17f, 20f, true, true);
+        PlaceHeaderText(holdingValues[1], header, L + W * .6f, .17f, W * .4f, .30f, 30f, false, true);
+        PlaceHeaderText(holdingCaptions[0], header, L, .52f, W * .2f, .2f, 20f, true);
+        PlaceHeaderText(holdingValues[0], header, L + W * .18f, .52f, W * .3f, .2f, 23f);
+        PlaceHeaderText(holdingCaptions[3], header, L + W * .5f, .52f, W * .2f, .2f, 20f, true);
+        PlaceHeaderText(holdingValues[3], header, L + W * .66f, .52f, W * .34f, .2f, 23f, false, true);
+        PlaceHeaderCaption(header, "Volume Caption", L, .77f, W * .2f);
+        PlaceHeaderText(textVolume, header, L + W * .18f, .77f, W * .3f, .2f, 23f);
+        PlaceHeaderCaption(header, "Turnover Caption", L + W * .5f, .77f, W * .2f);
+        PlaceHeaderText(textTurnover, header, L + W * .66f, .77f, W * .34f, .2f, 23f, false, true);
+        foreach (string name in new[] { "Volume Caption", "Turnover Caption" })
         {
-            float y = .075f + i * .225f;
-            PlaceHeaderText(holdingCaptions[i], header, HoldingLeft, y, HoldingWidth * .42f, .20f, 22f, true);
-            PlaceHeaderText(holdingValues[i], header, HoldingLeft + HoldingWidth * .36f, y, HoldingWidth * .64f, .20f, 24f, false, true);
+            var child = header.Find("Text :: " + name);
+            if (child != null) { var label = child.GetComponent<TextMeshProUGUI>(); label.alignment = TextAlignmentOptions.MidlineLeft; label.fontSize = 20f; }
+        }
+        // 구역 사이의 얇은 세로선 두 개(상자 대신 선으로 나눈다).
+        foreach (float x in new[] { .365f, L - .012f })
+        {
+            string name = "Image :: Header Divider " + x.ToString("0.000");
+            if (header.Find(name) != null) { continue; }
+            var line = new GameObject(name, typeof(RectTransform)).AddComponent<UnityEngine.UI.Image>();
+            line.rectTransform.SetParent(header, false); line.raycastTarget = false; line.color = new Color32(40, 54, 64, 255);
+            line.rectTransform.anchorMin = new Vector2(x, .1f); line.rectTransform.anchorMax = new Vector2(x + .0012f, .9f); line.rectTransform.offsetMin = line.rectTransform.offsetMax = Vector2.zero;
         }
         RefreshHolding();
     }

@@ -127,8 +127,36 @@ public sealed class LeadingRoomUI : MonoBehaviour
         InvestorSociety.Instance?.Issue(chat.SelectedRoom, StockManager.Instance.CurrentStock, buy, sell);
     }
     private void Cancel() { InvestorSociety.Instance?.CancelRoom(chat.SelectedRoom); }
+    /// <summary>
+    /// 고른 채팅방 탭을 분명하게: 고른 탭은 밝은 글자 + 아래 청록 막대 + 한 단 밝은 바탕, 나머지는 바탕 없이 흐린 글자.
+    /// (예전에는 세 탭이 똑같은 회색 상자라 지금 어느 방인지 알 수 없었다.)
+    /// </summary>
+    private void RefreshTabs()
+    {
+        if (chat == null) { return; }
+        int selectedRoom = chat.SelectedRoom;
+        foreach (var (tab, room) in new[] { (publicRoom, 0), (npcRoom, NpcLeadingRoom.RoomId), (roomOne, 1) })
+        {
+            if (tab == null || !tab.gameObject.activeInHierarchy) { continue; }
+            bool on = room == 1 ? selectedRoom >= 1 && selectedRoom <= 3 : selectedRoom == room;
+            var face = tab.image;
+            if (face != null) { var tone = on ? new Color32(30, 46, 55, 255) : new Color32(16, 24, 30, 255); if (face.color != (Color)tone) { face.color = tone; } }
+            var label = tab.GetComponentInChildren<TextMeshProUGUI>(true);
+            if (label != null) { label.color = on ? TabletKitStyle.Ink : new Color32(120, 136, 148, 255); label.fontStyle = on ? FontStyles.Bold : FontStyles.Normal; }
+            var bar = tab.transform.Find("Image :: Selected Tab");
+            if (bar == null)
+            {
+                var image = new GameObject("Image :: Selected Tab", typeof(RectTransform)).AddComponent<Image>();
+                image.rectTransform.SetParent(tab.transform, false); image.raycastTarget = false; image.color = TabletKitStyle.Accent;
+                image.rectTransform.anchorMin = new Vector2(.06f, 0f); image.rectTransform.anchorMax = new Vector2(.94f, .07f); image.rectTransform.offsetMin = image.rectTransform.offsetMax = Vector2.zero;
+                bar = image.transform;
+            }
+            if (bar.gameObject.activeSelf != on) { bar.gameObject.SetActive(on); }
+        }
+    }
     void Update()
     {
+        RefreshTabs();
         if (Time.unscaledTime < nextUpdate || StockManager.Instance == null || InvestorSociety.Instance == null)
         { return; }
         nextUpdate = Time.unscaledTime + .5f;
@@ -198,6 +226,8 @@ public sealed class LeadingRoomUI : MonoBehaviour
         { return; }
         Set(npcSummary,npc.LeaderName + " · 운영자\n체결 " + npc.FillCount + "건 · 실현 " + npc.RealizedProfit.ToString("+#,##0;-#,##0;0") + "돈");
         Set(membershipLabel,npc.PlayerJoined ? "방 나가기" : npc.Available ? "방 참여" : "참여 예약");
+        // 나가기는 위험 동작이라 붉은 글자로 옆의 검토 단추들과 구별한다.
+        if (membershipLabel != null) { membershipLabel.color = npc.PlayerJoined ? TabletControlStyle.DangerInk : TabletKitStyle.Ink; }
         bool signal = npc.PlayerJoined && npc.HasSignal;
         var current = npc.Current;
         Set(npcSignal,signal ? current.Stock.stockName + " · " + current.Time + " 관측\n" + (current.Buy > 0m ? (current.RestingBuy ? "매수 대기 " : "최근 매수 체결 ") + current.Buy.ToString("N0") + "돈" : "매수 신호 없음") + "\n" + (current.Sell > 0m ? "매도 대기 " + current.Sell.ToString("N0") + "돈" : "매도 신호 없음") : npc.PlayerJoined ? npc.Status : "참여하면 운영자의 실제 주문과 대화를 볼 수 있습니다.");

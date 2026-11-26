@@ -21,8 +21,8 @@ public class FakeNewsManager : MonoBehaviour
     /// <summary>방금 돌려준 사유가 이미 지금 언어로 적힌 글인지(번역 표를 거치지 않아야 한다).</summary>
     public bool ReasonWritten { get; private set; }
     public double PlayerCooldown => playerClock.Remaining(Time.realtimeSinceStartupAsDouble);
-    public bool PlayerUnlocked => PlayerAccounts.Instance != null && PlayerAccounts.Instance.AutomatedUnlocked &&
-        PlayerAccounts.Instance.CanUse(PlayerAccounts.Instance.automated);
+    public bool PlayerUnlocked => PlayerAccounts.Instance != null &&
+        PlayerAccounts.Instance.CanUse(PlayerAccounts.Instance.primary);
     void Awake()
     {
         if (Instance != null && Instance != this) { Destroy(this); return; }

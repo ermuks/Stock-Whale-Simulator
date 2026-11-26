@@ -4,6 +4,10 @@
   {
    "key": "pop.fuss",
    "lines": [
+    "oh? oh??",
+    "{stockName} go go go",
+    "wait it's moving",
+    "ayo {stockName}",
     "is it going?",
     "{stockName} is moving!!",
     "here we go here we go",
@@ -27,6 +31,10 @@
   {
    "key": "pop.dry",
    "lines": [
+    "eh, up a little",
+    "ticked up. cool",
+    "{stockName} moved i guess",
+    "whatever, small",
     "{stockName} up a bit",
     "{stockName} ticking up",
     "small move. that's all it is",
@@ -45,6 +53,10 @@
   {
    "key": "pop.doubt",
    "lines": [
+    "nah, fake",
+    "not buying it",
+    "{stockName} bait again",
+    "it'll come right back",
     "is {stockName} actually going though?",
     "smells like a fakeout",
     "it'll come right back, watch",
@@ -62,6 +74,10 @@
   {
    "key": "pop.joke",
    "lines": [
+    "{stockName} found the espresso",
+    "oh it's alive lol",
+    "{stockName} clocked in",
+    "did someone poke it",
     "{stockName} had its coffee",
     "who woke {stockName} up lol",
     "oh it's alive",
@@ -76,6 +92,10 @@
   {
    "key": "pop.fomo",
    "lines": [
+    "ugh not in it",
+    "do i buy do i buy",
+    "{stockName} without me again",
+    "fine i'll chase",
     "is it too late to get in {stockName}?",
     "should've bought {stockName}",
     "everyone has {stockName} but me",
@@ -91,44 +111,103 @@
   {
    "key": "pop.holder",
    "lines": [
+    "ok go",
+    "{stockName} come on",
+    "more more",
+    "finally working",
     "finally {stockName} moves",
-    "come on {stockName}, just get me to even",
-    "glad i held {stockName}",
     "this is just the start. or copium",
     "worth the wait. maybe",
     "{stockName} keep going",
     "don't stop here {stockName}",
-    "didn't sell. that's me. hi",
-    "that's my {stockName}, go on",
     "little more {stockName}, you got this"
+   ]
+  },
+  {
+   "key": "pop.holderGain",
+   "lines": [
+    "love it",
+    "{stockName} keep cooking",
+    "yep keep going",
+    "another tick for me",
+    "glad i held {stockName}",
+    "that's my {stockName}, go on",
+    "{stockName} keep going",
+    "didn't sell. that's me. hi",
+    "this is just the start. or copium",
+    "add to the pile {stockName}",
+    "worth the wait",
+    "{stockName} clocking in again"
+   ]
+  },
+  {
+   "key": "pop.holderLoss",
+   "lines": [
+    "pls pls pls",
+    "{stockName} breakeven, go",
+    "little more i beg",
+    "be real this time",
+    "come on {stockName}, just get me to even",
+    "finally {stockName} moves",
+    "don't stop here {stockName}",
+    "little more {stockName}, you got this",
+    "breakeven is right there",
+    "please be the real one",
+    "help a bagholder out {stockName}",
+    "don't tease me"
    ]
   },
   {
    "key": "spill.fuss",
    "lines": [
-    "it's dumping",
-    "{stockName} is dumping!!",
-    "whoa {stockName} is falling",
+    "uh oh",
+    "hold on, {stockName} is dropping",
+    "nonono",
+    "who's dumping",
+    "is it rolling over?",
+    "{stockName} is slipping!!",
+    "whoa {stockName} just dipped",
     "they're selling they're selling",
-    "{stockName} is cracking",
     "what just happened to {stockName}",
-    "run",
     "supply hitting {stockName}",
-    "it's so over for {stockName}",
-    "who is dumping right now",
+    "who is selling right now",
     "{stockName} sliding",
-    "look at that sell wall omg",
     "uh uh uh it's slipping",
-    "{stockName} is leaking bad",
-    "abandon ship",
-    "{stockName} rug incoming",
+    "{stockName} is leaking",
     "red candle red candle",
-    "{stockName} going down down"
+    "wait why is {stockName} dropping",
+    "sellers showed up",
+    "{stockName} losing steam?",
+    "vibes just shifted",
+    "uh oh {stockName}"
+   ]
+  },
+  {
+   "key": "spill.calm",
+   "lines": [
+    "it's fine lol",
+    "{stockName} catching a breath",
+    "nothing burger",
+    "relax",
+    "just catching its breath",
+    "{stockName} taking a breather",
+    "after that run it's allowed to rest",
+    "you can't even see that on the chart",
+    "{stockName} gave back a tick. a tick",
+    "nothing compared to what it ran",
+    "let it rest",
+    "{stockName} pausing, that's all",
+    "if that scares you don't trade runners",
+    "healthy. it needed that"
    ]
   },
   {
    "key": "spill.dry",
    "lines": [
+    "down a bit, eh",
+    "small dip",
+    "{stockName} gave a tick back",
+    "it happens",
     "{stockName} down a bit",
     "{stockName} slipping a little",
     "just a pullback",
@@ -147,6 +226,10 @@
   {
    "key": "spill.doubt",
    "lines": [
+    "is that it?",
+    "{stockName} looks sus",
+    "shakeout or real?",
+    "bad vibes ngl",
     "did {stockName} just top?",
     "if it drops more, it's real",
     "pullback or the end, can't tell",
@@ -163,6 +246,10 @@
   {
    "key": "spill.joke",
    "lines": [
+    "{stockName} slipped on a banana",
+    "who pushed it",
+    "so much for 'is it going'",
+    "{stockName} dozed off",
     "{stockName} tripped lol",
     "we said 'is it going' and it went down lol",
     "{stockName} is out of breath",
@@ -177,23 +264,59 @@
   {
    "key": "spill.holder",
    "lines": [
+    "no no",
+    "{stockName} hold please",
+    "not selling",
+    "sweating a bit",
     "not selling {stockName}, not selling",
-    "should've sold {stockName}",
+    "i can sit through this",
+    "shake all you want, i'm staying",
+    "it's a pullback. i believe. {stockName} pls",
+    "please stop here {stockName}",
+    "right at breakeven, of course it dips"
+   ]
+  },
+  {
+   "key": "spill.holderGain",
+   "lines": [
+    "should've trimmed lol",
+    "{stockName} don't eat my gains",
+    "hold up now",
+    "thinking about selling",
     "i can sit through this",
     "my gains are melting",
-    "please stop here {stockName}",
-    "shake all you want, i'm staying",
     "should've taken profit",
+    "shake all you want, i'm staying",
+    "it's a pullback. i believe. {stockName} pls",
+    "it always rips after i sell so no",
+    "should've sold {stockName}",
+    "diamond hands. sweaty diamond hands"
+   ]
+  },
+  {
+   "key": "spill.holderLoss",
+   "lines": [
+    "again?",
+    "{stockName} stop pls",
+    "there goes breakeven",
+    "why always me",
+    "please stop here {stockName}",
     "why does it drop the second i hold",
     "my hands are shaking",
-    "it always rips after i sell so no",
-    "it's a pullback. i believe. {stockName} pls",
-    "diamond hands. sweaty diamond hands"
+    "and there goes breakeven again",
+    "not selling {stockName}, not selling",
+    "thought it was going. nope",
+    "average down or stop digging",
+    "{stockName} please, i'm already red"
    ]
   },
   {
    "key": "spill.outsider",
    "lines": [
+    "glad i passed lol",
+    "{stockName} dip more",
+    "buy the dip? maybe",
+    "fun to watch",
     "glad i stayed out of {stockName}",
     "i'll pick up {stockName} lower",
     "just watching",

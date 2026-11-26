@@ -42,7 +42,17 @@ public sealed class DeskViewController : MonoBehaviour
     private bool custom;
     /// <summary>모니터를 보는 시점(1 종목, 2 가운데, 3 채팅)인가. 이 시점들에서는 가운데 화면도 함께 보이고 조작된다.</summary>
     private static bool MonitorView(DeskViewTarget target) => target == DeskViewTarget.Stocks || target == DeskViewTarget.Chart || target == DeskViewTarget.Chat;
-    public static bool BlockChartPointer => Instance != null && (!MonitorView(Instance.Target) || Instance.moving || Instance.consumedFrame == Time.frameCount);
+    public static bool BlockChartPointer => Instance != null && (!(MonitorView(Instance.Target) || Instance.TabletOverMonitor) || Instance.moving || Instance.consumedFrame == Time.frameCount);
+    /// <summary>태블릿을 들고 있고, 마우스가 태블릿이 아니라 뒤의 모니터 위에 있는가(그때는 차트도 조작된다).</summary>
+    private bool TabletOverMonitor => Target >= DeskViewTarget.TabletOne && FindHovered(Input.mousePosition) <= DeskViewTarget.Chat && FindHovered(Input.mousePosition) != DeskViewTarget.None;
+    private float tabletClickAt = -10f; private Vector2 tabletClickFrom, tabletGrabFrom;
+    /// <summary>태블릿 시점의 기준 방향(home)에서 화면의 한 점을 지나는 시선의 방향(월드). 흔들림은 넣지 않는다.</summary>
+    private Vector3 ViewRay(Vector2 pixel)
+    {
+        float tanY = Mathf.Tan(viewCamera.fieldOfView * .5f * Mathf.Deg2Rad), tanX = tanY * viewCamera.aspect;
+        var local = new Vector3((pixel.x / Mathf.Max(1f, Screen.width) * 2f - 1f) * tanX, (pixel.y / Mathf.Max(1f, Screen.height) * 2f - 1f) * tanY, 1f);
+        return (home.rotation * local).normalized;
+    }
     /// <summary>모니터를 확대해 보는 중인가(1·2·3 시점).</summary>
     public static bool MonitorZoomed => Instance != null && MonitorView(Instance.Target);
     /// <summary>차트를 끌어도 되는가. 시점은 오른쪽 버튼으로 옮기므로 왼쪽 끌기는 언제나 차트의 것이다.</summary>
@@ -107,6 +117,12 @@ public sealed class DeskViewController : MonoBehaviour
 
     public bool OwnsTablet(TabletViewController tablet)
     { return tablets != null && System.Array.IndexOf(tablets, tablet) >= 0; }
+
+    /// <summary>번호로 태블릿을 확대한다(0이 왼쪽·Q, 1이 오른쪽·E).</summary>
+    public void FocusTabletNumber(int index)
+    {
+        if (tablets != null && index >= 0 && index < tablets.Length && tablets[index] != null) { FocusTablet(tablets[index]); }
+    }
 
     public void FocusTablet(TabletViewController tablet, bool toggle = false)
     {
@@ -211,7 +227,7 @@ public sealed class DeskViewController : MonoBehaviour
         return true;
     }
 
-    public void Focus(DeskViewTarget next)
+    public void Focus(DeskViewTarget next, bool keepSelection = false)
     {
         if (!Ready || next == DeskViewTarget.None || next == Target || ScreenFor(next) == null)
         { return; }
@@ -226,7 +242,8 @@ public sealed class DeskViewController : MonoBehaviour
         ReleaseHeldTablet();
         Target = next; Hovered = DeskViewTarget.None; consumedFrame = Time.frameCount; sway = Vector2.zero;
         UnlockPanels(); hasPreset = false; viewKeyHeld = turning = viewReady = following = false;
-        EventSystem.current?.SetSelectedGameObject(null);
+        // 보통은 누르고 있던 것의 포커스를 푼다. 글을 쓰는 중에 넘어올 때(채팅 입력)는 그대로 둔다.
+        if (!keepSelection) { EventSystem.current?.SetSelectedGameObject(null); }
         mouseLook?.SetViewCursor(false);
         Cursor.lockState = CursorLockMode.None; Cursor.visible = true;
         SetPointerTarget(DeskViewTarget.None);
@@ -314,14 +331,33 @@ public sealed class DeskViewController : MonoBehaviour
             if (moving && tablet.IsFramed)
             { moving = false; SetPointerTarget(Target); }
             // 태블릿을 든 채로도 걸어 다닌다(WASD). 오른쪽 버튼을 누른 채 끌면 둘러본다. 글을 쓰는 중에는 움직이지 않는다.
+            // 태블릿을 든 채 채팅 입력 칸을 눌러 글을 쓰기 시작하면 곧바로 채팅 화면(3번 시점)으로 넘어간다. 입력 칸의 포커스는 그대로 둔다.
+            if (MouseCameraController.TextEntryActive && EventSystem.current != null)
+            {
+                var chat = ScreenFor(DeskViewTarget.Chat); var picked = EventSystem.current.currentSelectedGameObject;
+                if (chat != null && picked != null && picked.transform.IsChildOf(chat)) { Focus(DeskViewTarget.Chat, true); return; }
+            }
             if (mouseLook != null && !MouseCameraController.TextEntryActive)
             {
+                // 오른쪽 버튼을 짧게 누르면(끌지 않고 곧 떼면) 태블릿을 화면의 반대쪽으로 옮긴다.
+                if (Input.GetMouseButtonDown(1)) { tabletClickAt = Time.unscaledTime; tabletClickFrom = Input.mousePosition; }
+                if (Input.GetMouseButtonUp(1) && Time.unscaledTime - tabletClickAt < .28f && ((Vector2)Input.mousePosition - tabletClickFrom).sqrMagnitude < 64f)
+                { tablet.FlipSide(); moving = true; consumedFrame = Time.frameCount; }
+                if (Input.GetMouseButtonDown(1)) { tabletGrabFrom = Input.mousePosition; }
                 if (Input.GetMouseButton(1))
                 {
-                    Vector3 angles = home.rotation.eulerAngles; float pitch = angles.x > 180f ? angles.x - 360f : angles.x;
-                    float turn = mouseLook.sensitivity * GameSettings.Current.sensitivity;
-                    pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * turn, -80f, 80f);
-                    home.rotation = Quaternion.Euler(pitch, angles.y + Input.GetAxis("Mouse X") * turn, 0f);
+                    // 잡아서 끄는 방식이다: 오른쪽 버튼으로 누른 곳이 커서를 그대로 따라온다. 오른쪽으로 끌면 방이 오른쪽으로, 위로 끌면 위로 밀린다.
+                    // 감도 설정을 곱하지 않는다. 마우스가 움직인 화면 거리만큼 정확히 돈다(그래야 잡은 점이 커서 밑에 남는다).
+                    Vector2 mouse = Input.mousePosition;
+                    if ((mouse - tabletGrabFrom).sqrMagnitude > 0f)
+                    {
+                        Vector3 before = ViewRay(tabletGrabFrom), after = ViewRay(mouse); tabletGrabFrom = mouse;
+                        Vector3 angles = home.rotation.eulerAngles; float pitch = angles.x > 180f ? angles.x - 360f : angles.x;
+                        float yaw = Mathf.Atan2(before.x, before.z) - Mathf.Atan2(after.x, after.z);
+                        float rise = Mathf.Asin(Mathf.Clamp(after.y, -1f, 1f)) - Mathf.Asin(Mathf.Clamp(before.y, -1f, 1f));
+                        pitch = Mathf.Clamp(pitch + rise * Mathf.Rad2Deg, -80f, 80f);
+                        home.rotation = Quaternion.Euler(pitch, angles.y + Mathf.DeltaAngle(0f, yaw * Mathf.Rad2Deg), 0f);
+                    }
                 }
                 mouseLook.WalkFacing(home.rotation.eulerAngles.y);
                 home.position = transform.position;
@@ -330,7 +366,8 @@ public sealed class DeskViewController : MonoBehaviour
                 Input.mousePosition.x / Mathf.Max(1f, Screen.width) * 2f - 1f,
                 Input.mousePosition.y / Mathf.Max(1f, Screen.height) * 2f - 1f);
             input = Vector2.ClampMagnitude(input, 1f);
-            sway = Vector2.Lerp(sway, input * tabletSwayDegrees, 1f - Mathf.Exp(-2f * Time.unscaledDeltaTime));
+            // 끄는 동안에는 흔들림을 멈춰 둔다(흔들림이 풀리며 화면이 따로 움직이면 잡은 점이 커서에서 미끄러진다).
+            if (!Input.GetMouseButton(1)) { sway = Vector2.Lerp(sway, input * tabletSwayDegrees, 1f - Mathf.Exp(-2f * Time.unscaledDeltaTime)); }
             transform.rotation = home.rotation * Quaternion.Euler(-sway.y, sway.x, 0f);
             return;
         }
@@ -526,7 +563,8 @@ public sealed class DeskViewController : MonoBehaviour
             {
                 var raycaster = raycasters[i][j];
                 // 모니터를 보는 시점에서는 세 모니터가 모두 조작된다(시점을 옮겨 옆 모니터도 쓸 수 있다).
-                bool enabled = (i == (int)target || i <= (int)DeskViewTarget.Chat && MonitorView(target)) && authoredRaycasts[i][j];
+                // 태블릿을 들고 있을 때도 뒤의 모니터를 눌러 쓸 수 있다(태블릿이 앞에 있어서 겹친 자리는 태블릿이 받는다).
+                bool enabled = (i == (int)target || i <= (int)DeskViewTarget.Chat && (MonitorView(target) || target >= DeskViewTarget.TabletOne)) && authoredRaycasts[i][j];
                 if (raycaster != null && raycaster.enabled != enabled)
                 { raycaster.enabled = enabled; }
             }
